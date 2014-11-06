@@ -1,5 +1,11 @@
 #!/usr/bin/env python
-"""Module collecting different functions to create visual stimuli."""
+"""Module collecting different functions to create lightness stimuli. Includes
+Cornsweet edges
+Todorovic's Cornsweet checkerboard
+square waves
+White's illusion in different forms
+disc and ring stimuli
+"""
 
 import numpy as np
 
