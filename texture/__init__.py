@@ -1,5 +1,5 @@
 """
-Generation of texture stimuli
+Generation of various texture stimuli
 
 """
 
