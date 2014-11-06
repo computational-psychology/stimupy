@@ -1,4 +1,5 @@
-stimuli
+TUBvision's stimuli repository
 =======
 
-Code that generates stimuli for various psychophysical experiments
+Code that generates stimuli for various psychophysical experiments.
+
