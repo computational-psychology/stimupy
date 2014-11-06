@@ -1,5 +1,7 @@
-TUBvision's stimuli repository
-=======
+## Stimuli ##
 
-Code that generates stimuli for various psychophysical experiments.
-
+Contains submoduls for
+- creating different lightness illusions (lightness)
+- creating different textures (texture)
+- some helper functions for padding, resizing, computing Munsell values, and
+converting pixel values to degrees of visual angle (utils)

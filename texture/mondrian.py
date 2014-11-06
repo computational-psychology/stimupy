@@ -1,12 +1,14 @@
+#!/usr/bin/python
+# -*- coding: latin-1 -*-
 
 """
 This module provides functions for creating mondrian style stimuli, and for
-rotating them in 3D. create_mondrian() is probably the most important function.
+rotating them in 3D. Use create_mondrian() to create a Mondrian texture with
+given parameters.
 
 """
 import random
 import bisect
-import Image
 import numpy as np
 
 from .. import utils
@@ -16,7 +18,7 @@ def distribute_patches(size, mean_edge_len, colors, weights=None, write=False):
     Create a mondrian display of given size, mean edge length and colors.
     Optionanlly, weights for the colors, i.e. the probability that a patch will
     receive a certain color, can be specified.
-    
+
     Parameters
     ----------
     size : tuple of two ints
@@ -42,10 +44,10 @@ def distribute_patches(size, mean_edge_len, colors, weights=None, write=False):
         weights = [1. / len(colors) for _ in colors]
     elif len(weights) != len(colors):
         raise ValueError(
-                "number of weights must be equal to number of colors, but " + 
+                "number of weights must be equal to number of colors, but " +
                 "is %d weights for %d colors" %(len(weights), len(colors)))
     rng = WeightedRandomGenerator(weights)
-    M = -np.ones(size) 
+    M = -np.ones(size)
     x = 0
     if write:
         out_file = open('/tmp/mondrian_out', 'w')
@@ -76,7 +78,7 @@ def distribute_patches(size, mean_edge_len, colors, weights=None, write=False):
         out_file.close()
     return M
 
-def create_mondrian(size, mean_edge_len, colors, weights=None, 
+def create_mondrian(size, mean_edge_len, colors, weights=None,
                     accuracy=.05, max_cycles=1000, write=False):
     """
     Create a mondrian on which the difference between desired color
@@ -119,7 +121,7 @@ def create_mondrian(size, mean_edge_len, colors, weights=None,
         weights = [1. / len(colors) for _ in colors]
     elif len(weights) != len(colors):
         raise ValueError(
-                "number of weights must be equal to number of colors, but " + 
+                "number of weights must be equal to number of colors, but " +
                 "is %d weights for %d colors" %(len(weights), len(colors)))
     bins = list(colors)
     bins.append(bins[-1] + 1)
@@ -161,7 +163,7 @@ def rotate_3d(m, rot_angle, ppd, constant_side='l', background=0, factor=1):
              if the function is called with a resized array, the resize factor
              can be passed to ensure that the output size is a multiple of the
              resize factor. Default is 1.
-    
+
     Returns
     -------
     rotated : 2D numpy array
@@ -189,16 +191,16 @@ def rotate_3d(m, rot_angle, ppd, constant_side='l', background=0, factor=1):
 
     for x in np.arange(width):
         alpha = np.arctan(x / distance)
-        x_coord = np.round(distance * np.sin(alpha) / 
+        x_coord = np.round(distance * np.sin(alpha) /
                                             np.sin(np.pi - alpha - theta))
-        obj_dist = np.sqrt(distance ** 2 + x_coord ** 2 - 
+        obj_dist = np.sqrt(distance ** 2 + x_coord ** 2 -
                                 2 * distance * x_coord * np.cos(theta))
         screen_dist = x / np.sin(alpha) if x > 0 else distance
         height = m.shape[0] * screen_dist / obj_dist
         height = np.floor(height) + (m.shape[0] - np.floor(height)) % 2
         h_diff = (m.shape[0] - int(height)) / 2
         if h_diff == 0:
-            rotated[:, x] = m[:, x_coord]  
+            rotated[:, x] = m[:, x_coord]
         else:
             rotated[h_diff:-h_diff, x] = m[:,x_coord][
                 np.linspace(0, m.shape[0], height, endpoint=False).astype(int)]
@@ -229,7 +231,7 @@ def rotate_3d_smooth(m, rot_angle, ppd, constant_side='l', background=0,
                  not covered by the rotated surface. Default is 0.
     factor : odd number, optional
              the super-sampling factor. Default is 5.
-    
+
     Returns
     -------
     rotated : 2D numpy array
@@ -246,7 +248,7 @@ def rotate_3d_smooth(m, rot_angle, ppd, constant_side='l', background=0,
 
 def angled_mondrians(left, right, angle, ppd, background=0):
     """
-    Arrange two arrays (ususally Mondrians), side by side, rotated such that 
+    Arrange two arrays (ususally Mondrians), side by side, rotated such that
     the corner forms a given angle.
 
     Parameters
@@ -262,7 +264,7 @@ def angled_mondrians(left, right, angle, ppd, background=0):
     background : number, optional
                  the value used to fill in the returned image in the locations
                  not covered by the rotated surface. Default is 0.
-    
+
     Returns
     -------
     2D array
@@ -276,7 +278,7 @@ def overlapping_patch(left, right, size, value, y_offset=None, x_offset=None):
     """
     Change values in the two arrays such that when they are placed side by
     side, there is an overlapping patch of the specified value.
-    
+
     Parameters
     ----------
     left : 2D array
@@ -325,7 +327,7 @@ class WeightedRandomGenerator(object):
     Implementation copied from
     http://eli.thegreenplace.net/2010/01/22/weighted-random-generation-in-python
     """
-    
+
     def __init__(self, weights):
         self.totals = []
         running_total = 0
