@@ -5,7 +5,7 @@ Utility functions to read and write .tess files
 @author: G. Aguilar, Sept 2013
 """
 
-from rpy2 import robjects
+
  
  
 def read_tess_Rfile(filename):
@@ -13,6 +13,8 @@ def read_tess_Rfile(filename):
     Internal function of hardcore module
     """
 
+    from rpy2 import robjects
+    
     robjects.r['load'](filename)
     tessetiles = robjects.r['tessetiles']
     

@@ -3,5 +3,5 @@ Generation of various texture stimuli
 
 """
 
-import mondrian
-import random_circles
+import bricks, mondrian, random_circles
+from spatialprocess import hardcore
