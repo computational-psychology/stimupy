@@ -2,6 +2,7 @@
 Provides some functionality for creating and manipulating visual stimuli
 represented as numpy arrays.
 """
+from __future__ import division
 import numpy as np
 try:
     import Image
@@ -228,3 +229,74 @@ def resize_array(arr, factor):
     An array of shape (arr.shape[0] * factor[0], arr.shape[1] * factor[1])
     """
     return np.repeat(np.repeat(arr, factor[0], axis=0), factor[1], axis=1)
+
+def smooth_window(shape, plateau, min_val, max_val, width):
+    """
+    Return an array that smoothly falls of from max_val to min_val. Plateau
+    specifies the location of max_val, width defines the width of the gradient,
+    i.e. the number of pixels to reach min_val.
+    TODO: only really works for unslanted rectangles, otherwise the inside of
+    the plateau is not filled in!
+
+    Parameters
+    ----------
+    shape : tuple of two ints
+            the shape of the output array, (y,x)
+    plateau : tuple of two-tuples ((y1, x1), ...)
+              the corner points of the plateau, i.e the region where the output
+              should be max_val. If two points are given, they are interpreted
+              as the upper left and lower right corner of the plateau.
+    min_val : number
+              the value of the output array at all locations further than width
+              from the plateau
+    max_val : number
+              the value of the output array at the plateau
+    width : int
+            the distance it takes for the gradient funcion to change from max
+            to min.
+
+    Returns
+    -------
+    mask : 2D array
+    """
+    x = np.arange(shape[1])[np.newaxis, :]
+    y = np.arange(shape[0])[:, np.newaxis]
+    distance = np.ones(shape) * width
+    if len(plateau) == 2:
+        plateau_points = (plateau[0], (plateau[0][0], plateau[1][1]), plateau[1],
+                        (plateau[1][0], plateau[0][1]))
+        distance[plateau[0][0] : plateau[1][0], plateau[0][1] : plateau[1][1]] = 0
+    else:
+        plateau_points = plateau
+    for i in range(len(plateau_points)):
+        p1 = plateau_points[i]
+        p2 = plateau_points[(i+1) % len(plateau_points)]
+        distance = np.fmin(distance, dist_to_segment(y, x, p1, p2))
+    distance = distance / width * np.pi
+    mask = (np.cos(distance) + 1) / 2
+    mask = mask * (max_val - min_val) + min_val
+
+    return mask
+
+
+
+def dist_squared(y, x, p):
+    return ((y - p[0]) ** 2 + (x - p[1]) ** 2)
+
+def dist_to_segment(y, x, p1, p2): # x3,y3 is the point
+    """
+    Compute the distance between a point, (y,x), and a line segment between p1
+    and p2.
+    """
+    y = np.atleast_1d(y)
+    x = np.atleast_1d(x)
+    sl = dist_squared(p1[0], p1[1], p2)
+    if sl == 0:
+        return np.sqrt(dist_squared(y, x, p1))
+    t = ((y - p1[0]) * (p2[0] - p1[0]) + (x - p1[1]) * (p2[1] - p1[1])) / sl
+    dist = dist_squared(y, x, (p1[0] + t * (p2[0] - p1[0]), p1[1] + t * (p2[1]
+        - p1[1])))
+    dist[t>1] = dist_squared(y, x, p2)[t>1]
+    dist[t<0] = dist_squared(y, x, p1)[t<0]
+    return np.sqrt(dist)
+
