@@ -1,6 +1,6 @@
 ## Stimuli ##
 
-Contains submoduls for
+Contains submodules for
 - creating different lightness illusions (lightness)
 - creating different textures (texture)
 - some helper functions for padding, resizing, computing Munsell values, and
