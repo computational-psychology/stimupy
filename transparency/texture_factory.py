@@ -55,6 +55,7 @@ class TextureFactory(object):
             alpha blending params of transparency circle.
         circle_radius : int
         bg_luminosity : float or None
+            If None, it renders transparency against background
             If not None, the circle is cut out and set against the given background luminosity.
 
         Returns
