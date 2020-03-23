@@ -45,7 +45,7 @@ class CheckerboardFactory:
         n_checks : int
             Number of checks in each direction.
         reflectances : list[float] or None
-            Reflectance values for the checks to draw from randomly.
+            Reflectance values [in povray a.u.] for the checks to draw from randomly.
             When None, default values as in Wiebel, Aguilar and Maertens 2017 are used.
         sample_repeat : int
             Repeating >reflectances< this many times, then drawing without replacing.
@@ -76,11 +76,11 @@ class CheckerboardFactory:
         Parameters
         ----------
         tau : float
-            Luminosity of the transparent partial overlay. [0.0, 10.0]
+            Reflectance [in povray a.u.] of the transparent partial overlay. [0.0, 10.0]
         alpha : float
             Alpha value of the transparent partial overlay. [0.0, 1.0]
         background : float
-            Background luminosity. [0.0, 1.0]
+            Background luminance. [0.0, 1.0]
         camera_offset, look_at_offset : tuple[int]
             xyz coordinate offset from default camera position / look_at focus position
         transparency_coords : list or None, optional
@@ -270,9 +270,9 @@ def write_pov(filename, r_checks, positions, transparency=None, cb_transf=None, 
     planes, pointers : list[str]
         list of povray instructions
     background : float
-        background luminosity
+        background luminance
     light : float
-        light source luminosity
+        light source intensity
     camera_offset, look_at_offset : tuple[float]
         xyz coordinate offset from default camera position / look_at focus position
     """
