@@ -7,7 +7,7 @@ import numpy as np
 try:
     import Image
 except ImportError:
-    print "Could not import Image, utils.write_array_to_image will not work."
+    print("Could not import Image, utils.write_array_to_image will not work.")
     Image = None
 
 def write_array_to_image(filename, arr):

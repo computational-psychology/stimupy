@@ -9,7 +9,7 @@ disc and ring stimuli
 
 import numpy as np
 
-from stimuli.utils import degrees_to_pixels, resize_array
+from utils.utils import degrees_to_pixels, resize_array
 
 
 def cornsweet(size, ppd, contrast, ramp_width=3, exponent=2.75,

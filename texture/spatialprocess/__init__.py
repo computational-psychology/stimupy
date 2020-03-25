@@ -1,1 +1,1 @@
-import hardcore
+from texture.spatialprocess import hardcore, tessutils
