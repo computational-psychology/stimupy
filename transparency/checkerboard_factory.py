@@ -5,11 +5,13 @@ Created on Fri Mar 20 08:08:01 2020
 @author: max
 """
 
-import numpy as np
 from PIL import Image
+from os import path
+import numpy as np
 import matplotlib.pyplot as plt
 import subprocess
 import string
+import warnings
 
 
 class CheckerboardFactory:
@@ -19,7 +21,7 @@ class CheckerboardFactory:
     Example usage:
     >>> f = CheckerboardFactory()
     >>> f.find_checkerboard(n_checks=8)
-    >>> f.build_image(tau=2, alpha=.5, camera_offset=(1, 0, 0))
+    >>> f.build_image(tau=2, alpha=.5)
     >>> checkerboard = f.get_checkerboard()
     >>> cutout = f.get_cutout()
     >>> stacked = f.get_stacked()
@@ -33,43 +35,109 @@ class CheckerboardFactory:
         self.n_checks = 0
         self.r_checks = {}
         self.image = None
+        self.camera_offsets_specified = False
 
-        mask = Image.open("checkerboard_mask.png").convert('L')
+        base_path = path.dirname(__file__)
+        p = path.join(base_path, 'checkerboard_mask.png')
+        mask = Image.open(p).convert('L')
         self.mask = np.array(mask) / 255.0
         self.cropped_mask = self.mask[289:377, 139:341]
 
-    def find_checkerboard(self, n_checks, reflectances=None, sample_repeat=9):
+    def find_checkerboard(self, n_checks, reflectances=None, sample_repeat=9,
+                          strict_sampling=True, controlled_sampling=False):
         """
         Find a checkerboard pattern where no two adjacent checks have the same value, and save internally.
 
+        Parameters
+        ----------
         n_checks : int
             Number of checks in each direction.
-        reflectances : list[float] or None
+        reflectances : list[float] or None, optional
             Reflectance values [in povray a.u.] for the checks to draw from randomly.
             When None, default values as in Wiebel, Aguilar and Maertens 2017 are used.
-        sample_repeat : int
-            Repeating >reflectances< this many times, then drawing without replacing.
+        sample_repeat : int, optional
+            Repeating >reflectances< this many times, to sample the board from (without replacing).
+        strict_sampling : bool, optional
+            If True, the entire board is (re-)sampled until no two adjacent checks have the same value.
+            If False, problematic checks will be corrected one by one, which is faster, but might lead to
+            - some reflectances occurring more often than >sample_repeat<, and
+            - slight inconsistencies in overall distribution / deviations.
+        controlled_sampling : bool, optional
+            If True and n_checks!=8, the lower quadrant of the board (which will be mostly covered by the transparent
+            rectangle) will be sampled independently in order to control the distribution of reflectances there.
+            If True and n_checks=8, 26 checks known to be fully or partially covered by the transparency will be used.
+            If False, the entire board will be sampled equally.
         """
+        self.n_checks = n_checks
+        total_checks = n_checks*n_checks
+
         if reflectances is None:
             reflectances = [0.06, 0.11, 0.19, 0.31, 0.46, 0.63, 0.82, 1.05, 1.29, 1.50, 1.67, 1.95, 2.22]
 
-        self.n_checks = n_checks
+        if len(reflectances) * sample_repeat < total_checks:
+            sample_repeat = np.ceil(total_checks / len(reflectances))
+            warnings.warn('Given value for sample_repeat was too small and has been changed to %d.' % sample_repeat)
 
-        # build n x n matrix with values drawn from reflectances with at most >sample_repeat< repeats of each value
-        draw_set = np.repeat(reflectances, sample_repeat)
-        board = np.random.choice(draw_set, (n_checks, n_checks), replace=False)
+        # repeated concatenation of reflectances / multiset of values the cells will be sampled from without replacing
+        np.random.shuffle(reflectances)
+        sample_set = np.tile(reflectances, sample_repeat)
 
-        for i, j in np.ndindex((n_checks, n_checks)):
-            # if check value is identical to top or left adjacent cell, draw a different sample
-            if (i > 0 and board[i, j] == board[i - 1, j]) or (j > 0 and board[i, j] == board[i, j - 1]):
-                board[i, j] = np.random.choice([a for a in reflectances if a != board[i, j]])
-                # TODO is it important that a value doesn't occur more than >sample_repeat< times?
+        # mask for the part of the board to be sampled first (see docstring)
+        if controlled_sampling:
+            mask = np.full((n_checks, n_checks), False)
+            if n_checks == 8:
+                x = [3, 3, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 6, 7, 7, 7, 7, 2, 2, 3, 4, 5, 6, 7, 7]
+                y = [0, 1, 0, 1, 2, 0, 1, 2, 3, 0, 1, 2, 3, 4, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 4, 5]
+                mask[(x, y)] = True
+            else:
+                t = int(np.ceil(n_checks/2))
+                mask[t:, :t] = True
+            mask_size = np.count_nonzero(mask)
+        else:
+            mask = mask_size = None
 
-            key = '%s%.2d' % (string.ascii_lowercase[i], j + 1)
-            self.r_checks[key] = board[i, j]
+        # board sampling loop
+        iterations = 0
+        max_iterations = 100000
+        while True:
+            if iterations >= max_iterations:
+                raise RuntimeWarning('No board found after %d attempts. Consider setting strict_sampling to False.'
+                                     % max_iterations)
+            iterations += 1
 
-    def build_image(self, tau, alpha, background=.27, camera_offset=(0, 0, 0), look_at_offset=(0, 0, 0),
-                    transparency_coords=None, filename="checkerboard", resolution=(480, 480)):
+            if controlled_sampling:
+                # split sample_set into two buckets to sample controlled and uncontrolled checks from,
+                # to guarantee occurrence of all reflectances amongst the controlled checks
+                # (this is because draw_set is the repeated concatenation of the ordered reflectances)
+                board = np.zeros((n_checks, n_checks))
+                board[mask] = np.random.choice(sample_set[:mask_size], mask_size, replace=False)
+                board[~mask] = np.random.choice(sample_set[mask_size:], total_checks - mask_size, replace=False)
+            else:
+                board = np.random.choice(sample_set, (n_checks, n_checks), replace=False)
+
+            # check that no two adjacent cells have the same value (by checking top and left neighbour of each cell)
+            for (i, j), val in np.ndenumerate(board):
+                top_neighbour = board[i-1, j] if i > 0 else None
+                left_neighbour = board[i, j-1] if j > 0 else None
+
+                if val == top_neighbour or val == left_neighbour:
+                    if not strict_sampling:
+                        # redraw the value from all non-adjacent reflectances (see strict_sampling description)
+                        restricted_draw_set = [r for r in reflectances if r != top_neighbour and r != left_neighbour]
+                        board[i, j] = np.random.choice(restricted_draw_set)
+                    else:
+                        break  # break the for-loop in order to *not* enter the else-block and continue in while-loop
+            else:
+                break  # else-block wasn't entered => no adjacent duplicates => break the while-loop
+
+        # fill r_checks with values from the board
+        for i in range(n_checks):
+            for j in range(n_checks):
+                key = '%s%.2d' % (string.ascii_lowercase[i], j + 1)
+                self.r_checks[key] = board[i, j]
+
+    def build_image(self, tau, alpha, background=.27, camera_offset=None, look_at_offset=None,
+                    transparency_coords=None, filename='checkerboard', resolution=(480, 480)):
         """
         Add the transparency layer to the checkerboard and generate the image.
         
@@ -81,8 +149,9 @@ class CheckerboardFactory:
             Alpha value of the transparent partial overlay. [0.0, 1.0]
         background : float
             Background luminance. [0.0, 1.0]
-        camera_offset, look_at_offset : tuple[int]
+        camera_offset, look_at_offset : tuple[int], None
             xyz coordinate offset from default camera position / look_at focus position
+            !!! Attention: If offsets are specified, no functionality associated with masks or cutouts will work!
         transparency_coords : list or None, optional
             The coordinates of the transparent partial overlay.
             Default (when None given) is horizontal.
@@ -94,6 +163,14 @@ class CheckerboardFactory:
         """
         if transparency_coords is None:
             transparency_coords = [[-2.0, 1.85, -8.0], [-2.0, -0.2, -8.0], [2.0, -0.2, -8.0], [2.0, 1.85, -8.0]]
+        if camera_offset is None:
+            camera_offset = (0, 0, 0)
+        else:
+            self.camera_offsets_specified = True
+        if look_at_offset is None:
+            look_at_offset = (0, 0, 0)
+        else:
+            self.camera_offsets_specified = True
 
         positions = get_positions(n_checks=self.n_checks, y1=-1.00, y2=-0.71)
         cb_transf = 'rotate y * 45'
@@ -123,6 +200,8 @@ class CheckerboardFactory:
         """
         checkerboard = self.image.copy()
         if cropped:
+            if self.camera_offsets_specified:
+                warnings.warn('Camera offsets have been specified. All cutouts and masks are incorrect!')
             return checkerboard[209:425, 63:417]
         else:
             return checkerboard
@@ -140,6 +219,9 @@ class CheckerboardFactory:
         np.ndarray
             numpy array with values between 0.0 and 1.0
         """
+        if self.camera_offsets_specified:
+            warnings.warn('Camera offsets have been specified. All cutouts and masks are incorrect!')
+
         cutout = self.image.copy()
         bg = cutout[0, 0]
         cutout[self.mask == 0] = bg
@@ -149,18 +231,25 @@ class CheckerboardFactory:
         else:
             return cutout
 
-    def get_stacked(self, distance=100):
+    def get_stacked(self, distance=100, return_masks=False):
         """
         Combine cutout and non-cutout-checkerboard in one image, stacked atop each other.
 
         Parameters
         ----------
-        distance : int
+        distance : int, optional
             space in between object
+        return_masks : bool, optional
+            see below
+
         Returns
         -------
-        np.ndarray
-            numpy array with values between 0.0 and 1.0
+        stacked : np.ndarray
+            the image with values between 0.0 and 1.0
+        mask_checkerboard : np.ndarray, optional
+            mask for the intersection of checkerboard and transparent rectangle in the upper part
+        mask_cutout : np.ndarray, optional
+            mask for the cutout in the lower part
         """
         checkerboard = self.get_checkerboard(cropped=True)
         cutout = self.get_cutout(cropped=True)
@@ -195,7 +284,10 @@ class CheckerboardFactory:
         x2 = x1 + checkerboard.shape[1]
         stacked[y1:y2, x1:x2] = checkerboard
 
-        return stacked, mask_checkerboard, mask_cutout
+        if return_masks:
+            return stacked, mask_checkerboard, mask_cutout
+        else:
+            return stacked
 
 
 def get_positions(n_checks=10, xz1=-2.9, xz2=2.9, y1=-0.75, y2=-0.71):
@@ -390,18 +482,28 @@ def run_povray(filename, res=(1024, 768)):
 
 def main():
     f = CheckerboardFactory()
-    f.find_checkerboard(10)
+    # calculate a n-dimensional pattern
+    n = 8
+    f.find_checkerboard(n)
+
+    # render an image, including transparent rectangle
     tau = 2
     alpha = .5
-
     f.build_image(tau, alpha, background=.5)
-    img1 = f.get_checkerboard()
-    f.build_image(tau, alpha, background=.5, camera_offset=(1, 0, 0))
-    img2 = f.get_checkerboard()
+    # get a comparable stacked version of the original image and a cutout of the board-transparency intersection
+    img1 = f.get_stacked()
 
+    plt.figure()
     plt.imshow(img1, cmap='gray', vmin=0, vmax=1)
     plt.show()
-    plt.imshow(img2, cmap='gray', vmin=0, vmax=1)
+
+    # move the camera to the right (but keep look_at point constant) before rendering
+    f.build_image(0, 1, camera_offset=(5, 0, 0), look_at_offset=(0, 0, 0))
+    # when offsets are specified, only get_checkerboard may be used
+    img1 = f.get_checkerboard()
+
+    plt.figure()
+    plt.imshow(img1, cmap='gray', vmin=0, vmax=1)
     plt.show()
 
 
