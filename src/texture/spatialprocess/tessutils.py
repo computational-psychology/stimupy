@@ -73,7 +73,7 @@ def read_tess(filename):
             
             
         else:
-            print "error in parsing the .tess file !!"
+            print("error in parsing the .tess file !!")
     
     # checks that all values have been read
     assert(len(tessels)==len(lines)/3.0)

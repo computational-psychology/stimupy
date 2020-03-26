@@ -1,5 +1,5 @@
-transparency/checkerboard.png
-transparency/checkerboard.pov
+src/transparency/checkerboard.png
+src/transparency/checkerboard.pov
 
 *~
 
@@ -18,7 +18,6 @@ develop-eggs/
 dist/
 downloads/
 eggs/
-lib/
 lib64/
 parts/
 sdist/

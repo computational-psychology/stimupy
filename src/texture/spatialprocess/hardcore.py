@@ -134,11 +134,11 @@ def generate_hardcore(rootname, beta=3, R = 0.52, size = 42.5, factor=100, circl
     
     ## reading results
     if st==0:
-        print "reading generated data"    
+        print "reading generated data"
         x, y = np.loadtxt(csvfile, skiprows=1, usecols=(1,2), unpack=True, delimiter=',')    
         
     else:
-        print "error in R execution"    
+        print "error in R execution"
         
     
     ##############################################################################

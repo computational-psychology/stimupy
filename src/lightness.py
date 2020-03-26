@@ -1,5 +1,12 @@
 #!/usr/bin/env python
-"""Module collecting different functions to create lightness stimuli. Includes
+"""
+This submodule contains functions for creating common stimuli used in
+lightness/brightness research as numpy arrays (or save them as raster art).
+
+All stimuli are freely parameterizable, see docstrings of individual functions
+for details.
+
+Includes
 Cornsweet edges
 Todorovic's Cornsweet checkerboard
 square waves
@@ -9,11 +16,11 @@ disc and ring stimuli
 
 import numpy as np
 
-from utils.utils import degrees_to_pixels, resize_array
+from .utils import degrees_to_pixels, resize_array
 
 
 def cornsweet(size, ppd, contrast, ramp_width=3, exponent=2.75,
-                      mean_lum=.5):
+              mean_lum=.5):
     """
     Create a matrix containing a rectangular Cornsweet edge stimulus.
     The 2D luminance profile of the stimulus is defined as
@@ -44,7 +51,7 @@ def cornsweet(size, ppd, contrast, ramp_width=3, exponent=2.75,
 
     Returns
     -------
-    stim : 2D ndarray
+    stim : ndarray (2D)
 
     References
     ----------
@@ -55,17 +62,17 @@ def cornsweet(size, ppd, contrast, ramp_width=3, exponent=2.75,
     # compute size as the closest even number of pixel corresponding to the
     # size given in degrees of visual angle.
     size = np.round(np.tan(np.radians(np.array(size) / 2.)) /
-                 np.tan(np.radians(.5)) * ppd / 2) * 2
+                    np.tan(np.radians(.5)) * ppd / 2) * 2
     stim = np.ones(size) * mean_lum
-    dist = np.arange(size[1] / 2 )
-    dist = np.degrees(np.arctan(dist / 2. / ppd * 2 * np.tan(np.radians(.5))))\
-            * 2
+    dist = np.arange(size[1] / 2)
+    dist = np.degrees(np.arctan(dist / 2. / ppd * 2 * np.tan(np.radians(.5)))) * 2
     dist /= ramp_width
     dist[dist > 1] = 1
-    profile = (1 - dist)  ** exponent * mean_lum *  contrast / 2
-    stim[:, 0:size[1]/2] += profile[::-1]
-    stim[:, size[1]/2:] -= profile
+    profile = (1 - dist) ** exponent * mean_lum * contrast / 2
+    stim[:, 0:size[1] / 2] += profile[::-1]
+    stim[:, size[1] / 2:] -= profile
     return stim
+
 
 def todorovic(coc, vert_rep, horz_rep):
     """
@@ -85,7 +92,7 @@ def todorovic(coc, vert_rep, horz_rep):
 
     Returns
     -------
-    stim: 2D ndarray
+    stim: ndarray (2D)
 
     References
     ----------
@@ -98,13 +105,14 @@ def todorovic(coc, vert_rep, horz_rep):
     if horz_rep % 2 != 0:
         stim = np.hstack((stim, stim[:, 0:coc.shape[1]]))
     stim = np.tile(np.vstack((stim, np.roll(stim, coc.shape[1], 1))),
-                    (vert_rep / 2, 1))
+                   (vert_rep / 2, 1))
     if vert_rep % 2 != 0:
         stim = np.vstack((stim, stim[0:coc.shape[0], :]))
     return stim
 
+
 def square_wave(shape, ppd, contrast, frequency, mean_lum=.5, period='ignore',
-        start='high'):
+                start='high'):
     """
     Create a horizontal square wave of given spatial frequency.
 
@@ -136,13 +144,13 @@ def square_wave(shape, ppd, contrast, frequency, mean_lum=.5, period='ignore',
 
     Returns
     -------
-    stim : 2D ndarray
+    stim : ndarray (2D)
            the square wave stimulus
     """
 
-    if not period in ['ignore', 'full', 'half']:
+    if period not in ['ignore', 'full', 'half']:
         raise TypeError('size not understood: %s' % period)
-    if not start in ['high', 'low']:
+    if start not in ['high', 'low']:
         raise TypeError('start value not understood: %s' % start)
     if frequency > ppd / 2:
         raise ValueError('The frequency is limited to 1/2 cycle per pixel.')
@@ -154,19 +162,20 @@ def square_wave(shape, ppd, contrast, frequency, mean_lum=.5, period='ignore',
         shape[1] = shape[1] / pixels_per_cycle * pixels_per_cycle
     elif period is 'half':
         shape[1] = shape[1] / pixels_per_cycle * pixels_per_cycle + \
-                                pixels_per_cycle / 2
+                   pixels_per_cycle / 2
     diff = type(mean_lum)(contrast * mean_lum)
     high = mean_lum + diff
     low = mean_lum - diff
     stim = np.ones(shape) * (low if start is 'high' else high)
-    index = [i + j for i in range(pixels_per_cycle / 2)
-                      for j in range(0, shape[1], pixels_per_cycle)
-                      if i + j < shape[1]]
+    index = [i + j for i in range(pixels_per_cycle // 2)
+             for j in range(0, shape[1], pixels_per_cycle)
+             if i + j < shape[1]]
     stim[:, index] = low if start is 'low' else high
     return stim
 
+
 def whites_illusion_bmcc(shape, ppd, contrast, frequency, mean_lum=.5,
-        patch_height=None, start='high', sep=1):
+                         patch_height=None, start='high', sep=1):
     """
     Create a version of White's illusion on a square wave, in the style used by
     Blakeslee and McCourt (1999).
@@ -197,8 +206,8 @@ def whites_illusion_bmcc(shape, ppd, contrast, frequency, mean_lum=.5,
 
     Returns
     -------
-    stim : 2D ndarray
-           the stimulus
+    stim : ndarray (2D)
+        the stimulus
 
     References
     ----------
@@ -206,8 +215,7 @@ def whites_illusion_bmcc(shape, ppd, contrast, frequency, mean_lum=.5,
     the White effect, simultaneous brightness contrast and grating induction.
     Vision research 39(26):4361-77.
     """
-    stim = square_wave(shape, ppd, contrast, frequency, mean_lum, 'full',
-                        start)
+    stim = square_wave(shape, ppd, contrast, frequency, mean_lum, 'full', start)
     half_cycle = int(degrees_to_pixels(1. / frequency / 2, ppd) + .5)
     if patch_height is None:
         patch_height = stim.shape[0] // 3
@@ -216,14 +224,15 @@ def whites_illusion_bmcc(shape, ppd, contrast, frequency, mean_lum=.5,
     y_pos = (stim.shape[0] - patch_height) // 2
     stim[y_pos: -y_pos,
          stim.shape[1] / 2 - (sep + 1) * half_cycle:
-            stim.shape[1] / 2 - sep * half_cycle] = mean_lum
+         stim.shape[1] / 2 - sep * half_cycle] = mean_lum
     stim[y_pos: -y_pos,
          stim.shape[1] / 2 + sep * half_cycle:
-            stim.shape[1] / 2 + (sep + 1) * half_cycle] = mean_lum
+         stim.shape[1] / 2 + (sep + 1) * half_cycle] = mean_lum
     return stim
 
+
 def contours_white_bmmc(shape, ppd, contrast, frequency, mean_lum=.5,
-        patch_height=None, sep=1, orientation='vertical', contour_width=6):
+                        patch_height=None, sep=1, orientation='vertical', contour_width=6):
     """
     Create stimuli with contours masking either the vertical or the horizontal
     borders of the test patches in White's illusion (Blakeslee, McCourt
@@ -281,28 +290,29 @@ def contours_white_bmmc(shape, ppd, contrast, frequency, mean_lum=.5,
     offset = contour_width // 2
     if orientation == 'vertical':
         idx_mask[y_pos: -y_pos,
-                 x_pos[0] - offset : x_pos[0] + offset] = True
+                 x_pos[0] - offset: x_pos[0] + offset] = True
         idx_mask[y_pos: -y_pos,
-                 x_pos[0] + hc - offset : x_pos[0] + hc + offset] = True
+                 x_pos[0] + hc - offset: x_pos[0] + hc + offset] = True
         idx_mask[y_pos: -y_pos,
-                 x_pos[1] - offset : x_pos[1] + offset] = True
+                 x_pos[1] - offset: x_pos[1] + offset] = True
         idx_mask[y_pos: -y_pos,
-                 x_pos[1] + hc - offset : x_pos[1] + hc + offset] = True
+                 x_pos[1] + hc - offset: x_pos[1] + hc + offset] = True
     elif orientation == 'horizontal':
-        idx_mask[y_pos - offset : y_pos + offset,
-                 x_pos[0] : x_pos[0] + hc] = True
-        idx_mask[y_pos - offset : y_pos + offset,
-                 x_pos[1] : x_pos[1] + hc] = True
-        idx_mask[-y_pos - offset : -y_pos + offset,
-                 x_pos[0] : x_pos[0] + hc] = True
-        idx_mask[-y_pos - offset : -y_pos + offset,
-                 x_pos[1] : x_pos[1] + hc] = True
+        idx_mask[y_pos - offset: y_pos + offset,
+                 x_pos[0]: x_pos[0] + hc] = True
+        idx_mask[y_pos - offset: y_pos + offset,
+                 x_pos[1]: x_pos[1] + hc] = True
+        idx_mask[-y_pos - offset: -y_pos + offset,
+                 x_pos[0]: x_pos[0] + hc] = True
+        idx_mask[-y_pos - offset: -y_pos + offset,
+                 x_pos[1]: x_pos[1] + hc] = True
     mask_dark[idx_mask] = dark
     mask_bright[idx_mask] = bright
-    return (mask_dark, mask_bright)
+    return mask_dark, mask_bright
+
 
 def whites_illusion_gil(shape, ppd, contrast, frequency, mean_lum=.5,
-        start='low'):
+                        start='low'):
     """
     Create a version of White's illusion on a square wave, in the style used by
     Gilchrist (2006, p. 281)
@@ -328,7 +338,7 @@ def whites_illusion_gil(shape, ppd, contrast, frequency, mean_lum=.5,
 
     Returns
     -------
-    stim : 2D ndarray
+    stim : ndarray (2D)
            the stimulus
 
     References
@@ -337,14 +347,14 @@ def whites_illusion_gil(shape, ppd, contrast, frequency, mean_lum=.5,
     University Press.
     """
     stim = square_wave(shape, ppd, contrast, frequency, mean_lum, 'half',
-                        start)
+                       start)
     half_cycle = int(degrees_to_pixels(1. / frequency / 2, ppd) + .5)
     on_dark_idx = [i for i in range(int(half_cycle * 2.5),
-                                        int(stim.shape[1] - half_cycle * .5))
-                        if stim[0, i] < mean_lum]
+                                    int(stim.shape[1] - half_cycle * .5))
+                   if stim[0, i] < mean_lum]
     on_light_idx = [i for i in range(int(half_cycle * 1.5),
-                                        int(stim.shape[1] - half_cycle * 1.5))
-                        if stim[0, i] > mean_lum]
+                                     int(stim.shape[1] - half_cycle * 1.5))
+                    if stim[0, i] > mean_lum]
     stim[stim.shape[0] / 5: stim.shape[0] / 5 * 2, on_light_idx] = mean_lum
     stim[stim.shape[0] / 5 * 3: stim.shape[0] / 5 * 4, on_dark_idx] = mean_lum
 
@@ -352,13 +362,13 @@ def whites_illusion_gil(shape, ppd, contrast, frequency, mean_lum=.5,
     max_cut = stim.shape[0] / 10
     bg = stim[0, half_cycle]
     for start_idx in range(0 if start is 'low' else half_cycle,
-                            stim.shape[1] - half_cycle, 2 * half_cycle):
-
-        stim[0 : np.random.randint(max_cut),
-                start_idx : start_idx + half_cycle] = bg
+                           stim.shape[1] - half_cycle, 2 * half_cycle):
+        stim[0: np.random.randint(max_cut),
+             start_idx: start_idx + half_cycle] = bg
         stim[stim.shape[0] - np.random.randint(max_cut):,
-                start_idx : start_idx + half_cycle] = bg
+             start_idx: start_idx + half_cycle] = bg
     return stim
+
 
 def disc_and_ring(shape, radii, values, bg=0, ppd=30, ssf=5):
     """
@@ -383,7 +393,7 @@ def disc_and_ring(shape, radii, values, bg=0, ppd=30, ssf=5):
 
     Returns
     -------
-    stim : 2D ndarray
+    stim : ndarray (2D)
            the stimulus
     """
     assert len(radii) == len(values)
@@ -393,11 +403,11 @@ def disc_and_ring(shape, radii, values, bg=0, ppd=30, ssf=5):
     # compute distance from center of array for every point, cap at 1.0
     x = np.linspace(-stim.shape[1] / 2., stim.shape[1] / 2., stim.shape[1])
     y = np.linspace(-stim.shape[0] / 2., stim.shape[0] / 2., stim.shape[0])
-    Dist = np.sqrt(x[np.newaxis, :] ** 2 + y[:, np.newaxis] ** 2)
+    dist = np.sqrt(x[np.newaxis, :] ** 2 + y[:, np.newaxis] ** 2)
 
     radii = degrees_to_pixels(np.array(radii), ppd) * ssf
     for radius, value in zip(radii, values):
-        stim[Dist < radius] = value
+        stim[dist < radius] = value
 
     # downsample the stimulus by local averaging along rows and columns
     sampler = resize_array(np.eye(stim.shape[0] / ssf), (1, ssf))

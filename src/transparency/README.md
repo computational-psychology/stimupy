@@ -1,7 +1,7 @@
 # Checkerboard Factory
 Create images of 3-dimensional checkerboards and optionally a transparent rectangle covering a part of the board.
 
-![3D checkerboard](./example_images/checkerboard_stacked.png)
+![3D checkerboard](example_images/checkerboard_stacked.png)
 
 ### Example Usage
 ```
@@ -31,18 +31,13 @@ plt.imshow(img1, cmap='gray', vmin=0, vmax=1)
 plt.show()
 ```
 
-### Requires
-- PovRay
-- PIL
-- Numpy
-
 # Texture Factory
 Create 2-dimensional textures with an optional transparent circle covering layered over the center.
 
 Supports random textures and alternating checkerboard patterns.
 
-![Texture Random](./example_images/texture_random.png)
-![Texture Checkerboard](./example_images/texture_checkerboard.png)
+![Texture Random](example_images/texture_random.png)
+![Texture Checkerboard](example_images/texture_checkerboard.png)
 
 ### Example Usage
 ```

@@ -2,13 +2,9 @@
 Provides some functionality for creating and manipulating visual stimuli
 represented as numpy arrays.
 """
-from __future__ import division
 import numpy as np
-try:
-    import Image
-except ImportError:
-    print("Could not import Image, utils.write_array_to_image will not work.")
-    Image = None
+from PIL import Image
+
 
 def write_array_to_image(filename, arr):
     """
@@ -17,16 +13,17 @@ def write_array_to_image(filename, arr):
     Parameters
     ----------
     filename : str
-               full path to the file to be creaated.
-    arr : 2D numpy array
-          The data to be stored in the image. Values will be cropped to
-          [0,255].
+        full path to the file to be creaated.
+    arr : np.ndarray
+        2D numpy array
+        The data to be stored in the image. Values will be cropped to [0,255].
     """
     if Image:
         imsize = arr.shape
         im = Image.new('L', (imsize[1], imsize[0]))
         im.putdata(arr.flatten())
         im.save(filename)
+
 
 def luminance2munsell(lum_values, reference_white):
     """
@@ -58,6 +55,7 @@ def luminance2munsell(lum_values, reference_white):
     y[~idx] = y2
     return 11.6 * y - 1.6
 
+
 def munsell2luminance(munsell_values, reference_white):
     """
     Transform Munsell values to luminance values.
@@ -83,6 +81,7 @@ def munsell2luminance(munsell_values, reference_white):
     lum_values[~idx] **= 3
     return lum_values * reference_white
 
+
 def degrees_to_pixels(degrees, ppd):
     """
     convert degrees of visual angle to pixels, given the number of pixels in
@@ -101,6 +100,7 @@ def degrees_to_pixels(degrees, ppd):
     """
     return np.tan(np.radians(degrees / 2.)) / np.tan(np.radians(.5)) * ppd
 
+
 def pixels_to_degrees(pixels, ppd):
     """
     convert pixels to degrees of visual angle, given the number of pixels in
@@ -118,6 +118,7 @@ def pixels_to_degrees(pixels, ppd):
     degres : number or ndarray
     """
     return 2 * np.degrees(np.arctan(pixels * np.tan(np.radians(.5)) / ppd))
+
 
 def compute_ppd(screen_size, resolution, distance):
     """
@@ -145,6 +146,7 @@ def compute_ppd(screen_size, resolution, distance):
     mmpd = 2 * np.tan(np.radians(.5)) * distance
     return ppmm * mmpd
 
+
 def pad_array(arr, amount, pad_value=0):
     """
     Pad array with an arbitrary value. So far, only works for 2D arrays.
@@ -171,18 +173,19 @@ def pad_array(arr, amount, pad_value=0):
     # if amount is a single number, use it for padding in all directions
     if type(amount) is int or type(amount) is float:
         amount = np.array(((amount, amount), (amount, amount)))
-    assert amount.min() >=0
+    assert amount.amin() >= 0
     if len(arr.shape) != 2:
         raise NotImplementedError(
-                        "pad_array currently only works for 2D arrays")
+            "pad_array currently only works for 2D arrays")
     if amount.sum() == 0:
         return arr
 
     output_shape = [x + y.sum() for x, y in zip(arr.shape, amount)]
-    output = np.ones(output_shape, dtype = arr.dtype) * pad_value
+    output = np.ones(output_shape, dtype=arr.dtype) * pad_value
     output[amount[0][0]:output_shape[0] - amount[0][1],
-           amount[1][0]:output_shape[1] - amount[1][1]] = arr
+    amount[1][0]:output_shape[1] - amount[1][1]] = arr
     return output
+
 
 def center_array(arr, shape, pad_value=0):
     """Center an array on a larger one. Selects appropriate pad amounts in
@@ -204,13 +207,15 @@ def center_array(arr, shape, pad_value=0):
     output : numpy ndarray
              the padded array
     """
-    if arr.shape == shape: return arr
+    if arr.shape == shape:
+        return arr
     y_pad, x_pad = np.asarray(shape) - arr.shape
     assert (y_pad % 2 == 0) and (x_pad % 2 == 0)
     assert x_pad > 0 and y_pad > 0
     out = np.ones(shape, dtype=arr.dtype) * pad_value
     out[y_pad / 2: -y_pad / 2, x_pad / 2: -x_pad / 2] = arr
     return out
+
 
 def resize_array(arr, factor):
     """
@@ -229,6 +234,7 @@ def resize_array(arr, factor):
     An array of shape (arr.shape[0] * factor[0], arr.shape[1] * factor[1])
     """
     return np.repeat(np.repeat(arr, factor[0], axis=0), factor[1], axis=1)
+
 
 def smooth_window(shape, plateau, min_val, max_val, width):
     """
@@ -264,13 +270,13 @@ def smooth_window(shape, plateau, min_val, max_val, width):
     distance = np.ones(shape) * width
     if len(plateau) == 2:
         plateau_points = (plateau[0], (plateau[0][0], plateau[1][1]), plateau[1],
-                        (plateau[1][0], plateau[0][1]))
-        distance[plateau[0][0] : plateau[1][0], plateau[0][1] : plateau[1][1]] = 0
+                          (plateau[1][0], plateau[0][1]))
+        distance[plateau[0][0]: plateau[1][0], plateau[0][1]: plateau[1][1]] = 0
     else:
         plateau_points = plateau
     for i in range(len(plateau_points)):
         p1 = plateau_points[i]
-        p2 = plateau_points[(i+1) % len(plateau_points)]
+        p2 = plateau_points[(i + 1) % len(plateau_points)]
         distance = np.fmin(distance, dist_to_segment(y, x, p1, p2))
     distance = distance / width * np.pi
     mask = (np.cos(distance) + 1) / 2
@@ -279,11 +285,11 @@ def smooth_window(shape, plateau, min_val, max_val, width):
     return mask
 
 
-
 def dist_squared(y, x, p):
-    return ((y - p[0]) ** 2 + (x - p[1]) ** 2)
+    return (y - p[0]) ** 2 + (x - p[1]) ** 2
 
-def dist_to_segment(y, x, p1, p2): # x3,y3 is the point
+
+def dist_to_segment(y, x, p1, p2):  # x3,y3 is the point
     """
     Compute the distance between a point, (y,x), and a line segment between p1
     and p2.
@@ -295,8 +301,7 @@ def dist_to_segment(y, x, p1, p2): # x3,y3 is the point
         return np.sqrt(dist_squared(y, x, p1))
     t = ((y - p1[0]) * (p2[0] - p1[0]) + (x - p1[1]) * (p2[1] - p1[1])) / sl
     dist = dist_squared(y, x, (p1[0] + t * (p2[0] - p1[0]), p1[1] + t * (p2[1]
-        - p1[1])))
-    dist[t>1] = dist_squared(y, x, p2)[t>1]
-    dist[t<0] = dist_squared(y, x, p1)[t<0]
+                                                                         - p1[1])))
+    dist[t > 1] = dist_squared(y, x, p2)[t > 1]
+    dist[t < 0] = dist_squared(y, x, p1)[t < 0]
     return np.sqrt(dist)
-

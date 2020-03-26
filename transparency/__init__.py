@@ -1,2 +1,0 @@
-from transparency.checkerboard_factory import CheckerboardFactory
-from transparency.texture_factory import TextureFactory
