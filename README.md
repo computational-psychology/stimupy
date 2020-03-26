@@ -14,8 +14,8 @@ For details, please refer to the source directory (src/), the respective subdire
 ## Dependencies
 - Required: numpy, matplotlib, PIL
 - Optional: 
-    - PovRay (transparency.CheckerboardFactory)
-    - rpy2 (texture)
+    - PovRay (to render variegated checkerboards - submodule transparency.CheckerboardFactory])
+    - rpy2 and R (to render textures with specific spatial properties - submodule texture)
  
 
 ## Installation
@@ -34,7 +34,7 @@ To use in your own code, import the modules. See READMEs in src/ for example usa
 ```python
 from stimuli.transparency import TextureFactory
 from stimuli.transparency import CheckerboardFactory
-from stimuli import contrast_measures as cm
-from stimuli import utils
+#from stimuli import contrast_measures as cm
+#from stimuli import utils
 # (other modules are yet to be fixed)
 ```
