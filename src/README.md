@@ -1,13 +1,13 @@
-## Contrast Measures
-Various function that calculate contrast metrics. See code docstrings for details.
+# Contrast Measures
+Various function that calculate contrast metrics.
 
-# Example usage
+### Example usage
 
 ```python
 
 ```
 
-## Lightness
+# Lightness
 This submodule contains functions for creating common stimuli used in
 lightness/brightness research as numpy arrays (or save them as raster art).
 
@@ -17,11 +17,11 @@ for details.
 (not yet tested)
 
 
-# Example usage
+### Example usage
 ```python
 
 ```
 
-## Utils
+# Utils
 Helper functions for padding, resizing, computing Munsell values, and
 converting pixel values to degrees of visual angle.

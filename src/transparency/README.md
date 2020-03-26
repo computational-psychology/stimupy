@@ -1,7 +1,8 @@
 # Checkerboard Factory
 Creates images of 3-dimensional checkerboards and optionally a transparent rectangle covering a part of the board. It renders using [povray](http://www.povray.org/).
 
-![3D checkerboard](example_images/checkerboard_stacked.png)
+![checkerboard_full](example_images/checkerboard.png | width=100)
+![checkerboard_stacked](example_images/stacked.png | width=100)
 
 ### Example Usage
 ```python
@@ -17,7 +18,7 @@ f.find_checkerboard(n_checks=8, reflectances = reflectances)
 tau = 2  # transparency's reflectance, in povray units
 alpha = .5 # transparency's transmittance
 
-img1 = f.build_image(tau, alpha)
+f.build_image(tau, alpha)
 
 # get the rendered image and shows
 checkerboard = f.get_checkerboard()
