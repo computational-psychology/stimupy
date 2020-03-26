@@ -1,4 +1,4 @@
-## Stimuli
+# Stimuli
 
 Contains submodules for
 - creating different stimuli used in lightness perception (lightness)
@@ -18,17 +18,20 @@ For details, please refer to the source directory (src/), the respective subdire
     - rpy2 (texture)
  
 
-### Installation
+## Installation
 First clone the repository via 
 
-`git clone https://github.com/computational-psychology/stimuli.git`. 
+```python
+git clone https://github.com/computational-psychology/stimuli.git
+``` 
 
 Then run `python setup.py install` at the root of the repository.
 
 The repository may then be removed again.
 
 ## Importing
-```
+To use in your own code, import the modules. See READMEs in src/ for example usages.
+```python
 from stimuli.transparency import TextureFactory
 from stimuli.transparency import CheckerboardFactory
 from stimuli import contrast_measures as cm
