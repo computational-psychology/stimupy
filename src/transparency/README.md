@@ -1,34 +1,43 @@
 # Checkerboard Factory
-Create images of 3-dimensional checkerboards and optionally a transparent rectangle covering a part of the board.
+Creates images of 3-dimensional checkerboards and optionally a transparent rectangle covering a part of the board. It renders using [povray](http://www.povray.org/).
 
 ![3D checkerboard](example_images/checkerboard_stacked.png)
 
 ### Example Usage
-```
+```python
+# 1. Basic functionality
+reflectances = [0.06, 0.11, 0.19, 0.31, 0.46, 0.63, 0.82, 1.05, 1.29, 1.50, 1.67, 1.95, 2.22]
+
 f = CheckerboardFactory()
-# calculate a n-dimensional pattern
-n = 8
-f.find_checkerboard(n)
 
-# render an image, including transparent rectangle
-tau = 2
-alpha = .5
-f.build_image(tau, alpha, background=.5)
-# get a comparable stacked version of the original image and a cutout of the board-transparency intersection
-img1 = f.get_stacked()
+# sets-up a n-dimensional checkerboard with contrain that neighooring checks cannot be equal.
+f.find_checkerboard(n_checks=8, reflectances = reflectances)
 
-plt.figure()
-plt.imshow(img1, cmap='gray', vmin=0, vmax=1)
-plt.show()
+# render an image, including the transparency in front
+tau = 2  # transparency's reflectance, in povray units
+alpha = .5 # transparency's transmittance
 
-# move the camera to the right (but keep look_at point constant) before rendering
-f.build_image(0, 1, camera_offset=(5, 0, 0), look_at_offset=(0, 0, 0))
+img1 = f.build_image(tau, alpha)
+
+# get the rendered image and shows
+checkerboard = f.get_checkerboard()
+plt.figure(); plt.imshow(checkerboard, cmap='gray', vmin=0, vmax=1); plt.axis('off'); plt.show()
+
+# 2. Cut-out region of transparency
+# get the checkarboard and cut-out region stacked
+stacked = f.get_stacked()
+plt.figure(); plt.imshow(stacked, cmap='gray', vmin=0, vmax=1); plt.axis('off'); plt.show()
+
+# 3. Moving the camera to the right (but keep constant the look_at point)
+f.build_image(tau, alpha, camera_offset=(2, 0, 0), look_at_offset=(0, 0, 0))
 # when offsets are specified, only get_checkerboard may be used
 img1 = f.get_checkerboard()
+plt.figure(); plt.imshow(img1, cmap='gray', vmin=0, vmax=1); plt.axis('off'); plt.show()
 
-plt.figure()
-plt.imshow(img1, cmap='gray', vmin=0, vmax=1)
-plt.show()
+# See more functionalities in docstrings:
+# CheckerboardFactory.find_checkerboard?
+# CheckerboardFactory.build_image?
+
 ```
 
 # Texture Factory
@@ -40,7 +49,7 @@ Supports random textures and alternating checkerboard patterns.
 ![Texture Checkerboard](example_images/texture_checkerboard.png)
 
 ### Example Usage
-```
+```python
 # compute texture with n-dimensional checkerboard pattern
     n = 10
     image_width = 480

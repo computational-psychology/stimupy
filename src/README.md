@@ -1,5 +1,5 @@
 ## Contrast Measures
-Various contrast measure functions. See code for details.
+Various function that calculate contrast metrics. See code docstrings for details.
 
 ## Lightness
 This submodule contains functions for creating common stimuli used in

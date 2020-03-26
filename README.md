@@ -1,15 +1,15 @@
 ## Stimuli
 
 Contains submodules for
-- creating different lightness illusions (lightness)
-- creating different textures (texture)
+- creating different stimuli used in lightness perception (lightness)
 - creating 2D patterns or renderings of 3D checkerboards with transparent 
 layers covering part of the image (transparency)
+- creating different random and deterministic textures (texture)
 - some helper functions for padding, resizing, computing Munsell values, and
 converting pixel values to degrees of visual angle (utils)
-- various contrast measure functions (contrast_measures)
+- various functions that calculate contrast metrics (contrast_metrics)
 
-For details, please refer to the source directory and the respective subdirectories.
+For details, please refer to the source directory (src/), the respective subdirectories and the docstrings.
 
 ## Dependencies
 - Required: numpy, matplotlib, PIL
