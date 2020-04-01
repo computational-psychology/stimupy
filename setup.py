@@ -6,7 +6,7 @@ if __name__ == '__main__':
     setuptools.setup(
         name='stimuli',
         description='Library for creating different visual stimuli for psychophysic experiments',
-        version='0.2',
+        version='0.3',
         author='Guillermo Aguilar',
         author_email='guillermo.aguilar@mail.tu-berlin.de',
         license='GPL2',

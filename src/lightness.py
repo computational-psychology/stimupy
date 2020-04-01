@@ -15,7 +15,6 @@ disc and ring stimuli
 """
 
 import numpy as np
-
 from .utils import degrees_to_pixels, resize_array
 
 
@@ -36,7 +35,7 @@ def cornsweet(size, ppd, contrast, ramp_width=3, exponent=2.75,
            the size of the matrix in degrees of visual angle
     ppd : number
           the number of pixels in one degree of visual angle
-    contrast : number in [0,1]
+    contrast : float, in [0,1]
                the contrast at the Cornsweet edge, defined as
                (max_luminance - min_luminance) / mean_luminance
     ramp_width : number (optional)
@@ -61,16 +60,16 @@ def cornsweet(size, ppd, contrast, ramp_width=3, exponent=2.75,
     """
     # compute size as the closest even number of pixel corresponding to the
     # size given in degrees of visual angle.
-    size = np.round(np.tan(np.radians(np.array(size) / 2.)) /
-                    np.tan(np.radians(.5)) * ppd / 2) * 2
+    size = np.rint(np.tan(np.radians(np.array(size) / 2.)) /
+                   np.tan(np.radians(.5)) * ppd / 2) * 2
     stim = np.ones(size) * mean_lum
     dist = np.arange(size[1] / 2)
     dist = np.degrees(np.arctan(dist / 2. / ppd * 2 * np.tan(np.radians(.5)))) * 2
     dist /= ramp_width
     dist[dist > 1] = 1
     profile = (1 - dist) ** exponent * mean_lum * contrast / 2
-    stim[:, 0:size[1] / 2] += profile[::-1]
-    stim[:, size[1] / 2:] -= profile
+    stim[:, :size[1] // 2] += profile[::-1]
+    stim[:, size[1] // 2:] -= profile
     return stim
 
 
@@ -122,7 +121,7 @@ def square_wave(shape, ppd, contrast, frequency, mean_lum=.5, period='ignore',
             The shape of the stimulus in degrees of visual angle. (y,x)
     ppd : number
           the number of pixels in one degree of visual angle
-    contrast : number in [0,1]
+    contrast : float, in [0,1]
                the contrast of the grating, defined as
                (max_luminance - min_luminance) / mean_luminance
     frequency : number
@@ -134,8 +133,8 @@ def square_wave(shape, ppd, contrast, frequency, mean_lum=.5, period='ignore',
     period : string in ['ignore', 'full', 'half'] (optional)
              specifies if the period of the wave is taken into account when
              determining exact stimulus dimensions.
-             'ignore' simply converts degrees to pixesl
-             'full' rounds down to garuantee a full period
+             'ignore' simply converts degrees to pixels
+             'full' rounds down to guarantee a full period
              'half' adds a half period to the size 'full' would yield.
              Default is 'ignore'.
     start : string in ['high', 'low'] (optional)
@@ -186,7 +185,7 @@ def whites_illusion_bmcc(shape, ppd, contrast, frequency, mean_lum=.5,
             The shape of the stimulus in degrees of visual angle. (y,x)
     ppd : number
           the number of pixels in one degree of visual angle
-    contrast : number in [0,1]
+    contrast : float, in [0,1]
                the contrast of the grating, defined as
                (max_luminance - min_luminance) / mean_luminance
     frequency : number
@@ -223,11 +222,11 @@ def whites_illusion_bmcc(shape, ppd, contrast, frequency, mean_lum=.5,
         patch_height = degrees_to_pixels(patch_height, ppd)
     y_pos = (stim.shape[0] - patch_height) // 2
     stim[y_pos: -y_pos,
-         stim.shape[1] / 2 - (sep + 1) * half_cycle:
-         stim.shape[1] / 2 - sep * half_cycle] = mean_lum
+         stim.shape[1] // 2 - (sep + 1) * half_cycle:
+         stim.shape[1] // 2 - sep * half_cycle] = mean_lum
     stim[y_pos: -y_pos,
-         stim.shape[1] / 2 + sep * half_cycle:
-         stim.shape[1] / 2 + (sep + 1) * half_cycle] = mean_lum
+         stim.shape[1] // 2 + sep * half_cycle:
+         stim.shape[1] // 2 + (sep + 1) * half_cycle] = mean_lum
     return stim
 
 
@@ -244,7 +243,7 @@ def contours_white_bmmc(shape, ppd, contrast, frequency, mean_lum=.5,
             The shape of the stimulus in degrees of visual angle. (y,x)
     ppd : number
           the number of pixels in one degree of visual angle
-    contrast : number in [0,1]
+    contrast : float, in [0,1]
                the contrast of dark vs bright contours, defined as
                (max_luminance - min_luminance) / (2 * mean_luminance)
     frequency : number
@@ -323,7 +322,7 @@ def whites_illusion_gil(shape, ppd, contrast, frequency, mean_lum=.5,
             The shape of the stimulus in degrees of visual angle. (y,x)
     ppd : number
           the number of pixels in one degree of visual angle
-    contrast : number in [0,1]
+    contrast : float, in [0,1]
                the contrast of the grating, defined as
                (max_luminance - min_luminance) / mean_luminance
     frequency : number
@@ -355,8 +354,10 @@ def whites_illusion_gil(shape, ppd, contrast, frequency, mean_lum=.5,
     on_light_idx = [i for i in range(int(half_cycle * 1.5),
                                      int(stim.shape[1] - half_cycle * 1.5))
                     if stim[0, i] > mean_lum]
-    stim[stim.shape[0] / 5: stim.shape[0] / 5 * 2, on_light_idx] = mean_lum
-    stim[stim.shape[0] / 5 * 3: stim.shape[0] / 5 * 4, on_dark_idx] = mean_lum
+    stim[stim.shape[0] // 5:
+         stim.shape[0] // 5 * 2, on_light_idx] = mean_lum
+    stim[stim.shape[0] // 5 * 3:
+         stim.shape[0] // 5 * 4, on_dark_idx] = mean_lum
 
     # randomize border cutoff
     max_cut = stim.shape[0] / 10
@@ -410,5 +411,5 @@ def disc_and_ring(shape, radii, values, bg=0, ppd=30, ssf=5):
         stim[dist < radius] = value
 
     # downsample the stimulus by local averaging along rows and columns
-    sampler = resize_array(np.eye(stim.shape[0] / ssf), (1, ssf))
+    sampler = resize_array(np.eye(stim.shape[0] // ssf), (1, ssf))
     return np.dot(sampler, np.dot(stim, sampler.T)) / ssf ** 2
