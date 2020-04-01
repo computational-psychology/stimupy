@@ -1,4 +1,4 @@
-# Checkerboard Factory
+# Checkerboard [Factory](https://en.wikipedia.org/wiki/Factory_%28object-oriented_programming%29)
 Creates images of 3-dimensional checkerboards and optionally a transparent rectangle covering a part of the board. It renders using [povray](http://www.povray.org/).
 
 ![checkerboard_full](example_images/checkerboard.png)
@@ -44,7 +44,7 @@ plt.figure(); plt.imshow(img1, cmap='gray', vmin=0, vmax=1); plt.axis('off'); pl
 
 ```
 
-# Texture Factory
+# Texture [Factory](https://en.wikipedia.org/wiki/Factory_%28object-oriented_programming%29)
 Create 2-dimensional textures with an optional transparent circle covering the center.
 
 Supports random textures and checkerboard patterns.

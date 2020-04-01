@@ -183,7 +183,7 @@ def pad_array(arr, amount, pad_value=0):
     output_shape = [x + y.sum() for x, y in zip(arr.shape, amount)]
     output = np.ones(output_shape, dtype=arr.dtype) * pad_value
     output[amount[0][0]:output_shape[0] - amount[0][1],
-    amount[1][0]:output_shape[1] - amount[1][1]] = arr
+           amount[1][0]:output_shape[1] - amount[1][1]] = arr
     return output
 
 
@@ -300,8 +300,7 @@ def dist_to_segment(y, x, p1, p2):  # x3,y3 is the point
     if sl == 0:
         return np.sqrt(dist_squared(y, x, p1))
     t = ((y - p1[0]) * (p2[0] - p1[0]) + (x - p1[1]) * (p2[1] - p1[1])) / sl
-    dist = dist_squared(y, x, (p1[0] + t * (p2[0] - p1[0]), p1[1] + t * (p2[1]
-                                                                         - p1[1])))
+    dist = dist_squared(y, x, (p1[0] + t * (p2[0] - p1[0]), p1[1] + t * (p2[1] - p1[1])))
     dist[t > 1] = dist_squared(y, x, p2)[t > 1]
     dist[t < 0] = dist_squared(y, x, p1)[t < 0]
     return np.sqrt(dist)

@@ -185,39 +185,56 @@ class CheckerboardFactory:
         image = Image.open('%s.png' % filename).convert('L')
         self.image = np.array(image) / 255.0
 
-    def get_checkerboard(self, cropped=False):
+    def get_checkerboard(self, cropped=False, return_mask=False):
         """
         Get the entire image of the checkerboard and the transparent rectangle.
 
         Parameters
         ----------
         cropped : bool
+            If True, there will be no rows/cols with containing only the background.
+        return_mask : bool
+            see below
 
         Returns
         -------
-        np.ndarray
-            numpy array with values between 0.0 and 1.0
+        checkerboard : np.ndarray
+            The image as 2D array.
+        mask : np.ndarray, optional
+            A mask for the intersection of checkerboard and transparent rectangle.
         """
         checkerboard = self.image.copy()
+
         if cropped:
             if self.camera_offsets_specified:
                 warnings.warn('Camera offsets have been specified. All cutouts and masks are incorrect!')
-            return checkerboard[209:425, 63:417]
+            if return_mask:
+                return checkerboard[209:425, 63:417], self.mask[209:425, 63:417]
+            else:
+                return checkerboard[209:425, 63:417]
         else:
-            return checkerboard
+            if return_mask:
+                return checkerboard, self.mask
+            else:
+                return checkerboard
 
-    def get_cutout(self, cropped=False):
+    def get_cutout(self, cropped=False, return_mask=False):
         """
         Get the cutout of the intersection of the transparent rectangle and the checkerboard.
 
         Parameters
         ----------
         cropped : bool
+            If True, there will be no rows/cols with containing only the background.
+        return_mask : bool
+            see below
 
         Returns
         -------
-        np.ndarray
-            numpy array with values between 0.0 and 1.0
+        cutout : np.ndarray
+            The image as 2D array.
+        mask : np.ndarray, optional
+            A mask for the cutout.
         """
         if self.camera_offsets_specified:
             warnings.warn('Camera offsets have been specified. All cutouts and masks are incorrect!')
@@ -227,9 +244,15 @@ class CheckerboardFactory:
         cutout[self.mask == 0] = bg
 
         if cropped:
-            return cutout[289:377, 139:341]
+            if return_mask:
+                return cutout[289:377, 139:341], self.mask[289:377, 139:341]
+            else:
+                return cutout[289:377, 139:341]
         else:
-            return cutout
+            if return_mask:
+                return cutout, self.mask
+            else:
+                return cutout
 
     def get_stacked(self, distance=100, return_masks=False):
         """
