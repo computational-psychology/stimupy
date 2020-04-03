@@ -21,13 +21,15 @@ For details, please refer to the source directory (src/), the respective subdire
 ## Installation
 First clone the repository via 
 
-```python
+```shell script
 git clone https://github.com/computational-psychology/stimuli.git
 ``` 
 
 Then run `python setup.py install` at the root of the repository.
 
 The repository may then be removed again.
+
+The same command is used to update to a new version. The old version is not automatically removed, though.
 
 ## Importing
 To use in your own code, import the modules. See READMEs in src/ for example usages.
