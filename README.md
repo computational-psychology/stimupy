@@ -29,7 +29,7 @@ Then run `python setup.py install` at the root of the repository.
 
 The repository may then be removed again.
 
-The same command is used to update to a new version. The old version is not automatically removed, though.
+To update to a newer version, run `python setup.py install --force`.
 
 ## Importing
 To use in your own code, import the modules. See READMEs in src/ for example usages.

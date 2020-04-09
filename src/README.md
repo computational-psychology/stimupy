@@ -5,21 +5,32 @@ Various function that calculate contrast metrics.
 
 ```python
 from stimuli import contrast_metrics as cm
-import numpy as np
+from stimuli.transparency import CheckerboardFactory
 
-arr = np.random.randint(2, 10, (10, 10))
-cm.SAM(arr)
-cm.SAMLG(arr)
-cm.SDMC(arr)
-cm.SAW(arr)
-cm.SAWLG(arr)
-cm.RMS(arr)
-cm.SD(arr)
-cm.SDLG(arr)
-
-mask = arr > 5
-cm.SAM(arr, mask=mask, mode="chunk", chunk_size=2)
+f = CheckerboardFactory()
+f.find_checkerboard(8)
+f.build_image(1, .5)
+img, mask = f.get_checkerboard(return_mask=True)
 ```
+Checkerboard (left) and only the masked region (right):
+
+![Checkerboard](example_images/checkerboard.png)
+![Masked Checkerboard](example_images/checkerboard_masked.png)
+
+This computes the average of all pair-wise Michelson Contrasts between unique luminance values in the
+masked region of the image:
+```python
+cm.SAM(img, mask=(mask==1), mode="unique")
+```
+Available Metrics:
+- SAM: Space Average Michelson Contrast
+- SAMLG: SAM of log luminances
+- SDMC: Standard Deviation of pair-wise Michelson Contrasts
+- SAW: Space Average Whittle Contrast
+- SAWLG: SAW of log luminances
+- RMS: Root Mean Sqaure Contrast
+- SD: Standard Deviation of luminances
+- SDLG: SD of log luminances
 
 # Lightness
 This submodule contains functions for creating common stimuli used in
@@ -33,9 +44,12 @@ for details.
 ```python
 from stimuli import lightness
 import matplotlib.pyplot as plt
-
-# %% Cornsweet / Todorovic
-a = lightness.cornsweet((30, 30), 30, .5)
+```
+#### Cornsweet / Todorovic
+![Cornsweet](example_images/cornsweet.png)
+![Todorovic](example_images/todorovic.png)
+```python
+a = lightness.cornsweet((10, 10), 10, .5)
 b = lightness.todorovic(a, 2, 2)
 
 plt.figure()
@@ -45,16 +59,24 @@ plt.figure()
 plt.imshow(b, vmin=0, vmax=1, cmap='gray')
 plt.show()
 
-# %% Square Wave
-c = lightness.square_wave((10, 10), 30, .5, 2)
+```
+#### Square Wave
+![Square Wave](example_images/square_wave.png)
+```python
+c = lightness.square_wave((10, 10), 10, .5, 2)
 
 plt.figure()
 plt.imshow(c, vmin=0, vmax=1, cmap='gray')
 plt.show()
 
-# %% White's Illusion BMCC
-d = lightness.whites_illusion_bmcc((10, 10), 30, .5, 2)
-e1, e2 = lightness.contours_white_bmmc((10, 10), 30, .5, 2)
+```
+#### White's Illusion BMCC
+![White's Illusion BMCC](example_images/whites_illusion_bmcc.png)
+![Contours dark](example_images/contours_white_bmcc_dark.png)
+![Contours bright](example_images/contours_white_bmcc_bright.png)
+```python
+d = lightness.whites_illusion_bmcc((10, 10), 10, .5, 2)
+e1, e2 = lightness.contours_white_bmmc((10, 10), 10, .5, 2, contour_width=3)
 
 plt.figure()
 plt.imshow(d, vmin=0, vmax=1, cmap='gray')
@@ -66,14 +88,20 @@ plt.figure()
 plt.imshow(e2, vmin=0, vmax=1, cmap='gray')
 plt.show()
 
-# %% White's Illusion Gil
-f = lightness.whites_illusion_gil((10, 10), 30, .5, 2)
+```
+#### White's Illusion Gil
+![White's Illusion Gil](example_images/whites_illusion_gil.png)
+```python
+f = lightness.whites_illusion_gil((10, 10), 10, .5, 2)
 
 plt.figure()
 plt.imshow(f, vmin=0, vmax=1, cmap='gray')
 plt.show()
 
-# %% Disc and Ring
+```
+#### Disc and Ring
+![Disk and Ring](example_images/disc_and_ring.png)
+```python
 g = lightness.disc_and_ring((10, 10), [4, 2], [0.5, 1.])
 
 plt.figure()

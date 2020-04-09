@@ -62,6 +62,7 @@ def cornsweet(size, ppd, contrast, ramp_width=3, exponent=2.75,
     # size given in degrees of visual angle.
     size = np.rint(np.tan(np.radians(np.array(size) / 2.)) /
                    np.tan(np.radians(.5)) * ppd / 2) * 2
+    size = size.astype('int')
     stim = np.ones(size) * mean_lum
     dist = np.arange(size[1] / 2)
     dist = np.degrees(np.arctan(dist / 2. / ppd * 2 * np.tan(np.radians(.5)))) * 2
@@ -146,7 +147,6 @@ def square_wave(shape, ppd, contrast, frequency, mean_lum=.5, period='ignore',
     stim : ndarray (2D)
            the square wave stimulus
     """
-
     if period not in ['ignore', 'full', 'half']:
         raise TypeError('size not understood: %s' % period)
     if start not in ['high', 'low']:
@@ -158,9 +158,9 @@ def square_wave(shape, ppd, contrast, frequency, mean_lum=.5, period='ignore',
     pixels_per_cycle = int(degrees_to_pixels(1. / frequency / 2, ppd) + .5) * 2
 
     if period is 'full':
-        shape[1] = shape[1] / pixels_per_cycle * pixels_per_cycle
+        shape[1] = (shape[1] // pixels_per_cycle) * pixels_per_cycle
     elif period is 'half':
-        shape[1] = shape[1] / pixels_per_cycle * pixels_per_cycle + \
+        shape[1] = (shape[1] // pixels_per_cycle) * pixels_per_cycle + \
                    pixels_per_cycle / 2
     diff = type(mean_lum)(contrast * mean_lum)
     high = mean_lum + diff
@@ -271,7 +271,7 @@ def contours_white_bmmc(shape, ppd, contrast, frequency, mean_lum=.5,
     """
     shape = degrees_to_pixels(np.array(shape), ppd).astype(int)
     pixels_per_cycle = int(degrees_to_pixels(1. / frequency / 2, ppd) + .5) * 2
-    shape[1] = shape[1] // pixels_per_cycle * pixels_per_cycle
+    shape[1] = (shape[1] // pixels_per_cycle) * pixels_per_cycle
     # determine pixel width of individual grating bars (half cycle)
     hc = pixels_per_cycle // 2
     if patch_height is None:
