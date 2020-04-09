@@ -72,6 +72,7 @@ plt.show()
 ```
 #### White's Illusion BMCC
 ![White's Illusion BMCC](example_images/whites_illusion_bmcc.png)
+
 ![Contours dark](example_images/contours_white_bmcc_dark.png)
 ![Contours bright](example_images/contours_white_bmcc_bright.png)
 ```python
