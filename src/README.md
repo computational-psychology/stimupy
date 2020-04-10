@@ -13,7 +13,9 @@ from stimuli import lightness
 import matplotlib.pyplot as plt
 ```
 #### Cornsweet 
+
 A rectangular Cornsweet edge stimulus.
+
 ![Cornsweet](example_images/cornsweet.png)
 ```python
 a = lightness.cornsweet((10, 10), 10, .5)
@@ -24,8 +26,11 @@ plt.show()
 ```
 
 #### Todorovic
-![Todorovic](example_images/todorovic.png)
+
 A checkerboard illusion by appropriately aligning COC stimuli, in the way demonstrated by Todorovic (1987)
+
+![Todorovic](example_images/todorovic.png)
+
 ```python
 a = lightness.cornsweet((10, 10), 10, .5)
 
@@ -84,7 +89,7 @@ plt.imshow(g, vmin=0, vmax=1, cmap='gray')
 plt.show()
 ```
 
-# Contrast Measures
+# Contrast Metrics
 Various function that calculate contrast metrics.
 
 ### Example usage
