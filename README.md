@@ -1,13 +1,13 @@
 # Stimuli
 
 Contains submodules for
-- creating different stimuli used in lightness perception (lightness)
+- creating different stimuli used in lightness perception ([lightness](src/README.md))
 - creating 2D patterns or renderings of 3D checkerboards with transparent 
-layers covering part of the image (transparency)
+layers covering part of the image ([transparency](src/trasnparency/README.md))
 - creating different random and deterministic textures (texture)
 - some helper functions for padding, resizing, computing Munsell values, and
-converting pixel values to degrees of visual angle (utils)
-- various functions that calculate contrast metrics (contrast_metrics)
+converting pixel values to degrees of visual angle ([utils](src/README.md))
+- various functions that calculate contrast metrics ([contrast_metrics](src/README.md))
 
 For details, please refer to the source directory (src/), the respective subdirectories and the docstrings.
 
