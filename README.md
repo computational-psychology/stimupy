@@ -7,7 +7,7 @@ layers covering part of the image ([transparency](src/transparency/README.md))
 - creating different random and deterministic textures ([texture](src/texture/README.md))
 - some helper functions for padding, resizing, computing Munsell values, and
 converting pixel values to degrees of visual angle ([utils](src/README.md))
-- various functions that calculate contrast metrics ([contrast_metrics](src/README.md))
+- various functions that calculate contrast metrics ([contrast_metrics](src/README.md#contrast-metrics))
 
 For details, please refer to the source directory (src/), the respective subdirectories and the docstrings.
 
