@@ -44,51 +44,11 @@ def mc_single(t, s):
     return np.mean([mc(t, k) for k in s])
 
 
-def chunk_means(arr, chunk_size):
-    """
-    Slice a 2D array into square chunks and compute the mean of each chunk.
-    If width or height of arr aren't divisible by chunk size, the righter- and lower-most chunks
-    are accordingly smaller.
-
-    Parameters
-    ----------
-    arr : ndarray (2D)
-    chunk_size : int
-
-    Returns
-    -------
-    ndarray (1D)
-    """
-    assert np.ndim(arr) == 2, "Chunk mode only works on 2D arrays."
-    h, w = arr.shape
-    chunk_size = min(chunk_size, h, w)
-    chunk_rows = int(np.ceil(h/chunk_size))
-    chunk_cols = int(np.ceil(w/chunk_size))
-
-    # pad the array with NaN values for partial blocks (to be ignored in mean calculation)
-    h_pad = chunk_size * chunk_rows - h
-    w_pad = chunk_size * chunk_cols - w
-    arr = np.pad(arr, ((0, h_pad), (0, w_pad)), constant_values=np.nan)
-
-    # the actual chunking; https://stackoverflow.com/a/16858283
-    chunks = arr.reshape((chunk_rows, chunk_size, -1, chunk_size))\
-        .swapaxes(1, 2).reshape(-1, chunk_size, chunk_size)
-    # print(chunks)
-
-    # compute the mean value of every chunk, ignoring padding and masked values
-    chunks = chunks[~np.all(np.isnan(chunks), axis=(1, 2))]
-    means = np.nanmean(chunks, axis=(1, 2))
-    return means
-
-
-def preprocess_arr(arr, mask, mode, chunk_size):
+def preprocess_arr(arr, mask, mode):
     """Apply the mask and the mode rules to the array."""
     arr = arr.astype('float')
     if mask is None:
         mask = np.True_
-    if mode == "chunk":
-        arr[~mask] = np.nan
-        arr = chunk_means(arr, chunk_size)
     elif mode == "complete":
         arr = arr[mask].flatten()
     elif mode == "unique":
@@ -98,14 +58,14 @@ def preprocess_arr(arr, mask, mode, chunk_size):
     return arr
 
 
-def _SAM_or_SAW(func, arr, mask, mode, chunk_size, return_pair_contrasts=False):
+def _SAM_or_SAW(func, arr, mask, mode, return_pair_contrasts=False):
     """
     For reduced redundancy, this method implements the logic for SAM and SAW. See those methods for documentation.
     """
     if np.any(arr == 0):
         raise ValueError('Space-average contrast is not defined for luminance values of 0.')
 
-    arr = preprocess_arr(arr, mask, mode, chunk_size)
+    arr = preprocess_arr(arr, mask, mode)
 
     n = len(arr)
     pair_contrasts = []
@@ -126,7 +86,7 @@ def _SAM_or_SAW(func, arr, mask, mode, chunk_size, return_pair_contrasts=False):
         return contrast
 
 
-def SAM(arr, mask=None, mode="unique", chunk_size=10, return_pair_contrasts=False):
+def SAM(arr, mask=None, mode="unique", return_pair_contrasts=False):
     """
     Space-Average Michelson contrast of all pairs of values in arr:
     mean{ |(lum_i-lum_j)/(lum_i+lum_j)| } for i, j in [0, arr_size].
@@ -136,13 +96,10 @@ def SAM(arr, mask=None, mode="unique", chunk_size=10, return_pair_contrasts=Fals
     arr : ndarray
         2D image or a 1D array of luminance values.
     mask : ndarray or None, optional
-        Boolean mask for 2D arr. Limits contrast computation to this region. Compatible with chunk mode.
-    mode : {"complete", "chunk", "unique"}, optional
+        Boolean mask for 2D arr. Limits contrast computation to this region.
+    mode : {"complete", "unique"}, optional
         unique (default): only unique values in arr are compared
-        chunk: arr is sliced into chunks and chunk means are compared
         complete: every value of arr is compared with every other value (resource-intensive)
-    chunk_size : int, optional
-        Height and width of the chunks in chunk mode.
     return_pair_contrasts : bool, optional
 
     Returns
@@ -153,29 +110,29 @@ def SAM(arr, mask=None, mode="unique", chunk_size=10, return_pair_contrasts=Fals
         Includes each unordered pair of values once, i.e. (i,j), but not (j,i).
         Doesn't include self-contrasts (i,i).
     """
-    return _SAM_or_SAW('SAM', arr, mask, mode, chunk_size, return_pair_contrasts)
+    return _SAM_or_SAW('SAM', arr, mask, mode, return_pair_contrasts)
 
 
-def SAMLG(arr, mask=None, mode="unique", chunk_size=10):
+def SAMLG(arr, mask=None, mode="unique"):
     """
     Space-Average Michelson contrast of all pairs of the logarithm of values in arr.
     See SAM for details.
     SAMLG(arr) = SAM(log(arr))
     """
-    return SAM(np.log(arr), mask, mode, chunk_size)
+    return SAM(np.log(arr), mask, mode)
 
 
-def SDMC(arr, mask=None, mode="unique", chunk_size=10):
+def SDMC(arr, mask=None, mode="unique"):
     """
     Standard deviation of Michelson contrasts between the values in arr.
     Amount of contrast modulation.
     See SAM for details.
     """
-    _, contrasts = SAM(arr, mask, mode, chunk_size, return_pair_contrasts=True)
+    _, contrasts = SAM(arr, mask, mode, return_pair_contrasts=True)
     return np.std(contrasts)
 
 
-def SAW(arr, mask=None, mode="unique", chunk_size=10, return_pair_contrasts=False):
+def SAW(arr, mask=None, mode="unique", return_pair_contrasts=False):
     """
     Space-Average Whittle contrast of all pairs of values in arr:
     mean{ |(lum_i-lum_j)/min(lum_i, lum_j)| } for i, j in [0, arr_size].
@@ -185,13 +142,10 @@ def SAW(arr, mask=None, mode="unique", chunk_size=10, return_pair_contrasts=Fals
     arr : ndarray
         2D image or a 1D array of luminance values.
     mask : ndarray or None, optional
-        Boolean mask for 2D arr. Limits contrast computation to this region. Compatible with chunk mode.
-    mode : {"complete", "chunk", "unique"}, optional
+        Boolean mask for 2D arr. Limits contrast computation to this region.
+    mode : {"complete", "unique"}, optional
         unique (unique): only unique values in arr are compared
-        chunk: arr is sliced into chunks and chunk means are compared
         complete: every value of arr is compared with every other value (resource-intensive)
-    chunk_size : int, optional
-        Height and width of the chunks in chunk mode.
     return_pair_contrasts : bool, optional
 
     Returns
@@ -202,19 +156,19 @@ def SAW(arr, mask=None, mode="unique", chunk_size=10, return_pair_contrasts=Fals
         Includes each unordered pair of values once, i.e. (i,j), but not (j,i).
         Doesn't include self-contrasts (i,i).
     """
-    return _SAM_or_SAW('SAW', arr, mask, mode, chunk_size, return_pair_contrasts)
+    return _SAM_or_SAW('SAW', arr, mask, mode, return_pair_contrasts)
 
 
-def SAWLG(arr, mask=None, mode="unique", chunk_size=10):
+def SAWLG(arr, mask=None, mode="unique"):
     """
     Space-Average Whittle contrast of all pairs of the logarithm of values in arr.
     See SAW for details.
     SAWLG(arr) = SAW(log(arr))
     """
-    return SAW(np.log(arr), mask, mode, chunk_size)
+    return SAW(np.log(arr), mask, mode)
 
 
-def RMS(arr, mask=None, mode="complete", chunk_size=10):
+def RMS(arr, mask=None, mode="complete"):
     """
     Root mean square of values in arr.
 
@@ -223,23 +177,20 @@ def RMS(arr, mask=None, mode="complete", chunk_size=10):
     arr : ndarray
         2D image or a 1D array of luminance values.
     mask : ndarray or None, optional
-        Boolean mask for 2D arr. Limits contrast computation to this region. Compatible with chunk mode.
-    mode : {"complete", "chunk", "unique"}, optional
+        Boolean mask for 2D arr. Limits contrast computation to this region
+    mode : {"complete", "unique"}, optional
         complete (default): RMS of entire arr
-        chunk: arr is sliced into chunks and RMS of chunk means is computed
         unique: RMS of unique values in arr
-    chunk_size : int, optional
-        Height and width of the chunks in chunk mode.
 
     Returns
     -------
     contrast : float
     """
-    arr = preprocess_arr(arr, mask, mode, chunk_size)
+    arr = preprocess_arr(arr, mask, mode)
     return np.sqrt(np.mean(arr**2))
 
 
-def SD(arr, mask=None, mode="complete", chunk_size=10):
+def SD(arr, mask=None, mode="complete"):
     """
     Standard deviation of values in arr.
 
@@ -248,28 +199,25 @@ def SD(arr, mask=None, mode="complete", chunk_size=10):
     arr : ndarray
         2D image or a 1D array of luminance values.
     mask : ndarray or None, optional
-        Boolean mask for 2D arr. Limits contrast computation to this region. Compatible with chunk mode.
-    mode : {"complete", "chunk", "unique"}, optional
+        Boolean mask for 2D arr. Limits contrast computation to this region.
+    mode : {"complete", "unique"}, optional
         complete (default): SD of entire arr
-        chunk: arr is sliced into chunks and SD of chunk means is computed
         unique: SD of unique values in arr
-    chunk_size : int, optional
-        Height and width of the chunks in chunk mode.
 
     Returns
     -------
     contrast : float
     """
-    arr = preprocess_arr(arr, mask, mode, chunk_size)
+    arr = preprocess_arr(arr, mask, mode)
     return np.std(arr)
 
 
-def SDLG(arr, mask=None, mode="complete", chunk_size=10):
+def SDLG(arr, mask=None, mode="complete"):
     """
     Standard deviation of logarithms of values in arr.
     SDLG(arr) != SD(log(arr)), because the log of the mean of arr is used, not the mean of logs of arr.
     """
-    arr = preprocess_arr(arr, mask, mode, chunk_size)
+    arr = preprocess_arr(arr, mask, mode)
     x = (np.log(arr) - np.log(np.mean(arr)))**2
     return np.sqrt(np.mean(x))
 
