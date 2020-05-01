@@ -170,7 +170,7 @@ def SAWLG(arr, mask=None, mode="unique"):
 
 def RMS(arr, mask=None, mode="complete"):
     """
-    Root mean square of values in arr.
+    RMS contrast, defined as standard_deviation(arr) / mean(arr.)
 
     Parameters
     ----------
@@ -187,7 +187,7 @@ def RMS(arr, mask=None, mode="complete"):
     contrast : float
     """
     arr = preprocess_arr(arr, mask, mode)
-    return np.sqrt(np.mean(arr**2))
+    return np.std(arr) / np.mean(arr)
 
 
 def SD(arr, mask=None, mode="complete"):

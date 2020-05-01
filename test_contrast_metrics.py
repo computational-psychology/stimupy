@@ -31,15 +31,11 @@ z = cm.SD(arr, mode="unique")
 assert(y==0.5)
 assert(z==0.5)
 
-# TODO: RMS is not returning correct value
 arr = np.vstack((np.ones(s), np.zeros(s)))
 y = cm.RMS(arr, mode="complete")
 z = cm.RMS(arr, mode="unique")
-# assert(y==1.0)
-# assert(z==1.0)
-
-print(cm.SD(arr)/arr.mean())
-
+assert(y==1.0)
+assert(z==1.0)
 
 # %%
 arr = np.random.randint(1, 10, (10, 10))

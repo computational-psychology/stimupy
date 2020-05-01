@@ -116,13 +116,18 @@ cm.SAM(img, mask=(mask==1), mode="unique")
 Available Metrics:
 - SAM: Space Average Michelson Contrast
 - SAMLG: SAM of log luminances
-- SDMC: Standard Deviation of pair-wise Michelson Contrasts
+- SDMC: Standard Deviation of Michelson Contrasts between all pairs of values
 - SAW: Space Average Whittle Contrast
 - SAWLG: SAW of log luminances
-- RMS: Root Mean Sqaure Contrast
 - SD: Standard Deviation of luminances
 - SDLG: SD of log luminances
+- RMS: RMS Contrast, defined as standard_deviation(luminances)/mean(luminances)
 
+Definitions:
+- Michelson Contrast between values a and b: |(a-b)/(a+b)|
+- Whittle Contrast between values a and b: |(a-b)/min(a,b)|
+- Space Average Contrast: mean of contrasts between all pairs of values
+- Log luminances: contrast is computed on log_10(luminances)
 
 # Utils
 Helper functions for padding, resizing, computing Munsell values, and
