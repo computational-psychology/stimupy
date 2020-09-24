@@ -75,7 +75,7 @@ class CheckerboardFactory:
             reflectances = [0.06, 0.11, 0.19, 0.31, 0.46, 0.63, 0.82, 1.05, 1.29, 1.50, 1.67, 1.95, 2.22]
 
         if len(reflectances) * sample_repeat < total_checks:
-            sample_repeat = np.ceil(total_checks / len(reflectances))
+            sample_repeat = int(np.ceil(total_checks / len(reflectances)))
             warnings.warn('Given value for sample_repeat was too small and has been changed to %d.' % sample_repeat)
 
         # repeated concatenation of reflectances / multiset of values the cells will be sampled from without replacing

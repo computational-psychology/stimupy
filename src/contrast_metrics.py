@@ -122,6 +122,53 @@ def SAMLG(arr, mask=None, mode="unique"):
     return SAM(np.log(arr), mask, mode)
 
 
+def SAMLG_Moulden(arr, mask=None, mode="complete", return_pair_contrasts=False):
+    """
+    Space-Average Log Michelson contrast of all pairs of values in arr.
+    This formula comes from Moulden, Kingdom, Gatley 1990.
+    
+    Different than SAMLG, which uses formula in Robilotto 2002
+    """
+    
+    n = len(arr)
+    
+    c, pair_contrasts = _SAM_or_SAW('SAM', arr, mask, mode, return_pair_contrasts=True)
+    
+    # current ATF has identical values, resolution problem! I had to remove
+    # equal values manually
+    #pair_contrasts = np.array(pair_contrasts)
+    #pair_contrasts = pair_contrasts[pair_contrasts!=0]
+    # not needed anymore as I'm taking analytical ATFs
+    
+    pair_contrasts = np.log(pair_contrasts)
+    contrast = 2 * np.sum(pair_contrasts) / (n * n)
+    
+    return contrast
+
+
+def SAWLG_Moulden(arr, mask=None, mode="complete", return_pair_contrasts=False):
+    """
+    Space-Average Log Whittle contrast of all pairs of values in arr.
+    This formula comes from Moulden, Kingdom, Gatley 1990.
+    
+    Different than SAWLG, which uses formula in Robilotto 2002
+    """
+    
+    n = len(arr)
+    
+    c, pair_contrasts = _SAM_or_SAW('SAW', arr, mask, mode, return_pair_contrasts=True)
+    
+    # current ATF has identical values, resolution problem! I had to remove
+    # equal values manually
+    #pair_contrasts = np.array(pair_contrasts)
+    #pair_contrasts = pair_contrasts[pair_contrasts!=0]
+    # not needed anymore as I'm taking analytical ATFs
+    
+    pair_contrasts = np.log(pair_contrasts)
+    contrast = 2 * np.sum(pair_contrasts) / (n * n)
+    
+    return contrast
+
 def SDMC(arr, mask=None, mode="unique"):
     """
     Standard deviation of Michelson contrasts between the values in arr.
@@ -236,6 +283,7 @@ def alpha_c(plain, medium):
     return c_medium / c_plain
 
 
+##### TODO complete docstrings
 def alpha_metelli(plain, medium):
     """
     ratio of luminance ranges
@@ -246,7 +294,7 @@ def alpha_metelli(plain, medium):
     q = medium.min()
     return np.around((p - q) / (a - b), decimals=2)
 
-
+##### TODO complete docstrings
 def alpha_c_minmax(plain, medium):
     """
     ratio of luminance ranges adjusted by additional offset term
