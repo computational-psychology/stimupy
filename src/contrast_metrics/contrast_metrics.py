@@ -48,7 +48,7 @@ def preprocess_arr(arr, mask, mode):
     """Apply the mask and the mode rules to the array."""
     arr = arr.astype('float')
     if mask is None:
-        mask = np.True_
+        arr = arr.flatten()
     elif mode == "complete":
         arr = arr[mask].flatten()
     elif mode == "unique":
@@ -168,6 +168,7 @@ def SAWLG_Moulden(arr, mask=None, mode="complete", return_pair_contrasts=False):
     contrast = 2 * np.sum(pair_contrasts) / (n * n)
     
     return contrast
+
 
 def SDMC(arr, mask=None, mode="unique"):
     """

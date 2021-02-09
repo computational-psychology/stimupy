@@ -22,7 +22,7 @@ import os
 import cairo
 import math
 import tessutils    # tessellation utils
-import Image
+from PIL import Image
 
 
 def generate_hardcore(rootname, beta=3, R = 0.52, size = 42.5, factor=100, circlerad=24, algo='ssi', N=3500, tess=True ):
@@ -134,13 +134,12 @@ def generate_hardcore(rootname, beta=3, R = 0.52, size = 42.5, factor=100, circl
     
     ## reading results
     if st==0:
-        print "reading generated data"
+        print("reading generated data")
         x, y = np.loadtxt(csvfile, skiprows=1, usecols=(1,2), unpack=True, delimiter=',')    
         
     else:
-        print "error in R execution"
-        
-    
+        print("error in R execution")
+
     ##############################################################################
     ### Step 1: creating circular texture with these centroids
     ####### working now with pix units
