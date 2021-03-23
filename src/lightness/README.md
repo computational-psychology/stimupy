@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 
 A rectangular Cornsweet edge stimulus.
 
-![Cornsweet](lightness/example_images/cornsweet.png)
+![Cornsweet](example_images/cornsweet.png)
 ```python
 a = lightness.cornsweet((10, 10), 10, .5)
 
@@ -28,7 +28,7 @@ plt.show()
 
 A checkerboard illusion by appropriately aligning COC stimuli, in the way demonstrated by Todorovic (1987)
 
-![Todorovic](lightness/example_images/todorovic.png)
+![Todorovic](example_images/todorovic.png)
 
 ```python
 a = lightness.cornsweet((10, 10), 10, .5)
@@ -39,7 +39,7 @@ plt.show()
 ```
 
 #### Square Wave
-![Square Wave](lightness/example_images/square_wave.png)
+![Square Wave](example_images/square_wave.png)
 ```python
 c = lightness.square_wave((10, 10), 10, .5, 2)
 
@@ -49,10 +49,10 @@ plt.show()
 
 ```
 #### White's Illusion - Blakeslee and McCourt (1999)
-![White's Illusion BMCC](lightness/example_images/whites_illusion_bmcc.png)
+![White's Illusion BMCC](example_images/whites_illusion_bmcc.png)
 
-![Contours dark](lightness/example_images/contours_white_bmcc_dark.png)
-![Contours bright](lightness/example_images/contours_white_bmcc_bright.png)
+![Contours dark](example_images/contours_white_bmcc_dark.png)
+![Contours bright](example_images/contours_white_bmcc_bright.png)
 ```python
 d = lightness.whites_illusion_bmcc((10, 10), 10, .5, 2)
 e1, e2 = lightness.contours_white_bmmc((10, 10), 10, .5, 2, contour_width=3)
@@ -69,7 +69,7 @@ plt.show()
 
 ```
 #### White's Illusion - Gilchrist
-![White's Illusion Gilchrist](lightness/example_images/whites_illusion_gil.png)
+![White's Illusion Gilchrist](example_images/whites_illusion_gil.png)
 ```python
 f = lightness.whites_illusion_gil((10, 10), 10, .5, 2)
 
@@ -79,7 +79,7 @@ plt.show()
 
 ```
 #### Disc and Ring
-![Disk and Ring](lightness/example_images/disc_and_ring.png)
+![Disk and Ring](example_images/disc_and_ring.png)
 ```python
 g = lightness.disc_and_ring((10, 10), [4, 2], [0.5, 1.])
 
