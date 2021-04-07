@@ -11,7 +11,7 @@ if __name__ == '__main__':
         author_email='guillermo.aguilar@mail.tu-berlin.de',
         license='GPL2',
         url='https://github.com/computational-psychology/stimuli',
-        package_dir={'stimuli': 'src'},
+        package_dir={'stimuli': 'stimuli'},
         packages=(
             'stimuli',
             'stimuli.lightness',
