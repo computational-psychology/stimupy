@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def benarys_cross(input_size=100, cross_thickness=20, padding=10, back=1., cross=0., target=.5):
     """
     Benary's Cross Illusion (with square targets)

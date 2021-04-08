@@ -39,21 +39,21 @@ def simultaneous_contrast(n_grid, size_target, add_squares=False, size_squares=2
     #   - size_squares: size of the squares in one dimension (int, unit:pixels)
     #   - seperate: seperate the left and right half of the illusion by a gray
     #               area (bool)
-    
+
     # Create the background:
     grid = np.zeros([n_grid, n_grid*2], dtype=np.float32)
     grid[:, n_grid:n_grid*2] = 1
     if seperate:
         # Optional: seperate black and white halfs by a gray area
         grid[:, n_grid-1:n_grid+1] = 0.5
-    
+
     center = n_grid / 2
     # Ensure that the illusion looks symmetric:
     if size_target % 2 == 0:
         # Place targets on grid
         grid[int(center-size_target/2):int(center+size_target/2), int(center-size_target/2):int(center+size_target/2)] = 0.5
         grid[int(center-size_target/2):int(center+size_target/2), int(center+n_grid-size_target/2):int(center+n_grid+size_target/2)] = 0.5
-        
+
         # Add covering squares:
         if add_squares:
             # Set a constant difference between the covering squares.
@@ -68,7 +68,7 @@ def simultaneous_contrast(n_grid, size_target, add_squares=False, size_squares=2
             grid[int(center+dist):int(center+dist+size_squares), int(center+n_grid+dist):int(center+n_grid+dist+size_squares)] = 0
             grid[int(center-size_squares-dist):int(center-dist), int(center+n_grid+dist):int(center+n_grid+dist+size_squares)] = 0
             grid[int(center+dist):int(center+dist+size_squares), int(center+n_grid-size_squares-dist):int(center+n_grid-dist)] = 0
-            
+
             # If the target is much bigger than the covering squares, "cut" the
             # overlap, so the target looks like a cross
             if size_target > (size_squares*2 + dist):
@@ -80,7 +80,7 @@ def simultaneous_contrast(n_grid, size_target, add_squares=False, size_squares=2
                 grid[int(0):int(center-dist), int(center+dist+size_squares):int(n_grid)] = 0
                 grid[int(center+dist)::, int(0):int(center-dist-size_squares)] = 0
                 grid[int(center+dist)::, int(center+dist+size_squares):int(n_grid)] = 0
-                
+
                 grid[int(0):int(center-size_squares-dist), int(n_grid):int(center+n_grid-dist)] = 1
                 grid[int(0):int(center-size_squares-dist), int(center+n_grid+dist)::] = 1
                 grid[int(center+size_squares+dist)::, int(n_grid):int(center+n_grid-dist)] = 1
@@ -89,11 +89,11 @@ def simultaneous_contrast(n_grid, size_target, add_squares=False, size_squares=2
                 grid[int(0):int(center-dist), int(center+n_grid+dist+size_squares)::] = 1
                 grid[int(center+dist)::, int(n_grid):int(center+n_grid-dist-size_squares)] = 1
                 grid[int(center+dist)::, int(center+n_grid+dist+size_squares)::] = 1
-                
+
         else:
             grid[int(center-size_target/2):int(center+size_target/2), int(center-size_target/2):int(center+size_target/2)] = 0.5
             grid[int(center-size_target/2):int(center+size_target/2), int(center+n_grid-size_target/2):int(center+n_grid+size_target/2)] = 0.5
-            
+
     else:
         # Place targets on grid
         grid[int(center-size_target/2):int(center+1+size_target/2), int(center-size_target/2):int(center+1+size_target/2)] = 0.5
@@ -112,7 +112,7 @@ def simultaneous_contrast(n_grid, size_target, add_squares=False, size_squares=2
             grid[int(center+dist):int(center+dist+size_squares), int(center+n_grid+dist):int(center+n_grid+dist+size_squares)] = 0
             grid[int(center+1-size_squares-dist):int(center+1-dist), int(center+n_grid+dist):int(center+n_grid+dist+size_squares)] = 0
             grid[int(center+dist):int(center+dist+size_squares), int(center+1+n_grid-size_squares-dist):int(center+1+n_grid-dist)] = 0
-            
+
             # If the target is much bigger than the covering squares, "cut" the
             # overlap, so the target looks like a cross
             if size_target > (size_squares*2 + dist):
@@ -124,7 +124,7 @@ def simultaneous_contrast(n_grid, size_target, add_squares=False, size_squares=2
                 grid[int(0):int(center-dist+1), int(center+dist+size_squares):int(n_grid)] = 0
                 grid[int(center+dist)::, int(0):int(center-dist-size_squares+1)] = 0
                 grid[int(center+dist)::, int(center+dist+size_squares):int(n_grid)] = 0
-                
+
                 grid[int(0):int(center-size_squares-dist+1), int(n_grid):int(center+n_grid-dist+1)] = 1
                 grid[int(0):int(center-size_squares-dist+1), int(center+n_grid+dist)::] = 1
                 grid[int(center+size_squares+dist)::, int(n_grid):int(center+n_grid-dist+1)] = 1

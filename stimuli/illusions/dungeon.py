@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def dungeon_illusion(n_cells=5, target_radius=1, cell_size=10, back=0., grid=1., target=0.5, double=True):
     """
     Dungeon illusion (Bressan, 2001) with diamond target.

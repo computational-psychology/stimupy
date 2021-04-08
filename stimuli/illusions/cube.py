@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def cube_illusion(n_cells=4, target_length=1, cell_size=10, cell_spacing=3, padding=5, occlusion_overlap=4, back=0., grid=1., target=.5, double=True):
     """
     Cube illusion (Agostini & Galmonte, 2002)

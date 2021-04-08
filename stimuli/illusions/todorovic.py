@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def todorovic_illusion(input_size=100, target_size=40, spacing=5, padding=15, back=0., grid=1., target=.5, double=True):
     """
     Todorovic's illusion

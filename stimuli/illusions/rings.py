@@ -29,8 +29,8 @@ def ring_pattern(n_rings=8, target_pos_l=4, target_pos_r=3, ring_width=5, paddin
 
     # build array representing rings
     arr = np.ones((n_rings*2, n_rings*2)) * back
-    arr[radii%2==(0 if invert_rings else 1)] = rings
-    arr[radii==target_pos_l] = target
+    arr[radii % 2 == (0 if invert_rings else 1)] = rings
+    arr[radii == target_pos_l] = target
 
     # build image from array
     img = np.repeat(np.repeat(arr, ring_width, axis=0), ring_width, axis=1)

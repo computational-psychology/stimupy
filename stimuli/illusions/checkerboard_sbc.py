@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def checkerboard_contrast(n_checks=8, check_size=10, target1_coords=(3, 2), target2_coords=(5, 5), extend_targets=False,
                           padding=10, check1=0., check2=1., target=.5):
     """

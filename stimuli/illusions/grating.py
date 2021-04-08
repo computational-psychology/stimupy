@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def grating_illusion(n_bars=5, target_length=1, bar_width=10, back=0., grid=1., target=0.5, double=True):
     """
     Grating illusion
