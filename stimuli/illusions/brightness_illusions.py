@@ -308,113 +308,7 @@ def circular_white(n_parts, n_targets):
     return grid
 
 
-###################################
-#      Simultaneous contrast      #
-###################################
-def simultaneous_contrast(n_grid, size_target, add_squares=False, size_squares=2,
-                          seperate=False):
-    # Inputs:
-    #   - n_grid: height of the grid (int, unit: pixels)
-    #   - size_target: size of target in one dimension (int, unit: pixels)
-    #   - add_squares: if True, cover targets (partially) with squares (bool)
-    #   - size_squares: size of the squares in one dimension (int, unit:pixels)
-    #   - seperate: seperate the left and right half of the illusion by a gray
-    #               area (bool)
-    
-    # Create the background:
-    grid = np.zeros([n_grid, n_grid*2], dtype=np.float32)
-    grid[:, n_grid:n_grid*2] = 1
-    if seperate:
-        # Optional: seperate black and white halfs by a gray area
-        grid[:, n_grid-1:n_grid+1] = 0.5
-    
-    center = n_grid / 2
-    # Ensure that the illusion looks symmetric:
-    if size_target % 2 == 0:
-        # Place targets on grid
-        grid[int(center-size_target/2):int(center+size_target/2), int(center-size_target/2):int(center+size_target/2)] = 0.5
-        grid[int(center-size_target/2):int(center+size_target/2), int(center+n_grid-size_target/2):int(center+n_grid+size_target/2)] = 0.5
-        
-        # Add covering squares:
-        if add_squares:
-            # Set a constant difference between the covering squares.
-            # If you want them to be closer relative to the rest of the grid, increase
-            # the grid size (n_grid)
-            dist = 1
-            grid[int(center-size_squares-dist):int(center-dist), int(center-size_squares-dist):int(center-dist)] = 1
-            grid[int(center+dist):int(center+dist+size_squares), int(center+dist):int(center+dist+size_squares)] = 1
-            grid[int(center-size_squares-dist):int(center-dist), int(center+dist):int(center+dist+size_squares)] = 1
-            grid[int(center+dist):int(center+dist+size_squares), int(center-size_squares-dist):int(center-dist)] = 1
-            grid[int(center-size_squares-dist):int(center-dist), int(center+n_grid-size_squares-dist):int(center+n_grid-dist)] = 0
-            grid[int(center+dist):int(center+dist+size_squares), int(center+n_grid+dist):int(center+n_grid+dist+size_squares)] = 0
-            grid[int(center-size_squares-dist):int(center-dist), int(center+n_grid+dist):int(center+n_grid+dist+size_squares)] = 0
-            grid[int(center+dist):int(center+dist+size_squares), int(center+n_grid-size_squares-dist):int(center+n_grid-dist)] = 0
-            
-            # If the target is much bigger than the covering squares, "cut" the
-            # overlap, so the target looks like a cross
-            if size_target > (size_squares*2 + dist):
-                grid[int(0):int(center-size_squares-dist), int(0):int(center-dist)] = 0
-                grid[int(0):int(center-size_squares-dist), int(center+dist):int(n_grid)] = 0
-                grid[int(center+size_squares+dist)::, int(0):int(center-dist)] = 0
-                grid[int(center+size_squares+dist)::, int(center+dist):int(n_grid)] = 0
-                grid[int(0):int(center-dist), int(0):int(center-dist-size_squares)] = 0
-                grid[int(0):int(center-dist), int(center+dist+size_squares):int(n_grid)] = 0
-                grid[int(center+dist)::, int(0):int(center-dist-size_squares)] = 0
-                grid[int(center+dist)::, int(center+dist+size_squares):int(n_grid)] = 0
-                
-                grid[int(0):int(center-size_squares-dist), int(n_grid):int(center+n_grid-dist)] = 1
-                grid[int(0):int(center-size_squares-dist), int(center+n_grid+dist)::] = 1
-                grid[int(center+size_squares+dist)::, int(n_grid):int(center+n_grid-dist)] = 1
-                grid[int(center+size_squares+dist)::, int(center+n_grid+dist)::] = 1
-                grid[int(0):int(center-dist), int(n_grid):int(center+n_grid+-dist-size_squares)] = 1
-                grid[int(0):int(center-dist), int(center+n_grid+dist+size_squares)::] = 1
-                grid[int(center+dist)::, int(n_grid):int(center+n_grid-dist-size_squares)] = 1
-                grid[int(center+dist)::, int(center+n_grid+dist+size_squares)::] = 1
-                
-        else:
-            grid[int(center-size_target/2):int(center+size_target/2), int(center-size_target/2):int(center+size_target/2)] = 0.5
-            grid[int(center-size_target/2):int(center+size_target/2), int(center+n_grid-size_target/2):int(center+n_grid+size_target/2)] = 0.5
-            
-    else:
-        # Place targets on grid
-        grid[int(center-size_target/2):int(center+1+size_target/2), int(center-size_target/2):int(center+1+size_target/2)] = 0.5
-        grid[int(center-size_target/2):int(center+1+size_target/2), int(center+n_grid-size_target/2):int(center+1+n_grid+size_target/2)] = 0.5
-        if add_squares:
-            # Set a constant difference between the covering squares.
-            # If you want them to be closer relative to the rest of the grid, increase
-            # the grid size (n_grid)
-            dist = 2
-            dist = dist/2
-            grid[int(center+1-size_squares-dist):int(center+1-dist), int(center+1-size_squares-dist):int(center+1-dist)] = 1
-            grid[int(center+dist):int(center+dist+size_squares), int(center+dist):int(center+dist+size_squares)] = 1
-            grid[int(center+1-size_squares-dist):int(center+1-dist), int(center+dist):int(center+dist+size_squares)] = 1
-            grid[int(center+dist):int(center+dist+size_squares), int(center+1-size_squares-dist):int(center+1-dist)] = 1
-            grid[int(center+1-size_squares-dist):int(center+1-dist), int(center+1+n_grid-size_squares-dist):int(center+1+n_grid-dist)] = 0
-            grid[int(center+dist):int(center+dist+size_squares), int(center+n_grid+dist):int(center+n_grid+dist+size_squares)] = 0
-            grid[int(center+1-size_squares-dist):int(center+1-dist), int(center+n_grid+dist):int(center+n_grid+dist+size_squares)] = 0
-            grid[int(center+dist):int(center+dist+size_squares), int(center+1+n_grid-size_squares-dist):int(center+1+n_grid-dist)] = 0
-            
-            # If the target is much bigger than the covering squares, "cut" the
-            # overlap, so the target looks like a cross
-            if size_target > (size_squares*2 + dist):
-                grid[int(0):int(center-size_squares-dist+1), int(0):int(center-dist+1)] = 0
-                grid[int(0):int(center-size_squares-dist+1), int(center+dist):int(n_grid)] = 0
-                grid[int(center+size_squares+dist)::, int(0):int(center-dist+1)] = 0
-                grid[int(center+size_squares+dist)::, int(center+dist):int(n_grid)] = 0
-                grid[int(0):int(center-dist+1), int(0):int(center-dist-size_squares+1)] = 0
-                grid[int(0):int(center-dist+1), int(center+dist+size_squares):int(n_grid)] = 0
-                grid[int(center+dist)::, int(0):int(center-dist-size_squares+1)] = 0
-                grid[int(center+dist)::, int(center+dist+size_squares):int(n_grid)] = 0
-                
-                grid[int(0):int(center-size_squares-dist+1), int(n_grid):int(center+n_grid-dist+1)] = 1
-                grid[int(0):int(center-size_squares-dist+1), int(center+n_grid+dist)::] = 1
-                grid[int(center+size_squares+dist)::, int(n_grid):int(center+n_grid-dist+1)] = 1
-                grid[int(center+size_squares+dist)::, int(center+n_grid+dist)::] = 1
-                grid[int(0):int(center-dist+1), int(n_grid):int(center+n_grid+-dist-size_squares+1)] = 1
-                grid[int(0):int(center-dist+1), int(center+n_grid+dist+size_squares)::] = 1
-                grid[int(center+dist)::, int(n_grid):int(center+n_grid-dist-size_squares+1)] = 1
-                grid[int(center+dist)::, int(center+n_grid+dist+size_squares)::] = 1
-    return grid
+
 
 
 ###################################
@@ -478,36 +372,6 @@ def extended_white(n_grid, size_target, shift=False):
             grid[int(center+1-size_target/2):int(center+1+size_target/2):2, int(center-size_target/2):int(center+1+size_target/2)] = 0.5
         
     grid[:, n_grid:n_grid*2] = np.abs(grid[:, 0:n_grid]-1)
-    return grid
-
-
-###################################
-#        Grating induction        #
-###################################
-def grating_induction(n_grid, width_target, blur):
-    # Inputs:
-    #   - n_grid: number of black and white stripes (int, unit: pixels)
-    #   - width_target: width of the target (float, unit: pixels)
-    #   - blur: amount of blur added (float)
-
-    # Create grid
-    grid = np.zeros([n_grid, n_grid], dtype=np.float32)
-    grid[:, ::2] = 1
-    grid[:, 1::2] = 0
-    
-    # Increase the resolution of the grid for blurring it later:
-    res_factor = 50
-    grid = np.repeat(grid, res_factor, axis=0)
-    grid = np.repeat(grid, res_factor, axis=1)
-    grid = gaussian_filter(grid, blur)
-    
-    # Place target on blurred grid
-    n_grid = n_grid*res_factor
-    width_target = int(width_target*res_factor)
-    if width_target%2 == 0:
-        grid[int(n_grid/2-width_target/2):int(n_grid/2+width_target/2), :] = 0.5
-    else:
-        grid[int(n_grid/2-width_target/2-1):int(n_grid/2+width_target/2), :] = 0.5
     return grid
 
 
@@ -628,14 +492,4 @@ def dotted_white(n_grid, size_target, n_dots, reverse_target=False):
     grid[grid>1] = 1
     
     grid[:, int(n_grid):int(n_grid*2)] = np.abs(grid[:, int(0):int(n_grid)]-1)
-    return grid
-
-
-###################################
-#           Hermann Grid          #
-###################################
-def hermann_grid(n_grid, space):
-    grid = np.zeros([n_grid, n_grid], dtype=np.float32)
-    grid[::space, :] = 1
-    grid[:, ::space] = 1
     return grid
