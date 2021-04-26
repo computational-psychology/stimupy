@@ -26,11 +26,12 @@ First clone the repository via
 git clone https://github.com/computational-psychology/stimuli.git
 ``` 
 
-Then run `python setup.py install` at the root of the repository.
-
+Then run `pip install .` at the root of the repository.
 The repository may then be removed again.
 
-To update to a newer version, run `python setup.py install --force`.
+To install in developer/editable mode: `pip install -e .` at the root directory.
+This makes changes to files immediately usable,
+rather than having to reinstall the package after every change.
 
 ## Importing
 To use in your own code, import the modules. See READMEs in src/ for example usages.
