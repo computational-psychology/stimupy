@@ -1,0 +1,148 @@
+{
+"WE-thick": {
+    "source": ["Blakeslee and McCourt (1999)", "White (1979)"],
+    "target_shape": [2, 4]
+},
+
+"WE-thin-wide": {
+    "source": ["Blakeslee and McCourt (1999)", "White (1979)"],
+    "target_shape": [1, 2]
+},
+
+"WE-dual": {
+    "source": "Robinson, Hammon, and De SA (2007)",
+    "target_shape": [1, 2]
+},
+
+"WE-Anderson": {
+    "source": ["Blakeslee et al. (2005)", "Anderson (2001)"],
+    "target_shape": [1, 3]
+},
+
+"WE-Howe": {
+    "source": ["Blakeslee et al. (2005)", "Howe (2001)"],
+    "target_shape": [1, 3]
+},
+
+"WE-zigzag": {
+    "source": ["Based on Clifford and Spehar (2003)"],
+    "target_shape": [1, 3]
+},
+
+"WE-radial-thick-small": {
+    "source": "Based on Anstis (2003)",
+    "target_shape": [2, 4]
+},
+
+"WE-radial-thick": {
+    "source": "Based on Anstis (2003)",
+    "target_shape": [2, 4]
+},
+
+"WE-radial-thin-small": {
+    "source": "Based on Anstis (2003)",
+    "target_shape": [1, 2]
+},
+
+"WE-radial-thin": {
+    "source": "Based on Anstis (2003)",
+    "target_shape": [1, 2]
+},
+
+"WE-circular1": {
+    "source": "Based on Howe (2005)",
+    "ring_width": 1
+},
+
+"WE-circular0.5": {
+    "source": "Based on Howe (2005)",
+    "ring_width": 0.5
+},
+
+"WE-circular0.25": {
+    "source": "Based on Howe (2005)",
+    "ring_width": 0.25
+},
+
+"Grating_induction": {
+    "source": ["Blakeslee and McCourt (1999)", "McCourt (1982)"],
+    "target_height": 1
+},
+
+"SBC-large": {
+    "source": "Blakeslee and McCourt (1999)",
+    "target_shape": [3, 3]
+},
+
+"SBC-small": {
+    "source": "Blakeslee and McCourt (1999)",
+    "target_shape": [1, 1]
+},
+
+"Todorovic-equal": {
+    "source": ["Blakeslee and McCourt (1999)", "Pessoa et al. (1998)"],
+    "cross_length": 8
+},
+
+"Todorovic-in-large": {
+    "source": ["Blakeslee and McCourt (1999)", "Todorovic (1997)"],
+    "cross_length": 5.3
+
+},
+
+"Todorovic-in-small": {
+    "source": ["Blakeslee and McCourt (1999)", "Todorovic (1997)"],
+    "cross_length": 3
+
+},
+
+"Todorovic-out": {
+    "source": ["Blakeslee and McCourt (1999)", "Pessoa et al. (1998)"],
+    "cross_length": 8.7
+},
+
+"Checkerboard-0.16": {
+    "source": ["Blakeslee and McCourt (2004)", "DeValois and DeValois (1988)"],
+    "target_shape": [0.156, 0.156]
+},
+
+"Checkerboard-0.94": {
+    "source": ["Blakeslee and McCourt (2004)", "DeValois and DeValois (1988)"],
+    "target_shape": [0.938, 0.938]
+},
+
+"Checkerboard-2.1": {
+    "source": ["Blakeslee and McCourt (2004)", "DeValois and DeValois (1988)"],
+    "target_shape": [2.09, 2.09]
+},
+
+"Corrugated Mondrian": {
+    "source": ["Blakeslee and McCourt (2001)", "Adelson (1993)"],
+    "target_shape": [2, 2]
+},
+
+"Benary cross": {
+    "source": ["Blakeslee and McCourt (2001)", "Benary (1924)"],
+    "target_hypothenuse": 3
+},
+
+"Todorovic Benary 1–2": {
+    "source": ["Blakeslee and McCourt (2001)", "Todorovic (1997)"],
+    "target_hypothenuse": 3
+},
+
+"Todorovic Benary 3–4": {
+    "source": ["Blakeslee and McCourt (2001)", "Todorovic (1997)"],
+    "target_hypothenuse": 3
+},
+
+"Bullseye-thin": {
+    "source": "Bindman and Chubb (2004)",
+    "width": 0.608
+},
+
+"Bullseye-thick": {
+    "source": "Bindman and Chubb (2004)",
+    "width": 0.608
+}
+}
