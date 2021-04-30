@@ -352,17 +352,63 @@
         "source": ["Blakeslee and McCourt (1999)", "Pessoa et al. (1998)"],
         "cross_length": 8.7,
     },
-    "Checkerboard-0.16": {
+    "Checkerboard-0.156": {
         "source": ["Blakeslee and McCourt (2004)", "DeValois and DeValois (1988)"],
-        "target_shape": [0.156, 0.156],
+        "checkerboard": {
+            "check_height": 0.156,  # deg
+            "check_width": 0.156,  # deg
+            "n_checks": (102, 40),  # number of checks, (width, height)
+            "width": 15.91,  # deg
+            "height": 6.57,  # deg
+        },
+        "target": [
+            {
+                "height": 0.156,  # deg
+                "width": 0.156,  # deg
+                "phase_idx": 17,  # which check is target on?
+            },
+            {
+                "height": 0.156,  # deg
+                "width": 0.156,  # deg
+                "phase_idx": 86,  # which check is target on?
+            },
+        ],
     },
-    "Checkerboard-0.94": {
+    "Checkerboard-0.938": {
         "source": ["Blakeslee and McCourt (2004)", "DeValois and DeValois (1988)"],
-        "target_shape": [0.938, 0.938],
+        "checkerboard": {
+            "check_height": 0.938,  # deg
+            "check_width": 0.938,  # deg
+            "n_checks": (25, 7),  # number of checks, (width, height)
+            "width": 18.8,  # deg
+            "height": 6.57,  # deg
+        },
+        "target": [
+            {"height": 0.938, "width": 0.938, "phase_idx": 7},  # deg  # deg
+            {"height": 0.938, "width": 0.938, "phase_idx": 18},  # deg  # deg
+        ],
     },
-    "Checkerboard-2.1": {
+    "Checkerboard-2.09": {
         "source": ["Blakeslee and McCourt (2004)", "DeValois and DeValois (1988)"],
-        "target_shape": [2.09, 2.09],
+        "checkerboard": {
+            "check_height": 2.09,  # deg
+            "check_width": 2.09,  # deg
+            "n_checks": (10, 3),  # number of checks, (width, height)
+            "width": 20.09,  # deg
+            "height": 6.27,  # deg
+        },
+        "target": [
+            {
+                "height": 2.09,  # deg
+                "width": 2.09,  # deg
+                "phase_idx": 3,  # which check is target on?
+            },
+            {
+                "height": 2.09,  # deg
+                "width": 2.09,  # deg
+                "phase_idx": 8,  # which check is target on?
+            },
+        ],
     },
     "Corrugated Mondrian": {
         "source": ["Blakeslee and McCourt (2001)", "Adelson (1993)"],
