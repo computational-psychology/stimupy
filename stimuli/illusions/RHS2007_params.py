@@ -338,19 +338,55 @@
     },
     "Todorovic-equal": {
         "source": ["Blakeslee and McCourt (1999)", "Pessoa et al. (1998)"],
-        "cross_length": 8,
+        "stimuli": [
+            {
+                "background": {"height": 12, "width": 15, "phase": 1},
+                "target": {"cross_length": 8},  # deg
+            },
+            {
+                "background": {"height": 12, "width": 15, "phase": 0},
+                "target": {"cross_length": 8},  # deg
+            },
+        ],
     },
     "Todorovic-in-large": {
         "source": ["Blakeslee and McCourt (1999)", "Todorovic (1997)"],
-        "cross_length": 5.3,
+        "stimuli": [
+            {
+                "background": {"height": 12, "width": 15, "phase": 1},
+                "target": {"cross_length": 5.3},  # deg
+            },
+            {
+                "background": {"height": 12, "width": 15, "phase": 0},
+                "target": {"cross_length": 5.3},  # deg
+            },
+        ],
     },
     "Todorovic-in-small": {
         "source": ["Blakeslee and McCourt (1999)", "Todorovic (1997)"],
-        "cross_length": 3,
+        "stimuli": [
+            {
+                "background": {"height": 12, "width": 15, "phase": 1},
+                "target": {"cross_length": 3},  # deg
+            },
+            {
+                "background": {"height": 12, "width": 15, "phase": 0},
+                "target": {"cross_length": 3},  # deg
+            },
+        ],
     },
     "Todorovic-out": {
         "source": ["Blakeslee and McCourt (1999)", "Pessoa et al. (1998)"],
-        "cross_length": 8.7,
+        "stimuli": [
+            {
+                "background": {"height": 12, "width": 15, "phase": 1},
+                "target": {"cross_length": 8.7},  # deg
+            },
+            {
+                "background": {"height": 12, "width": 15, "phase": 0},
+                "target": {"cross_length": 8.7},  # deg
+            },
+        ],
     },
     "Checkerboard-0.156": {
         "source": ["Blakeslee and McCourt (2004)", "DeValois and DeValois (1988)"],
