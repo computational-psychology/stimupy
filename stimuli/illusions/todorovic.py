@@ -42,3 +42,36 @@ def todorovic_illusion(input_size=100, target_size=40, spacing=5, padding=15, ba
         return np.hstack([img, img2])
     else:
         return img
+
+
+def domijan2015():
+    return todorovic_illusion(input_size=100, target_size=40, spacing=5, padding=15, back=1., grid=9., target=5., double=True)
+
+
+def lynn_domijan2015():
+    """
+    sizes of the squares and distancing between them needs to be adjusted
+    """
+    lum_white = 9.
+    lum_black = 1.
+    lum_gray = 5.
+
+    input_image = lum_white * np.ones([100, 200])
+    input_image[:, 0:100] = lum_black
+    input_image[29:70, 29:70] = lum_gray
+    input_image[29:70, 129:170] = lum_gray
+
+    input_image[14:45, 14:45] = lum_white
+    input_image[14:45, 54:85] = lum_white
+    input_image[54:85, 14:45] = lum_white
+    input_image[54:85, 54:85] = lum_white
+
+    input_image[14:45, 114:145] = lum_black
+    input_image[14:45, 154:185] = lum_black
+    input_image[54:85, 114:145] = lum_black
+    input_image[54:85, 154:185] = lum_black
+
+    return input_image
+
+
+

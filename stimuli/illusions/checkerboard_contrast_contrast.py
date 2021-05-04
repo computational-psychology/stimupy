@@ -34,8 +34,8 @@ def checkerboard_contrast_contrast_effect(n_checks=8, check_size=10, target_leng
     arr2[~idx] = tau
 
     img1 = np.repeat(np.repeat(arr1, check_size, axis=0), check_size, axis=1)
-    img1 = np.pad(img1, padding, constant_values=tau)
+    img1 = np.pad(img1, padding, constant_values=tau, mode="constant")
     img2 = np.repeat(np.repeat(arr2, check_size, axis=0), check_size, axis=1)
-    img2 = np.pad(img2, padding, constant_values=tau)
+    img2 = np.pad(img2, padding, constant_values=tau, mode="constant")
 
     return np.hstack([img1, img2])

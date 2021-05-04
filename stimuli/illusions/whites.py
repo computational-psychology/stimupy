@@ -27,8 +27,11 @@ import numpy as np
 ###################################
 def white_illusion(n_grid, n_targets, width_target, invert=False, grid_lum=1,
                    switch_polarity=False, width_howe=0, anderson_displacement=0):
+    # TODO: n_grid seems to be number of cycles, not size of the grid in pixels
+    # TODO: add possiblity of displacement of target in vertical/horizontal direction
+    # TODO: add possibility of rotating the illusiong
     # Inputs:
-    #   - n_grid: size of the grid (int, unit: pixels)
+    #   - n_grid: size of the grid (int, unit: pixels) -> this is wrong, it represents number of cycles
     #   - n_targets: number of targets that get placed on the black and white bars (int)
     #   - width_target: width of the targets (int, unit: pixels)
     #   - invert: if True, create inverted White illusion (bool)

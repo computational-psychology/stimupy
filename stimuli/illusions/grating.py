@@ -37,3 +37,29 @@ def grating_illusion(n_bars=5, target_length=1, bar_width=10, back=0., grid=1., 
         return np.hstack([img, img2])
     else:
         return img
+
+def domijan2015():
+    return grating_illusion(n_bars=5, target_length=1, bar_width=10, back=0., grid=1., target=0.5, double=True)
+
+
+def lynn_domijan2015():
+    """
+    domijan2015 has dimensions (110, 220) and lynn_domijan2015 has dimensions (100, 220)
+    """
+    lum_white = 9.
+    lum_black = 1.
+    lum_gray = 5.
+
+    input_image = lum_black * np.ones([100, 220])
+    input_image[:, 110:220] = lum_white
+
+    for j in range(9, 100, 20):
+        input_image[9:90, j:j + 10] = lum_white
+
+    for j in range(119, 210, 20):
+        input_image[9:90, j:j + 10] = lum_black
+
+    input_image[9:90, 49:59] = lum_gray
+    input_image[9:90, 159:169] = lum_gray
+
+    return input_image
