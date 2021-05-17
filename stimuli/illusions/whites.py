@@ -20,6 +20,8 @@ Last update on 09.02.2021
 """
 
 import numpy as np
+from stimuli.utils.utils import degrees_to_pixels
+from stimuli.illusions.square_wave import square_wave
 
 
 ###################################
@@ -493,3 +495,209 @@ def dotted_white(n_grid, size_target, n_dots, reverse_target=False):
 
     grid[:, int(n_grid):int(n_grid*2)] = np.abs(grid[:, int(0):int(n_grid)]-1)
     return grid
+
+
+
+"""
+The following illusions come from lightness module that has been integrated into illusions module
+TODO: check for any redundancies between the the functions above and below
+"""
+
+
+
+def whites_illusion_bmcc(shape, ppd, contrast, frequency, mean_lum=.5,
+                         patch_height=None, start='high', sep=1):
+    """
+    Create a version of White's illusion on a square wave, in the style used by
+    Blakeslee and McCourt (1999).
+
+    Parameters
+    ----------
+    shape : tuple of 2 numbers
+            The shape of the stimulus in degrees of visual angle. (y,x)
+    ppd : number
+          the number of pixels in one degree of visual angle
+    contrast : float, in [0,1]
+               the contrast of the grating, defined as
+               (max_luminance - min_luminance) / mean_luminance
+    frequency : number
+                the spatial frequency of the wave in cycles per degree
+    mean_lum : number
+               the mean luminance of the grating, i.e. (max_lum + min_lum) / 2.
+               The average luminance of the actual stimulus can differ slightly
+               from this value if the stimulus is not an integer of cycles big.
+    patch_height : number
+                   the height of the gray patches, in degrees of visual ange
+    start : string in ['high', 'low'] (optional)
+            specifies if the wave starts with a high or low value. Default is
+            'high'.
+    sep : int (optional)
+          the separation distance between the two test patches, measured in
+          full grating cycles. Default is 1.
+
+    Returns
+    -------
+    stim : ndarray (2D)
+        the stimulus
+
+    References
+    ----------
+    Blakeslee B, McCourt ME (1999). A multiscale spatial filtering account of
+    the White effect, simultaneous brightness contrast and grating induction.
+    Vision research 39(26):4361-77.
+    """
+    stim = square_wave(shape, ppd, contrast, frequency, mean_lum, 'full', start)
+    half_cycle = int(degrees_to_pixels(1. / frequency / 2, ppd) + .5)
+    if patch_height is None:
+        patch_height = stim.shape[0] // 3
+    else:
+        patch_height = degrees_to_pixels(patch_height, ppd)
+    y_pos = (stim.shape[0] - patch_height) // 2
+    stim[y_pos: -y_pos,
+         stim.shape[1] // 2 - (sep + 1) * half_cycle:
+         stim.shape[1] // 2 - sep * half_cycle] = mean_lum
+    stim[y_pos: -y_pos,
+         stim.shape[1] // 2 + sep * half_cycle:
+         stim.shape[1] // 2 + (sep + 1) * half_cycle] = mean_lum
+    return stim
+
+
+def contours_white_bmmc(shape, ppd, contrast, frequency, mean_lum=.5,
+                        patch_height=None, sep=1, orientation='vertical', contour_width=6):
+    """
+    Create stimuli with contours masking either the vertical or the horizontal
+    borders of the test patches in White's illusion (Blakeslee, McCourt
+    version).
+
+    Parameters
+    ----------
+    shape : tuple of 2 numbers
+            The shape of the stimulus in degrees of visual angle. (y,x)
+    ppd : number
+          the number of pixels in one degree of visual angle
+    contrast : float, in [0,1]
+               the contrast of dark vs bright contours, defined as
+               (max_luminance - min_luminance) / (2 * mean_luminance)
+    frequency : number
+                the spatial frequency of the White's stimulus to be masked in
+                cycles per degree
+    mean_lum : number
+               the background luminance of the masking stimuli.
+    patch_height : number
+                   the height of the gray patches to be masked, in degrees of
+                   visual ange
+    sep : int (optional)
+          the separation distance between the two test patches, measured in
+          full grating cycles. Default is 1.
+    orientation : ['vertical', 'horizontal'] (optional)
+                  the orientation of the border to be masked. Default is
+                  'vertical'.
+    contour_width : number
+                     the width of the masking contour in pixels
+
+    Returns
+    -------
+    masks : tuple of two 2D ndarrays
+            the contour adaptation masks. masks[0] has dark contours, mask[1]
+            has bright contours.
+    """
+    shape = degrees_to_pixels(np.array(shape), ppd).astype(int)
+    pixels_per_cycle = int(degrees_to_pixels(1. / frequency / 2, ppd) + .5) * 2
+    shape[1] = (shape[1] // pixels_per_cycle) * pixels_per_cycle
+    # determine pixel width of individual grating bars (half cycle)
+    hc = pixels_per_cycle // 2
+    if patch_height is None:
+        patch_height = shape[0] // 3
+    else:
+        patch_height = degrees_to_pixels(patch_height, ppd)
+    y_pos = (shape[0] - patch_height) // 2
+    x_pos = (shape[1] // 2 - (sep + 1) * hc,
+             shape[1] // 2 + sep * hc)
+    mask_dark = np.ones(shape) * mean_lum
+    mask_bright = np.ones(shape) * mean_lum
+    idx_mask = np.zeros(shape, dtype=bool)
+    bright = mean_lum * (1 + contrast)
+    dark = mean_lum * (1 - contrast)
+    offset = contour_width // 2
+    if orientation == 'vertical':
+        idx_mask[y_pos: -y_pos,
+                 x_pos[0] - offset: x_pos[0] + offset] = True
+        idx_mask[y_pos: -y_pos,
+                 x_pos[0] + hc - offset: x_pos[0] + hc + offset] = True
+        idx_mask[y_pos: -y_pos,
+                 x_pos[1] - offset: x_pos[1] + offset] = True
+        idx_mask[y_pos: -y_pos,
+                 x_pos[1] + hc - offset: x_pos[1] + hc + offset] = True
+    elif orientation == 'horizontal':
+        idx_mask[y_pos - offset: y_pos + offset,
+                 x_pos[0]: x_pos[0] + hc] = True
+        idx_mask[y_pos - offset: y_pos + offset,
+                 x_pos[1]: x_pos[1] + hc] = True
+        idx_mask[-y_pos - offset: -y_pos + offset,
+                 x_pos[0]: x_pos[0] + hc] = True
+        idx_mask[-y_pos - offset: -y_pos + offset,
+                 x_pos[1]: x_pos[1] + hc] = True
+    mask_dark[idx_mask] = dark
+    mask_bright[idx_mask] = bright
+    return mask_dark, mask_bright
+
+
+def whites_illusion_gil(shape, ppd, contrast, frequency, mean_lum=.5,
+                        start='low'):
+    """
+    Create a version of White's illusion on a square wave, in the style used by
+    Gilchrist (2006, p. 281)
+
+    Parameters
+    ----------
+    shape : tuple of 2 numbers
+            The shape of the stimulus in degrees of visual angle. (y,x)
+    ppd : number
+          the number of pixels in one degree of visual angle
+    contrast : float, in [0,1]
+               the contrast of the grating, defined as
+               (max_luminance - min_luminance) / mean_luminance
+    frequency : number
+                the spatial frequency of the wave in cycles per degree
+    mean_lum : number
+               the mean luminance of the grating, i.e. (max_lum + min_lum) / 2.
+               The average luminance of the actual stimulus can differ slightly
+               from this value if the stimulus is not an integer of cycles big.
+    start : string in ['high', 'low'] (optional)
+            specifies if the wave starts with a high or low value. Default is
+            'high'.
+
+    Returns
+    -------
+    stim : ndarray (2D)
+           the stimulus
+
+    References
+    ----------
+    Gilchrist A (2006). Seeing Black and White. New York, New York, USA: Oxford
+    University Press.
+    """
+    stim = square_wave.square_wave(shape, ppd, contrast, frequency, mean_lum, 'half',
+                       start)
+    half_cycle = int(degrees_to_pixels(1. / frequency / 2, ppd) + .5)
+    on_dark_idx = [i for i in range(int(half_cycle * 2.5),
+                                    int(stim.shape[1] - half_cycle * .5))
+                   if stim[0, i] < mean_lum]
+    on_light_idx = [i for i in range(int(half_cycle * 1.5),
+                                     int(stim.shape[1] - half_cycle * 1.5))
+                    if stim[0, i] > mean_lum]
+    stim[stim.shape[0] // 5:
+         stim.shape[0] // 5 * 2, on_light_idx] = mean_lum
+    stim[stim.shape[0] // 5 * 3:
+         stim.shape[0] // 5 * 4, on_dark_idx] = mean_lum
+
+    # randomize border cutoff
+    max_cut = stim.shape[0] / 10
+    bg = stim[0, half_cycle]
+    for start_idx in range(0 if start is 'low' else half_cycle,
+                           stim.shape[1] - half_cycle, 2 * half_cycle):
+        stim[0: np.random.randint(max_cut),
+             start_idx: start_idx + half_cycle] = bg
+        stim[stim.shape[0] - np.random.randint(max_cut):,
+             start_idx: start_idx + half_cycle] = bg
+    return stim

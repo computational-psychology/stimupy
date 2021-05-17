@@ -74,4 +74,41 @@ def lynn_domijan2015():
     return input_image
 
 
+# This function comes from the lightness module that has been integrated inside the illusions dir.
+# TODO: Compare this function with the one above and merge into one
+def todorovic_lightness(coc, vert_rep, horz_rep):
 
+    """
+    Create a checkerboard illusion by appropriately aligning COC stimuli, in
+    the way demonstrated by Todorovic (1987).
+
+    Parameters
+    ----------
+    coc : ndarray
+          The base Craig-O'Brien-Cornsweet stimulus, created with cornsweet().
+          It should have a small ramp-width compared to its size, moderate
+          contrast, and be square.
+    horz_rep : int
+               number of horizontal repetitions of the cornsweet stimulus.
+    vert_rep : int
+               number of vertical repetitions.
+
+    Returns
+    -------
+    stim: ndarray (2D)
+
+    References
+    ----------
+    Todorovic, D. (1987). The Craik-O'Brien-Cornsweet effect: new
+    varieties and their theoretical implications. Perception & psychophysics,
+    42(6), 545-60, Plate 4.
+    """
+
+    stim = np.tile(np.hstack((coc, np.fliplr(coc))), (1, horz_rep / 2))
+    if horz_rep % 2 != 0:
+        stim = np.hstack((stim, stim[:, 0:coc.shape[1]]))
+    stim = np.tile(np.vstack((stim, np.roll(stim, coc.shape[1], 1))),
+                   (vert_rep / 2, 1))
+    if vert_rep % 2 != 0:
+        stim = np.vstack((stim, stim[0:coc.shape[0], :]))
+    return stim

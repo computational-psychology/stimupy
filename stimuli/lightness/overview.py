@@ -32,7 +32,7 @@ for i, (name, img) in enumerate(illusions.items()):
     plt.xticks([])
     plt.yticks([])
     plt.title(name, fontsize=25)
-    plt.imshow(img)
+    plt.imshow(img, cmap='gray')
 
 
 plt.savefig("illusions_overview.png")
