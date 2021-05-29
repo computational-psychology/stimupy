@@ -33,3 +33,25 @@ def benarys_cross(input_size=100, cross_thickness=20, padding=10, back=1., cross
     img[tpos2y:tpos2y + tsize, tpos2x:tpos2x + tsize] = target
 
     return img
+
+def domijan2015():
+    return benarys_cross(input_size=100, cross_thickness=20, padding=10, back=9., cross=1., target=5.)
+
+def lynn_domijan2015():
+    """
+    there's one pixel translation between the stimuli package and utils generated inputs
+    (see pixels [39,9] and [40,10] in reults from this and previous functions)
+    """
+    lum_white = 9.
+    lum_black = 1.
+    lum_gray = 5.
+
+    input_image = lum_white * np.ones([100, 100])
+    input_image[39:60, 9:90] = lum_black
+    input_image[9:90, 39:60] = lum_black
+    input_image[39:50, 79:90] = lum_gray
+    input_image[28:39, 28:39] = lum_gray
+
+    return input_image
+
+

@@ -27,6 +27,29 @@ def simultaneous_brightness_contrast(input_size=100, target_size=20, left=1., ri
     return np.hstack([img1, img2])
 
 
+def domijan2015():
+    return simultaneous_brightness_contrast(input_size=100, target_size=20, left=9., right=1., target=5.)
+
+
+def lynn_domijan2015():
+    """
+    there's one pixel translation between the stimuli package and utils generated inputs
+    (see pixels [39,39] and [40,40] in reults from this and previous functions)
+    """
+
+    lum_white = 9.
+    lum_black = 1.
+    lum_gray = 5.
+
+    input_image = lum_black * np.ones([100, 200])
+    input_image[:, 0:100] = lum_white
+    input_image[39:60, 39:60] = lum_gray
+    input_image[39:60, 139:160] = lum_gray
+
+    return input_image
+
+
+
 ###################################
 #      Simultaneous contrast      #
 ###################################
@@ -134,3 +157,5 @@ def simultaneous_contrast(n_grid, size_target, add_squares=False, size_squares=2
                 grid[int(center+dist)::, int(n_grid):int(center+n_grid-dist-size_squares+1)] = 1
                 grid[int(center+dist)::, int(center+n_grid+dist+size_squares)::] = 1
     return grid
+
+

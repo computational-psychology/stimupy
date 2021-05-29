@@ -43,3 +43,37 @@ def dungeon_illusion(n_cells=5, target_radius=1, cell_size=10, back=0., grid=1.,
         return np.hstack([img, img2])
     else:
         return img
+
+def domijan2015():
+    return dungeon_illusion(n_cells=5, target_radius=1,cell_size=10, back=1.0, grid=9.0, target=5.0, double=True)
+
+def lynn_domijan2015():
+    """
+    there's one pixel translation between the stimuli package and utils generated inputs
+    (see pixels [9,9] and [10,10] in reults from this and previous functions)
+    """
+    lum_white = 9.
+    lum_black = 1.
+    lum_gray = 5.
+    input_image = lum_black * np.ones([110, 220])
+    input_image[:, 110:220] = lum_white
+
+    for i in range(9, 90, 20):
+        for j in range(9, 90, 20):
+            input_image[i:i + 10, j:j + 10] = lum_white
+        for j in range(119, 210, 20):
+            input_image[i:i + 10, j:j + 10] = lum_black
+
+    input_image[49:59, 29:39] = lum_gray
+    input_image[49:59, 49:59] = lum_gray
+    input_image[49:59, 69:79] = lum_gray
+    input_image[49:59, 139:149] = lum_gray
+    input_image[49:59, 159:169] = lum_gray
+    input_image[49:59, 179:189] = lum_gray
+
+    input_image[29:39, 49:59] = lum_gray
+    input_image[69:79, 49:59] = lum_gray
+    input_image[29:39, 159:169] = lum_gray
+    input_image[69:79, 159:169] = lum_gray
+
+    return input_image
