@@ -1,16 +1,16 @@
 import numpy as np
+import math
 
-
-def todorovic_illusion(input_size=100, target_size=40, spacing=5, padding=15, back=0., grid=1., target=.5, double=True):
+def todorovic_illusion(target_padding=(60,60,60,60), covers_size=(30,30), spacing=5, padding=(15,15,15,15), back=0., grid=1., target=.5, double=True):
     """
     Todorovic's illusion
 
     Parameters
     ----------
-    input_size: height of the input (and half of the width) in px
-    target_size: height and width of the centred target cross in px
+    target_padding: tuple specifying distance  of the target edge from (top, bottom, left,right) edge of the image
+    squares_size: tuple specifying (height, width) of the four squares covering the target in px
     spacing: spacing between grid cells (i.e target cross bar thickness) in px
-    padding: padding around grid in px
+    padding: 4-valued tuple specifying padding (top, bottom, left, right) in px
     back: value for background
     grid: value for grid cells
     target: value for target
@@ -20,24 +20,30 @@ def todorovic_illusion(input_size=100, target_size=40, spacing=5, padding=15, ba
     -------
 
     """
-    img = np.ones((input_size, input_size)) * back
+
+    padding_top, padding_bottom, padding_left, padding_right = padding
+    covers_height, covers_width = covers_size
+    target_top, target_bottom, target_left, target_right = target_padding
+
+    width = padding_left + covers_width*2 + spacing + padding_right
+    height = padding_top + covers_height*2 + spacing + padding_bottom
+
+    img = np.ones((height, width)) * back
 
     # put target square on image
-    tpos = (input_size-target_size)//2
-    img[tpos:-tpos, tpos:-tpos] = target
 
-    # put grid cells on image
-    csize = (input_size - 2*padding - spacing)//2
-    gpos1 = padding
-    gpos2 = padding + csize + spacing
-    img[gpos1:gpos1+csize, gpos1:gpos1+csize] = grid
-    img[gpos1:gpos1+csize, gpos2:gpos2+csize] = grid
-    img[gpos2:gpos2+csize, gpos1:gpos1+csize] = grid
-    img[gpos2:gpos2+csize, gpos2:gpos2+csize] = grid
+    img[target_top:-target_bottom, target_left:-target_right] = target
+
+
+    img[padding_top:padding_top+covers_height, padding_left:padding_left+covers_width] = grid # top left
+    img[padding_top:padding_top+covers_height, padding_left+covers_width+spacing:-padding_right] = grid # top right
+    img[padding_top+covers_height+spacing:-padding_bottom, padding_left:padding_left+covers_width] = grid # bottom left
+    img[padding_top+covers_height+spacing:-padding_bottom, padding_left+covers_width+spacing:-padding_right] = grid # bottom right
+
 
     # create right half of stimulus
     if double:
-        img2 = todorovic_illusion(input_size=input_size, target_size=target_size, spacing=spacing, padding=padding,
+        img2 = todorovic_illusion(target_padding=target_padding, covers_size=covers_size, spacing=spacing, padding=padding,
                                   back=grid, grid=back, target=target, double=False)
         return np.hstack([img, img2])
     else:
@@ -45,33 +51,12 @@ def todorovic_illusion(input_size=100, target_size=40, spacing=5, padding=15, ba
 
 
 def domijan2015():
-    return todorovic_illusion(input_size=100, target_size=40, spacing=5, padding=15, back=1., grid=9., target=5., double=True)
+    return todorovic_illusion(target_padding=(29,30,29,30), covers_size=(31,31), spacing=9, padding=(14,15,14,15), back=1., grid=9., target=5., double=True)
 
 
-def lynn_domijan2015():
-    """
-    sizes of the squares and distancing between them needs to be adjusted
-    """
-    lum_white = 9.
-    lum_black = 1.
-    lum_gray = 5.
 
-    input_image = lum_white * np.ones([100, 200])
-    input_image[:, 0:100] = lum_black
-    input_image[29:70, 29:70] = lum_gray
-    input_image[29:70, 129:170] = lum_gray
 
-    input_image[14:45, 14:45] = lum_white
-    input_image[14:45, 54:85] = lum_white
-    input_image[54:85, 14:45] = lum_white
-    input_image[54:85, 54:85] = lum_white
 
-    input_image[14:45, 114:145] = lum_black
-    input_image[14:45, 154:185] = lum_black
-    input_image[54:85, 114:145] = lum_black
-    input_image[54:85, 154:185] = lum_black
-
-    return input_image
 
 
 # This function comes from the lightness module that has been integrated inside the illusions dir.
@@ -112,3 +97,4 @@ def todorovic_lightness(coc, vert_rep, horz_rep):
     if vert_rep % 2 != 0:
         stim = np.vstack((stim, stim[0:coc.shape[0], :]))
     return stim
+

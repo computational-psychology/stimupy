@@ -1,14 +1,14 @@
 import numpy as np
+from stimuli import utils
 
-
-def simultaneous_brightness_contrast(input_size=100, target_size=20, left=1., right=0., target=.5):
+def simultaneous_brightness_contrast(target_size=(20,20), padding=(10,10,10,10), left=1., right=0., target=.5):
     """
     Simultaneous brightness contrast
 
     Parameters
     ----------
-    input_size: height of the input (and half of the width) in px
-    target_size: height and width of the centred target square in px
+    target_size: target size in px of format (height, width)
+    padding: 4-valued tuple specifying padding (top, bottom, left, right) in px
     left: left background value
     right: right background value
     target: target value
@@ -17,36 +17,26 @@ def simultaneous_brightness_contrast(input_size=100, target_size=20, left=1., ri
     -------
     2d numpy array
     """
-    img1 = np.ones((input_size, input_size)) * left
-    img2 = np.ones((input_size, input_size)) * right
 
-    tpos = (input_size-target_size)//2
-    img1[tpos:tpos+target_size, tpos:tpos+target_size] = target
-    img2[tpos:tpos+target_size, tpos:tpos+target_size] = target
+    padding_top, padding_bottom, padding_left, padding_right = padding
+    target_height, target_width = target_size
+
+    width = padding_left + target_width + padding_right
+    height = padding_top + target_height + padding_bottom
+
+    img = np.ones((target_height, target_width)) * target
+    img1 = np.pad(img, ((padding_top, padding_bottom), (padding_left, padding_right)), 'constant', constant_values=left)
+    img2 = np.pad(img, ((padding_top, padding_bottom), (padding_left, padding_right)), 'constant', constant_values=right)
+
 
     return np.hstack([img1, img2])
 
 
 def domijan2015():
-    return simultaneous_brightness_contrast(input_size=100, target_size=20, left=9., right=1., target=5.)
+    return simultaneous_brightness_contrast(target_size=(21,21), padding=(39,40,39,40), left=9., right=1., target=5.)
 
 
-def lynn_domijan2015():
-    """
-    there's one pixel translation between the stimuli package and utils generated inputs
-    (see pixels [39,39] and [40,40] in reults from this and previous functions)
-    """
 
-    lum_white = 9.
-    lum_black = 1.
-    lum_gray = 5.
-
-    input_image = lum_black * np.ones([100, 200])
-    input_image[:, 0:100] = lum_white
-    input_image[39:60, 39:60] = lum_gray
-    input_image[39:60, 139:160] = lum_gray
-
-    return input_image
 
 
 

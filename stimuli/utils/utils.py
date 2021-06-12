@@ -304,3 +304,21 @@ def dist_to_segment(y, x, p1, p2):  # x3,y3 is the point
     dist[t > 1] = dist_squared(y, x, p2)[t > 1]
     dist[t < 0] = dist_squared(y, x, p1)[t < 0]
     return np.sqrt(dist)
+
+
+def shift_pixels(img, shift):
+    """
+        Shift image by specified number of pixels. The pixels pushed on the edge will reappear on the other side (wrap around)
+
+        Parameters
+        ----------
+        img : 2D array representing the image to be shifted
+        shift: (x,y) tuple specifying the number of pixels to shift. Positive x specifies shift in the right direction
+            and positive y shift downwards
+
+        Returns
+        -------
+        img : shifted image
+    """
+    return np.roll(img, shift, (1, 0))
+

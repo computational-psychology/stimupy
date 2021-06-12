@@ -1,7 +1,7 @@
 import numpy as np
+from stimuli import utils
 
-
-def ring_pattern(n_rings=8, target_pos_l=4, target_pos_r=3, ring_width=5, padding=10, back=0., rings=1., target=.5, invert_rings=False, double=True):
+def ring_pattern(n_rings=8, target_pos_l=4, target_pos_r=3, ring_width=5, padding=10, back=0., rings=1., target=.5, invert_rings=False, double=True, ):
     """
     Ring Pattern White's-like illusion
 
@@ -11,7 +11,7 @@ def ring_pattern(n_rings=8, target_pos_l=4, target_pos_r=3, ring_width=5, paddin
     target_pos_l: the "index" of the target ring on the left half
     target_pos_r: the "index" of the targetring on the right half
     ring_width: width per ring in px
-    padding: padding around stimulus in px
+    padding: 4-valued tuple specifying padding (top, bottom, left, right) in px
     back: value for background
     rings: value for grid cells
     target: value for target
@@ -22,6 +22,10 @@ def ring_pattern(n_rings=8, target_pos_l=4, target_pos_r=3, ring_width=5, paddin
     -------
     2D numpy array
     """
+
+    padding_top, padding_bottom, padding_left, padding_right = padding
+
+
     # calculate Minkowski-p=inf distances from centre
     x = np.arange(0, n_rings)
     x = np.hstack([np.flip(x), x])
@@ -34,45 +38,30 @@ def ring_pattern(n_rings=8, target_pos_l=4, target_pos_r=3, ring_width=5, paddin
 
     # build image from array
     img = np.repeat(np.repeat(arr, ring_width, axis=0), ring_width, axis=1)
-    img = np.pad(img, padding, constant_values=back, mode="constant")
+    img = np.pad(img, ((padding_top, padding_bottom), (padding_left, padding_right)), constant_values=back, mode="constant")
+
+    y_c, x_c = img.shape
+    y_c //=2
+    x_c //=2
+
+    row_c = img[y_c, :]
+    img = np.insert(img, y_c, row_c, axis=0)
+
+    col_c = img[:, x_c]
+    img = np.insert(img, x_c, col_c, axis=1)
+
+
 
     # create right half of stimulus
     if double:
-        img2 = ring_pattern(n_rings, target_pos_r, 0, ring_width, padding, back, rings, target, invert_rings, double=False)
+        img2 = ring_pattern(n_rings=n_rings, target_pos_l=target_pos_r, target_pos_r=0, ring_width=ring_width,
+                            padding=padding, back=back, rings=rings, target=target, invert_rings=invert_rings, double=False)
         return np.hstack([img, img2])
     else:
         return img
 
 def domijan2015():
-    return ring_pattern(n_rings=8, target_pos_l=4, target_pos_r=3, ring_width=5, padding=10, back=1., rings=9., target=5., invert_rings=False, double=True)
+    img = ring_pattern(n_rings=8, target_pos_l=4, target_pos_r=3, ring_width=5, padding=(9,10,9,10), back=1., rings=9., target=5., invert_rings=False, double=True)
+    return img
 
-def lynn_domijan2015():
-    """
-    there's one pixel translation between the stimuli package and utils generated inputs
-    (see pixels [9,9] and [10,10] in reults from this and previous functions)
-    """
 
-    lum_white = 9.
-    lum_black = 1.
-    lum_gray = 5.
-
-    input_image = lum_black * np.ones([100, 200])
-    input_image[9:90, 9:90] = lum_white
-    input_image[14:85, 14:85] = lum_black
-    input_image[19:80, 19:80] = lum_white
-    input_image[24:75, 24:75] = lum_gray
-    input_image[29:70, 29:70] = lum_white
-    input_image[34:65, 34:65] = lum_black
-    input_image[39:60, 39:60] = lum_white
-    input_image[44:55, 44:55] = lum_black
-
-    input_image[9:90, 109:190] = lum_white
-    input_image[14:85, 114:185] = lum_black
-    input_image[19:80, 119:180] = lum_white
-    input_image[24:75, 124:175] = lum_black
-    input_image[29:70, 129:170] = lum_gray
-    input_image[34:65, 134:165] = lum_black
-    input_image[39:60, 139:160] = lum_white
-    input_image[44:55, 144:155] = lum_black
-
-    return input_image
