@@ -1,15 +1,16 @@
 import numpy as np
 
 
-def benarys_cross(input_size=100, cross_thickness=20, padding=10, back=1., cross=0., target=.5):
+def benarys_cross(cross_size=(80,80,80,80), cross_thickness=20, padding=(10,10,10,10), target_size=10, back=1., cross=0., target=.5):
     """
     Benary's Cross Illusion (with square targets)
 
     Parameters
     ----------
-    input_size: width and height of input in px
+    cross_size: size of the cross in px in form (top, bottom, left, right) specifying the length of each of the cross' bars
     cross_thickness: width of the cross bars in px
-    padding: padding around cross in px
+    padding: 4-valued tuple specifying padding (top, bottom, left, right) in px
+    target_size: size of the side of target square in px
     back: background value
     cross: cross value
     target: target value
@@ -18,40 +19,31 @@ def benarys_cross(input_size=100, cross_thickness=20, padding=10, back=1., cross
     -------
     2D numpy array
     """
-    img = np.ones((input_size, input_size)) * back
 
-    cpos = (input_size - cross_thickness) // 2
-    img[padding:-padding, cpos:-cpos] = cross
-    img[cpos:-cpos, padding:-padding] = cross
+    padding_top, padding_bottom, padding_left, padding_right = padding
+    cross_top, cross_bottom, cross_left, cross_right = cross_size
+    width = cross_left + cross_thickness + cross_right
+    height = cross_top+cross_thickness+cross_bottom
 
-    tsize = cross_thickness // 2
-    tpos1y = cpos - tsize
-    tpos1x = tpos1y
-    tpos2y = cpos
-    tpos2x = input_size - padding - tsize
-    img[tpos1y:tpos1y + tsize, tpos1x:tpos1x + tsize] = target
-    img[tpos2y:tpos2y + tsize, tpos2x:tpos2x + tsize] = target
+    img = np.ones((height, width)) * back
+
+    x_edge_left, x_edge_right = cross_left, -cross_right
+    y_edge_top, y_edge_bottom = cross_top, -cross_bottom
+    img[:, x_edge_left:x_edge_right] = cross
+    img[y_edge_top:y_edge_bottom, :] = cross
+
+
+    tpos1y = y_edge_top - target_size
+    tpos1x = x_edge_left - target_size
+    tpos2y = y_edge_top
+    tpos2x = -target_size
+    img[tpos1y:tpos1y + target_size, tpos1x:tpos1x + target_size] = target
+    img[tpos2y:tpos2y + target_size, tpos2x:] = target
+
+    img = np.pad(img, ((padding_top, padding_bottom),(padding_left, padding_right)), 'constant', constant_values=back)
 
     return img
 
 def domijan2015():
-    return benarys_cross(input_size=100, cross_thickness=20, padding=10, back=9., cross=1., target=5.)
-
-def lynn_domijan2015():
-    """
-    there's one pixel translation between the stimuli package and utils generated inputs
-    (see pixels [39,9] and [40,10] in reults from this and previous functions)
-    """
-    lum_white = 9.
-    lum_black = 1.
-    lum_gray = 5.
-
-    input_image = lum_white * np.ones([100, 100])
-    input_image[39:60, 9:90] = lum_black
-    input_image[9:90, 39:60] = lum_black
-    input_image[39:50, 79:90] = lum_gray
-    input_image[28:39, 28:39] = lum_gray
-
-    return input_image
-
+    return benarys_cross(cross_size=(30,30,30,30), cross_thickness=21, target_size=11, padding=(9,10,9,10), back=9., cross=1., target=5.)
 
