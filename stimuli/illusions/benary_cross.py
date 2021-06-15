@@ -45,5 +45,5 @@ def benarys_cross(cross_size=(80,80,80,80), cross_thickness=20, padding=(10,10,1
     return img
 
 def domijan2015():
-    return benarys_cross(cross_size=(30,30,30,30), cross_thickness=21, target_size=11, padding=(9,10,9,10), back=9., cross=1., target=5.)
+    return benarys_cross(cross_size=(30,30,30,30), cross_thickness=21, padding=(9,10,9,10),target_size=11,  back=9., cross=1., target=5.)
 

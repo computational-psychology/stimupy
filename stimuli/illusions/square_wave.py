@@ -38,6 +38,9 @@ def square_wave(shape, ppd, contrast, frequency, mean_lum=.5, period='ignore',
     stim : ndarray (2D)
            the square wave stimulus
     """
+    #TODO: very buggy, fix problems when being called in white_bmcc and white_gil
+
+
     if period not in ['ignore', 'full', 'half']:
         raise TypeError('size not understood: %s' % period)
     if start not in ['high', 'low']:
@@ -49,16 +52,18 @@ def square_wave(shape, ppd, contrast, frequency, mean_lum=.5, period='ignore',
     pixels_per_cycle = int(degrees_to_pixels(1. / frequency / 2, ppd) + .5) * 2
 
     if period is 'full':
-        shape[1] = (shape[1] // pixels_per_cycle) * pixels_per_cycle
+        shape = (shape // pixels_per_cycle) * pixels_per_cycle
     elif period is 'half':
-        shape[1] = (shape[1] // pixels_per_cycle) * pixels_per_cycle + \
+        shape = (shape // pixels_per_cycle) * pixels_per_cycle + \
                    pixels_per_cycle / 2
     diff = type(mean_lum)(contrast * mean_lum)
     high = mean_lum + diff
     low = mean_lum - diff
     stim = np.ones(shape) * (low if start is 'high' else high)
+
+    # TODO: shape[0] used to be just shape, Matko changed it to shape[0] just to make it work, look into it
     index = [i + j for i in range(pixels_per_cycle // 2)
-             for j in range(0, shape[1], pixels_per_cycle)
-             if i + j < shape[1]]
+             for j in range(0, shape[0], pixels_per_cycle)
+             if i + j < shape[0]]
     stim[:, index] = low if start is 'low' else high
     return stim
