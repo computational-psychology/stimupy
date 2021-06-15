@@ -506,7 +506,7 @@ TODO: check for any redundancies between the the functions above and below
 
 
 def whites_illusion_bmcc(shape, ppd, contrast, frequency, mean_lum=.5,
-                         patch_height=None, start='high', sep=1):
+                         patch_height=None, start='high', sep=1, padding=(3,3,3,3)):
     """
     Create a version of White's illusion on a square wave, in the style used by
     Blakeslee and McCourt (1999).
@@ -534,6 +534,8 @@ def whites_illusion_bmcc(shape, ppd, contrast, frequency, mean_lum=.5,
     sep : int (optional)
           the separation distance between the two test patches, measured in
           full grating cycles. Default is 1.
+    padding: 4-valued tuple specifying padding (top, bottom, left, right) in degrees visual angle
+
 
     Returns
     -------
@@ -546,6 +548,8 @@ def whites_illusion_bmcc(shape, ppd, contrast, frequency, mean_lum=.5,
     the White effect, simultaneous brightness contrast and grating induction.
     Vision research 39(26):4361-77.
     """
+    padding_top, padding_bottom, padding_left, padding_right = tuple(int(degrees_to_pixels(x, ppd)) for x in padding)
+
     stim = square_wave(shape, ppd, contrast, frequency, mean_lum, 'full', start)
     half_cycle = int(degrees_to_pixels(1. / frequency / 2, ppd) + .5)
     if patch_height is None:
@@ -559,6 +563,8 @@ def whites_illusion_bmcc(shape, ppd, contrast, frequency, mean_lum=.5,
     stim[y_pos: -y_pos,
          stim.shape[1] // 2 + sep * half_cycle:
          stim.shape[1] // 2 + (sep + 1) * half_cycle] = mean_lum
+    stim = np.pad(stim, ((padding_top, padding_bottom), (padding_left, padding_right)), 'constant', constant_values=mean_lum)
+
     return stim
 
 
@@ -677,7 +683,7 @@ def whites_illusion_gil(shape, ppd, contrast, frequency, mean_lum=.5,
     Gilchrist A (2006). Seeing Black and White. New York, New York, USA: Oxford
     University Press.
     """
-    stim = square_wave.square_wave(shape, ppd, contrast, frequency, mean_lum, 'half',
+    stim = square_wave(shape, ppd, contrast, frequency, mean_lum, 'half',
                        start)
     half_cycle = int(degrees_to_pixels(1. / frequency / 2, ppd) + .5)
     on_dark_idx = [i for i in range(int(half_cycle * 2.5),
@@ -701,3 +707,38 @@ def whites_illusion_gil(shape, ppd, contrast, frequency, mean_lum=.5,
         stim[stim.shape[0] - np.random.randint(max_cut):,
              start_idx: start_idx + half_cycle] = bg
     return stim
+
+
+
+def matko_white(n_cycli=5, grating_shape=(100,10), target_index=1, target_spacing=3, target_height=20, target_y_offset=0,
+                padding=(10,10,10,10,), start="high", high=1, low=0, target=0.5):
+    grating_height, grating_width = grating_shape
+    height, width = grating_height, n_cycli*grating_width*2
+    img = np.ones((height, width))*low
+
+    target_start_y = height//2 - target_height//2 - target_y_offset
+    target_end_y = target_start_y + target_height
+
+    for i in range(n_cycli):
+        img[:, 2*i*grating_width:(2*i+1)*grating_width] = high
+
+        if 2*i == target_index or 2*i == target_index+target_spacing:
+            img[target_start_y: target_end_y, 2*i*grating_width:(2*i+1)*grating_width] = target
+
+        if (2*i+1) == target_index or (2*i+1) == target_index+target_spacing:
+            img[target_start_y: target_end_y, (2*i+1)*grating_width:(2*i+2)*grating_width] = target
+
+    if start == "low":
+        high_mask, low_mask = img == high, img == low
+        img[high_mask] = low
+        img[low_mask] = high
+
+    padding_top, padding_bottom, padding_left, padding_right = padding
+    img = np.pad(img, ((padding_top, padding_bottom), (padding_left, padding_right)), 'constant', constant_values=target)
+
+
+    return img
+
+
+def domijan2015_white():
+    return  matko_white(n_cycli=4, grating_shape=(81, 10), target_index=2, target_spacing=3, start="low", target_height=21, padding=(9, 10, 9, 11), high=9, low=1, target=5)

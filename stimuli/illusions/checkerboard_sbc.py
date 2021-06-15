@@ -45,3 +45,5 @@ def checkerboard_contrast(n_checks=8, check_size=10, target1_coords=(3, 2), targ
 def domijan2015():
     return checkerboard_contrast(n_checks=8, check_size=10, target1_coords=(3, 2), target2_coords=(5, 5), extend_targets=False, padding=(9,11,9,11), check1=1., check2=9., target=5.)
 
+def domijan2015_extended():
+    return checkerboard_contrast(n_checks=8, check_size=10, target1_coords=(3, 2), target2_coords=(5, 5), extend_targets=True, padding=(9,11,9,11), check1=1., check2=9., target=5.)
