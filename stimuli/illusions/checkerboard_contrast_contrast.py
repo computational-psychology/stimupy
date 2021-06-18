@@ -46,28 +46,6 @@ def checkerboard_contrast_contrast_effect(n_checks=8, check_size=10, target_leng
 
 
 
-def lynn_domijan2015():
-    lum_white = 9.0
-    lum_black = 1.0
-    lum_gray = 5.0
-
-    input_image = lum_gray * np.ones([100, 100])
-    input_image[9:89, 9:89] = lum_white
-
-    for i in range(9, 80, 20):
-        for j in range(9, 80, 20):
-            input_image[i: i + 10, j: j + 10] = lum_black
-            k, l = i + 10, j + 10
-            input_image[k: k + 10, l: l + 10] = lum_black
-
-    input_image[39:49, 19:49] = lum_gray
-    input_image[59:69, 49:79] = lum_gray
-    input_image[29:59, 29:39] = lum_gray
-    input_image[49:79, 59:69] = lum_gray
-
-
-    return input_image
-
 def domijan2015():
     return checkerboard_contrast_contrast_effect(n_checks=8, check_size=10, target_length=4, padding=(9,11,9,11), check1=1.,
                                                  check2=9., tau=5, alpha= .5)

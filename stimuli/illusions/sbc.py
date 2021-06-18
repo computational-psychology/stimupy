@@ -35,9 +35,21 @@ def simultaneous_brightness_contrast(target_size=(20,20), padding=(10,10,10,10),
 def domijan2015():
     return simultaneous_brightness_contrast(target_size=(21,21), padding=(39,40,39,40), left=9., right=1., target=5.)
 
+def RHS2007_sbc_large():
+    unit = 10
+    target_width = 3 * unit
+    padding_top, padding_bottom = (int)(1.5 * target_width), (int)(1.5 * target_width)  # total height = 12
+    padding_left, padding_right = 2 * target_width, 2 * target_width  # total width = 15
+    padding = (padding_top, padding_bottom, padding_left, padding_right)
+    return simultaneous_brightness_contrast(target_size=(target_width, target_width), padding=padding)
 
-
-
+def RHS2007_sbc_small():
+    unit = 10
+    target_width = 1 * unit
+    padding_top, padding_bottom = (int)(5.5 * target_width), (int)(5.5 * target_width)  # total height = 12
+    padding_left, padding_right = 7 * target_width, 7 * target_width  # total width = 15
+    padding = (padding_top, padding_bottom, padding_left, padding_right)
+    return simultaneous_brightness_contrast(target_size=(target_width, target_width), padding=padding)
 
 
 ###################################

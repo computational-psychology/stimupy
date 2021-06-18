@@ -253,17 +253,22 @@ def wheel_of_fortune_white(n_parts, target_width):
 ###################################
 #     Circular White illusion     #
 ###################################
-def circular_white(n_parts, n_targets):
+def circular_white(n_parts, target_locations, padding=(10,10,10,10,), high = 1., low = 0., target = .5, res = 400):
+    # TODO: it's really slow
+
     # Inputs:
     #   - n_parts: number of black and white parts within circle (int)
     #   - n_targets: number of targets in the circle (int)
     #   - switch_polarity: inverse pixel values (bool)
+    #   - index of the circle
 
     # Decide on resolution for the grid.
     # The lower the resolution, the worse the circles will look
-    n_grid = 400
+    n_grid = res
     n_numbers = n_grid*3
 
+    n_targets = len(target_locations)
+    target_locations = np.array(target_locations)
     # Create a circle
     x = np.linspace(0, 2*np.pi, n_numbers)
 
@@ -280,16 +285,12 @@ def circular_white(n_parts, n_targets):
     yy = yy / yy_max * (n_grid-1)
 
     # Change the background to gray and place the circle on the grid:
-    grid = np.zeros([n_grid, n_grid*2]) + 0.5
+    grid = np.ones([n_grid, n_grid*2]) * target
 
     # Divide the circle in n_parts parts
     n_parts += 1
     r = np.linspace(0, 1, n_parts)
 
-    # Specify the target locations:
-    target_locations = np.arange(n_parts/2 - n_targets, n_parts/2 + n_targets, 2, int)
-    if target_locations[0] % 2==0:
-        target_locations -= 1
 
     for i in range(n_parts-1):
         r_chosen = np.linspace(r[i], r[i+1], n_numbers)
@@ -301,14 +302,19 @@ def circular_white(n_parts, n_targets):
             yyy = yyy - yyy.max() / 2 + n_grid/2
 
             if i%2==0:
-                grid[xxx.astype(int), yyy.astype(int)] = 1
+                grid[xxx.astype(int), yyy.astype(int)] = high
             else:
-                grid[xxx.astype(int), yyy.astype(int)] = 0
+                grid[xxx.astype(int), yyy.astype(int)] = low
 
             if any(i==target_locations):
-                grid[xxx.astype(int), yyy.astype(int)] = 0.5
+                grid[xxx.astype(int), yyy.astype(int)] = target
 
     grid[:, n_grid:n_grid*2] = np.abs(grid[:, 0:n_grid]-1)
+
+    padding_top, padding_bottom, padding_left, padding_right = padding
+    padding_tuple = ((padding_top, padding_bottom), (padding_left, padding_right))
+    grid = np.pad(grid, padding_tuple, "constant", constant_values=target)
+
     return grid
 
 
@@ -710,16 +716,16 @@ def whites_illusion_gil(shape, ppd, contrast, frequency, mean_lum=.5,
 
 
 
-def matko_white(n_cycli=5, grating_shape=(100,10), target_index=1, target_spacing=3, target_height=20, target_y_offset=0,
+def default_white(n_cycles=5, grating_shape=(100,10), target_index=1, target_spacing=3, target_height=20, target_y_offset=0,
                 padding=(10,10,10,10,), start="high", high=1, low=0, target=0.5):
     grating_height, grating_width = grating_shape
-    height, width = grating_height, n_cycli*grating_width*2
+    height, width = grating_height, n_cycles*grating_width*2
     img = np.ones((height, width))*low
 
-    target_start_y = height//2 - target_height//2 - target_y_offset
-    target_end_y = target_start_y + target_height
+    target_start_y = int(height//2 - target_height//2 - target_y_offset)
+    target_end_y = int(target_start_y + target_height)
 
-    for i in range(n_cycli):
+    for i in range(n_cycles):
         img[:, 2*i*grating_width:(2*i+1)*grating_width] = high
 
         if 2*i == target_index or 2*i == target_index+target_spacing:
@@ -736,9 +742,29 @@ def matko_white(n_cycli=5, grating_shape=(100,10), target_index=1, target_spacin
     padding_top, padding_bottom, padding_left, padding_right = padding
     img = np.pad(img, ((padding_top, padding_bottom), (padding_left, padding_right)), 'constant', constant_values=target)
 
-
     return img
 
 
 def domijan2015_white():
-    return  matko_white(n_cycli=4, grating_shape=(81, 10), target_index=2, target_spacing=3, start="low", target_height=21, padding=(9, 10, 9, 11), high=9, low=1, target=5)
+    return  default_white(n_cycles=4, grating_shape=(81, 10), target_index=2, target_spacing=3, start="low", target_height=21, padding=(9, 10, 9, 11), high=9, low=1, target=5)
+
+
+def RHS2007_WE_thick():
+    phase_width = 20
+    height = phase_width * 6
+    return default_white(n_cycles=4, grating_shape=(height, phase_width), target_index=2, target_spacing=3,
+                                        target_height=phase_width*2, padding=(50,50,50,50,), start="low")
+def RHS2007_WE_thin_wide():
+    phase_width = 10
+    height = phase_width * 12
+    return default_white(n_cycles=8, grating_shape=(height, phase_width), target_index=3, target_spacing=9,
+                                    target_height=phase_width*2, padding=(50, 50, 50, 50,), start="high")
+
+def RHS2007_WE_circular1():
+    return circular_white(8, (4,), padding=(200,200,0,0))
+
+def RHS2007_WE_circular05():
+    return circular_white(16, (10,), padding=(200, 200, 0, 0), res=1600)
+
+def RHS2007_WE_circular025():
+    return circular_white(32, (22,))
