@@ -218,7 +218,7 @@ def RHS2007_WE_thick():
     padding_horizontal = (total_width - width) / 2
     padding_vertical = (total_height - height) / 2
     padding = (padding_vertical, padding_vertical, padding_horizontal, padding_horizontal)
-    target_height = stimuli.utils.degrees_to_pixels(4, ppd)
+    target_height = 4
     return stimuli.illusions.whites.white(shape=(height, width), ppd=ppd, frequency=frequency, start='low', target_indices=(2, 5), padding=padding, target_height=target_height)
 
 def RHS2007_WE_thin_wide():
@@ -229,7 +229,7 @@ def RHS2007_WE_thin_wide():
     padding_horizontal = (total_width - width) / 2
     padding_vertical = (total_height - height) / 2
     padding = (padding_vertical, padding_vertical, padding_horizontal, padding_horizontal)
-    target_height = stimuli.utils.degrees_to_pixels(4, ppd)
+    target_height = 4
     return stimuli.illusions.whites.white(shape=(height, width), ppd=ppd, frequency=frequency, start='low', target_indices=(3, 12), padding=padding, target_height=target_height)
 
 def RHS2007_WE_dual():
@@ -243,7 +243,7 @@ def RHS2007_WE_dual():
     padding_horizontal2, padding_vertical2 = (total_width / 2 - height) / 2, (total_height - width) / 2
     padding2 = (padding_vertical2, padding_vertical2, padding_horizontal2, padding_horizontal2)
 
-    target_height = stimuli.utils.degrees_to_pixels(2, ppd)
+    target_height = 2
     stim1 = stimuli.illusions.whites.white(shape=(height, width), ppd=ppd, frequency=frequency, start='low', target_indices=(2, 5), padding=padding1, target_height=target_height)
     stim2 = stimuli.illusions.whites.white(shape=(height, width), ppd=ppd, frequency=frequency, start='low', target_indices=(2, 5), padding=padding2, target_height=target_height, orientation='vertical')
 
@@ -266,6 +266,7 @@ def RHS2007_WE_anderson():
     return stimuli.illusions.whites.white_anderson(shape=(height, width), ppd=ppd, frequency=frequency, target_height=target_height,
                                                   target_indices_top=(5,), target_offsets_top=(target_height / 2,), target_indices_bottom=(10,), target_offsets_bottom=(-target_height / 2,),
                                                   height_bars=height_bars, height_horizontal_top=height_horizontal, padding=padding)
+    return img
 
 def RHS2007_WE_howe():
     total_height, total_width, ppd = (32,)*3
@@ -281,6 +282,7 @@ def RHS2007_WE_howe():
     return stimuli.illusions.whites.white_anderson(shape=(height, width), ppd=ppd, frequency=frequency, target_height=target_height,
                                                   target_indices_top=(5,), target_offsets_top=(0,), target_indices_bottom=(10,), target_offsets_bottom=(0,),
                                                   height_bars=height_bars, height_horizontal_top=height_horizontal, padding=padding)
+    return img
 
 def RHS2007_WE_radial_thick_small():
     total_height, total_width, ppd = (32,)*3
@@ -333,8 +335,8 @@ def RHS2007_WE_circular05():
     frequency = n_cycles / radius
     padding_vertical = (total_height - 2 * radius) / 2
     padding = (padding_vertical, padding_vertical, 0, 0)
-    stim1 = stimuli.illusions.whites.circular_white(radius=radius, ppd=ppd, frequency=frequency, target_indices=(4,), start='high', padding=padding)
-    stim2 = stimuli.illusions.whites.circular_white(radius=radius, ppd=ppd, frequency=frequency, target_indices=(4,), start='low', padding=padding)
+    stim1 = stimuli.illusions.whites.circular_white(radius=radius, ppd=ppd, frequency=frequency, target_indices=(10,), start='high', padding=padding)
+    stim2 = stimuli.illusions.whites.circular_white(radius=radius, ppd=ppd, frequency=frequency, target_indices=(10,), start='low', padding=padding)
 
     stim = Stimulus()
     stim.img = np.hstack((stim1.img, stim2.img))
@@ -349,8 +351,8 @@ def RHS2007_WE_circular025():
     frequency = n_cycles / radius
     padding_vertical = (total_height - 2 * radius) / 2
     padding = (padding_vertical, padding_vertical, 0, 0)
-    stim1 = stimuli.illusions.whites.circular_white(radius=radius, ppd=ppd, frequency=frequency, target_indices=(4,), start='high', padding=padding)
-    stim2 = stimuli.illusions.whites.circular_white(radius=radius, ppd=ppd, frequency=frequency, target_indices=(4,), start='low', padding=padding)
+    stim1 = stimuli.illusions.whites.circular_white(radius=radius, ppd=ppd, frequency=frequency, target_indices=(22,), start='high', padding=padding)
+    stim2 = stimuli.illusions.whites.circular_white(radius=radius, ppd=ppd, frequency=frequency, target_indices=(22,), start='low', padding=padding)
 
     stim = Stimulus()
     stim.img = np.hstack((stim1.img, stim2.img))
