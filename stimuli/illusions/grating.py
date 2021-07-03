@@ -1,7 +1,8 @@
 import numpy as np
+from stimuli.utils import degrees_to_pixels, pad_img
 
 
-def grating_illusion(n_bars=5, target_length=1, bar_width=10, bar_height=80, padding=(10,10,10,10), back=0., grid=1., target=0.5, double=True):
+def grating_illusion(ppd=10, n_bars=5, target_length=1, bar_width=1.0, bar_height=8.0, padding=(1.0,1.0,1.0,1.0), back=0., grid=1., target=0.5, double=True):
     """
     Grating illusion
 
@@ -22,29 +23,45 @@ def grating_illusion(n_bars=5, target_length=1, bar_width=10, bar_height=80, pad
     2D numpy array
     """
 
-    padding_top, padding_bottom, padding_left, padding_right = padding
+    bar_height_px, bar_width_px = degrees_to_pixels(bar_height, ppd), degrees_to_pixels(bar_width, ppd)
 
     # create array of grating
     arr = np.ones(n_bars) * grid
+    mask_arr = np.zeros(n_bars)
+
     target_offset = (n_bars-target_length)//2
     arr[target_offset:target_offset+target_length] = target
+    mask_arr[target_offset:target_offset+target_length] = True
 
     # final image array
-    width = (n_bars*2-1)*bar_width + padding_left + padding_right
-    height = padding_top + bar_height + padding_bottom
-    img = np.ones((height, width)) * back
+    width_px = (n_bars*2-1)*bar_width_px
+    height_px = bar_height_px
+    img = np.ones((height_px, width_px)) * back
+    mask = np.zeros((height_px, width_px))
 
     for i, val in np.ndenumerate(arr):
-        x = padding_left + i[0]*2*bar_width
-        img[padding_top:padding_top+bar_height, x:x+bar_width] = val
+        mask_val = val==target
+        x = i[0]*2*bar_width_px
+        img[:, x:x+bar_width_px] = val
+        mask[:, x:x+bar_width_px] = mask_val
+
+    img = pad_img(img, padding, ppd, back)
+    mask = pad_img(mask, padding, ppd, 0)
+
 
     if double:
-        img2 = grating_illusion(n_bars=n_bars, target_length=target_length, bar_width=bar_width, bar_height=bar_height,
+        img2, mask2 = grating_illusion(ppd=ppd, n_bars=n_bars, target_length=target_length, bar_width=bar_width, bar_height=bar_height,
                                 padding=padding, back=grid, grid=back, target=target, double=False)
-        return np.hstack([img, img2])
+        return (np.hstack([img, img2]), np.hstack([mask, mask2]))
     else:
-        return img
+        return (img, mask)
 
 def domijan2015():
-    return grating_illusion(n_bars=5, target_length=1, bar_width=10, bar_height=81, padding=(9,10,9,11), back=1, grid=9, target=5, double=True)
+    return grating_illusion(ppd=10, n_bars=5, target_length=1, bar_width=1.0, bar_height=8.1, padding=(.9,1.0,.9,1.1), back=1, grid=9, target=5, double=True)
 
+
+if __name__ == '__main__':
+    import matplotlib.pyplot as plt
+    img, mask = grating_illusion()
+    plt.imshow(img, cmap='gray')
+    plt.show()

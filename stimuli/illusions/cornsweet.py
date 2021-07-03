@@ -1,7 +1,8 @@
 import numpy as np
 
-def cornsweet(size, ppd, contrast, ramp_width=3, exponent=2.75,
+def cornsweet(size=(10,10), ppd=10, contrast=0.5, ramp_width=2, exponent=2.75,
               mean_lum=.5):
+    #TODO: the parameters aren't analogous to the other stimuli
     """
     Create a matrix containing a rectangular Cornsweet edge stimulus.
     The 2D luminance profile of the stimulus is defined as
@@ -53,4 +54,12 @@ def cornsweet(size, ppd, contrast, ramp_width=3, exponent=2.75,
     profile = (1 - dist) ** exponent * mean_lum * contrast / 2
     stim[:, :size[1] // 2] += profile[::-1]
     stim[:, size[1] // 2:] -= profile
-    return stim
+    mask = None
+    return (stim, mask)
+
+
+if __name__ == '__main__':
+    import matplotlib.pyplot as plt
+    img, mask = cornsweet()
+    plt.imshow(img, cmap='gray')
+    plt.show()

@@ -2,7 +2,9 @@ import numpy as np
 from stimuli.utils.utils import degrees_to_pixels, resize_array
 
 
-def disc_and_ring(shape, radii, values, bg=0, ppd=30, ssf=5):
+def disc_and_ring(shape=(10,10), radii=(9,5), values=(200, 100), bg=0, ppd=30, ssf=5):
+    #TODO: the parameters aren't analogous to the other stimuli
+    #TODO: figure out defeault parameters that create something that makes sense
     """
     Create a disc and ring stimulus with an arbitrary number of rings.
 
@@ -43,4 +45,14 @@ def disc_and_ring(shape, radii, values, bg=0, ppd=30, ssf=5):
 
     # downsample the stimulus by local averaging along rows and columns
     sampler = resize_array(np.eye(stim.shape[0] // ssf), (1, ssf))
-    return np.dot(sampler, np.dot(stim, sampler.T)) / ssf ** 2
+
+    mask = None
+
+    return (np.dot(sampler, np.dot(stim, sampler.T)) / ssf ** 2, mask)
+
+
+if __name__ == '__main__':
+    import matplotlib.pyplot as plt
+    img, mask = disc_and_ring()
+    plt.imshow(img, cmap='gray')
+    plt.show()
