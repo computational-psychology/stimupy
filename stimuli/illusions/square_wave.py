@@ -2,7 +2,7 @@ import numpy as np
 from stimuli.utils.utils import degrees_to_pixels
 
 
-def square_wave(shape, ppd, contrast, frequency, mean_lum=.5, period='ignore',
+def square_wave(shape=(10,10), ppd=10, frequency=1, high=1.0, low=0.0, period='ignore',
                 start='high'):
     """
     Create a horizontal square wave of given spatial frequency.
@@ -13,15 +13,13 @@ def square_wave(shape, ppd, contrast, frequency, mean_lum=.5, period='ignore',
             The shape of the stimulus in degrees of visual angle. (y,x)
     ppd : number
           the number of pixels in one degree of visual angle
-    contrast : float, in [0,1]
-               the contrast of the grating, defined as
-               (max_luminance - min_luminance) / mean_luminance
+    high:   float
+            value of the bright pixels
+    low:    float
+            value of the dark pixels
     frequency : number
                 the spatial frequency of the wave in cycles per degree
-    mean_lum : number
-               the mean luminance of the grating, i.e. (max_lum + min_lum) / 2.
-               The average luminance of the actual stimulus can differ slightly
-               from this value if the stimulus is not an integer of cycles big.
+
     period : string in ['ignore', 'full', 'half'] (optional)
              specifies if the period of the wave is taken into account when
              determining exact stimulus dimensions.
@@ -38,7 +36,6 @@ def square_wave(shape, ppd, contrast, frequency, mean_lum=.5, period='ignore',
     stim : ndarray (2D)
            the square wave stimulus
     """
-    #TODO: very buggy, fix problems when being called in white_bmcc and white_gil
 
 
     if period not in ['ignore', 'full', 'half']:
@@ -48,22 +45,24 @@ def square_wave(shape, ppd, contrast, frequency, mean_lum=.5, period='ignore',
     if frequency > ppd / 2:
         raise ValueError('The frequency is limited to 1/2 cycle per pixel.')
 
-    shape = degrees_to_pixels(np.array(shape), ppd).astype(int)
-    pixels_per_cycle = int(degrees_to_pixels(1. / frequency / 2, ppd) + .5) * 2
+    height, width = degrees_to_pixels(shape, ppd)
+    pixels_per_cycle = degrees_to_pixels(1. / (frequency*2) , ppd) * 2
 
     if period is 'full':
-        shape = (shape // pixels_per_cycle) * pixels_per_cycle
+        width = (shape_pixels // pixels_per_cycle) * pixels_per_cycle
     elif period is 'half':
-        shape = (shape // pixels_per_cycle) * pixels_per_cycle + \
-                   pixels_per_cycle / 2
-    diff = type(mean_lum)(contrast * mean_lum)
-    high = mean_lum + diff
-    low = mean_lum - diff
-    stim = np.ones(shape) * (low if start is 'high' else high)
+        width = (shape_pixels // pixels_per_cycle) * pixels_per_cycle + pixels_per_cycle / 2
 
-    # TODO: shape[0] used to be just shape, Matko changed it to shape[0] just to make it work, look into it
+    stim = np.ones((height, width)) * (low if start is 'high' else high)
+
     index = [i + j for i in range(pixels_per_cycle // 2)
-             for j in range(0, shape[0], pixels_per_cycle)
-             if i + j < shape[0]]
+             for j in range(0, width, pixels_per_cycle)
+             if i + j < width]
     stim[:, index] = low if start is 'low' else high
-    return stim
+    return (stim, pixels_per_cycle)
+
+
+if __name__ == '__main__':
+    import matplotlib.pyplot as plt
+    plt.imshow(square_wave()[0], cmap='gray')
+    plt.show()

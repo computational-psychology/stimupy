@@ -20,7 +20,7 @@ if __name__ == '__main__':
             'stimuli.texture',
             'stimuli.transparency',
             'stimuli.illusions',
-            'stimuli.papers_stimuli'
+            'stimuli.papers'
         ),
         package_data={'stimuli.transparency': ['checkerboard_mask.png']},
         install_requires=[
