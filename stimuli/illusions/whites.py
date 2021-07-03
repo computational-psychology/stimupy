@@ -204,9 +204,14 @@ def RHS2007_WE_thick():
     padding_horizontal = (total_width - width) / 2
     padding_vertical = (total_height - height) / 2
     padding = (padding_vertical, padding_vertical, padding_horizontal, padding_horizontal)
+<<<<<<< Updated upstream
     target_height = stimuli.utils.degrees_to_pixels(4, ppd)
     img = stimuli.illusions.whites.white(shape=(height, width), ppd=ppd, frequency=frequency, start='low', target_indices=(2, 5), padding=padding, target_height=target_height)
     return img
+=======
+    target_height = 4
+    return stimuli.illusions.whites.white(shape=(height, width), ppd=ppd, frequency=frequency, start='low', target_indices=(2, 5), padding=padding, target_height=target_height)
+>>>>>>> Stashed changes
 
 def RHS2007_WE_thin_wide():
     total_height, total_width, ppd = (32,)*3
@@ -216,9 +221,14 @@ def RHS2007_WE_thin_wide():
     padding_horizontal = (total_width - width) / 2
     padding_vertical = (total_height - height) / 2
     padding = (padding_vertical, padding_vertical, padding_horizontal, padding_horizontal)
+<<<<<<< Updated upstream
     target_height = stimuli.utils.degrees_to_pixels(4, ppd)
     img = stimuli.illusions.whites.white(shape=(height, width), ppd=ppd, frequency=frequency, start='low', target_indices=(3, 12), padding=padding, target_height=target_height)
     return img
+=======
+    target_height = 4
+    return stimuli.illusions.whites.white(shape=(height, width), ppd=ppd, frequency=frequency, start='low', target_indices=(3, 12), padding=padding, target_height=target_height)
+>>>>>>> Stashed changes
 
 def RHS2007_WE_dual():
     total_height, total_width, ppd = (32,)*3
@@ -231,11 +241,22 @@ def RHS2007_WE_dual():
     padding_horizontal2, padding_vertical2 = (total_width / 2 - height) / 2, (total_height - width) / 2
     padding2 = (padding_vertical2, padding_vertical2, padding_horizontal2, padding_horizontal2)
 
+<<<<<<< Updated upstream
     target_height = stimuli.utils.degrees_to_pixels(2, ppd)
     img1 = stimuli.illusions.whites.white(shape=(height, width), ppd=ppd, frequency=frequency, start='low', target_indices=(2, 5), padding=padding1, target_height=target_height)
     img2 = stimuli.illusions.whites.white(shape=(height, width), ppd=ppd, frequency=frequency, start='low', target_indices=(2, 5), padding=padding2, target_height=target_height, orientation='vertical')
     img = np.hstack((img1, img2))
     return img
+=======
+    target_height = 2
+    stim1 = stimuli.illusions.whites.white(shape=(height, width), ppd=ppd, frequency=frequency, start='low', target_indices=(2, 5), padding=padding1, target_height=target_height)
+    stim2 = stimuli.illusions.whites.white(shape=(height, width), ppd=ppd, frequency=frequency, start='low', target_indices=(2, 5), padding=padding2, target_height=target_height, orientation='vertical')
+
+    stim = Stimulus()
+    stim.img = np.hstack((stim1.img, stim2.img))
+    stim.target_mask = np.hstack((stim1.target_mask, stim2.target_mask))
+    return stim
+>>>>>>> Stashed changes
 
 def RHS2007_WE_anderson():
     total_height, total_width, ppd = (32,)*3
@@ -320,10 +341,21 @@ def RHS2007_WE_circular05():
     frequency = n_cycles / radius
     padding_vertical = (total_height - 2 * radius) / 2
     padding = (padding_vertical, padding_vertical, 0, 0)
+<<<<<<< Updated upstream
     img1 = stimuli.illusions.whites.circular_white(radius=radius, ppd=ppd, frequency=frequency, target_indices=(4,), start='high', padding=padding)
     img2 = stimuli.illusions.whites.circular_white(radius=radius, ppd=ppd, frequency=frequency, target_indices=(4,), start='low', padding=padding)
     img = np.hstack((img1, img2))
     return img
+=======
+    stim1 = stimuli.illusions.whites.circular_white(radius=radius, ppd=ppd, frequency=frequency, target_indices=(10,), start='high', padding=padding)
+    stim2 = stimuli.illusions.whites.circular_white(radius=radius, ppd=ppd, frequency=frequency, target_indices=(10,), start='low', padding=padding)
+
+    stim = Stimulus()
+    stim.img = np.hstack((stim1.img, stim2.img))
+    stim.target_mask = np.hstack((stim1.target_mask, stim2.target_mask))
+
+    return stim
+>>>>>>> Stashed changes
 
 def RHS2007_WE_circular025():
     total_height, total_width, ppd = (32,)*3
@@ -332,10 +364,21 @@ def RHS2007_WE_circular025():
     frequency = n_cycles / radius
     padding_vertical = (total_height - 2 * radius) / 2
     padding = (padding_vertical, padding_vertical, 0, 0)
+<<<<<<< Updated upstream
     img1 = stimuli.illusions.whites.circular_white(radius=radius, ppd=ppd, frequency=frequency, target_indices=(4,), start='high', padding=padding)
     img2 = stimuli.illusions.whites.circular_white(radius=radius, ppd=ppd, frequency=frequency, target_indices=(4,), start='low', padding=padding)
     img = np.hstack((img1, img2))
     return img
+=======
+    stim1 = stimuli.illusions.whites.circular_white(radius=radius, ppd=ppd, frequency=frequency, target_indices=(22,), start='high', padding=padding)
+    stim2 = stimuli.illusions.whites.circular_white(radius=radius, ppd=ppd, frequency=frequency, target_indices=(22,), start='low', padding=padding)
+
+    stim = Stimulus()
+    stim.img = np.hstack((stim1.img, stim2.img))
+    stim.target_mask = np.hstack((stim1.target_mask, stim2.target_mask))
+
+    return stim
+>>>>>>> Stashed changes
 
 def domijan2015_white():
     height, width, ppd = 8.1, 8., 10
