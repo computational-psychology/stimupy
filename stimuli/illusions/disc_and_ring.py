@@ -1,5 +1,6 @@
 import numpy as np
 from stimuli.utils.utils import degrees_to_pixels, resize_array
+from stimuli.Stimulus import Stimulus
 
 
 def disc_and_ring(shape=(10,10), radii=(9,5), values=(200, 100), bg=0, ppd=30, ssf=5):
@@ -48,7 +49,11 @@ def disc_and_ring(shape=(10,10), radii=(9,5), values=(200, 100), bg=0, ppd=30, s
 
     mask = None
 
-    return (np.dot(sampler, np.dot(stim, sampler.T)) / ssf ** 2, mask)
+    stim = Stimulus()
+    stim.img = np.dot(sampler, np.dot(stim, sampler.T)) / ssf ** 2
+    stim.target_mask = mask
+
+    return stim
 
 
 if __name__ == '__main__':

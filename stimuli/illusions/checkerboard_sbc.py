@@ -1,5 +1,6 @@
 import numpy as np
 from stimuli.utils import degrees_to_pixels, pad_img
+from stimuli.Stimulus import Stimulus
 
 def checkerboard_contrast(ppd=10, n_checks=8, check_size=1.0, target1_coords=(3, 2), target2_coords=(5, 5), extend_targets=False,
                           padding=(1.0,1.0,1.0,1.0), check1=0., check2=1., target=.5):
@@ -51,7 +52,11 @@ def checkerboard_contrast(ppd=10, n_checks=8, check_size=1.0, target1_coords=(3,
     img = pad_img(img, padding, ppd, (check1+check2)/2)
     mask = pad_img(mask, padding, ppd, 0)
 
-    return (img, mask)
+    stim = Stimulus()
+    stim.img = img
+    stim.target_mask = mask
+
+    return stim
 
 
 def domijan2015():

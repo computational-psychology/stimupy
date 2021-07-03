@@ -1,5 +1,6 @@
 import numpy as np
 from stimuli.utils import degrees_to_pixels, pad_img
+from stimuli.Stimulus import Stimulus
 
 
 def grating_illusion(ppd=10, n_bars=5, target_length=1, bar_width=1.0, bar_height=8.0, padding=(1.0,1.0,1.0,1.0), back=0., grid=1., target=0.5, double=True):
@@ -50,11 +51,16 @@ def grating_illusion(ppd=10, n_bars=5, target_length=1, bar_width=1.0, bar_heigh
 
 
     if double:
-        img2, mask2 = grating_illusion(ppd=ppd, n_bars=n_bars, target_length=target_length, bar_width=bar_width, bar_height=bar_height,
+        stim2 = grating_illusion(ppd=ppd, n_bars=n_bars, target_length=target_length, bar_width=bar_width, bar_height=bar_height,
                                 padding=padding, back=grid, grid=back, target=target, double=False)
-        return (np.hstack([img, img2]), np.hstack([mask, mask2]))
-    else:
-        return (img, mask)
+        img = np.hstack([img, stim2.img])
+        mask = np.hstack([mask, stim2.target_mask])
+
+    stim = Stimulus()
+    stim.img = img
+    stim.target_mask = mask
+
+    return stim
 
 def domijan2015():
     return grating_illusion(ppd=10, n_bars=5, target_length=1, bar_width=1.0, bar_height=8.1, padding=(.9,1.0,.9,1.1), back=1, grid=9, target=5, double=True)

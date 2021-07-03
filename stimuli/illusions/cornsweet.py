@@ -1,4 +1,5 @@
 import numpy as np
+from stimuli.Stimulus import Stimulus
 
 def cornsweet(size=(10,10), ppd=10, contrast=0.5, ramp_width=2, exponent=2.75,
               mean_lum=.5):
@@ -55,7 +56,12 @@ def cornsweet(size=(10,10), ppd=10, contrast=0.5, ramp_width=2, exponent=2.75,
     stim[:, :size[1] // 2] += profile[::-1]
     stim[:, size[1] // 2:] -= profile
     mask = None
-    return (stim, mask)
+
+    stim = Stimulus()
+    stim.img = img
+    stim.target_mask = mask
+
+    return stim
 
 
 if __name__ == '__main__':

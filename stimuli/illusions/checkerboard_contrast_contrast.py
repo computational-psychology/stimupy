@@ -1,5 +1,6 @@
 import numpy as np
 from stimuli.utils import degrees_to_pixels, pad_img
+from stimuli.Stimulus import Stimulus
 
 
 def checkerboard_contrast_contrast_effect(ppd=10, n_checks=8, check_size=1.0, target_length=4, padding=(1.0,1.0,1.0,1.0), check1=0., check2=2.,
@@ -53,7 +54,13 @@ def checkerboard_contrast_contrast_effect(ppd=10, n_checks=8, check_size=1.0, ta
     mask2 = np.repeat(np.repeat(mask_arr2, check_size_px, axis=0), check_size_px, axis=1)
     mask2 = pad_img(mask2, padding, ppd, 0)
 
-    return (np.hstack([img1, img2]), np.hstack([mask1, mask2]))
+    img = np.hstack([img1, img2])
+    mask =  np.hstack([mask1, mask2])
+    stim = Stimulus()
+    stim.img = img
+    stim.target_mask = mask
+
+    return stim
 
 
 

@@ -1,6 +1,7 @@
 import numpy as np
 import stimuli
 from stimuli.utils import degrees_to_pixels, pad_img
+from stimuli.Stimulus import Stimulus
 
 
 def simultaneous_brightness_contrast(ppd=10, target_shape=(5,5), padding=(2,2,2,2), inner_padding=(3,3,3,3), left=1., right=0., target=.5):
@@ -39,7 +40,11 @@ def simultaneous_brightness_contrast(ppd=10, target_shape=(5,5), padding=(2,2,2,
     img = pad_img(img, padding, ppd, target)
     mask = pad_img(mask, padding, ppd, 0)
 
-    return (img, mask)
+    stim = Stimulus()
+    stim.img = img
+    stim.target_mask = mask
+
+    return stim
 
 
 def domijan2015():

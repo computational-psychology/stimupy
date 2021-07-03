@@ -3,6 +3,7 @@ import numpy as np
 import math
 
 from stimuli.utils import degrees_to_pixels, pad_img
+from stimuli.Stimulus import Stimulus
 
 
 def todorovic_illusion(target_shape=(4,4), ppd=10, covers_shape=(2.5, 2.5), spacing=(1.5,1.5,1.5,1.5), inner_padding=(3,3,3,3), padding=(2,2,2,2), back=0., grid=1., target=.5, double=True):
@@ -72,16 +73,19 @@ def todorovic_illusion(target_shape=(4,4), ppd=10, covers_shape=(2.5, 2.5), spac
 
     # create right half of stimulus
     if double:
-        img2, mask2 = todorovic_illusion(target_shape=target_shape, ppd=ppd, covers_shape=covers_shape, spacing=spacing,
+        stim2 = todorovic_illusion(target_shape=target_shape, ppd=ppd, covers_shape=covers_shape, spacing=spacing,
                                   padding=(0,0,0,0), inner_padding=inner_padding, back=grid, grid=back, target=target, double=False)
-        img = np.hstack([img, img2])
-        mask = np.hstack([mask, mask2])
+        img = np.hstack([img, stim2.img])
+        mask = np.hstack([mask, stim2.target_mask])
 
     img = pad_img(img, padding, ppd, target)
     mask = pad_img(mask, padding, ppd, target)
 
-    return (img, mask)
+    stim = Stimulus()
+    stim.img = img
+    stim.target_mask = mask
 
+    return stim
 
 def domijan2015():
     return todorovic_illusion(target_shape=(4.1, 4.1), ppd=10, covers_shape=(3.1, 3.1), spacing=(1.5, 1.5, 1.5, 1.5), inner_padding=(2.9,3.0, 2.9,3.0 ),

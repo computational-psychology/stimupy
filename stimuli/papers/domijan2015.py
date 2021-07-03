@@ -69,18 +69,19 @@ if __name__ == "__main__":
             "checkerboard_extended": checkerboard_extended,
         }
 
-        plt.figure(figsize=(8,20))
         M = len(stims)
+        plt.figure(figsize=(8, M * 3))
         for i, (stim_name, stim) in enumerate(stims.items()):
-            img, mask = stim()
+            print("Generating", stim_name+"")
+            st = stim()
             plt.subplot(M, 2, 2*i+1)
             plt.title(stim_name+" - img")
-            plt.imshow(img, cmap='gray')
+            plt.imshow(st.img, cmap='gray')
 
-            if mask is not None:
+            if st.target_mask is not None:
                 plt.subplot(M, 2, 2*i+2)
                 plt.title(stim_name + " - mask")
-                plt.imshow(mask, cmap='gray')
+                plt.imshow(st.target_mask, cmap='gray')
 
         plt.tight_layout()
 

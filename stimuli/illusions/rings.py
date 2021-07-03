@@ -1,5 +1,6 @@
 import numpy as np
 from stimuli.utils import degrees_to_pixels, pad_img
+from stimuli.Stimulus import Stimulus
 
 def ring_pattern(ppd=10, n_rings=8, target_pos_l=4, target_pos_r=3, ring_width=.5, padding=(1.0,1.0,1.0,1.0,), back=0., rings=1., target=.5, invert_rings=False, double=True, ):
     """
@@ -63,11 +64,16 @@ def ring_pattern(ppd=10, n_rings=8, target_pos_l=4, target_pos_r=3, ring_width=.
 
     # create right half of stimulus
     if double:
-        img2, mask2 = ring_pattern(ppd=ppd, n_rings=n_rings, target_pos_l=target_pos_r, target_pos_r=0, ring_width=ring_width,
+        stim2 = ring_pattern(ppd=ppd, n_rings=n_rings, target_pos_l=target_pos_r, target_pos_r=0, ring_width=ring_width,
                             padding=padding, back=back, rings=rings, target=target, invert_rings=invert_rings, double=False)
-        return (np.hstack([img, img2]), np.hstack([mask, mask2]))
-    else:
-        return (img, mask)
+        img = np.hstack([img, stim2.img])
+        mask = np.hstack([mask, stim2.target_mask])
+
+    stim = Stimulus()
+    stim.img = img
+    stim.target_mask = mask
+
+    return stim
 
 def domijan2015():
     img = ring_pattern(ppd=10, n_rings=8, target_pos_l=4, target_pos_r=3, ring_width=.5, padding=(.9,1.0,.9,1.0), back=1., rings=9., target=5., invert_rings=False, double=True)

@@ -1,6 +1,6 @@
 import numpy as np
 from stimuli.utils import degrees_to_pixels, pad_img
-
+from stimuli.Stimulus import Stimulus
 
 def benarys_cross(ppd=10, cross_size=(8,8,8,8), cross_thickness=5, padding=(1,1,1,1), target_size=2, back=1., cross=0., target=.5):
     """
@@ -51,13 +51,16 @@ def benarys_cross(ppd=10, cross_size=(8,8,8,8), cross_thickness=5, padding=(1,1,
     img = pad_img(img, padding, ppd, back)
     mask = pad_img(mask, padding, ppd, 0)
 
-    return (img, mask)
+    stim = Stimulus()
+    stim.target_mask = mask
+    stim.img = img
+    return stim
 
 def domijan2015():
     return benarys_cross(ppd=10, cross_size=(3,3,3,3), cross_thickness=2.1, padding=(.9,1.0,.9,1.0),target_size=1.1,  back=9., cross=1., target=5.)
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
-    img, mask = benarys_cross()
-    plt.imshow(img, cmap='gray')
+    stim = benarys_cross()
+    plt.imshow(stim.img, cmap='gray')
     plt.show()

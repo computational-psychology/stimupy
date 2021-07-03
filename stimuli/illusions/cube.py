@@ -1,5 +1,6 @@
 import numpy as np
 from stimuli.utils import degrees_to_pixels, pad_img
+from stimuli.Stimulus import Stimulus
 
 
 def cube_illusion(ppd=10, n_cells=4, target_length=1, cell_long=1.5, cell_short=1.0, corner_cell_width=1.8, corner_cell_height=1.8,
@@ -109,11 +110,16 @@ def cube_illusion(ppd=10, n_cells=4, target_length=1, cell_long=1.5, cell_short=
     mask = pad_img(mask, padding, ppd, 0)
 
     if double:
-        img2, mask2 = cube_illusion(ppd=ppd, n_cells=n_cells, target_length=target_length, cell_long=cell_long, cell_short=cell_short, corner_cell_width=corner_cell_width, corner_cell_height=corner_cell_height,
+        stim2 = cube_illusion(ppd=ppd, n_cells=n_cells, target_length=target_length, cell_long=cell_long, cell_short=cell_short, corner_cell_width=corner_cell_width, corner_cell_height=corner_cell_height,
                              cell_spacing=cell_spacing, padding=padding, occlusion_overlap=occlusion_overlap, back=grid, grid=back, target=target, double=False)
-        return (np.hstack([img, img2]), np.hstack([mask, mask2]))
-    else:
-        return (img, mask)
+        img = np.hstack([img, stim2.img])
+        mask = np.hstack([mask, stim2.target_mask])
+
+    stim = Stimulus()
+    stim.img = img
+    stim.target_mask = mask
+
+    return stim
 
 
 def domijan2015():

@@ -1,6 +1,7 @@
 import numpy as np
 from stimuli.illusions.rings import ring_pattern
 from stimuli.utils import degrees_to_pixels, pad_img
+from stimuli.Stimulus import Stimulus
 
 def bullseye_illusion(ppd=10, n_rings=8, ring_width=.5, target_pos_l=0, target_pos_r=0, padding=(1.0,1.0,1.0,1.0), back=0., rings=1., target=.5):
     """
@@ -20,12 +21,19 @@ def bullseye_illusion(ppd=10, n_rings=8, ring_width=.5, target_pos_l=0, target_p
     -------
     2D numpy array
     """
-    img1, mask1 = ring_pattern(n_rings=n_rings, target_pos_l=target_pos_l, ring_width=ring_width, padding=padding,
+    stim1 = ring_pattern(n_rings=n_rings, target_pos_l=target_pos_l, ring_width=ring_width, padding=padding,
                         back=back, rings=rings, target=target, invert_rings=False, double=False)
-    img2, mask2 = ring_pattern(n_rings=n_rings, target_pos_l=target_pos_r, ring_width=ring_width, padding=padding,
+    stim2 = ring_pattern(n_rings=n_rings, target_pos_l=target_pos_r, ring_width=ring_width, padding=padding,
                         back=back, rings=rings, target=target, invert_rings=True, double=False)
 
-    return (np.hstack((img1, img2)), np.hstack((mask1, mask2)))
+    img = np.hstack((stim1.img, stim2.img))
+    mask = np.hstack((stim1.target_mask, stim2.target_mask))
+
+    stim = Stimulus()
+    stim.img = img
+    stim.target_mask = mask
+
+    return stim
 
 def domijan2015():
     img =  bullseye_illusion(n_rings=8, ring_width=.5, target_pos_l=0, target_pos_r=0, padding=(.9,1.0,.9,1.0), back=1., rings=9., target=5.)
@@ -39,6 +47,6 @@ def RHS2007_bullseye_thick():
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
-    img, mask = bullseye_illusion()
-    plt.imshow(img, cmap='gray')
+    stim = bullseye_illusion()
+    plt.imshow(stim.img, cmap='gray')
     plt.show()
