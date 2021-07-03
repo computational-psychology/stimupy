@@ -1,7 +1,12 @@
 import numpy as np
+from stimuli.utils import degrees_to_pixels, pad_img
+from stimuli.Stimulus import Stimulus
 
 
-def cube_illusion(n_cells=4, target_length=1, cell_long=15, cell_short=10, corner_cell_width=15, corner_cell_height=10, cell_spacing=3, padding=(5,5,5,5), occlusion_overlap=(4,4,4,4), back=0., grid=1., target=.5, double=True):
+def cube_illusion(ppd=10, n_cells=4, target_length=1, cell_long=1.5, cell_short=1.0, corner_cell_width=1.8, corner_cell_height=1.8,
+                  cell_spacing=.5, padding=(1.0,1.0,1.0,1.0), occlusion_overlap=(.7,.7,.7,.7), back=0., grid=1., target=.5, double=True):
+
+
     """
     Cube illusion (Agostini & Galmonte, 2002)
 
@@ -23,10 +28,11 @@ def cube_illusion(n_cells=4, target_length=1, cell_long=15, cell_short=10, corne
     -------
     2D numpy array
     """
+    cell_long_px, cell_short_px = degrees_to_pixels(cell_long, ppd), degrees_to_pixels(cell_short, ppd)
+    corner_cell_width_px, corner_cell_height_px = degrees_to_pixels(corner_cell_width, ppd), degrees_to_pixels(corner_cell_height, ppd)
+    cell_spacing_px = degrees_to_pixels(cell_spacing, ppd)
     # array representing grid cells
     arr = np.ones((n_cells, n_cells)) * grid
-
-    padding_top, padding_bottom, padding_left, padding_right = padding
 
     # add target pattern (floor and ceil leads to asymmetry in case of odd target size)
     target_offset = (n_cells-target_length)/2
@@ -36,72 +42,92 @@ def cube_illusion(n_cells=4, target_length=1, cell_long=15, cell_short=10, corne
     arr[-1, offs_f:offs_f+target_length] = target
     arr[offs_f:offs_f+target_length, 0] = target
     arr[offs_c:offs_c+target_length, -1] = target
+    
 
     # final image array
-    width = (n_cells-2)*cell_long + 2*corner_cell_width + (n_cells-1)*cell_spacing + padding_left + padding_right
-    height = (n_cells-2)*cell_long + 2*corner_cell_height + (n_cells-1)*cell_spacing + padding_top + padding_bottom
+    width_px = (n_cells-2)*cell_long_px + 2*corner_cell_width_px + (n_cells-1)*cell_spacing_px
+    height_px = (n_cells-2)*cell_long_px + 2*corner_cell_height_px + (n_cells-1)*cell_spacing_px
 
-    img = np.ones((height, width)) * back
+    img = np.ones((height_px, width_px)) * back
+    mask = np.zeros((height_px, width_px))
 
     for i, val in np.ndenumerate(arr):
+        mask_val = val == target
         if i[0] in range(1, n_cells-1) and i[1] in range(1, n_cells-1):
             continue  # skip centre cells for efficiency
         elif i == (0,0):  # top left corner cell
-            x, y = padding_left, padding_top
-            img[y:y+corner_cell_height, x:x+corner_cell_width] = val
+            img[:corner_cell_height_px, :corner_cell_width_px] = val
+            mask[:corner_cell_height_px, :corner_cell_width_px] = mask_val
+
         elif i == (0, n_cells-1): # top right corner cell
-            x = padding_left + corner_cell_width + cell_spacing + (n_cells-2)*(cell_long + cell_spacing)
-            y = padding_top
-            img[y:y+corner_cell_height, x:x+corner_cell_width] = val
+            img[:corner_cell_height_px, -corner_cell_width_px:] = val
+            mask[:corner_cell_height_px, -corner_cell_width_px:] = mask_val
+
         elif i == (n_cells-1, 0): # bottom left corner cell
-            x = padding_left
-            y = padding_top + corner_cell_height + cell_spacing + (n_cells-2)*(cell_long + cell_spacing)
-            img[y:y+corner_cell_height, x:x+corner_cell_width] = val
+            img[-corner_cell_height_px:, :corner_cell_width_px] = val
+            mask[-corner_cell_height_px:, :corner_cell_width_px] = mask_val
+
         elif i == (n_cells - 1, n_cells-1):  # bottom right corner cell
-            x = padding_left + corner_cell_width + cell_spacing + (n_cells - 2)*(cell_long + cell_spacing)
-            y = padding_top + corner_cell_height + cell_spacing + (n_cells - 2)*(cell_long + cell_spacing)
-            img[y:y + corner_cell_height, x:x + corner_cell_width] = val
+            img[-corner_cell_height_px:, -corner_cell_width_px:] = val
+            mask[-corner_cell_height_px:, -corner_cell_width_px:] = mask_val
+
         else:
             if i[0] == 0 or i[0] == n_cells -1: # top/bottom side
-                x = padding_left + corner_cell_width + cell_spacing + (i[1] - 1) * (cell_long + cell_spacing)
+                x = corner_cell_width_px + cell_spacing_px + (i[1] - 1) * (cell_long_px + cell_spacing_px)
                 if i[0] == 0: # top side
-                    y = padding_top
+                    img[:cell_short_px, x:x + cell_long_px] = val
+                    mask[:cell_short_px, x:x + cell_long_px] = mask_val
                 else: # bottom side
-                    y = - padding_bottom - cell_short
-
-                img[y:y + cell_short, x:x + cell_long] = val
+                    img[-cell_short_px:, x:x + cell_long_px] = val
+                    mask[-cell_short_px:, x:x + cell_long_px] = mask_val
 
             else: # left/right side
-                y = padding_top + corner_cell_width + cell_spacing + (i[0] - 1) * (cell_long + cell_spacing)
+                y = corner_cell_width_px + cell_spacing_px + (i[0] - 1) * (cell_long_px + cell_spacing_px)
 
                 if i[1] == 0: # left side
-                    x = padding_left
+                    img[y:y + cell_long_px, :cell_short_px] = val
+                    mask[y:y + cell_long_px, :cell_short_px] = mask_val
 
                 else: # right side
-                    x = -padding_right - cell_short
-
-                img[y:y + cell_long, x:x + cell_short] = val
+                    img[y:y + cell_long_px, -cell_short_px:] = val
+                    mask[y:y + cell_long_px, -cell_short_px:] = mask_val
 
 
     # add occlusion
-    occlusion_top, occlusion_bottom, occlusion_left, occlusion_right = occlusion_overlap
+    occlusion_overlap_px = degrees_to_pixels(occlusion_overlap, ppd)
+    occlusion_top, occlusion_bottom, occlusion_left, occlusion_right = occlusion_overlap_px
 
-    occ_inset_x_left = padding_left + corner_cell_width - occlusion_left
-    occ_inset_x_right = width - padding_right - corner_cell_width + occlusion_right
+    occ_inset_x_left = corner_cell_width_px - occlusion_left
+    occ_inset_x_right = width_px - corner_cell_width_px + occlusion_right
 
-    occ_inset_y_top = padding_top + corner_cell_height - occlusion_top
-    occ_inset_y_bottom = height - padding_bottom - corner_cell_height + occlusion_bottom
+    occ_inset_y_top = corner_cell_height_px - occlusion_top
+    occ_inset_y_bottom = height_px - corner_cell_height_px + occlusion_bottom
 
     img[occ_inset_y_top:occ_inset_y_bottom, occ_inset_x_left:occ_inset_x_right] = back
+    mask[occ_inset_y_top:occ_inset_y_bottom, occ_inset_x_left:occ_inset_x_right] = False
+
+    img = pad_img(img, padding, ppd, back)
+    mask = pad_img(mask, padding, ppd, 0)
 
     if double:
-        img2 = cube_illusion(n_cells=n_cells, target_length=target_length, cell_long=cell_long, cell_short=cell_short, corner_cell_width=corner_cell_width, corner_cell_height=corner_cell_height,
+        stim2 = cube_illusion(ppd=ppd, n_cells=n_cells, target_length=target_length, cell_long=cell_long, cell_short=cell_short, corner_cell_width=corner_cell_width, corner_cell_height=corner_cell_height,
                              cell_spacing=cell_spacing, padding=padding, occlusion_overlap=occlusion_overlap, back=grid, grid=back, target=target, double=False)
-        return np.hstack([img, img2])
-    else:
-        return img
+        img = np.hstack([img, stim2.img])
+        mask = np.hstack([mask, stim2.target_mask])
+
+    stim = Stimulus()
+    stim.img = img
+    stim.target_mask = mask
+
+    return stim
 
 
 def domijan2015():
-    return cube_illusion(n_cells=4, target_length=1, cell_long=15, cell_short=11, corner_cell_width=18, corner_cell_height=18, cell_spacing=5, padding=(9,10,9,10),
-                         occlusion_overlap=(7,7,7,7), back=1., grid=9., target=5., double=True)
+    return cube_illusion(ppd=10, n_cells=4, target_length=1, cell_long=1.5, cell_short=1.1, corner_cell_width=1.8, corner_cell_height=1.8, cell_spacing=.5, padding=(.9,1.0,.9,1.0),
+                         occlusion_overlap=(.7,.7,.7,.7), back=1., grid=9., target=5., double=True)
+
+if __name__ == '__main__':
+    import matplotlib.pyplot as plt
+    img, mask = cube_illusion()
+    plt.imshow(img, cmap='gray')
+    plt.show()

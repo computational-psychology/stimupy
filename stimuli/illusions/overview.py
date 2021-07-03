@@ -16,7 +16,7 @@ import rings
 import sbc
 import square_wave
 import todorovic
-import whites
+import whites_old
 
 """
 illusions = {
@@ -43,18 +43,18 @@ illusions = {
 
 
 white_illusions = {
-    "white_illusion": whites.white_illusion(10, 3, 5),
-    "zigzag_white": whites.zigzag_white(10, 4, 2),
-    "wheel_of_fortune_white": whites.wheel_of_fortune_white(2, 10),
-    "circular_white": whites.circular_white(4, 3),
-    "SC_white": whites.SC_white(100, 20),
-    "extended_white": whites.extended_white(100, 20),
-    "checkered_white": whites.checkered_white(100),
-    "squared_white": whites.squared_white(100, 10),
-    "dotted_white": whites.dotted_white(100, 20, 5),
-    "whites_illusion_bmcc": whites.whites_illusion_bmcc(100, 20, 5, 2),
-    "contours_white_bmmc": whites.contours_white_bmmc(100, 20, 5, 1),
-    "whites_illusion_gil": whites.whites_illusion_gil(100, 20, 5, 1)
+    "white_illusion": whites_old.white_illusion(10, 3, 5),
+    "zigzag_white": whites_old.zigzag_white(10, 4, 2),
+    "wheel_of_fortune_white": whites_old.wheel_of_fortune_white(2, 10),
+    "circular_white": whites_old.circular_white(4, 3),
+    "SC_white": whites_old.SC_white(100, 20),
+    "extended_white": whites_old.extended_white(100, 20),
+    "checkered_white": whites_old.checkered_white(100),
+    "squared_white": whites_old.squared_white(100, 10),
+    "dotted_white": whites_old.dotted_white(100, 20, 5),
+    "whites_illusion_bmcc": whites_old.whites_illusion_bmcc(100, 20, 5, 2),
+    "contours_white_bmmc": whites_old.contours_white_bmmc(100, 20, 5, 1),
+    "whites_illusion_gil": whites_old.whites_illusion_gil(100, 20, 5, 1)
 }
 
 
