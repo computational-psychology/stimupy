@@ -4,7 +4,7 @@ represented as numpy arrays.
 """
 import numpy as np
 from PIL import Image
-
+import matplotlib.pyplot as plt
 
 def write_array_to_image(filename, arr):
     """
@@ -89,7 +89,7 @@ def degrees_to_pixels(degrees, ppd):
 
     Parameters
     ----------
-    degrees : number or ndarray
+    degrees : number, tuple, list or a ndarray
               the degree values to be converted.
     ppd : number
           the number of pixels in the central 1 degree of visual angle.
@@ -98,7 +98,10 @@ def degrees_to_pixels(degrees, ppd):
     -------
     pixels : number or ndarray
     """
-    return np.tan(np.radians(degrees / 2.)) / np.tan(np.radians(.5)) * ppd
+    degrees = np.array(degrees)
+    return (degrees * ppd).astype(int)
+    # This is the 'super correct' conversion, but it makes very little difference in practice
+    #return (np.tan(np.radians(degrees / 2.)) / np.tan(np.radians(.5)) * ppd).astype(int)
 
 
 def pixels_to_degrees(pixels, ppd):
@@ -108,7 +111,7 @@ def pixels_to_degrees(pixels, ppd):
 
     Parameters
     ----------
-    pixels : number or ndarray
+    pixels : number, tuple, list or a ndarray
               the pixel values to be converted.
     ppd : number
           the number of pixels in the central 1 degree of visual angle.
@@ -117,7 +120,10 @@ def pixels_to_degrees(pixels, ppd):
     -------
     degres : number or ndarray
     """
-    return 2 * np.degrees(np.arctan(pixels * np.tan(np.radians(.5)) / ppd))
+    pixels = np.array(pixels)
+    return pixels / ppd
+    # This is the 'super correct' conversion, but it makes very little difference in practice
+    # return 2 * np.degrees(np.arctan(pixels * np.tan(np.radians(.5)) / ppd))
 
 
 def compute_ppd(screen_size, resolution, distance):
@@ -322,3 +328,105 @@ def shift_pixels(img, shift):
     """
     return np.roll(img, shift, (1, 0))
 
+def get_circle_indices(n_numbers, grid_shape):
+
+    height, width = grid_shape
+
+    x = np.linspace(0, 2 * np.pi, n_numbers)
+
+    xx = np.cos(x)
+    xx_min = np.abs(xx.min())
+    xx += xx_min
+    xx_max = xx.max()
+    xx = xx / xx_max * (width-1)
+
+    yy = np.sin(x)
+    yy_min = np.abs(yy.min())
+    yy += yy_min
+    yy_max = yy.max()
+    yy = yy / yy_max * (height - 1)
+
+    return (yy, xx)
+
+def get_circle_mask(shape, center, radius):
+    """
+        Get a circle shaped mask
+
+        Parameters
+        -------
+        shape: (height, width) of the mask in pixels
+        center: (y_center, x_center) in pixels
+        radius: radius of the circle in pixels
+
+        Returns
+        -------
+        mask: 2D boolean numpy array
+    """
+    radius *= 2
+    height, width = shape
+    y_c, x_c = center
+    n_numbers = max(shape)*3
+
+    x = np.linspace(0, 2 * np.pi, n_numbers)
+
+    xx = np.cos(x)
+    xx_min = np.abs(xx.min())
+    xx += xx_min # get rid of the negative values
+    xx_max = xx.max()
+    xx = xx / xx_max * radius # normalize between 0 and 1
+
+    yy = np.sin(x)
+    yy_min = np.abs(yy.min())
+    yy += yy_min
+    yy_max = yy.max()
+    yy = yy / yy_max * radius
+
+    grid = np.zeros([height, width])
+
+    radii = np.linspace(0, 1, radius)
+    for j in range(len(radii)):
+        r = radii[j]
+        xxx = r * xx
+        xxx = xxx - xxx.max() / 2 + x_c
+        yyy = r * yy
+        yyy = yyy - yyy.max() / 2 + y_c
+        grid[xxx.astype(int), yyy.astype(int)] = 1
+
+    return grid
+
+def get_annulus_mask(shape, center, inner_radius, outer_radius):
+    """
+           Get an annulus shaped mask
+
+           Parameters
+           -------
+           shape: (height, width) of the mask in pixels
+           radius: radius of the circle in pixels
+           center: width of the annulus in pixels
+
+           Returns
+           -------
+           mask: 2D boolean numpy array
+       """
+
+    mask1 = get_circle_mask(shape, center, inner_radius)
+    mask2 = get_circle_mask(shape, center, outer_radius)
+    mask = np.logical_xor(mask1, mask2)
+
+    return mask
+
+def pad_img(img, padding, ppd, val):
+    """
+    padding: degrees visual angle (top, bottom, left, right)
+    """
+    padding_px = degrees_to_pixels(padding, ppd)
+    padding_top, padding_bottom, padding_left, padding_right = padding_px
+    return np.pad(img, ((padding_top, padding_bottom), (padding_left, padding_right)), 'constant', constant_values=val)
+
+def compare_plots(plots):
+    M = len(plots)
+    for i, (plot_name, plot) in enumerate(plots.items()):
+        plt.subplot(1,M,i+1)
+        plt.title(plot_name)
+        plt.imshow(plot, cmap='gray')
+    plt.show()

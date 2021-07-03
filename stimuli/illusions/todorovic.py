@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import numpy as np
 import math
 
@@ -25,21 +26,19 @@ def todorovic_illusion(target_padding=(60,60,60,60), covers_size=(30,30), spacin
     covers_height, covers_width = covers_size
     target_top, target_bottom, target_left, target_right = target_padding
 
-    width = padding_left + covers_width*2 + spacing + padding_right
-    height = padding_top + covers_height*2 + spacing + padding_bottom
+    width = covers_width*2 + spacing
+    height = covers_height*2 + spacing
 
     img = np.ones((height, width)) * back
+    img[target_top:height-target_bottom, target_left:width-target_right] = target
 
-    # put target square on image
+    img[:covers_height, :covers_width] = grid # top left square
+    img[:covers_height, -covers_width:] = grid # top right square
+    img[-covers_height:, :covers_width] = grid # bottom left square
+    img[-covers_height:, -covers_width:] = grid # bottom right square
 
-    img[target_top:-target_bottom, target_left:-target_right] = target
-
-
-    img[padding_top:padding_top+covers_height, padding_left:padding_left+covers_width] = grid # top left
-    img[padding_top:padding_top+covers_height, padding_left+covers_width+spacing:-padding_right] = grid # top right
-    img[padding_top+covers_height+spacing:-padding_bottom, padding_left:padding_left+covers_width] = grid # bottom left
-    img[padding_top+covers_height+spacing:-padding_bottom, padding_left+covers_width+spacing:-padding_right] = grid # bottom right
-
+    img = np.pad(img, ((padding_top, padding_bottom), (padding_left, padding_right)),
+                 mode='constant', constant_values=back)
 
     # create right half of stimulus
     if double:
@@ -51,12 +50,45 @@ def todorovic_illusion(target_padding=(60,60,60,60), covers_size=(30,30), spacin
 
 
 def domijan2015():
-    return todorovic_illusion(target_padding=(29,30,29,30), covers_size=(31,31), spacing=9, padding=(14,15,14,15), back=1., grid=9., target=5., double=True)
+    return todorovic_illusion(target_padding=(15,15,15,15), covers_size=(31,31), spacing=9, padding=(14,15,14,15), back=1., grid=9., target=5., double=True)
+
+def RHS2007_todorovic_equal():
+    target_padding = (0, 0, 0, 0)
+    covers_size = 30
+    spacing = 15
+    center_square_size = 2 * covers_size + spacing
+    padding_top, padding_bottom = center_square_size // 4, center_square_size // 4  # total height = 12
+    padding_left, padding_right = (int)(7 / 8 * center_square_size), (int)(7 / 8 * center_square_size)  # total width = 15
+    padding = (padding_top, padding_bottom, padding_left, padding_right)
+    return illusions.todorovic.todorovic_illusion(target_padding=target_padding, covers_size=(covers_size, covers_size),
+                                                  spacing=spacing, padding=padding, back=1., grid=0.)
+
+def RHS2007_todorovic_in_large():
+    unit = 10
+    covers_size = 3 * unit
+    spacing = 15
+    target_padding = (int)(2 * covers_size + spacing - 5.3 * unit) // 2
+    target_padding = (target_padding, target_padding, target_padding, target_padding)
+    center_square_size = 2 * covers_size + spacing
+    padding_top, padding_bottom = center_square_size // 4, center_square_size // 4  # total height = 12
+    padding_left, padding_right = (int)(7 / 8 * center_square_size), (int)(7 / 8 * center_square_size)  # total width = 15
+    padding = (padding_top, padding_bottom, padding_left, padding_right)
+    return illusions.todorovic.todorovic_illusion(target_padding=target_padding, covers_size=(covers_size, covers_size),
+                                                  spacing=spacing, padding=padding, back=1., grid=0.)
 
 
-
-
-
+def RHS2007_todorovic_in_small():
+    unit = 10
+    covers_size = 3 * unit
+    spacing = 15
+    target_padding = (int)(2 * covers_size + spacing - 3 * unit) // 2
+    target_padding = (target_padding, target_padding, target_padding, target_padding)
+    center_square_size = 2 * covers_size + spacing
+    padding_top, padding_bottom = center_square_size // 4, center_square_size // 4  # total height = 12
+    padding_left, padding_right = (int)(7 / 8 * center_square_size), (int)(7 / 8 * center_square_size)  # total width = 15
+    padding = (padding_top, padding_bottom, padding_left, padding_right)
+    return illusions.todorovic.todorovic_illusion(target_padding=target_padding, covers_size=(covers_size, covers_size),
+                                                  spacing=spacing, padding=padding, back=1., grid=0.)
 
 
 # This function comes from the lightness module that has been integrated inside the illusions dir.
@@ -97,4 +129,3 @@ def todorovic_lightness(coc, vert_rep, horz_rep):
     if vert_rep % 2 != 0:
         stim = np.vstack((stim, stim[0:coc.shape[0], :]))
     return stim
-

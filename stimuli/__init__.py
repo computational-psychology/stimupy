@@ -3,5 +3,5 @@ from . import illusions
 from . import lightness
 from . import texture
 from . import transparency
-from . import papers_stimuli
-from . import utils
+from . import papers
+from .utils import utils

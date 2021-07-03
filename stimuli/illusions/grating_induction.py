@@ -1,32 +1,47 @@
 import numpy as np
 from scipy.ndimage.filters import gaussian_filter
+from stimuli.utils import degrees_to_pixels, pad_img
 
+import stimuli
 
 ###################################
 #        Grating induction        #
 ###################################
-def grating_induction(n_grid, width_target, blur):
-    # Inputs:
-    #   - n_grid: number of black and white stripes (int, unit: pixels)
-    #   - width_target: width of the target (float, unit: pixels)
-    #   - blur: amount of blur added (float)
+def grating_illusion(shape=(10,10), ppd=40, frequency=0.5, target_height=0.5, blur=None, high=1., low=0., target=.5, start='low', period='ignore', padding=(2,2,2,2)):
+    if blur == None:
+        blur = shape[0]/2
 
-    # Create grid
-    grid = np.zeros([n_grid, n_grid], dtype=np.float32)
-    grid[:, ::2] = 1
-    grid[:, 1::2] = 0
+    height_px, width_px = degrees_to_pixels(shape, ppd)
+    target_height_px = degrees_to_pixels(target_height, ppd)
 
-    # Increase the resolution of the grid for blurring it later:
-    res_factor = 50
-    grid = np.repeat(grid, res_factor, axis=0)
-    grid = np.repeat(grid, res_factor, axis=1)
-    grid = gaussian_filter(grid, blur)
+    img, pixels_per_cycle = stimuli.illusions.square_wave(shape, ppd, frequency, high, low, period, start)
+    img = gaussian_filter(img, blur)
+    mask = np.zeros((height_px, width_px))
 
-    # Place target on blurred grid
-    n_grid = n_grid*res_factor
-    width_target = int(width_target*res_factor)
-    if width_target % 2 == 0:
-        grid[int(n_grid/2-width_target/2):int(n_grid/2+width_target/2), :] = 0.5
-    else:
-        grid[int(n_grid/2-width_target/2-1):int(n_grid/2+width_target/2), :] = 0.5
-    return grid
+    target_start = height_px//2 - target_height_px//2
+    target_end = target_start + target_height_px
+    img[target_start:target_end, :] = target
+    mask[target_start:target_end, :] = True
+
+    img = pad_img(img, padding, ppd, target)
+    mask = pad_img(mask, padding, ppd, 0)
+
+    return (img, mask)
+
+def RHS2007_grating_induction():
+    total_height, total_width, ppd = (32,)*3
+    n_cycles = 4
+    height, width = 12, 16
+    frequency = n_cycles / width
+    padding_horizontal = (total_width - width) / 2
+    padding_vertical = (total_height - height) / 2
+    padding = (padding_vertical, padding_vertical, padding_horizontal, padding_horizontal)
+    img = stimuli.illusions.grating_induction.grating_illusion(shape=(height, width), ppd=ppd, frequency=frequency, target_height=1, blur=10, start='high', padding=padding)
+    return img
+
+
+if __name__ == '__main__':
+    import matplotlib.pyplot as plt
+    img, mask = grating_illusion()
+    plt.imshow(img, cmap='gray')
+    plt.show()
