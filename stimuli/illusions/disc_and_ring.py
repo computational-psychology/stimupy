@@ -3,9 +3,11 @@ from stimuli.utils.utils import degrees_to_pixels, resize_array
 from stimuli.Stimulus import Stimulus
 
 
-def disc_and_ring(shape=(10,10), radii=(9,5), values=(200, 100), bg=0, ppd=30, ssf=5):
-    #TODO: the parameters aren't analogous to the other stimuli
-    #TODO: figure out defeault parameters that create something that makes sense
+def disc_and_ring(
+    shape=(10, 10), radii=(4, 2), values=(0.5, 1), bg=0, ppd=30, ssf=5
+):
+    # TODO: the parameters aren't analogous to the other stimuli
+    # TODO: figure out defeault parameters that create something that makes sense
     """
     Create a disc and ring stimulus with an arbitrary number of rings.
 
@@ -58,8 +60,9 @@ def disc_and_ring(shape=(10,10), radii=(9,5), values=(200, 100), bg=0, ppd=30, s
     return stim
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import matplotlib.pyplot as plt
+
     img, mask = disc_and_ring()
-    plt.imshow(img, cmap='gray')
+    plt.imshow(img, cmap="gray")
     plt.show()
