@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import math
 
-from stimuli.utils import degrees_to_pixels, pad_img
+from stimuli.utils import degrees_to_pixels, pad_img, plot_stim
 from stimuli.Stimulus import Stimulus
 
 
@@ -79,7 +79,7 @@ def todorovic_illusion(target_shape=(4,4), ppd=10, covers_shape=(2.5, 2.5), spac
         mask = np.hstack([mask, stim2.target_mask])
 
     img = pad_img(img, padding, ppd, target)
-    mask = pad_img(mask, padding, ppd, target)
+    mask = pad_img(mask, padding, ppd, 0)
 
     stim = Stimulus()
     stim.img = img
@@ -144,13 +144,8 @@ def RHS2007_todorovic_in_small():
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
-    img, mask = todorovic_illusion()
-    plt.imshow(img, cmap='gray')
-    plt.show()
-
-
-
-
+    stim = todorovic_illusion()
+    plot_stim(stim, mask=True)
 
 
 # This function comes from the lightness module that has been integrated inside the illusions dir.

@@ -4,6 +4,7 @@ from .checkerboard_contrast_contrast import checkerboard_contrast_contrast_effec
 from .checkerboard_sbc import checkerboard_contrast
 from .cube import cube_illusion
 from .dungeon import dungeon_illusion
+from .disc_and_ring import disc_and_ring
 from .grating_induction import grating_illusion
 from .grating import grating_illusion
 from .hermann import hermann_grid

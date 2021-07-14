@@ -430,3 +430,15 @@ def compare_plots(plots):
         plt.title(plot_name)
         plt.imshow(plot, cmap='gray')
     plt.show()
+
+def plot_stim(stim, mask=False):
+    if not mask:
+        plt.imshow(stim.img, cmap='gray')
+    else:
+        plt.subplot(1,2,1)
+        plt.imshow(stim.img, cmap='gray')
+        plt.subplot(1,2,2)
+        plt.imshow(stim.target_mask, cmap='gray')
+
+    plt.tight_layout()
+    plt.show()

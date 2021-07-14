@@ -22,11 +22,11 @@ def white(shape=(10,10), ppd=50, frequency=0.5, high=1.0, low=0.0, target=0.5, p
     y_start = height//2 - target_height_px//2 - targets_offset
     y_end = y_start + target_height_px
 
-    for index in target_indices:
+    for i, index in enumerate(target_indices):
         x_start = index*phase_width
         x_end = x_start+phase_width
         img[y_start:y_end, x_start:x_end] = target
-        mask[y_start:y_end, x_start:x_end] = True
+        mask[y_start:y_end, x_start:x_end] = i+1
 
     if orientation == 'vertical':
         img = np.rot90(img, 3)
@@ -57,13 +57,15 @@ def circular_white(radius=5, ppd=50, frequency=1, high=1., low=0., target=.5, ta
     img = np.ones((height, width))*target
     mask = np.zeros((height, width))
 
+    mask_counter = 1
     for i in range(0, n_cycles):
         radius = circle_width*i
         annulus_mask = stimuli.utils.get_annulus_mask((height, width), (height//2, width//2), radius, radius+circle_width-1)
         img[annulus_mask] = st if i%2==0 else other
         if i in target_indices:
             img[annulus_mask] = target
-            mask[annulus_mask] = True
+            mask[annulus_mask] = mask_counter
+            mask_counter += 1
         else:
             img[annulus_mask] = st if i % 2 == 0 else other
 
@@ -119,6 +121,7 @@ def wheel_of_fortune_white(radius=10, ppd=50, n_cycles=5, target_width=0.7, targ
     # Divide circle in n_parts parts:
     x = np.linspace(0+angle_shift, 2*np.pi+angle_shift, int(n_parts+1))
 
+    mask_counter = 1
     for i in range(len(x)-1):
         xxx = np.linspace(x[i], x[i+1], int(n_numbers))
         xxxx = np.cos(xxx)
@@ -141,10 +144,16 @@ def wheel_of_fortune_white(radius=10, ppd=50, n_cycles=5, target_width=0.7, targ
             if i in target_indices:
                 # Place a single target inside the area
                 img[sep_x[int(n_numbers * (0.5 - target_width / 2)):int(n_numbers * (0.5 + target_width / 2))].astype(int),
-                     sep_y[int(n_numbers * (0.5 - target_width / 2)):int(n_numbers * (0.5 + target_width / 2))].astype(int)] = 0.5
+                     sep_y[int(n_numbers * (0.5 - target_width / 2)):int(n_numbers * (0.5 + target_width / 2))].astype(int)] = target
 
                 mask[sep_x[int(n_numbers * (0.5 - target_width / 2)):int(n_numbers * (0.5 + target_width / 2))].astype(int),
-                    sep_y[int(n_numbers * (0.5 - target_width / 2)):int(n_numbers * (0.5 + target_width / 2))].astype(int)] = True
+                    sep_y[int(n_numbers * (0.5 - target_width / 2)):int(n_numbers * (0.5 + target_width / 2))].astype(int)] = mask_counter
+        mask_counter += 1
+
+    mask_vals = np.unique(mask)
+    mask_vals = mask_vals[1:]
+    for i, val in enumerate(mask_vals):
+        mask[mask==val] = i+1
 
     img = pad_img(img, padding, ppd, target)
     mask = pad_img(mask, padding, ppd, 0)
@@ -190,7 +199,7 @@ def white_anderson(shape=(5,5), ppd=40, frequency=2, height_bars=1, height_horiz
         target_start = height_bars + (height_horizontal_top-target_height)//2 + offset
         target_end = target_start + target_height
         img[target_start:target_end, st:end] = target
-        mask[target_start:target_end, st:end] = True
+        mask[target_start:target_end, st:end] = i+1
 
     for i, ind in enumerate(target_indices_bottom):
         st = int(pixels_per_cycle/2 * ind)
@@ -200,7 +209,7 @@ def white_anderson(shape=(5,5), ppd=40, frequency=2, height_bars=1, height_horiz
         target_start = -height_bars - spacing_bottom + offset
         target_end = target_start + target_height
         img[target_start:target_end, st:end] = target
-        mask[target_start:target_end, st:end] = True
+        mask[target_start:target_end, st:end] = len(target_indices_top) + i + 1
 
     img = pad_img(img, padding, ppd, target)
     mask = pad_img(mask, padding, ppd, 0)
