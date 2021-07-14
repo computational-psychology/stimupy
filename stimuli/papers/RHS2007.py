@@ -81,16 +81,14 @@ def todorovic_out():
     pass
 
 def checkerboard_016():
-    #TODO: not available atm
-    pass
+    return stimuli.illusions.checkerboard_sbc.RHS2007_Checkerboard016()
 
 def checkerboard_094():
-    #TODO: not available atm
-    pass
+    return stimuli.illusions.checkerboard_sbc.RHS2007_Checkerboard0938()
 
 def checkerboard21():
-    #TODO: not available atm
-    pass
+    return stimuli.illusions.checkerboard_sbc.RHS2007_Checkerboard209()
+
 
 def corrugated_mondrian():
     #TODO: not available atm
