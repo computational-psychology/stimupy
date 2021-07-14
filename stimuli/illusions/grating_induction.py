@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.ndimage.filters import gaussian_filter
-from stimuli.utils import degrees_to_pixels, pad_img
+from stimuli.utils import degrees_to_pixels, pad_img, plot_stim
 from stimuli.Stimulus import Stimulus
 
 import stimuli
@@ -22,7 +22,7 @@ def grating_illusion(shape=(10,10), ppd=40, frequency=0.5, target_height=0.5, bl
     target_start = height_px//2 - target_height_px//2
     target_end = target_start + target_height_px
     img[target_start:target_end, :] = target
-    mask[target_start:target_end, :] = True
+    mask[target_start:target_end, :] = 1
 
     img = pad_img(img, padding, ppd, target)
     mask = pad_img(mask, padding, ppd, 0)
@@ -47,6 +47,5 @@ def RHS2007_grating_induction():
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
-    img, mask = grating_illusion()
-    plt.imshow(img, cmap='gray')
-    plt.show()
+    stim = grating_illusion()
+    plot_stim(stim, mask=True)

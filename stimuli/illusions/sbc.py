@@ -1,6 +1,6 @@
 import numpy as np
 import stimuli
-from stimuli.utils import degrees_to_pixels, pad_img
+from stimuli.utils import degrees_to_pixels, pad_img, plot_stim
 from stimuli.Stimulus import Stimulus
 
 
@@ -81,11 +81,8 @@ def RHS2007_sbc_small():
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
-    img, mask = simultaneous_brightness_contrast()
-    plt.imshow(img, cmap='gray')
-    plt.show()
-
-
+    stim = simultaneous_brightness_contrast()
+    plot_stim(stim, mask=True)
 
 
 ###################################

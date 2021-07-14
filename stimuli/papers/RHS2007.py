@@ -110,11 +110,11 @@ def todorovic_benary3_4():
 
 def bullseye_thin():
     # The parameters are mostly guessed
-    return illusions.bullseye.RHS2007_bullseye_thin(total_height, total_width, ppd)
+    return stimuli.illusions.bullseye.RHS2007_bullseye_thin()
 
 def bullseye_thick():
     # The parameters are mostly guessed
-    return illusions.bullseye.RHS2007_bullseye_thick(total_height, total_width, ppd)
+    return stimuli.illusions.bullseye.RHS2007_bullseye_thick()
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt

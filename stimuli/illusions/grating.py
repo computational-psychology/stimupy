@@ -1,9 +1,9 @@
 import numpy as np
-from stimuli.utils import degrees_to_pixels, pad_img
+from stimuli.utils import degrees_to_pixels, pad_img, plot_stim
 from stimuli.Stimulus import Stimulus
 
 
-def grating_illusion(ppd=10, n_bars=5, target_length=1, bar_width=1.0, bar_height=8.0, padding=(1.0,1.0,1.0,1.0), back=0., grid=1., target=0.5, double=True):
+def grating_illusion(ppd=10, n_bars=5, target_length=2, bar_width=1.0, bar_height=8.0, padding=(1.0,1.0,1.0,1.0), back=0., grid=1., target=0.5, double=True):
     """
     Grating illusion
 
@@ -32,7 +32,8 @@ def grating_illusion(ppd=10, n_bars=5, target_length=1, bar_width=1.0, bar_heigh
 
     target_offset = (n_bars-target_length)//2
     arr[target_offset:target_offset+target_length] = target
-    mask_arr[target_offset:target_offset+target_length] = True
+    for i, j in enumerate(range(target_offset,target_offset+target_length)):
+        mask_arr[j] = i+1
 
     # final image array
     width_px = (n_bars*2-1)*bar_width_px
@@ -41,10 +42,11 @@ def grating_illusion(ppd=10, n_bars=5, target_length=1, bar_width=1.0, bar_heigh
     mask = np.zeros((height_px, width_px))
 
     for i, val in np.ndenumerate(arr):
-        mask_val = val==target
+        target_val = val==target
         x = i[0]*2*bar_width_px
         img[:, x:x+bar_width_px] = val
-        mask[:, x:x+bar_width_px] = mask_val
+        if target_val:
+            mask[:, x:x+bar_width_px] = mask_arr[i]
 
     img = pad_img(img, padding, ppd, back)
     mask = pad_img(mask, padding, ppd, 0)
@@ -68,6 +70,5 @@ def domijan2015():
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
-    img, mask = grating_illusion()
-    plt.imshow(img, cmap='gray')
-    plt.show()
+    stim = grating_illusion()
+    plot_stim(stim, mask=True)

@@ -1,5 +1,5 @@
 import numpy as np
-from stimuli.utils import degrees_to_pixels, pad_img
+from stimuli.utils import degrees_to_pixels, pad_img, plot_stim
 from stimuli.Stimulus import Stimulus
 
 
@@ -36,14 +36,18 @@ def dungeon_illusion(ppd=10, n_cells=5, target_radius=1, cell_size=1.0, padding=
     # add targets
     idx = radii <= (target_radius * 2)
     arr[idx] = target
-    mask_arr[idx] = True
+    mask_arr[idx] = 1
 
     # compute and apply grid mask
     grid_mask = [[(False if i % 2 == 0 and j % 2 == 0 else True) for i in range(n_cells * 2 - 1)] for j in
             range(n_cells * 2 - 1)]
     grid_mask = np.array(grid_mask)
     arr[grid_mask] = back
-    mask_arr[grid_mask] = False
+    mask_arr[grid_mask] = 0
+
+    ind1, ind2 = np.nonzero(mask_arr)
+    for i in range(len(ind1)):
+        mask_arr[ind1[i], ind2[i]] = i+1
 
     img = np.repeat(np.repeat(arr, cell_size_px, axis=0), cell_size_px, axis=1)
     img = pad_img(img, padding, ppd, back)
@@ -68,6 +72,5 @@ def domijan2015():
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
-    img, mask = dungeon_illusion()
-    plt.imshow(img, cmap='gray')
-    plt.show()
+    stim = dungeon_illusion()
+    plot_stim(stim, mask=True)
