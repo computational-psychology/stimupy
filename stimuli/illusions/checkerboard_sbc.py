@@ -1,5 +1,5 @@
 import numpy as np
-from stimuli.utils import degrees_to_pixels, pad_img
+from stimuli.utils import degrees_to_pixels, pad_img, plot_stim
 from stimuli.Stimulus import Stimulus
 
 def checkerboard_contrast(ppd=10, n_checks=8, check_size=1.0, target1_coords=(3, 2), target2_coords=(5, 5), extend_targets=False,
@@ -35,16 +35,16 @@ def checkerboard_contrast(ppd=10, n_checks=8, check_size=1.0, target1_coords=(3,
     arr[target1_coords] = target
     arr[target2_coords] = target
 
-    mask[target1_coords] = True
-    mask[target2_coords] = True
+    mask[target1_coords] = 1
+    mask[target2_coords] = 2
 
     if extend_targets:
         for idx in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
             arr[target1_coords[0] + idx[0], target1_coords[1] + idx[1]] = target
             arr[target2_coords[0] + idx[0], target2_coords[1] + idx[1]] = target
 
-            mask[target1_coords[0] + idx[0], target1_coords[1] + idx[1]] = True
-            mask[target2_coords[0] + idx[0], target2_coords[1] + idx[1]] = True
+            mask[target1_coords[0] + idx[0], target1_coords[1] + idx[1]] = 1
+            mask[target2_coords[0] + idx[0], target2_coords[1] + idx[1]] = 2
 
     img = np.repeat(np.repeat(arr, check_size_px, axis=0), check_size_px, axis=1)
     mask = np.repeat(np.repeat(mask, check_size_px, axis=0), check_size_px, axis=1)
@@ -68,6 +68,5 @@ def domijan2015_extended():
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
-    img, mask = checkerboard_contrast()
-    plt.imshow(img, cmap='gray')
-    plt.show()
+    stim = checkerboard_contrast()
+    plot_stim(stim, mask=True)

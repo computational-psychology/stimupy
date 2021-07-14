@@ -1,5 +1,5 @@
 import numpy as np
-from stimuli.utils import degrees_to_pixels, pad_img
+from stimuli.utils import degrees_to_pixels, pad_img, plot_stim
 from stimuli.Stimulus import Stimulus
 
 
@@ -37,7 +37,13 @@ def checkerboard_contrast_contrast_effect(ppd=10, n_checks=8, check_size=1.0, ta
     tpos = (n_checks - target_length) // 2
     idx[tpos:tpos + target_length, tpos:tpos + target_length] = True
     arr1[idx] = alpha * arr1[idx] + (1 - alpha) * tau
-    mask_arr1[idx] = True
+    mask_counter = 1
+    for i, _ in enumerate(idx):
+        for j, el in enumerate(_):
+            if el:
+                mask_arr1[i,j] = mask_counter
+                mask_counter += 1
+
 
     arr2 = arr1.copy()
     arr2[~idx] = tau
@@ -70,6 +76,5 @@ def domijan2015():
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
-    img, mask = checkerboard_contrast_contrast_effect()
-    plt.imshow(img, cmap='gray')
-    plt.show()
+    stim = checkerboard_contrast_contrast_effect()
+    plot_stim(stim, mask=True)

@@ -1,9 +1,9 @@
 import numpy as np
-from stimuli.utils import degrees_to_pixels, pad_img
+from stimuli.utils import degrees_to_pixels, pad_img, plot_stim
 from stimuli.Stimulus import Stimulus
 
 
-def cube_illusion(ppd=10, n_cells=4, target_length=1, cell_long=1.5, cell_short=1.0, corner_cell_width=1.8, corner_cell_height=1.8,
+def cube_illusion(ppd=10, n_cells=5, target_length=2, cell_long=1.5, cell_short=1.0, corner_cell_width=1.8, corner_cell_height=1.8,
                   cell_spacing=.5, padding=(1.0,1.0,1.0,1.0), occlusion_overlap=(.7,.7,.7,.7), back=0., grid=1., target=.5, double=True):
 
 
@@ -50,47 +50,59 @@ def cube_illusion(ppd=10, n_cells=4, target_length=1, cell_long=1.5, cell_short=
 
     img = np.ones((height_px, width_px)) * back
     mask = np.zeros((height_px, width_px))
+    mask_counter = 0
 
     for i, val in np.ndenumerate(arr):
-        mask_val = val == target
+        target_cell = val==target
+        if target_cell:
+            mask_counter += 1
         if i[0] in range(1, n_cells-1) and i[1] in range(1, n_cells-1):
             continue  # skip centre cells for efficiency
         elif i == (0,0):  # top left corner cell
             img[:corner_cell_height_px, :corner_cell_width_px] = val
-            mask[:corner_cell_height_px, :corner_cell_width_px] = mask_val
+            if target_cell:
+                mask[:corner_cell_height_px, :corner_cell_width_px] = mask_counter
 
         elif i == (0, n_cells-1): # top right corner cell
             img[:corner_cell_height_px, -corner_cell_width_px:] = val
-            mask[:corner_cell_height_px, -corner_cell_width_px:] = mask_val
+            if target_cell:
+                mask[:corner_cell_height_px, -corner_cell_width_px:] = mask_counter
 
         elif i == (n_cells-1, 0): # bottom left corner cell
             img[-corner_cell_height_px:, :corner_cell_width_px] = val
-            mask[-corner_cell_height_px:, :corner_cell_width_px] = mask_val
+            if target_cell:
+                mask[-corner_cell_height_px:, :corner_cell_width_px] = mask_counter
 
         elif i == (n_cells - 1, n_cells-1):  # bottom right corner cell
             img[-corner_cell_height_px:, -corner_cell_width_px:] = val
-            mask[-corner_cell_height_px:, -corner_cell_width_px:] = mask_val
+            if target_cell:
+                mask[-corner_cell_height_px:, -corner_cell_width_px:] = mask_counter
 
         else:
             if i[0] == 0 or i[0] == n_cells -1: # top/bottom side
                 x = corner_cell_width_px + cell_spacing_px + (i[1] - 1) * (cell_long_px + cell_spacing_px)
                 if i[0] == 0: # top side
                     img[:cell_short_px, x:x + cell_long_px] = val
-                    mask[:cell_short_px, x:x + cell_long_px] = mask_val
+                    if target_cell:
+                        mask[:cell_short_px, x:x + cell_long_px] = mask_counter
                 else: # bottom side
                     img[-cell_short_px:, x:x + cell_long_px] = val
-                    mask[-cell_short_px:, x:x + cell_long_px] = mask_val
+                    if target_cell:
+                        mask[-cell_short_px:, x:x + cell_long_px] = mask_counter
 
             else: # left/right side
                 y = corner_cell_width_px + cell_spacing_px + (i[0] - 1) * (cell_long_px + cell_spacing_px)
 
                 if i[1] == 0: # left side
                     img[y:y + cell_long_px, :cell_short_px] = val
-                    mask[y:y + cell_long_px, :cell_short_px] = mask_val
+                    if target_cell:
+                        mask[y:y + cell_long_px, :cell_short_px] = mask_counter
 
                 else: # right side
                     img[y:y + cell_long_px, -cell_short_px:] = val
-                    mask[y:y + cell_long_px, -cell_short_px:] = mask_val
+                    if target_cell:
+                        mask[y:y + cell_long_px, -cell_short_px:] = mask_counter
+
 
 
     # add occlusion
@@ -128,6 +140,5 @@ def domijan2015():
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
-    img, mask = cube_illusion()
-    plt.imshow(img, cmap='gray')
-    plt.show()
+    stim = cube_illusion()
+    plot_stim(stim, mask=True)
