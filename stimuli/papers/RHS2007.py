@@ -83,10 +83,10 @@ def todorovic_out():
 def checkerboard_016():
     return stimuli.illusions.checkerboard_sbc.RHS2007_Checkerboard016()
 
-def checkerboard_094():
+def checkerboard_0938():
     return stimuli.illusions.checkerboard_sbc.RHS2007_Checkerboard0938()
 
-def checkerboard21():
+def checkerboard209():
     return stimuli.illusions.checkerboard_sbc.RHS2007_Checkerboard209()
 
 
@@ -136,7 +136,11 @@ if __name__ == "__main__":
             "sbc_small": sbc_small,
             "todorovic_equal": todorovic_equal,
             "todorovic_in_large": todorovic_in_large,
-            "todorovic_in_small": todorovic_in_small
+            "todorovic_in_small": todorovic_in_small,
+            "checkerboard_0.16": checkerboard_016,
+            "checkerboard_0.938": checkerboard_0938,
+            "checherboard_2.09": checkerboard209
+
         }
 
         M = len(stims)
