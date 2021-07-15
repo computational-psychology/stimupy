@@ -154,6 +154,7 @@ if __name__ == "__main__":
 
             if st.target_mask is not None:
                 plt.subplot(M, 2, 2 * i + 2)
+                plt.colorbar()
                 plt.title(stim_name + " - mask")
                 plt.imshow(st.target_mask, cmap='gray')
 
