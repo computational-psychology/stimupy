@@ -35,7 +35,7 @@ def simultaneous_brightness_contrast(ppd=10, target_shape=(5,5), padding=(2,2,2,
 
     mask1 = pad_img(mask, inner_padding, ppd, 0)
     mask2 = pad_img(mask, inner_padding, ppd, 0)
-    mask = np.hstack((mask1, mask2))
+    mask = np.hstack((mask1, mask2*2))
 
     img = pad_img(img, padding, ppd, target)
     mask = pad_img(mask, padding, ppd, 0)
