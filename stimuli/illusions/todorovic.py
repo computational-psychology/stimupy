@@ -76,7 +76,7 @@ def todorovic_illusion(target_shape=(4,4), ppd=10, covers_shape=(2.5, 2.5), spac
         stim2 = todorovic_illusion(target_shape=target_shape, ppd=ppd, covers_shape=covers_shape, spacing=spacing,
                                   padding=(0,0,0,0), inner_padding=inner_padding, back=grid, grid=back, target=target, double=False)
         img = np.hstack([img, stim2.img])
-        mask = np.hstack([mask, stim2.target_mask])
+        mask = np.hstack([mask, stim2.target_mask*2])
 
     img = pad_img(img, padding, ppd, target)
     mask = pad_img(mask, padding, ppd, 0)
