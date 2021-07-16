@@ -140,23 +140,25 @@ if __name__ == "__main__":
             "checkerboard_0.16": checkerboard_016,
             "checkerboard_0.938": checkerboard_0938,
             "checherboard_2.09": checkerboard209
-
         }
 
-        M = len(stims)
-        plt.figure(figsize=(8, M*3))
+        a = math.ceil(math.sqrt(len(stims)))
+        plt.figure(figsize=(a*3, a*3))
         for i, (stim_name, stim) in enumerate(stims.items()):
             print("Generating", stim_name+"")
             st = stim()
-            plt.subplot(M, 2, 2 * i + 1)
-            plt.title(stim_name + " - img")
-            plt.imshow(st.img, cmap='gray')
+            img, mask = st.img, st.target_mask
+            img = np.dstack([img, img, img])
 
-            if st.target_mask is not None:
-                plt.subplot(M, 2, 2 * i + 2)
-                plt.colorbar()
-                plt.title(stim_name + " - mask")
-                plt.imshow(st.target_mask, cmap='gray')
+            mask = np.insert(np.expand_dims(mask, 2), 1, 0, axis=2)
+            mask = np.insert(mask, 2, 0, axis=2)
+            final = mask + img
+            final /= np.max(final)
+
+            plt.subplot(a, a, i + 1)
+            plt.title(stim_name + " - img")
+            plt.imshow(final)
+
 
         plt.tight_layout()
 
