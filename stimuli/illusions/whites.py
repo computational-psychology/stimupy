@@ -238,8 +238,8 @@ def RHS2007_WE_thin_wide():
     padding_horizontal = (total_width - width) / 2
     padding_vertical = (total_height - height) / 2
     padding = (padding_vertical, padding_vertical, padding_horizontal, padding_horizontal)
-    target_height = 4
-    return stimuli.illusions.whites.white(shape=(height, width), ppd=ppd, frequency=frequency, start='low', target_indices=(3, 12), padding=padding, target_height=target_height)
+    target_height = 2
+    return stimuli.illusions.whites.white(shape=(height, width), ppd=ppd, frequency=frequency, start='high', target_indices=(3, 12), padding=padding, target_height=target_height)
 
 def RHS2007_WE_dual():
     total_height, total_width, ppd = (32,)*3
