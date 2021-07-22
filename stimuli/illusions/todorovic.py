@@ -6,7 +6,7 @@ from stimuli.utils import degrees_to_pixels, pad_img, plot_stim
 from stimuli.Stimulus import Stimulus
 
 
-def todorovic_illusion(target_shape=(4,4), ppd=10, covers_shape=(2.5, 2.5), spacing=(1.5,1.5,1.5,1.5), inner_padding=(3,3,3,3), padding=(2,2,2,2), back=0., grid=1., target=.5, double=True):
+def todorovic_illusion(target_shape=(4,4), ppd=10, covers_shape=(2.5, 2.5), spacing=(1.5,1.5,1.5,1.5), padding=(2,2,2,2), back=0., grid=1., target=.5, double=True):
     """
     Todorovic's illusion
 
@@ -29,16 +29,16 @@ def todorovic_illusion(target_shape=(4,4), ppd=10, covers_shape=(2.5, 2.5), spac
     target_height_px, target_width_px = degrees_to_pixels(target_shape, ppd)
 
     img = np.ones((target_height_px, target_width_px)) * target
-    img = pad_img(img, inner_padding, ppd, back)
+    img = pad_img(img, padding, ppd, back)
 
     mask = np.ones((target_height_px, target_width_px))
-    mask = pad_img(mask, inner_padding, ppd, 0)
+    mask = pad_img(mask, padding, ppd, 0)
 
-    inner_padding_px = degrees_to_pixels(inner_padding, ppd)
-    inner_padding_top_px, inner_padding_bottom_px, inner_padding_left_px, inner_padding_right_px = inner_padding_px
+    padding_px = degrees_to_pixels(padding, ppd)
+    padding_top_px, padding_bottom_px, padding_left_px, padding_right_px = padding_px
 
-    width_px = inner_padding_left_px + target_width_px + inner_padding_right_px
-    height_px = inner_padding_top_px + target_height_px + inner_padding_bottom_px
+    width_px = padding_left_px + target_width_px + padding_right_px
+    height_px = padding_top_px + target_height_px + padding_bottom_px
 
     cover_height_px, cover_width_px = degrees_to_pixels(covers_shape, ppd)
     spacing_px = degrees_to_pixels(spacing, ppd)
@@ -74,12 +74,12 @@ def todorovic_illusion(target_shape=(4,4), ppd=10, covers_shape=(2.5, 2.5), spac
     # create right half of stimulus
     if double:
         stim2 = todorovic_illusion(target_shape=target_shape, ppd=ppd, covers_shape=covers_shape, spacing=spacing,
-                                  padding=(0,0,0,0), inner_padding=inner_padding, back=grid, grid=back, target=target, double=False)
+                                  padding=padding, back=grid, grid=back, target=target, double=False)
         img = np.hstack([img, stim2.img])
         mask = np.hstack([mask, stim2.target_mask*2])
 
-    img = pad_img(img, padding, ppd, target)
-    mask = pad_img(mask, padding, ppd, 0)
+    #img = pad_img(img, padding, ppd, target)
+    #mask = pad_img(mask, padding, ppd, 0)
 
     stim = Stimulus()
     stim.img = img
@@ -88,8 +88,8 @@ def todorovic_illusion(target_shape=(4,4), ppd=10, covers_shape=(2.5, 2.5), spac
     return stim
 
 def domijan2015():
-    return todorovic_illusion(target_shape=(4.1, 4.1), ppd=10, covers_shape=(3.1, 3.1), spacing=(1.5, 1.5, 1.5, 1.5), inner_padding=(2.9,3.0, 2.9,3.0 ),
-                              padding=(0,0,0,0), grid=9., back=1., target=5.)
+    return todorovic_illusion(target_shape=(4.1, 4.1), ppd=10, covers_shape=(3.1, 3.1), spacing=(1.5, 1.5, 1.5, 1.5), padding=(2.9,3.0, 2.9,3.0 ),
+                              grid=9., back=1., target=5.)
 
 def RHS2007_todorovic_equal():
     total_height, total_width, ppd = (32,)*3
@@ -99,13 +99,24 @@ def RHS2007_todorovic_equal():
     inner_padding_vertical, inner_padding_horizontal = (height - target_height) / 2, (width - target_width) / 2
     inner_padding = (inner_padding_vertical, inner_padding_vertical, inner_padding_horizontal, inner_padding_horizontal)
 
-    padding_vertical, padding_horizontal = (total_height - height) / 2, (total_width - 2 * width) / 2
-    padding = (padding_vertical, padding_vertical, padding_horizontal, padding_horizontal)
-
     covers_shape = (0.4 * 8,) * 2
     spacing = (0,) * 4
-    return todorovic_illusion(target_shape=(target_height, target_width), ppd=ppd, covers_shape=covers_shape, spacing=spacing,
-                                                          inner_padding=inner_padding, padding=padding, back=1., grid=0.)
+
+    back, grid, target = 1., 0., .5
+    stim = todorovic_illusion(target_shape=(target_height, target_width), ppd=ppd, covers_shape=covers_shape, spacing=spacing,
+                                                         padding=inner_padding, back=back, grid=grid, target=target)
+    height_px, width_px = stim.img.shape
+
+    padding_vertical_top = degrees_to_pixels( (total_height - height) / 2, ppd)
+    padding_vertical_bottom = 1024 - padding_vertical_top - height_px
+    padding_horizontal_left = degrees_to_pixels( (total_width - width*2) / 2, ppd)
+    padding_horizontal_right = 1024 - padding_horizontal_left - width_px
+
+    stim.img = np.pad(stim.img, ((padding_vertical_top, padding_vertical_bottom), (padding_horizontal_left, padding_horizontal_right)), 'constant', constant_values=target)
+    stim.target_mask = np.pad(stim.target_mask, ((padding_vertical_top, padding_vertical_bottom), (padding_horizontal_left, padding_horizontal_right)), 'constant', constant_values=0)
+
+    return stim
+
 
 def RHS2007_todorovic_in_large():
     total_height, total_width, ppd = (32,)*3
@@ -115,14 +126,23 @@ def RHS2007_todorovic_in_large():
     inner_padding_vertical, inner_padding_horizontal = (height - target_height) / 2, (width - target_width) / 2
     inner_padding = (inner_padding_vertical, inner_padding_vertical, inner_padding_horizontal, inner_padding_horizontal)
 
-    padding_vertical, padding_horizontal = (total_height - height) / 2, (total_width - 2 * width) / 2
-    padding = (padding_vertical, padding_vertical, padding_horizontal, padding_horizontal)
-
     covers_shape = (0.4 * 8,) * 2
     spacing = ((8 - 5.3) / 2,) * 4
 
-    return todorovic_illusion(target_shape=(target_height, target_width), ppd=ppd, covers_shape=covers_shape, spacing=spacing,
-                              inner_padding=inner_padding, padding=padding, back=1., grid=0.)
+    back, grid, target = 1., 0., .5
+    stim = todorovic_illusion(target_shape=(target_height, target_width), ppd=ppd, covers_shape=covers_shape, spacing=spacing,
+                              padding=inner_padding, back=back, grid=grid, target=target)
+    height_px, width_px = stim.img.shape
+
+    padding_vertical_top = degrees_to_pixels( (total_height - height) / 2, ppd)
+    padding_vertical_bottom = 1024 - padding_vertical_top - height_px
+    padding_horizontal_left = degrees_to_pixels( (total_width - width*2) / 2, ppd)
+    padding_horizontal_right = 1024 - padding_horizontal_left - width_px
+
+    stim.img = np.pad(stim.img, ((padding_vertical_top, padding_vertical_bottom), (padding_horizontal_left, padding_horizontal_right)), 'constant', constant_values=target)
+    stim.target_mask = np.pad(stim.target_mask, ((padding_vertical_top, padding_vertical_bottom), (padding_horizontal_left, padding_horizontal_right)), 'constant', constant_values=0)
+
+    return stim
 
 
 def RHS2007_todorovic_in_small():
@@ -133,14 +153,23 @@ def RHS2007_todorovic_in_small():
     inner_padding_vertical, inner_padding_horizontal = (height - target_height) / 2, (width - target_width) / 2
     inner_padding = (inner_padding_vertical, inner_padding_vertical, inner_padding_horizontal, inner_padding_horizontal)
 
-    padding_vertical, padding_horizontal = (total_height - height) / 2, (total_width - 2 * width) / 2
-    padding = (padding_vertical, padding_vertical, padding_horizontal, padding_horizontal)
-
     covers_shape = (0.4 * 8,) * 2
     spacing = ((8 - 3) / 2,) * 4
-    return todorovic_illusion(target_shape=(target_height, target_width), ppd=ppd, covers_shape=covers_shape, spacing=spacing,
-                              inner_padding=inner_padding, padding=padding, back=1., grid=0.)
 
+    back, grid, target = 1., 0., .5
+    stim = todorovic_illusion(target_shape=(target_height, target_width), ppd=ppd, covers_shape=covers_shape, spacing=spacing,
+                              padding=inner_padding, back=back, grid=grid, target=target)
+    height_px, width_px = stim.img.shape
+
+    padding_vertical_top = degrees_to_pixels((total_height - height) / 2, ppd)
+    padding_vertical_bottom = 1024 - padding_vertical_top - height_px
+    padding_horizontal_left = degrees_to_pixels((total_width - width * 2) / 2, ppd)
+    padding_horizontal_right = 1024 - padding_horizontal_left - width_px
+
+    stim.img = np.pad(stim.img, ((padding_vertical_top, padding_vertical_bottom), (padding_horizontal_left, padding_horizontal_right)), 'constant', constant_values=target)
+    stim.target_mask = np.pad(stim.target_mask, ((padding_vertical_top, padding_vertical_bottom), (padding_horizontal_left, padding_horizontal_right)), 'constant', constant_values=0)
+
+    return stim
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt

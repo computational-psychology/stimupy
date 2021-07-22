@@ -45,9 +45,10 @@ def dungeon_illusion(ppd=10, n_cells=5, target_radius=1, cell_size=1.0, padding=
     arr[grid_mask] = back
     mask_arr[grid_mask] = 0
 
-    ind1, ind2 = np.nonzero(mask_arr)
-    for i in range(len(ind1)):
-        mask_arr[ind1[i], ind2[i]] = i+1
+    # This is used to number each target square individually instead of giving them all an index of 1
+    # ind1, ind2 = np.nonzero(mask_arr)
+    # for i in range(len(ind1)):
+    #     mask_arr[ind1[i], ind2[i]] = i+1
 
     img = np.repeat(np.repeat(arr, cell_size_px, axis=0), cell_size_px, axis=1)
     img = pad_img(img, padding, ppd, back)
@@ -58,7 +59,7 @@ def dungeon_illusion(ppd=10, n_cells=5, target_radius=1, cell_size=1.0, padding=
     if double:
         stim2 = dungeon_illusion(ppd=ppd, n_cells=n_cells, target_radius=target_radius, cell_size=cell_size, padding=padding,  back=grid, grid=back, target=target, double=False)
         img = np.hstack([img, stim2.img])
-        mask = np.hstack([mask, stim2.target_mask])
+        mask = np.hstack([mask, stim2.target_mask*2])
 
     stim = Stimulus()
     stim.img = img

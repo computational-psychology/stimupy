@@ -1,12 +1,11 @@
 import numpy as np
-
+from stimuli.utils import plot_stim
 
 ###################################
 #           Hermann Grid          #
 ###################################
-def hermann_grid(n_grid=1000, space=100):
+def hermann_grid(n_grid=100, space=5):
     #TODO: the parameters aren't analogous to the other stimuli
-    #TODO: figure out the default parameters that results in something that makes sense
 
     grid = np.zeros([n_grid, n_grid], dtype=np.float32)
     grid[::space, :] = 1
@@ -16,5 +15,6 @@ def hermann_grid(n_grid=1000, space=100):
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
-    plt.imshow(hermann_grid(), cmap='gray')
+    stim = hermann_grid()
+    plt.imshow(stim, cmap='gray')
     plt.show()

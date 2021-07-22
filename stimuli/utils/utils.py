@@ -99,7 +99,8 @@ def degrees_to_pixels(degrees, ppd):
     pixels : number or ndarray
     """
     degrees = np.array(degrees)
-    return (degrees * ppd).astype(int)
+    return (np.round(degrees * ppd)).astype(int)
+
     # This is the 'super correct' conversion, but it makes very little difference in practice
     #return (np.tan(np.radians(degrees / 2.)) / np.tan(np.radians(.5)) * ppd).astype(int)
 
@@ -422,6 +423,26 @@ def pad_img(img, padding, ppd, val):
     padding_px = degrees_to_pixels(padding, ppd)
     padding_top, padding_bottom, padding_left, padding_right = padding_px
     return np.pad(img, ((padding_top, padding_bottom), (padding_left, padding_right)), 'constant', constant_values=val)
+
+def pad_img_to_shape(img, shape, val=0):
+    """
+    shape: shape of the resulting image in pixels (height, width)
+    """
+    height_px, width_px = shape
+    height_img_px, width_img_px = img.shape
+    if height_img_px >= height_px or width_img_px >= width_px:
+        raise ValueError("the image is bigger than the size after padding")
+
+    padding_vertical_top = (height_px - height_img_px) // 2
+    padding_vertical_bottom = height_px - height_img_px - padding_vertical_top
+
+    padding_horizontal_left = (width_px - width_img_px) // 2
+    padding_horizontal_right = width_px - width_img_px - padding_horizontal_left
+
+    return np.pad(img, ((padding_vertical_top, padding_vertical_bottom), (padding_horizontal_left, padding_horizontal_right)), 'constant', constant_values=val)
+    
+    
+
 
 def compare_plots(plots):
     M = len(plots)

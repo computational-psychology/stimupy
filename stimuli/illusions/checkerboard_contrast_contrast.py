@@ -71,7 +71,7 @@ def checkerboard_contrast_contrast_effect(ppd=10, n_checks=8, check_size=1.0, ta
 
 
 def domijan2015():
-    return checkerboard_contrast_contrast_effect(n_checks=8, check_size=10, target_length=4, padding=(9,11,9,11), check1=1.,
+    return checkerboard_contrast_contrast_effect(ppd=10, n_checks=8, check_size=1.0, target_length=4, padding=(.9,1.1,.9,1.1), check1=1.,
                                                  check2=9., tau=5, alpha= .5)
 
 if __name__ == '__main__':

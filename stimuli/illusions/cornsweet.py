@@ -47,14 +47,14 @@ def cornsweet(size=(10,10), ppd=10, contrast=0.5, ramp_width=2, exponent=2.75,
     size = np.rint(np.tan(np.radians(np.array(size) / 2.)) /
                    np.tan(np.radians(.5)) * ppd / 2) * 2
     size = size.astype('int')
-    stim = np.ones(size) * mean_lum
+    img = np.ones(size) * mean_lum
     dist = np.arange(size[1] / 2)
     dist = np.degrees(np.arctan(dist / 2. / ppd * 2 * np.tan(np.radians(.5)))) * 2
     dist /= ramp_width
     dist[dist > 1] = 1
     profile = (1 - dist) ** exponent * mean_lum * contrast / 2
-    stim[:, :size[1] // 2] += profile[::-1]
-    stim[:, size[1] // 2:] -= profile
+    img[:, :size[1] // 2] += profile[::-1]
+    img[:, size[1] // 2:] -= profile
     mask = None
 
     stim = Stimulus()
@@ -66,6 +66,6 @@ def cornsweet(size=(10,10), ppd=10, contrast=0.5, ramp_width=2, exponent=2.75,
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
-    img, mask = cornsweet()
-    plt.imshow(img, cmap='gray')
+    stim = cornsweet()
+    plt.imshow(stim, cmap='gray')
     plt.show()
