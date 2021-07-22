@@ -164,4 +164,6 @@ if __name__ == "__main__":
 
     else:
         plt.imshow(img, cmap='gray')
+
+    plt.savefig("overview_RHS2007.png")
     plt.show()
