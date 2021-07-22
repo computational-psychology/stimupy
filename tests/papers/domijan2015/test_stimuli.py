@@ -71,3 +71,9 @@ def test_checkerboard_extended():
     original = ground_truth.get_checkerboard_extended()
     test = stimuli.papers.domijan2015.checkerboard_extended().img
     assert np.array_equal(original, test)
+
+
+def test_checkerboard_contrast_contrast():
+    original = ground_truth.get_contrast_contrast()
+    test = stimuli.papers.domijan2015.checkerboard_contrast_contrast().img
+    assert np.array_equal(original, test)
