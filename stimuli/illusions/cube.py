@@ -135,7 +135,7 @@ def cube_illusion(ppd=10, n_cells=5, target_length=2, cell_long=1.5, cell_short=
 
 
 def domijan2015():
-    return cube_illusion(ppd=10, n_cells=4, target_length=1, cell_long=1.5, cell_short=1.1, corner_cell_width=1.8, corner_cell_height=1.8, cell_spacing=.5, padding=(.9,1.0,.9,1.0),
+    return cube_illusion(ppd=10, n_cells=4, target_length=2, cell_long=1.5, cell_short=1.1, corner_cell_width=1.8, corner_cell_height=1.8, cell_spacing=.5, padding=(.9,1.0,.9,1.0),
                          occlusion_overlap=(.7,.7,.7,.7), back=1., grid=9., target=5., double=True)
 
 if __name__ == '__main__':

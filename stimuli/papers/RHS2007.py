@@ -4,9 +4,9 @@ import math
 import stimuli
 
 
-
 def WE_thick():
     return stimuli.illusions.whites.RHS2007_WE_thick()
+
 
 def WE_thin_wide():
     return stimuli.illusions.whites.RHS2007_WE_thin_wide()
@@ -23,6 +23,7 @@ def WE_anderson():
 def WE_howe():
     return stimuli.illusions.whites.RHS2007_WE_howe()
 
+
 def WE_zigzag():
     # TODO: not available atm
     pass
@@ -30,6 +31,7 @@ def WE_zigzag():
 
 def WE_radial_thick_small():
     return stimuli.illusions.whites.RHS2007_WE_radial_thick_small()
+
 
 def WE_radial_thick():
     return stimuli.illusions.whites.RHS2007_WE_radial_thick()
@@ -40,7 +42,7 @@ def WE_radial_thin_small():
 
 
 def WE_radial_thin():
-    return stimuli.illusions.whites.RHS2007_WE_radial_thin_small()
+    return stimuli.illusions.whites.RHS2007_WE_radial_thin()
 
 
 def WE_circular1():
@@ -62,6 +64,7 @@ def grating_induction():
 def sbc_large():
     return stimuli.illusions.sbc.RHS2007_sbc_large()
 
+
 def sbc_small():
     return stimuli.illusions.sbc.RHS2007_sbc_small()
 
@@ -69,8 +72,10 @@ def sbc_small():
 def todorovic_equal():
     return stimuli.illusions.todorovic.RHS2007_todorovic_equal()
 
+
 def todorovic_in_large():
     return stimuli.illusions.todorovic.RHS2007_todorovic_in_large()
+
 
 def todorovic_in_small():
     return stimuli.illusions.todorovic.RHS2007_todorovic_in_small()
@@ -80,11 +85,14 @@ def todorovic_out():
     #TODO: not available atm
     pass
 
+
 def checkerboard_016():
     return stimuli.illusions.checkerboard_sbc.RHS2007_Checkerboard016()
 
+
 def checkerboard_0938():
     return stimuli.illusions.checkerboard_sbc.RHS2007_Checkerboard0938()
+
 
 def checkerboard209():
     return stimuli.illusions.checkerboard_sbc.RHS2007_Checkerboard209()
@@ -94,25 +102,31 @@ def corrugated_mondrian():
     #TODO: not available atm
     pass
 
+
 def benary_cross():
     #TODO: not available atm
     pass
+
 
 def todorovic_benary1_2():
     #TODO: not available atm
     pass
 
+
 def todorovic_benary3_4():
     #TODO: not available atm
     pass
+
 
 def bullseye_thin():
     # The parameters are mostly guessed
     return stimuli.illusions.bullseye.RHS2007_bullseye_thin()
 
+
 def bullseye_thick():
     # The parameters are mostly guessed
     return stimuli.illusions.bullseye.RHS2007_bullseye_thick()
+
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
@@ -158,7 +172,6 @@ if __name__ == "__main__":
             plt.subplot(a, a, i + 1)
             plt.title(stim_name + " - img")
             plt.imshow(final)
-
 
         plt.tight_layout()
 
