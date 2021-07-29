@@ -1,6 +1,7 @@
 import numpy as np
 from stimuli.utils import degrees_to_pixels, pad_img, plot_stim
 from stimuli.Stimulus import Stimulus
+from stimuli import  illusions
 
 def ring_pattern(ppd=10, n_rings=8, target_pos_l=4, target_pos_r=3, ring_width=.5, padding=(1.0,1.0,1.0,1.0,), back=0., rings=1., target=.5, invert_rings=False, double=True, ):
     """
@@ -76,7 +77,7 @@ def ring_pattern(ppd=10, n_rings=8, target_pos_l=4, target_pos_r=3, ring_width=.
     return stim
 
 def domijan2015():
-    img = ring_pattern(ppd=10, n_rings=8, target_pos_l=4, target_pos_r=3, ring_width=.5, padding=(.9,1.0,.9,1.0), back=1., rings=9., target=5., invert_rings=False, double=True)
+    img = illusions.ring_pattern(ppd=10, n_rings=8, target_pos_l=4, target_pos_r=3, ring_width=.5, padding=(.9,1.0,.9,1.0), back=1., rings=9., target=5., invert_rings=False, double=True)
     return img
 
 

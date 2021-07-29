@@ -1,7 +1,7 @@
 import numpy as np
 from stimuli.utils import degrees_to_pixels, pad_img, plot_stim
 from stimuli.Stimulus import Stimulus
-
+from stimuli import illusions
 
 def checkerboard_contrast_contrast_effect(ppd=10, n_checks=8, check_size=1.0, target_length=4, padding=(1.0,1.0,1.0,1.0), check1=0., check2=2.,
                                           tau=.5, alpha=.5):
@@ -71,7 +71,7 @@ def checkerboard_contrast_contrast_effect(ppd=10, n_checks=8, check_size=1.0, ta
 
 
 def domijan2015():
-    return checkerboard_contrast_contrast_effect(ppd=10, n_checks=8, check_size=1.0, target_length=4, padding=(.9,1.1,.9,1.1), check1=1.,
+    return illusions.checkerboard_contrast_contrast_effect(ppd=10, n_checks=8, check_size=1.0, target_length=4, padding=(.9,1.1,.9,1.1), check1=1.,
                                                  check2=9., tau=5, alpha= .5)
 
 if __name__ == '__main__':

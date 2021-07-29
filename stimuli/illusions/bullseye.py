@@ -2,6 +2,7 @@ import numpy as np
 from stimuli.illusions.rings import ring_pattern
 from stimuli.utils import degrees_to_pixels, pad_img
 from stimuli.Stimulus import Stimulus
+from stimuli import illusions
 
 def bullseye_illusion(ppd=10, n_rings=8, ring_width=.5, target_pos_l=0, target_pos_r=0, padding=(1.0,1.0,1.0,1.0), back=0., rings=1., target=.5):
     """
@@ -36,14 +37,14 @@ def bullseye_illusion(ppd=10, n_rings=8, ring_width=.5, target_pos_l=0, target_p
     return stim
 
 def domijan2015():
-    img =  bullseye_illusion(n_rings=8, ring_width=.5, target_pos_l=0, target_pos_r=0, padding=(.9,1.0,.9,1.0), back=1., rings=9., target=5.)
+    img =  illusions.bullseye_illusion(n_rings=8, ring_width=.5, target_pos_l=0, target_pos_r=0, padding=(.9,1.0,.9,1.0), back=1., rings=9., target=5.)
     return img
 
 def RHS2007_bullseye_thin():
-    return bullseye_illusion(n_rings=8, ring_width=1, padding=(100,100,100,100), back=1., rings=9., target=5.)
+    return illusions.bullseye_illusion(n_rings=8, ring_width=1, padding=(100,100,100,100), back=1., rings=9., target=5.)
 
 def RHS2007_bullseye_thick():
-    return bullseye_illusion(n_rings=8, ring_width=1, padding=(50,50,50,50), back=1., rings=9., target=5.)
+    return illusions.bullseye_illusion(n_rings=8, ring_width=1, padding=(50,50,50,50), back=1., rings=9., target=5.)
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt

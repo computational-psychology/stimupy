@@ -2,7 +2,7 @@ import numpy as np
 import stimuli
 from stimuli.utils import degrees_to_pixels, pad_img, plot_stim
 from stimuli.Stimulus import Stimulus
-
+from stimuli import illusions
 
 def simultaneous_brightness_contrast(ppd=10, target_shape=(5,5), padding=(2,2,2,2), inner_padding=(3,3,3,3), left=1., right=0., target=.5):
     """
@@ -48,7 +48,7 @@ def simultaneous_brightness_contrast(ppd=10, target_shape=(5,5), padding=(2,2,2,
 
 
 def domijan2015():
-    return simultaneous_brightness_contrast(ppd=10, target_shape=(2.1,2.1), inner_padding=(3.9,4.0,3.9,4.0), padding=(0,0,0,0), left=9., right=1., target=5.)
+    return illusions.simultaneous_brightness_contrast(ppd=10, target_shape=(2.1,2.1), inner_padding=(3.9,4.0,3.9,4.0), padding=(0,0,0,0), left=9., right=1., target=5.)
 
 def RHS2007_sbc_large():
     total_height, total_width, ppd = (32,)*3
@@ -61,7 +61,7 @@ def RHS2007_sbc_large():
     padding_vertical, padding_horizontal = (total_height - height)/2, (total_width - 2 * width)/2
     padding = (padding_vertical, padding_vertical, padding_horizontal, padding_horizontal)
 
-    return stimuli.illusions.sbc.simultaneous_brightness_contrast(target_shape=(target_height, target_width), ppd=ppd, inner_padding=inner_padding, padding=padding)
+    return illusions.sbc.simultaneous_brightness_contrast(target_shape=(target_height, target_width), ppd=ppd, inner_padding=inner_padding, padding=padding)
 
 
 def RHS2007_sbc_small():
@@ -75,7 +75,7 @@ def RHS2007_sbc_small():
     padding_vertical, padding_horizontal = (total_height - height) / 2, (total_width - 2 * width) / 2
     padding = (padding_vertical, padding_vertical, padding_horizontal, padding_horizontal)
 
-    return stimuli.illusions.sbc.simultaneous_brightness_contrast(target_shape=(target_height, target_width), ppd=ppd, inner_padding=inner_padding, padding=padding)
+    return illusions.sbc.simultaneous_brightness_contrast(target_shape=(target_height, target_width), ppd=ppd, inner_padding=inner_padding, padding=padding)
 
 
 

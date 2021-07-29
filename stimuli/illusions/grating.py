@@ -1,7 +1,7 @@
 import numpy as np
 from stimuli.utils import degrees_to_pixels, pad_img, plot_stim
 from stimuli.Stimulus import Stimulus
-
+from stimuli import illusions
 
 def grating_illusion(ppd=10, n_bars=5, target_length=2, bar_width=1.0, bar_height=8.0, padding=(1.0,1.0,1.0,1.0), back=0., grid=1., target=0.5, double=True):
     """
@@ -65,7 +65,7 @@ def grating_illusion(ppd=10, n_bars=5, target_length=2, bar_width=1.0, bar_heigh
     return stim
 
 def domijan2015():
-    return grating_illusion(ppd=10, n_bars=5, target_length=1, bar_width=1.0, bar_height=8.1, padding=(.9,1.0,.9,1.1), back=1, grid=9, target=5, double=True)
+    return illusions.grating_illusion(ppd=10, n_bars=5, target_length=1, bar_width=1.0, bar_height=8.1, padding=(.9,1.0,.9,1.1), back=1, grid=9, target=5, double=True)
 
 
 if __name__ == '__main__':

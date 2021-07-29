@@ -4,7 +4,7 @@ import math
 
 from stimuli.utils import degrees_to_pixels, pad_img, plot_stim
 from stimuli.Stimulus import Stimulus
-
+from stimuli import illusions
 
 def todorovic_illusion(target_shape=(4,4), ppd=10, covers_shape=(2.5, 2.5), spacing=(1.5,1.5,1.5,1.5), padding=(2,2,2,2), back=0., grid=1., target=.5, double=True):
     """
@@ -88,7 +88,7 @@ def todorovic_illusion(target_shape=(4,4), ppd=10, covers_shape=(2.5, 2.5), spac
     return stim
 
 def domijan2015():
-    return todorovic_illusion(target_shape=(4.1, 4.1), ppd=10, covers_shape=(3.1, 3.1), spacing=(1.5, 1.5, 1.5, 1.5), padding=(2.9,3.0, 2.9,3.0 ),
+    return illusions.todorovic_illusion(target_shape=(4.1, 4.1), ppd=10, covers_shape=(3.1, 3.1), spacing=(1.5, 1.5, 1.5, 1.5), padding=(2.9,3.0, 2.9,3.0 ),
                               grid=9., back=1., target=5.)
 
 def RHS2007_todorovic_equal():
@@ -103,7 +103,7 @@ def RHS2007_todorovic_equal():
     spacing = (0,) * 4
 
     back, grid, target = 1., 0., .5
-    stim = todorovic_illusion(target_shape=(target_height, target_width), ppd=ppd, covers_shape=covers_shape, spacing=spacing,
+    stim = illusions.todorovic_illusion(target_shape=(target_height, target_width), ppd=ppd, covers_shape=covers_shape, spacing=spacing,
                                                          padding=inner_padding, back=back, grid=grid, target=target)
     height_px, width_px = stim.img.shape
 
@@ -130,7 +130,7 @@ def RHS2007_todorovic_in_large():
     spacing = ((8 - 5.3) / 2,) * 4
 
     back, grid, target = 1., 0., .5
-    stim = todorovic_illusion(target_shape=(target_height, target_width), ppd=ppd, covers_shape=covers_shape, spacing=spacing,
+    stim = illusions.todorovic_illusion(target_shape=(target_height, target_width), ppd=ppd, covers_shape=covers_shape, spacing=spacing,
                               padding=inner_padding, back=back, grid=grid, target=target)
     height_px, width_px = stim.img.shape
 
@@ -157,7 +157,7 @@ def RHS2007_todorovic_in_small():
     spacing = ((8 - 3) / 2,) * 4
 
     back, grid, target = 1., 0., .5
-    stim = todorovic_illusion(target_shape=(target_height, target_width), ppd=ppd, covers_shape=covers_shape, spacing=spacing,
+    stim = illusions.todorovic_illusion(target_shape=(target_height, target_width), ppd=ppd, covers_shape=covers_shape, spacing=spacing,
                               padding=inner_padding, back=back, grid=grid, target=target)
     height_px, width_px = stim.img.shape
 
@@ -175,43 +175,3 @@ if __name__ == '__main__':
     import matplotlib.pyplot as plt
     stim = todorovic_illusion()
     plot_stim(stim, mask=True)
-
-
-# This function comes from the lightness module that has been integrated inside the illusions dir.
-# TODO: Compare this function with the one above and merge into one
-def todorovic_lightness(coc, vert_rep, horz_rep):
-
-    """
-    Create a checkerboard illusion by appropriately aligning COC stimuli, in
-    the way demonstrated by Todorovic (1987).
-
-    Parameters
-    ----------
-    coc : ndarray
-          The base Craig-O'Brien-Cornsweet stimulus, created with cornsweet().
-          It should have a small ramp-width compared to its size, moderate
-          contrast, and be square.
-    horz_rep : int
-               number of horizontal repetitions of the cornsweet stimulus.
-    vert_rep : int
-               number of vertical repetitions.
-
-    Returns
-    -------
-    stim: ndarray (2D)
-
-    References
-    ----------
-    Todorovic, D. (1987). The Craik-O'Brien-Cornsweet effect: new
-    varieties and their theoretical implications. Perception & psychophysics,
-    42(6), 545-60, Plate 4.
-    """
-
-    stim = np.tile(np.hstack((coc, np.fliplr(coc))), (1, horz_rep / 2))
-    if horz_rep % 2 != 0:
-        stim = np.hstack((stim, stim[:, 0:coc.shape[1]]))
-    stim = np.tile(np.vstack((stim, np.roll(stim, coc.shape[1], 1))),
-                   (vert_rep / 2, 1))
-    if vert_rep % 2 != 0:
-        stim = np.vstack((stim, stim[0:coc.shape[0], :]))
-    return stim
