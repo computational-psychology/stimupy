@@ -12,16 +12,7 @@ if __name__ == '__main__':
         license='GPL2',
         url='https://github.com/computational-psychology/stimuli',
         package_dir={'stimuli': 'stimuli'},
-        packages=(
-            'stimuli',
-            'stimuli.lightness',
-            'stimuli.contrast_metrics',
-            'stimuli.utils',
-            'stimuli.texture',
-            'stimuli.transparency',
-            'stimuli.illusions',
-            'stimuli.papers'
-        ),
+        packages=setuptools.find_packages(),
         package_data={'stimuli.transparency': ['checkerboard_mask.png']},
         install_requires=[
             'numpy',
