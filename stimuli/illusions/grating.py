@@ -9,19 +9,30 @@ def grating_illusion(ppd=10, n_bars=5, target_length=2, bar_width=1.0, bar_heigh
 
     Parameters
     ----------
-    n_bars: the number of vertical bars
-    target_length: # bars that make up the target
-    bar_width: width of bar in px
-    bar_height: height of bar in px
-    padding: 4-valued tuple specifying padding (top, bottom, left, right) in px
-    back: value for background
-    grid: value for grid cells
-    target: value for target
-    double: whether to return the full illusion with two grids side-by-side (inverting back and grid values)
+    ppd : int
+        pixels per degree (visual angle)
+    n_bars : int
+        the number of vertical bars
+    target_length : int
+        #bars that make up the target
+    bar_width : float
+        width of bar in degrees visual angle
+    bar_height : float
+        height of bar in degrees visual angle
+    padding : (float, float, float, float)
+        4-valued tuple specifying padding (top, bottom, left, right) in degrees visual angle
+    back : float
+        value for background
+    grid : float
+        value for grid cells
+    target : float
+        value for target
+    double : bool
+        whether to return the full illusion with two grids side-by-side (inverting back and grid values)
 
     Returns
     -------
-    2D numpy array
+    A stimulus object
     """
 
     bar_height_px, bar_width_px = degrees_to_pixels(bar_height, ppd), degrees_to_pixels(bar_width, ppd)

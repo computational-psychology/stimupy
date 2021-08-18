@@ -9,17 +9,26 @@ def benarys_cross(ppd=10, cross_size=(8,8,8,8), cross_thickness=5, padding=(1,1,
 
     Parameters
     ----------
-    cross_size: size of the cross in degrees visual angle in form (top, bottom, left, right) specifying the length of each of the cross' bars
-    cross_thickness: width of the cross bars in degrees visual angle
-    padding: 4-valued tuple specifying padding (top, bottom, left, right) in degrees visual angle
-    target_size: size of the side of target square in degrees visual angle
-    back: background value
-    cross: cross value
-    target: target value
+    ppd : int
+        pixels per degree (visual angle)
+    cross_size : (float, float, float, float)
+        size of the cross in degrees visual angle in form (top, bottom, left, right) specifying the length of each of the cross' bars
+    cross_thickness : float
+        width of the cross bars in degrees visual angle
+    padding : (float, float, float, float)
+        4-valued tuple specifying padding (top, bottom, left, right) in degrees visual angle
+    target_size : float
+        size of the side of target square in degrees visual angle
+    back : float
+        background value
+    cross : float
+        cross value
+    target : float
+        target value
 
     Returns
     -------
-    2D numpy array
+    A stimulus object
     """
 
 
@@ -58,6 +67,10 @@ def benarys_cross(ppd=10, cross_size=(8,8,8,8), cross_thickness=5, padding=(1,1,
     return stim
 
 def domijan2015():
+    """
+    Generates Benary Cross illusion as used in the Domijan 2015 paper.
+    """
+
     return illusions.benarys_cross(ppd=10, cross_size=(3,3,3,3), cross_thickness=2.1, padding=(.9,1.0,.9,1.0),target_size=1.1,  back=9., cross=1., target=5.)
 
 if __name__ == '__main__':

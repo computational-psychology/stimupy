@@ -10,16 +10,24 @@ def simultaneous_brightness_contrast(ppd=10, target_shape=(5,5), padding=(2,2,2,
 
     Parameters
     ----------
-    shape: shape of the stimulus in degrees visual angle (height,width)
-    target_shape: target shape in degrees visual angle (height, width)
-    padding: 4-valued tuple specifying padding (top, bottom, left, right) in degrees visual angle
-    left: left background value
-    right: right background value
-    target: target value
+    ppd : int
+        pixels per degree (visual angle)
+    target shape : (float, float)
+        target shape in degrees visual angle (height, width)
+    padding : (float, float, float, float)
+        4-valued tuple specifying outer padding (top, bottom, left, right) in degrees visual angle
+    inner_padding: 
+        4-valued tuple specifying inner padding (top, bottom, left, right) in degrees visual angle
+    left : float 
+        left background value
+    right : float
+        right background value
+    target : float 
+        target value
 
     Returns
     -------
-    2d numpy array
+    A stimulus object
     """
 
     target_height, target_width = target_shape

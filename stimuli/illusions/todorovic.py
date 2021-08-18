@@ -12,19 +12,30 @@ def todorovic_illusion(target_shape=(4,4), ppd=10, covers_shape=(2.5, 2.5), spac
 
     Parameters
     ----------
-    target_padding: tuple specifying distance  of the target edge from (top, bottom, left,right) edge of the stimulus
-    squares_size: tuple specifying (height, width) of the four squares covering the target in px
-    spacing: spacing between grid cells (i.e target cross bar thickness) in px
-    padding: 4-valued tuple specifying padding (top, bottom, left, right) in px
-    back: value for background
-    grid: value for grid cells
-    target: value for target
-    double: whether to return the full illusion with two grids side-by-side (inverting back and grid values)
+    target_shape : (float, float)
+        The shape of the target in degrees of visual angle (height, width)
+    ppd : int 
+        pixels per degree (visual angle)
+    covers_shape : (float, float)
+        The shape of the covers in degrees of visual angle (height, width)
+    spacing : (float, float, float, float)
+        Spacing between the covers in the form of (top, bottom, left, right).
+    padding : (float, float, float, float)
+        4-valued tuple specifying padding (top, bottom, left, right) in degrees visual angle
+    back : float
+        value for background
+    grid : float
+        value for grid cells
+    target : float
+        value for target
+    double: bool
+        whether to return the full illusion with two grids side-by-side 
 
     Returns
     -------
-
+    A stimulus object
     """
+
     target_height, target_width = target_shape
     target_height_px, target_width_px = degrees_to_pixels(target_shape, ppd)
 

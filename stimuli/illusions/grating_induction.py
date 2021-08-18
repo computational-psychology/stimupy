@@ -8,6 +8,37 @@ from stimuli import illusions
 #        Grating induction        #
 ###################################
 def grating_illusion(shape=(10,10), ppd=40, frequency=0.5, target_height=0.5, blur=None, high=1., low=0., target=.5, start='low', period='ignore', padding=(2,2,2,2)):
+    """
+    Grating induction illusions
+
+    Parameters
+    ----------
+    shape : (float, float)
+        Shape of the illusion in degrees visual angle
+    ppd : int
+        pixels per degree (visual angle)
+    frequency : float
+        frequency of the grid in cycles per degree visual angle
+    target_height : float
+        height of the target in degrees visual angle
+    blur : float
+        amount of blur to apply
+    high : float
+        value of the bright stripes
+    low : float
+        value of the dark stripes
+    start : string in ['low','high']
+        whether to start with a bright or a low stripes
+    period : string in ['ignore', 'full', 'half'] 
+        see square_wave.py for details about this
+    padding : (float, float, float, float)
+        4-valued tuple specifying padding (top, bottom, left, right) in degrees visual angle
+
+    Returns
+    -------
+    A stimulus object
+    """
+
     if blur == None:
         blur = shape[0]/2
 

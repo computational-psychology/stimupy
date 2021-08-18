@@ -11,19 +11,30 @@ def checkerboard_contrast(ppd=10, board_shape=(8,8), check_size=1.0, target1_coo
 
     Parameters
     ----------
-    board shape: number of checks per board in y, x direction
-    check_size: size of a check in px
-    target1_coords: check-coordinates of target check 1
-    target2_coords: check-coordinates of target check 2
-    extend_targets: cross targets instead of single-check targets
-    padding: 4-valued tuple specifying padding (top, bottom, left, right) in px
-    check1: a check value
-    check2: other check value
-    target: target value
+    ppd : int
+        pixels per degree (visual angle)
+    board shape : (int, int)
+        number of checks per board in y, x direction
+    check_size : float
+        size of a check in degrees visual angle
+    target1_coords : (int, int)
+        check-coordinates of target check 1
+    target2_coords : (int, int)
+        check-coordinates of target check 2
+    extend_targets : bool
+        cross targets instead of single-check targets
+    padding : (float, float, float, float)
+        4-valued tuple specifying padding (top, bottom, left, right) in degrees visual angle
+    check1 : float
+        first check value
+    check2 : float
+        other check value
+    target: float
+        target value
 
     Returns
     -------
-
+    A stimulus object
     """
 
     check_size_px = degrees_to_pixels(check_size, ppd)
@@ -60,6 +71,9 @@ def checkerboard_contrast(ppd=10, board_shape=(8,8), check_size=1.0, target1_coo
 
 
 def domijan2015():
+    """
+    Generates checkerboard_sbc illusion as used in Domijan 2015 paper.
+    """
     stim = illusions.checkerboard_contrast(ppd=10, board_shape=(8,8), check_size=1.0, target1_coords=(3, 2), target2_coords=(5, 5), extend_targets=False, check1=1., check2=9., target=5.)
     padding = (.9, 1.1, .9, 1.1)
     stim.img = pad_img(stim.img, padding, ppd=10, val=5.)
@@ -68,6 +82,9 @@ def domijan2015():
 
 
 def domijan2015_extended():
+    """
+    Generates checkerboard_sbc extended illusion as used in Domijan 2015 paper.
+    """
     stim = illusions.checkerboard_contrast(ppd=10, board_shape=(8,8), check_size=1.0, target1_coords=(3, 2), target2_coords=(5, 5), extend_targets=True, check1=1., check2=9., target=5.)
     padding = (.9, 1.1, .9, 1.1)
     stim.img = pad_img(stim.img, padding, ppd=10, val=5.)
@@ -76,6 +93,9 @@ def domijan2015_extended():
 
 
 def RHS2007_Checkerboard016():
+    """
+    Generates checkerboard 0.16 illusion as used in Robinson, Hammon and de Sa 2007 paper.
+    """
     total_height, total_width, ppd = (32,) * 3
     height_checks, width_checks = 40, 102
     check_height = 32/102
@@ -93,6 +113,9 @@ def RHS2007_Checkerboard016():
 
 
 def RHS2007_Checkerboard0938():
+    """
+    Generates checkerboard 0.94 illusion as used in Robinson, Hammon and de Sa 2007 paper.
+    """
     total_height, total_width, ppd = (32,) * 3
     height_checks, width_checks = 7, 25
     check_height = 0.938
@@ -109,6 +132,9 @@ def RHS2007_Checkerboard0938():
 
 
 def RHS2007_Checkerboard209():
+    """
+    Generates checkerboard 2.1 illusion as used in Robinson, Hammon and de Sa 2007 paper.
+    """
     total_height, total_width, ppd = (32,) * 3
     height_checks, width_checks = 3, 10
     check_height = 2.09

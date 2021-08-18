@@ -9,19 +9,28 @@ def dungeon_illusion(ppd=10, n_cells=5, target_radius=1, cell_size=1.0, padding=
 
     Parameters
     ----------
-    n_cells: the number of square cells (not counting background) per dimension
-    target_radius: the "Manhattan radius" of the diamond target in # cells
-    cell_size: size per cell in px
-    padding: 4-valued tuple specifying padding (top, bottom, left, right) in px
-    back: value for background
-    grid: value for grid cells
-    target: value for target
-    double: whether to return the full illusion with two grids side-by-side (inverting back and grid values)
-    shift: number of x,y pixels to shift all the squares by. Top left corner is 0,0
+    ppd : int
+        pixels per degree (visual angle)
+    n_cells : int
+        the number of square cells (not counting background) per dimension
+    target_radius : int
+        the "Manhattan radius" of the diamond target in # cells
+    cell_size : float
+        size per cell in degrees visual angle
+    padding : (float, float, float, float)
+        4-valued tuple specifying padding (top, bottom, left, right) in degrees visual angle
+    back : float
+        value for background
+    grid : float
+        value for grid cells
+    target : float
+        value for target
+    double : bool
+        whether to return the full illusion with two grids side-by-side (inverting back and grid values)
 
     Returns
     -------
-    2D numpy array
+    A stimulus object
     """
     cell_size_px = degrees_to_pixels(cell_size, ppd)
 

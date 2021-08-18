@@ -9,20 +9,32 @@ def ring_pattern(ppd=10, n_rings=8, target_pos_l=4, target_pos_r=3, ring_width=.
 
     Parameters
     ----------
-    n_rings: the number of rings
-    target_pos_l: the "index" of the target ring on the left half
-    target_pos_r: the "index" of the targetring on the right half
-    ring_width: width per ring in px
-    padding: 4-valued tuple specifying padding (top, bottom, left, right) in px
-    back: value for background
-    rings: value for grid cells
-    target: value for target
-    invert_rings: inverts ordering of rings and background
-    double: whether to return the full illusion with two grids side-by-side (inverting back and grid values)
+    ppd : int
+        pixels per degree (visual angle)
+    n_rings : int   
+        the number of rings
+    target_pos_l : int
+        the "index" of the target ring on the left half
+    target_pos_r : int
+        the "index" of the target ring on the right half
+    ring_width : float
+        width per ring in degrees visual angle 
+    padding : (float, float, float, float)
+        4-valued tuple specifying padding (top, bottom, left, right) in degrees visual angle
+    back : float
+        value for background
+    rings : float
+        value for grid cells
+    target : float
+        value for target
+    invert_rings : bool 
+        inverts ordering of rings and background
+    double : bool
+        whether to return the full illusion with two grids side-by-side (inverting back and grid values)
 
     Returns
     -------
-    2D numpy array
+    A stimulus object
     """
 
     ring_width_px = degrees_to_pixels(ring_width, ppd)

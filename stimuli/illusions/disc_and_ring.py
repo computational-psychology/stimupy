@@ -7,7 +7,6 @@ def disc_and_ring(
     shape=(10, 10), radii=(4, 2), values=(0.5, 1), bg=0, ppd=30, ssf=5
 ):
     # TODO: the parameters aren't analogous to the other stimuli
-    # TODO: figure out defeault parameters that create something that makes sense
     """
     Create a disc and ring stimulus with an arbitrary number of rings.
 

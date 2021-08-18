@@ -10,18 +10,28 @@ def checkerboard_contrast_contrast_effect(ppd=10, n_checks=8, check_size=1.0, ta
 
     Parameters
     ----------
-    n_checks: number of checks per board in each direction
-    check_size: size of a check in px
-    target_length: size of the target in # checks
-    padding: 4-valued tuple specifying padding (top, bottom, left, right) in px
-    check1: a check value
-    check2: other check value
-    tau: tau of transparency
-    alpha: alpha of transparency
+    ppd : int
+        pixels per degree (visual angle)
+    n_checks : int
+        number of checks per board in each direction
+    check_size : float
+        size of a check in degrees visual angle
+    target_length : int
+        size of the target in # checks
+    padding : (float, float, float, float)
+        4-valued tuple specifying padding (top, bottom, left, right) in degrees visual angle
+    check1 : float
+        first check value
+    check2 : float
+        other check value
+    tau : float
+        tau of transparency
+    alpha : float
+        alpha of transparency
 
     Returns
     -------
-    2D numpy array
+    A stimulus object
     """
 
     check_size_px = degrees_to_pixels(check_size, ppd)
@@ -71,6 +81,9 @@ def checkerboard_contrast_contrast_effect(ppd=10, n_checks=8, check_size=1.0, ta
 
 
 def domijan2015():
+    """
+    Generates checkerboard contrast contrast illusion as used in Domijan 2015 paper.
+    """
     return illusions.checkerboard_contrast_contrast_effect(ppd=10, n_checks=8, check_size=1.0, target_length=4, padding=(.9,1.1,.9,1.1), check1=1.,
                                                  check2=9., tau=5, alpha= .5)
 

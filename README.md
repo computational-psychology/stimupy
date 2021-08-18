@@ -1,16 +1,16 @@
 # Stimuli
 
 Contains submodules for
-- creating different stimuli used in lightness perception ([lightness](src/lightness/README.md))
-- creating different brightness illusions ([illusions](src/illusions/README.md))
+- creating different brightness illusions ([illusions](stimuli/illusions/))
+- replicating illusions in certain published papers  ([papers](stimuli/papers/))
 - creating 2D patterns or renderings of 3D checkerboards with transparent 
-layers covering part of the image ([transparency](src/transparency/README.md))
-- various functions that calculate contrast metrics ([contrast_metrics](src/contrest_metrics/README.md))
+layers covering part of the image ([transparency](stimuli/transparency/))
+- various functions that calculate contrast metrics ([contrast_metrics](stimuli/contrest_metrics/))
 - some helper functions for padding, resizing, computing Munsell values, and
-converting pixel values to degrees of visual angle ([utils](src/utils/README.md#utils))
-- (creating different random and deterministic textures ([texture](src/texture/README.md)) [yet to be fixed])
+converting pixel values to degrees of visual angle ([utils](stimuli/utils/))
+- (creating different random and deterministic textures ([texture](stimuli/texture/)) [yet to be fixed])
 
-For details, please refer to the source directory (src/), the respective subdirectories and the docstrings.
+For details, please refer to the source directory (stimuli/), the respective subdirectories and the docstrings.
 
 ## Dependencies
 - Required: numpy, matplotlib, PIL
@@ -34,7 +34,7 @@ This makes changes to files immediately usable,
 rather than having to reinstall the package after every change.
 
 ## Importing
-To use in your own code, import the modules. See READMEs in src/ for example usages.
+To use in your own code, import the modules. See READMEs in stimuli/ for example usages.
 ```python
 from stimuli import lightness
 from stimuli import illusions

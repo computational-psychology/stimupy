@@ -6,27 +6,43 @@ from stimuli import illusions
 def cube_illusion(ppd=10, n_cells=5, target_length=2, cell_long=1.5, cell_short=1.0, corner_cell_width=1.8, corner_cell_height=1.8,
                   cell_spacing=.5, padding=(1.0,1.0,1.0,1.0), occlusion_overlap=(.7,.7,.7,.7), back=0., grid=1., target=.5, double=True):
 
-
     """
     Cube illusion (Agostini & Galmonte, 2002)
 
     Parameters
     ----------
-    n_cells: the number of square cells (not counting background) per dimension
-    target_length: length in # cells per edge of the square
-    cell_long: long side of a cell in px
-    cell_short: short side of a cell in px
-    cell_spacing: distance between two cells in px
-    padding: 4-valued tuple specifying padding (top, bottom, left, right) in px
-    occlusion_overlap: 4-valued tuple specifying how many px the big central square overlaps the cells on (top, bottom, left, right
-    back: value for background
-    grid: value for grid cells
-    target: value for target
-    double: whether to return the full illusion with two grids side-by-side (inverting back and grid values)
+    ppd : int
+        pixels per degree (visual angle)
+    n_cells : int
+        the number of square cells (not counting background) per dimension
+    target_length : int
+        length in # cells per edge of the square
+    cell_long : float
+        long side of a cell in degrees visual angle
+    cell_short : float
+        short side of a cell in degrees visual angle
+    corner_cell_width : float
+        width of the corner cells in degrees visual angle
+    corner_cell_height: float
+        height of the corner cells in degrees visual angle
+    cell_spacing : float
+        distance between two cells in degrees visual angle
+    padding : (float, float, float, float)
+        4-valued tuple specifying padding (top, bottom, left, right) in degrees visual angle
+    occlusion_overlap : (float, float, float, float)
+        4-valued tuple specifying how much the big central square overlaps the cells on (top, bottom, left, right) in degrees visual angle
+    back : float
+        value for background
+    grid : float
+        value for grid cells
+    target : float
+        value for target
+    double : bool
+        whether to return the full illusion with two grids side-by-side (inverting back and grid values)
 
     Returns
     -------
-    2D numpy array
+    A stimulus object
     """
     cell_long_px, cell_short_px = degrees_to_pixels(cell_long, ppd), degrees_to_pixels(cell_short, ppd)
     corner_cell_width_px, corner_cell_height_px = degrees_to_pixels(corner_cell_width, ppd), degrees_to_pixels(corner_cell_height, ppd)

@@ -9,32 +9,28 @@ def square_wave(shape=(10,10), ppd=10, frequency=1, high=1.0, low=0.0, period='i
 
     Parameters
     ----------
-    shape : tuple of 2 numbers
-            The shape of the stimulus in degrees of visual angle. (y,x)
-    ppd : number
-          the number of pixels in one degree of visual angle
-    high:   float
-            value of the bright pixels
-    low:    float
-            value of the dark pixels
-    frequency : number
-                the spatial frequency of the wave in cycles per degree
-
-    period : string in ['ignore', 'full', 'half'] (optional)
-             specifies if the period of the wave is taken into account when
-             determining exact stimulus dimensions.
-             'ignore' simply converts degrees to pixels
-             'full' rounds down to guarantee a full period
-             'half' adds a half period to the size 'full' would yield.
-             Default is 'ignore'.
-    start : string in ['high', 'low'] (optional)
-            specifies if the wave starts with a high or low value. Default is
-            'high'.
+    shape : (float, float)
+        The shape of the stimulus in degrees of visual angle. (y,x)
+    ppd : int 
+        pixels per degree (visual angle)
+    high : float
+        value of the bright pixels
+    low : float
+        value of the dark pixels
+    frequency : float
+        the spatial frequency of the wave in cycles per degree
+    period : string in ['ignore', 'full', 'half'] 
+        specifies if the period of the wave is taken into account when determining exact stimulus dimensions.
+            'ignore' simply converts degrees to pixels
+            'full' rounds down to guarantee a full period
+            'half' adds a half period to the size 'full' would yield.
+        Default is 'ignore'.
+    start : string in ['high', 'low'] 
+        specifies if the wave starts with a high or low value. Default is 'high'.
 
     Returns
     -------
-    stim : ndarray (2D)
-           the square wave stimulus
+    (2D ndarray, pixels_per_cycle)
     """
 
 

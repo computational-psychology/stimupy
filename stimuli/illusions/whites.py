@@ -8,6 +8,43 @@ from stimuli import illusions
 def white(shape=(10,10), ppd=50, frequency=0.4, high=1.0, low=0.0, target=0.5, period='ignore', start='low', target_indices=(2,5),
                 target_height=None, targets_offset=0, orientation = 'horizontal', padding=(2,2,2,2)):
 
+    """
+    Whites's illusion
+
+    Parameters
+    ----------
+    shape : (float, float)
+        The shape of the illustion in degrees of visual angle (height, width)
+    ppd : int 
+        pixels per degree (visual angle)
+    frequency : float
+        frequency of the grid in cycles per degree visual angle
+    high : float
+        value of the bright stripes
+    low : float
+        value of the dark stripes
+    target : float
+        value for target
+    period : string in ['ignore', 'full', 'half'] 
+        see square_wave.py for details about this
+    start : string in ['low','high']
+        whether to start with a bright or a low stripes
+    target_indices : (int, )
+        indices of the stripes where the target(s) will be placed. There will be as many targets as indices specified.
+    target_height : float
+        height of the target in degrees visual angle. If it's None, the target will be 1/3 of the illusion height
+    targets_offset : int
+        Vertical offset of the target in pixels
+    orientation : string in ['horizontal', 'vertical']
+        orientation of the illusion
+    padding : (float, float, float, float)
+        4-valued tuple specifying padding (top, bottom, left, right) in degrees visual angle
+
+    Returns
+    -------
+    A stimulus object
+    """
+
     height_px, width_px = degrees_to_pixels(shape, ppd)
 
     if target_height is None:
@@ -45,7 +82,32 @@ def white(shape=(10,10), ppd=50, frequency=0.4, high=1.0, low=0.0, target=0.5, p
 
 def circular_white(radius=5, ppd=50, frequency=1, high=1., low=0., target=.5, target_indices=(2,6), start='low', padding=(2,2,2,2)):
     """
-    frequency: cycles per degree
+    Circular Whites's illusion
+
+    Parameters
+    ----------
+    radius : float
+        radius of the circle in degrees visual angle
+    ppd : int
+        pixels per degree (visual angle)
+    frequency : float
+        frequency of the circles in cycles per degree visual angle
+    high : float
+        value of the bright stripes
+    low : float
+        value of the dark stripes
+    target : float
+        value for target
+    target_indices : (int, )
+        indices of the stripes where the target(s) will be placed. There will be as many targets as indices specified.
+    start : string in ['low','high']
+        whether to start with a bright or a low stripes
+    padding : (float, float, float, float)
+        4-valued tuple specifying padding (top, bottom, left, right) in degrees visual angle
+
+    Returns
+    ----------
+    A stimulus object
     """
 
     height, width = (degrees_to_pixels(radius*2, ppd),)*2
@@ -83,14 +145,40 @@ def circular_white(radius=5, ppd=50, frequency=1, high=1., low=0., target=.5, ta
 def wheel_of_fortune_white(radius=10, ppd=50, n_cycles=5, target_width=0.7, target_indices=None, target_start=0.5,
                            angle_shift=0, high=1.0, low=0., target=.5, start='high', padding=(1,1,1,1)):
     #TODO: make this faster
+    """
+    Wheel of fortune Whites's illusion
 
-    # Inputs:
-    #   - n_parts: number of black and white parts within circle (int), it
-    #              should be even numbered to avoid asymmetry
-    #   - target_width: relative width of the targets between 0 and 1 (float)
+    Parameters
+    ----------
+    radius : float
+        radius of the circle in degrees visual angle
+    ppd : int
+        pixels per degree (visual angle)
+    n_cycles : int
+        number of full grid cycles in the circle
+    target_width :  float in interval [0,1]
+        width of the target, 1 means target goes from center all the way to the edge of the circle 
+    target_indices : (int, )
+        indices of the stripes where the target(s) will be placed 
+    target_start : float in interval [0,1]
+        specify where the target starts relative to the radius
+    angle_shift : float
+        rotate the circle for specified amount of radians
+    high : float
+        value of the bright stripes
+    low : float
+        value of the dark stripes
+    target : float
+        value for target
+    start : string in ['low','high']
+        whether to start with a bright or a low stripes
+    padding : (float, float, float, float)
+        4-valued tuple specifying padding (top, bottom, left, right) in degrees visual angle
 
-    # Decide on resolution for the grid.
-    # The lower the resolution, the worse the wheel of fortune will look
+    Returns
+    ----------
+    A stimulus object
+    """
 
 
     n_parts=n_cycles*2
@@ -170,7 +258,44 @@ def wheel_of_fortune_white(radius=10, ppd=50, n_cycles=5, target_width=0.7, targ
 
 def white_anderson(shape=(5,5), ppd=40, frequency=2, height_bars=1, height_horizontal_top=1, target_height=1, target_indices_top=(5,), target_offsets_top=(0.5,),
                    target_indices_bottom=(12,), target_offsets_bottom=(-0.5,), high=1., low=0., target=.5, top='low', padding=(1,1,1,1)):
+    """
+    Anderson's white illusion
 
+    Parameters
+    ----------
+    shape : (float, float)
+        The shape of the illustion in degrees of visual angle (height, width)
+    ppd : int 
+        pixels per degree (visual angle)
+    frequency : float
+        frequency of the grid in cycles per degree visual angle
+    height_bars : float
+        height of the bars in degrees visual angle
+    target_height : float
+        height of the target in degrees visual angle. If it's None, the target will be 1/3 of the illusion height
+    target_indices_top : (int, )
+        indices of the stripes where the target(s) will be placed. If None, two targets are put on (0, n_parts // 2).
+    target_offsets_top : (float, )
+        vertical offsets of targets in the top
+    target_indices_bottom : (int, )
+        indices of the stripes where the target(s) will be placed. If None, two targets are put on (0, n_parts // 2).
+    target_offsets_bottom : (float, )
+        vertical offsets of targets in the bottom
+    high : float
+        value of the bright stripes
+    low : float
+        value of the dark stripes
+    target : float
+        value for target
+    top : string in ['low', 'high']
+        specify whether the top should be bright or dark
+    padding : (float, float, float, float)
+        4-valued tuple specifying padding (top, bottom, left, right) in degrees visual angle
+
+    Returns
+    -------
+    A stimulus object
+    """
     height, width = degrees_to_pixels(shape, ppd)
     pixels_per_cycle = degrees_to_pixels(1. / (frequency*2) , ppd) * 2
     height_bars, height_horizontal_top = degrees_to_pixels(height_bars, ppd), degrees_to_pixels(height_horizontal_top, ppd)
