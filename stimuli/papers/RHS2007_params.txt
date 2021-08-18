@@ -1,3 +1,8 @@
+This txt file contains information about the stimuli used in the Robinson, Hammon and De Sa paper from 2007.
+All the information specified in the paper is here and some parameters, which were not specifically specified in the paper
+are approximated by the author. This txt file is not connected to any script in this repository, but the information from here
+was used to write the functions in RHS2007.py
+
 {
     #Done
     "WE-thick": {

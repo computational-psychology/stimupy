@@ -5,7 +5,7 @@ from stimuli.utils import degrees_to_pixels, pad_img, get_annulus_mask
 from stimuli.Stimulus import Stimulus
 from stimuli import illusions
 
-def white(shape=(10,10), ppd=50, frequency=0.5, high=1.0, low=0.0, target=0.5, period='ignore', start='high', target_indices=(2,5),
+def white(shape=(10,10), ppd=50, frequency=0.4, high=1.0, low=0.0, target=0.5, period='ignore', start='low', target_indices=(2,5),
                 target_height=None, targets_offset=0, orientation = 'horizontal', padding=(2,2,2,2)):
 
     height_px, width_px = degrees_to_pixels(shape, ppd)
@@ -43,7 +43,7 @@ def white(shape=(10,10), ppd=50, frequency=0.5, high=1.0, low=0.0, target=0.5, p
     return stim
 
 
-def circular_white(radius=5, ppd=50, frequency=1, high=1., low=0., target=.5, target_indices=(2,5), start='low', padding=(2,2,2,2)):
+def circular_white(radius=5, ppd=50, frequency=1, high=1., low=0., target=.5, target_indices=(2,6), start='low', padding=(2,2,2,2)):
     """
     frequency: cycles per degree
     """
@@ -225,6 +225,7 @@ def white_anderson(shape=(5,5), ppd=40, frequency=2, height_bars=1, height_horiz
     return stim
 
 
+
 def RHS2007_WE_thick():
     total_height, total_width, ppd = (32,)*3
     height, width = 12, 16
@@ -402,23 +403,23 @@ if __name__ == '__main__':
    plt.subplot(4,2,2)
    plt.imshow(stim.target_mask, cmap='gray')
 
-   stim = circular_white()
-   plt.subplot(4, 2, 3)
-   plt.imshow(stim.img, cmap='gray')
-   plt.subplot(4, 2, 4)
-   plt.imshow(stim.target_mask, cmap='gray')
-
-   stim = wheel_of_fortune_white()
-   plt.subplot(4, 2, 5)
-   plt.imshow(stim.img, cmap='gray')
-   plt.subplot(4, 2, 6)
-   plt.imshow(stim.target_mask, cmap='gray')
-
-   stim = white_anderson()
-   plt.subplot(4, 2, 7)
-   plt.imshow(stim.img, cmap='gray')
-   plt.subplot(4, 2, 8)
-   plt.imshow(stim.target_mask, cmap='gray')
+   # stim = circular_white()
+   # plt.subplot(4, 2, 3)
+   # plt.imshow(stim.img, cmap='gray')
+   # plt.subplot(4, 2, 4)
+   # plt.imshow(stim.target_mask, cmap='gray')
+   #
+   # stim = wheel_of_fortune_white()
+   # plt.subplot(4, 2, 5)
+   # plt.imshow(stim.img, cmap='gray')
+   # plt.subplot(4, 2, 6)
+   # plt.imshow(stim.target_mask, cmap='gray')
+   #
+   # stim = white_anderson()
+   # plt.subplot(4, 2, 7)
+   # plt.imshow(stim.img, cmap='gray')
+   # plt.subplot(4, 2, 8)
+   # plt.imshow(stim.target_mask, cmap='gray')
 
    plt.tight_layout()
    plt.show()
