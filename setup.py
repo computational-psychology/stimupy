@@ -7,7 +7,7 @@ if __name__ == '__main__':
         name='stimuli',
         description='Library for creating different visual stimuli for psychophysic experiments',
         version='0.8',
-        author='Guillermo Aguilar',
+        author='Guillermo Aguilar, Maximilian Pohlmann, Lynn Schmittwilken, Joris Vincent, Matko Matic',
         author_email='guillermo.aguilar@mail.tu-berlin.de',
         license='GPL2',
         url='https://github.com/computational-psychology/stimuli',
