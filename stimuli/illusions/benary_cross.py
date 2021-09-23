@@ -1,9 +1,18 @@
 import numpy as np
 from stimuli.utils import degrees_to_pixels, pad_img, plot_stim
 from stimuli.Stimulus import Stimulus
-from stimuli import illusions
 
-def benarys_cross(ppd=10, cross_size=(8,8,8,8), cross_thickness=5, padding=(1,1,1,1), target_size=2, back=1., cross=0., target=.5):
+
+def benarys_cross(
+    ppd=10,
+    cross_size=(8, 8, 8, 8),
+    cross_thickness=5,
+    padding=(1, 1, 1, 1),
+    target_size=2,
+    back=1.0,
+    cross=0.0,
+    target=0.5,
+):
     """
     Benary's Cross Illusion (with square targets)
 
@@ -71,7 +80,17 @@ def domijan2015():
     Generates Benary Cross illusion as used in the Domijan 2015 paper.
     """
 
-    return illusions.benarys_cross(ppd=10, cross_size=(3,3,3,3), cross_thickness=2.1, padding=(.9,1.0,.9,1.0),target_size=1.1,  back=9., cross=1., target=5.)
+    return benarys_cross(
+        ppd=10,
+        cross_size=(3, 3, 3, 3),
+        cross_thickness=2.1,
+        padding=(0.9, 1.0, 0.9, 1.0),
+        target_size=1.1,
+        back=9.0,
+        cross=1.0,
+        target=5.0,
+    )
+
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt

@@ -1,9 +1,19 @@
 import numpy as np
 from stimuli.utils import degrees_to_pixels, pad_img, plot_stim
 from stimuli.Stimulus import Stimulus
-from stimuli import illusions
 
-def dungeon_illusion(ppd=10, n_cells=5, target_radius=1, cell_size=1.0, padding=(1.0,1.0,1.0,1.0), back=0., grid=1., target=0.5, double=True):
+
+def dungeon_illusion(
+    ppd=10,
+    n_cells=5,
+    target_radius=1,
+    cell_size=1.0,
+    padding=(1.0, 1.0, 1.0, 1.0),
+    back=0.0,
+    grid=1.0,
+    target=0.5,
+    double=True,
+):
     """
     Dungeon illusion (Bressan, 2001) with diamond target.
 
@@ -66,7 +76,17 @@ def dungeon_illusion(ppd=10, n_cells=5, target_radius=1, cell_size=1.0, padding=
     mask = pad_img(mask, padding, ppd, False)
 
     if double:
-        stim2 = dungeon_illusion(ppd=ppd, n_cells=n_cells, target_radius=target_radius, cell_size=cell_size, padding=padding,  back=grid, grid=back, target=target, double=False)
+        stim2 = dungeon_illusion(
+            ppd=ppd,
+            n_cells=n_cells,
+            target_radius=target_radius,
+            cell_size=cell_size,
+            padding=padding,
+            back=grid,
+            grid=back,
+            target=target,
+            double=False,
+        )
         img = np.hstack([img, stim2.img])
         mask = np.hstack([mask, stim2.target_mask*2])
 
@@ -76,8 +96,19 @@ def dungeon_illusion(ppd=10, n_cells=5, target_radius=1, cell_size=1.0, padding=
 
     return stim
 
+
 def domijan2015():
-    return illusions.dungeon_illusion(ppd=10, n_cells=5, target_radius=1,cell_size=1.0, padding=(.9,1.1,.9,1.1), back=1.0, grid=9.0, target=5.0, double=True)
+    return dungeon_illusion(
+        ppd=10,
+        n_cells=5,
+        target_radius=1,
+        cell_size=1.0,
+        padding=(0.9, 1.1, 0.9, 1.1),
+        back=1.0,
+        grid=9.0,
+        target=5.0,
+        double=True,
+    )
 
 
 if __name__ == '__main__':

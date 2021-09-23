@@ -1,11 +1,25 @@
 import numpy as np
-from stimuli.utils import degrees_to_pixels, pad_img, pad_img_to_shape, plot_stim
+from stimuli.utils import (
+    degrees_to_pixels,
+    pad_img,
+    pad_img_to_shape,
+    plot_stim,
+)
 from stimuli.Stimulus import Stimulus
 import matplotlib.pyplot as plt
-from stimuli import illusions
 
-def checkerboard_contrast(ppd=10, board_shape=(8,8), check_size=1.0, target1_coords=(3, 2), target2_coords=(5, 5), extend_targets=False,
-                         check1=0., check2=1., target=.5):
+
+def checkerboard_contrast(
+    ppd=10,
+    board_shape=(8, 8),
+    check_size=1.0,
+    target1_coords=(3, 2),
+    target2_coords=(5, 5),
+    extend_targets=False,
+    check1=0.0,
+    check2=1.0,
+    target=0.5,
+):
     """
     Checkerboard Contrast
 
@@ -74,9 +88,19 @@ def domijan2015():
     """
     Generates checkerboard_sbc illusion as used in Domijan 2015 paper.
     """
-    stim = illusions.checkerboard_contrast(ppd=10, board_shape=(8,8), check_size=1.0, target1_coords=(3, 2), target2_coords=(5, 5), extend_targets=False, check1=1., check2=9., target=5.)
-    padding = (.9, 1.1, .9, 1.1)
-    stim.img = pad_img(stim.img, padding, ppd=10, val=5.)
+    stim = checkerboard_contrast(
+        ppd=10,
+        board_shape=(8, 8),
+        check_size=1.0,
+        target1_coords=(3, 2),
+        target2_coords=(5, 5),
+        extend_targets=False,
+        check1=1.0,
+        check2=9.0,
+        target=5.0,
+    )
+    padding = (0.9, 1.1, 0.9, 1.1)
+    stim.img = pad_img(stim.img, padding, ppd=10, val=5.0)
     stim.target_mask = pad_img(stim.target_mask, padding, ppd=10, val=0)
     return stim
 
@@ -85,9 +109,19 @@ def domijan2015_extended():
     """
     Generates checkerboard_sbc extended illusion as used in Domijan 2015 paper.
     """
-    stim = illusions.checkerboard_contrast(ppd=10, board_shape=(8,8), check_size=1.0, target1_coords=(3, 2), target2_coords=(5, 5), extend_targets=True, check1=1., check2=9., target=5.)
-    padding = (.9, 1.1, .9, 1.1)
-    stim.img = pad_img(stim.img, padding, ppd=10, val=5.)
+    stim = heckerboard_contrast(
+        ppd=10,
+        board_shape=(8, 8),
+        check_size=1.0,
+        target1_coords=(3, 2),
+        target2_coords=(5, 5),
+        extend_targets=True,
+        check1=1.0,
+        check2=9.0,
+        target=5.0,
+    )
+    padding = (0.9, 1.1, 0.9, 1.1)
+    stim.img = pad_img(stim.img, padding, ppd=10, val=5.0)
     stim.target_mask = pad_img(stim.target_mask, padding, ppd=10, val=0)
     return stim
 
@@ -103,8 +137,17 @@ def RHS2007_Checkerboard016():
 
     check1, check2, target = 1, 0, .5
     target_height = height_checks // 2
-    stim = illusions.checkerboard_contrast(ppd=ppd, board_shape=board_shape, check_size=check_height, target1_coords=(target_height, 16), target2_coords=(target_height, 85),
-                                 extend_targets=False, check1=check1, check2=check2, target=target)
+    stim = checkerboard_contrast(
+        ppd=ppd,
+        board_shape=board_shape,
+        check_size=check_height,
+        target1_coords=(target_height, 16),
+        target2_coords=(target_height, 85),
+        extend_targets=False,
+        check1=check1,
+        check2=check2,
+        target=target,
+    )
 
     stim.img = pad_img_to_shape(stim.img, (1024, 1024), val=target)
     stim.target_mask = pad_img_to_shape(stim.target_mask, (1024, 1024), val=0)
@@ -123,8 +166,17 @@ def RHS2007_Checkerboard0938():
 
     check1, check2, target = 0, 1, .5
     target_height = height_checks // 2
-    stim = illusions.checkerboard_contrast(ppd=ppd, board_shape=board_shape, check_size=check_height, target1_coords=(target_height, 6), target2_coords=(target_height, 17),
-                                 extend_targets=False, check1=check1, check2=check2, target=target)
+    stim = checkerboard_contrast(
+        ppd=ppd,
+        board_shape=board_shape,
+        check_size=check_height,
+        target1_coords=(target_height, 6),
+        target2_coords=(target_height, 17),
+        extend_targets=False,
+        check1=check1,
+        check2=check2,
+        target=target,
+    )
     stim.img = pad_img_to_shape(stim.img, (1024, 1024), val=target)
     stim.target_mask = pad_img_to_shape(stim.target_mask, (1024, 1024), val=0)
 
@@ -142,8 +194,17 @@ def RHS2007_Checkerboard209():
 
     check1, check2, target = 0, 1, .5
     target_height = height_checks // 2
-    stim = illusions.checkerboard_contrast(ppd=ppd, board_shape=board_shape, check_size=check_height, target1_coords=(target_height, 2), target2_coords=(target_height, 7),
-                                 extend_targets=False, check1=check1, check2=check2, target=target)
+    stim = checkerboard_contrast(
+        ppd=ppd,
+        board_shape=board_shape,
+        check_size=check_height,
+        target1_coords=(target_height, 2),
+        target2_coords=(target_height, 7),
+        extend_targets=False,
+        check1=check1,
+        check2=check2,
+        target=target,
+    )
     stim.img = pad_img_to_shape(stim.img, (1024, 1024), val=target)
     stim.target_mask = pad_img_to_shape(stim.target_mask, (1024, 1024), val=0)
 

@@ -2,8 +2,15 @@ import numpy as np
 from stimuli.utils.utils import degrees_to_pixels
 
 
-def square_wave(shape=(10,10), ppd=10, frequency=1, high=1.0, low=0.0, period='ignore',
-                start='high'):
+def square_wave(
+    shape=(10, 10),
+    ppd=10,
+    frequency=1,
+    high=1.0,
+    low=0.0,
+    period="ignore",
+    start="high",
+):
     """
     Create a horizontal square wave of given spatial frequency.
 
@@ -42,7 +49,7 @@ def square_wave(shape=(10,10), ppd=10, frequency=1, high=1.0, low=0.0, period='i
         raise ValueError('The frequency is limited to 1/2 cycle per pixel.')
 
     height, width = degrees_to_pixels(shape, ppd)
-    pixels_per_cycle = degrees_to_pixels(1. / (frequency*2) , ppd) * 2
+    pixels_per_cycle = degrees_to_pixels(1.0 / (frequency * 2.0), ppd) * 2
 
     if period is 'full':
         width = (shape_pixels // pixels_per_cycle) * pixels_per_cycle
