@@ -420,9 +420,9 @@ def pad_img(img, padding, ppd, val):
     """
     padding: degrees visual angle (top, bottom, left, right)
     """
-    padding_px = degrees_to_pixels(padding, ppd)
+    padding_px = np.array(degrees_to_pixels(padding, ppd), dtype=np.int32)
     padding_top, padding_bottom, padding_left, padding_right = padding_px
-    return np.pad(img, ((padding_top, padding_bottom), (padding_left, padding_right)), 'constant', constant_values=val)
+    return np.pad(img, ((int(padding_top), int(padding_bottom)), (int(padding_left), int(padding_right))), 'constant', constant_values=((val,val),(val,val)))
 
 def pad_img_to_shape(img, shape, val=0):
     """
@@ -433,11 +433,11 @@ def pad_img_to_shape(img, shape, val=0):
     if height_img_px >= height_px or width_img_px >= width_px:
         raise ValueError("the image is bigger than the size after padding")
 
-    padding_vertical_top = (height_px - height_img_px) // 2
-    padding_vertical_bottom = height_px - height_img_px - padding_vertical_top
+    padding_vertical_top = int((height_px - height_img_px) // 2)
+    padding_vertical_bottom = int(height_px - height_img_px - padding_vertical_top)
 
-    padding_horizontal_left = (width_px - width_img_px) // 2
-    padding_horizontal_right = width_px - width_img_px - padding_horizontal_left
+    padding_horizontal_left = int((width_px - width_img_px) // 2)
+    padding_horizontal_right = int(width_px - width_img_px - padding_horizontal_left)
 
     return np.pad(img, ((padding_vertical_top, padding_vertical_bottom), (padding_horizontal_left, padding_horizontal_right)), 'constant', constant_values=val)
     
