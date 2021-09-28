@@ -1,12 +1,14 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import math
 
+import stimuli
 from stimuli.utils import degrees_to_pixels, pad_img, get_annulus_mask
 from stimuli.Stimulus import Stimulus
 from stimuli import illusions
 
 def white(shape=(10,10), ppd=50, frequency=0.4, high=1.0, low=0.0, target=0.5, period='ignore', start='low', target_indices=(2,5),
-                target_height=None, targets_offset=0, orientation = 'horizontal', padding=(2,2,2,2)):
+                target_height=None, targets_offset=0, orientation = 'horizontal', padding=(2,2,2,2), padding_val=0.5):
 
     """
     Whites's illusion
@@ -61,7 +63,15 @@ def white(shape=(10,10), ppd=50, frequency=0.4, high=1.0, low=0.0, target=0.5, p
     y_end = y_start + target_height_px
 
     for i, index in enumerate(target_indices):
-        x_start = index*phase_width
+        if index >= 0:
+            x_start = index*phase_width
+        else:
+            cycles = frequency * shape[1]
+            phases = int(cycles)*2
+            dec = cycles % 1
+            if dec != 0:
+                phases = phases + 2 if dec > 0.5 else phases + 1
+            x_start = int((phases + index)*phase_width)
         x_end = x_start+phase_width
         img[y_start:y_end, x_start:x_end] = target
         mask[y_start:y_end, x_start:x_end] = i+1
@@ -70,7 +80,7 @@ def white(shape=(10,10), ppd=50, frequency=0.4, high=1.0, low=0.0, target=0.5, p
         img = np.rot90(img, 3)
         mask = np.rot90(mask, 3)
 
-    img = pad_img(img, padding, ppd, target)
+    img = pad_img(img, padding, ppd, padding_val)
     mask = pad_img(mask, padding, ppd, 0)
 
     stim = Stimulus()
@@ -522,7 +532,7 @@ def domijan2015_white():
 
 
 if __name__ == '__main__':
-   stim = white()
+   stim = stimuli.illusions.whites.white()
    plt.subplot(4,2,1)
    plt.imshow(stim.img, cmap='gray')
    plt.subplot(4,2,2)

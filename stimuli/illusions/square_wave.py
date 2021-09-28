@@ -45,9 +45,9 @@ def square_wave(shape=(10,10), ppd=10, frequency=1, high=1.0, low=0.0, period='i
     pixels_per_cycle = degrees_to_pixels(1. / (frequency*2) , ppd) * 2
 
     if period is 'full':
-        width = (shape_pixels // pixels_per_cycle) * pixels_per_cycle
+        width = (width // pixels_per_cycle) * pixels_per_cycle
     elif period is 'half':
-        width = (shape_pixels // pixels_per_cycle) * pixels_per_cycle + pixels_per_cycle / 2
+        width = (height // pixels_per_cycle) * pixels_per_cycle + pixels_per_cycle / 2
 
     stim = np.ones((height, width)) * (low if start is 'high' else high)
 
