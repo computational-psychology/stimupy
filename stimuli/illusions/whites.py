@@ -6,13 +6,25 @@ import stimuli
 from stimuli.utils import degrees_to_pixels, pad_img, get_annulus_mask
 from stimuli.Stimulus import Stimulus
 from stimuli import illusions
-
-def white(shape=(10,10), ppd=50, frequency=0.4, high=1.0, low=0.0, target=0.5, period='ignore', start='low', target_indices=(2,5),
-                target_height=None, targets_offset=0, orientation = 'horizontal', padding=(2,2,2,2), padding_val=0.5):
 from stimuli.illusions.square_wave import square_wave
 
 
-
+def white(
+    shape=(10, 10),
+    ppd=50,
+    frequency=0.4,
+    high=1.0,
+    low=0.0,
+    target=0.5,
+    period="ignore",
+    start="low",
+    target_indices=(2, 5),
+    target_height=None,
+    targets_offset=0,
+    orientation="horizontal",
+    padding=(2, 2, 2, 2),
+    padding_val=0.5,
+):
     """
     Whites's illusion
 
@@ -20,7 +32,7 @@ from stimuli.illusions.square_wave import square_wave
     ----------
     shape : (float, float)
         The shape of the illustion in degrees of visual angle (height, width)
-    ppd : int 
+    ppd : int
         pixels per degree (visual angle)
     frequency : float
         frequency of the grid in cycles per degree visual angle
@@ -30,7 +42,7 @@ from stimuli.illusions.square_wave import square_wave
         value of the dark stripes
     target : float
         value for target
-    period : string in ['ignore', 'full', 'half'] 
+    period : string in ['ignore', 'full', 'half']
         see square_wave.py for details about this
     start : string in ['low','high']
         whether to start with a bright or a low stripes
@@ -53,7 +65,7 @@ from stimuli.illusions.square_wave import square_wave
     height_px, width_px = degrees_to_pixels(shape, ppd)
 
     if target_height is None:
-        target_height_px = degrees_to_pixels(shape[1]/3, ppd)
+        target_height_px = degrees_to_pixels(shape[1] / 3, ppd)
     else:
         target_height_px = degrees_to_pixels(target_height, ppd)
 
@@ -63,25 +75,25 @@ from stimuli.illusions.square_wave import square_wave
     mask = np.zeros((height_px, width_px))
 
     height, width = img.shape
-    phase_width = pixels_per_cycle //2
-    y_start = height//2 - target_height_px//2 - targets_offset
+    phase_width = pixels_per_cycle // 2
+    y_start = height // 2 - target_height_px // 2 - targets_offset
     y_end = y_start + target_height_px
 
     for i, index in enumerate(target_indices):
         if index >= 0:
-            x_start = index*phase_width
+            x_start = index * phase_width
         else:
             cycles = frequency * shape[1]
-            phases = int(cycles)*2
+            phases = int(cycles) * 2
             dec = cycles % 1
             if dec != 0:
                 phases = phases + 2 if dec > 0.5 else phases + 1
-            x_start = int((phases + index)*phase_width)
-        x_end = x_start+phase_width
+            x_start = int((phases + index) * phase_width)
+        x_end = x_start + phase_width
         img[y_start:y_end, x_start:x_end] = target
-        mask[y_start:y_end, x_start:x_end] = i+1
+        mask[y_start:y_end, x_start:x_end] = i + 1
 
-    if orientation == 'vertical':
+    if orientation == "vertical":
         img = np.rot90(img, 3)
         mask = np.rot90(mask, 3)
 
@@ -135,21 +147,26 @@ def circular_white(
     A stimulus object
     """
 
-    height, width = (degrees_to_pixels(radius*2, ppd),)*2
-    pixels_per_cycle = degrees_to_pixels(1. / (frequency*2) , ppd) * 2
-    circle_width = pixels_per_cycle//2
-    n_cycles = (max(height, width))//(circle_width*2)
+    height, width = (degrees_to_pixels(radius * 2, ppd),) * 2
+    pixels_per_cycle = degrees_to_pixels(1.0 / (frequency * 2), ppd) * 2
+    circle_width = pixels_per_cycle // 2
+    n_cycles = (max(height, width)) // (circle_width * 2)
 
-    st = low if start == 'low' else high
-    other = high if start == 'low' else low
-    img = np.ones((height, width))*target
+    st = low if start == "low" else high
+    other = high if start == "low" else low
+    img = np.ones((height, width)) * target
     mask = np.zeros((height, width))
 
     mask_counter = 1
     for i in range(0, n_cycles):
-        radius = circle_width*i
-        annulus_mask = get_annulus_mask((height, width), (height//2, width//2), radius, radius+circle_width-1)
-        img[annulus_mask] = st if i%2==0 else other
+        radius = circle_width * i
+        annulus_mask = get_annulus_mask(
+            (height, width),
+            (height // 2, width // 2),
+            radius,
+            radius + circle_width - 1,
+        )
+        img[annulus_mask] = st if i % 2 == 0 else other
         if i in target_indices:
             img[annulus_mask] = target
             mask[annulus_mask] = mask_counter
@@ -194,9 +211,9 @@ def wheel_of_fortune_white(
     n_cycles : int
         number of full grid cycles in the circle
     target_width :  float in interval [0,1]
-        width of the target, 1 means target goes from center all the way to the edge of the circle 
+        width of the target, 1 means target goes from center all the way to the edge of the circle
     target_indices : (int, )
-        indices of the stripes where the target(s) will be placed 
+        indices of the stripes where the target(s) will be placed
     target_start : float in interval [0,1]
         specify where the target starts relative to the radius
     angle_shift : float
@@ -217,52 +234,51 @@ def wheel_of_fortune_white(
     A stimulus object
     """
 
-
-    n_parts=n_cycles*2
-    n_grid = degrees_to_pixels(radius, ppd)*2
-    n_numbers = n_grid*2
+    n_parts = n_cycles * 2
+    n_grid = degrees_to_pixels(radius, ppd) * 2
+    n_numbers = n_grid * 2
 
     if target_indices is None:
         target_indices = (0, n_parts // 2)
 
     # Create a circle
-    x = np.linspace(0, 2*np.pi, int(n_numbers))
+    x = np.linspace(0, 2 * np.pi, int(n_numbers))
 
     xx = np.cos(x)
     xx_min = np.abs(xx.min())
     xx += xx_min
     xx_max = xx.max()
-    xx = xx / xx_max * (n_grid-1)
+    xx = xx / xx_max * (n_grid - 1)
 
     yy = np.sin(x)
     yy_min = np.abs(yy.min())
     yy += yy_min
     yy_max = yy.max()
-    yy = yy / yy_max * (n_grid-1)
+    yy = yy / yy_max * (n_grid - 1)
 
     img = np.zeros([n_grid, n_grid]) + 0.5
     mask = np.zeros([n_grid, n_grid])
 
-    st = high if start=='high' else low
-    other = low if start=='high' else high
+    st = high if start == "high" else low
+    other = low if start == "high" else high
 
     # Divide circle in n_parts parts:
-    x = np.linspace(0+angle_shift, 2*np.pi+angle_shift, int(n_parts+1))
+    x = np.linspace(0 + angle_shift, 2 * np.pi + angle_shift, int(n_parts + 1))
 
     mask_counter = 1
-    for i in range(len(x)-1):
-        xxx = np.linspace(x[i], x[i+1], int(n_numbers))
+    for i in range(len(x) - 1):
+        xxx = np.linspace(x[i], x[i + 1], int(n_numbers))
         xxxx = np.cos(xxx)
         xxxx += xx_min
-        xxxx = xxxx / xx_max * (n_grid-1)
+        xxxx = xxxx / xx_max * (n_grid - 1)
 
         yyyy = np.sin(xxx)
         yyyy += yy_min
-        yyyy = yyyy / yy_max * (n_grid-1)
+        yyyy = yyyy / yy_max * (n_grid - 1)
 
         for j in range(int(n_numbers)):
-            sep_x = np.linspace(n_grid/2, xxxx[j], int(n_numbers))
-            sep_y = np.linspace(n_grid/2, yyyy[j], int(n_numbers))
+            sep_x = np.linspace(n_grid / 2, xxxx[j], int(n_numbers))
+            sep_y = np.linspace(n_grid / 2, yyyy[j], int(n_numbers))
             # Switch between bright and dark areas:
             if i % 2 == 0:
                 img[sep_x.astype(int), sep_y.astype(int)] = st
@@ -271,17 +287,37 @@ def wheel_of_fortune_white(
 
             if i in target_indices:
                 # Place a single target inside the area
-                img[sep_x[int(n_numbers * (target_start - target_width / 2)):int(n_numbers * (target_start + target_width / 2))].astype(int),
-                     sep_y[int(n_numbers * (target_start - target_width / 2)):int(n_numbers * (target_start + target_width / 2))].astype(int)] = target
+                img[
+                    sep_x[
+                        int(
+                            n_numbers * (target_start - target_width / 2)
+                        ) : int(n_numbers * (target_start + target_width / 2))
+                    ].astype(int),
+                    sep_y[
+                        int(
+                            n_numbers * (target_start - target_width / 2)
+                        ) : int(n_numbers * (target_start + target_width / 2))
+                    ].astype(int),
+                ] = target
 
-                mask[sep_x[int(n_numbers * (target_start - target_width / 2)):int(n_numbers * (target_start + target_width / 2))].astype(int),
-                    sep_y[int(n_numbers * (target_start - target_width / 2)):int(n_numbers * (target_start + target_width / 2))].astype(int)] = mask_counter
+                mask[
+                    sep_x[
+                        int(
+                            n_numbers * (target_start - target_width / 2)
+                        ) : int(n_numbers * (target_start + target_width / 2))
+                    ].astype(int),
+                    sep_y[
+                        int(
+                            n_numbers * (target_start - target_width / 2)
+                        ) : int(n_numbers * (target_start + target_width / 2))
+                    ].astype(int),
+                ] = mask_counter
         mask_counter += 1
 
     mask_vals = np.unique(mask)
     mask_vals = mask_vals[1:]
     for i, val in enumerate(mask_vals):
-        mask[mask==val] = i+1
+        mask[mask == val] = i + 1
 
     img = pad_img(img, padding, ppd, target)
     mask = pad_img(mask, padding, ppd, 0)
@@ -317,7 +353,7 @@ def white_anderson(
     ----------
     shape : (float, float)
         The shape of the illustion in degrees of visual angle (height, width)
-    ppd : int 
+    ppd : int
         pixels per degree (visual angle)
     frequency : float
         frequency of the grid in cycles per degree visual angle
@@ -761,30 +797,30 @@ def domijan2015_white():
     )
 
 
-if __name__ == '__main__':
-   stim = stimuli.illusions.whites.white()
-   plt.subplot(4,2,1)
-   plt.imshow(stim.img, cmap='gray')
-   plt.subplot(4,2,2)
-   plt.imshow(stim.target_mask, cmap='gray')
+if __name__ == "__main__":
+    stim = stimuli.illusions.whites.white()
+    plt.subplot(4, 2, 1)
+    plt.imshow(stim.img, cmap="gray")
+    plt.subplot(4, 2, 2)
+    plt.imshow(stim.target_mask, cmap="gray")
 
-   # stim = circular_white()
-   # plt.subplot(4, 2, 3)
-   # plt.imshow(stim.img, cmap='gray')
-   # plt.subplot(4, 2, 4)
-   # plt.imshow(stim.target_mask, cmap='gray')
-   #
-   # stim = wheel_of_fortune_white()
-   # plt.subplot(4, 2, 5)
-   # plt.imshow(stim.img, cmap='gray')
-   # plt.subplot(4, 2, 6)
-   # plt.imshow(stim.target_mask, cmap='gray')
-   #
-   # stim = white_anderson()
-   # plt.subplot(4, 2, 7)
-   # plt.imshow(stim.img, cmap='gray')
-   # plt.subplot(4, 2, 8)
-   # plt.imshow(stim.target_mask, cmap='gray')
+    # stim = circular_white()
+    # plt.subplot(4, 2, 3)
+    # plt.imshow(stim.img, cmap='gray')
+    # plt.subplot(4, 2, 4)
+    # plt.imshow(stim.target_mask, cmap='gray')
+    #
+    # stim = wheel_of_fortune_white()
+    # plt.subplot(4, 2, 5)
+    # plt.imshow(stim.img, cmap='gray')
+    # plt.subplot(4, 2, 6)
+    # plt.imshow(stim.target_mask, cmap='gray')
+    #
+    # stim = white_anderson()
+    # plt.subplot(4, 2, 7)
+    # plt.imshow(stim.img, cmap='gray')
+    # plt.subplot(4, 2, 8)
+    # plt.imshow(stim.target_mask, cmap='gray')
 
-   plt.tight_layout()
-   plt.show()
+    plt.tight_layout()
+    plt.show()
