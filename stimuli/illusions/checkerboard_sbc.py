@@ -4,8 +4,9 @@ from stimuli.Stimulus import Stimulus
 import matplotlib.pyplot as plt
 from stimuli import illusions
 
-def checkerboard_contrast(ppd=10, board_shape=(8,8), check_size=1.0, target1_coords=(3, 2), target2_coords=(5, 5), extend_targets=False,
+def checkerboard_contrast(ppd=10, board_shape=(8,8), check_size=1.0, targets_coords=((3, 2), (5, 5)), extend_targets=False,
                          check1=0., check2=1., target=.5):
+    # TODO: targets_coords used to be coord1 and coords2, now multiple targets are allowed. This should be changed in all places calling this function
     """
     Checkerboard Contrast
 
@@ -18,9 +19,9 @@ def checkerboard_contrast(ppd=10, board_shape=(8,8), check_size=1.0, target1_coo
     check_size : float
         size of a check in degrees visual angle
     target1_coords : (int, int)
-        check-coordinates of target check 1
+        check-coordinates of target check 1 (row, col)
     target2_coords : (int, int)
-        check-coordinates of target check 2
+        check-coordinates of target check 2 (row, col)
     extend_targets : bool
         cross targets instead of single-check targets
     padding : (float, float, float, float)
@@ -46,19 +47,15 @@ def checkerboard_contrast(ppd=10, board_shape=(8,8), check_size=1.0, target1_coo
     for i, j in np.ndindex((height_checks, width_checks)):
         arr[i, j] = check1 if i % 2 == j % 2 else check2
 
-    arr[target1_coords] = target
-    arr[target2_coords] = target
-
-    mask[target1_coords] = 1
-    mask[target2_coords] = 2
+    for i, coords in enumerate(targets_coords):
+        arr[coords] = target
+        mask[coords] = i+1
 
     if extend_targets:
-        for idx in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
-            arr[target1_coords[0] + idx[0], target1_coords[1] + idx[1]] = target
-            arr[target2_coords[0] + idx[0], target2_coords[1] + idx[1]] = target
-
-            mask[target1_coords[0] + idx[0], target1_coords[1] + idx[1]] = 1
-            mask[target2_coords[0] + idx[0], target2_coords[1] + idx[1]] = 2
+        for i, coords in enumerate(targets_coords):
+            for idx in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
+                arr[coords[0] + idx[0], coords[1] + idx[1]] = target
+                mask[coords[0] + idx[0], coords[1] + idx[1]] = i+1
 
     img = np.repeat(np.repeat(arr, check_size_px, axis=0), check_size_px, axis=1)
     mask = np.repeat(np.repeat(mask, check_size_px, axis=0), check_size_px, axis=1)
