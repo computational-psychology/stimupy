@@ -9,6 +9,9 @@ from stimuli import illusions
 
 def white(shape=(10,10), ppd=50, frequency=0.4, high=1.0, low=0.0, target=0.5, period='ignore', start='low', target_indices=(2,5),
                 target_height=None, targets_offset=0, orientation = 'horizontal', padding=(2,2,2,2), padding_val=0.5):
+from stimuli.illusions.square_wave import square_wave
+
+
 
     """
     Whites's illusion
@@ -54,7 +57,9 @@ def white(shape=(10,10), ppd=50, frequency=0.4, high=1.0, low=0.0, target=0.5, p
     else:
         target_height_px = degrees_to_pixels(target_height, ppd)
 
-    img, pixels_per_cycle = illusions.square_wave(shape, ppd, frequency, high, low, period, start)
+    img, pixels_per_cycle = square_wave(
+        shape, ppd, frequency, high, low, period, start
+    )
     mask = np.zeros((height_px, width_px))
 
     height, width = img.shape
@@ -90,7 +95,17 @@ def white(shape=(10,10), ppd=50, frequency=0.4, high=1.0, low=0.0, target=0.5, p
     return stim
 
 
-def circular_white(radius=5, ppd=50, frequency=1, high=1., low=0., target=.5, target_indices=(2,6), start='low', padding=(2,2,2,2)):
+def circular_white(
+    radius=5,
+    ppd=50,
+    frequency=1.0,
+    high=1.0,
+    low=0.0,
+    target=0.5,
+    target_indices=(2, 6),
+    start="low",
+    padding=(2, 2, 2, 2),
+):
     """
     Circular Whites's illusion
 
@@ -152,9 +167,21 @@ def circular_white(radius=5, ppd=50, frequency=1, high=1., low=0., target=.5, ta
     return stim
 
 
-def wheel_of_fortune_white(radius=10, ppd=50, n_cycles=5, target_width=0.7, target_indices=None, target_start=0.5,
-                           angle_shift=0, high=1.0, low=0., target=.5, start='high', padding=(1,1,1,1)):
-    #TODO: make this faster
+def wheel_of_fortune_white(
+    radius=10,
+    ppd=50,
+    n_cycles=5,
+    target_width=0.7,
+    target_indices=None,
+    target_start=0.5,
+    angle_shift=0,
+    high=1.0,
+    low=0.0,
+    target=0.5,
+    start="high",
+    padding=(1, 1, 1, 1),
+):
+    # TODO: make this faster
     """
     Wheel of fortune Whites's illusion
 
@@ -266,8 +293,23 @@ def wheel_of_fortune_white(radius=10, ppd=50, n_cycles=5, target_width=0.7, targ
     return stim
 
 
-def white_anderson(shape=(5,5), ppd=40, frequency=2, height_bars=1, height_horizontal_top=1, target_height=1, target_indices_top=(5,), target_offsets_top=(0.5,),
-                   target_indices_bottom=(12,), target_offsets_bottom=(-0.5,), high=1., low=0., target=.5, top='low', padding=(1,1,1,1)):
+def white_anderson(
+    shape=(5, 5),
+    ppd=40,
+    frequency=2,
+    height_bars=1,
+    height_horizontal_top=1,
+    target_height=1,
+    target_indices_top=(5,),
+    target_offsets_top=(0.5,),
+    target_indices_bottom=(12,),
+    target_offsets_bottom=(-0.5,),
+    high=1.0,
+    low=0.0,
+    target=0.5,
+    top="low",
+    padding=(1, 1, 1, 1),
+):
     """
     Anderson's white illusion
 
@@ -307,43 +349,53 @@ def white_anderson(shape=(5,5), ppd=40, frequency=2, height_bars=1, height_horiz
     A stimulus object
     """
     height, width = degrees_to_pixels(shape, ppd)
-    pixels_per_cycle = degrees_to_pixels(1. / (frequency*2) , ppd) * 2
-    height_bars, height_horizontal_top = degrees_to_pixels(height_bars, ppd), degrees_to_pixels(height_horizontal_top, ppd)
-    spacing_bottom = height - 3*height_bars - height_horizontal_top
+    pixels_per_cycle = degrees_to_pixels(1.0 / (frequency * 2), ppd) * 2
+    height_bars, height_horizontal_top = degrees_to_pixels(
+        height_bars, ppd
+    ), degrees_to_pixels(height_horizontal_top, ppd)
+    spacing_bottom = height - 3 * height_bars - height_horizontal_top
 
-    top = low if top=='low' else high
-    bottom = high if top==low else low
+    top = low if top == "low" else high
+    bottom = high if top == low else low
 
-    img = np.ones((height, width))*bottom
+    img = np.ones((height, width)) * bottom
     mask = np.zeros((height, width))
 
-    index = [i + j for i in range(pixels_per_cycle // 2)
-             for j in range(0, width, pixels_per_cycle)
-             if i + j < width]
+    index = [
+        i + j
+        for i in range(pixels_per_cycle // 2)
+        for j in range(0, width, pixels_per_cycle)
+        if i + j < width
+    ]
 
-    img[:height_bars*2 + height_horizontal_top, index] = top
+    img[: height_bars * 2 + height_horizontal_top, index] = top
     img[-height_bars:, index] = top
-    img[height_bars:height_bars+height_horizontal_top,:] = top
+    img[height_bars : height_bars + height_horizontal_top, :] = top
 
     target_height = degrees_to_pixels(target_height, ppd)
-    target_offsets_top = tuple(degrees_to_pixels(x, ppd) for x in target_offsets_top)
-    target_offsets_bottom = tuple(degrees_to_pixels(x, ppd) for x in target_offsets_bottom)
-
+    target_offsets_top = tuple(
+        degrees_to_pixels(x, ppd) for x in target_offsets_top
+    )
+    target_offsets_bottom = tuple(
+        degrees_to_pixels(x, ppd) for x in target_offsets_bottom
+    )
 
     for i, ind in enumerate(target_indices_top):
-        st = int(pixels_per_cycle/2 * ind)
-        end = int(st + pixels_per_cycle/2)
-        img[:height_bars*2+height_horizontal_top,st:end] = bottom
+        st = int(pixels_per_cycle / 2 * ind)
+        end = int(st + pixels_per_cycle / 2)
+        img[: height_bars * 2 + height_horizontal_top, st:end] = bottom
         offset = target_offsets_top[i]
-        target_start = height_bars + (height_horizontal_top-target_height)//2 + offset
+        target_start = (
+            height_bars + (height_horizontal_top - target_height) // 2 + offset
+        )
         target_end = target_start + target_height
         img[target_start:target_end, st:end] = target
-        mask[target_start:target_end, st:end] = i+1
+        mask[target_start:target_end, st:end] = i + 1
 
     for i, ind in enumerate(target_indices_bottom):
-        st = int(pixels_per_cycle/2 * ind)
-        end = int(st + pixels_per_cycle/2)
-        img[height_bars+height_horizontal_top:,st:end] = top
+        st = int(pixels_per_cycle / 2 * ind)
+        end = int(st + pixels_per_cycle / 2)
+        img[height_bars + height_horizontal_top :, st:end] = top
         offset = target_offsets_bottom[i]
         target_start = -height_bars - spacing_bottom + offset
         target_end = target_start + target_height
@@ -360,45 +412,101 @@ def white_anderson(shape=(5,5), ppd=40, frequency=2, height_bars=1, height_horiz
     return stim
 
 
-
 def RHS2007_WE_thick():
-    total_height, total_width, ppd = (32,)*3
-    height, width = 12, 16
-    n_cycles = 4
+    total_height, total_width, ppd = (32.0,) * 3
+    height, width = 12.0, 16.0
+    n_cycles = 4.0
     frequency = n_cycles / width
     padding_horizontal = (total_width - width) / 2
     padding_vertical = (total_height - height) / 2
-    padding = (padding_vertical, padding_vertical, padding_horizontal, padding_horizontal)
+    padding = (
+        padding_vertical,
+        padding_vertical,
+        padding_horizontal,
+        padding_horizontal,
+    )
     target_height = 4
-    return illusions.white(shape=(height, width), ppd=ppd, frequency=frequency, start='low', target_indices=(2, 5), padding=padding, target_height=target_height)
+    return white(
+        shape=(height, width),
+        ppd=ppd,
+        frequency=frequency,
+        start="low",
+        target_indices=(2, 5),
+        padding=padding,
+        target_height=target_height,
+    )
 
 
 def RHS2007_WE_thin_wide():
-    total_height, total_width, ppd = (32,)*3
-    height, width = 12, 16
-    n_cycles = 8
+    total_height, total_width, ppd = (32.0,) * 3
+    height, width = 12.0, 16.0
+    n_cycles = 8.0
     frequency = n_cycles / width
-    padding_horizontal = (total_width - width) / 2
-    padding_vertical = (total_height - height) / 2
-    padding = (padding_vertical, padding_vertical, padding_horizontal, padding_horizontal)
+    padding_horizontal = (total_width - width) / 2.0
+    padding_vertical = (total_height - height) / 2.0
+    padding = (
+        padding_vertical,
+        padding_vertical,
+        padding_horizontal,
+        padding_horizontal,
+    )
     target_height = 2
-    return illusions.white(shape=(height, width), ppd=ppd, frequency=frequency, start='high', target_indices=(3, 12), padding=padding, target_height=target_height)
+    return white(
+        shape=(height, width),
+        ppd=ppd,
+        frequency=frequency,
+        start="high",
+        target_indices=(3, 12),
+        padding=padding,
+        target_height=target_height,
+    )
 
 
 def RHS2007_WE_dual():
-    total_height, total_width, ppd = (32,)*3
-    height, width = 6, 8
-    n_cycles = 4
+    total_height, total_width, ppd = (32.0,) * 3
+    height, width = 6.0, 8.0
+    n_cycles = 4.0
     frequency = n_cycles / width
 
-    padding_horizontal1, padding_vertical1 = (total_width / 2 - width) / 2, (total_height - height) / 2
-    padding1 = (padding_vertical1, padding_vertical1, padding_horizontal1, padding_horizontal1)
-    padding_horizontal2, padding_vertical2 = (total_width / 2 - height) / 2, (total_height - width) / 2
-    padding2 = (padding_vertical2, padding_vertical2, padding_horizontal2, padding_horizontal2)
+    padding_horizontal1, padding_vertical1 = (
+        total_width / 2.0 - width
+    ) / 2.0, (total_height - height) / 2.0
+    padding1 = (
+        padding_vertical1,
+        padding_vertical1,
+        padding_horizontal1,
+        padding_horizontal1,
+    )
+    padding_horizontal2, padding_vertical2 = (
+        total_width / 2.0 - height
+    ) / 2.0, (total_height - width) / 2.0
+    padding2 = (
+        padding_vertical2,
+        padding_vertical2,
+        padding_horizontal2,
+        padding_horizontal2,
+    )
 
-    target_height = 2
-    stim1 = illusions.white(shape=(height, width), ppd=ppd, frequency=frequency, start='low', target_indices=(2, 5), padding=padding1, target_height=target_height)
-    stim2 = illusions.white(shape=(height, width), ppd=ppd, frequency=frequency, start='low', target_indices=(2, 5), padding=padding2, target_height=target_height, orientation='vertical')
+    target_height = 2.0
+    stim1 = white(
+        shape=(height, width),
+        ppd=ppd,
+        frequency=frequency,
+        start="low",
+        target_indices=(2, 5),
+        padding=padding1,
+        target_height=target_height,
+    )
+    stim2 = white(
+        shape=(height, width),
+        ppd=ppd,
+        frequency=frequency,
+        start="low",
+        target_indices=(2, 5),
+        padding=padding2,
+        target_height=target_height,
+        orientation="vertical",
+    )
 
     stim = Stimulus()
     stim.img = np.hstack((stim1.img, stim2.img))
@@ -407,78 +515,158 @@ def RHS2007_WE_dual():
 
 
 def RHS2007_WE_anderson():
-    total_height, total_width, ppd = (32,)*3
-    height, width = 16, 16
-    n_cycles = 8
+    total_height, total_width, ppd = (32,) * 3
+    height, width = 16.0, 16.0
+    n_cycles = 8.0
     frequency = n_cycles / width
     height_bars = height / 5
     height_horizontal = height_bars
     target_height = height_bars
     padding_horizontal = (total_width - width) / 2
     padding_vertical = (total_height - height) / 2
-    padding = (padding_vertical, padding_vertical, padding_horizontal, padding_horizontal)
-    return illusions.white_anderson(shape=(height, width), ppd=ppd, frequency=frequency, target_height=target_height,
-                                                  target_indices_top=(5,), target_offsets_top=(target_height / 2,), target_indices_bottom=(10,), target_offsets_bottom=(-target_height / 2,),
-                                                  height_bars=height_bars, height_horizontal_top=height_horizontal, padding=padding)
+    padding = (
+        padding_vertical,
+        padding_vertical,
+        padding_horizontal,
+        padding_horizontal,
+    )
+    return white_anderson(
+        shape=(height, width),
+        ppd=ppd,
+        frequency=frequency,
+        target_height=target_height,
+        target_indices_top=(5,),
+        target_offsets_top=(target_height / 2,),
+        target_indices_bottom=(10,),
+        target_offsets_bottom=(-target_height / 2,),
+        height_bars=height_bars,
+        height_horizontal_top=height_horizontal,
+        padding=padding,
+    )
 
 
 def RHS2007_WE_howe():
-    total_height, total_width, ppd = (32,)*3
-    height, width = 16, 16
-    n_cycles = 8
+    total_height, total_width, ppd = (32.0,) * 3
+    height, width = 16.0, 16.0
+    n_cycles = 8.0
     frequency = n_cycles / width
-    height_bars = height / 5
+    height_bars = height / 5.0
     height_horizontal = height_bars
     target_height = height_bars
-    padding_horizontal = (total_width - width) / 2
-    padding_vertical = (total_height - height) / 2
-    padding = (padding_vertical, padding_vertical, padding_horizontal, padding_horizontal)
-    return illusions.white_anderson(shape=(height, width), ppd=ppd, frequency=frequency, target_height=target_height,
-                                                  target_indices_top=(5,), target_offsets_top=(0,), target_indices_bottom=(10,), target_offsets_bottom=(0,),
-                                                  height_bars=height_bars, height_horizontal_top=height_horizontal, padding=padding)
+    padding_horizontal = (total_width - width) / 2.0
+    padding_vertical = (total_height - height) / 2.0
+    padding = (
+        padding_vertical,
+        padding_vertical,
+        padding_horizontal,
+        padding_horizontal,
+    )
+    return white_anderson(
+        shape=(height, width),
+        ppd=ppd,
+        frequency=frequency,
+        target_height=target_height,
+        target_indices_top=(5,),
+        target_offsets_top=(0,),
+        target_indices_bottom=(10,),
+        target_offsets_bottom=(0,),
+        height_bars=height_bars,
+        height_horizontal_top=height_horizontal,
+        padding=padding,
+    )
 
 
 def RHS2007_WE_radial_thick_small():
-    total_height, total_width, ppd = (32,)*3
-    radius = 8
-    padding = ((total_width - 2 * radius) / 2,) * 4
-    n_cycles = 7
-    return illusions.wheel_of_fortune_white(radius=radius, ppd=ppd, n_cycles=n_cycles, angle_shift=np.pi / n_cycles / 2, target_indices=(n_cycles - 1, 2 * n_cycles - 1), target_width=0.5, target_start=0.55, padding=padding)
+    total_height, total_width, ppd = (32.0,) * 3
+    radius = 8.0
+    padding = ((total_width - 2 * radius) / 2.0,) * 4
+    n_cycles = 7.0
+    return wheel_of_fortune_white(
+        radius=radius,
+        ppd=ppd,
+        n_cycles=n_cycles,
+        angle_shift=np.pi / n_cycles / 2.0,
+        target_indices=(n_cycles - 1, 2 * n_cycles - 1),
+        target_width=0.5,
+        target_start=0.55,
+        padding=padding,
+    )
 
 
 def RHS2007_WE_radial_thick():
-    total_height, total_width, ppd = (32,)*3
-    radius = 12
-    padding = ((total_width - 2 * radius) / 2,) * 4
-    n_cycles = 9
-    return illusions.wheel_of_fortune_white(radius=radius, ppd=ppd, n_cycles=n_cycles, angle_shift=np.pi / n_cycles / 2, target_indices=(n_cycles - 1, 2 * n_cycles - 1), target_width=0.3, target_start=0.5, padding=padding)
+    total_height, total_width, ppd = (32.0,) * 3
+    radius = 12.0
+    padding = ((total_width - 2 * radius) / 2.0,) * 4
+    n_cycles = 9.0
+    return wheel_of_fortune_white(
+        radius=radius,
+        ppd=ppd,
+        n_cycles=n_cycles,
+        angle_shift=np.pi / n_cycles / 2.0,
+        target_indices=(n_cycles - 1, 2 * n_cycles - 1),
+        target_width=0.3,
+        target_start=0.5,
+        padding=padding,
+    )
 
 
 def RHS2007_WE_radial_thin_small():
-    total_height, total_width, ppd = (32,)*3
-    radius = 8
-    padding = ((total_width - 2 * radius) / 2,) * 4
-    n_cycles = 13
-    return illusions.wheel_of_fortune_white(radius=radius, ppd=ppd, n_cycles=n_cycles, angle_shift=np.pi / n_cycles / 2, target_indices=(n_cycles - 1, 2 * n_cycles - 1), target_width=0.25, target_start=0.5, padding=padding)
+    total_height, total_width, ppd = (32.0,) * 3
+    radius = 8.0
+    padding = ((total_width - 2 * radius) / 2.0,) * 4
+    n_cycles = 13.0
+    return wheel_of_fortune_white(
+        radius=radius,
+        ppd=ppd,
+        n_cycles=n_cycles,
+        angle_shift=np.pi / n_cycles / 2,
+        target_indices=(n_cycles - 1, 2 * n_cycles - 1),
+        target_width=0.25,
+        target_start=0.5,
+        padding=padding,
+    )
 
 
 def RHS2007_WE_radial_thin():
-    total_height, total_width, ppd = (32,)*3
-    radius = 12
+    total_height, total_width, ppd = (32,) * 3
+    radius = 12.0
     padding = ((total_width - 2 * radius) / 2,) * 4
-    n_cycles = 21
-    return illusions.wheel_of_fortune_white(radius=radius, ppd=ppd, n_cycles=n_cycles, angle_shift=np.pi / n_cycles / 2, target_indices=(n_cycles - 1, 2 * n_cycles - 1), target_width=0.15, target_start=0.55, padding=padding)
+    n_cycles = 21.0
+    return wheel_of_fortune_white(
+        radius=radius,
+        ppd=ppd,
+        n_cycles=n_cycles,
+        angle_shift=np.pi / n_cycles / 2,
+        target_indices=(n_cycles - 1, 2 * n_cycles - 1),
+        target_width=0.15,
+        target_start=0.55,
+        padding=padding,
+    )
 
 
 def RHS2007_WE_circular1():
-    total_height, total_width, ppd = (32,)*3
-    radius = 8
-    n_cycles = 4
+    total_height, total_width, ppd = (32,) * 3
+    radius = 8.0
+    n_cycles = 4.0
     frequency = n_cycles / radius
     padding_vertical = (total_height - 2 * radius) / 2
     padding = (padding_vertical, padding_vertical, 0, 0)
-    stim1 = illusions.circular_white(radius=radius, ppd=ppd, frequency=frequency, target_indices=(4,), start='high', padding=padding)
-    stim2 = illusions.circular_white(radius=radius, ppd=ppd, frequency=frequency, target_indices=(4,), start='low', padding=padding)
+    stim1 = circular_white(
+        radius=radius,
+        ppd=ppd,
+        frequency=frequency,
+        target_indices=(4,),
+        start="high",
+        padding=padding,
+    )
+    stim2 = circular_white(
+        radius=radius,
+        ppd=ppd,
+        frequency=frequency,
+        target_indices=(4,),
+        start="low",
+        padding=padding,
+    )
     stim2.target_mask *= 2
 
     stim = Stimulus()
@@ -489,14 +677,28 @@ def RHS2007_WE_circular1():
 
 
 def RHS2007_WE_circular05():
-    total_height, total_width, ppd = (32,)*3
+    total_height, total_width, ppd = (32,) * 3
     radius = 8
     n_cycles = 8
     frequency = n_cycles / radius
     padding_vertical = (total_height - 2 * radius) / 2
     padding = (padding_vertical, padding_vertical, 0, 0)
-    stim1 = illusions.circular_white(radius=radius, ppd=ppd, frequency=frequency, target_indices=(10,), start='high', padding=padding)
-    stim2 = illusions.circular_white(radius=radius, ppd=ppd, frequency=frequency, target_indices=(10,), start='low', padding=padding)
+    stim1 = circular_white(
+        radius=radius,
+        ppd=ppd,
+        frequency=frequency,
+        target_indices=(10,),
+        start="high",
+        padding=padding,
+    )
+    stim2 = circular_white(
+        radius=radius,
+        ppd=ppd,
+        frequency=frequency,
+        target_indices=(10,),
+        start="low",
+        padding=padding,
+    )
     stim2.target_mask *= 2
 
     stim = Stimulus()
@@ -507,14 +709,28 @@ def RHS2007_WE_circular05():
 
 
 def RHS2007_WE_circular025():
-    total_height, total_width, ppd = (32,)*3
-    radius = 8
-    n_cycles = 16
+    total_height, total_width, ppd = (32.0,) * 3
+    radius = 8.0
+    n_cycles = 16.0
     frequency = n_cycles / radius
-    padding_vertical = (total_height - 2 * radius) / 2
+    padding_vertical = (total_height - 2 * radius) / 2.0
     padding = (padding_vertical, padding_vertical, 0, 0)
-    stim1 = illusions.circular_white(radius=radius, ppd=ppd, frequency=frequency, target_indices=(22,), start='high', padding=padding)
-    stim2 = illusions.circular_white(radius=radius, ppd=ppd, frequency=frequency, target_indices=(22,), start='low', padding=padding)
+    stim1 = circular_white(
+        radius=radius,
+        ppd=ppd,
+        frequency=frequency,
+        target_indices=(22,),
+        start="high",
+        padding=padding,
+    )
+    stim2 = circular_white(
+        radius=radius,
+        ppd=ppd,
+        frequency=frequency,
+        target_indices=(22,),
+        start="low",
+        padding=padding,
+    )
     stim2.target_mask *= 2
 
     stim = Stimulus()
@@ -523,12 +739,26 @@ def RHS2007_WE_circular025():
 
     return stim
 
+
 def domijan2015_white():
-    height, width, ppd = 8.1, 8., 10
+    height, width, ppd = 8.1, 8.0, 10
     n_cycles = 4
-    frequency = n_cycles/width
-    return illusions.white(shape=(height, width), ppd=ppd, frequency=frequency, high=9., low=1., target=5., period='ignore', start='low',
-                 target_indices=(2,5), target_height=2.1, targets_offset=0, orientation='horizontal', padding=(.9, 1., .9, 1.1))
+    frequency = n_cycles / width
+    return white(
+        shape=(height, width),
+        ppd=ppd,
+        frequency=frequency,
+        high=9.0,
+        low=1.0,
+        target=5.0,
+        period="ignore",
+        start="low",
+        target_indices=(2, 5),
+        target_height=2.1,
+        targets_offset=0,
+        orientation="horizontal",
+        padding=(0.9, 1.0, 0.9, 1.1),
+    )
 
 
 if __name__ == '__main__':

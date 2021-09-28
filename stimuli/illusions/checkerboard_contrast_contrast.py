@@ -1,10 +1,19 @@
 import numpy as np
 from stimuli.utils import degrees_to_pixels, pad_img, plot_stim
 from stimuli.Stimulus import Stimulus
-from stimuli import illusions
 
-def checkerboard_contrast_contrast_effect(ppd=10, n_checks=8, check_size=1.0, target_length=4, padding=(1.0,1.0,1.0,1.0), check1=0., check2=2.,
-                                          tau=.5, alpha=.5):
+
+def checkerboard_contrast_contrast_effect(
+    ppd=10,
+    n_checks=8,
+    check_size=1.0,
+    target_length=4,
+    padding=(1.0, 1.0, 1.0, 1.0),
+    check1=0.0,
+    check2=2.0,
+    tau=0.5,
+    alpha=0.5,
+):
     """
     Contrast-contrast effect on checkerboard with square transparency layer.
 
@@ -79,13 +88,22 @@ def checkerboard_contrast_contrast_effect(ppd=10, n_checks=8, check_size=1.0, ta
     return stim
 
 
-
 def domijan2015():
     """
     Generates checkerboard contrast contrast illusion as used in Domijan 2015 paper.
     """
-    return illusions.checkerboard_contrast_contrast_effect(ppd=10, n_checks=8, check_size=1.0, target_length=4, padding=(.9,1.1,.9,1.1), check1=1.,
-                                                 check2=9., tau=5, alpha= .5)
+    return checkerboard_contrast_contrast_effect(
+        ppd=10,
+        n_checks=8,
+        check_size=1.0,
+        target_length=4,
+        padding=(0.9, 1.1, 0.9, 1.1),
+        check1=1.0,
+        check2=9.0,
+        tau=5,
+        alpha=0.5,
+    )
+
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt

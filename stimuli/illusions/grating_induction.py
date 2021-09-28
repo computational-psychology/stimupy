@@ -2,12 +2,25 @@ import numpy as np
 from scipy.ndimage.filters import gaussian_filter
 from stimuli.utils import degrees_to_pixels, pad_img, plot_stim
 from stimuli.Stimulus import Stimulus
-from stimuli import illusions
+from stimuli.illusions.square_wave import square_wave
+
 
 ###################################
 #        Grating induction        #
 ###################################
-def grating_illusion(shape=(10,10), ppd=40, frequency=0.5, target_height=0.5, blur=None, high=1., low=0., target=.5, start='low', period='ignore', padding=(2,2,2,2)):
+def grating_illusion(
+    shape=(10, 10),
+    ppd=40,
+    frequency=0.5,
+    target_height=0.5,
+    blur=None,
+    high=1.0,
+    low=0.0,
+    target=0.5,
+    start="low",
+    period="ignore",
+    padding=(2, 2, 2, 2),
+):
     """
     Grating induction illusions
 
@@ -45,7 +58,9 @@ def grating_illusion(shape=(10,10), ppd=40, frequency=0.5, target_height=0.5, bl
     height_px, width_px = degrees_to_pixels(shape, ppd)
     target_height_px = degrees_to_pixels(target_height, ppd)
 
-    img, pixels_per_cycle = illusions.square_wave(shape, ppd, frequency, high, low, period, start)
+    img, pixels_per_cycle = square_wave(
+        shape, ppd, frequency, high, low, period, start
+    )
     img = gaussian_filter(img, blur)
     mask = np.zeros((height_px, width_px))
 
@@ -63,15 +78,29 @@ def grating_illusion(shape=(10,10), ppd=40, frequency=0.5, target_height=0.5, bl
 
     return stim
 
+
 def RHS2007_grating_induction():
-    total_height, total_width, ppd = (32,)*3
-    n_cycles = 4
-    height, width = 12, 16
+    total_height, total_width, ppd = (32.0,) * 3
+    n_cycles = 4.0
+    height, width = 12.0, 16.0
     frequency = n_cycles / width
     padding_horizontal = (total_width - width) / 2
     padding_vertical = (total_height - height) / 2
-    padding = (padding_vertical, padding_vertical, padding_horizontal, padding_horizontal)
-    img = illusions.grating_induction.grating_illusion(shape=(height, width), ppd=ppd, frequency=frequency, target_height=1, blur=10, start='high', padding=padding)
+    padding = (
+        padding_vertical,
+        padding_vertical,
+        padding_horizontal,
+        padding_horizontal,
+    )
+    img = grating_illusion(
+        shape=(height, width),
+        ppd=ppd,
+        frequency=frequency,
+        target_height=1,
+        blur=10,
+        start="high",
+        padding=padding,
+    )
     return img
 
 

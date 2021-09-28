@@ -1,9 +1,26 @@
 import numpy as np
 from stimuli.utils import degrees_to_pixels, pad_img, plot_stim
 from stimuli.Stimulus import Stimulus
-from stimuli import  illusions
 
-def ring_pattern(ppd=10, n_rings=8, target_pos_l=4, target_pos_r=3, ring_width=.5, padding=(1.0,1.0,1.0,1.0,), back=0., rings=1., target=.5, invert_rings=False, double=True, ):
+
+def ring_pattern(
+    ppd=10,
+    n_rings=8,
+    target_pos_l=4,
+    target_pos_r=3,
+    ring_width=0.5,
+    padding=(
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+    ),
+    back=0.0,
+    rings=1.0,
+    target=0.5,
+    invert_rings=False,
+    double=True,
+):
     """
     Ring Pattern White's-like illusion
 
@@ -74,11 +91,21 @@ def ring_pattern(ppd=10, n_rings=8, target_pos_l=4, target_pos_r=3, ring_width=.
     img = pad_img(img, padding, ppd, back)
     mask = pad_img(mask, padding, ppd, 0)
 
-
     # create right half of stimulus
     if double:
-        stim2 = ring_pattern(ppd=ppd, n_rings=n_rings, target_pos_l=target_pos_r, target_pos_r=0, ring_width=ring_width,
-                            padding=padding, back=back, rings=rings, target=target, invert_rings=invert_rings, double=False)
+        stim2 = ring_pattern(
+            ppd=ppd,
+            n_rings=n_rings,
+            target_pos_l=target_pos_r,
+            target_pos_r=0,
+            ring_width=ring_width,
+            padding=padding,
+            back=back,
+            rings=rings,
+            target=target,
+            invert_rings=invert_rings,
+            double=False,
+        )
         img = np.hstack([img, stim2.img])
         mask = np.hstack([mask, stim2.target_mask])
 
@@ -88,8 +115,21 @@ def ring_pattern(ppd=10, n_rings=8, target_pos_l=4, target_pos_r=3, ring_width=.
 
     return stim
 
+
 def domijan2015():
-    img = illusions.ring_pattern(ppd=10, n_rings=8, target_pos_l=4, target_pos_r=3, ring_width=.5, padding=(.9,1.0,.9,1.0), back=1., rings=9., target=5., invert_rings=False, double=True)
+    img = ring_pattern(
+        ppd=10,
+        n_rings=8,
+        target_pos_l=4,
+        target_pos_r=3,
+        ring_width=0.5,
+        padding=(0.9, 1.0, 0.9, 1.0),
+        back=1.0,
+        rings=9.0,
+        target=5.0,
+        invert_rings=False,
+        double=True,
+    )
     return img
 
 

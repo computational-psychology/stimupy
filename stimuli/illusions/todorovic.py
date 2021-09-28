@@ -4,9 +4,19 @@ import math
 
 from stimuli.utils import degrees_to_pixels, pad_img, plot_stim
 from stimuli.Stimulus import Stimulus
-from stimuli import illusions
 
-def todorovic_illusion(target_shape=(4,4), ppd=10, covers_shape=(2.5, 2.5), spacing=(1.5,1.5,1.5,1.5), padding=(2,2,2,2), back=0., grid=1., target=.5, double=True):
+
+def todorovic_illusion(
+    target_shape=(4, 4),
+    ppd=10,
+    covers_shape=(2.5, 2.5),
+    spacing=(1.5, 1.5, 1.5, 1.5),
+    padding=(2, 2, 2, 2),
+    back=0.0,
+    grid=1.0,
+    target=0.5,
+    double=True,
+):
     """
     Todorovic's illusion
 
@@ -84,8 +94,17 @@ def todorovic_illusion(target_shape=(4,4), ppd=10, covers_shape=(2.5, 2.5), spac
 
     # create right half of stimulus
     if double:
-        stim2 = todorovic_illusion(target_shape=target_shape, ppd=ppd, covers_shape=covers_shape, spacing=spacing,
-                                  padding=padding, back=grid, grid=back, target=target, double=False)
+        stim2 = todorovic_illusion(
+            target_shape=target_shape,
+            ppd=ppd,
+            covers_shape=covers_shape,
+            spacing=spacing,
+            padding=padding,
+            back=grid,
+            grid=back,
+            target=target,
+            double=False,
+        )
         img = np.hstack([img, stim2.img])
         mask = np.hstack([mask, stim2.target_mask*2])
 
@@ -98,9 +117,19 @@ def todorovic_illusion(target_shape=(4,4), ppd=10, covers_shape=(2.5, 2.5), spac
 
     return stim
 
+
 def domijan2015():
-    return illusions.todorovic_illusion(target_shape=(4.1, 4.1), ppd=10, covers_shape=(3.1, 3.1), spacing=(1.5, 1.5, 1.5, 1.5), padding=(2.9,3.0, 2.9,3.0 ),
-                              grid=9., back=1., target=5.)
+    return todorovic_illusion(
+        target_shape=(4.1, 4.1),
+        ppd=10,
+        covers_shape=(3.1, 3.1),
+        spacing=(1.5, 1.5, 1.5, 1.5),
+        padding=(2.9, 3.0, 2.9, 3.0),
+        grid=9.0,
+        back=1.0,
+        target=5.0,
+    )
+
 
 def RHS2007_todorovic_equal():
     total_height, total_width, ppd = (32,)*3
@@ -114,8 +143,16 @@ def RHS2007_todorovic_equal():
     spacing = (0,) * 4
 
     back, grid, target = 1., 0., .5
-    stim = illusions.todorovic_illusion(target_shape=(target_height, target_width), ppd=ppd, covers_shape=covers_shape, spacing=spacing,
-                                                         padding=inner_padding, back=back, grid=grid, target=target)
+    stim = todorovic_illusion(
+        target_shape=(target_height, target_width),
+        ppd=ppd,
+        covers_shape=covers_shape,
+        spacing=spacing,
+        padding=inner_padding,
+        back=back,
+        grid=grid,
+        target=target,
+    )
     height_px, width_px = stim.img.shape
 
     padding_vertical_top = degrees_to_pixels( (total_height - height) / 2, ppd)
@@ -141,8 +178,16 @@ def RHS2007_todorovic_in_large():
     spacing = ((8 - 5.3) / 2,) * 4
 
     back, grid, target = 1., 0., .5
-    stim = illusions.todorovic_illusion(target_shape=(target_height, target_width), ppd=ppd, covers_shape=covers_shape, spacing=spacing,
-                              padding=inner_padding, back=back, grid=grid, target=target)
+    stim = todorovic_illusion(
+        target_shape=(target_height, target_width),
+        ppd=ppd,
+        covers_shape=covers_shape,
+        spacing=spacing,
+        padding=inner_padding,
+        back=back,
+        grid=grid,
+        target=target,
+    )
     height_px, width_px = stim.img.shape
 
     padding_vertical_top = degrees_to_pixels( (total_height - height) / 2, ppd)
@@ -168,8 +213,16 @@ def RHS2007_todorovic_in_small():
     spacing = ((8 - 3) / 2,) * 4
 
     back, grid, target = 1., 0., .5
-    stim = illusions.todorovic_illusion(target_shape=(target_height, target_width), ppd=ppd, covers_shape=covers_shape, spacing=spacing,
-                              padding=inner_padding, back=back, grid=grid, target=target)
+    stim = todorovic_illusion(
+        target_shape=(target_height, target_width),
+        ppd=ppd,
+        covers_shape=covers_shape,
+        spacing=spacing,
+        padding=inner_padding,
+        back=back,
+        grid=grid,
+        target=target,
+    )
     height_px, width_px = stim.img.shape
 
     padding_vertical_top = degrees_to_pixels((total_height - height) / 2, ppd)
