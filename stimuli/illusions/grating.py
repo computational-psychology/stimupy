@@ -73,6 +73,7 @@ def grating_illusion(
     img = pad_img(img, padding, ppd, back)
     mask = pad_img(mask, padding, ppd, 0)
 
+    # Repeat stimulus and add to single-stimulus:
     if double:
         stim2 = grating_illusion(
             ppd=ppd,
@@ -87,6 +88,8 @@ def grating_illusion(
             double=False,
         )
         img = np.hstack([img, stim2.img])
+        # Increase target mask values to differentiate from single-stimulus targets:
+        stim2.target_mask[stim2.target_mask != 0] += 1
         mask = np.hstack([mask, stim2.target_mask])
 
     stim = Stimulus()

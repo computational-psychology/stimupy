@@ -39,6 +39,8 @@ def bullseye_illusion(ppd=10, n_rings=8, ring_width=.5, target_pos_l=0, target_p
                         back=back, rings=rings, target=target, invert_rings=True, double=False)
 
     img = np.hstack((stim1.img, stim2.img))
+    # Increase target mask values to differentiate from single-stimulus targets:
+    stim2.target_mask[stim2.target_mask != 0] += 1
     mask = np.hstack((stim1.target_mask, stim2.target_mask))
 
     stim = Stimulus()

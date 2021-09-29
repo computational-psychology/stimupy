@@ -107,6 +107,8 @@ def ring_pattern(
             double=False,
         )
         img = np.hstack([img, stim2.img])
+        # Increase target mask values to differentiate from single-stimulus targets:
+        stim2.target_mask[stim2.target_mask != 0] += 1
         mask = np.hstack([mask, stim2.target_mask])
 
     stim = Stimulus()

@@ -18,6 +18,7 @@ def cube_illusion(
     grid=1.0,
     target=0.5,
     double=True,
+    limit_mask_vals=True
 ):
 
     """
@@ -53,6 +54,8 @@ def cube_illusion(
         value for target
     double : bool
         whether to return the full illusion with two grids side-by-side (inverting back and grid values)
+    limit_mask_vals : bool
+        whether to differentiate only two targets (left/right) or individiual targets
 
     Returns
     -------
@@ -80,33 +83,36 @@ def cube_illusion(
 
     img = np.ones((height_px, width_px)) * back
     mask = np.zeros((height_px, width_px))
-    mask_counter = 0
+    mask_id = 0
 
     for i, val in np.ndenumerate(arr):
         target_cell = val==target
-        if target_cell:
-            mask_counter += 1
+        if target_cell and not limit_mask_vals:
+            mask_id += 1
+        elif target_cell and limit_mask_vals:
+            mask_id = 1
+
         if i[0] in range(1, n_cells-1) and i[1] in range(1, n_cells-1):
             continue  # skip centre cells for efficiency
         elif i == (0,0):  # top left corner cell
             img[:corner_cell_height_px, :corner_cell_width_px] = val
             if target_cell:
-                mask[:corner_cell_height_px, :corner_cell_width_px] = mask_counter
+                mask[:corner_cell_height_px, :corner_cell_width_px] = mask_id
 
         elif i == (0, n_cells-1): # top right corner cell
             img[:corner_cell_height_px, -corner_cell_width_px:] = val
             if target_cell:
-                mask[:corner_cell_height_px, -corner_cell_width_px:] = mask_counter
+                mask[:corner_cell_height_px, -corner_cell_width_px:] = mask_id
 
         elif i == (n_cells-1, 0): # bottom left corner cell
             img[-corner_cell_height_px:, :corner_cell_width_px] = val
             if target_cell:
-                mask[-corner_cell_height_px:, :corner_cell_width_px] = mask_counter
+                mask[-corner_cell_height_px:, :corner_cell_width_px] = mask_id
 
         elif i == (n_cells - 1, n_cells-1):  # bottom right corner cell
             img[-corner_cell_height_px:, -corner_cell_width_px:] = val
             if target_cell:
-                mask[-corner_cell_height_px:, -corner_cell_width_px:] = mask_counter
+                mask[-corner_cell_height_px:, -corner_cell_width_px:] = mask_id
 
         else:
             if i[0] == 0 or i[0] == n_cells -1: # top/bottom side
@@ -114,11 +120,11 @@ def cube_illusion(
                 if i[0] == 0: # top side
                     img[:cell_short_px, x:x + cell_long_px] = val
                     if target_cell:
-                        mask[:cell_short_px, x:x + cell_long_px] = mask_counter
+                        mask[:cell_short_px, x:x + cell_long_px] = mask_id
                 else: # bottom side
                     img[-cell_short_px:, x:x + cell_long_px] = val
                     if target_cell:
-                        mask[-cell_short_px:, x:x + cell_long_px] = mask_counter
+                        mask[-cell_short_px:, x:x + cell_long_px] = mask_id
 
             else: # left/right side
                 y = corner_cell_width_px + cell_spacing_px + (i[0] - 1) * (cell_long_px + cell_spacing_px)
@@ -126,13 +132,12 @@ def cube_illusion(
                 if i[1] == 0: # left side
                     img[y:y + cell_long_px, :cell_short_px] = val
                     if target_cell:
-                        mask[y:y + cell_long_px, :cell_short_px] = mask_counter
+                        mask[y:y + cell_long_px, :cell_short_px] = mask_id
 
                 else: # right side
                     img[y:y + cell_long_px, -cell_short_px:] = val
                     if target_cell:
-                        mask[y:y + cell_long_px, -cell_short_px:] = mask_counter
-
+                        mask[y:y + cell_long_px, -cell_short_px:] = mask_id
 
 
     # add occlusion
@@ -169,6 +174,8 @@ def cube_illusion(
             double=False,
         )
         img = np.hstack([img, stim2.img])
+        # Increase target mask values to differentiate from single-stimulus targets:
+        stim2.target_mask[stim2.target_mask != 0] += mask_id
         mask = np.hstack([mask, stim2.target_mask])
 
     stim = Stimulus()

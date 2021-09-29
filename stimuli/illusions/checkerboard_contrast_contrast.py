@@ -13,6 +13,7 @@ def checkerboard_contrast_contrast_effect(
     check2=2.0,
     tau=0.5,
     alpha=0.5,
+    limit_mask_vals=True
 ):
     """
     Contrast-contrast effect on checkerboard with square transparency layer.
@@ -51,23 +52,24 @@ def checkerboard_contrast_contrast_effect(
 
     mask_arr1 = np.zeros((n_checks, n_checks))
 
-
     idx = np.zeros((n_checks, n_checks), dtype=bool)
     tpos = (n_checks - target_length) // 2
     idx[tpos:tpos + target_length, tpos:tpos + target_length] = True
     arr1[idx] = alpha * arr1[idx] + (1 - alpha) * tau
-    mask_counter = 1
+    mask_id = 0
     for i, _ in enumerate(idx):
         for j, el in enumerate(_):
             if el:
-                mask_arr1[i,j] = mask_counter
-                mask_counter += 1
-
+                if limit_mask_vals:
+                    mask_id = 1
+                else:
+                    mask_id += 1
+                mask_arr1[i, j] = mask_id
 
     arr2 = arr1.copy()
     arr2[~idx] = tau
-
     mask_arr2 = mask_arr1.copy()
+    mask_arr2[mask_arr2 != 0] += mask_id
 
     img1 = np.repeat(np.repeat(arr1, check_size_px, axis=0), check_size_px, axis=1)
     img1 = pad_img(img1, padding, ppd, tau)
@@ -80,7 +82,8 @@ def checkerboard_contrast_contrast_effect(
     mask2 = pad_img(mask2, padding, ppd, 0)
 
     img = np.hstack([img1, img2])
-    mask =  np.hstack([mask1, mask2])
+    # Increase target mask values to differentiate from single-stimulus targets:
+    mask = np.hstack([mask1, mask2])
     stim = Stimulus()
     stim.img = img
     stim.target_mask = mask
