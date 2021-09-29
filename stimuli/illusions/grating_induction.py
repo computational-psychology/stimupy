@@ -61,13 +61,15 @@ def grating_illusion(
     img, pixels_per_cycle = square_wave(
         shape, ppd, frequency, high, low, period, start
     )
-    img = gaussian_filter(img, blur)
-    mask = np.zeros((height_px, width_px))
 
     target_start = height_px//2 - target_height_px//2
     target_end = target_start + target_height_px
+
+    mask = np.zeros((height_px, width_px))
+    mask[target_start:target_end, :] = (img[target_start:target_end, :] - low) / (high - low) + 1
+
+    img = gaussian_filter(img, blur)
     img[target_start:target_end, :] = target
-    mask[target_start:target_end, :] = 1
 
     img = pad_img(img, padding, ppd, target)
     mask = pad_img(mask, padding, ppd, 0)
