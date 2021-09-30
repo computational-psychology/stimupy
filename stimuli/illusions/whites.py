@@ -85,9 +85,6 @@ def white(
         else:
             cycles = frequency * shape[1]
             phases = int(cycles) * 2
-            dec = cycles % 1
-            if dec != 0:
-                phases = phases + 2 if dec > 0.5 else phases + 1
             x_start = int((phases + index) * phase_width)
         x_end = x_start + phase_width
         img[y_start:y_end, x_start:x_end] = target
