@@ -2,10 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 
-import stimuli
 from stimuli.utils import degrees_to_pixels, pad_img, get_annulus_mask
 from stimuli.Stimulus import Stimulus
-from stimuli import illusions
 from stimuli.illusions.square_wave import square_wave
 
 
@@ -795,7 +793,7 @@ def domijan2015_white():
 
 
 if __name__ == "__main__":
-    stim = stimuli.illusions.whites.white()
+    stim = white()
     plt.subplot(4, 2, 1)
     plt.imshow(stim.img, cmap="gray")
     plt.subplot(4, 2, 2)
