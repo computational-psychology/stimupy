@@ -18,7 +18,7 @@ def white(
     target=0.5,
     period="ignore",
     start="low",
-    target_indices=(2, 5),
+    target_indices=(2, -3),
     target_height=None,
     targets_offset=0,
     orientation="horizontal",
@@ -81,14 +81,14 @@ def white(
 
     for i, index in enumerate(target_indices):
         if index >= 0:
-            x_start = index * phase_width
+            x_start = (index-1) * phase_width
         else:
-            cycles = frequency * shape[1]
-            phases = int(cycles) * 2
+            # Calculate the number of phases based on resolution of grating:
+            phases = int(2 * (int(shape[1] * ppd / phase_width) // 2))
             x_start = int((phases + index) * phase_width)
         x_end = x_start + phase_width
         img[y_start:y_end, x_start:x_end] = target
-        mask[y_start:y_end, x_start:x_end] = i + 1
+        mask[y_start:y_end, x_start:x_end] = i+1.
 
     if orientation == "vertical":
         img = np.rot90(img, 3)
@@ -100,7 +100,6 @@ def white(
     stim = Stimulus()
     stim.img = img
     stim.target_mask = mask
-
     return stim
 
 
@@ -464,7 +463,7 @@ def RHS2007_WE_thick():
         ppd=ppd,
         frequency=frequency,
         start="low",
-        target_indices=(2, 5),
+        target_indices=(3, 6),
         padding=padding,
         target_height=target_height,
     )
@@ -489,7 +488,7 @@ def RHS2007_WE_thin_wide():
         ppd=ppd,
         frequency=frequency,
         start="high",
-        target_indices=(3, 12),
+        target_indices=(4, 13),
         padding=padding,
         target_height=target_height,
     )
@@ -526,7 +525,7 @@ def RHS2007_WE_dual():
         ppd=ppd,
         frequency=frequency,
         start="low",
-        target_indices=(2, 5),
+        target_indices=(3, 6),
         padding=padding1,
         target_height=target_height,
     )
@@ -535,7 +534,7 @@ def RHS2007_WE_dual():
         ppd=ppd,
         frequency=frequency,
         start="low",
-        target_indices=(2, 5),
+        target_indices=(3, 6),
         padding=padding2,
         target_height=target_height,
         orientation="vertical",
@@ -786,7 +785,7 @@ def domijan2015_white():
         target=5.0,
         period="ignore",
         start="low",
-        target_indices=(2, 5),
+        target_indices=(3, 6),
         target_height=2.1,
         targets_offset=0,
         orientation="horizontal",
@@ -801,23 +800,23 @@ if __name__ == "__main__":
     plt.subplot(4, 2, 2)
     plt.imshow(stim.target_mask, cmap="gray")
 
-    # stim = circular_white()
-    # plt.subplot(4, 2, 3)
-    # plt.imshow(stim.img, cmap='gray')
-    # plt.subplot(4, 2, 4)
-    # plt.imshow(stim.target_mask, cmap='gray')
-    #
-    # stim = wheel_of_fortune_white()
-    # plt.subplot(4, 2, 5)
-    # plt.imshow(stim.img, cmap='gray')
-    # plt.subplot(4, 2, 6)
-    # plt.imshow(stim.target_mask, cmap='gray')
-    #
-    # stim = white_anderson()
-    # plt.subplot(4, 2, 7)
-    # plt.imshow(stim.img, cmap='gray')
-    # plt.subplot(4, 2, 8)
-    # plt.imshow(stim.target_mask, cmap='gray')
+    stim = circular_white()
+    plt.subplot(4, 2, 3)
+    plt.imshow(stim.img, cmap='gray')
+    plt.subplot(4, 2, 4)
+    plt.imshow(stim.target_mask, cmap='gray')
+
+    stim = wheel_of_fortune_white()
+    plt.subplot(4, 2, 5)
+    plt.imshow(stim.img, cmap='gray')
+    plt.subplot(4, 2, 6)
+    plt.imshow(stim.target_mask, cmap='gray')
+
+    stim = white_anderson()
+    plt.subplot(4, 2, 7)
+    plt.imshow(stim.img, cmap='gray')
+    plt.subplot(4, 2, 8)
+    plt.imshow(stim.target_mask, cmap='gray')
 
     plt.tight_layout()
     plt.show()
