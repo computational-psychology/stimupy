@@ -349,51 +349,31 @@ def get_circle_indices(n_numbers, grid_shape):
 
     return (yy, xx)
 
+
 def get_circle_mask(shape, center, radius):
     """
-        Get a circle shaped mask
+    Get a circle shaped mask
 
-        Parameters
-        -------
-        shape: (height, width) of the mask in pixels
-        center: (y_center, x_center) in pixels
-        radius: radius of the circle in pixels
+    Parameters
+    -------
+    shape: (height, width) of the mask in pixels
+    center: (y_center, x_center) in pixels
+    radius: radius of the circle in pixels
 
-        Returns
-        -------
-        mask: 2D boolean numpy array
+    Returns
+    -------
+    mask: 2D boolean numpy array
     """
-    radius *= 2
     height, width = shape
     y_c, x_c = center
-    n_numbers = max(shape)*3
 
-    x = np.linspace(0, 2 * np.pi, n_numbers)
+    xx, yy = np.mgrid[:height, :width]
+    grid_radii = (xx - x_c) ** 2 + (yy - y_c) ** 2
 
-    xx = np.cos(x)
-    xx_min = np.abs(xx.min())
-    xx += xx_min # get rid of the negative values
-    xx_max = xx.max()
-    xx = xx / xx_max * radius # normalize between 0 and 1
+    circle_mask = grid_radii < (radius ** 2)
 
-    yy = np.sin(x)
-    yy_min = np.abs(yy.min())
-    yy += yy_min
-    yy_max = yy.max()
-    yy = yy / yy_max * radius
+    return circle_mask
 
-    grid = np.zeros([height, width])
-
-    radii = np.linspace(0, 1, radius)
-    for j in range(len(radii)):
-        r = radii[j]
-        xxx = r * xx
-        xxx = xxx - xxx.max() / 2 + x_c
-        yyy = r * yy
-        yyy = yyy - yyy.max() / 2 + y_c
-        grid[xxx.astype(int), yyy.astype(int)] = 1
-
-    return grid
 
 def get_annulus_mask(shape, center, inner_radius, outer_radius):
     """
