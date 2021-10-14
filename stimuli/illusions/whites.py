@@ -158,7 +158,7 @@ def circular_white(
             (height, width),
             (height // 2, width // 2),
             radius,
-            radius + circle_width - 1,
+            radius + circle_width,
         )
         img[annulus_mask] = st if i % 2 == 0 else other
         if i in target_indices:
