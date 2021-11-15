@@ -105,17 +105,13 @@ def todorovic_illusion(
             target=target,
             double=False,
         )
-        img = np.hstack([img, stim2.img])
-        mask = np.hstack([mask, stim2.target_mask*2])
+        img = np.hstack([img, stim2['img']])
+        mask = np.hstack([mask, stim2['mask']*2])
 
     #img = pad_img(img, padding, ppd, target)
     #mask = pad_img(mask, padding, ppd, 0)
 
-    stim = Stimulus()
-    stim.img = img
-    stim.target_mask = mask
-
-    return stim
+    return {"img": img, "mask": mask}
 
 
 def domijan2015():
@@ -153,17 +149,17 @@ def RHS2007_todorovic_equal():
         grid=grid,
         target=target,
     )
-    height_px, width_px = stim.img.shape
+    height_px, width_px = stim['img'].shape
 
     padding_vertical_top = degrees_to_pixels( (total_height - height) / 2, ppd)
     padding_vertical_bottom = 1024 - padding_vertical_top - height_px
     padding_horizontal_left = degrees_to_pixels( (total_width - width*2) / 2, ppd)
     padding_horizontal_right = 1024 - padding_horizontal_left - width_px
 
-    stim.img = np.pad(stim.img, ((padding_vertical_top, padding_vertical_bottom), (padding_horizontal_left, padding_horizontal_right)), 'constant', constant_values=target)
-    stim.target_mask = np.pad(stim.target_mask, ((padding_vertical_top, padding_vertical_bottom), (padding_horizontal_left, padding_horizontal_right)), 'constant', constant_values=0)
+    img = np.pad(stim['img'], ((padding_vertical_top, padding_vertical_bottom), (padding_horizontal_left, padding_horizontal_right)), 'constant', constant_values=target)
+    mask = np.pad(stim['mask'], ((padding_vertical_top, padding_vertical_bottom), (padding_horizontal_left, padding_horizontal_right)), 'constant', constant_values=0)
 
-    return stim
+    return {"img": img, "mask": mask}
 
 
 def RHS2007_todorovic_in_large():
@@ -188,17 +184,17 @@ def RHS2007_todorovic_in_large():
         grid=grid,
         target=target,
     )
-    height_px, width_px = stim.img.shape
+    height_px, width_px = stim['img'].shape
 
     padding_vertical_top = degrees_to_pixels( (total_height - height) / 2, ppd)
     padding_vertical_bottom = 1024 - padding_vertical_top - height_px
     padding_horizontal_left = degrees_to_pixels( (total_width - width*2) / 2, ppd)
     padding_horizontal_right = 1024 - padding_horizontal_left - width_px
 
-    stim.img = np.pad(stim.img, ((padding_vertical_top, padding_vertical_bottom), (padding_horizontal_left, padding_horizontal_right)), 'constant', constant_values=target)
-    stim.target_mask = np.pad(stim.target_mask, ((padding_vertical_top, padding_vertical_bottom), (padding_horizontal_left, padding_horizontal_right)), 'constant', constant_values=0)
+    img = np.pad(stim['img'], ((padding_vertical_top, padding_vertical_bottom), (padding_horizontal_left, padding_horizontal_right)), 'constant', constant_values=target)
+    mask = np.pad(stim['mask'], ((padding_vertical_top, padding_vertical_bottom), (padding_horizontal_left, padding_horizontal_right)), 'constant', constant_values=0)
 
-    return stim
+    return {"img": img, "mask": mask}
 
 
 def RHS2007_todorovic_in_small():

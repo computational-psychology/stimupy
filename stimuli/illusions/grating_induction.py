@@ -74,11 +74,7 @@ def grating_illusion(
     img = pad_img(img, padding, ppd, target)
     mask = pad_img(mask, padding, ppd, 0)
 
-    stim = Stimulus()
-    stim.img = img
-    stim.target_mask = mask
-
-    return stim
+    return {"img": img, "mask": mask}
 
 
 def RHS2007_grating_induction():
@@ -94,7 +90,7 @@ def RHS2007_grating_induction():
         padding_horizontal,
         padding_horizontal,
     )
-    img = grating_illusion(
+    stim = grating_illusion(
         shape=(height, width),
         ppd=ppd,
         frequency=frequency,
@@ -103,7 +99,7 @@ def RHS2007_grating_induction():
         start="high",
         padding=padding,
     )
-    return img
+    return stim
 
 
 if __name__ == '__main__':

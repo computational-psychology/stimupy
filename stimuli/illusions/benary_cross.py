@@ -70,10 +70,8 @@ def benarys_cross(
     img = pad_img(img, padding, ppd, back)
     mask = pad_img(mask, padding, ppd, 0)
 
-    stim = Stimulus()
-    stim.target_mask = mask
-    stim.img = img
-    return stim
+
+    return {"img": img, "mask": mask}
 
 def domijan2015():
     """

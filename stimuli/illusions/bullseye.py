@@ -38,16 +38,12 @@ def bullseye_illusion(ppd=10, n_rings=8, ring_width=.5, target_pos_l=0, target_p
     stim2 = ring_pattern(n_rings=n_rings, target_pos_l=target_pos_r, ring_width=ring_width, padding=padding,
                         back=back, rings=rings, target=target, invert_rings=True, double=False)
 
-    img = np.hstack((stim1.img, stim2.img))
+    img = np.hstack((stim1['img'], stim2['img']))
     # Increase target mask values to differentiate from single-stimulus targets:
-    stim2.target_mask[stim2.target_mask != 0] += 1
-    mask = np.hstack((stim1.target_mask, stim2.target_mask))
+    stim2['mask'][stim2['mask'] != 0] += 1
+    mask = np.hstack((stim1['mask'], stim2['mask']))
 
-    stim = Stimulus()
-    stim.img = img
-    stim.target_mask = mask
-
-    return stim
+    return {"img": img, "mask": mask}
 
 
 def domijan2015():

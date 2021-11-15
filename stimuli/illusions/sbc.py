@@ -56,11 +56,7 @@ def simultaneous_brightness_contrast(
     img = pad_img(img, padding, ppd, target)
     mask = pad_img(mask, padding, ppd, 0)
 
-    stim = Stimulus()
-    stim.img = img
-    stim.target_mask = mask
-
-    return stim
+    return {"img": img, "mask": mask}
 
 
 def domijan2015():

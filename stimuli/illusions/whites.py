@@ -95,10 +95,7 @@ def white(
     img = pad_img(img, padding, ppd, padding_val)
     mask = pad_img(mask, padding, ppd, 0)
 
-    stim = Stimulus()
-    stim.img = img
-    stim.target_mask = mask
-    return stim
+    return {"img": img, "mask": mask}
 
 
 def circular_white(
@@ -171,11 +168,7 @@ def circular_white(
     img = pad_img(img, padding, ppd, target)
     mask = pad_img(mask, padding, ppd, 0)
 
-    stim = Stimulus()
-    stim.img = img
-    stim.target_mask = mask
-
-    return stim
+    return {"img": img, "mask": mask}
 
 
 def wheel_of_fortune_white(
@@ -316,11 +309,7 @@ def wheel_of_fortune_white(
     img = pad_img(img, padding, ppd, target)
     mask = pad_img(mask, padding, ppd, 0)
 
-    stim = Stimulus()
-    stim.img = img
-    stim.target_mask = mask
-
-    return stim
+    return {"img": img, "mask": mask}
 
 
 def white_anderson(
@@ -435,11 +424,7 @@ def white_anderson(
     img = pad_img(img, padding, ppd, target)
     mask = pad_img(mask, padding, ppd, 0)
 
-    stim = Stimulus()
-    stim.img = img
-    stim.target_mask = mask
-
-    return stim
+    return {"img": img, "mask": mask}
 
 
 def RHS2007_WE_thick():
@@ -539,8 +524,8 @@ def RHS2007_WE_dual():
     )
 
     stim = Stimulus()
-    stim.img = np.hstack((stim1.img, stim2.img))
-    stim.target_mask = np.hstack((stim1.target_mask, stim2.target_mask))
+    stim.img = np.hstack((stim1['img'], stim2['img']))
+    stim.target_mask = np.hstack((stim1['mask'], stim2['mask']))
     return stim
 
 
@@ -697,13 +682,12 @@ def RHS2007_WE_circular1():
         start="low",
         padding=padding,
     )
-    stim2.target_mask *= 2
+    stim2['mask'] *= 2
 
-    stim = Stimulus()
-    stim.img = np.hstack((stim1.img, stim2.img))
-    stim.target_mask = np.hstack((stim1.target_mask, stim2.target_mask))
+    img = np.hstack((stim1['img'], stim2['img']))
+    mask = np.hstack((stim1['mask'], stim2['mask']))
 
-    return stim
+    return {"img": img, "mask": mask}
 
 
 def RHS2007_WE_circular05():
@@ -729,13 +713,12 @@ def RHS2007_WE_circular05():
         start="low",
         padding=padding,
     )
-    stim2.target_mask *= 2
+    stim2['mask'] *= 2
 
-    stim = Stimulus()
-    stim.img = np.hstack((stim1.img, stim2.img))
-    stim.target_mask = np.hstack((stim1.target_mask, stim2.target_mask))
+    img = np.hstack((stim1['img'], stim2['img']))
+    mask = np.hstack((stim1['mask'], stim2['mask']))
 
-    return stim
+    return {"img": img, "mask": mask}
 
 
 def RHS2007_WE_circular025():
@@ -761,13 +744,12 @@ def RHS2007_WE_circular025():
         start="low",
         padding=padding,
     )
-    stim2.target_mask *= 2
+    stim2['mask'] *= 2
 
-    stim = Stimulus()
-    stim.img = np.hstack((stim1.img, stim2.img))
-    stim.target_mask = np.hstack((stim1.target_mask, stim2.target_mask))
+    img = np.hstack((stim1['img'], stim2['img']))
+    mask = np.hstack((stim1['mask'], stim2['mask']))
 
-    return stim
+    return {"img": img, "mask": mask}
 
 
 def domijan2015_white():
@@ -794,27 +776,27 @@ def domijan2015_white():
 if __name__ == "__main__":
     stim = white()
     plt.subplot(4, 2, 1)
-    plt.imshow(stim.img, cmap="gray")
+    plt.imshow(stim['img'], cmap="gray")
     plt.subplot(4, 2, 2)
-    plt.imshow(stim.target_mask, cmap="gray")
+    plt.imshow(stim['mask'], cmap="gray")
 
     stim = circular_white()
     plt.subplot(4, 2, 3)
-    plt.imshow(stim.img, cmap='gray')
+    plt.imshow(stim['img'], cmap='gray')
     plt.subplot(4, 2, 4)
-    plt.imshow(stim.target_mask, cmap='gray')
+    plt.imshow(stim['mask'], cmap='gray')
 
     stim = wheel_of_fortune_white()
     plt.subplot(4, 2, 5)
-    plt.imshow(stim.img, cmap='gray')
+    plt.imshow(stim['img'], cmap='gray')
     plt.subplot(4, 2, 6)
-    plt.imshow(stim.target_mask, cmap='gray')
+    plt.imshow(stim['mask'], cmap='gray')
 
     stim = white_anderson()
     plt.subplot(4, 2, 7)
-    plt.imshow(stim.img, cmap='gray')
+    plt.imshow(stim['img'], cmap='gray')
     plt.subplot(4, 2, 8)
-    plt.imshow(stim.target_mask, cmap='gray')
+    plt.imshow(stim['mask'], cmap='gray')
 
     plt.tight_layout()
     plt.show()

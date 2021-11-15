@@ -13,10 +13,10 @@ def hermann_grid(n_grid=100, space=5):
     grid[::space, :] = 1
     grid[:, ::space] = 1
 
-    stim = Stimulus()
-    stim.img = grid
-    stim.target_mask = None
-    return stim
+    img = grid
+    mask = None #TODO add this
+
+    return {"img": img, "mask": mask}
 
 
 if __name__ == '__main__':

@@ -68,11 +68,7 @@ def checkerboard_contrast(ppd=10, board_shape=(8,8), check_size=1.0, targets_coo
         np.repeat(mask, check_size_px, axis=0), check_size_px, axis=1
     )
 
-    stim = Stimulus()
-    stim.img = img
-    stim.target_mask = mask
-
-    return stim
+    return {"img": img, "mask": mask}
 
 
 def domijan2015():
@@ -90,9 +86,10 @@ def domijan2015():
         target=5.0,
     )
     padding = (0.9, 1.1, 0.9, 1.1)
-    stim.img = pad_img(stim.img, padding, ppd=10, val=5.0)
-    stim.target_mask = pad_img(stim.target_mask, padding, ppd=10, val=0)
-    return stim
+    img = pad_img(stim['img'], padding, ppd=10, val=5.0)
+    mask = pad_img(stim['mask'], padding, ppd=10, val=0)
+
+    return {"img": img, "mask": mask}
 
 
 def domijan2015_extended():
@@ -110,9 +107,10 @@ def domijan2015_extended():
         target=5.0,
     )
     padding = (0.9, 1.1, 0.9, 1.1)
-    stim.img = pad_img(stim.img, padding, ppd=10, val=5.0)
-    stim.target_mask = pad_img(stim.target_mask, padding, ppd=10, val=0)
-    return stim
+    img = pad_img(stim['img'], padding, ppd=10, val=5.0)
+    mask = pad_img(stim['mask'], padding, ppd=10, val=0)
+
+    return {"img": img, "mask": mask}
 
 
 def RHS2007_Checkerboard016():
@@ -137,10 +135,10 @@ def RHS2007_Checkerboard016():
         target=target,
     )
 
-    stim.img = pad_img_to_shape(stim.img, (1024, 1024), val=target)
-    stim.target_mask = pad_img_to_shape(stim.target_mask, (1024, 1024), val=0)
+    img = pad_img_to_shape(stim['img'], (1024, 1024), val=target)
+    mask = pad_img_to_shape(stim['mask'], (1024, 1024), val=0)
 
-    return stim
+    return {"img": img, "mask": mask}
 
 
 def RHS2007_Checkerboard0938():
@@ -164,10 +162,10 @@ def RHS2007_Checkerboard0938():
         check2=check2,
         target=target,
     )
-    stim.img = pad_img_to_shape(stim.img, (1024, 1024), val=target)
-    stim.target_mask = pad_img_to_shape(stim.target_mask, (1024, 1024), val=0)
+    img = pad_img_to_shape(stim['img'], (1024, 1024), val=target)
+    mask = pad_img_to_shape(stim['mask'], (1024, 1024), val=0)
 
-    return stim
+    return {"img": img, "mask": mask}
 
 
 def RHS2007_Checkerboard209():
@@ -191,10 +189,10 @@ def RHS2007_Checkerboard209():
         check2=check2,
         target=target,
     )
-    stim.img = pad_img_to_shape(stim.img, (1024, 1024), val=target)
-    stim.target_mask = pad_img_to_shape(stim.target_mask, (1024, 1024), val=0)
+    img = pad_img_to_shape(stim['img'], (1024, 1024), val=target)
+    mask = pad_img_to_shape(stim['mask'], (1024, 1024), val=0)
 
-    return stim
+    return {"img": img, "mask": mask}
 
 
 if __name__ == "__main__":

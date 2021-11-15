@@ -84,11 +84,8 @@ def checkerboard_contrast_contrast_effect(
     img = np.hstack([img1, img2])
     # Increase target mask values to differentiate from single-stimulus targets:
     mask = np.hstack([mask1, mask2])
-    stim = Stimulus()
-    stim.img = img
-    stim.target_mask = mask
 
-    return stim
+    return {"img": img, "mask": mask}
 
 
 def domijan2015():

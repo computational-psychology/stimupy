@@ -57,11 +57,7 @@ def cornsweet(size=(10,10), ppd=10, contrast=0.5, ramp_width=2, exponent=2.75,
     img[:, size[1] // 2:] -= profile
     mask = None
 
-    stim = Stimulus()
-    stim.img = img
-    stim.target_mask = mask
-
-    return stim
+    return {"img": img, "mask": mask}
 
 
 if __name__ == '__main__':

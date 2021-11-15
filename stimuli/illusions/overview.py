@@ -19,7 +19,6 @@ stimuli = {
     "hermann": illusions.hermann_grid(),
     "rings": illusions.ring_pattern(),
     "bullseye": illusions.bullseye_illusion(),
-    "bullseye": illusions.bullseye_illusion(),
     "sbc sbc": illusions.simultaneous_brightness_contrast(),
     "todorovic in": papers.RHS2007.todorovic_in_large(),
     "todorovic equal": papers.RHS2007.todorovic_equal(),
@@ -43,7 +42,7 @@ for i, (name, stim) in enumerate(stimuli.items()):
     plt.xticks([])
     plt.yticks([])
     plt.title(name, fontsize=25)
-    plt.imshow(stim.img, cmap='gray')
+    plt.imshow(stim['img'], cmap='gray')
 
 plt.tight_layout()
 plt.show()

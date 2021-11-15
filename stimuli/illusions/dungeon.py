@@ -87,14 +87,11 @@ def dungeon_illusion(
             target=target,
             double=False,
         )
-        img = np.hstack([img, stim2.img])
-        mask = np.hstack([mask, stim2.target_mask*2])
+        img = np.hstack([img, stim2['img']])
+        mask = np.hstack([mask, stim2['mask']*2])
 
-    stim = Stimulus()
-    stim.img = img
-    stim.target_mask = mask
+    return {"img": img, "mask": mask}
 
-    return stim
 
 
 def domijan2015():

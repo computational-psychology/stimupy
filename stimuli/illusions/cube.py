@@ -173,16 +173,12 @@ def cube_illusion(
             target=target,
             double=False,
         )
-        img = np.hstack([img, stim2.img])
+        img = np.hstack([img, stim2['img']])
         # Increase target mask values to differentiate from single-stimulus targets:
-        stim2.target_mask[stim2.target_mask != 0] += mask_id
-        mask = np.hstack([mask, stim2.target_mask])
+        stim2['mask'][stim2['mask'] != 0] += mask_id
+        mask = np.hstack([mask, stim2['mask']])
 
-    stim = Stimulus()
-    stim.img = img
-    stim.target_mask = mask
-
-    return stim
+    return {"img": img, "mask": mask}
 
 
 def domijan2015():
