@@ -523,10 +523,11 @@ def RHS2007_WE_dual():
         orientation="vertical",
     )
 
-    stim = Stimulus()
-    stim.img = np.hstack((stim1['img'], stim2['img']))
-    stim.target_mask = np.hstack((stim1['mask'], stim2['mask']))
-    return stim
+    img = np.hstack((stim1['img'], stim2['img']))
+    mask = np.hstack((stim1['mask'], stim2['mask']))
+
+    return {"img": img, "mask": mask}
+
 
 
 def RHS2007_WE_anderson():
