@@ -1,6 +1,7 @@
 import numpy as np
 from stimuli.Stimulus import Stimulus
 
+
 def cornsweet(size=(10,10), ppd=10, contrast=0.5, ramp_width=2, exponent=2.75,
               mean_lum=.5):
     #TODO: the parameters aren't analogous to the other stimuli
@@ -20,8 +21,8 @@ def cornsweet(size=(10,10), ppd=10, contrast=0.5, ramp_width=2, exponent=2.75,
     ppd : number
           the number of pixels in one degree of visual angle
     contrast : float, in [0,1]
-               the contrast at the Cornsweet edge, defined as
-               (max_luminance - min_luminance) / mean_luminance
+               the contrast at the Cornsweet edge, defined as Michelson contrast
+               (max_luminance - min_luminance) / (max_luminance + min_luminance)
     ramp_width : number (optional)
                  the width of the luminance ramp in degrees of visual angle.
                  Default is 3.
@@ -34,7 +35,7 @@ def cornsweet(size=(10,10), ppd=10, contrast=0.5, ramp_width=2, exponent=2.75,
 
     Returns
     -------
-    stim : ndarray (2D)
+    Dictionary with img: ndarray (2D) and empty mask
 
     References
     ----------
@@ -42,21 +43,15 @@ def cornsweet(size=(10,10), ppd=10, contrast=0.5, ramp_width=2, exponent=2.75,
     S.O., Kersten, D. (2007). Responses to Lightness Variations in Early Human
     Visual Cortex. Current Biology 17, 989-993.
     """
-    # compute size as the closest even number of pixel corresponding to the
-    # size given in degrees of visual angle.
-    size = np.rint(np.tan(np.radians(np.array(size) / 2.)) /
-                   np.tan(np.radians(.5)) * ppd / 2) * 2
-    size = size.astype('int')
+    size = [int(size[0]*ppd), int(size[1]*ppd)]
     img = np.ones(size) * mean_lum
-    dist = np.arange(size[1] / 2)
-    dist = np.degrees(np.arctan(dist / 2. / ppd * 2 * np.tan(np.radians(.5)))) * 2
-    dist /= ramp_width
-    dist[dist > 1] = 1
-    profile = (1 - dist) ** exponent * mean_lum * contrast / 2
-    img[:, :size[1] // 2] += profile[::-1]
+    dist = np.arange(size[1] / 2.)
+    dist = dist / (ramp_width*ppd)
+    dist[dist > 1.] = 1.
+    profile = (1. - dist) ** exponent * mean_lum * contrast
+    img[:, :int(np.ceil(size[1]/2.))] += profile[::-1]
     img[:, size[1] // 2:] -= profile
     mask = None
-
     return {"img": img, "mask": mask}
 
 
