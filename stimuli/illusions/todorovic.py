@@ -136,12 +136,12 @@ def todorovic_illusion(
             double=False,
         )
         img = np.hstack([img, stim2["img"]])
-        mask = np.hstack([mask, stim2["target_mask"] * 2])
+        mask = np.hstack([mask, stim2["mask"] * 2])
 
     # img = pad_img(img, padding, ppd, target)
     # mask = pad_img(mask, padding, ppd, 0)
 
-    return {"img": img, "target_mask": mask}
+    return {"img": img, "mask": mask}
 
 
 def domijan2015():
@@ -205,7 +205,7 @@ def RHS2007_todorovic_equal():
         constant_values=target,
     )
     mask = np.pad(
-        stim["target_mask"],
+        stim["mask"],
         (
             (padding_vertical_top, padding_vertical_bottom),
             (padding_horizontal_left, padding_horizontal_right),
@@ -214,7 +214,7 @@ def RHS2007_todorovic_equal():
         constant_values=0,
     )
 
-    return {"img": img, "target_mask": mask}
+    return {"img": img, "mask": mask}
 
 
 def RHS2007_todorovic_in_large():
@@ -265,7 +265,7 @@ def RHS2007_todorovic_in_large():
         constant_values=target,
     )
     mask = np.pad(
-        stim["target_mask"],
+        stim["mask"],
         (
             (padding_vertical_top, padding_vertical_bottom),
             (padding_horizontal_left, padding_horizontal_right),
@@ -274,7 +274,7 @@ def RHS2007_todorovic_in_large():
         constant_values=0,
     )
 
-    return {"img": img, "target_mask": mask}
+    return {"img": img, "mask": mask}
 
 
 def RHS2007_todorovic_in_small():
@@ -324,8 +324,8 @@ def RHS2007_todorovic_in_small():
         "constant",
         constant_values=target,
     )
-    stim["target_mask"] = np.pad(
-        stim["target_mask"],
+    stim["mask"] = np.pad(
+        stim["mask"],
         (
             (padding_vertical_top, padding_vertical_bottom),
             (padding_horizontal_left, padding_horizontal_right),
