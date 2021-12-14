@@ -771,6 +771,7 @@ def domijan2015_white():
         targets_offset=0,
         orientation="horizontal",
         padding=(0.9, 1.0, 0.9, 1.1),
+        padding_val=5.0,
     )
 
 

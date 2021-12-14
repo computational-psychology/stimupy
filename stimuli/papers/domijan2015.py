@@ -75,7 +75,7 @@ if __name__ == "__main__":
         for i, (stim_name, stim) in enumerate(stims.items()):
             print("Generating", stim_name + "")
             st = stim()
-            img, mask = st.img, st.target_mask
+            img, mask = st["img"], st["mask"]
             img = np.dstack([img, img, img])
 
             mask = np.insert(np.expand_dims(mask, 2), 1, 0, axis=2)
