@@ -434,12 +434,12 @@ def compare_plots(plots):
 
 def plot_stim(stim, mask=False):
     if not mask:
-        plt.imshow(stim.img, cmap='gray')
+        plt.imshow(stim['img'], cmap='gray')
     else:
         plt.subplot(1,2,1)
-        plt.imshow(stim.img, cmap='gray')
+        plt.imshow(stim['img'], cmap='gray')
         plt.subplot(1,2,2)
-        plt.imshow(stim.target_mask, cmap='gray')
+        plt.imshow(stim['mask'], cmap='gray')
 
     plt.tight_layout()
     plt.show()
