@@ -448,7 +448,8 @@ def RHS2007_WE_thick():
         start="low",
         target_indices=(3, 6),
         padding=padding,
-        target_height=target_height,
+        target_height=target_height + (1 / ppd),
+        targets_offset=1,
     )
 
 
