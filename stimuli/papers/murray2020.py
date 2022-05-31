@@ -1,5 +1,3 @@
-# gitlab
-
 import math
 import os.path
 
@@ -13,7 +11,9 @@ print(mat_fname)
 mat_content = scipy.io.loadmat(mat_fname)
 
 
-def get_mask(arr_list, ppd, mask):
+def get_mask(arr_list, shape):
+    mask = np.zeros(shape)
+
     target1 = arr_list[0]
     target2 = arr_list[1]
     y = target1[0]
@@ -46,175 +46,148 @@ def get_mask(arr_list, ppd, mask):
             x = target2[1]
             mask[y + j][x + i] = 2
 
-    plt.imshow(mask)
     return mask
 
 
-def argyle_illusion(ppd):
-    argyle = mat_content["argyle"]
-    img = np.array(((argyle[0])[0])[0])
+def argyle_illusion():
     a = mat_content["argyle"]
+    img = np.array(((a[0])[0])[0])
     t = np.array((((a[0])[0])[1])[0])
     t2 = np.array((((a[0])[0])[2])[0])
-    arr_list = [t - int(ppd / 16), t2 - int(ppd / 16)]
-    mask = np.zeros(img.shape)
-    mask = get_mask(arr_list, ppd, mask)
+    arr_list = [t - 1, t2 - 1]
+    mask = get_mask(arr_list, img.shape)
     return {"img": img, "mask": mask}
 
 
-def argyle_control_illusion(ppd):
-    argyle_control = mat_content["argyle_control"]
-    img = np.array(((argyle_control[0])[0])[0])
+def argyle_control_illusion():
     a = mat_content["argyle_control"]
+    img = np.array(((a[0])[0])[0])
     t = np.array((((a[0])[0])[1])[0])
     t2 = np.array((((a[0])[0])[2])[0])
     arr_list = [t - 1, t2 - 1]
-    mask = np.zeros(img.shape)
-    mask = get_mask(arr_list, ppd, mask)
+    mask = get_mask(arr_list, img.shape)
     return {"img": img, "mask": mask}
 
 
-def argyle_long_illusion(ppd):
-    argyle_long = mat_content["argyle_long"]
-    img = np.array(((argyle_long[0])[0])[0])
+def argyle_long_illusion():
     a = mat_content["argyle_long"]
+    img = np.array(((a[0])[0])[0])
     t = np.array((((a[0])[0])[1])[0])
     t2 = np.array((((a[0])[0])[2])[0])
     arr_list = [t - 1, t2 - 1]
-    mask = np.zeros(img.shape)
-    mask = get_mask(arr_list, ppd, mask)
+    mask = get_mask(arr_list, img.shape)
     return {"img": img, "mask": mask}
 
 
-def snake_illusion(ppd):
-    snake = mat_content["snake"]
-    img = np.array(((snake[0])[0])[0])
+def snake_illusion():
     a = mat_content["snake"]
+    img = np.array(((a[0])[0])[0])
     t = np.array((((a[0])[0])[1])[0])
     t2 = np.array((((a[0])[0])[2])[0])
     arr_list = [t - 1, t2 - 1]
-    mask = np.zeros(img.shape)
-    mask = get_mask(arr_list, ppd, mask)
+    mask = get_mask(arr_list, img.shape)
     return {"img": img, "mask": mask}
 
 
-def snake_control_illusion(ppd):
-    snake_control = mat_content["snake_control"]
-    img = np.array(((snake_control[0])[0])[0])
+def snake_control_illusion():
     a = mat_content["snake_control"]
+    img = np.array(((a[0])[0])[0])
     t = np.array((((a[0])[0])[1])[0])
     t2 = np.array((((a[0])[0])[2])[0])
     arr_list = [t - 1, t2 - 1]
-    mask = np.zeros(img.shape)
-    mask = get_mask(arr_list, ppd, mask)
+    mask = get_mask(arr_list, img.shape)
     return {"img": img, "mask": mask}
 
 
-def koffka_adelson_illusion(ppd):
-    koffka_adelson = mat_content["koffka_adelson"]
-    img = np.array(((koffka_adelson[0])[0])[0])
+def koffka_adelson_illusion():
     a = mat_content["koffka_adelson"]
+    img = np.array(((a[0])[0])[0])
     t = np.array((((a[0])[0])[1])[0])
     t2 = np.array((((a[0])[0])[2])[0])
     arr_list = [t - 1, t2 - 1]
-    mask = np.zeros(img.shape)
-    mask = get_mask(arr_list, ppd, mask)
+    mask = get_mask(arr_list, img.shape)
     return {"img": img, "mask": mask}
 
 
-def koffka_broken_illusion(ppd):
-    koffka_broken = mat_content["koffka_broken"]
-    img = np.array(((koffka_broken[0])[0])[0])
+def koffka_broken_illusion():
     a = mat_content["koffka_broken"]
+    img = np.array(((a[0])[0])[0])
     t = np.array((((a[0])[0])[1])[0])
     t2 = np.array((((a[0])[0])[2])[0])
     arr_list = [t - 1, t2 - 1]
-    mask = np.zeros(img.shape)
-    mask = get_mask(arr_list, ppd, mask)
+    mask = get_mask(arr_list, img.shape)
     return {"img": img, "mask": mask}
 
 
-def koffka_connected_illusion(ppd):
-    koffka_connected = mat_content["koffka_connected"]
-    img = np.array(((koffka_connected[0])[0])[0])
+def koffka_connected_illusion():
     a = mat_content["koffka_connected"]
+    img = np.array(((a[0])[0])[0])
     t = np.array((((a[0])[0])[1])[0])
     t2 = np.array((((a[0])[0])[2])[0])
     arr_list = [t - 1, t2 - 1]
-    mask = np.zeros(img.shape)
-    mask = get_mask(arr_list, ppd, mask)
+    mask = get_mask(arr_list, img.shape)
     return {"img": img, "mask": mask}
 
 
-def checkassim_illusion(ppd):
-    checkassim = mat_content["checkassim"]
-    img = np.array(((checkassim[0])[0])[0])
+def checkassim_illusion():
     a = mat_content["checkassim"]
+    img = np.array(((a[0])[0])[0])
     t = np.array((((a[0])[0])[1])[0])
     t2 = np.array((((a[0])[0])[2])[0])
     arr_list = [t - 1, t2 - 1]
-    mask = np.zeros(img.shape)
-    mask = get_mask(arr_list, ppd, mask)
+    mask = get_mask(arr_list, img.shape)
     return {"img": img, "mask": mask}
 
 
-def simcon_illusion(ppd):
-    simcon = mat_content["simcon"]
-    img = np.array(((simcon[0])[0])[0])
+def simcon_illusion():
     a = mat_content["simcon"]
+    img = np.array(((a[0])[0])[0])
     t = np.array((((a[0])[0])[1])[0])
     t2 = np.array((((a[0])[0])[2])[0])
     arr_list = [t - 1, t2 - 1]
-    mask = np.zeros(img.shape)
-    mask = get_mask(arr_list, ppd, mask)
+    mask = get_mask(arr_list, img.shape)
     return {"img": img, "mask": mask}
 
 
-def simcon_articulated_illusion(ppd):
-    simcon_articulated = mat_content["simcon_articulated"]
-    img = np.array(((simcon_articulated[0])[0])[0])
+def simcon_articulated_illusion():
     a = mat_content["simcon_articulated"]
+    img = np.array(((a[0])[0])[0])
     t = np.array((((a[0])[0])[1])[0])
     t2 = np.array((((a[0])[0])[2])[0])
     arr_list = [t - 1, t2 - 1]
-    mask = np.zeros(img.shape)
-    mask = get_mask(arr_list, ppd, mask)
+    mask = get_mask(arr_list, img.shape)
     return {"img": img, "mask": mask}
 
 
-def white_illusion(ppd):
-    white = mat_content["white"]
-    img = np.array(((white[0])[0])[0])
+def white_illusion():
     a = mat_content["white"]
+    img = np.array(((a[0])[0])[0])
     t = np.array((((a[0])[0])[1])[0])
     t2 = np.array((((a[0])[0])[2])[0])
     arr_list = [t - 1, t2 - 1]
-    mask = np.zeros(img.shape)
-    mask = get_mask(arr_list, ppd, mask)
+    mask = get_mask(arr_list, img.shape)
     return {"img": img, "mask": mask}
 
 
 if __name__ == "__main__":
 
-    ppd = 16
-
     stims = {
-        "argyle_illusion": argyle_illusion(ppd),
-        "argyle_control_illusion": argyle_control_illusion(ppd),
-        "argyle_long_illusion": argyle_long_illusion(ppd),
-        "snake_illusion": snake_illusion(ppd),
-        "snake_control_illusion": snake_control_illusion(ppd),
-        "koffka_adelson_illusion": koffka_adelson_illusion(ppd),
-        "koffka_broken_illusion": koffka_broken_illusion(ppd),
-        "koffka_connected_illusion": koffka_connected_illusion(ppd),
-        "checkassim_illusion": checkassim_illusion(ppd),
-        "simcon_illusion": simcon_illusion(ppd),
-        "simcon_articulated_illusion": simcon_articulated_illusion(ppd),
-        "white_illusion": white_illusion(ppd),
+        "argyle_illusion": argyle_illusion(),
+        "argyle_control_illusion": argyle_control_illusion(),
+        "argyle_long_illusion": argyle_long_illusion(),
+        "snake_illusion": snake_illusion(),
+        "snake_control_illusion": snake_control_illusion(),
+        "koffka_adelson_illusion": koffka_adelson_illusion(),
+        "koffka_broken_illusion": koffka_broken_illusion(),
+        "koffka_connected_illusion": koffka_connected_illusion(),
+        "checkassim_illusion": checkassim_illusion(),
+        "simcon_illusion": simcon_illusion(),
+        "simcon_articulated_illusion": simcon_articulated_illusion(),
+        "white_illusion": white_illusion(),
     }
 
-    a = math.ceil(math.sqrt(len(stims)))
-    plt.figure(figsize=(a * 3, a * 3))
+    n_stim = math.ceil(math.sqrt(len(stims)))
+    plt.figure(figsize=(n_stim * 3, n_stim * 3))
     for i, (stim_name, stim) in enumerate(stims.items()):
         print("Generating", stim_name + "")
         img, mask = stim["img"], stim["mask"]
@@ -226,8 +199,8 @@ if __name__ == "__main__":
         final = mask * 100 + img
         final /= np.max(final)
 
-        plt.subplot(a, a, i + 1)
-        plt.title(stim_name + " - img")
+        plt.subplot(n_stim, n_stim, i + 1)
+        plt.title(stim_name)
         plt.imshow(final)
 
     plt.tight_layout()
