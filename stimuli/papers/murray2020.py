@@ -49,37 +49,37 @@ def get_mask(arr_list, shape):
     return mask
 
 
-def argyle_illusion():
+def argyle():
     a = mat_content["argyle"]
     img = np.array(((a[0])[0])[0])
-    t = np.array((((a[0])[0])[1])[0])
-    t2 = np.array((((a[0])[0])[2])[0])
+    t = np.array((((a[0])[0])[1])[0]) - [1, 0, 1, 0]
+    t2 = np.array((((a[0])[0])[2])[0]) - [1, 0, 1, 0]
     arr_list = [t - 1, t2 - 1]
     mask = get_mask(arr_list, img.shape)
     return {"img": img, "mask": mask}
 
 
-def argyle_control_illusion():
+def argyle_control():
     a = mat_content["argyle_control"]
     img = np.array(((a[0])[0])[0])
-    t = np.array((((a[0])[0])[1])[0])
-    t2 = np.array((((a[0])[0])[2])[0])
+    t = np.array((((a[0])[0])[1])[0]) - [1, 0, 1, 0]
+    t2 = np.array((((a[0])[0])[2])[0]) - [1, 0, 1, 0]
     arr_list = [t - 1, t2 - 1]
     mask = get_mask(arr_list, img.shape)
     return {"img": img, "mask": mask}
 
 
-def argyle_long_illusion():
+def argyle_long():
     a = mat_content["argyle_long"]
     img = np.array(((a[0])[0])[0])
-    t = np.array((((a[0])[0])[1])[0])
-    t2 = np.array((((a[0])[0])[2])[0])
+    t = np.array((((a[0])[0])[1])[0]) - [1, 0, 1, 0]
+    t2 = np.array((((a[0])[0])[2])[0]) - [1, 0, 1, 0]
     arr_list = [t - 1, t2 - 1]
     mask = get_mask(arr_list, img.shape)
     return {"img": img, "mask": mask}
 
 
-def snake_illusion():
+def snake():
     a = mat_content["snake"]
     img = np.array(((a[0])[0])[0])
     t = np.array((((a[0])[0])[1])[0])
@@ -89,7 +89,7 @@ def snake_illusion():
     return {"img": img, "mask": mask}
 
 
-def snake_control_illusion():
+def snake_control():
     a = mat_content["snake_control"]
     img = np.array(((a[0])[0])[0])
     t = np.array((((a[0])[0])[1])[0])
@@ -99,7 +99,7 @@ def snake_control_illusion():
     return {"img": img, "mask": mask}
 
 
-def koffka_adelson_illusion():
+def koffka_adelson():
     a = mat_content["koffka_adelson"]
     img = np.array(((a[0])[0])[0])
     t = np.array((((a[0])[0])[1])[0])
@@ -109,7 +109,7 @@ def koffka_adelson_illusion():
     return {"img": img, "mask": mask}
 
 
-def koffka_broken_illusion():
+def koffka_broken():
     a = mat_content["koffka_broken"]
     img = np.array(((a[0])[0])[0])
     t = np.array((((a[0])[0])[1])[0])
@@ -119,7 +119,7 @@ def koffka_broken_illusion():
     return {"img": img, "mask": mask}
 
 
-def koffka_connected_illusion():
+def koffka_connected():
     a = mat_content["koffka_connected"]
     img = np.array(((a[0])[0])[0])
     t = np.array((((a[0])[0])[1])[0])
@@ -129,7 +129,7 @@ def koffka_connected_illusion():
     return {"img": img, "mask": mask}
 
 
-def checkassim_illusion():
+def checkassim():
     a = mat_content["checkassim"]
     img = np.array(((a[0])[0])[0])
     t = np.array((((a[0])[0])[1])[0])
@@ -139,7 +139,7 @@ def checkassim_illusion():
     return {"img": img, "mask": mask}
 
 
-def simcon_illusion():
+def simcon():
     a = mat_content["simcon"]
     img = np.array(((a[0])[0])[0])
     t = np.array((((a[0])[0])[1])[0])
@@ -149,7 +149,7 @@ def simcon_illusion():
     return {"img": img, "mask": mask}
 
 
-def simcon_articulated_illusion():
+def simcon_articulated():
     a = mat_content["simcon_articulated"]
     img = np.array(((a[0])[0])[0])
     t = np.array((((a[0])[0])[1])[0])
@@ -159,7 +159,7 @@ def simcon_articulated_illusion():
     return {"img": img, "mask": mask}
 
 
-def white_illusion():
+def white():
     a = mat_content["white"]
     img = np.array(((a[0])[0])[0])
     t = np.array((((a[0])[0])[1])[0])
@@ -172,18 +172,18 @@ def white_illusion():
 if __name__ == "__main__":
 
     stims = {
-        "argyle_illusion": argyle_illusion(),
-        "argyle_control_illusion": argyle_control_illusion(),
-        "argyle_long_illusion": argyle_long_illusion(),
-        "snake_illusion": snake_illusion(),
-        "snake_control_illusion": snake_control_illusion(),
-        "koffka_adelson_illusion": koffka_adelson_illusion(),
-        "koffka_broken_illusion": koffka_broken_illusion(),
-        "koffka_connected_illusion": koffka_connected_illusion(),
-        "checkassim_illusion": checkassim_illusion(),
-        "simcon_illusion": simcon_illusion(),
-        "simcon_articulated_illusion": simcon_articulated_illusion(),
-        "white_illusion": white_illusion(),
+        "argyle": argyle(),
+        "argyle_control": argyle_control(),
+        "argyle_long": argyle_long(),
+        "snake": snake(),
+        "snake_control": snake_control(),
+        "koffka_adelson": koffka_adelson(),
+        "koffka_broken": koffka_broken(),
+        "koffka_connected": koffka_connected(),
+        "checkassim": checkassim(),
+        "simcon": simcon(),
+        "simcon_articulated": simcon_articulated(),
+        "white": white(),
     }
 
     n_stim = math.ceil(math.sqrt(len(stims)))
