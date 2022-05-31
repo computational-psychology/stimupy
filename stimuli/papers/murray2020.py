@@ -50,20 +50,6 @@ def get_mask(arr_list, ppd, mask):
     return mask
 
 
-def ini_matrix(ppd):
-    a = []
-    for i in range(ppd):
-        a.append(np.zeros(ppd))
-    return a
-
-
-def ini_matrix_2(ppd):
-    a = []
-    for i in range(ppd):
-        a.append(np.zeros(24))
-    return a
-
-
 def argyle_illusion(ppd):
     argyle = mat_content["argyle"]
     img = np.array(((argyle[0])[0])[0])
@@ -71,7 +57,7 @@ def argyle_illusion(ppd):
     t = np.array((((a[0])[0])[1])[0])
     t2 = np.array((((a[0])[0])[2])[0])
     arr_list = [t - int(ppd / 16), t2 - int(ppd / 16)]
-    mask = np.array(ini_matrix(ppd))
+    mask = np.zeros(img.shape)
     mask = get_mask(arr_list, ppd, mask)
     return {"img": img, "mask": mask}
 
@@ -83,7 +69,7 @@ def argyle_control_illusion(ppd):
     t = np.array((((a[0])[0])[1])[0])
     t2 = np.array((((a[0])[0])[2])[0])
     arr_list = [t - 1, t2 - 1]
-    mask = np.array(ini_matrix(ppd))
+    mask = np.zeros(img.shape)
     mask = get_mask(arr_list, ppd, mask)
     return {"img": img, "mask": mask}
 
@@ -95,7 +81,7 @@ def argyle_long_illusion(ppd):
     t = np.array((((a[0])[0])[1])[0])
     t2 = np.array((((a[0])[0])[2])[0])
     arr_list = [t - 1, t2 - 1]
-    mask = np.array(ini_matrix_2(ppd))
+    mask = np.zeros(img.shape)
     mask = get_mask(arr_list, ppd, mask)
     return {"img": img, "mask": mask}
 
@@ -107,7 +93,7 @@ def snake_illusion(ppd):
     t = np.array((((a[0])[0])[1])[0])
     t2 = np.array((((a[0])[0])[2])[0])
     arr_list = [t - 1, t2 - 1]
-    mask = np.array(ini_matrix(ppd))
+    mask = np.zeros(img.shape)
     mask = get_mask(arr_list, ppd, mask)
     return {"img": img, "mask": mask}
 
@@ -119,7 +105,7 @@ def snake_control_illusion(ppd):
     t = np.array((((a[0])[0])[1])[0])
     t2 = np.array((((a[0])[0])[2])[0])
     arr_list = [t - 1, t2 - 1]
-    mask = np.array(ini_matrix(ppd))
+    mask = np.zeros(img.shape)
     mask = get_mask(arr_list, ppd, mask)
     return {"img": img, "mask": mask}
 
@@ -131,7 +117,7 @@ def koffka_adelson_illusion(ppd):
     t = np.array((((a[0])[0])[1])[0])
     t2 = np.array((((a[0])[0])[2])[0])
     arr_list = [t - 1, t2 - 1]
-    mask = np.array(ini_matrix(ppd))
+    mask = np.zeros(img.shape)
     mask = get_mask(arr_list, ppd, mask)
     return {"img": img, "mask": mask}
 
@@ -143,7 +129,7 @@ def koffka_broken_illusion(ppd):
     t = np.array((((a[0])[0])[1])[0])
     t2 = np.array((((a[0])[0])[2])[0])
     arr_list = [t - 1, t2 - 1]
-    mask = np.array(ini_matrix(ppd))
+    mask = np.zeros(img.shape)
     mask = get_mask(arr_list, ppd, mask)
     return {"img": img, "mask": mask}
 
@@ -155,7 +141,7 @@ def koffka_connected_illusion(ppd):
     t = np.array((((a[0])[0])[1])[0])
     t2 = np.array((((a[0])[0])[2])[0])
     arr_list = [t - 1, t2 - 1]
-    mask = np.array(ini_matrix(ppd))
+    mask = np.zeros(img.shape)
     mask = get_mask(arr_list, ppd, mask)
     return {"img": img, "mask": mask}
 
@@ -167,7 +153,7 @@ def checkassim_illusion(ppd):
     t = np.array((((a[0])[0])[1])[0])
     t2 = np.array((((a[0])[0])[2])[0])
     arr_list = [t - 1, t2 - 1]
-    mask = np.array(ini_matrix(ppd))
+    mask = np.zeros(img.shape)
     mask = get_mask(arr_list, ppd, mask)
     return {"img": img, "mask": mask}
 
@@ -179,7 +165,7 @@ def simcon_illusion(ppd):
     t = np.array((((a[0])[0])[1])[0])
     t2 = np.array((((a[0])[0])[2])[0])
     arr_list = [t - 1, t2 - 1]
-    mask = np.array(ini_matrix(ppd))
+    mask = np.zeros(img.shape)
     mask = get_mask(arr_list, ppd, mask)
     return {"img": img, "mask": mask}
 
@@ -191,7 +177,7 @@ def simcon_articulated_illusion(ppd):
     t = np.array((((a[0])[0])[1])[0])
     t2 = np.array((((a[0])[0])[2])[0])
     arr_list = [t - 1, t2 - 1]
-    mask = np.array(ini_matrix(ppd))
+    mask = np.zeros(img.shape)
     mask = get_mask(arr_list, ppd, mask)
     return {"img": img, "mask": mask}
 
@@ -203,7 +189,7 @@ def white_illusion(ppd):
     t = np.array((((a[0])[0])[1])[0])
     t2 = np.array((((a[0])[0])[2])[0])
     arr_list = [t - 1, t2 - 1]
-    mask = np.array(ini_matrix(ppd))
+    mask = np.zeros(img.shape)
     mask = get_mask(arr_list, ppd, mask)
     return {"img": img, "mask": mask}
 
