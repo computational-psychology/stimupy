@@ -11,11 +11,12 @@ print(mat_fname)
 mat_content = scipy.io.loadmat(mat_fname)
 
 
-def get_mask(arr_list, shape):
+def get_mask(target1, target2, shape):
     mask = np.zeros(shape)
 
-    target1 = arr_list[0]
-    target2 = arr_list[1]
+    target1 = target1 - 1
+    target2 = target2 - 1
+
     y = target1[0]
     x = target1[1]
     mask[y][x] = 1
@@ -52,120 +53,108 @@ def get_mask(arr_list, shape):
 def argyle():
     a = mat_content["argyle"]
     img = np.array(((a[0])[0])[0])
-    t = np.array((((a[0])[0])[1])[0]) - [1, 0, 1, 0]
-    t2 = np.array((((a[0])[0])[2])[0]) - [1, 0, 1, 0]
-    arr_list = [t - 1, t2 - 1]
-    mask = get_mask(arr_list, img.shape)
+    target1 = np.array((((a[0])[0])[1])[0]) - [1, 0, 1, 0]
+    target2 = np.array((((a[0])[0])[2])[0]) - [1, 0, 1, 0]
+    mask = get_mask(target1, target2, img.shape)
     return {"img": img, "mask": mask}
 
 
 def argyle_control():
     a = mat_content["argyle_control"]
     img = np.array(((a[0])[0])[0])
-    t = np.array((((a[0])[0])[1])[0]) - [1, 0, 1, 0]
-    t2 = np.array((((a[0])[0])[2])[0]) - [1, 0, 1, 0]
-    arr_list = [t - 1, t2 - 1]
-    mask = get_mask(arr_list, img.shape)
+    target1 = np.array((((a[0])[0])[1])[0]) - [1, 0, 1, 0]
+    target2 = np.array((((a[0])[0])[2])[0]) - [1, 0, 1, 0]
+    mask = get_mask(target1, target2, img.shape)
     return {"img": img, "mask": mask}
 
 
 def argyle_long():
     a = mat_content["argyle_long"]
     img = np.array(((a[0])[0])[0])
-    t = np.array((((a[0])[0])[1])[0]) - [1, 0, 1, 0]
-    t2 = np.array((((a[0])[0])[2])[0]) - [1, 0, 1, 0]
-    arr_list = [t - 1, t2 - 1]
-    mask = get_mask(arr_list, img.shape)
+    target1 = np.array((((a[0])[0])[1])[0]) - [1, 0, 1, 0]
+    target2 = np.array((((a[0])[0])[2])[0]) - [1, 0, 1, 0]
+    mask = get_mask(target1, target2, img.shape)
     return {"img": img, "mask": mask}
 
 
 def snake():
     a = mat_content["snake"]
     img = np.array(((a[0])[0])[0])
-    t = np.array((((a[0])[0])[1])[0])
-    t2 = np.array((((a[0])[0])[2])[0])
-    arr_list = [t - 1, t2 - 1]
-    mask = get_mask(arr_list, img.shape)
+    target1 = np.array((((a[0])[0])[1])[0])
+    target2 = np.array((((a[0])[0])[2])[0])
+    mask = get_mask(target1, target2, img.shape)
     return {"img": img, "mask": mask}
 
 
 def snake_control():
     a = mat_content["snake_control"]
     img = np.array(((a[0])[0])[0])
-    t = np.array((((a[0])[0])[1])[0])
-    t2 = np.array((((a[0])[0])[2])[0])
-    arr_list = [t - 1, t2 - 1]
-    mask = get_mask(arr_list, img.shape)
+    target1 = np.array((((a[0])[0])[1])[0])
+    target2 = np.array((((a[0])[0])[2])[0])
+    mask = get_mask(target1, target2, img.shape)
     return {"img": img, "mask": mask}
 
 
 def koffka_adelson():
     a = mat_content["koffka_adelson"]
     img = np.array(((a[0])[0])[0])
-    t = np.array((((a[0])[0])[1])[0])
-    t2 = np.array((((a[0])[0])[2])[0])
-    arr_list = [t - 1, t2 - 1]
-    mask = get_mask(arr_list, img.shape)
+    target1 = np.array((((a[0])[0])[1])[0])
+    target2 = np.array((((a[0])[0])[2])[0])
+    mask = get_mask(target1, target2, img.shape)
     return {"img": img, "mask": mask}
 
 
 def koffka_broken():
     a = mat_content["koffka_broken"]
     img = np.array(((a[0])[0])[0])
-    t = np.array((((a[0])[0])[1])[0])
-    t2 = np.array((((a[0])[0])[2])[0])
-    arr_list = [t - 1, t2 - 1]
-    mask = get_mask(arr_list, img.shape)
+    target1 = np.array((((a[0])[0])[1])[0])
+    target2 = np.array((((a[0])[0])[2])[0])
+    mask = get_mask(target1, target2, img.shape)
     return {"img": img, "mask": mask}
 
 
 def koffka_connected():
     a = mat_content["koffka_connected"]
     img = np.array(((a[0])[0])[0])
-    t = np.array((((a[0])[0])[1])[0])
-    t2 = np.array((((a[0])[0])[2])[0])
-    arr_list = [t - 1, t2 - 1]
-    mask = get_mask(arr_list, img.shape)
+    target1 = np.array((((a[0])[0])[1])[0])
+    target2 = np.array((((a[0])[0])[2])[0])
+    mask = get_mask(target1, target2, img.shape)
     return {"img": img, "mask": mask}
 
 
 def checkassim():
     a = mat_content["checkassim"]
     img = np.array(((a[0])[0])[0])
-    t = np.array((((a[0])[0])[1])[0])
-    t2 = np.array((((a[0])[0])[2])[0])
-    arr_list = [t - 1, t2 - 1]
-    mask = get_mask(arr_list, img.shape)
+    target1 = np.array((((a[0])[0])[1])[0])
+    target2 = np.array((((a[0])[0])[2])[0])
+    mask = get_mask(target1, target2, img.shape)
     return {"img": img, "mask": mask}
 
 
 def simcon():
     a = mat_content["simcon"]
     img = np.array(((a[0])[0])[0])
-    t = np.array((((a[0])[0])[1])[0])
-    t2 = np.array((((a[0])[0])[2])[0])
-    arr_list = [t - 1, t2 - 1]
-    mask = get_mask(arr_list, img.shape)
+    target1 = np.array((((a[0])[0])[1])[0])
+    target2 = np.array((((a[0])[0])[2])[0])
+    mask = get_mask(target1, target2, img.shape)
     return {"img": img, "mask": mask}
 
 
 def simcon_articulated():
     a = mat_content["simcon_articulated"]
     img = np.array(((a[0])[0])[0])
-    t = np.array((((a[0])[0])[1])[0])
-    t2 = np.array((((a[0])[0])[2])[0])
-    arr_list = [t - 1, t2 - 1]
-    mask = get_mask(arr_list, img.shape)
+    target1 = np.array((((a[0])[0])[1])[0])
+    target2 = np.array((((a[0])[0])[2])[0])
+    mask = get_mask(target1, target2, img.shape)
     return {"img": img, "mask": mask}
 
 
 def white():
     a = mat_content["white"]
     img = np.array(((a[0])[0])[0])
-    t = np.array((((a[0])[0])[1])[0])
-    t2 = np.array((((a[0])[0])[2])[0])
-    arr_list = [t - 1, t2 - 1]
-    mask = get_mask(arr_list, img.shape)
+    target1 = np.array((((a[0])[0])[1])[0])
+    target2 = np.array((((a[0])[0])[2])[0])
+    mask = get_mask(target1, target2, img.shape)
     return {"img": img, "mask": mask}
 
 
