@@ -14,38 +14,19 @@ mat_content = scipy.io.loadmat(mat_fname)
 def get_mask(target1, target2, shape):
     mask = np.zeros(shape)
 
+    # Convert MATLAB 1-based index to numpy 0-based index
     target1 = target1 - 1
     target2 = target2 - 1
 
-    y = target1[0]
-    x = target1[1]
-    mask[y][x] = 1
-    y = target1[2]
-    x = target1[3]
-    mask[y][x] = 1
+    # Fill target1 mask
+    for x in range(target1[1], target1[3] + 1):
+        for y in range(target1[0], target1[2] + 1):
+            mask[y][x] = 1
 
-    x_diff = target1[3] - target1[1] + 1
-    for i in range(x_diff):
-        y_diff = target1[2] - target1[0] + 1
-        for j in range(y_diff):
-            y = target1[0]
-            x = target1[1]
-            mask[y + j][x + i] = 1
-
-    y = target2[0]
-    x = target2[1]
-    mask[y][x] = 2
-    y = target2[2]
-    x = target2[3]
-    mask[y][x] = 2
-
-    x_diff = target2[3] - target2[1] + 1
-    for i in range(x_diff):
-        y_diff = target2[2] - target2[0] + 1
-        for j in range(y_diff):
-            y = target2[0]
-            x = target2[1]
-            mask[y + j][x + i] = 2
+    # Fill target2 mask
+    for x in range(target2[1], target2[3] + 1):
+        for y in range(target2[0], target2[2] + 1):
+            mask[y, x] = 2
 
     return mask
 
