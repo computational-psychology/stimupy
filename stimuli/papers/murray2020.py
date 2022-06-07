@@ -1,3 +1,36 @@
+"""Stimuli from Murray (2020) https://doi.org/10/gh57gf
+
+This module reproduces most of the stimuli used by Murray (2020)
+exactly as they were provided to the model described in that paper.
+The stimuli are show in Fig 1 of the paper.
+
+Each stimulus is provided by a separate function,
+a full list can be found as stimuli.papers.murray2020.__all__
+
+The output of each of these functions is a dict
+with at least the keys:
+    - "img", containing a 2D numpy array providing the stimulus image
+      in cd/m2
+    - "mask", containing a 2D numpy array providing a mask for the 
+      target regions in the stimulus, each indicated by an integer index.
+
+For a visual representation of all the stimuli and their mask,
+simply run this module as a script:
+
+    $ python stimuli/papers/murray2020.py
+
+Attributes
+----------
+__all__ (list of str): list of all stimulus-functions
+    that are exported by this module when executing
+        >>> from stimuli.papers.murray2020 import *
+
+References
+-----------
+Murray, R. F. (2020). A model of lightness perception guided by
+probabilistic assumptions about lighting and reflectance.
+Journal of Vision, 20(7), 28. https://doi.org/10/gh57gf
+"""
 import os.path
 
 import matplotlib.pyplot as plt
