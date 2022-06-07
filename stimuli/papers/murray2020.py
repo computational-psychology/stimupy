@@ -3,6 +3,7 @@
 This module reproduces most of the stimuli used by Murray (2020)
 exactly as they were provided to the model described in that paper.
 The stimuli are show in Fig 1 of the paper.
+NOTE that the Haze illusion (Fig 1m) is not provided.
 
 Each stimulus is provided by a separate function,
 a full list can be found as stimuli.papers.murray2020.__all__
