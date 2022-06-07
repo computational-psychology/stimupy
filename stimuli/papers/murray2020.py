@@ -319,22 +319,10 @@ def white():
 
 
 if __name__ == "__main__":
+    # Generate all stimuli exported in __all__
+    stims = {s: globals()[s]() for s in __all__}
 
-    stims = {
-        "argyle": argyle(),
-        "argyle_control": argyle_control(),
-        "argyle_long": argyle_long(),
-        "snake": snake(),
-        "snake_control": snake_control(),
-        "koffka_adelson": koffka_adelson(),
-        "koffka_broken": koffka_broken(),
-        "koffka_connected": koffka_connected(),
-        "checkassim": checkassim(),
-        "simcon": simcon(),
-        "simcon_articulated": simcon_articulated(),
-        "white": white(),
-    }
-
+    # Plot each stimulus+mask
     n_stim = math.ceil(math.sqrt(len(stims)))
     plt.figure(figsize=(n_stim * 3, n_stim * 3))
     for i, (stim_name, stim) in enumerate(stims.items()):
