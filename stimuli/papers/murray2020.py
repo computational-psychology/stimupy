@@ -11,7 +11,7 @@ The output of each of these functions is a dict
 with at least the keys:
     - "img", containing a 2D numpy array providing the stimulus image
       in cd/m2
-    - "mask", containing a 2D numpy array providing a mask for the 
+    - "mask", containing a 2D numpy array providing a mask for the
       target regions in the stimulus, each indicated by an integer index.
 
 For a visual representation of all the stimuli and their mask,
@@ -79,6 +79,17 @@ def get_mask(target1, target2, shape):
 
 
 def argyle():
+    """Argyle illusion, Murray (2020) Fig 1a
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus, with at least the keys:
+        - "img" containing a 2D numpy array providing the stimulus image
+          [in cd/m2]
+        - "mask", containing a 2D numpy array providing a mask for the
+          target regions in the stimulus, each indicated by an integer index.
+    """
     a = mat_content["argyle"]
     img = np.array(((a[0])[0])[0])
     target1 = np.array((((a[0])[0])[1])[0]) - [1, 0, 1, 0]
@@ -88,6 +99,17 @@ def argyle():
 
 
 def argyle_control():
+    """Argyle control figure, Murray (2020) Fig 1c
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus, with at least the keys:
+        - "img" containing a 2D numpy array providing the stimulus image
+          [in cd/m2]
+        - "mask", containing a 2D numpy array providing a mask for the
+          target regions in the stimulus, each indicated by an integer index.
+    """
     a = mat_content["argyle_control"]
     img = np.array(((a[0])[0])[0])
     target1 = np.array((((a[0])[0])[1])[0]) - [1, 0, 1, 0]
@@ -97,6 +119,17 @@ def argyle_control():
 
 
 def argyle_long():
+    """Long-range Argyle illusion, Murray (2020) Fig 1b
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus, with at least the keys:
+        - "img" containing a 2D numpy array providing the stimulus image
+          [in cd/m2]
+        - "mask", containing a 2D numpy array providing a mask for the
+          target regions in the stimulus, each indicated by an integer index.
+    """
     a = mat_content["argyle_long"]
     img = np.array(((a[0])[0])[0])
     target1 = np.array((((a[0])[0])[1])[0]) - [1, 0, 1, 0]
@@ -106,6 +139,17 @@ def argyle_long():
 
 
 def snake():
+    """Snake illusion, Murray (2020) Fig 1i
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus, with at least the keys:
+        - "img" containing a 2D numpy array providing the stimulus image
+          [in cd/m2]
+        - "mask", containing a 2D numpy array providing a mask for the
+          target regions in the stimulus, each indicated by an integer index.
+    """
     a = mat_content["snake"]
     img = np.array(((a[0])[0])[0])
     target1 = np.array((((a[0])[0])[1])[0])
@@ -115,6 +159,17 @@ def snake():
 
 
 def snake_control():
+    """Snake control figure, Murray (2020) Fig 1j
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus, with at least the keys:
+        - "img" containing a 2D numpy array providing the stimulus image
+          [in cd/m2]
+        - "mask", containing a 2D numpy array providing a mask for the
+          target regions in the stimulus, each indicated by an integer index.
+    """
     a = mat_content["snake_control"]
     img = np.array(((a[0])[0])[0])
     target1 = np.array((((a[0])[0])[1])[0])
@@ -124,6 +179,17 @@ def snake_control():
 
 
 def koffka_adelson():
+    """Koffka-Adelson figure, Murray (2020) Fig 1e
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus, with at least the keys:
+        - "img" containing a 2D numpy array providing the stimulus image
+          [in cd/m2]
+        - "mask", containing a 2D numpy array providing a mask for the
+          target regions in the stimulus, each indicated by an integer index.
+    """
     a = mat_content["koffka_adelson"]
     img = np.array(((a[0])[0])[0])
     target1 = np.array((((a[0])[0])[1])[0])
@@ -133,6 +199,17 @@ def koffka_adelson():
 
 
 def koffka_broken():
+    """Koffka ring, broken, Murray (2020) Fig 1d
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus, with at least the keys:
+        - "img" containing a 2D numpy array providing the stimulus image
+          [in cd/m2]
+        - "mask", containing a 2D numpy array providing a mask for the
+          target regions in the stimulus, each indicated by an integer index.
+    """
     a = mat_content["koffka_broken"]
     img = np.array(((a[0])[0])[0])
     target1 = np.array((((a[0])[0])[1])[0])
@@ -142,6 +219,17 @@ def koffka_broken():
 
 
 def koffka_connected():
+    """Koffka ring, connected, Murray (2020) Fig 1f
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus, with at least the keys:
+        - "img" containing a 2D numpy array providing the stimulus image
+          [in cd/m2]
+        - "mask", containing a 2D numpy array providing a mask for the
+          target regions in the stimulus, each indicated by an integer index.
+    """
     a = mat_content["koffka_connected"]
     img = np.array(((a[0])[0])[0])
     target1 = np.array((((a[0])[0])[1])[0])
@@ -151,6 +239,17 @@ def koffka_connected():
 
 
 def checkassim():
+    """Checkerboard assimilation, Murray (2020) Fig 1h
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus, with at least the keys:
+        - "img" containing a 2D numpy array providing the stimulus image
+          [in cd/m2]
+        - "mask", containing a 2D numpy array providing a mask for the
+          target regions in the stimulus, each indicated by an integer index.
+    """
     a = mat_content["checkassim"]
     img = np.array(((a[0])[0])[0])
     target1 = np.array((((a[0])[0])[1])[0])
@@ -160,6 +259,17 @@ def checkassim():
 
 
 def simcon():
+    """Classic simultaneous contrast figure, Murray (2020) Fig 1k
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus, with at least the keys:
+        - "img" containing a 2D numpy array providing the stimulus image
+          [in cd/m2]
+        - "mask", containing a 2D numpy array providing a mask for the
+          target regions in the stimulus, each indicated by an integer index.
+    """
     a = mat_content["simcon"]
     img = np.array(((a[0])[0])[0])
     target1 = np.array((((a[0])[0])[1])[0])
@@ -169,6 +279,17 @@ def simcon():
 
 
 def simcon_articulated():
+    """Articulated simultaneous contrast figure, Murray (2020) Fig 1l
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus, with at least the keys:
+        - "img" containing a 2D numpy array providing the stimulus image
+          [in cd/m2]
+        - "mask", containing a 2D numpy array providing a mask for the
+          target regions in the stimulus, each indicated by an integer index.
+    """
     a = mat_content["simcon_articulated"]
     img = np.array(((a[0])[0])[0])
     target1 = np.array((((a[0])[0])[1])[0])
@@ -178,6 +299,17 @@ def simcon_articulated():
 
 
 def white():
+    """White's illusion, Murray (2020) Fig 1A
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus, with at least the keys:
+        - "img" containing a 2D numpy array providing the stimulus image
+          [in cd/m2]
+        - "mask", containing a 2D numpy array providing a mask for the
+          target regions in the stimulus, each indicated by an integer index.
+    """
     a = mat_content["white"]
     img = np.array(((a[0])[0])[0])
     target1 = np.array((((a[0])[0])[1])[0])
