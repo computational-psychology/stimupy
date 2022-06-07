@@ -1,7 +1,38 @@
-import numpy as np
 import math
 
+import numpy as np
 import stimuli
+
+__all__ = [
+    "WE_thick",
+    "WE_thin_wide",
+    "WE_dual",
+    "WE_anderson",
+    "WE_howe",
+    "WE_zigzag",
+    "WE_radial_thick_small",
+    "WE_radial_thick",
+    "WE_radial_thin_small",
+    "WE_circular1",
+    "WE_circular05",
+    "WE_circular025",
+    "grating_induction",
+    "sbc_large",
+    "sbc_small",
+    "todorovic_equal",
+    "todorovic_in_large",
+    "todorovic_in_small",
+    "todorovic_out",
+    "checkerboard_016",
+    "checkerboard_0938",
+    "checkerboard209",
+    "corrugated_mondrian",
+    "benary_cross",
+    "todorovic_benary1_2",
+    "todorovic_benary3_4",
+    "bullseye_thin",
+    "bullseye_thick",
+]
 
 
 def WE_thick():
