@@ -92,8 +92,8 @@ def argyle():
     """
     a = mat_content["argyle"]
     img = np.array(((a[0])[0])[0])
-    target1 = np.array((((a[0])[0])[1])[0]) - [1, 0, 1, 0]
-    target2 = np.array((((a[0])[0])[2])[0]) - [1, 0, 1, 0]
+    target1 = np.array((((a[0])[0])[1])[0])
+    target2 = np.array((((a[0])[0])[2])[0])
     mask = get_mask(target1, target2, img.shape)
     return {"img": img, "mask": mask}
 
@@ -112,8 +112,8 @@ def argyle_control():
     """
     a = mat_content["argyle_control"]
     img = np.array(((a[0])[0])[0])
-    target1 = np.array((((a[0])[0])[1])[0]) - [1, 0, 1, 0]
-    target2 = np.array((((a[0])[0])[2])[0]) - [1, 0, 1, 0]
+    target1 = np.array((((a[0])[0])[1])[0])
+    target2 = np.array((((a[0])[0])[2])[0])
     mask = get_mask(target1, target2, img.shape)
     return {"img": img, "mask": mask}
 
@@ -132,8 +132,8 @@ def argyle_long():
     """
     a = mat_content["argyle_long"]
     img = np.array(((a[0])[0])[0])
-    target1 = np.array((((a[0])[0])[1])[0]) - [1, 0, 1, 0]
-    target2 = np.array((((a[0])[0])[2])[0]) - [1, 0, 1, 0]
+    target1 = np.array((((a[0])[0])[1])[0])
+    target2 = np.array((((a[0])[0])[2])[0])
     mask = get_mask(target1, target2, img.shape)
     return {"img": img, "mask": mask}
 
@@ -338,7 +338,7 @@ if __name__ == "__main__":
     n_stim = math.ceil(math.sqrt(len(stims)))
     plt.figure(figsize=(n_stim * 3, n_stim * 3))
     for i, (stim_name, stim) in enumerate(stims.items()):
-        print("Generating", stim_name + "")
+        print("Generating " + stim_name)
         img, mask = stim["img"], stim["mask"]
         img = np.dstack([img, img, img])
 
