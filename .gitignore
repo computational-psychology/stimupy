@@ -61,3 +61,4 @@ target/
 .vscode/
 
 *.png
+.pytest_cache/
