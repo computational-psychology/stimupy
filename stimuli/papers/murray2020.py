@@ -7,7 +7,6 @@ import scipy.io
 
 data_dir = os.path.dirname(__file__)
 mat_fname = os.path.join(data_dir, "murray2020.mat")
-print(mat_fname)
 mat_content = scipy.io.loadmat(mat_fname)
 
 
