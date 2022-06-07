@@ -1,9 +1,23 @@
-import math
 import os.path
 
 import matplotlib.pyplot as plt
 import numpy as np
 import scipy.io
+
+__all__ = [
+    "argyle",
+    "argyle_control",
+    "argyle_long",
+    "snake",
+    "snake_control",
+    "koffka_adelson",
+    "koffka_broken",
+    "koffka_connected",
+    "checkassim",
+    "simcon",
+    "simcon_articulated",
+    "white",
+]
 
 data_dir = os.path.dirname(__file__)
 mat_fname = os.path.join(data_dir, "murray2020.mat")
