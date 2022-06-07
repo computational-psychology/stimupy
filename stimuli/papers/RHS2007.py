@@ -57,7 +57,7 @@ def WE_howe():
 
 def WE_zigzag():
     # TODO: not available atm
-    pass
+    raise NotImplementedError
 
 
 def WE_radial_thick_small():
@@ -113,8 +113,8 @@ def todorovic_in_small():
 
 
 def todorovic_out():
-    #TODO: not available atm
-    pass
+    # TODO: not available atm
+    raise NotImplementedError
 
 
 def checkerboard_016():
@@ -130,23 +130,23 @@ def checkerboard209():
 
 
 def corrugated_mondrian():
-    #TODO: not available atm
-    pass
+    # TODO: not available atm
+    raise NotImplementedError
 
 
 def benary_cross():
-    #TODO: not available atm
-    pass
+    # TODO: not available atm
+    raise NotImplementedError
 
 
 def todorovic_benary1_2():
-    #TODO: not available atm
-    pass
+    # TODO: not available atm
+    raise NotImplementedError
 
 
 def todorovic_benary3_4():
-    #TODO: not available atm
-    pass
+    # TODO: not available atm
+    raise NotImplementedError
 
 
 def bullseye_thin():
