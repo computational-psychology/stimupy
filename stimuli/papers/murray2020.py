@@ -31,6 +31,7 @@ Murray, R. F. (2020). A model of lightness perception guided by
 probabilistic assumptions about lighting and reflectance.
 Journal of Vision, 20(7), 28. https://doi.org/10/gh57gf
 """
+import math
 import os.path
 
 import matplotlib.pyplot as plt
