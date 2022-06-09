@@ -1,2 +1,1 @@
-from . import domijan2015
-from . import RHS2007
+from . import RHS2007, domijan2015, murray2020
