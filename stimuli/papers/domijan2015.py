@@ -16,10 +16,12 @@ __all__ = [
     "checkerboard_extended",
 ]
 
+PPD = 10
 
-def dungeon():
+
+def dungeon(ppd=PPD):
     return illusions.dungeon.dungeon_illusion(
-        ppd=10,
+        ppd=ppd,
         n_cells=5,
         target_radius=1,
         cell_size=1.0,
@@ -31,9 +33,9 @@ def dungeon():
     )
 
 
-def cube():
+def cube(ppd=PPD):
     return illusions.cube.cube_illusion(
-        ppd=10,
+        ppd=ppd,
         n_cells=4,
         target_length=2,
         cell_long=1.5,
@@ -50,9 +52,9 @@ def cube():
     )
 
 
-def grating():
+def grating(ppd=PPD):
     return illusions.grating.grating_illusion(
-        ppd=10,
+        ppd=ppd,
         n_bars=5,
         target_length=1,
         bar_width=1.0,
@@ -65,9 +67,9 @@ def grating():
     )
 
 
-def rings():
+def rings(ppd=PPD):
     return illusions.rings.ring_pattern(
-        ppd=10,
+        ppd=ppd,
         n_rings=8,
         target_pos_l=4,
         target_pos_r=3,
@@ -81,8 +83,9 @@ def rings():
     )
 
 
-def bullseye():
+def bullseye(ppd=PPD):
     return illusions.bullseye.bullseye_illusion(
+        ppd=ppd,
         n_rings=8,
         ring_width=0.5,
         target_pos_l=0,
@@ -94,23 +97,25 @@ def bullseye():
     )
 
 
-def simultaneous_brightness_contrast():
+def simultaneous_brightness_contrast(ppd=PPD):
     return illusions.sbc.simultaneous_brightness_contrast(
-        ppd=10,
+        ppd=ppd,
         target_shape=(2.1, 2.1),
         inner_padding=(3.9, 4.0, 3.9, 4.0),
-        padding=(0, 0, 0, 0),
         left=9.0,
         right=1.0,
         target=5.0,
     )
 
 
-def white():
-    height, width, ppd = 8.1, 8.0, 10
+def white(ppd=PPD):
+    height, width, = (
+        8.1,
+        8.0,
+    )
     n_cycles = 4
     frequency = n_cycles / width
-    return illusions.whites.white(
+    stim = illusions.whites.white(
         shape=(height, width),
         ppd=ppd,
         frequency=frequency,
@@ -123,28 +128,35 @@ def white():
         target_height=2.1,
         targets_offset=0,
         orientation="horizontal",
-        padding=(0.9, 1.0, 0.9, 1.1),
-        padding_val=5.0,
     )
 
+    padding = (0.9, 1.0, 0.9, 1.1)
+    stim["img"] = pad_img(stim["img"], padding, ppd, val=5.0)
+    stim["mask"] = pad_img(stim["mask"], padding, ppd, val=0)
+    return stim
 
-def benary():
-    return illusions.benary_cross.benarys_cross(
-        ppd=10,
+
+def benary(ppd=PPD):
+    stim = illusions.benary_cross.benarys_cross(
+        ppd=PPD,
         cross_size=(3, 3, 3, 3),
         cross_thickness=2.1,
-        padding=(0.9, 1.0, 0.9, 1.0),
         target_size=1.1,
         back=9.0,
         cross=1.0,
         target=5.0,
     )
 
+    padding = (0.9, 1.0, 0.9, 1.0)
+    stim["img"] = pad_img(stim["img"], padding, ppd, val=9.0)
+    stim["mask"] = pad_img(stim["mask"], padding, ppd, val=0)
+    return stim
 
-def todorovic():
+
+def todorovic(ppd=PPD):
     return illusions.todorovic.todorovic_illusion(
         target_shape=(4.1, 4.1),
-        ppd=10,
+        ppd=ppd,
         covers_shape=(3.1, 3.1),
         spacing=(1.5, 1.5, 1.5, 1.5),
         padding=(2.9, 3.0, 2.9, 3.0),
@@ -154,10 +166,10 @@ def todorovic():
     )
 
 
-def checkerboard_contrast_contrast():
+def checkerboard_contrast_contrast(ppd=PPD):
     # TODO: add mask
     return illusions.checkerboard_contrast_contrast.checkerboard_contrast_contrast_effect(
-        ppd=10,
+        ppd=ppd,
         n_checks=8,
         check_size=1.0,
         target_length=4,
@@ -169,9 +181,9 @@ def checkerboard_contrast_contrast():
     )
 
 
-def checkerboard():
+def checkerboard(ppd=PPD):
     stim = illusions.checkerboard_sbc.checkerboard_contrast(
-        ppd=10,
+        ppd=ppd,
         board_shape=(8, 8),
         check_size=1.0,
         targets_coords=((3, 2), (5, 5)),
@@ -180,6 +192,7 @@ def checkerboard():
         check2=9.0,
         target=5.0,
     )
+
     padding = (0.9, 1.1, 0.9, 1.1)
     img = pad_img(stim["img"], padding, ppd=10, val=5.0)
     mask = pad_img(stim["mask"], padding, ppd=10, val=0)
@@ -187,9 +200,9 @@ def checkerboard():
     return {"img": img, "mask": mask}
 
 
-def checkerboard_extended():
+def checkerboard_extended(ppd=PPD):
     stim = illusions.checkerboard_sbc.checkerboard_contrast(
-        ppd=10,
+        ppd=ppd,
         board_shape=(8, 8),
         check_size=1.0,
         targets_coords=((3, 2), (5, 5)),
@@ -198,9 +211,10 @@ def checkerboard_extended():
         check2=9.0,
         target=5.0,
     )
+
     padding = (0.9, 1.1, 0.9, 1.1)
-    img = pad_img(stim["img"], padding, ppd=10, val=5.0)
-    mask = pad_img(stim["mask"], padding, ppd=10, val=0)
+    img = pad_img(stim["img"], padding, ppd=ppd, val=5.0)
+    mask = pad_img(stim["mask"], padding, ppd=ppd, val=0)
 
     return {"img": img, "mask": mask}
 

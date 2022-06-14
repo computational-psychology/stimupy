@@ -6,7 +6,6 @@ from stimuli.utils import pad_img, plot_stim
 def simultaneous_brightness_contrast(
     ppd=10,
     target_shape=(5, 5),
-    padding=(2, 2, 2, 2),
     inner_padding=(3, 3, 3, 3),
     left=1.0,
     right=0.0,
@@ -53,9 +52,6 @@ def simultaneous_brightness_contrast(
     mask1 = pad_img(mask, inner_padding, ppd, 0)
     mask2 = pad_img(mask, inner_padding, ppd, 0)
     mask = np.hstack((mask1, mask2 * 2))
-
-    img = pad_img(img, padding, ppd, target)
-    mask = pad_img(mask, padding, ppd, 0)
 
     return {"img": img, "mask": mask}
 

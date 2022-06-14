@@ -43,6 +43,7 @@ def bullseye_illusion(
     A stimulus object
     """
     stim1 = ring_pattern(
+        ppd=ppd,
         n_rings=n_rings,
         target_pos_l=target_pos_l,
         ring_width=ring_width,
@@ -54,6 +55,7 @@ def bullseye_illusion(
         double=False,
     )
     stim2 = ring_pattern(
+        ppd=ppd,
         n_rings=n_rings,
         target_pos_l=target_pos_r,
         ring_width=ring_width,

@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.ndimage.filters import gaussian_filter
 from stimuli.illusions.square_wave import square_wave
-from stimuli.utils import degrees_to_pixels, pad_img, plot_stim
+from stimuli.utils import degrees_to_pixels, plot_stim
 
 
 ###################################
@@ -18,7 +18,6 @@ def grating_illusion(
     target=0.5,
     start="low",
     period="ignore",
-    padding=(2, 2, 2, 2),
 ):
     """
     Grating induction illusions
@@ -43,8 +42,6 @@ def grating_illusion(
         whether to start with a bright or a low stripes
     period : string in ['ignore', 'full', 'half']
         see square_wave.py for details about this
-    padding : (float, float, float, float)
-        4-valued tuple specifying padding (top, bottom, left, right) in degrees visual angle
 
     Returns
     -------
@@ -71,9 +68,6 @@ def grating_illusion(
 
     img = gaussian_filter(img, blur)
     img[target_start:target_end, :] = target
-
-    img = pad_img(img, padding, ppd, target)
-    mask = pad_img(mask, padding, ppd, 0)
 
     return {"img": img, "mask": mask}
 

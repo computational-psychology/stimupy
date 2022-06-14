@@ -3,7 +3,7 @@ import math
 import matplotlib.pyplot as plt
 import numpy as np
 from stimuli.illusions.square_wave import square_wave
-from stimuli.utils import degrees_to_pixels, get_annulus_mask, pad_img
+from stimuli.utils import degrees_to_pixels, get_annulus_mask
 
 
 def white(
@@ -19,8 +19,6 @@ def white(
     target_height=None,
     targets_offset=0,
     orientation="horizontal",
-    padding=(2, 2, 2, 2),
-    padding_val=0.5,
 ):
     """
     Whites's illusion
@@ -51,8 +49,6 @@ def white(
         Vertical offset of the target in pixels
     orientation : string in ['horizontal', 'vertical']
         orientation of the illusion
-    padding : (float, float, float, float)
-        4-valued tuple specifying padding (top, bottom, left, right) in degrees visual angle
 
     Returns
     -------
@@ -91,9 +87,6 @@ def white(
         img = np.rot90(img, 3)
         mask = np.rot90(mask, 3)
 
-    img = pad_img(img, padding, ppd, padding_val)
-    mask = pad_img(mask, padding, ppd, 0)
-
     return {"img": img, "mask": mask}
 
 
@@ -106,7 +99,6 @@ def circular_white(
     target=0.5,
     target_indices=(2, 6),
     start="low",
-    padding=(2, 2, 2, 2),
 ):
     """
     Circular Whites's illusion
@@ -129,8 +121,6 @@ def circular_white(
         indices of the stripes where the target(s) will be placed. There will be as many targets as indices specified.
     start : string in ['low','high']
         whether to start with a bright or a low stripes
-    padding : (float, float, float, float)
-        4-valued tuple specifying padding (top, bottom, left, right) in degrees visual angle
 
     Returns
     ----------
@@ -164,9 +154,6 @@ def circular_white(
         else:
             img[annulus_mask] = st if i % 2 == 0 else other
 
-    img = pad_img(img, padding, ppd, target)
-    mask = pad_img(mask, padding, ppd, 0)
-
     return {"img": img, "mask": mask}
 
 
@@ -182,7 +169,6 @@ def wheel_of_fortune_white(
     low=0.0,
     target=0.5,
     start="high",
-    padding=(1, 1, 1, 1),
 ):
     # TODO: make this faster
     """
@@ -212,8 +198,6 @@ def wheel_of_fortune_white(
         value for target
     start : string in ['low','high']
         whether to start with a bright or a low stripes
-    padding : (float, float, float, float)
-        4-valued tuple specifying padding (top, bottom, left, right) in degrees visual angle
 
     Returns
     ----------
@@ -305,9 +289,6 @@ def wheel_of_fortune_white(
     for i, val in enumerate(mask_vals):
         mask[mask == val] = i + 1
 
-    img = pad_img(img, padding, ppd, target)
-    mask = pad_img(mask, padding, ppd, 0)
-
     return {"img": img, "mask": mask}
 
 
@@ -326,7 +307,6 @@ def white_anderson(
     low=0.0,
     target=0.5,
     top="low",
-    padding=(1, 1, 1, 1),
 ):
     """
     Anderson's white illusion
@@ -359,8 +339,6 @@ def white_anderson(
         value for target
     top : string in ['low', 'high']
         specify whether the top should be bright or dark
-    padding : (float, float, float, float)
-        4-valued tuple specifying padding (top, bottom, left, right) in degrees visual angle
 
     Returns
     -------
@@ -419,9 +397,6 @@ def white_anderson(
         target_end = target_start + target_height
         img[target_start:target_end, st:end] = target
         mask[target_start:target_end, st:end] = len(target_indices_top) + i + 1
-
-    img = pad_img(img, padding, ppd, target)
-    mask = pad_img(mask, padding, ppd, 0)
 
     return {"img": img, "mask": mask}
 

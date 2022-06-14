@@ -6,7 +6,6 @@ def benarys_cross(
     ppd=10,
     cross_size=(8, 8, 8, 8),
     cross_thickness=5,
-    padding=(1, 1, 1, 1),
     target_size=2,
     back=1.0,
     cross=0.0,
@@ -72,9 +71,6 @@ def benarys_cross(
         tpos1y : tpos1y + target_size_px, tpos1x : tpos1x + target_size_px
     ] = 1
     mask[tpos2y : tpos2y + target_size_px, tpos2x:] = 2
-
-    img = pad_img(img, padding, ppd, back)
-    mask = pad_img(mask, padding, ppd, 0)
 
     return {"img": img, "mask": mask}
 
