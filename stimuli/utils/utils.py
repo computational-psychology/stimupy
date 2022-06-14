@@ -466,14 +466,35 @@ def compare_plots(plots):
     plt.show()
 
 
-def plot_stim(stim, mask=False):
+def plot_stim(stim, mask=False, stim_name="stim", ax=None):
+    if ax is None:
+        ax = plt.gca()
+
     if not mask:
-        plt.imshow(stim["img"], cmap="gray")
+        ax.imshow(stim["img"], cmap="gray")
     else:
-        plt.subplot(1, 2, 1)
-        plt.imshow(stim["img"], cmap="gray")
-        plt.subplot(1, 2, 2)
-        plt.imshow(stim["mask"], cmap="gray")
+        img, mask = stim["img"], stim["mask"]
+        img = np.dstack([img, img, img])
+
+        mask = np.insert(np.expand_dims(mask, 2), 1, 0, axis=2)
+        mask = np.insert(mask, 2, 0, axis=2)
+        final = mask + img
+        final /= np.max(final)
+        ax.imshow(final)
+
+    ax.set_title(label=stim_name)
+    return ax
+
+
+def plot_stimuli(stims):
+    import math
+
+    # Plot each stimulus+mask
+    n_stim = math.ceil(math.sqrt(len(stims)))
+    F = plt.figure(figsize=(n_stim * 3, n_stim * 3))
+    for i, (stim_name, stim) in enumerate(stims.items()):
+        ax = F.add_subplot(n_stim, n_stim, i + 1)
+        plot_stim(stim, True, stim_name=stim_name, ax=ax)
 
     plt.tight_layout()
     plt.show()

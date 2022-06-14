@@ -1,5 +1,4 @@
 import numpy as np
-from stimuli.utils import plot_stim
 
 
 ###################################
@@ -20,6 +19,8 @@ def hermann_grid(n_grid=100, space=5):
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
+    from stimuli.utils import plot_stim
 
     stim = hermann_grid()
-    plot_stim(stim)
+    plot_stim(stim, stim_name="Hermann Grid")
+    plt.show()

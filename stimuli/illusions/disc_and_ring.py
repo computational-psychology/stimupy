@@ -1,5 +1,5 @@
 import numpy as np
-from stimuli.utils.utils import degrees_to_pixels, resize_array
+from stimuli.utils import degrees_to_pixels, resize_array
 
 
 def disc_and_ring(
@@ -57,7 +57,8 @@ def disc_and_ring(
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
+    from stimuli.utils import plot_stim
 
-    img, mask = disc_and_ring()
-    plt.imshow(img, cmap="gray")
+    stim = disc_and_ring()
+    plot_stim(stim, stim_name="Disc and ring")
     plt.show()

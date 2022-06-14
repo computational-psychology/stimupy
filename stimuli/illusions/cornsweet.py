@@ -70,7 +70,9 @@ def cornsweet(
 
 
 if __name__ == "__main__":
+    import matplotlib.pyplot as plt
     from stimuli.utils import plot_stim
 
     stim = cornsweet()
-    plot_stim(stim, mask=True)
+    plot_stim(stim, stim_name="Cornsweet illusion")
+    plt.show()

@@ -1,5 +1,5 @@
 import numpy as np
-from stimuli.utils import degrees_to_pixels, pad_img, plot_stim
+from stimuli.utils import degrees_to_pixels, pad_img
 
 
 def ring_pattern(
@@ -118,6 +118,8 @@ def ring_pattern(
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
+    from stimuli.utils import plot_stim
 
     stim = ring_pattern()
-    plot_stim(stim, mask=True)
+    plot_stim(stim, stim_name="Ring pattern")
+    plt.show()

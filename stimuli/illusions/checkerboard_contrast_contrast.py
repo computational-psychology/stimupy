@@ -1,5 +1,5 @@
 import numpy as np
-from stimuli.utils import degrees_to_pixels, pad_img, plot_stim
+from stimuli.utils import degrees_to_pixels, pad_img
 
 
 def checkerboard_contrast_contrast_effect(
@@ -97,6 +97,9 @@ def checkerboard_contrast_contrast_effect(
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
+    from stimuli.utils import plot_stim
 
     stim = checkerboard_contrast_contrast_effect()
-    plot_stim(stim, mask=True)
+
+    plot_stim(stim, stim_name="Checkerboard Contrast-Contrast")
+    plt.show()

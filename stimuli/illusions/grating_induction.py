@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.ndimage.filters import gaussian_filter
 from stimuli.illusions.square_wave import square_wave
-from stimuli.utils import degrees_to_pixels, plot_stim
+from stimuli.utils import degrees_to_pixels
 
 
 ###################################
@@ -74,6 +74,11 @@ def grating_illusion(
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
+    from stimuli.utils import plot_stim
 
     stim = grating_illusion()
-    plot_stim(stim, mask=True)
+    plot_stim(
+        stim,
+        stim_name="Grating (/ counterphase lightness) induction",
+    )
+    plt.show()
