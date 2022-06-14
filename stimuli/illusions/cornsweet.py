@@ -1,5 +1,4 @@
 import numpy as np
-from stimuli.Stimulus import Stimulus
 
 
 def cornsweet(

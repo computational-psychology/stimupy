@@ -1,6 +1,5 @@
 import numpy as np
 from stimuli.utils import degrees_to_pixels, pad_img, plot_stim
-from stimuli.Stimulus import Stimulus
 
 
 def benarys_cross(

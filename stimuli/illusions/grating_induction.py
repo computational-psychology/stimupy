@@ -1,8 +1,7 @@
 import numpy as np
 from scipy.ndimage.filters import gaussian_filter
-from stimuli.utils import degrees_to_pixels, pad_img, plot_stim
-from stimuli.Stimulus import Stimulus
 from stimuli.illusions.square_wave import square_wave
+from stimuli.utils import degrees_to_pixels, pad_img, plot_stim
 
 
 ###################################

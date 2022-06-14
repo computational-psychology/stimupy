@@ -1,6 +1,5 @@
 import numpy as np
 from stimuli.illusions.rings import ring_pattern
-from stimuli.Stimulus import Stimulus
 
 
 def bullseye_illusion(

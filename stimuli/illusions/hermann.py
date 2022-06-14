@@ -1,7 +1,6 @@
 import numpy as np
 from stimuli.utils import plot_stim
-from stimuli.Stimulus import Stimulus
-from stimuli.utils import  plot_stim
+
 
 ###################################
 #           Hermann Grid          #

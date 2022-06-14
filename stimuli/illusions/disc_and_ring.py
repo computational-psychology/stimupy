@@ -1,6 +1,5 @@
 import numpy as np
 from stimuli.utils.utils import degrees_to_pixels, resize_array
-from stimuli.Stimulus import Stimulus
 
 
 def disc_and_ring(
