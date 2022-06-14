@@ -73,24 +73,8 @@ def benarys_cross(
 
     return {"img": img, "mask": mask}
 
-def domijan2015():
-    """
-    Generates Benary Cross illusion as used in the Domijan 2015 paper.
-    """
 
-    return benarys_cross(
-        ppd=10,
-        cross_size=(3, 3, 3, 3),
-        cross_thickness=2.1,
-        padding=(0.9, 1.0, 0.9, 1.0),
-        target_size=1.1,
-        back=9.0,
-        cross=1.0,
-        target=5.0,
-    )
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     import matplotlib.pyplot as plt
     stim = benarys_cross()
     plot_stim(stim, mask=True)

@@ -144,19 +144,6 @@ def todorovic_illusion(
     return {"img": img, "mask": mask}
 
 
-def domijan2015():
-    return todorovic_illusion(
-        target_shape=(4.1, 4.1),
-        ppd=10,
-        covers_shape=(3.1, 3.1),
-        spacing=(1.5, 1.5, 1.5, 1.5),
-        padding=(2.9, 3.0, 2.9, 3.0),
-        grid=9.0,
-        back=1.0,
-        target=5.0,
-    )
-
-
 def RHS2007_todorovic_equal():
     total_height, total_width, ppd = (32,) * 3
     height, width = 12, 15

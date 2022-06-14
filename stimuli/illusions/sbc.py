@@ -59,18 +59,6 @@ def simultaneous_brightness_contrast(
     return {"img": img, "mask": mask}
 
 
-def domijan2015():
-    return simultaneous_brightness_contrast(
-        ppd=10,
-        target_shape=(2.1, 2.1),
-        inner_padding=(3.9, 4.0, 3.9, 4.0),
-        padding=(0, 0, 0, 0),
-        left=9.0,
-        right=1.0,
-        target=5.0,
-    )
-
-
 def RHS2007_sbc_large():
     total_height, total_width, ppd = (32,)*3
     height, width = 12, 15

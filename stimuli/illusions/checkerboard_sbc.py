@@ -71,48 +71,6 @@ def checkerboard_contrast(ppd=10, board_shape=(8,8), check_size=1.0, targets_coo
     return {"img": img, "mask": mask}
 
 
-def domijan2015():
-    """
-    Generates checkerboard_sbc illusion as used in Domijan 2015 paper.
-    """
-    stim = checkerboard_contrast(
-        ppd=10,
-        board_shape=(8, 8),
-        check_size=1.0,
-        targets_coords=((3, 2), (5, 5)),
-        extend_targets=False,
-        check1=1.0,
-        check2=9.0,
-        target=5.0,
-    )
-    padding = (0.9, 1.1, 0.9, 1.1)
-    img = pad_img(stim['img'], padding, ppd=10, val=5.0)
-    mask = pad_img(stim['mask'], padding, ppd=10, val=0)
-
-    return {"img": img, "mask": mask}
-
-
-def domijan2015_extended():
-    """
-    Generates checkerboard_sbc extended illusion as used in Domijan 2015 paper.
-    """
-    stim = checkerboard_contrast(
-        ppd=10,
-        board_shape=(8, 8),
-        check_size=1.0,
-        targets_coords=((3, 2), (5, 5)),
-        extend_targets=True,
-        check1=1.0,
-        check2=9.0,
-        target=5.0,
-    )
-    padding = (0.9, 1.1, 0.9, 1.1)
-    img = pad_img(stim['img'], padding, ppd=10, val=5.0)
-    mask = pad_img(stim['mask'], padding, ppd=10, val=0)
-
-    return {"img": img, "mask": mask}
-
-
 def RHS2007_Checkerboard016():
     """
     Generates checkerboard 0.16 illusion as used in Robinson, Hammon and de Sa 2007 paper.

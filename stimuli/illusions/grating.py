@@ -95,21 +95,7 @@ def grating_illusion(
     return {"img": img, "mask": mask}
 
 
-def domijan2015():
-    return grating_illusion(
-        ppd=10,
-        n_bars=5,
-        target_length=1,
-        bar_width=1.0,
-        bar_height=8.1,
-        padding=(0.9, 1.0, 0.9, 1.1),
-        back=1,
-        grid=9,
-        target=5,
-        double=True,
-    )
-
-
+if __name__ == "__main__":
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
     stim = grating_illusion()

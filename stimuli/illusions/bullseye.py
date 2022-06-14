@@ -46,24 +46,6 @@ def bullseye_illusion(ppd=10, n_rings=8, ring_width=.5, target_pos_l=0, target_p
     return {"img": img, "mask": mask}
 
 
-def domijan2015():
-    """
-    Generates Bullseye illusion as used in the Domijan 2015 paper.
-    """
-
-    img = bullseye_illusion(
-        n_rings=8,
-        ring_width=0.5,
-        target_pos_l=0,
-        target_pos_r=0,
-        padding=(0.9, 1.0, 0.9, 1.0),
-        back=1.0,
-        rings=9.0,
-        target=5.0,
-    )
-    return img
-
-
 def RHS2007_bullseye_thin():
     """
     Generates Bullseye thin illusion as used in the Robinson, Hammon and de Sa 2007 paper.

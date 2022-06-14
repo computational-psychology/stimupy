@@ -181,26 +181,7 @@ def cube_illusion(
     return {"img": img, "mask": mask}
 
 
-def domijan2015():
-    return cube_illusion(
-        ppd=10,
-        n_cells=4,
-        target_length=2,
-        cell_long=1.5,
-        cell_short=1.1,
-        corner_cell_width=1.8,
-        corner_cell_height=1.8,
-        cell_spacing=0.5,
-        padding=(0.9, 1.0, 0.9, 1.0),
-        occlusion_overlap=(0.7, 0.7, 0.7, 0.7),
-        back=1.0,
-        grid=9.0,
-        target=5.0,
-        double=True,
-    )
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     import matplotlib.pyplot as plt
     stim = cube_illusion()
     plot_stim(stim, mask=True)

@@ -114,24 +114,7 @@ def ring_pattern(
     return {"img": img, "mask": mask}
 
 
-def domijan2015():
-    img = ring_pattern(
-        ppd=10,
-        n_rings=8,
-        target_pos_l=4,
-        target_pos_r=3,
-        ring_width=0.5,
-        padding=(0.9, 1.0, 0.9, 1.0),
-        back=1.0,
-        rings=9.0,
-        target=5.0,
-        invert_rings=False,
-        double=True,
-    )
-    return img
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     import matplotlib.pyplot as plt
     stim = ring_pattern()
     plot_stim(stim, mask=True)

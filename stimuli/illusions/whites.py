@@ -754,28 +754,6 @@ def RHS2007_WE_circular025():
     return {"img": img, "mask": mask}
 
 
-def domijan2015_white():
-    height, width, ppd = 8.1, 8.0, 10
-    n_cycles = 4
-    frequency = n_cycles / width
-    return white(
-        shape=(height, width),
-        ppd=ppd,
-        frequency=frequency,
-        high=9.0,
-        low=1.0,
-        target=5.0,
-        period="ignore",
-        start="low",
-        target_indices=(3, 6),
-        target_height=2.1,
-        targets_offset=0,
-        orientation="horizontal",
-        padding=(0.9, 1.0, 0.9, 1.1),
-        padding_val=5.0,
-    )
-
-
 if __name__ == "__main__":
     stim = white()
     plt.subplot(4, 2, 1)

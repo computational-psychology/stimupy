@@ -94,20 +94,6 @@ def dungeon_illusion(
 
 
 
-def domijan2015():
-    return dungeon_illusion(
-        ppd=10,
-        n_cells=5,
-        target_radius=1,
-        cell_size=1.0,
-        padding=(0.9, 1.1, 0.9, 1.1),
-        back=1.0,
-        grid=9.0,
-        target=5.0,
-        double=True,
-    )
-
-
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
     stim = dungeon_illusion()

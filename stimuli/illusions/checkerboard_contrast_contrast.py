@@ -88,24 +88,7 @@ def checkerboard_contrast_contrast_effect(
     return {"img": img, "mask": mask}
 
 
-def domijan2015():
-    """
-    Generates checkerboard contrast contrast illusion as used in Domijan 2015 paper.
-    """
-    return checkerboard_contrast_contrast_effect(
-        ppd=10,
-        n_checks=8,
-        check_size=1.0,
-        target_length=4,
-        padding=(0.9, 1.1, 0.9, 1.1),
-        check1=1.0,
-        check2=9.0,
-        tau=5,
-        alpha=0.5,
-    )
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     import matplotlib.pyplot as plt
     stim = checkerboard_contrast_contrast_effect()
     plot_stim(stim, mask=True)
