@@ -73,35 +73,6 @@ def bullseye_illusion(
     return {"img": img, "mask": mask}
 
 
-def RHS2007_bullseye_thin():
-    """
-    Generates Bullseye thin illusion as used in the Robinson, Hammon and de Sa 2007 paper.
-    """
-    return bullseye_illusion(
-        n_rings=8,
-        ring_width=1,
-        padding=(100, 100, 100, 100),
-        back=1.0,
-        rings=9.0,
-        target=5.0,
-    )
-
-
-def RHS2007_bullseye_thick():
-    """
-    Generates Bullseye thick illusion as used in the Robinson, Hammon and de Sa 2007 paper.
-    """
-
-    return bullseye_illusion(
-        n_rings=8,
-        ring_width=1,
-        padding=(50, 50, 50, 50),
-        back=1.0,
-        rings=9.0,
-        target=5.0,
-    )
-
-
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
 

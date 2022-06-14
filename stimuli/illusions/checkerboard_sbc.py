@@ -1,5 +1,5 @@
 import numpy as np
-from stimuli.utils import degrees_to_pixels, pad_img_to_shape, plot_stim
+from stimuli.utils import degrees_to_pixels, plot_stim
 
 
 def checkerboard_contrast(
@@ -73,93 +73,7 @@ def checkerboard_contrast(
     return {"img": img, "mask": mask}
 
 
-def RHS2007_Checkerboard016():
-    """
-    Generates checkerboard 0.16 illusion as used in Robinson, Hammon and de Sa 2007 paper.
-    """
-    total_height, total_width, ppd = (32,) * 3
-    height_checks, width_checks = 40, 102
-    check_height = 32 / 102
-    board_shape = (height_checks, width_checks)
-
-    check1, check2, target = 1, 0, 0.5
-    target_height = height_checks // 2
-    stim = checkerboard_contrast(
-        ppd=ppd,
-        board_shape=board_shape,
-        check_size=check_height,
-        targets_coords=((target_height, 16), (target_height, 85)),
-        extend_targets=False,
-        check1=check1,
-        check2=check2,
-        target=target,
-    )
-
-    img = pad_img_to_shape(stim["img"], (1024, 1024), val=target)
-    mask = pad_img_to_shape(stim["mask"], (1024, 1024), val=0)
-
-    return {"img": img, "mask": mask}
-
-
-def RHS2007_Checkerboard0938():
-    """
-    Generates checkerboard 0.94 illusion as used in Robinson, Hammon and de Sa 2007 paper.
-    """
-    total_height, total_width, ppd = (32,) * 3
-    height_checks, width_checks = 7, 25
-    check_height = 0.938
-    board_shape = (height_checks, width_checks)
-
-    check1, check2, target = 0, 1, 0.5
-    target_height = height_checks // 2
-    stim = checkerboard_contrast(
-        ppd=ppd,
-        board_shape=board_shape,
-        check_size=check_height,
-        targets_coords=((target_height, 6), (target_height, 17)),
-        extend_targets=False,
-        check1=check1,
-        check2=check2,
-        target=target,
-    )
-    img = pad_img_to_shape(stim["img"], (1024, 1024), val=target)
-    mask = pad_img_to_shape(stim["mask"], (1024, 1024), val=0)
-
-    return {"img": img, "mask": mask}
-
-
-def RHS2007_Checkerboard209():
-    """
-    Generates checkerboard 2.1 illusion as used in Robinson, Hammon and de Sa 2007 paper.
-    """
-    total_height, total_width, ppd = (32,) * 3
-    height_checks, width_checks = 3, 10
-    check_height = 2.09
-    board_shape = (height_checks, width_checks)
-
-    check1, check2, target = 0, 1, 0.5
-    target_height = height_checks // 2
-    stim = checkerboard_contrast(
-        ppd=ppd,
-        board_shape=board_shape,
-        check_size=check_height,
-        targets_coords=((target_height, 2), (target_height, 7)),
-        extend_targets=False,
-        check1=check1,
-        check2=check2,
-        target=target,
-    )
-    img = pad_img_to_shape(stim["img"], (1024, 1024), val=target)
-    mask = pad_img_to_shape(stim["mask"], (1024, 1024), val=0)
-
-    return {"img": img, "mask": mask}
-
-
 if __name__ == "__main__":
-    img1 = RHS2007_Checkerboard016()
-    img2 = RHS2007_Checkerboard0938()
-    img3 = RHS2007_Checkerboard209()
-
     stim = checkerboard_contrast()
-    plt.figure()
+
     plot_stim(stim, mask=True)

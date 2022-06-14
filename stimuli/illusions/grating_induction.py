@@ -78,31 +78,6 @@ def grating_illusion(
     return {"img": img, "mask": mask}
 
 
-def RHS2007_grating_induction():
-    total_height, total_width, ppd = (32.0,) * 3
-    n_cycles = 4.0
-    height, width = 12.0, 16.0
-    frequency = n_cycles / width
-    padding_horizontal = (total_width - width) / 2
-    padding_vertical = (total_height - height) / 2
-    padding = (
-        padding_vertical,
-        padding_vertical,
-        padding_horizontal,
-        padding_horizontal,
-    )
-    stim = grating_illusion(
-        shape=(height, width),
-        ppd=ppd,
-        frequency=frequency,
-        target_height=1,
-        blur=10,
-        start="high",
-        padding=padding,
-    )
-    return stim
-
-
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
 
