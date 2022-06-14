@@ -46,29 +46,31 @@ def grating_illusion(
     A stimulus object
     """
 
-    bar_height_px, bar_width_px = degrees_to_pixels(bar_height, ppd), degrees_to_pixels(bar_width, ppd)
+    bar_height_px, bar_width_px = degrees_to_pixels(
+        bar_height, ppd
+    ), degrees_to_pixels(bar_width, ppd)
 
     # create array of grating
     arr = np.ones(n_bars) * grid
     mask_arr = np.zeros(n_bars)
 
-    target_offset = (n_bars-target_length)//2
-    arr[target_offset:target_offset+target_length] = target
-    for i, j in enumerate(range(target_offset,target_offset+target_length)):
-        mask_arr[j] = i+1
+    target_offset = (n_bars - target_length) // 2
+    arr[target_offset : target_offset + target_length] = target
+    for i, j in enumerate(range(target_offset, target_offset + target_length)):
+        mask_arr[j] = i + 1
 
     # final image array
-    width_px = (n_bars*2-1)*bar_width_px
+    width_px = (n_bars * 2 - 1) * bar_width_px
     height_px = bar_height_px
     img = np.ones((height_px, width_px)) * back
     mask = np.zeros((height_px, width_px))
 
     for i, val in np.ndenumerate(arr):
-        target_val = val==target
-        x = i[0]*2*bar_width_px
-        img[:, x:x+bar_width_px] = val
+        target_val = val == target
+        x = i[0] * 2 * bar_width_px
+        img[:, x : x + bar_width_px] = val
         if target_val:
-            mask[:, x:x+bar_width_px] = mask_arr[i]
+            mask[:, x : x + bar_width_px] = mask_arr[i]
 
     img = pad_img(img, padding, ppd, back)
     mask = pad_img(mask, padding, ppd, 0)
@@ -87,16 +89,16 @@ def grating_illusion(
             target=target,
             double=False,
         )
-        img = np.hstack([img, stim2['img']])
+        img = np.hstack([img, stim2["img"]])
         # Increase target mask values to differentiate from single-stimulus targets:
-        stim2['mask'][stim2['mask'] != 0] += 1
-        mask = np.hstack([mask, stim2['mask']])
+        stim2["mask"][stim2["mask"] != 0] += 1
+        mask = np.hstack([mask, stim2["mask"]])
 
     return {"img": img, "mask": mask}
 
 
 if __name__ == "__main__":
-if __name__ == '__main__':
     import matplotlib.pyplot as plt
+
     stim = grating_illusion()
     plot_stim(stim, mask=True)

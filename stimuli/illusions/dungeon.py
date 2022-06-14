@@ -49,7 +49,7 @@ def dungeon_illusion(
     mask_arr = np.zeros((n_cells * 2 - 1, n_cells * 2 - 1))
 
     # compute Manhattan distances from image center (=radius) of each pixel
-    x = np.arange(-n_cells+1, n_cells)
+    x = np.arange(-n_cells + 1, n_cells)
     radii = np.abs(x[np.newaxis]) + np.abs(x[:, np.newaxis])
 
     # add targets
@@ -58,8 +58,13 @@ def dungeon_illusion(
     mask_arr[idx] = 1
 
     # compute and apply grid mask
-    grid_mask = [[(False if i % 2 == 0 and j % 2 == 0 else True) for i in range(n_cells * 2 - 1)] for j in
-            range(n_cells * 2 - 1)]
+    grid_mask = [
+        [
+            (False if i % 2 == 0 and j % 2 == 0 else True)
+            for i in range(n_cells * 2 - 1)
+        ]
+        for j in range(n_cells * 2 - 1)
+    ]
     grid_mask = np.array(grid_mask)
     arr[grid_mask] = back
     mask_arr[grid_mask] = 0
@@ -72,7 +77,9 @@ def dungeon_illusion(
     img = np.repeat(np.repeat(arr, cell_size_px, axis=0), cell_size_px, axis=1)
     img = pad_img(img, padding, ppd, back)
 
-    mask = np.repeat(np.repeat(mask_arr, cell_size_px, axis=0), cell_size_px, axis=1)
+    mask = np.repeat(
+        np.repeat(mask_arr, cell_size_px, axis=0), cell_size_px, axis=1
+    )
     mask = pad_img(mask, padding, ppd, False)
 
     if double:
@@ -87,14 +94,14 @@ def dungeon_illusion(
             target=target,
             double=False,
         )
-        img = np.hstack([img, stim2['img']])
-        mask = np.hstack([mask, stim2['mask']*2])
+        img = np.hstack([img, stim2["img"]])
+        mask = np.hstack([mask, stim2["mask"] * 2])
 
     return {"img": img, "mask": mask}
 
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     import matplotlib.pyplot as plt
+
     stim = dungeon_illusion()
     plot_stim(stim, mask=True)

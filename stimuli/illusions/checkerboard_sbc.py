@@ -1,15 +1,18 @@
 import numpy as np
-from stimuli.utils import (
-    degrees_to_pixels,
-    pad_img,
-    pad_img_to_shape,
-    plot_stim,
-)
+from stimuli.utils import degrees_to_pixels, pad_img_to_shape, plot_stim
 from stimuli.Stimulus import Stimulus
-import matplotlib.pyplot as plt
 
-def checkerboard_contrast(ppd=10, board_shape=(8,8), check_size=1.0, targets_coords=((3, 2), (5, 5)), extend_targets=False,
-                         check1=0., check2=1., target=.5):
+
+def checkerboard_contrast(
+    ppd=10,
+    board_shape=(8, 8),
+    check_size=1.0,
+    targets_coords=((3, 2), (5, 5)),
+    extend_targets=False,
+    check1=0.0,
+    check2=1.0,
+    target=0.5,
+):
     # TODO: targets_coords used to be coord1 and coords2, now multiple targets are allowed. This should be changed in all places calling this function
     """
     Checkerboard Contrast
@@ -53,13 +56,13 @@ def checkerboard_contrast(ppd=10, board_shape=(8,8), check_size=1.0, targets_coo
 
     for i, coords in enumerate(targets_coords):
         arr[coords] = target
-        mask[coords] = i+1
+        mask[coords] = i + 1
 
     if extend_targets:
         for i, coords in enumerate(targets_coords):
             for idx in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
                 arr[coords[0] + idx[0], coords[1] + idx[1]] = target
-                mask[coords[0] + idx[0], coords[1] + idx[1]] = i+1
+                mask[coords[0] + idx[0], coords[1] + idx[1]] = i + 1
 
     img = np.repeat(
         np.repeat(arr, check_size_px, axis=0), check_size_px, axis=1
@@ -93,8 +96,8 @@ def RHS2007_Checkerboard016():
         target=target,
     )
 
-    img = pad_img_to_shape(stim['img'], (1024, 1024), val=target)
-    mask = pad_img_to_shape(stim['mask'], (1024, 1024), val=0)
+    img = pad_img_to_shape(stim["img"], (1024, 1024), val=target)
+    mask = pad_img_to_shape(stim["mask"], (1024, 1024), val=0)
 
     return {"img": img, "mask": mask}
 
@@ -120,8 +123,8 @@ def RHS2007_Checkerboard0938():
         check2=check2,
         target=target,
     )
-    img = pad_img_to_shape(stim['img'], (1024, 1024), val=target)
-    mask = pad_img_to_shape(stim['mask'], (1024, 1024), val=0)
+    img = pad_img_to_shape(stim["img"], (1024, 1024), val=target)
+    mask = pad_img_to_shape(stim["mask"], (1024, 1024), val=0)
 
     return {"img": img, "mask": mask}
 
@@ -147,8 +150,8 @@ def RHS2007_Checkerboard209():
         check2=check2,
         target=target,
     )
-    img = pad_img_to_shape(stim['img'], (1024, 1024), val=target)
-    mask = pad_img_to_shape(stim['mask'], (1024, 1024), val=0)
+    img = pad_img_to_shape(stim["img"], (1024, 1024), val=target)
+    mask = pad_img_to_shape(stim["mask"], (1024, 1024), val=0)
 
     return {"img": img, "mask": mask}
 

@@ -50,8 +50,8 @@ def disc_and_ring(
     # downsample the stimulus by local averaging along rows and columns
     sampler = resize_array(np.eye(img.shape[0] // ssf), (1, ssf))
 
-    mask = None #TODO add this
-    img = np.dot(sampler, np.dot(img, sampler.T)) / ssf ** 2
+    mask = None  # TODO add this
+    img = np.dot(sampler, np.dot(img, sampler.T)) / ssf**2
 
     return {"img": img, "mask": mask}
 

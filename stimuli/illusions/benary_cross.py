@@ -40,8 +40,12 @@ def benarys_cross(
     A stimulus object
     """
 
-
-    cross_top_px, cross_bottom_px, cross_left_px, cross_right_px = degrees_to_pixels(cross_size,ppd)
+    (
+        cross_top_px,
+        cross_bottom_px,
+        cross_left_px,
+        cross_right_px,
+    ) = degrees_to_pixels(cross_size, ppd)
     cross_thickness_px = degrees_to_pixels(cross_thickness, ppd)
     target_size_px = degrees_to_pixels(target_size, ppd)
 
@@ -56,25 +60,28 @@ def benarys_cross(
     img[:, x_edge_left:x_edge_right] = cross
     img[y_edge_top:y_edge_bottom, :] = cross
 
-
     tpos1y = y_edge_top - target_size_px
     tpos1x = x_edge_left - target_size_px
     tpos2y = y_edge_top
     tpos2x = -target_size_px
-    img[tpos1y:tpos1y + target_size_px, tpos1x:tpos1x + target_size_px] = target
-    img[tpos2y:tpos2y + target_size_px, tpos2x:] = target
+    img[
+        tpos1y : tpos1y + target_size_px, tpos1x : tpos1x + target_size_px
+    ] = target
+    img[tpos2y : tpos2y + target_size_px, tpos2x:] = target
 
-    mask[tpos1y:tpos1y + target_size_px, tpos1x:tpos1x + target_size_px] = 1
-    mask[tpos2y:tpos2y + target_size_px, tpos2x:] = 2
+    mask[
+        tpos1y : tpos1y + target_size_px, tpos1x : tpos1x + target_size_px
+    ] = 1
+    mask[tpos2y : tpos2y + target_size_px, tpos2x:] = 2
 
     img = pad_img(img, padding, ppd, back)
     mask = pad_img(mask, padding, ppd, 0)
-
 
     return {"img": img, "mask": mask}
 
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
+
     stim = benarys_cross()
     plot_stim(stim, mask=True)

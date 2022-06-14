@@ -1,9 +1,19 @@
 import numpy as np
 from stimuli.illusions.rings import ring_pattern
-from stimuli.utils import degrees_to_pixels, pad_img
 from stimuli.Stimulus import Stimulus
 
-def bullseye_illusion(ppd=10, n_rings=8, ring_width=.5, target_pos_l=0, target_pos_r=0, padding=(1.0,1.0,1.0,1.0), back=0., rings=1., target=.5):
+
+def bullseye_illusion(
+    ppd=10,
+    n_rings=8,
+    ring_width=0.5,
+    target_pos_l=0,
+    target_pos_r=0,
+    padding=(1.0, 1.0, 1.0, 1.0),
+    back=0.0,
+    rings=1.0,
+    target=0.5,
+):
     """
     Bullseye Illusion.
     Two ring patterns (see ring_pattern func), with target in centre and one ring pattern inverted.
@@ -33,15 +43,33 @@ def bullseye_illusion(ppd=10, n_rings=8, ring_width=.5, target_pos_l=0, target_p
     -------
     A stimulus object
     """
-    stim1 = ring_pattern(n_rings=n_rings, target_pos_l=target_pos_l, ring_width=ring_width, padding=padding,
-                        back=back, rings=rings, target=target, invert_rings=False, double=False)
-    stim2 = ring_pattern(n_rings=n_rings, target_pos_l=target_pos_r, ring_width=ring_width, padding=padding,
-                        back=back, rings=rings, target=target, invert_rings=True, double=False)
+    stim1 = ring_pattern(
+        n_rings=n_rings,
+        target_pos_l=target_pos_l,
+        ring_width=ring_width,
+        padding=padding,
+        back=back,
+        rings=rings,
+        target=target,
+        invert_rings=False,
+        double=False,
+    )
+    stim2 = ring_pattern(
+        n_rings=n_rings,
+        target_pos_l=target_pos_r,
+        ring_width=ring_width,
+        padding=padding,
+        back=back,
+        rings=rings,
+        target=target,
+        invert_rings=True,
+        double=False,
+    )
 
-    img = np.hstack((stim1['img'], stim2['img']))
+    img = np.hstack((stim1["img"], stim2["img"]))
     # Increase target mask values to differentiate from single-stimulus targets:
-    stim2['mask'][stim2['mask'] != 0] += 1
-    mask = np.hstack((stim1['mask'], stim2['mask']))
+    stim2["mask"][stim2["mask"] != 0] += 1
+    mask = np.hstack((stim1["mask"], stim2["mask"]))
 
     return {"img": img, "mask": mask}
 
@@ -75,8 +103,9 @@ def RHS2007_bullseye_thick():
     )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import matplotlib.pyplot as plt
+
     stim = bullseye_illusion()
-    plt.imshow(stim.img, cmap='gray')
+    plt.imshow(stim.img, cmap="gray")
     plt.show()

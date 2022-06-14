@@ -13,7 +13,7 @@ def checkerboard_contrast_contrast_effect(
     check2=2.0,
     tau=0.5,
     alpha=0.5,
-    limit_mask_vals=True
+    limit_mask_vals=True,
 ):
     """
     Contrast-contrast effect on checkerboard with square transparency layer.
@@ -54,7 +54,7 @@ def checkerboard_contrast_contrast_effect(
 
     idx = np.zeros((n_checks, n_checks), dtype=bool)
     tpos = (n_checks - target_length) // 2
-    idx[tpos:tpos + target_length, tpos:tpos + target_length] = True
+    idx[tpos : tpos + target_length, tpos : tpos + target_length] = True
     arr1[idx] = alpha * arr1[idx] + (1 - alpha) * tau
     mask_id = 0
     for i, _ in enumerate(idx):
@@ -71,14 +71,22 @@ def checkerboard_contrast_contrast_effect(
     mask_arr2 = mask_arr1.copy()
     mask_arr2[mask_arr2 != 0] += mask_id
 
-    img1 = np.repeat(np.repeat(arr1, check_size_px, axis=0), check_size_px, axis=1)
+    img1 = np.repeat(
+        np.repeat(arr1, check_size_px, axis=0), check_size_px, axis=1
+    )
     img1 = pad_img(img1, padding, ppd, tau)
-    img2 = np.repeat(np.repeat(arr2, check_size_px, axis=0), check_size_px, axis=1)
+    img2 = np.repeat(
+        np.repeat(arr2, check_size_px, axis=0), check_size_px, axis=1
+    )
     img2 = pad_img(img2, padding, ppd, tau)
 
-    mask1 = np.repeat(np.repeat(mask_arr1, check_size_px, axis=0), check_size_px, axis=1)
+    mask1 = np.repeat(
+        np.repeat(mask_arr1, check_size_px, axis=0), check_size_px, axis=1
+    )
     mask1 = pad_img(mask1, padding, ppd, 0)
-    mask2 = np.repeat(np.repeat(mask_arr2, check_size_px, axis=0), check_size_px, axis=1)
+    mask2 = np.repeat(
+        np.repeat(mask_arr2, check_size_px, axis=0), check_size_px, axis=1
+    )
     mask2 = pad_img(mask2, padding, ppd, 0)
 
     img = np.hstack([img1, img2])
@@ -90,5 +98,6 @@ def checkerboard_contrast_contrast_effect(
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
+
     stim = checkerboard_contrast_contrast_effect()
     plot_stim(stim, mask=True)

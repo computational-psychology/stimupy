@@ -1,10 +1,9 @@
-import numpy as np
-import matplotlib.pyplot as plt
 import math
 
-from stimuli.utils import degrees_to_pixels, pad_img, get_annulus_mask
-from stimuli.Stimulus import Stimulus
+import matplotlib.pyplot as plt
+import numpy as np
 from stimuli.illusions.square_wave import square_wave
+from stimuli.utils import degrees_to_pixels, get_annulus_mask, pad_img
 
 
 def white(
@@ -79,14 +78,14 @@ def white(
 
     for i, index in enumerate(target_indices):
         if index >= 0:
-            x_start = (index-1) * phase_width
+            x_start = (index - 1) * phase_width
         else:
             # Calculate the number of phases based on resolution of grating:
             phases = int(2 * (int(shape[1] * ppd / phase_width) // 2))
             x_start = int((phases + index) * phase_width)
         x_end = x_start + phase_width
         img[y_start:y_end, x_start:x_end] = target
-        mask[y_start:y_end, x_start:x_end] = i+1.
+        mask[y_start:y_end, x_start:x_end] = i + 1.0
 
     if orientation == "vertical":
         img = np.rot90(img, 3)
@@ -524,11 +523,10 @@ def RHS2007_WE_dual():
         orientation="vertical",
     )
 
-    img = np.hstack((stim1['img'], stim2['img']))
-    mask = np.hstack((stim1['mask'], stim2['mask']))
+    img = np.hstack((stim1["img"], stim2["img"]))
+    mask = np.hstack((stim1["mask"], stim2["mask"]))
 
     return {"img": img, "mask": mask}
-
 
 
 def RHS2007_WE_anderson():
@@ -684,10 +682,10 @@ def RHS2007_WE_circular1():
         start="low",
         padding=padding,
     )
-    stim2['mask'] *= 2
+    stim2["mask"] *= 2
 
-    img = np.hstack((stim1['img'], stim2['img']))
-    mask = np.hstack((stim1['mask'], stim2['mask']))
+    img = np.hstack((stim1["img"], stim2["img"]))
+    mask = np.hstack((stim1["mask"], stim2["mask"]))
 
     return {"img": img, "mask": mask}
 
@@ -715,10 +713,10 @@ def RHS2007_WE_circular05():
         start="low",
         padding=padding,
     )
-    stim2['mask'] *= 2
+    stim2["mask"] *= 2
 
-    img = np.hstack((stim1['img'], stim2['img']))
-    mask = np.hstack((stim1['mask'], stim2['mask']))
+    img = np.hstack((stim1["img"], stim2["img"]))
+    mask = np.hstack((stim1["mask"], stim2["mask"]))
 
     return {"img": img, "mask": mask}
 
@@ -746,10 +744,10 @@ def RHS2007_WE_circular025():
         start="low",
         padding=padding,
     )
-    stim2['mask'] *= 2
+    stim2["mask"] *= 2
 
-    img = np.hstack((stim1['img'], stim2['img']))
-    mask = np.hstack((stim1['mask'], stim2['mask']))
+    img = np.hstack((stim1["img"], stim2["img"]))
+    mask = np.hstack((stim1["mask"], stim2["mask"]))
 
     return {"img": img, "mask": mask}
 
@@ -757,27 +755,27 @@ def RHS2007_WE_circular025():
 if __name__ == "__main__":
     stim = white()
     plt.subplot(4, 2, 1)
-    plt.imshow(stim['img'], cmap="gray")
+    plt.imshow(stim["img"], cmap="gray")
     plt.subplot(4, 2, 2)
-    plt.imshow(stim['mask'], cmap="gray")
+    plt.imshow(stim["mask"], cmap="gray")
 
     stim = circular_white()
     plt.subplot(4, 2, 3)
-    plt.imshow(stim['img'], cmap='gray')
+    plt.imshow(stim["img"], cmap="gray")
     plt.subplot(4, 2, 4)
-    plt.imshow(stim['mask'], cmap='gray')
+    plt.imshow(stim["mask"], cmap="gray")
 
     stim = wheel_of_fortune_white()
     plt.subplot(4, 2, 5)
-    plt.imshow(stim['img'], cmap='gray')
+    plt.imshow(stim["img"], cmap="gray")
     plt.subplot(4, 2, 6)
-    plt.imshow(stim['mask'], cmap='gray')
+    plt.imshow(stim["mask"], cmap="gray")
 
     stim = white_anderson()
     plt.subplot(4, 2, 7)
-    plt.imshow(stim['img'], cmap='gray')
+    plt.imshow(stim["img"], cmap="gray")
     plt.subplot(4, 2, 8)
-    plt.imshow(stim['mask'], cmap='gray')
+    plt.imshow(stim["mask"], cmap="gray")
 
     plt.tight_layout()
     plt.show()

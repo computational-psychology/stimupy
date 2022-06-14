@@ -42,7 +42,7 @@ def grating_illusion(
         value of the dark stripes
     start : string in ['low','high']
         whether to start with a bright or a low stripes
-    period : string in ['ignore', 'full', 'half'] 
+    period : string in ['ignore', 'full', 'half']
         see square_wave.py for details about this
     padding : (float, float, float, float)
         4-valued tuple specifying padding (top, bottom, left, right) in degrees visual angle
@@ -53,7 +53,7 @@ def grating_illusion(
     """
 
     if blur == None:
-        blur = shape[0]/2
+        blur = shape[0] / 2
 
     height_px, width_px = degrees_to_pixels(shape, ppd)
     target_height_px = degrees_to_pixels(target_height, ppd)
@@ -62,11 +62,13 @@ def grating_illusion(
         shape, ppd, frequency, high, low, period, start
     )
 
-    target_start = height_px//2 - target_height_px//2
+    target_start = height_px // 2 - target_height_px // 2
     target_end = target_start + target_height_px
 
     mask = np.zeros((height_px, width_px))
-    mask[target_start:target_end, :] = (img[target_start:target_end, :] - low) / (high - low) + 1
+    mask[target_start:target_end, :] = (
+        img[target_start:target_end, :] - low
+    ) / (high - low) + 1
 
     img = gaussian_filter(img, blur)
     img[target_start:target_end, :] = target
@@ -102,7 +104,8 @@ def RHS2007_grating_induction():
     return stim
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import matplotlib.pyplot as plt
+
     stim = grating_illusion()
     plot_stim(stim, mask=True)
