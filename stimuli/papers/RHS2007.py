@@ -625,36 +625,89 @@ def todorovic_benary3_4():
 
 
 def bullseye_thin(ppd=PPD):
-    # The parameters are mostly guessed
-    stim = stimuli.illusions.bullseye.bullseye_illusion(
-        n_rings=8,
-        ring_width=1,
-        back=1.0,
-        rings=9.0,
-        target=5.0,
-    )
-    shape = degrees_to_pixels(VISEXTENT, ppd)
-    stim["img"] = pad_img_to_shape(stim["img"], shape, val=0.5)
-    stim["mask"] = pad_img_to_shape(stim["mask"], shape, val=0)
+    v1, v2, v3 = 1., 0.5, 0.
+    shape_ind = degrees_to_pixels(np.array(VISEXTENT)/2., ppd)
+    shape_all = degrees_to_pixels(VISEXTENT, ppd)
+    stim1 = stimuli.illusions.bullseye.bullseye_single(
+            ppd=ppd,
+            n_rings=8,
+            target_idx=(0, 1, 2, 3),
+            ring_width=0.1,
+            vring1=v1,
+            vring2=v3,
+            vtarget=v2,
+            )
+    stim2 = stimuli.illusions.bullseye.bullseye_single(
+            ppd=ppd,
+            n_rings=8,
+            target_idx=(0, 1, 2, 3),
+            ring_width=0.1,
+            vring1=v3,
+            vring2=v1,
+            vtarget=v2,
+            )
 
-    return stim
+    # Individual padding
+    img1 = pad_img_to_shape(stim1['img'], shape_ind, v2)
+    mask1 = pad_img_to_shape(stim1['mask'], shape_ind, 0)
+    img2 = pad_img_to_shape(stim2['img'], shape_ind, v2)
+    mask2 = pad_img_to_shape(stim2['mask'], shape_ind, 0)
+
+    # Increase target index of right stimulus half
+    mask2 = mask2 + 1
+    mask2[mask2 == 1] = 0
+
+    # Stacking
+    img = np.hstack([img1, img2])
+    mask = np.hstack([mask1, mask2])
+
+    # Full padding
+    img = pad_img_to_shape(img, shape_all, v2)
+    mask = pad_img_to_shape(mask, shape_all, 0)
+    return {"img": img, "mask": mask}
 
 
 def bullseye_thick(ppd=PPD):
-    # The parameters are mostly guessed
-    stim = stimuli.illusions.bullseye.bullseye_illusion(
-        n_rings=8,
-        ring_width=1,
-        back=1.0,
-        rings=9.0,
-        target=5.0,
-    )
+    v1, v2, v3 = 1., 0.5, 0.
+    shape_ind = degrees_to_pixels(np.array(VISEXTENT)/2., ppd)
+    shape_all = degrees_to_pixels(VISEXTENT, ppd)
+    stim1 = stimuli.illusions.bullseye.bullseye_single(
+            ppd=ppd,
+            n_rings=6,
+            target_idx=(0, 1),
+            ring_width=0.2,
+            vring1=v1,
+            vring2=v3,
+            vtarget=v2,
+            )
+    stim2 = stimuli.illusions.bullseye.bullseye_single(
+            ppd=ppd,
+            n_rings=6,
+            target_idx=(0, 1),
+            ring_width=0.2,
+            vring1=v3,
+            vring2=v1,
+            vtarget=v2,
+            )
 
-    shape = degrees_to_pixels(VISEXTENT, ppd)
-    stim["img"] = pad_img_to_shape(stim["img"], shape, val=0.5)
-    stim["mask"] = pad_img_to_shape(stim["mask"], shape, val=0)
+    # Individual padding
+    img1 = pad_img_to_shape(stim1['img'], shape_ind, v2)
+    mask1 = pad_img_to_shape(stim1['mask'], shape_ind, 0)
+    img2 = pad_img_to_shape(stim2['img'], shape_ind, v2)
+    mask2 = pad_img_to_shape(stim2['mask'], shape_ind, 0)
 
-    return stim
+    # Increase target index of right stimulus half
+    mask2 = mask2 + 1
+    mask2[mask2 == 1] = 0
+
+    # Stacking
+    img = np.hstack([img1, img2])
+    mask = np.hstack([mask1, mask2])
+
+    # Full padding
+    img = pad_img_to_shape(img, shape_all, v2)
+    mask = pad_img_to_shape(mask, shape_all, 0)
+    return {"img": img, "mask": mask}
 
 
 if __name__ == "__main__":

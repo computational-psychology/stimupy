@@ -84,17 +84,39 @@ def rings(ppd=PPD):
 
 
 def bullseye(ppd=PPD):
-    return illusions.bullseye.bullseye_illusion(
-        ppd=ppd,
-        n_rings=8,
-        ring_width=0.5,
-        target_pos_l=0,
-        target_pos_r=0,
-        padding=(0.9, 1.0, 0.9, 1.0),
-        back=1.0,
-        rings=9.0,
-        target=5.0,
-    )
+    v1, v2, v3 = 1., 5., 9.
+    pad = (0.9, 1.0, 0.9, 1.0)
+    stim1 = illusions.bullseye.bullseye_single(
+            ppd=ppd,
+            n_rings=8,
+            target_idx=0,
+            ring_width=0.5,
+            vring1=v1,
+            vring2=v3,
+            vtarget=v2,
+            )
+    stim2 = illusions.bullseye.bullseye_single(
+            ppd=ppd,
+            n_rings=8,
+            target_idx=0,
+            ring_width=0.5,
+            vring1=v3,
+            vring2=v1,
+            vtarget=v2,
+            )
+
+    # Padding
+    img1, mask1 = pad_img(stim1['img'], pad, ppd, v1), pad_img(stim1['mask'], pad, ppd, 0)
+    img2, mask2 = pad_img(stim2['img'], pad, ppd, v1), pad_img(stim2['mask'], pad, ppd, 0)
+
+    # Increase target index of right stimulus half
+    mask2 = mask2 + 1
+    mask2[mask2 == 1] = 0
+
+    # Stacking
+    img_stacked = np.hstack([img1, img2])
+    mask_stacked = np.hstack([mask1, mask2])
+    return {"img": img_stacked, "mask": mask_stacked}
 
 
 def simultaneous_brightness_contrast(ppd=PPD):
