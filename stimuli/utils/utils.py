@@ -486,7 +486,7 @@ def plot_stim(stim, mask=False, stim_name="stim", ax=None):
     return ax
 
 
-def plot_stimuli(stims):
+def plot_stimuli(stims, mask=False):
     import math
 
     # Plot each stimulus+mask
@@ -494,7 +494,7 @@ def plot_stimuli(stims):
     F = plt.figure(figsize=(n_stim * 3, n_stim * 3))
     for i, (stim_name, stim) in enumerate(stims.items()):
         ax = F.add_subplot(n_stim, n_stim, i + 1)
-        plot_stim(stim, True, stim_name=stim_name, ax=ax)
+        plot_stim(stim, mask, stim_name=stim_name, ax=ax)
 
     plt.tight_layout()
     plt.show()
