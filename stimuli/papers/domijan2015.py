@@ -230,4 +230,4 @@ if __name__ == "__main__":
         except NotImplementedError:
             print("-- not implemented")
 
-    plot_stimuli(stims)
+    plot_stimuli(stims, mask=False)
