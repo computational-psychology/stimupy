@@ -1,0 +1,90 @@
+{
+    "WE_thick": {
+        "img": "f74e52cbe48c5d1ecc166db61e4df0d3fc99b2e1",
+        "mask": "9fb2884af6bfc2b675ffdfa7fe2efc96f8915c04"
+    },
+    "WE_thin_wide": {
+        "img": "c5581022313dea052d952be1e05cb84839680166",
+        "mask": "0b452d0d6cbe1c6b4e48796f21a4d4978d497711"
+    },
+    "WE_dual": {
+        "img": "7aeef4e6d692ee83ad0aae16e0722c1d3fbeee77",
+        "mask": "a7785e8139e83c3e67c33d264a34123a457f2d81"
+    },
+    "WE_anderson": {
+        "img": "4d9b3b7fdfc82d2835a4ccddcfa3a5398b3599f1",
+        "mask": "dcddd8fc6d9dc094561243fdee782b5a8986973f"
+    },
+    "WE_howe": {
+        "img": "443054266c0049d4d6a7be5756e8427069931a68",
+        "mask": "a0b774261051a3570f8c3b7e7598fe03907f58ff"
+    },
+    "WE_radial_thick_small": {
+        "img": "5623451adb178f560003b1d197507a3d15fbb9e3",
+        "mask": "3af91a81592f4e0f8da0fe7962a17f02d3209841"
+    },
+    "WE_radial_thick": {
+        "img": "01f0a078fc4b46425c513075f860277289cea1ce",
+        "mask": "dcf3e4ecf8a5299b71fcc0c0d5f2c3bbc4315d07"
+    },
+    "WE_radial_thin_small": {
+        "img": "c21abc112a9a0377a25fa0703a27cf5e669a4e0f",
+        "mask": "29e4c2cf98bd29ec115ee0c53345b7b0e3a56f48"
+    },
+    "WE_circular1": {
+        "img": "e869e5b38eee0e5eaff78a26550f2045d597ba4c",
+        "mask": "dec71151582ee939a93be088c3f6632724d278ba"
+    },
+    "WE_circular05": {
+        "img": "2931fe0b06b78b6af64d760541abb9a5e7432ea4",
+        "mask": "c531c2bcac8b2c059580bc737a3bd8122997831f"
+    },
+    "WE_circular025": {
+        "img": "70e65b2bb8804fba76508e2c7f07dd25b2992f72",
+        "mask": "aa625abfc6258fc04855a7651c7bc7f8782cc632"
+    },
+    "grating_induction": {
+        "img": "eabab5c78c8ed9232bf39f261715234cd2e77533",
+        "mask": "08c6127b6c91a55dc8500e032be85efd54a48753"
+    },
+    "sbc_large": {
+        "img": "5dabe245b1ee1db04938b38df0a7d3f53d955a3c",
+        "mask": "e6003cfe3a131e0a383846d758bc7ce5fbe5dfb4"
+    },
+    "sbc_small": {
+        "img": "e3e54973cf56ac590ca3365f72a85c84c0406756",
+        "mask": "79453ba209c7fb0adb65d590b898f0016369c77a"
+    },
+    "todorovic_equal": {
+        "img": "c0fc1599d1d7daa40e3517de5c96bc7c639bc55c",
+        "mask": "2de52b9b0a17620a9d088315d734bcac799ee460"
+    },
+    "todorovic_in_large": {
+        "img": "1cd13e2cafdf61b7afa39517dc3bb99d07c32932",
+        "mask": "ac5822f349faf5ab94a1ad84f2100036a6c051e5"
+    },
+    "todorovic_in_small": {
+        "img": "dfc311f76377593affa90b81821d3678ef68ec32",
+        "mask": "3706587cf15b34e24a5ec8059684723eee54980f"
+    },
+    "checkerboard_016": {
+        "img": "834d66b9a39b9d0671a03220ddb550b6ba459b00",
+        "mask": "7703068e11d77c270ebb79b6b3a15c9b0ba697a7"
+    },
+    "checkerboard_0938": {
+        "img": "c8ccc332139c31ac5b79d917b6d30d8e104159d3",
+        "mask": "e7e491af5683983aa247eb9d6e83f3b1f6fb2511"
+    },
+    "checkerboard209": {
+        "img": "42036add90769ec09165a9cd0a405c2f337143af",
+        "mask": "d9c205103e37440e4fe4c7597d6eec512eb4764d"
+    },
+    "bullseye_thin": {
+        "img": "98355e157a00a402e8c3e1842e97a8649d629765",
+        "mask": "c13467fe9d2d45cc8bedc40342c8801e0f3bdd68"
+    },
+    "bullseye_thick": {
+        "img": "98355e157a00a402e8c3e1842e97a8649d629765",
+        "mask": "c13467fe9d2d45cc8bedc40342c8801e0f3bdd68"
+    }
+}

@@ -1,0 +1,50 @@
+{
+    "dungeon": {
+        "img": "68916765508edad21b54a739c439d9f3ed0818f9",
+        "mask": "2909a91b9e41ce0d2c34bedc3dcc5498387711f4"
+    },
+    "cube": {
+        "img": "c0f97e35df4d0dc83b853592deb4b0b7edad9ead",
+        "mask": "8e1b08b9cbbdd21ddb43cfb5d1cd2a709e41587f"
+    },
+    "grating": {
+        "img": "ad412900c2876353b05946983b45616fc1491fc0",
+        "mask": "ffbdfa00d199b3c0b8b1591d959688edb7af5d6e"
+    },
+    "rings": {
+        "img": "05405135800f940595d878684a22ebc7526010b1",
+        "mask": "62077c54c04844f489d856073fa8751173ec047d"
+    },
+    "bullseye": {
+        "img": "f08bcba5900de35e14d0c7e9c3e39606008df996",
+        "mask": "995024b44d54a04a2c408c41e156c4b0cf128611"
+    },
+    "simultaneous_brightness_contrast": {
+        "img": "7278d19b967f4b11054d0fe95fee5d96bed1e075",
+        "mask": "7d542f0409c187c2bb50043dd76f13174071788e"
+    },
+    "white": {
+        "img": "73e3daae2ad8bde2a5bf8e2a2a13fe52988c48ce",
+        "mask": "2eefb2dc02de0e4733d25d7ce682d7417abb55e2"
+    },
+    "benary": {
+        "img": "79e232c02f5086b3bd7e56caf63b7ae0fa1db64b",
+        "mask": "5b0b04f0af4abec321f4fd7802e63d29e0062264"
+    },
+    "todorovic": {
+        "img": "0a00ab245563dda224877f93e3c8e956a419e56d",
+        "mask": "245263ceb96d1fbdd379661ca2fbc134a89dfd92"
+    },
+    "checkerboard_contrast_contrast": {
+        "img": "92246df5d992e6479aac62ecb2eaf85d0693d532",
+        "mask": "765a19c96b4cbe020ab09fde08e4a9ddb86847e7"
+    },
+    "checkerboard": {
+        "img": "b66cfcf6e0de943f62e3d69db78a8d1eb7e06c21",
+        "mask": "684eb135d09c6810d8b06d4983b3017f2c31d592"
+    },
+    "checkerboard_extended": {
+        "img": "9f102bb9e7252041485506b8d820150944714520",
+        "mask": "f7dd09bb19ad64e178ea280bf9ebb08534ef2972"
+    }
+}
