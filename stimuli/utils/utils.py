@@ -472,8 +472,10 @@ def plot_stim(stim, mask=False):
     else:
         plt.subplot(1, 2, 1)
         plt.imshow(stim["img"], cmap="gray")
+        plt.title('Stimulus')
         plt.subplot(1, 2, 2)
-        plt.imshow(stim["mask"], cmap="gray")
+        plt.imshow(stim["mask"], cmap="viridis")
+        plt.title('Target mask')
 
     plt.tight_layout()
     plt.show()
