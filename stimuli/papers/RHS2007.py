@@ -124,21 +124,22 @@ def WE_anderson(ppd=PPD):
     height, width = 16.0, 16.0
     n_cycles = 8.0
     frequency = n_cycles / width
-    height_bars = height / 5
-    height_horizontal = height_bars
-    target_height = height_bars
 
     stim = stimuli.illusions.whites.white_anderson(
         shape=(height, width),
         ppd=ppd,
         frequency=frequency,
-        target_height=target_height,
+        stripe_height=height/5,
+        stripe_ypos=(height/5, 3*height/5),
+        target_height=height/5,
         target_indices_top=(5,),
-        target_offsets_top=(target_height / 2,),
+        target_offsets_top=(height/10,),
         target_indices_bottom=(10,),
-        target_offsets_bottom=(-target_height / 2,),
-        height_bars=height_bars,
-        height_horizontal_top=height_horizontal,
+        target_offsets_bottom=(-height/10,),
+        vbars=(0., 1.),
+        vtarget=0.5,
+        vtopstripe=0.,
+        vbotstripe=1.,
     )
     shape = degrees_to_pixels(VISEXTENT, ppd)
     stim["img"] = pad_img_to_shape(stim["img"], shape, val=0.5)
@@ -150,20 +151,20 @@ def WE_howe(ppd=PPD):
     height, width = 16.0, 16.0
     n_cycles = 8.0
     frequency = n_cycles / width
-    height_bars = height / 5.0
-    height_horizontal = height_bars
-    target_height = height_bars
-    stim = stimuli.illusions.whites.white_anderson(
+
+    stim = stimuli.illusions.whites.white_howe(
         shape=(height, width),
         ppd=ppd,
         frequency=frequency,
-        target_height=target_height,
+        stripe_height=height/5,
+        stripe_ypos=(height/5, 3*height/5),
+        target_height=height/5,
         target_indices_top=(5,),
-        target_offsets_top=(0,),
         target_indices_bottom=(10,),
-        target_offsets_bottom=(0,),
-        height_bars=height_bars,
-        height_horizontal_top=height_horizontal,
+        vbars=(0., 1.),
+        vtarget=0.5,
+        vtopstripe=0.,
+        vbotstripe=1.,
     )
     shape = degrees_to_pixels(VISEXTENT, ppd)
     stim["img"] = pad_img_to_shape(stim["img"], shape, val=0.5)

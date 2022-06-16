@@ -296,20 +296,20 @@ def white_anderson(
     shape=(5, 5),
     ppd=40,
     frequency=2,
-    height_bars=1,
-    height_horizontal_top=1,
+    stripe_height=1,
+    stripe_ypos=(1, 3),
     target_height=1,
     target_indices_top=(5,),
     target_offsets_top=(0.5,),
     target_indices_bottom=(12,),
     target_offsets_bottom=(-0.5,),
-    high=1.0,
-    low=0.0,
-    target=0.5,
-    top="low",
+    vbars=(1., 0.),
+    vtarget=0.5,
+    vtopstripe=1.,
+    vbotstripe=0.
 ):
     """
-    Anderson's white illusion
+    Anderson's White stimulus
 
     Parameters
     ----------
@@ -319,42 +319,39 @@ def white_anderson(
         pixels per degree (visual angle)
     frequency : float
         frequency of the grid in cycles per degree visual angle
-    height_bars : float
-        height of the bars in degrees visual angle
+    stripe_height : float
+        height of the stripes in degrees visual angle
+    stripe_ypos : (float, float)
+        y coordinate of top and bottom stripe
     target_height : float
-        height of the target in degrees visual angle. If it's None, the target will be 1/3 of the illusion height
+        target height in degrees visual angle
     target_indices_top : (int, )
-        indices of the stripes where the target(s) will be placed. If None, two targets are put on (0, n_parts // 2).
+        bar indices where the top target(s) will be placed
     target_offsets_top : (float, )
-        vertical offsets of targets in the top
+        vertical offsets of top targets
     target_indices_bottom : (int, )
-        indices of the stripes where the target(s) will be placed. If None, two targets are put on (0, n_parts // 2).
+        bar indices where the bottom target(s) will be placed
     target_offsets_bottom : (float, )
-        vertical offsets of targets in the bottom
-    high : float
-        value of the bright stripes
-    low : float
-        value of the dark stripes
-    target : float
+        vertical offsets of bottom targets
+    vbars : (float, float)
+        values of grating bars
+    vtarget : float
         value for target
-    top : string in ['low', 'high']
-        specify whether the top should be bright or dark
+    vtopstripe : float
+        value of top stripe
+    vbotstripe : float
+        value of bottom stripe
 
     Returns
     -------
-    A stimulus object
+    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
     """
     height, width = degrees_to_pixels(shape, ppd)
     pixels_per_cycle = degrees_to_pixels(1.0 / (frequency * 2), ppd) * 2
-    height_bars, height_horizontal_top = degrees_to_pixels(
-        height_bars, ppd
-    ), degrees_to_pixels(height_horizontal_top, ppd)
-    spacing_bottom = height - 3 * height_bars - height_horizontal_top
+    stripe_ypos = degrees_to_pixels(stripe_ypos, ppd).astype(int)
+    stripe_height = degrees_to_pixels(stripe_height, ppd)
 
-    top = low if top == "low" else high
-    bottom = high if top == low else low
-
-    img = np.ones((height, width)) * bottom
+    img = np.ones((height, width)) * vbars[1]
     mask = np.zeros((height, width))
 
     index = [
@@ -364,40 +361,198 @@ def white_anderson(
         if i + j < width
     ]
 
-    img[: height_bars * 2 + height_horizontal_top, index] = top
-    img[-height_bars:, index] = top
-    img[height_bars : height_bars + height_horizontal_top, :] = top
+    # Create grating and add top and bottom stripes
+    img[:, index] = vbars[0]
+    img[stripe_ypos[0]:stripe_ypos[0]+stripe_height, :] = vtopstripe
+    img[stripe_ypos[1]:stripe_ypos[1]+stripe_height, :] = vbotstripe
 
     target_height = degrees_to_pixels(target_height, ppd)
-    target_offsets_top = tuple(
-        degrees_to_pixels(x, ppd) for x in target_offsets_top
-    )
-    target_offsets_bottom = tuple(
-        degrees_to_pixels(x, ppd) for x in target_offsets_bottom
-    )
+    target_offsets_top = tuple(degrees_to_pixels(x, ppd) for x in target_offsets_top)
+    target_offsets_bottom = tuple(degrees_to_pixels(x, ppd) for x in target_offsets_bottom)
 
+    # Add top targets
     for i, ind in enumerate(target_indices_top):
         st = int(pixels_per_cycle / 2 * ind)
         end = int(st + pixels_per_cycle / 2)
-        img[: height_bars * 2 + height_horizontal_top, st:end] = bottom
+        img[0:stripe_ypos[1]:, st:end] = vbotstripe
         offset = target_offsets_top[i]
-        target_start = (
-            height_bars + (height_horizontal_top - target_height) // 2 + offset
-        )
+        target_start = (stripe_ypos[0] + (stripe_height - target_height) // 2 + offset)
         target_end = target_start + target_height
-        img[target_start:target_end, st:end] = target
-        mask[target_start:target_end, st:end] = i + 1
+        img[target_start:target_end, st:end] = vtarget
+        mask[target_start:target_end, st:end] = 1
 
+    # Add bottom targets
     for i, ind in enumerate(target_indices_bottom):
         st = int(pixels_per_cycle / 2 * ind)
         end = int(st + pixels_per_cycle / 2)
-        img[height_bars + height_horizontal_top :, st:end] = top
+        img[stripe_ypos[0]+stripe_height::, st:end] = vtopstripe
         offset = target_offsets_bottom[i]
-        target_start = -height_bars - spacing_bottom + offset
+        target_start = stripe_ypos[1] + offset
         target_end = target_start + target_height
-        img[target_start:target_end, st:end] = target
-        mask[target_start:target_end, st:end] = len(target_indices_top) + i + 1
+        img[target_start:target_end, st:end] = vtarget
+        mask[target_start:target_end, st:end] = 2
+    return {"img": img, "mask": mask}
 
+
+def white_howe(
+        shape=(5, 5),
+        ppd=40,
+        frequency=2,
+        stripe_height=1,
+        stripe_ypos=(1, 3),
+        target_height=1,
+        target_indices_top=(5,),
+        target_indices_bottom=(12,),
+        vbars=(1., 0.),
+        vtarget=0.5,
+        vtopstripe=1.,
+        vbotstripe=0.
+        ):
+    """
+    Howe's White stimulus
+
+    Parameters
+    ----------
+    shape : (float, float)
+        The shape of the illustion in degrees of visual angle (height, width)
+    ppd : int
+        pixels per degree (visual angle)
+    frequency : float
+        frequency of the grid in cycles per degree visual angle
+    stripe_height : float
+        height of the stripes in degrees visual angle
+    stripe_ypos : (float, float)
+        y coordinate of top and bottom stripe
+    target_height : float
+        target height in degrees visual angle
+    target_indices_top : (int, )
+        bar indices where the top target(s) will be placed
+    target_indices_bottom : (int, )
+        bar indices where the bottom target(s) will be placed
+    vbars : (float, float)
+        values of grating bars
+    vtarget : float
+        value for target
+    vtopstripe : float
+        value of top stripe
+    vbotstripe : float
+        value of bottom stripe
+
+    Returns
+    -------
+    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    """
+    return white_anderson(
+            shape=shape,
+            ppd=ppd,
+            frequency=frequency,
+            stripe_height=stripe_height,
+            stripe_ypos=stripe_ypos,
+            target_height=target_height,
+            target_indices_top=target_indices_top,
+            target_offsets_top=np.zeros(len(target_indices_top)),
+            target_indices_bottom=target_indices_bottom,
+            target_offsets_bottom=np.zeros(len(target_indices_bottom)),
+            vbars=vbars,
+            vtarget=vtarget,
+            vtopstripe=vtopstripe,
+            vbotstripe=vbotstripe,
+            )
+
+
+def white_yazdanbakhsh(
+    shape=(5, 5),
+    ppd=40,
+    frequency=2,
+    stripe_height=0.2,
+    target_height=1,
+    target_indices_top=(5,),
+    target_ypos_top=(1.5,),
+    target_indices_bottom=(12,),
+    target_ypos_bottom=(3.,),
+    vbars=(1., 0.),
+    vtarget=0.5,
+    vtopstripe=1.,
+    vbotstripe=0.
+):
+    """
+    Yazsdanbakhsh's White stimulus
+
+    Parameters
+    ----------
+    shape : (float, float)
+        The shape of the illustion in degrees of visual angle (height, width)
+    ppd : int
+        pixels per degree (visual angle)
+    frequency : float
+        frequency of the grid in cycles per degree visual angle
+    stripe_height : float
+        height of the stripes in degrees visual angle
+    target_height : float
+        target height in degrees visual angle
+    target_indices_top : (int, )
+        bar indices where the top target(s) will be placed
+    target_ypos_top : (float, )
+        y coordinates of top targets
+    target_indices_bottom : (int, )
+        bar indices where the bottom target(s) will be placed
+    target_ypos_bottom : (float, )
+        y coordinates of bottom targets
+    vbars : (float, float)
+        values of grating bars
+    vtarget : float
+        value for target
+    vtopstripe : float
+        value of top stripe
+    vbotstripe : float
+        value of bottom stripe
+
+    Returns
+    -------
+    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    """
+    height, width = degrees_to_pixels(shape, ppd)
+    pixels_per_cycle = degrees_to_pixels(1.0 / (frequency * 2), ppd) * 2
+    stripe_height = degrees_to_pixels(stripe_height, ppd)
+
+    img = np.ones((height, width)) * vbars[1]
+    mask = np.zeros((height, width))
+
+    index = [
+        i + j
+        for i in range(pixels_per_cycle // 2)
+        for j in range(0, width, pixels_per_cycle)
+        if i + j < width
+    ]
+
+    # Create grating
+    img[:, index] = vbars[0]
+
+    target_height = degrees_to_pixels(target_height, ppd)
+    target_ypos_top = tuple(degrees_to_pixels(x, ppd) for x in target_ypos_top)
+    target_ypos_bottom = tuple(degrees_to_pixels(x, ppd) for x in target_ypos_bottom)
+
+    # Add top targets
+    for i, ind in enumerate(target_indices_top):
+        st = int(pixels_per_cycle / 2 * ind)
+        end = int(st + pixels_per_cycle / 2)
+        target_start = target_ypos_top[i]
+        target_end = target_start + target_height
+        img[target_start-stripe_height:target_start, st:end] = vtopstripe
+        img[target_end:target_end+stripe_height, st:end] = vtopstripe
+        img[target_start:target_end, st:end] = vtarget
+        mask[target_start:target_end, st:end] = 1
+
+    # Add bottom targets
+    for i, ind in enumerate(target_indices_bottom):
+        st = int(pixels_per_cycle / 2 * ind)
+        end = int(st + pixels_per_cycle / 2)
+        target_start = target_ypos_bottom[i]
+        target_end = target_start + target_height
+        img[target_start-stripe_height:target_start, st:end] = vbotstripe
+        img[target_end:target_end+stripe_height, st:end] = vbotstripe
+        img[target_start:target_end, st:end] = vtarget
+        mask[target_start:target_end, st:end] = 2
     return {"img": img, "mask": mask}
 
 
@@ -420,7 +575,7 @@ if __name__ == "__main__":
     plt.subplot(4, 2, 6)
     plt.imshow(stim["mask"], cmap="gray")
 
-    stim = white_anderson()
+    stim = white_yazdanbakhsh()
     plt.subplot(4, 2, 7)
     plt.imshow(stim["img"], cmap="gray")
     plt.subplot(4, 2, 8)

@@ -14,6 +14,9 @@ __all__ = [
     "checkerboard_contrast_contrast",
     "checkerboard",
     "checkerboard_extended",
+    "white_anderson",
+    "white_howe",
+    "white_yazdanbakhsh",
 ]
 
 PPD = 10
@@ -242,6 +245,84 @@ def checkerboard_extended(ppd=PPD):
     img = pad_img(stim["img"], padding, ppd=ppd, val=5.0)
     mask = pad_img(stim["mask"], padding, ppd=ppd, val=0)
 
+    return {"img": img, "mask": mask}
+
+
+def white_yazdanbakhsh(ppd=PPD):
+    height, width, = (8., 8.)
+    n_cycles = 4
+    frequency = n_cycles / width
+
+    stim = illusions.whites.white_yazdanbakhsh(
+        shape=(height, width),
+        ppd=ppd,
+        frequency=frequency,
+        stripe_height=height/10,
+        target_height=height/4,
+        target_indices_top=(2,),
+        target_ypos_top=(height/2.7,),
+        target_indices_bottom=(5,),
+        target_ypos_bottom=(height/2.7,),
+        vbars=(1., 9.),
+        vtarget=5.,
+        vtopstripe=9.,
+        vbotstripe=1.,
+    )
+    padding = (0.9, 1.1, 0.9, 1.1)
+    img = pad_img(stim["img"], padding, ppd=ppd, val=5.)
+    mask = pad_img(stim["mask"], padding, ppd=ppd, val=0)
+    return {"img": img, "mask": mask}
+
+
+def white_anderson(ppd=PPD):
+    height, width, = (10., 10.)
+    n_cycles = 5
+    frequency = n_cycles / width
+
+    stim = illusions.whites.white_anderson(
+        shape=(height, width),
+        ppd=ppd,
+        frequency=frequency,
+        stripe_height=height/5,
+        stripe_ypos=(height/5, 3*height/5),
+        target_height=height/5,
+        target_indices_top=(2,),
+        target_offsets_top=(height/10,),
+        target_indices_bottom=(7,),
+        target_offsets_bottom=(-height/10,),
+        vbars=(9., 1.),
+        vtarget=5.,
+        vtopstripe=1.,
+        vbotstripe=9.,
+    )
+    padding = (0.9, 1.1, 0.9, 1.1)
+    img = pad_img(stim["img"], padding, ppd=ppd, val=5.)
+    mask = pad_img(stim["mask"], padding, ppd=ppd, val=0)
+    return {"img": img, "mask": mask}
+
+
+def white_howe(ppd=PPD):
+    height, width, = (10., 10.)
+    n_cycles = 5
+    frequency = n_cycles / width
+
+    stim = illusions.whites.white_howe(
+        shape=(height, width),
+        ppd=ppd,
+        frequency=frequency,
+        stripe_height=height/5,
+        stripe_ypos=(height/5, 3*height/5),
+        target_height=height/5,
+        target_indices_top=(2,),
+        target_indices_bottom=(7,),
+        vbars=(9., 1.),
+        vtarget=5.,
+        vtopstripe=1.,
+        vbotstripe=9.,
+    )
+    padding = (0.9, 1.1, 0.9, 1.1)
+    img = pad_img(stim["img"], padding, ppd=ppd, val=5.)
+    mask = pad_img(stim["mask"], padding, ppd=ppd, val=0)
     return {"img": img, "mask": mask}
 
 
