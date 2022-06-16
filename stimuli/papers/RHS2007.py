@@ -2,7 +2,7 @@ import math
 
 import numpy as np
 import stimuli
-from stimuli.utils import degrees_to_pixels, pad_img_to_shape
+from stimuli.utils import degrees_to_pixels, pad_img_to_shape, pad_img
 
 __all__ = [
     "WE_thick",
@@ -31,6 +31,7 @@ __all__ = [
     "benary_cross",
     "todorovic_benary1_2",
     "todorovic_benary3_4",
+    "todorovic_benary1_2_3_4",
     "bullseye_thin",
     "bullseye_thick",
 ]
@@ -600,7 +601,6 @@ def checkerboard209(ppd=PPD):
     shape = degrees_to_pixels(VISEXTENT, ppd)
     stim["img"] = pad_img_to_shape(stim["img"], shape, val=0.5)
     stim["mask"] = pad_img_to_shape(stim["mask"], shape, val=0)
-
     return stim
 
 
@@ -609,19 +609,96 @@ def corrugated_mondrian():
     raise NotImplementedError
 
 
-def benary_cross():
-    # TODO: not available atm
-    raise NotImplementedError
+def benary_cross(ppd=PPD):
+    vback = 1.
+    vtarget = 0.5
+    padding = (0., 0., 4., 4.)
+    stim = stimuli.illusions.benary_cross.benarys_cross(
+        ppd=PPD,
+        cross_size=(4.5, 4.5, 9.5, 9.5),
+        cross_thickness=4.,
+        target_type=('t', 't'),
+        target_ori=(45., 0.),
+        target_size=(2.5, 2.5),
+        target_posx=(9.5-np.sqrt(11.25), 13.5),
+        target_posy=(4.5, 2.),
+        vback=vback,
+        vcross=0.,
+        vtarget=vtarget,
+    )
+
+    shape = degrees_to_pixels(VISEXTENT, ppd)
+    img = pad_img(stim["img"], padding, ppd, val=vback)
+    img = pad_img_to_shape(img, shape, vtarget)
+    mask = pad_img(stim["mask"], padding, ppd, val=0)
+    mask = pad_img_to_shape(mask, shape, 0)
+    return {"img": img, "mask": mask}
 
 
-def todorovic_benary1_2():
-    # TODO: not available atm
-    raise NotImplementedError
+def todorovic_benary1_2(ppd=PPD):
+    vback = 1.
+    vtarget = 0.5
+    stim = stimuli.illusions.benary_cross.todorovic_benary(
+        ppd=PPD,
+        L_size=(6.5, 6.5, 2.5, 28.5),
+        target_size=(2.5, 2.5),
+        target_type=('t', 't'),
+        target_ori=(0., 180.),
+        target_posx=(2.5, 26.),
+        target_posy=(4., 6.5),
+        vback=vback,
+        vcross=0.,
+        vtarget=vtarget,
+    )
+
+    shape = degrees_to_pixels(VISEXTENT, ppd)
+    img = pad_img_to_shape(stim["img"], shape, vtarget)
+    mask = pad_img_to_shape(stim["mask"], shape, 0)
+    return {"img": img, "mask": mask}
 
 
-def todorovic_benary3_4():
-    # TODO: not available atm
-    raise NotImplementedError
+def todorovic_benary3_4(ppd=PPD):
+    vback = 1.
+    vtarget = 0.5
+    stim = stimuli.illusions.benary_cross.todorovic_benary(
+        ppd=PPD,
+        L_size=(6.5, 6.5, 2.5, 28.5),
+        target_size=(2.5, 2.5),
+        target_type=('t', 't'),
+        target_ori=(45., 225.),
+        target_posx=(9.5, 18.),
+        target_posy=(6.5, 6.5-np.sqrt(11.25)/2.),
+        vback=vback,
+        vcross=0.,
+        vtarget=vtarget,
+    )
+
+    shape = degrees_to_pixels(VISEXTENT, ppd)
+    img = pad_img_to_shape(stim["img"], shape, vtarget)
+    mask = pad_img_to_shape(stim["mask"], shape, 0)
+    return {"img": img, "mask": mask}
+
+
+def todorovic_benary1_2_3_4(ppd=PPD):
+    vback = 1.
+    vtarget = 0.5
+    stim = stimuli.illusions.benary_cross.todorovic_benary(
+        ppd=PPD,
+        L_size=(6.5, 6.5, 2.5, 28.5),
+        target_size=(2.5, 2.5),
+        target_type=('t', 't', 't', 't'),
+        target_ori=(0., 45., 225., 180.),
+        target_posx=(2.5, 9.5, 18., 26.),
+        target_posy=(4., 6.5, 6.5-np.sqrt(11.25)/2., 6.5),
+        vback=vback,
+        vcross=0.,
+        vtarget=vtarget,
+    )
+
+    shape = degrees_to_pixels(VISEXTENT, ppd)
+    img = pad_img_to_shape(stim["img"], shape, vtarget)
+    mask = pad_img_to_shape(stim["mask"], shape, 0)
+    return {"img": img, "mask": mask}
 
 
 def bullseye_thin(ppd=PPD):

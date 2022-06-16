@@ -161,12 +161,16 @@ def white(ppd=PPD):
 def benary(ppd=PPD):
     stim = illusions.benary_cross.benarys_cross(
         ppd=PPD,
-        cross_size=(3, 3, 3, 3),
+        cross_size=(3., 3., 3., 3.),
         cross_thickness=2.1,
-        target_size=1.1,
-        back=9.0,
-        cross=1.0,
-        target=5.0,
+        target_type=('r', 'r'),
+        target_ori=(0., 0.),
+        target_size=(1.1, 1.1),
+        target_posx=(1.9, 7.),
+        target_posy=(1.9, 3.),
+        vback=9.,
+        vcross=1.,
+        vtarget=5.,
     )
 
     padding = (0.9, 1.0, 0.9, 1.0)
