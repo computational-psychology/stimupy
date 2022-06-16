@@ -2,18 +2,17 @@ import json
 from hashlib import sha1
 
 import numpy as np
-import stimuli.papers
-
-papers = ["RHS2007", "domijan2015", "murray2020"]
+from stimuli.papers import *
+from stimuli.papers import __all__ as papers
 
 
 def gen_ground_truth(paper):
 
     # Get a reference to the actual module, from the name-string
-    paper_module = getattr(stimuli.papers, paper)
+    paper_module = globals()[paper]
 
     # Extract the list of stimulus functions exported by that paper module
-    stimlist = getattr(paper_module, "__all__")
+    stimlist = paper_module.__all__
 
     stims = {}  # save the stimulus-dicts in a larger dict, with name as key
     for stimname in stimlist:
@@ -25,7 +24,7 @@ def gen_ground_truth(paper):
             # Generate the stimulus-dict
             stim = func()
 
-            # Hash (SHA1) "img" and "mask", and save only the hex
+            # Hash (sha1) "img" and "mask", and save only the hex
             stim["img"] = sha1(np.ascontiguousarray(stim["img"])).hexdigest()
             stim["mask"] = sha1(np.ascontiguousarray(stim["mask"])).hexdigest()
 
@@ -40,10 +39,14 @@ def gen_ground_truth(paper):
 
 
 if __name__ == "__main__":
+    from os.path import abspath, dirname
+
+    d = dirname(abspath(__file__))
+
     # Generate the ground_truth dict for each paper; save as .JSON
     for paper in papers:
         stims = gen_ground_truth(paper)
 
         # Save the dictionary of stimulus-dicts as (pretty) JSON
-        with open(f"{paper}.json", "w", encoding="utf-8") as f:
+        with open(f"{d}/{paper}.json", "w", encoding="utf-8") as f:
             json.dump(stims, f, ensure_ascii=False, indent=4)
