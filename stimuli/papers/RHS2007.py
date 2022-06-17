@@ -367,168 +367,275 @@ def grating_induction(ppd=PPD):
 
 
 def sbc_large(ppd=PPD):
-    height, width = 12, 15
-    target_height, target_width = 3, 3
+    im_size = (13., 15.5)
+    tsize = 3.
+    target_pos = (im_size[0]/2. - tsize/2., im_size[1]/2. - tsize/2.,)
+    stim1 = stimuli.illusions.sbc.simultaneous_contrast(
+            ppd=ppd,
+            im_size=im_size,
+            target_size=(tsize, tsize),
+            target_pos=target_pos,
+            vback=0.,
+            vtarget=0.5,
+            )
+    stim2 = stimuli.illusions.sbc.simultaneous_contrast(
+            ppd=ppd,
+            im_size=im_size,
+            target_size=(tsize, tsize),
+            target_pos=target_pos,
+            vback=1.,
+            vtarget=0.5,
+            )
 
-    inner_padding_vertical, inner_padding_horizontal = (
-        height - target_height
-    ) / 2, (width - target_width) / 2
-    inner_padding = (
-        inner_padding_vertical,
-        inner_padding_vertical,
-        inner_padding_horizontal,
-        inner_padding_horizontal,
-    )
+    # Increase target index of right stimulus half
+    mask2 = stim2['mask'] + 1
+    mask2[mask2 == 1] = 0
 
-    stim = stimuli.illusions.sbc.simultaneous_brightness_contrast(
-        target_shape=(target_height, target_width),
-        ppd=ppd,
-        inner_padding=inner_padding,
-    )
+    # Stacking
+    img = np.hstack([stim1['img'], stim2['img']])
+    mask = np.hstack([stim1['mask'], mask2])
+
     shape = degrees_to_pixels(VISEXTENT, ppd)
-    stim["img"] = pad_img_to_shape(stim["img"], shape, val=0.5)
-    stim["mask"] = pad_img_to_shape(stim["mask"], shape, val=0)
-
-    return stim
+    img = pad_img_to_shape(img, shape, val=0.5)
+    mask = pad_img_to_shape(mask, shape, val=0)
+    return {"img": img, "mask": mask}
 
 
 def sbc_small(ppd=PPD):
-    height, width = 12, 15
-    target_height, target_width = 1, 1
+    im_size = (13., 15.5)
+    tsize = 1.
+    target_pos = (im_size[0]/2. - tsize/2., im_size[1]/2. - tsize/2.,)
+    stim1 = stimuli.illusions.sbc.simultaneous_contrast(
+            ppd=ppd,
+            im_size=im_size,
+            target_size=(tsize, tsize),
+            target_pos=target_pos,
+            vback=0.,
+            vtarget=0.5,
+            )
+    stim2 = stimuli.illusions.sbc.simultaneous_contrast(
+            ppd=ppd,
+            im_size=im_size,
+            target_size=(tsize, tsize),
+            target_pos=target_pos,
+            vback=1.,
+            vtarget=0.5,
+            )
 
-    inner_padding_vertical, inner_padding_horizontal = (
-        height - target_height
-    ) / 2, (width - target_width) / 2
-    inner_padding = (
-        inner_padding_vertical,
-        inner_padding_vertical,
-        inner_padding_horizontal,
-        inner_padding_horizontal,
-    )
+    # Increase target index of right stimulus half
+    mask2 = stim2['mask'] + 1
+    mask2[mask2 == 1] = 0
 
-    stim = stimuli.illusions.sbc.simultaneous_brightness_contrast(
-        target_shape=(target_height, target_width),
-        ppd=ppd,
-        inner_padding=inner_padding,
-    )
+    # Stacking
+    img = np.hstack([stim1['img'], stim2['img']])
+    mask = np.hstack([stim1['mask'], mask2])
+
     shape = degrees_to_pixels(VISEXTENT, ppd)
-    stim["img"] = pad_img_to_shape(stim["img"], shape, val=0.5)
-    stim["mask"] = pad_img_to_shape(stim["mask"], shape, val=0)
-
-    return stim
+    img = pad_img_to_shape(img, shape, val=0.5)
+    mask = pad_img_to_shape(mask, shape, val=0)
+    return {"img": img, "mask": mask}
 
 
 def todorovic_equal(ppd=PPD):
-    height, width = 12, 15
-    target_height, target_width = 8, 8
+    im_size = (13., 15.5)
+    csize = 3.2
+    tthick = csize/2.
+    posx1 = im_size[1]/2. - csize - tthick/2.
+    posx2 = im_size[1]/2. + tthick/2. - 1/ppd
+    posy1 = im_size[0]/2. - csize - tthick/2.
+    posy2 = im_size[0]/2. + tthick/2. - 1/ppd
 
-    inner_padding_vertical, inner_padding_horizontal = (
-        height - target_height
-    ) / 2, (width - target_width) / 2
-    inner_padding = (
-        inner_padding_vertical,
-        inner_padding_vertical,
-        inner_padding_horizontal,
-        inner_padding_horizontal,
-    )
+    stim1 = stimuli.illusions.todorovic.todorovic_out(
+            im_size=im_size,
+            ppd=ppd,
+            target_size=(csize,)*4,
+            target_thickness=tthick,
+            covers_height=csize,
+            covers_width=csize,
+            covers_posx=(posx1, posx2, posx1, posx2),
+            covers_posy=(posy1, posy2, posy2, posy1),
+            vback=1.,
+            vtarget=0.5,
+            vcovers=0.,
+            )
+    stim2 = stimuli.illusions.todorovic.todorovic_out(
+            im_size=im_size,
+            ppd=ppd,
+            target_size=(csize,)*4,
+            target_thickness=tthick,
+            covers_height=csize,
+            covers_width=csize,
+            covers_posx=(posx1, posx2, posx1, posx2),
+            covers_posy=(posy1, posy2, posy2, posy1),
+            vback=0.,
+            vtarget=0.5,
+            vcovers=1.,
+            )
 
-    covers_shape = (0.4 * 8,) * 2
-    spacing = (0,) * 4
+    # Increase target index of right stimulus half
+    mask2 = stim2['mask'] + 1
+    mask2[mask2 == 1] = 0
 
-    back, grid, target = 1.0, 0.0, 0.5
-    stim = stimuli.illusions.todorovic.todorovic_illusion(
-        target_shape=(target_height, target_width),
-        ppd=ppd,
-        covers_shape=covers_shape,
-        spacing=spacing,
-        padding=inner_padding,
-        back=back,
-        grid=grid,
-        target=target,
-    )
+    # Stacking
+    img = np.hstack([stim1['img'], stim2['img']])
+    mask = np.hstack([stim1['mask'], mask2])
 
     shape = degrees_to_pixels(VISEXTENT, ppd)
-    stim["img"] = pad_img_to_shape(stim["img"], shape, val=0.5)
-    stim["mask"] = pad_img_to_shape(stim["mask"], shape, val=0)
-
-    return stim
+    img = pad_img_to_shape(img, shape, val=0.5)
+    mask = pad_img_to_shape(mask, shape, val=0)
+    return {"img": img, "mask": mask}
 
 
 def todorovic_in_large(ppd=PPD):
-    height, width = 12, 15
-    target_height, target_width = 5.3, 5.3
+    im_size = (13., 15.5)
+    tsize = 5.3
+    tpos = np.array(im_size)/2. - tsize/2.
+    csize = 3.2
+    posx1 = im_size[1]/2. - csize - csize/4.
+    posx2 = im_size[1]/2. + csize/4. - 1/ppd
+    posy1 = im_size[0]/2. - csize - csize/4.
+    posy2 = im_size[0]/2. + csize/4. - 1/ppd
 
-    inner_padding_vertical, inner_padding_horizontal = (
-        height - target_height
-    ) / 2, (width - target_width) / 2
-    inner_padding = (
-        inner_padding_vertical,
-        inner_padding_vertical,
-        inner_padding_horizontal,
-        inner_padding_horizontal,
-    )
+    stim1 = stimuli.illusions.todorovic.todorovic_in(
+            im_size=im_size,
+            ppd=ppd,
+            target_size=(tsize, tsize),
+            target_pos=tpos,
+            covers_height=csize,
+            covers_width=csize,
+            covers_posx=(posx1, posx2, posx1, posx2),
+            covers_posy=(posy1, posy2, posy2, posy1),
+            vback=1.,
+            vtarget=0.5,
+            vcovers=0.,
+            )
+    stim2 = stimuli.illusions.todorovic.todorovic_in(
+            im_size=im_size,
+            ppd=ppd,
+            target_size=(tsize, tsize),
+            target_pos=tpos,
+            covers_height=csize,
+            covers_width=csize,
+            covers_posx=(posx1, posx2, posx1, posx2),
+            covers_posy=(posy1, posy2, posy2, posy1),
+            vback=0.,
+            vtarget=0.5,
+            vcovers=1.,
+            )
 
-    covers_shape = (0.4 * 8,) * 2
-    spacing = ((8 - 5.3) / 2,) * 4
+    # Increase target index of right stimulus half
+    mask2 = stim2['mask'] + 1
+    mask2[mask2 == 1] = 0
 
-    back, grid, target = 1.0, 0.0, 0.5
-    stim = stimuli.illusions.todorovic.todorovic_illusion(
-        target_shape=(target_height, target_width),
-        ppd=ppd,
-        covers_shape=covers_shape,
-        spacing=spacing,
-        padding=inner_padding,
-        back=back,
-        grid=grid,
-        target=target,
-    )
+    # Stacking
+    img = np.hstack([stim1['img'], stim2['img']])
+    mask = np.hstack([stim1['mask'], mask2])
 
     shape = degrees_to_pixels(VISEXTENT, ppd)
-    stim["img"] = pad_img_to_shape(stim["img"], shape, val=0.5)
-    stim["mask"] = pad_img_to_shape(stim["mask"], shape, val=0)
-
-    return stim
+    img = pad_img_to_shape(img, shape, val=0.5)
+    mask = pad_img_to_shape(mask, shape, val=0)
+    return {"img": img, "mask": mask}
 
 
 def todorovic_in_small(ppd=PPD):
-    height, width = 12, 15
-    target_height, target_width = 3, 3
+    im_size = (13., 15.5)
+    tsize = 3.
+    tpos = np.array(im_size)/2. - tsize/2.
+    csize = 3.2
+    posx1 = im_size[1]/2. - csize - csize/4.
+    posx2 = im_size[1]/2. + csize/4. - 1/ppd
+    posy1 = im_size[0]/2. - csize - csize/4.
+    posy2 = im_size[0]/2. + csize/4. - 1/ppd
 
-    inner_padding_vertical, inner_padding_horizontal = (
-        height - target_height
-    ) / 2, (width - target_width) / 2
-    inner_padding = (
-        inner_padding_vertical,
-        inner_padding_vertical,
-        inner_padding_horizontal,
-        inner_padding_horizontal,
-    )
+    stim1 = stimuli.illusions.todorovic.todorovic_in(
+            im_size=im_size,
+            ppd=ppd,
+            target_size=(tsize, tsize),
+            target_pos=tpos,
+            covers_height=csize,
+            covers_width=csize,
+            covers_posx=(posx1, posx2, posx1, posx2),
+            covers_posy=(posy1, posy2, posy2, posy1),
+            vback=1.,
+            vtarget=0.5,
+            vcovers=0.,
+            )
+    stim2 = stimuli.illusions.todorovic.todorovic_in(
+            im_size=im_size,
+            ppd=ppd,
+            target_size=(tsize, tsize),
+            target_pos=tpos,
+            covers_height=csize,
+            covers_width=csize,
+            covers_posx=(posx1, posx2, posx1, posx2),
+            covers_posy=(posy1, posy2, posy2, posy1),
+            vback=0.,
+            vtarget=0.5,
+            vcovers=1.,
+            )
 
-    covers_shape = (0.4 * 8,) * 2
-    spacing = ((8 - 3) / 2,) * 4
+    # Increase target index of right stimulus half
+    mask2 = stim2['mask'] + 1
+    mask2[mask2 == 1] = 0
 
-    back, grid, target = 1.0, 0.0, 0.5
-    stim = stimuli.illusions.todorovic.todorovic_illusion(
-        target_shape=(target_height, target_width),
-        ppd=ppd,
-        covers_shape=covers_shape,
-        spacing=spacing,
-        padding=inner_padding,
-        back=back,
-        grid=grid,
-        target=target,
-    )
+    # Stacking
+    img = np.hstack([stim1['img'], stim2['img']])
+    mask = np.hstack([stim1['mask'], mask2])
 
     shape = degrees_to_pixels(VISEXTENT, ppd)
-    stim["img"] = pad_img_to_shape(stim["img"], shape, val=0.5)
-    stim["mask"] = pad_img_to_shape(stim["mask"], shape, val=0)
+    img = pad_img_to_shape(img, shape, val=0.5)
+    mask = pad_img_to_shape(mask, shape, val=0)
+    return {"img": img, "mask": mask}
 
-    return stim
 
+def todorovic_out(ppd=PPD):
+    im_size = (13., 15.5)
+    csize = 3.2
+    tthick = csize/2.
+    posx1 = im_size[1]/2. - csize - tthick/2.
+    posx2 = im_size[1]/2. + tthick/2. - 1/ppd
+    posy1 = im_size[0]/2. - csize - tthick/2.
+    posy2 = im_size[0]/2. + tthick/2. - 1/ppd
 
-def todorovic_out():
-    # TODO: not available atm
-    raise NotImplementedError
+    stim1 = stimuli.illusions.todorovic.todorovic_out(
+            im_size=im_size,
+            ppd=ppd,
+            target_size=(3.7,)*4,
+            target_thickness=tthick,
+            covers_height=csize,
+            covers_width=csize,
+            covers_posx=(posx1, posx2, posx1, posx2),
+            covers_posy=(posy1, posy2, posy2, posy1),
+            vback=1.,
+            vtarget=0.5,
+            vcovers=0.,
+            )
+    stim2 = stimuli.illusions.todorovic.todorovic_out(
+            im_size=im_size,
+            ppd=ppd,
+            target_size=(3.7,)*4,
+            target_thickness=tthick,
+            covers_height=csize,
+            covers_width=csize,
+            covers_posx=(posx1, posx2, posx1, posx2),
+            covers_posy=(posy1, posy2, posy2, posy1),
+            vback=0.,
+            vtarget=0.5,
+            vcovers=1.,
+            )
+
+    # Increase target index of right stimulus half
+    mask2 = stim2['mask'] + 1
+    mask2[mask2 == 1] = 0
+
+    # Stacking
+    img = np.hstack([stim1['img'], stim2['img']])
+    mask = np.hstack([stim1['mask'], mask2])
+
+    shape = degrees_to_pixels(VISEXTENT, ppd)
+    img = pad_img_to_shape(img, shape, val=0.5)
+    mask = pad_img_to_shape(mask, shape, val=0)
+    return {"img": img, "mask": mask}
 
 
 def checkerboard_016(ppd=PPD):
@@ -706,7 +813,7 @@ def bullseye_thin(ppd=PPD):
     v1, v2, v3 = 1., 0.5, 0.
     shape_ind = degrees_to_pixels(np.array(VISEXTENT)/2., ppd)
     shape_all = degrees_to_pixels(VISEXTENT, ppd)
-    stim1 = stimuli.illusions.bullseye.bullseye_single(
+    stim1 = stimuli.illusions.bullseye.bullseye_stimulus(
             ppd=ppd,
             n_rings=8,
             target_idx=(0, 1, 2, 3),
@@ -715,7 +822,7 @@ def bullseye_thin(ppd=PPD):
             vring2=v3,
             vtarget=v2,
             )
-    stim2 = stimuli.illusions.bullseye.bullseye_single(
+    stim2 = stimuli.illusions.bullseye.bullseye_stimulus(
             ppd=ppd,
             n_rings=8,
             target_idx=(0, 1, 2, 3),
@@ -749,7 +856,7 @@ def bullseye_thick(ppd=PPD):
     v1, v2, v3 = 1., 0.5, 0.
     shape_ind = degrees_to_pixels(np.array(VISEXTENT)/2., ppd)
     shape_all = degrees_to_pixels(VISEXTENT, ppd)
-    stim1 = stimuli.illusions.bullseye.bullseye_single(
+    stim1 = stimuli.illusions.bullseye.bullseye_stimulus(
             ppd=ppd,
             n_rings=6,
             target_idx=(0, 1),
@@ -758,7 +865,7 @@ def bullseye_thick(ppd=PPD):
             vring2=v3,
             vtarget=v2,
             )
-    stim2 = stimuli.illusions.bullseye.bullseye_single(
+    stim2 = stimuli.illusions.bullseye.bullseye_stimulus(
             ppd=ppd,
             n_rings=6,
             target_idx=(0, 1),

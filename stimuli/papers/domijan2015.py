@@ -71,25 +71,45 @@ def grating(ppd=PPD):
 
 
 def rings(ppd=PPD):
-    return illusions.rings.ring_pattern(
-        ppd=ppd,
-        n_rings=8,
-        target_pos_l=4,
-        target_pos_r=3,
-        ring_width=0.5,
-        padding=(0.9, 1.0, 0.9, 1.0),
-        back=1.0,
-        rings=9.0,
-        target=5.0,
-        invert_rings=False,
-        double=True,
-    )
+    v1, v2, v3 = 1., 5., 9.
+    pad = (0.9, 1.0, 0.9, 1.0)
+    stim1 = illusions.rings.ring_stimulus(
+            ppd=ppd,
+            n_rings=8,
+            target_idx=4,
+            ring_width=0.5,
+            vring1=v1,
+            vring2=v3,
+            vtarget=v2,
+            )
+    stim2 = illusions.rings.ring_stimulus(
+            ppd=ppd,
+            n_rings=8,
+            target_idx=3,
+            ring_width=0.5,
+            vring1=v1,
+            vring2=v3,
+            vtarget=v2,
+            )
+
+    # Padding
+    img1, mask1 = pad_img(stim1['img'], pad, ppd, v1), pad_img(stim1['mask'], pad, ppd, 0)
+    img2, mask2 = pad_img(stim2['img'], pad, ppd, v1), pad_img(stim2['mask'], pad, ppd, 0)
+
+    # Increase target index of right stimulus half
+    mask2 = mask2 + 1
+    mask2[mask2 == 1] = 0
+
+    # Stacking
+    img_stacked = np.hstack([img1, img2])
+    mask_stacked = np.hstack([mask1, mask2])
+    return {"img": img_stacked, "mask": mask_stacked}
 
 
 def bullseye(ppd=PPD):
     v1, v2, v3 = 1., 5., 9.
     pad = (0.9, 1.0, 0.9, 1.0)
-    stim1 = illusions.bullseye.bullseye_single(
+    stim1 = illusions.bullseye.bullseye_stimulus(
             ppd=ppd,
             n_rings=8,
             target_idx=0,
@@ -98,7 +118,7 @@ def bullseye(ppd=PPD):
             vring2=v3,
             vtarget=v2,
             )
-    stim2 = illusions.bullseye.bullseye_single(
+    stim2 = illusions.bullseye.bullseye_stimulus(
             ppd=ppd,
             n_rings=8,
             target_idx=0,
@@ -123,14 +143,31 @@ def bullseye(ppd=PPD):
 
 
 def simultaneous_brightness_contrast(ppd=PPD):
-    return illusions.sbc.simultaneous_brightness_contrast(
-        ppd=ppd,
-        target_shape=(2.1, 2.1),
-        inner_padding=(3.9, 4.0, 3.9, 4.0),
-        left=9.0,
-        right=1.0,
-        target=5.0,
-    )
+    stim1 = illusions.sbc.simultaneous_contrast(
+            ppd=ppd,
+            im_size=(10., 10.),
+            target_size=(2.1, 2.1),
+            target_pos=(3.9, 3.9),
+            vback=9.0,
+            vtarget=5.0,
+            )
+    stim2 = illusions.sbc.simultaneous_contrast(
+            ppd=ppd,
+            im_size=(10., 10.),
+            target_size=(2.1, 2.1),
+            target_pos=(3.9, 3.9),
+            vback=1.0,
+            vtarget=5.0,
+            )
+
+    # Increase target index of right stimulus half
+    mask2 = stim2['mask'] + 1
+    mask2[mask2 == 1] = 0
+
+    # Stacking
+    img_stacked = np.hstack([stim1['img'], stim2['img']])
+    mask_stacked = np.hstack([stim1['mask'], mask2])
+    return {"img": img_stacked, "mask": mask_stacked}
 
 
 def white(ppd=PPD):
@@ -183,16 +220,41 @@ def benary(ppd=PPD):
 
 
 def todorovic(ppd=PPD):
-    return illusions.todorovic.todorovic_illusion(
-        target_shape=(4.1, 4.1),
-        ppd=ppd,
-        covers_shape=(3.1, 3.1),
-        spacing=(1.5, 1.5, 1.5, 1.5),
-        padding=(2.9, 3.0, 2.9, 3.0),
-        grid=9.0,
-        back=1.0,
-        target=5.0,
-    )
+    stim1 = illusions.todorovic.todorovic_in(
+            im_size=(10., 10.),
+            ppd=ppd,
+            target_size=(4.1, 4.1),
+            target_pos=(2.9, 2.9),
+            covers_height=3.1,
+            covers_width=3.1,
+            covers_posx=(1.4, 5.4, 1.4, 5.4),
+            covers_posy=(1.4, 5.4, 5.4, 1.4),
+            vback=1.,
+            vtarget=5.,
+            vcovers=9.,
+            )
+    stim2 = illusions.todorovic.todorovic_in(
+            im_size=(10., 10.),
+            ppd=ppd,
+            target_size=(4.1, 4.1),
+            target_pos=(2.9, 2.9),
+            covers_height=3.1,
+            covers_width=3.1,
+            covers_posx=(1.4, 5.4, 1.4, 5.4),
+            covers_posy=(1.4, 5.4, 5.4, 1.4),
+            vback=9.,
+            vtarget=5.,
+            vcovers=1.,
+            )
+
+    # Increase target index of right stimulus half
+    mask2 = stim2['mask'] + 1
+    mask2[mask2 == 1] = 0
+
+    # Stacking
+    img_stacked = np.hstack([stim1['img'], stim2['img']])
+    mask_stacked = np.hstack([stim1['mask'], mask2])
+    return {"img": img_stacked, "mask": mask_stacked}
 
 
 def checkerboard_contrast_contrast(ppd=PPD):
