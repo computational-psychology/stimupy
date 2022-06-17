@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.ndimage import rotate
 from stimuli.utils import degrees_to_pixels, plot_stim
-from stimuli.components import triangle
+from stimuli.components import triangle, cross
 
 
 def benarys_cross(
@@ -52,31 +52,17 @@ def benarys_cross(
     if any(len(lst) != len(target_type) for lst in [target_ori, target_posx, target_posy]):
         raise Exception("target_type, target_ori, target_posx and target_posy need the same length.")
 
-    (
-        cross_top_px,
-        cross_bottom_px,
-        cross_left_px,
-        cross_right_px,
-    ) = degrees_to_pixels(cross_size, ppd)
-    cross_thickness_px = degrees_to_pixels(cross_thickness, ppd)
     target_y_px, target_x_px = degrees_to_pixels(target_size, ppd)
     tposy = degrees_to_pixels(target_posy, ppd)
     tposx = degrees_to_pixels(target_posx, ppd)
-    width = cross_left_px + cross_thickness_px + cross_right_px
-    height = cross_top_px + cross_thickness_px + cross_bottom_px
 
-    if (target_x_px + np.array(tposx)).max() > width:
+    img = cross(ppd, cross_size, cross_thickness, vback, vcross)
+    mask = np.zeros((img.shape[0], img.shape[1]))
+
+    if (target_x_px + np.array(tposx)).max() > img.shape[1]:
         raise Exception("Leftmost target does not fit in image.")
-    if (target_y_px + np.array(tposy)).max() > height:
+    if (target_y_px + np.array(tposy)).max() > img.shape[0]:
         raise Exception("Lowest target does not fit in image.")
-
-    img = np.ones((height, width)) * vback
-    mask = np.zeros((height, width))
-
-    x_edge_left, x_edge_right = cross_left_px, -cross_right_px
-    y_edge_top, y_edge_bottom = cross_top_px, -cross_bottom_px
-    img[:, x_edge_left:x_edge_right] = vcross
-    img[y_edge_top:y_edge_bottom, :] = vcross
 
     # Add targets:
     for i in range(len(target_posx)):
@@ -210,5 +196,5 @@ def todorovic_benary(
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
 
-    stim = todorovic_benary()
+    stim = benarys_cross()
     plot_stim(stim, mask=True)
