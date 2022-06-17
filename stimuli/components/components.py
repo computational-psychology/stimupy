@@ -2,7 +2,41 @@ import numpy as np
 from stimuli.utils import degrees_to_pixels
 
 
-def triangle(ppd=10., target_size=(2., 2.), vback=0., vtriangle=0.5):
+def rectangle(ppd=10, im_size=(4., 4.), rect_size=(2., 2.), rect_pos=(1., 1.), vback=0., vsquare=0.5):
+    """
+    Function to create a 2d array with a rectangle
+
+    Parameters
+    ----------
+    ppd : int
+        pixels per degree (visual angle)
+    im_size : (float, float)
+        size of the image in degrees visual angle
+    square_size : (float, float)
+        size of the square in degrees visual angle
+    square_pos : (float, float)
+        coordinates of the square in degrees visual angle
+    vback : float
+        background value
+    vsquare : float
+        square value
+
+    Returns
+    -------
+    A 2d-array with a rectangle
+    """
+    im_height, im_width = degrees_to_pixels(im_size, ppd)
+    rect_height, rect_width = degrees_to_pixels(rect_size, ppd)
+    rect_posy, rect_posx = degrees_to_pixels(rect_pos, ppd)
+
+    # Create image and add square
+    img = np.ones((im_height, im_width)) * vback
+    target = np.ones((rect_height, rect_width)) * vsquare
+    img[rect_posy:rect_posy+rect_height, rect_posx:rect_posx+rect_width] = target
+    return img
+
+
+def triangle(ppd=10, target_size=(2., 2.), vback=0., vtriangle=0.5):
     """
     Function to create a 2d array with a triangle in the lower left diagonal
 
@@ -31,7 +65,27 @@ def triangle(ppd=10., target_size=(2., 2.), vback=0., vtriangle=0.5):
     return img
 
 
-def cross(ppd=10., cross_size=(8., 8., 8., 8.), cross_thickness=4., vback=0., vcross=1.):
+def cross(ppd=10, cross_size=(8., 8., 8., 8.), cross_thickness=4., vback=0., vcross=1.):
+    """
+    Function to create a 2d array with a cross
+
+    Parameters
+    ----------
+    ppd : int
+        pixels per degree (visual angle)
+    cross_size : (float, float, float, float)
+        size of the cross' arms in degrees visual angle in form (top, bottom, left, right)
+    cross_thickness : float
+        width of the cross bars in degrees visual angle
+    vback : float
+        background value
+    vcross : float
+        cross value
+
+    Returns
+    -------
+    A 2d-array with a cross
+    """
     (cross_top, cross_bottom, cross_left, cross_right) = degrees_to_pixels(cross_size, ppd)
     cross_thickness = degrees_to_pixels(cross_thickness, ppd)
     width = cross_left + cross_thickness + cross_right
