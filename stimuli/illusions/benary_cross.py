@@ -50,7 +50,7 @@ def benarys_cross(
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
     """
     if any(len(lst) != len(target_type) for lst in [target_ori, target_posx, target_posy]):
-        raise Exception("target_type, target_ori, target_posx and target_posy need to be of same length.")
+        raise Exception("target_type, target_ori, target_posx and target_posy need the same length.")
 
     (
         cross_top_px,
