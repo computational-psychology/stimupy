@@ -1,6 +1,7 @@
 import numpy as np
 import stimuli
 from stimuli.utils import pad_img, plot_stim
+from stimuli.components import rectangle
 
 
 def simultaneous_brightness_contrast(
@@ -56,8 +57,21 @@ def simultaneous_brightness_contrast(
     return {"img": img, "mask": mask}
 
 
+def simultaneous_contrast(
+        ppd=10,
+        im_size=(4., 4.),
+        target_size=(2., 2.),
+        target_pos=(1., 1.),
+        vback=0.,
+        vtarget=0.5
+        ):
+    img = rectangle(ppd, im_size, target_size, target_pos, vback, vtarget)
+    mask = rectangle(ppd, im_size, target_size, target_pos, 0, 1)
+    return {"img": img, "mask": mask}
+
+
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
 
-    stim = simultaneous_brightness_contrast()
+    stim = simultaneous_contrast()
     plot_stim(stim, mask=True)
