@@ -1,4 +1,4 @@
-from stimuli.illusions.rings import ring
+from stimuli.illusions.rings import rings
 from stimuli.utils import plot_stim
 
 
@@ -35,7 +35,7 @@ def bullseye(
     -------
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
     """
-    stim = ring(
+    stim = rings(
         ppd=ppd,
         n_rings=n_rings,
         target_idx=target_idx,
