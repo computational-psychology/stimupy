@@ -100,15 +100,22 @@ def cross(ppd=10, cross_size=(8., 8., 8., 8.), cross_thickness=4., vback=0., vcr
     return img
 
 
-def parallelogram(ppd=10, para_size=(2., 3., 1.), vback=0., vpara=0.5):
+def parallelogram(ppd=10, para_size=(2., 3., -1.), vback=0., vpara=0.5):
     para_height, para_width, para_depth = degrees_to_pixels(para_size, ppd)
+    para_depth = np.abs(para_depth)
 
     # Create triangle to create parallelogram
-    tri1 = triangle(ppd, (para_size[0], para_size[2]), 0., -vpara+vback)
-    tri2 = triangle(ppd, (para_size[0], para_size[2]), -vpara+vback, 0.)
+    if para_depth == 0.:
+        img = np.ones((para_height, para_width)) * vpara
+    else:
+        tri1 = triangle(ppd, (para_size[0], np.abs(para_size[2])), 0., -vpara+vback)
+        tri2 = triangle(ppd, (para_size[0], np.abs(para_size[2])), -vpara+vback, 0.)
 
-    # Create image, add rectangle and subtract triangles
-    img = np.ones((para_height, para_width+para_depth)) * vpara
-    img[0:para_height, 0:para_depth] += tri1
-    img[0:para_height, para_width::] += tri2
+        # Create image, add rectangle and subtract triangles
+        img = np.ones((para_height, para_width+para_depth)) * vpara
+        img[0:para_height, 0:para_depth] += tri1
+        img[0:para_height, para_width::] += tri2
+
+    if para_size[2] < 0.:
+        img = np.fliplr(img)
     return img
