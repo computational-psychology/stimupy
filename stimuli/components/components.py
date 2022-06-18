@@ -2,7 +2,7 @@ import numpy as np
 from stimuli.utils import degrees_to_pixels
 
 
-def rectangle(ppd=10, im_size=(4., 4.), rect_size=(2., 2.), rect_pos=(1., 1.), vback=0., vsquare=0.5):
+def rectangle(ppd=10, im_size=(4., 4.), rect_size=(2., 2.), rect_pos=(1., 1.), vback=0., vrect=0.5):
     """
     Function to create a 2d array with a rectangle
 
@@ -18,8 +18,8 @@ def rectangle(ppd=10, im_size=(4., 4.), rect_size=(2., 2.), rect_pos=(1., 1.), v
         coordinates of the square in degrees visual angle
     vback : float
         background value
-    vsquare : float
-        square value
+    vrect : float
+        rectangle value
 
     Returns
     -------
@@ -31,7 +31,7 @@ def rectangle(ppd=10, im_size=(4., 4.), rect_size=(2., 2.), rect_pos=(1., 1.), v
 
     # Create image and add square
     img = np.ones((im_height, im_width)) * vback
-    target = np.ones((rect_height, rect_width)) * vsquare
+    target = np.ones((rect_height, rect_width)) * vrect
     img[rect_posy:rect_posy+rect_height, rect_posx:rect_posx+rect_width] = target
     return img
 
@@ -56,7 +56,7 @@ def triangle(ppd=10, target_size=(2., 2.), vback=0., vtriangle=0.5):
     A 2d-array with a triangle
     """
     target_y_px, target_x_px = degrees_to_pixels(target_size, ppd)
-    img = np.zeros([target_y_px, target_x_px])
+    img = np.ones([target_y_px, target_x_px]) * vback
     line1 = np.linspace(0, target_y_px-1, np.maximum(target_y_px, target_x_px)*2).astype(int)
     line1 = np.linspace(line1, target_y_px-1, np.maximum(target_y_px, target_x_px)*2).astype(int)
     line2 = np.linspace(0, target_x_px-1, np.maximum(target_y_px, target_x_px)*2).astype(int)
@@ -97,4 +97,18 @@ def cross(ppd=10, cross_size=(8., 8., 8., 8.), cross_thickness=4., vback=0., vcr
     y_edge_top, y_edge_bottom = cross_top, -cross_bottom
     img[:, x_edge_left:x_edge_right] = vcross
     img[y_edge_top:y_edge_bottom, :] = vcross
+    return img
+
+
+def parallelogram(ppd=10, para_size=(2., 3., 1.), vback=0., vpara=0.5):
+    para_height, para_width, para_depth = degrees_to_pixels(para_size, ppd)
+
+    # Create triangle to create parallelogram
+    tri1 = triangle(ppd, (para_size[0], para_size[2]), 0., -vpara+vback)
+    tri2 = triangle(ppd, (para_size[0], para_size[2]), -vpara+vback, 0.)
+
+    # Create image, add rectangle and subtract triangles
+    img = np.ones((para_height, para_width+para_depth)) * vpara
+    img[0:para_height, 0:para_depth] += tri1
+    img[0:para_height, para_width::] += tri2
     return img
