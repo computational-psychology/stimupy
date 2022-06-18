@@ -9,6 +9,7 @@ from .disc_and_ring import disc_and_ring
 from .grating_induction import grating_illusion
 from .grating import grating_illusion
 from .hermann import hermann_grid
+from .mondrians import corrugated_mondrians
 from .rings import ring_stimulus
 from .sbc import *
 from .todorovic import *

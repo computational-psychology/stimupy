@@ -712,9 +712,30 @@ def checkerboard209(ppd=PPD):
     return stim
 
 
-def corrugated_mondrian():
-    # TODO: not available atm
-    raise NotImplementedError
+def corrugated_mondrian(ppd=PPD):
+    depths = (0., -1., 0., 1., 0.)
+    v1, v2, v3, v4 = 0., 0.4, 0.75, 1.
+    values = ((v3, v2, v3, v2, v3),
+              (v4, v3, v2, v3, v4),
+              (v3, v2, v3, v2, v3),
+              (v2, v1, v2, v1, v2),
+              (v3, v2, v3, v2, v3))
+    target_idx = ((1, 2), (3, 2))
+
+    stim = stimuli.illusions.mondrians.corrugated_mondrians(
+            ppd=PPD,
+            widths=2.,
+            heights=2.,
+            depths=depths,
+            values=values,
+            target_idx=target_idx,
+            vback=0.5,
+            )
+
+    shape = degrees_to_pixels(VISEXTENT, ppd)
+    stim["img"] = pad_img_to_shape(stim["img"], shape, val=0.5)
+    stim["mask"] = pad_img_to_shape(stim["mask"], shape, val=0)
+    return stim
 
 
 def benary_cross(ppd=PPD):
