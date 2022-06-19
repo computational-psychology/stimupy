@@ -46,7 +46,7 @@ def todorovic_in(
 
     Returns
     -------
-    A stimulus object
+    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
     """
 
     if isinstance(covers_height, (float, int)):
@@ -90,6 +90,38 @@ def todorovic_out(
         vtarget=0.5,
         vcovers=1.,
         ):
+    """
+    Todorovic's illusion with cross target and rectangles added
+
+    Parameters
+    ----------
+    im_size : (float, float)
+        size of the stimulus in degrees of visual angle (height, width)
+    ppd : int
+        pixels per degree (visual angle)
+    target_size : (float, float, float, float)
+        size of the target's arms in degrees visual angle in form (top, bottom, left, right)
+    target_thickness : float
+        thickness of target cross
+    covers_height : float or tuple of floats
+        height of covers; if single float, all covers have the same height
+    covers_width : float or tuple of floats
+        width of covers; if single float, all covers have the same width
+    covers_posx : tuple of floats
+        x coordinates of covers; as many covers as there are coordinates
+    covers_posy : tuple of floats
+        y coordinates of covers; as many covers as there are coordinates
+    vback : float
+        value for background
+    vtarget : float
+        value for target
+    vcovers : float
+        value for covers
+
+    Returns
+    -------
+    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    """
 
     if isinstance(covers_height, (float, int)):
         covers_height = [covers_height]*len(covers_posx)
