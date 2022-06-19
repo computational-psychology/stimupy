@@ -8,13 +8,38 @@ def corrugated_mondrians(
         widths=2.,
         heights=2.,
         depths=(0., 1., 0., -1.),
+        target_idx=((1, 1), (3, 1)),
         values=((0.4, 0.75, 0.4, 0.75),
                 (0.75, 0.4, 0.75, 1.),
                 (0.4, 0.75, 0.4, 0.75),
                 (0., 0.4, 0., 0.4)),
-        target_idx=((1, 1), (3, 1)),
         vback=0.5
         ):
+    """
+    Corrugated mondrians
+
+    Parameters
+    ----------
+    ppd : int
+        pixels per degree (visual angle)
+    widths : float
+        width of rectangles in degree visual angle
+    heights : float or tuple of floats
+        height of rectangles; if single float, all rectangles have the same height
+    depths : float or tuple of floats
+        depth of rectangles; as many depths as there are rows
+    target_idx : nested tuples
+        index of targets; as many tuples as there are targets each with (x, y) indices
+    values : nested tuples
+        values of indiidual rectangles; as many tuples as there are rows and as many numbers in each
+        tuple as there are columns
+    vback : float
+        value for background
+
+    Returns
+    -------
+    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    """
 
     if isinstance(heights, (float, int)):
         heights = [heights]*len(depths)
