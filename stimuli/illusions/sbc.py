@@ -38,7 +38,5 @@ def simultaneous_contrast(
 
 
 if __name__ == "__main__":
-    import matplotlib.pyplot as plt
-
     stim = simultaneous_contrast()
     plot_stim(stim, mask=True)
