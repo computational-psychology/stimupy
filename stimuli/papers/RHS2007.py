@@ -172,9 +172,23 @@ def WE_howe(ppd=PPD):
     return stim
 
 
-def WE_zigzag():
-    # TODO: not available atm
-    raise NotImplementedError
+def WE_zigzag(ppd=PPD):
+    stim = stimuli.illusions.whites.white_zigzag(
+            ppd=PPD,
+            L_size=(4.4, 4.8, 1.),
+            L_distance=1.,
+            L_repeats=4.4,
+            target_height=2.,
+            target_idx1=((2, 2), (2, 1), (2, 0), (2, -1)),
+            target_idx2=((1, 1), (1, 0), (1, -1),  (1, 2)),
+            v1=0.,
+            v2=1.,
+            vtarget=0.5,
+            )
+    shape = degrees_to_pixels(VISEXTENT, ppd)
+    stim["img"] = pad_img_to_shape(stim["img"], shape, val=0.5)
+    stim["mask"] = pad_img_to_shape(stim["mask"], shape, val=0)
+    return stim
 
 
 def WE_radial_thick_small(ppd=PPD):
