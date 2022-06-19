@@ -727,8 +727,8 @@ def corrugated_mondrian(ppd=PPD):
             widths=2.,
             heights=2.,
             depths=depths,
-            values=values,
             target_idx=target_idx,
+            values=values,
             vback=0.5,
             )
 
