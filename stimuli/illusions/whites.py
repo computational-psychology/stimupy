@@ -555,12 +555,12 @@ def white_yazdanbakhsh(
 
 
 def white_zigzag(ppd=10,
-                 L_size=(8., 6., 2.),
+                 L_size=(10., 10., 2.),
                  L_distance=2.,
-                 L_repeats=6,
+                 L_repeats=(3., 3.),
                  target_height=4.,
-                 target_idx1=((2, 1), (2, 0), (2, -1)),
-                 target_idx2=None,
+                 target_idx_v1=((-1, 0), (0, 0), (1, 0)),
+                 target_idx_v2=((0, -1), (0, 0), (0, 1)),
                  v1=0.,
                  v2=1.,
                  vtarget=0.5,
@@ -576,18 +576,16 @@ def white_zigzag(ppd=10,
         size of individual jags (height, width, thickness) in degree visual angle
     L_distance : float
         distance between parallel jags in degree visual angle
-    L_repeats : float
-        number of repeats of jags
+    L_repeats : (float, float)
+        number of repeats of jags in y and x direction
     target_height : float
         height of targets in degree visual angle
-    target_idx1 : nested tuples
+    target_idx_v1 : nested tuples
         target indices with v1-value; as many tuples as there are targets each with (y, x) indices;
-        y indicates index from top to bottom with zero being the top;
-        x indicates index from center to periphery with zero being the center
-    target_idx2 : nested tuples
+        (0, 0) places a target in the center
+    target_idx_v2 : nested tuples
         target indices with v2-value; as many tuples as there are targets each with (y, x) indices;
-        y indicates index from top to bottom with zero being the top;
-        x indicates index from center to periphery with zero being the center
+        (0, 0) places a target in the center
     v1 : float
         first value for grating
     v2 : float
@@ -602,42 +600,46 @@ def white_zigzag(ppd=10,
 
     Ly, Lx, Lw = degrees_to_pixels(L_size, ppd)
     Ld = degrees_to_pixels(L_distance, ppd)
+    Lywd, Lxwd = Ly, Lx
     nL = L_repeats
     theight = degrees_to_pixels(target_height, ppd)
 
     mval2 = 2
-    if target_idx1 is None:
-        target_idx1 = ()
+    if target_idx_v1 is None:
+        target_idx_v1 = ()
         mval2 = 1
-    if target_idx2 is None:
-        target_idx2 = ()
+    if target_idx_v2 is None:
+        target_idx_v2 = ()
 
     if len(L_size) != 3:
         raise Exception("L_size needs to have a length of 3")
-    if nL < 2:
+
+    if isinstance(nL, (int, float)):
+        nL = (nL, nL)
+    if np.min(nL) < 2:
         raise Exception("L_repeats should be larger than 1")
 
     # Create grid patch
     L_patch = np.zeros([Ly, Lx])
-    L_patch[0:Lw, 0:Lx] = v2 - v1
-    L_patch[0:Ly, Lx-Lw::] = v2 - v1
-    L_patch[0:Lw, 0:Lw] = (v2 - v1) / 2.
-    L_patch[Ly-Lw::, Lx-Lw::] = (v2 - v1) / 2.
+    L_patch[0:Lw, 0:Lx] = v1 - v2
+    L_patch[0:Ly, Lx-Lw::] = v1 - v2
+    L_patch[0:Lw, 0:Lw] = (v1 - v2) / 2.
+    L_patch[Ly-Lw::, Lx-Lw::] = (v1 - v2) / 2.
 
     # Create target and mask patch 1
     tpatch1 = np.zeros([Ly, Lx])
-    tpatch1[int(Ly/2 - theight/2):int(Ly/2 + theight/2), Lx-Lw::] = vtarget - v2
+    tpatch1[int(Ly/2 - theight/2):int(Ly/2 + theight/2), Lx-Lw::] = vtarget - v1
     mpatch1 = np.zeros([Ly, Lx])
     mpatch1[int(Ly/2 - theight/2):int(Ly/2 + theight/2), Lx-Lw::] = 1
 
     # Create target and mask patch 2
     tpatch2 = np.zeros([Ly, Lx])
-    tpatch2[int(Ly/2 - theight/2):int(Ly/2 + theight/2), Lx-Lw-Ld:Lx-Lw] = vtarget - v1
+    tpatch2[int(Ly/2 - theight/2):int(Ly/2 + theight/2), Lx-Lw-Ld:Lx-Lw] = vtarget - v2
     mpatch2 = np.zeros([Ly, Lx])
     mpatch2[int(Ly/2 - theight/2):int(Ly/2 + theight/2), Lx-Lw-Ld:Lx-Lw] = mval2
 
     # Create image slightly larger than needed
-    img = np.ones([int(Ly*(nL+2)), int(Lx*(nL+2))]) * v1
+    img = np.ones([int(Lywd*(nL[0]+2)), int(Lxwd*(nL[1]+2))]) * v2
     height, width = img.shape
     mask = np.zeros([height, width])
 
@@ -645,7 +647,7 @@ def white_zigzag(ppd=10,
     idx_y = np.arange(0, height-Ly, Ly-Lw)
     idx_x = np.arange(0, width-Lx, Lx-Lw)
 
-    for j in range(int(nL**2)):
+    for j in range(int(np.max(nL)**2)):
         # Calculate starting coordinates in grid
         ny, nx = j*(Ly + Ld) - (Ly-Lw)*j, j*(Lx + Ld) - (Lx-Lw)*j
         my, mx = j*(Ly - Ld - Lw*2) - (Ly-Lw)*j, j*(Lx - Ld - Lw*2) - (Lx-Lw)*j
@@ -656,10 +658,12 @@ def white_zigzag(ppd=10,
                     img[idx_y[i]+ny:idx_y[i]+ny+Ly, idx_x[i]+mx:idx_x[i]+mx+Lx] += L_patch
 
                 # Add targets in lower left half
-                if (i-1, j) == target_idx1 or (i-1, j) in target_idx1:
+                tr = i - int(np.minimum(len(idx_x), len(idx_y)) / 2)
+                tc = j
+                if (tr, tc) == target_idx_v1 or (tr, tc) in target_idx_v1:
                     img[idx_y[i]+ny:idx_y[i]+ny+Ly, idx_x[i]+mx:idx_x[i]+mx+Lx] += tpatch1
                     mask[idx_y[i]+ny:idx_y[i]+ny+Ly, idx_x[i]+mx:idx_x[i]+mx+Lx] += mpatch1
-                if (i-1, j) == target_idx2 or (i-1, j) in target_idx2:
+                if (tr, tc) == target_idx_v2 or (tr, tc) in target_idx_v2:
                     img[idx_y[i]+ny+Lw:idx_y[i]+ny+Ly+Lw, idx_x[i]+mx:idx_x[i]+mx+Lx] += tpatch2
                     mask[idx_y[i]+ny+Lw:idx_y[i]+ny+Ly+Lw, idx_x[i]+mx:idx_x[i]+mx+Lx] += mpatch2
 
@@ -669,44 +673,23 @@ def white_zigzag(ppd=10,
                     img[idx_y[i]+my:idx_y[i]+my+Ly, idx_x[i]+nx:idx_x[i]+nx+Lx] += L_patch
 
                 # Add targets in upper right half
-                if (i-1, -j) == target_idx1 or (i-1, -j) in target_idx1:
+                if (tr, -tc) == target_idx_v1 or (tr, -tc) in target_idx_v1:
                     img[idx_y[i]+my:idx_y[i]+my+Ly, idx_x[i]+nx:idx_x[i]+nx+Lx] += tpatch1
                     mask[idx_y[i]+my:idx_y[i]+my+Ly, idx_x[i]+nx:idx_x[i]+nx+Lx] += mpatch1
-                if (i-1, -j) == target_idx2 or (i-1, -j) in target_idx2:
+                if (tr, -tc) == target_idx_v2 or (tr, -tc) in target_idx_v2:
                     img[idx_y[i]+my+Lw:idx_y[i]+my+Ly+Lw, idx_x[i]+nx:idx_x[i]+nx+Lx] += tpatch2
                     mask[idx_y[i]+my+Lw:idx_y[i]+my+Ly+Lw, idx_x[i]+nx:idx_x[i]+nx+Lx] += mpatch2
 
     # Crop to relevant size
-    img = img[Ly:height-Ly*2, Lx:width-Lx*2]
-    mask = mask[Ly:height-Ly*2, Lx:width-Lx*2]
+    img = img[Lywd:Lywd+int(Lywd*nL[0]), Lxwd:Lxwd+int(Lxwd*nL[1])]
+    mask = mask[Lywd:Lywd+int(Lywd*nL[0]), Lxwd:Lxwd+int(Lxwd*nL[1])]
     return {"img": img, "mask": mask}
 
 
 if __name__ == "__main__":
-    stim = white()
-    plt.figure(figsize=(8, 20))
-    plt.subplot(4, 2, 1)
-    plt.imshow(stim["img"], cmap="gray")
-    plt.subplot(4, 2, 2)
-    plt.imshow(stim["mask"], cmap="gray")
-
-    stim = circular_white()
-    plt.subplot(4, 2, 3)
-    plt.imshow(stim["img"], cmap="gray")
-    plt.subplot(4, 2, 4)
-    plt.imshow(stim["mask"], cmap="gray")
-
-    stim = wheel_of_fortune_white()
-    plt.subplot(4, 2, 5)
-    plt.imshow(stim["img"], cmap="gray")
-    plt.subplot(4, 2, 6)
-    plt.imshow(stim["mask"], cmap="gray")
-
     stim = white_zigzag()
-    plt.subplot(4, 2, 7)
+    plt.subplot(1, 2, 1)
     plt.imshow(stim["img"], cmap="gray")
-    plt.subplot(4, 2, 8)
-    plt.imshow(stim["mask"], cmap="gray")
-
-    plt.tight_layout()
+    plt.subplot(1, 2, 2)
+    plt.imshow(stim["mask"])
     plt.show()

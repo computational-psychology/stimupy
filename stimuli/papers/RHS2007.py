@@ -173,14 +173,15 @@ def WE_howe(ppd=PPD):
 
 
 def WE_zigzag(ppd=PPD):
+    i1, i2 = -1, 0
     stim = stimuli.illusions.whites.white_zigzag(
             ppd=PPD,
-            L_size=(4.4, 4.8, 1.),
+            L_size=(4.4, 4.6, 1.),
             L_distance=1.,
-            L_repeats=4.4,
+            L_repeats=(3.5, 3.8),
             target_height=2.,
-            target_idx1=((2, 2), (2, 1), (2, 0), (2, -1)),
-            target_idx2=((1, 1), (1, 0), (1, -1),  (1, 2)),
+            target_idx_v1=((i1, -1), (i1, -0), (i1, 1), (i1, 2)),
+            target_idx_v2=((i2, -1), (i2, -0), (i2, 1), (i2, 2)),
             v1=0.,
             v2=1.,
             vtarget=0.5,
