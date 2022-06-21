@@ -1,50 +1,50 @@
 {
     "dungeon": {
-        "img": "68916765508edad21b54a739c439d9f3ed0818f9",
-        "mask": "2909a91b9e41ce0d2c34bedc3dcc5498387711f4"
+        "img": "23859250c9f5a895de48c20e7095f4e9",
+        "mask": "1954462ad5eeb864935b349630f918f9"
     },
     "cube": {
-        "img": "c0f97e35df4d0dc83b853592deb4b0b7edad9ead",
-        "mask": "8e1b08b9cbbdd21ddb43cfb5d1cd2a709e41587f"
+        "img": "59ac0095ba9c17a2cdd98ffff6613447",
+        "mask": "3a6543daa69e82047d0b84b76a446312"
     },
     "grating": {
-        "img": "ad412900c2876353b05946983b45616fc1491fc0",
-        "mask": "ffbdfa00d199b3c0b8b1591d959688edb7af5d6e"
+        "img": "44286e04ca4f44fe98930722c0d45b1a",
+        "mask": "cb796a47e9ca6c8426a2585c9b604989"
     },
     "rings": {
-        "img": "05405135800f940595d878684a22ebc7526010b1",
-        "mask": "62077c54c04844f489d856073fa8751173ec047d"
+        "img": "38a7bc014428864fffcee590d0953465",
+        "mask": "3c5c395de3b4cae5b6956314624ea012"
     },
     "bullseye": {
-        "img": "f08bcba5900de35e14d0c7e9c3e39606008df996",
-        "mask": "995024b44d54a04a2c408c41e156c4b0cf128611"
+        "img": "e30fb79cf7897dfed4ce04983b36ba28",
+        "mask": "721937af54e313931f38a22b7a6ce885"
     },
     "simultaneous_brightness_contrast": {
-        "img": "7278d19b967f4b11054d0fe95fee5d96bed1e075",
-        "mask": "7d542f0409c187c2bb50043dd76f13174071788e"
+        "img": "a0e0353cd1fb9a829241ddecc51fbc64",
+        "mask": "c46a87aa52c48192ce96c90fbe10c062"
     },
     "white": {
-        "img": "73e3daae2ad8bde2a5bf8e2a2a13fe52988c48ce",
-        "mask": "2eefb2dc02de0e4733d25d7ce682d7417abb55e2"
+        "img": "377a2903002d526da2ba1d052eb193d2",
+        "mask": "306423f9e89e6d3bd21a946881ef684a"
     },
     "benary": {
-        "img": "79e232c02f5086b3bd7e56caf63b7ae0fa1db64b",
-        "mask": "5b0b04f0af4abec321f4fd7802e63d29e0062264"
+        "img": "4c3f2278ac91effebf1db9f580a24db6",
+        "mask": "c790aa14edddb57f8054a4f330c7ddc6"
     },
     "todorovic": {
-        "img": "0a00ab245563dda224877f93e3c8e956a419e56d",
-        "mask": "245263ceb96d1fbdd379661ca2fbc134a89dfd92"
+        "img": "1b9d5b09475aace9b97f599c5731177b",
+        "mask": "2eeeeb428daf6be031c64ef841e7c897"
     },
     "checkerboard_contrast_contrast": {
-        "img": "92246df5d992e6479aac62ecb2eaf85d0693d532",
-        "mask": "765a19c96b4cbe020ab09fde08e4a9ddb86847e7"
+        "img": "246c282926e1a0b390eb4bca6bd00b16",
+        "mask": "487c5cbe9dfd08719ead98ea9a7e901c"
     },
     "checkerboard": {
-        "img": "b66cfcf6e0de943f62e3d69db78a8d1eb7e06c21",
-        "mask": "684eb135d09c6810d8b06d4983b3017f2c31d592"
+        "img": "6891d301caf87043b99c199f13fdf607",
+        "mask": "70844521cd62275df0cab9a7c1184d9d"
     },
     "checkerboard_extended": {
-        "img": "9f102bb9e7252041485506b8d820150944714520",
-        "mask": "f7dd09bb19ad64e178ea280bf9ebb08534ef2972"
+        "img": "570e9597fa49a33a6e96687a007ad3e0",
+        "mask": "f6ee08aeab807602449271ee7367cc44"
     }
 }

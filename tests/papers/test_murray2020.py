@@ -1,6 +1,6 @@
 import json
 import os.path
-from hashlib import sha1
+from hashlib import md5
 
 import numpy as np
 import pytest
@@ -16,10 +16,10 @@ loaded = json.load(open(jsonfile, "r"))
 def test_stim(stim):
     func = getattr(stimuli.papers.murray2020, stim)
     assert (
-        sha1(np.ascontiguousarray(func()["img"])).hexdigest()
+        md5(np.ascontiguousarray(func()["img"])).hexdigest()
         == loaded[stim]["img"]
     ), "imgs are different"
     assert (
-        sha1(np.ascontiguousarray(func()["mask"])).hexdigest()
+        md5(np.ascontiguousarray(func()["mask"])).hexdigest()
         == loaded[stim]["mask"]
     ), "masks are different"

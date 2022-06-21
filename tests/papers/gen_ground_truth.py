@@ -1,5 +1,5 @@
 import json
-from hashlib import sha1
+from hashlib import md5
 
 import numpy as np
 from stimuli.papers import *
@@ -24,9 +24,9 @@ def gen_ground_truth(paper):
             # Generate the stimulus-dict
             stim = func()
 
-            # Hash (sha1) "img" and "mask", and save only the hex
-            stim["img"] = sha1(np.ascontiguousarray(stim["img"])).hexdigest()
-            stim["mask"] = sha1(np.ascontiguousarray(stim["mask"])).hexdigest()
+            # Hash (md5) "img" and "mask", and save only the hex
+            stim["img"] = md5(np.ascontiguousarray(stim["img"])).hexdigest()
+            stim["mask"] = md5(np.ascontiguousarray(stim["mask"])).hexdigest()
 
             # Accumulate
             stims[stimname] = stim

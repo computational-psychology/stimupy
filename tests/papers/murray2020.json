@@ -1,50 +1,50 @@
 {
     "argyle": {
-        "img": "423e122e42b54fce9917f3c617fab6f4b2f0d18a",
-        "mask": "06e66f7b979c14c0986d165237796d819a15cff2"
+        "img": "cb4ed25c9e5d878c4daf41a57656e4ba",
+        "mask": "b9c1760d980dc13c5bb2fda8ebe537c2"
     },
     "argyle_control": {
-        "img": "49ff3ef8cd53b2426d26c4df3bc1466f6f29c08f",
-        "mask": "5259c98174257af732e9b348d642ae1e4747d2ac"
+        "img": "e3e1e33d7eb3f1e4ea2c0100e551b3e6",
+        "mask": "91dbc28e28a6209bcd187a11e0321cae"
     },
     "argyle_long": {
-        "img": "c21fab6e5c7fabd1952cd822340510ca7434c6a1",
-        "mask": "408fb07d203a9a747b64b780d7fd225c34104523"
+        "img": "ce09cf6536bc04037536c767c973ef9c",
+        "mask": "83ffc7391ddcbebfe6cec7b0944c6dc0"
     },
     "snake": {
-        "img": "d29f91b88c29dfb6976ef861bf281983416ad3c4",
-        "mask": "cb9ba76ba9fbd80dfb6b812d503f4f3c002db1bd"
+        "img": "06337656c123eeb36dd75963639adaa2",
+        "mask": "02636e9e6289b9ae0bb36e518fc20e3f"
     },
     "snake_control": {
-        "img": "5d65036b27e6eb14441886c153a2ac8b2512e1b3",
-        "mask": "cb9ba76ba9fbd80dfb6b812d503f4f3c002db1bd"
+        "img": "3473bf614bdf0eb68b4c7c8ce1b29697",
+        "mask": "02636e9e6289b9ae0bb36e518fc20e3f"
     },
     "koffka_adelson": {
-        "img": "8c99e0b6208753c2cd0a3ef16c03833ad9c549f3",
-        "mask": "0a20a73294a86ff18f40f29ab32dd9f92cd486e5"
+        "img": "16f09cb37a170053a73f5183f289b6df",
+        "mask": "ecf8713ae03549fa9ee16b1462ff5bf1"
     },
     "koffka_broken": {
-        "img": "18e94511fd09c8fc8db9b73e75a451e296db4b81",
-        "mask": "3f8d7213e374a03226e86321bfca0bdc60effacf"
+        "img": "f710a7d1ceb75d1f6cac9d91e1c2a821",
+        "mask": "40c249e4d8835580b7f57d04e0df65c4"
     },
     "koffka_connected": {
-        "img": "50e6083439a1f8d6e03740f1e7e4b3964b35574f",
-        "mask": "347e20673d19f639e9c7b6d52947c2000266d609"
+        "img": "9ffb69c20afbaf731877b4626d61c404",
+        "mask": "4e4fa0cbe12df9fa7bdab6b0fc073270"
     },
     "checkassim": {
-        "img": "bc1580ef30dd5d1286fac394eeddc1eec4b73f9f",
-        "mask": "3db7cac46499b5e7e18a8a121194f1488ddaaa71"
+        "img": "ef5b9b410280b3f2e2ff45ee165e32d7",
+        "mask": "4bc92371e105629f30513c1050f99cf4"
     },
     "simcon": {
-        "img": "52f4d6d39d655994cd9da9cfc28fa24630339907",
-        "mask": "343b00af32adab0fd0a333b9adbda3f8b3ff0f8e"
+        "img": "87da2163dcd4ce3ef214c48fa243c787",
+        "mask": "99fbc73e5c8aefd70501838130b806e9"
     },
     "simcon_articulated": {
-        "img": "adfa71c170c756965cd9b323c5e2ba19cd42e37a",
-        "mask": "343b00af32adab0fd0a333b9adbda3f8b3ff0f8e"
+        "img": "61685f75a7352ff756d566a6ffcc8faf",
+        "mask": "99fbc73e5c8aefd70501838130b806e9"
     },
     "white": {
-        "img": "5bfa344de8ce975c538c58209bc2a2b81e535d34",
-        "mask": "ebecf00e9fe472f1b1f429b5e64d8a0130739b3f"
+        "img": "0fb691c397d4bdcbb0eb5f89134be5aa",
+        "mask": "b0f4ec00fd2d12d15f005af9b53b29f8"
     }
 }
