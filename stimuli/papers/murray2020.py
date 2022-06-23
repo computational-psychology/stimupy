@@ -58,6 +58,8 @@ data_dir = os.path.dirname(__file__)
 mat_fname = os.path.join(data_dir, "murray2020.mat")
 mat_content = scipy.io.loadmat(mat_fname)
 
+PPD = 16 / 8.0
+
 
 def gen_all(skip=False):
     stims = {}  # save the stimulus-dicts in a larger dict, with name as key
@@ -101,7 +103,7 @@ def get_mask(target1, target2, shape):
     return mask
 
 
-def argyle():
+def argyle(ppd=PPD):
     """Argyle illusion, Murray (2020) Fig 1a
 
     Returns
@@ -118,10 +120,18 @@ def argyle():
     target1 = np.array((((a[0])[0])[1])[0])
     target2 = np.array((((a[0])[0])[2])[0])
     mask = get_mask(target1, target2, img.shape)
+
+    img = img.repeat(repeats=int(ppd / PPD), axis=0).repeat(
+        repeats=int(ppd / PPD), axis=1
+    )
+    mask = mask.repeat(repeats=int(ppd / PPD), axis=0).repeat(
+        repeats=int(ppd / PPD), axis=1
+    )
+
     return {"img": img, "mask": mask}
 
 
-def argyle_control():
+def argyle_control(ppd=PPD):
     """Argyle control figure, Murray (2020) Fig 1c
 
     Returns
@@ -138,10 +148,18 @@ def argyle_control():
     target1 = np.array((((a[0])[0])[1])[0])
     target2 = np.array((((a[0])[0])[2])[0])
     mask = get_mask(target1, target2, img.shape)
+
+    img = img.repeat(repeats=int(ppd / PPD), axis=0).repeat(
+        repeats=int(ppd / PPD), axis=1
+    )
+    mask = mask.repeat(repeats=int(ppd / PPD), axis=0).repeat(
+        repeats=int(ppd / PPD), axis=1
+    )
+
     return {"img": img, "mask": mask}
 
 
-def argyle_long():
+def argyle_long(ppd=PPD):
     """Long-range Argyle illusion, Murray (2020) Fig 1b
 
     Returns
@@ -158,10 +176,18 @@ def argyle_long():
     target1 = np.array((((a[0])[0])[1])[0])
     target2 = np.array((((a[0])[0])[2])[0])
     mask = get_mask(target1, target2, img.shape)
+
+    img = img.repeat(repeats=int(ppd / PPD), axis=0).repeat(
+        repeats=int(ppd / PPD), axis=1
+    )
+    mask = mask.repeat(repeats=int(ppd / PPD), axis=0).repeat(
+        repeats=int(ppd / PPD), axis=1
+    )
+
     return {"img": img, "mask": mask}
 
 
-def snake():
+def snake(ppd=PPD):
     """Snake illusion, Murray (2020) Fig 1i
 
     Returns
@@ -178,10 +204,18 @@ def snake():
     target1 = np.array((((a[0])[0])[1])[0])
     target2 = np.array((((a[0])[0])[2])[0])
     mask = get_mask(target1, target2, img.shape)
+
+    img = img.repeat(repeats=int(ppd / PPD), axis=0).repeat(
+        repeats=int(ppd / PPD), axis=1
+    )
+    mask = mask.repeat(repeats=int(ppd / PPD), axis=0).repeat(
+        repeats=int(ppd / PPD), axis=1
+    )
+
     return {"img": img, "mask": mask}
 
 
-def snake_control():
+def snake_control(ppd=PPD):
     """Snake control figure, Murray (2020) Fig 1j
 
     Returns
@@ -198,10 +232,18 @@ def snake_control():
     target1 = np.array((((a[0])[0])[1])[0])
     target2 = np.array((((a[0])[0])[2])[0])
     mask = get_mask(target1, target2, img.shape)
+
+    img = img.repeat(repeats=int(ppd / PPD), axis=0).repeat(
+        repeats=int(ppd / PPD), axis=1
+    )
+    mask = mask.repeat(repeats=int(ppd / PPD), axis=0).repeat(
+        repeats=int(ppd / PPD), axis=1
+    )
+
     return {"img": img, "mask": mask}
 
 
-def koffka_adelson():
+def koffka_adelson(ppd=PPD):
     """Koffka-Adelson figure, Murray (2020) Fig 1e
 
     Returns
@@ -218,10 +260,18 @@ def koffka_adelson():
     target1 = np.array((((a[0])[0])[1])[0])
     target2 = np.array((((a[0])[0])[2])[0])
     mask = get_mask(target1, target2, img.shape)
+
+    img = img.repeat(repeats=int(ppd / PPD), axis=0).repeat(
+        repeats=int(ppd / PPD), axis=1
+    )
+    mask = mask.repeat(repeats=int(ppd / PPD), axis=0).repeat(
+        repeats=int(ppd / PPD), axis=1
+    )
+
     return {"img": img, "mask": mask}
 
 
-def koffka_broken():
+def koffka_broken(ppd=PPD):
     """Koffka ring, broken, Murray (2020) Fig 1d
 
     Returns
@@ -238,10 +288,18 @@ def koffka_broken():
     target1 = np.array((((a[0])[0])[1])[0])
     target2 = np.array((((a[0])[0])[2])[0])
     mask = get_mask(target1, target2, img.shape)
+
+    img = img.repeat(repeats=int(ppd / PPD), axis=0).repeat(
+        repeats=int(ppd / PPD), axis=1
+    )
+    mask = mask.repeat(repeats=int(ppd / PPD), axis=0).repeat(
+        repeats=int(ppd / PPD), axis=1
+    )
+
     return {"img": img, "mask": mask}
 
 
-def koffka_connected():
+def koffka_connected(ppd=PPD):
     """Koffka ring, connected, Murray (2020) Fig 1f
 
     Returns
@@ -258,10 +316,18 @@ def koffka_connected():
     target1 = np.array((((a[0])[0])[1])[0])
     target2 = np.array((((a[0])[0])[2])[0])
     mask = get_mask(target1, target2, img.shape)
+
+    img = img.repeat(repeats=int(ppd / PPD), axis=0).repeat(
+        repeats=int(ppd / PPD), axis=1
+    )
+    mask = mask.repeat(repeats=int(ppd / PPD), axis=0).repeat(
+        repeats=int(ppd / PPD), axis=1
+    )
+
     return {"img": img, "mask": mask}
 
 
-def checkassim():
+def checkassim(ppd=PPD):
     """Checkerboard assimilation, Murray (2020) Fig 1h
 
     Returns
@@ -278,10 +344,18 @@ def checkassim():
     target1 = np.array((((a[0])[0])[1])[0])
     target2 = np.array((((a[0])[0])[2])[0])
     mask = get_mask(target1, target2, img.shape)
+
+    img = img.repeat(repeats=int(ppd / PPD), axis=0).repeat(
+        repeats=int(ppd / PPD), axis=1
+    )
+    mask = mask.repeat(repeats=int(ppd / PPD), axis=0).repeat(
+        repeats=int(ppd / PPD), axis=1
+    )
+
     return {"img": img, "mask": mask}
 
 
-def simcon():
+def simcon(ppd=PPD):
     """Classic simultaneous contrast figure, Murray (2020) Fig 1k
 
     Returns
@@ -298,10 +372,18 @@ def simcon():
     target1 = np.array((((a[0])[0])[1])[0])
     target2 = np.array((((a[0])[0])[2])[0])
     mask = get_mask(target1, target2, img.shape)
+
+    img = img.repeat(repeats=int(ppd / PPD), axis=0).repeat(
+        repeats=int(ppd / PPD), axis=1
+    )
+    mask = mask.repeat(repeats=int(ppd / PPD), axis=0).repeat(
+        repeats=int(ppd / PPD), axis=1
+    )
+
     return {"img": img, "mask": mask}
 
 
-def simcon_articulated():
+def simcon_articulated(ppd=PPD):
     """Articulated simultaneous contrast figure, Murray (2020) Fig 1l
 
     Returns
@@ -318,10 +400,18 @@ def simcon_articulated():
     target1 = np.array((((a[0])[0])[1])[0])
     target2 = np.array((((a[0])[0])[2])[0])
     mask = get_mask(target1, target2, img.shape)
+
+    img = img.repeat(repeats=int(ppd / PPD), axis=0).repeat(
+        repeats=int(ppd / PPD), axis=1
+    )
+    mask = mask.repeat(repeats=int(ppd / PPD), axis=0).repeat(
+        repeats=int(ppd / PPD), axis=1
+    )
+
     return {"img": img, "mask": mask}
 
 
-def white():
+def white(ppd=PPD):
     """White's illusion, Murray (2020) Fig 1A
 
     Returns
@@ -338,6 +428,14 @@ def white():
     target1 = np.array((((a[0])[0])[1])[0])
     target2 = np.array((((a[0])[0])[2])[0])
     mask = get_mask(target1, target2, img.shape)
+
+    img = img.repeat(repeats=int(ppd / PPD), axis=0).repeat(
+        repeats=int(ppd / PPD), axis=1
+    )
+    mask = mask.repeat(repeats=int(ppd / PPD), axis=0).repeat(
+        repeats=int(ppd / PPD), axis=1
+    )
+
     return {"img": img, "mask": mask}
 
 
