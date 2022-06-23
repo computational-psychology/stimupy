@@ -1,9 +1,6 @@
-import json
-from hashlib import md5
-
-import numpy as np
 from stimuli.papers import *
 from stimuli.papers import __all__ as papers
+from stimuli.utils import export
 
 
 def gen_ground_truth(paper):
@@ -25,8 +22,7 @@ def gen_ground_truth(paper):
             stim = func()
 
             # Hash (md5) "img" and "mask", and save only the hex
-            stim["img"] = md5(np.ascontiguousarray(stim["img"])).hexdigest()
-            stim["mask"] = md5(np.ascontiguousarray(stim["mask"])).hexdigest()
+            stim = export.arrs_to_checksum(stim, keys=["img", "mask"])
 
             # Accumulate
             stims[stimname] = stim
@@ -47,6 +43,4 @@ if __name__ == "__main__":
     for paper in papers:
         stims = gen_ground_truth(paper)
 
-        # Save the dictionary of stimulus-dicts as (pretty) JSON
-        with open(f"{d}/{paper}.json", "w", encoding="utf-8") as f:
-            json.dump(stims, f, ensure_ascii=False, indent=4)
+        export.to_json(stims, f"{d}/{paper}.json")
