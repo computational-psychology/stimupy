@@ -48,7 +48,7 @@ def grating_illusion(
     A stimulus object
     """
 
-    if blur == None:
+    if blur is None:
         blur = shape[0] / 2
 
     height_px, width_px = degrees_to_pixels(shape, ppd)

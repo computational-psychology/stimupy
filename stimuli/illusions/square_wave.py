@@ -50,14 +50,14 @@ def square_wave(
     height, width = degrees_to_pixels(shape, ppd)
     pixels_per_cycle = degrees_to_pixels(1.0 / (frequency * 2.0), ppd) * 2
 
-    if period is "full":
+    if period == "full":
         width = (width // pixels_per_cycle) * pixels_per_cycle
-    elif period is "half":
+    elif period == "half":
         width = (
             height // pixels_per_cycle
         ) * pixels_per_cycle + pixels_per_cycle / 2
 
-    stim = np.ones((height, width)) * (low if start is "high" else high)
+    stim = np.ones((height, width)) * (low if start == "high" else high)
 
     index = [
         i + j
@@ -65,7 +65,7 @@ def square_wave(
         for j in range(0, width, pixels_per_cycle)
         if i + j < width
     ]
-    stim[:, index] = low if start is "low" else high
+    stim[:, index] = low if start == "low" else high
     return (stim, pixels_per_cycle)
 
 
