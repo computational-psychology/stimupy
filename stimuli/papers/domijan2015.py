@@ -19,6 +19,28 @@ __all__ = [
 PPD = 10
 
 
+def gen_all(ppd=PPD, skip=False):
+    stims = {}  # save the stimulus-dicts in a larger dict, with name as key
+    for stim_name in __all__:
+        print(f"Generating domijan2015.{stim_name}")
+
+        # Get a reference to the actual function
+        func = globals()[stim_name]
+        try:
+            stim = func()
+
+            # Accumulate
+            stims[stim_name] = stim
+        except NotImplementedError as e:
+            if not skip:
+                raise e
+            # Skip stimuli that aren't implemented
+            print("-- not implemented")
+            pass
+
+    return stims
+
+
 def dungeon(ppd=PPD):
     return illusions.dungeon.dungeon_illusion(
         ppd=ppd,
@@ -222,12 +244,6 @@ def checkerboard_extended(ppd=PPD):
 if __name__ == "__main__":
     from stimuli.utils import plot_stimuli
 
-    stims = {}
-    for stimname in __all__:
-        print("Generating " + stimname)
-        try:
-            stims[stimname] = globals()[stimname]()
-        except NotImplementedError:
-            print("-- not implemented")
+    stims = gen_all(skip=True)
 
     plot_stimuli(stims, mask=False)

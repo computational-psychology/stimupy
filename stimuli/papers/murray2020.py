@@ -59,6 +59,28 @@ mat_fname = os.path.join(data_dir, "murray2020.mat")
 mat_content = scipy.io.loadmat(mat_fname)
 
 
+def gen_all(skip=False):
+    stims = {}  # save the stimulus-dicts in a larger dict, with name as key
+    for stim_name in __all__:
+        print(f"Generating murray2020.{stim_name}")
+
+        # Get a reference to the actual function
+        func = globals()[stim_name]
+        try:
+            stim = func()
+
+            # Accumulate
+            stims[stim_name] = stim
+        except NotImplementedError as e:
+            if not skip:
+                raise e
+            # Skip stimuli that aren't implemented
+            print("-- not implemented")
+            pass
+
+    return stims
+
+
 def get_mask(target1, target2, shape):
     mask = np.zeros(shape)
 
@@ -322,12 +344,7 @@ def white():
 if __name__ == "__main__":
     from stimuli.utils import plot_stimuli
 
-    stims = {}
-    for stimname in __all__:
-        print("Generating " + stimname)
-        try:
-            stims[stimname] = globals()[stimname]()
-        except NotImplementedError:
-            print("-- not implemented")
+    # Generate all stimuli exported in __all__
+    stims = gen_all(skip=True)
 
     plot_stimuli(stims, mask=False)

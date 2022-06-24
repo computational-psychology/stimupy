@@ -1,0 +1,90 @@
+{
+    "WE_thick": {
+        "img": "4e6d0130b6f37eeaff7f568c31c68325",
+        "mask": "b523788d266b5f7ded635717acad5a54"
+    },
+    "WE_thin_wide": {
+        "img": "d0540819930d454dd272f9ee91739114",
+        "mask": "82738b790feeb3d762822cf13136abd5"
+    },
+    "WE_dual": {
+        "img": "0eb7042718b74b8973d8e945f0454867",
+        "mask": "88a5faacb4e5db2d7f5761066dc92f38"
+    },
+    "WE_anderson": {
+        "img": "34284f8560d01e2231fe30b9362e8577",
+        "mask": "ec5671221e98b96b6b35622424266eaf"
+    },
+    "WE_howe": {
+        "img": "f68a1210ae539a0dd4976bc8eaa701a8",
+        "mask": "c05d4411f96114b3b7ffe73254ff2875"
+    },
+    "WE_radial_thick_small": {
+        "img": "b92d533177eed4a009625d6d2cb0da59",
+        "mask": "78da2d5ec63b48e53f5bdbd90d2b82b9"
+    },
+    "WE_radial_thick": {
+        "img": "d0067dfb57016354f7b107ae410d217c",
+        "mask": "482a1a903b54df01f3e16cb284b8bfeb"
+    },
+    "WE_radial_thin_small": {
+        "img": "94e6b546f8ad5c6b95a502a8b409c00d",
+        "mask": "38a4da8d63237ac33b1a7f5e1cd021ec"
+    },
+    "WE_circular1": {
+        "img": "2ecc5cb5ad9cfef50de681ee3b923f46",
+        "mask": "32f876b2d56ce7a9f712f7784dc60289"
+    },
+    "WE_circular05": {
+        "img": "5d09c011b57d3afffcaf82e7aea84b34",
+        "mask": "dde7cc1ee48b2d47b37fbe9422e0f677"
+    },
+    "WE_circular025": {
+        "img": "ec3feee88c49aed0a5554c3838be8519",
+        "mask": "e4e9c650c9a247180211dbcde0e38fb2"
+    },
+    "grating_induction": {
+        "img": "da62004fdc198660b44529f8b6358362",
+        "mask": "40f02639e692658b9f357b09c11e9df1"
+    },
+    "sbc_large": {
+        "img": "8c1d036742bdf01159177f42625fe144",
+        "mask": "6f1f89e7d2a6d1b88c29c051ef3a2dd0"
+    },
+    "sbc_small": {
+        "img": "ae061d71fede147fcc8e7680e14e82c9",
+        "mask": "f4f124cbfae47fd81b7d398c09836495"
+    },
+    "todorovic_equal": {
+        "img": "caecfb4065b54222e8d810e00da685af",
+        "mask": "2821bec9b23503e1598696d0ab418f3b"
+    },
+    "todorovic_in_large": {
+        "img": "ba9c3382426f8e0e9864d4b999c7979c",
+        "mask": "265174ba6cc11c8a90fe9c822b18dfeb"
+    },
+    "todorovic_in_small": {
+        "img": "0ab88dbeb1419b4b786134cc432d73d7",
+        "mask": "a711607fc494557ce2b52e984dc103b4"
+    },
+    "checkerboard_016": {
+        "img": "cffb926181df5cea95608b95bbc163f1",
+        "mask": "1eb12e597ac5c454830dc2873730ccc1"
+    },
+    "checkerboard_0938": {
+        "img": "ffe0d07c218fa56eecce2a9386908ff5",
+        "mask": "845b86fd98823fc4778f76a360da6d52"
+    },
+    "checkerboard209": {
+        "img": "3058e7c3d03899760fede8aba1c940ac",
+        "mask": "1172e323e0af65b431a4641be9836b7b"
+    },
+    "bullseye_thin": {
+        "img": "59c97cb1feffb4c9c502b143c5699fb3",
+        "mask": "08cfee34814f232afda08e138da10661"
+    },
+    "bullseye_thick": {
+        "img": "59c97cb1feffb4c9c502b143c5699fb3",
+        "mask": "08cfee34814f232afda08e138da10661"
+    }
+}

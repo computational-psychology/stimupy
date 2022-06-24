@@ -39,6 +39,28 @@ VISEXTENT = (32.0, 32.0)
 PPD = 32
 
 
+def gen_all(ppd=PPD, skip=False):
+    stims = {}  # save the stimulus-dicts in a larger dict, with name as key
+    for stim_name in __all__:
+        print(f"Generating RHS2007.{stim_name}")
+
+        # Get a reference to the actual function
+        func = globals()[stim_name]
+        try:
+            stim = func()
+
+            # Accumulate
+            stims[stim_name] = stim
+        except NotImplementedError as e:
+            if not skip:
+                raise e
+            # Skip stimuli that aren't implemented
+            print("-- not implemented")
+            pass
+
+    return stims
+
+
 def WE_thick(ppd=PPD):
     height, width = 12.0, 16.0
     n_cycles = 4.0
@@ -660,12 +682,6 @@ def bullseye_thick(ppd=PPD):
 if __name__ == "__main__":
     from stimuli.utils import plot_stimuli
 
-    stims = {}
-    for stimname in __all__:
-        print("Generating " + stimname)
-        try:
-            stims[stimname] = globals()[stimname]()
-        except NotImplementedError:
-            print("-- not implemented")
+    stims = gen_all(skip=True)
 
     plot_stimuli(stims, mask=False)
