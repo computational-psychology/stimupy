@@ -1,5 +1,5 @@
 import numpy as np
-from stimuli.utils import degrees_to_pixels, pad_img, plot_stim
+from stimuli.utils import degrees_to_pixels
 
 
 def benarys_cross(
@@ -77,6 +77,8 @@ def benarys_cross(
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
+    from stimuli.utils import plot_stim
 
     stim = benarys_cross()
-    plot_stim(stim, mask=True)
+    ax = plot_stim(stim, stim_name="Benary's Cross")
+    plt.show()

@@ -77,7 +77,8 @@ def bullseye_illusion(
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
+    from stimuli.utils import plot_stim
 
     stim = bullseye_illusion()
-    plt.imshow(stim.img, cmap="gray")
+    plot_stim(stim, stim_name="Bullseye")
     plt.show()

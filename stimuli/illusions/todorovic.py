@@ -145,5 +145,9 @@ def todorovic_illusion(
 
 
 if __name__ == "__main__":
+    import matplotlib.pyplot as plt
+    from stimuli.utils import plot_stim
+
     stim = todorovic_illusion()
-    plot_stim(stim, mask=True)
+    plot_stim(stim, stim_name="Todorovic illusion")
+    plt.show()

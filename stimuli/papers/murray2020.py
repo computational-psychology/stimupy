@@ -320,27 +320,14 @@ def white():
 
 
 if __name__ == "__main__":
-    # Generate all stimuli exported in __all__
-    stims = {s: globals()[s]() for s in __all__}
+    from stimuli.utils import plot_stimuli
 
-    # Plot each stimulus+mask
-    n_stim = math.ceil(math.sqrt(len(stims)))
-    plt.figure(figsize=(n_stim * 3, n_stim * 3))
-    for i, (stim_name, stim) in enumerate(stims.items()):
-        print("Generating " + stim_name)
-        img, mask = stim["img"], stim["mask"]
-        img = np.dstack([img, img, img])
+    stims = {}
+    for stimname in __all__:
+        print("Generating " + stimname)
+        try:
+            stims[stimname] = globals()[stimname]()
+        except NotImplementedError:
+            print("-- not implemented")
 
-        mask = np.insert(np.expand_dims(mask, 2), 1, 0, axis=2)
-        mask = np.insert(mask, 2, 0, axis=2)
-
-        final = mask * 100 + img
-        final /= np.max(final)
-
-        plt.subplot(n_stim, n_stim, i + 1)
-        plt.title(stim_name)
-        plt.imshow(final)
-
-    plt.tight_layout()
-
-    plt.show()
+    plot_stimuli(stims, mask=False)

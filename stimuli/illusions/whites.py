@@ -402,29 +402,13 @@ def white_anderson(
 
 
 if __name__ == "__main__":
-    stim = white()
-    plt.subplot(4, 2, 1)
-    plt.imshow(stim["img"], cmap="gray")
-    plt.subplot(4, 2, 2)
-    plt.imshow(stim["mask"], cmap="gray")
+    from stimuli.utils import plot_stimuli
 
-    stim = circular_white()
-    plt.subplot(4, 2, 3)
-    plt.imshow(stim["img"], cmap="gray")
-    plt.subplot(4, 2, 4)
-    plt.imshow(stim["mask"], cmap="gray")
+    stims = {
+        "White's effect": white(),
+        "Circular White's effect": circular_white(),
+        "Wheel-of-fortune": wheel_of_fortune_white(),
+        "Anderson's variation": white_anderson(),
+    }
 
-    stim = wheel_of_fortune_white()
-    plt.subplot(4, 2, 5)
-    plt.imshow(stim["img"], cmap="gray")
-    plt.subplot(4, 2, 6)
-    plt.imshow(stim["mask"], cmap="gray")
-
-    stim = white_anderson()
-    plt.subplot(4, 2, 7)
-    plt.imshow(stim["img"], cmap="gray")
-    plt.subplot(4, 2, 8)
-    plt.imshow(stim["mask"], cmap="gray")
-
-    plt.tight_layout()
-    plt.show()
+    plot_stimuli(stims)

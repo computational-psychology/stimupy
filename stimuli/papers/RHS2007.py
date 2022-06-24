@@ -658,7 +658,7 @@ def bullseye_thick(ppd=PPD):
 
 
 if __name__ == "__main__":
-    import matplotlib.pyplot as plt
+    from stimuli.utils import plot_stimuli
 
     stims = {}
     for stimname in __all__:
@@ -668,22 +668,4 @@ if __name__ == "__main__":
         except NotImplementedError:
             print("-- not implemented")
 
-    # Plot each stimulus+mask
-    n_stim = math.ceil(math.sqrt(len(stims)))
-    plt.figure(figsize=(n_stim * 3, n_stim * 3))
-    for i, (stim_name, stim) in enumerate(stims.items()):
-        img, mask = stim["img"], stim["mask"]
-        img = np.dstack([img, img, img])
-
-        mask = np.insert(np.expand_dims(mask, 2), 1, 0, axis=2)
-        mask = np.insert(mask, 2, 0, axis=2)
-        final = mask + img
-        final /= np.max(final)
-
-        plt.subplot(n_stim, n_stim, i + 1)
-        plt.title(stim_name)
-        plt.imshow(final)
-
-    plt.tight_layout()
-
-    plt.show()
+    plot_stimuli(stims, mask=False)

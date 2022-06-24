@@ -1,6 +1,6 @@
 import numpy as np
 import stimuli
-from stimuli.utils import pad_img, plot_stim
+from stimuli.utils import pad_img
 
 
 def simultaneous_brightness_contrast(
@@ -58,6 +58,8 @@ def simultaneous_brightness_contrast(
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
+    from stimuli.utils import plot_stim
 
     stim = simultaneous_brightness_contrast()
-    plot_stim(stim, mask=True)
+    plot_stim(stim, stim_name="Simultaneous brightness contrast")
+    plt.show()

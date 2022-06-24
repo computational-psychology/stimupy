@@ -1,5 +1,5 @@
 import numpy as np
-from stimuli.utils import degrees_to_pixels, plot_stim
+from stimuli.utils import degrees_to_pixels
 
 
 def checkerboard_contrast(
@@ -74,6 +74,9 @@ def checkerboard_contrast(
 
 
 if __name__ == "__main__":
-    stim = checkerboard_contrast()
+    import matplotlib.pyplot as plt
+    from stimuli.utils import plot_stim
 
-    plot_stim(stim, mask=True)
+    stim = checkerboard_contrast()
+    plot_stim(stim, stim_name="Checkerboard (assimilation)")
+    plt.show()
