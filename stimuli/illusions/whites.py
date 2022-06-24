@@ -1,5 +1,5 @@
 import numpy as np
-from stimuli.illusions.square_wave import square_wave
+from stimuli.components import square_wave
 from stimuli.utils import degrees_to_pixels, get_annulus_mask
 
 

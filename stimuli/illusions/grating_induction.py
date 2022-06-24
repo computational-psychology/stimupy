@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.ndimage import gaussian_filter
-from stimuli.illusions.square_wave import square_wave
+from stimuli.components import square_wave
 from stimuli.utils import degrees_to_pixels
 
 
