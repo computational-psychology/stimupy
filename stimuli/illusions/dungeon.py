@@ -1,5 +1,5 @@
 import numpy as np
-from stimuli.utils import degrees_to_pixels, pad_img
+from stimuli.utils import degrees_to_pixels
 
 
 def dungeon_illusion(
@@ -7,11 +7,9 @@ def dungeon_illusion(
     n_cells=5,
     target_radius=1,
     cell_size=1.0,
-    padding=(1.0, 1.0, 1.0, 1.0),
     back=0.0,
     grid=1.0,
     target=0.5,
-    double=True,
 ):
     """
     Dungeon illusion (Bressan, 2001) with diamond target.
@@ -26,16 +24,12 @@ def dungeon_illusion(
         the "Manhattan radius" of the diamond target in # cells
     cell_size : float
         size per cell in degrees visual angle
-    padding : (float, float, float, float)
-        4-valued tuple specifying padding (top, bottom, left, right) in degrees visual angle
     back : float
         value for background
     grid : float
         value for grid cells
     target : float
         value for target
-    double : bool
-        whether to return the full illusion with two grids side-by-side (inverting back and grid values)
 
     Returns
     -------
@@ -74,27 +68,10 @@ def dungeon_illusion(
     #     mask_arr[ind1[i], ind2[i]] = i+1
 
     img = np.repeat(np.repeat(arr, cell_size_px, axis=0), cell_size_px, axis=1)
-    img = pad_img(img, padding, ppd, back)
 
     mask = np.repeat(
         np.repeat(mask_arr, cell_size_px, axis=0), cell_size_px, axis=1
     )
-    mask = pad_img(mask, padding, ppd, False)
-
-    if double:
-        stim2 = dungeon_illusion(
-            ppd=ppd,
-            n_cells=n_cells,
-            target_radius=target_radius,
-            cell_size=cell_size,
-            padding=padding,
-            back=grid,
-            grid=back,
-            target=target,
-            double=False,
-        )
-        img = np.hstack([img, stim2["img"]])
-        mask = np.hstack([mask, stim2["mask"] * 2])
 
     return {"img": img, "mask": mask}
 

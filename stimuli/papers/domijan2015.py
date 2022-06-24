@@ -46,17 +46,43 @@ def gen_all(ppd=PPD, skip=False):
 
 
 def dungeon(ppd=PPD):
-    return illusions.dungeon.dungeon_illusion(
+    n_cells = 5
+    target_radius = 1
+    cell_size = 1.0
+    back = 1.0
+    grid = 9.0
+    target = 5.0
+
+    stim1 = illusions.dungeon.dungeon_illusion(
         ppd=ppd,
-        n_cells=5,
-        target_radius=1,
-        cell_size=1.0,
-        padding=(0.9, 1.1, 0.9, 1.1),
-        back=1.0,
-        grid=9.0,
-        target=5.0,
-        double=True,
+        n_cells=n_cells,
+        target_radius=target_radius,
+        cell_size=cell_size,
+        back=back,
+        grid=grid,
+        target=target,
     )
+    padding = (0.9, 1.1, 0.9, 1.1)
+    stim1["img"] = pad_img(stim1["img"], padding, ppd, back)
+    stim1["mask"] = pad_img(stim1["mask"], padding, ppd, 0)
+
+    stim2 = illusions.dungeon.dungeon_illusion(
+        ppd=ppd,
+        n_cells=n_cells,
+        target_radius=target_radius,
+        cell_size=cell_size,
+        back=grid,
+        grid=back,
+        target=target,
+    )
+    padding = (0.9, 1.1, 0.9, 1.1)
+    stim2["img"] = pad_img(stim2["img"], padding, ppd, grid)
+    stim2["mask"] = pad_img(stim2["mask"], padding, ppd, 0)
+
+    img = np.hstack([stim1["img"], stim2["img"]])
+    mask = np.hstack([stim1["mask"], stim2["mask"] * 2])
+
+    return {"img": img, "mask": mask}
 
 
 def cube(ppd=PPD):
