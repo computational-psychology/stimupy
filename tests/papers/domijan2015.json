@@ -46,5 +46,17 @@
     "checkerboard_extended": {
         "img": "570e9597fa49a33a6e96687a007ad3e0",
         "mask": "f6ee08aeab807602449271ee7367cc44"
+    },
+    "white_anderson": {
+        "img": "c7778db45fd1d7804dc2b5eea0a78637",
+        "mask": "4f444ddd9e75de8357dbf61d25130416"
+    },
+    "white_howe": {
+        "img": "e32554b8707058acb6f84afa87ee68cb",
+        "mask": "dad7e6f46a83cfde26d224711e0afb0f"
+    },
+    "white_yazdanbakhsh": {
+        "img": "58f2c90531832a502e8dcd1745347405",
+        "mask": "3c2739936e5cd883520089605537e1d6"
     }
 }

@@ -12,12 +12,16 @@
         "mask": "88a5faacb4e5db2d7f5761066dc92f38"
     },
     "WE_anderson": {
-        "img": "34284f8560d01e2231fe30b9362e8577",
-        "mask": "ec5671221e98b96b6b35622424266eaf"
+        "img": "a057e8d6351df6b13b25bd08519fc5d1",
+        "mask": "22c5f87f558a47eba9f85a9a5a882fac"
     },
     "WE_howe": {
-        "img": "f68a1210ae539a0dd4976bc8eaa701a8",
-        "mask": "c05d4411f96114b3b7ffe73254ff2875"
+        "img": "73ba7876b0f5cc8f5579f78686d27da8",
+        "mask": "4f6c94d2041e950d11e9ad593044d8d6"
+    },
+    "WE_zigzag": {
+        "img": "9c11af9ccdfab0580db629dff6fda752",
+        "mask": "0461ef6bb3a975dfc417290bb2fe955b"
     },
     "WE_radial_thick_small": {
         "img": "b92d533177eed4a009625d6d2cb0da59",
@@ -48,24 +52,28 @@
         "mask": "40f02639e692658b9f357b09c11e9df1"
     },
     "sbc_large": {
-        "img": "8c1d036742bdf01159177f42625fe144",
-        "mask": "6f1f89e7d2a6d1b88c29c051ef3a2dd0"
+        "img": "f7de22705f4c97a089a1953a8112b3e1",
+        "mask": "80bc655564d9bfaf1d7c91c48a19c5d8"
     },
     "sbc_small": {
-        "img": "ae061d71fede147fcc8e7680e14e82c9",
-        "mask": "f4f124cbfae47fd81b7d398c09836495"
+        "img": "d5a3f6411501b959adb27cded2aab0bd",
+        "mask": "88d8d68cd2cc0ba75ffe6f0056dcdb80"
     },
     "todorovic_equal": {
-        "img": "caecfb4065b54222e8d810e00da685af",
-        "mask": "2821bec9b23503e1598696d0ab418f3b"
+        "img": "ada47272e5695d41a0cc1000afe7ed7b",
+        "mask": "1af5899340e16372d463125c9ecc5c62"
     },
     "todorovic_in_large": {
-        "img": "ba9c3382426f8e0e9864d4b999c7979c",
-        "mask": "265174ba6cc11c8a90fe9c822b18dfeb"
+        "img": "f6be5d6dbd1df8f5ca6491a2a1565ba6",
+        "mask": "41ee1a58ac2d85b2ec4482a704cc03d6"
     },
     "todorovic_in_small": {
-        "img": "0ab88dbeb1419b4b786134cc432d73d7",
-        "mask": "a711607fc494557ce2b52e984dc103b4"
+        "img": "97987ddd99bc4e777f72df9a9206a726",
+        "mask": "ade125ed9b2687abf39ad7b29487fef2"
+    },
+    "todorovic_out": {
+        "img": "f572675132ccab13b0e9d582a29c300b",
+        "mask": "6f0277e6ea561b0849319b43f76fdeed"
     },
     "checkerboard_016": {
         "img": "cffb926181df5cea95608b95bbc163f1",
@@ -79,12 +87,32 @@
         "img": "3058e7c3d03899760fede8aba1c940ac",
         "mask": "1172e323e0af65b431a4641be9836b7b"
     },
+    "corrugated_mondrian": {
+        "img": "2e02782a01a0b5a8060a3403b356f281",
+        "mask": "5adb129c8fc3b7068b68a75e3494d5bb"
+    },
+    "benary_cross": {
+        "img": "dd0b0fbf02ffb17fb164567fb4dec913",
+        "mask": "70de53075b5eb0044afcf47ffe3b2a4f"
+    },
+    "todorovic_benary1_2": {
+        "img": "973b958be7468c55e2f86094d21690e8",
+        "mask": "5d88a4fcec3e947ea38035c5ac488ac7"
+    },
+    "todorovic_benary3_4": {
+        "img": "d4b235af442ff1566723b4e47678e57b",
+        "mask": "e16df058cafdd6baae081b21bdc9d70a"
+    },
+    "todorovic_benary1_2_3_4": {
+        "img": "4e4c9d93f1466c203a53ca139f69f9b6",
+        "mask": "6c49f3d5cf37a7d89c669fef07c735b8"
+    },
     "bullseye_thin": {
-        "img": "59c97cb1feffb4c9c502b143c5699fb3",
-        "mask": "08cfee34814f232afda08e138da10661"
+        "img": "4e14a7c79d4c8aa8bec6aa6455745ccc",
+        "mask": "f087533e8065bac55448d0b459ca2411"
     },
     "bullseye_thick": {
-        "img": "59c97cb1feffb4c9c502b143c5699fb3",
-        "mask": "08cfee34814f232afda08e138da10661"
+        "img": "f699b7d47348cee2eaa0fd8c0a62953b",
+        "mask": "3963387f45a13fc272f78e2161a19b92"
     }
 }
