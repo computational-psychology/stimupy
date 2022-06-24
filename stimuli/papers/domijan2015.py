@@ -1,3 +1,4 @@
+import numpy as np
 from stimuli import illusions
 from stimuli.utils import pad_img
 
@@ -14,6 +15,9 @@ __all__ = [
     "checkerboard_contrast_contrast",
     "checkerboard",
     "checkerboard_extended",
+    "white_anderson",
+    "white_howe",
+    "white_yazdanbakhsh",
 ]
 
 PPD = 10
@@ -90,44 +94,109 @@ def grating(ppd=PPD):
 
 
 def rings(ppd=PPD):
-    return illusions.rings.ring_pattern(
+    v1, v2, v3 = 1.0, 5.0, 9.0
+    pad = (0.9, 1.0, 0.9, 1.0)
+    stim1 = illusions.rings.ring_stimulus(
         ppd=ppd,
         n_rings=8,
-        target_pos_l=4,
-        target_pos_r=3,
+        target_idx=4,
         ring_width=0.5,
-        padding=(0.9, 1.0, 0.9, 1.0),
-        back=1.0,
-        rings=9.0,
-        target=5.0,
-        invert_rings=False,
-        double=True,
+        vring1=v1,
+        vring2=v3,
+        vtarget=v2,
     )
+    stim2 = illusions.rings.ring_stimulus(
+        ppd=ppd,
+        n_rings=8,
+        target_idx=3,
+        ring_width=0.5,
+        vring1=v1,
+        vring2=v3,
+        vtarget=v2,
+    )
+
+    # Padding
+    img1, mask1 = pad_img(stim1["img"], pad, ppd, v1), pad_img(
+        stim1["mask"], pad, ppd, 0
+    )
+    img2, mask2 = pad_img(stim2["img"], pad, ppd, v1), pad_img(
+        stim2["mask"], pad, ppd, 0
+    )
+
+    # Increase target index of right stimulus half
+    mask2 = mask2 + 1
+    mask2[mask2 == 1] = 0
+
+    # Stacking
+    img_stacked = np.hstack([img1, img2])
+    mask_stacked = np.hstack([mask1, mask2])
+    return {"img": img_stacked, "mask": mask_stacked}
 
 
 def bullseye(ppd=PPD):
-    return illusions.bullseye.bullseye_illusion(
+    v1, v2, v3 = 1.0, 5.0, 9.0
+    pad = (0.9, 1.0, 0.9, 1.0)
+    stim1 = illusions.bullseye.bullseye_stimulus(
         ppd=ppd,
         n_rings=8,
         ring_width=0.5,
-        target_pos_l=0,
-        target_pos_r=0,
-        padding=(0.9, 1.0, 0.9, 1.0),
-        back=1.0,
-        rings=9.0,
-        target=5.0,
+        vring1=v1,
+        vring2=v3,
+        vtarget=v2,
     )
+    stim2 = illusions.bullseye.bullseye_stimulus(
+        ppd=ppd,
+        n_rings=8,
+        ring_width=0.5,
+        vring1=v3,
+        vring2=v1,
+        vtarget=v2,
+    )
+
+    # Padding
+    img1, mask1 = pad_img(stim1["img"], pad, ppd, v1), pad_img(
+        stim1["mask"], pad, ppd, 0
+    )
+    img2, mask2 = pad_img(stim2["img"], pad, ppd, v1), pad_img(
+        stim2["mask"], pad, ppd, 0
+    )
+
+    # Increase target index of right stimulus half
+    mask2 = mask2 + 1
+    mask2[mask2 == 1] = 0
+
+    # Stacking
+    img_stacked = np.hstack([img1, img2])
+    mask_stacked = np.hstack([mask1, mask2])
+    return {"img": img_stacked, "mask": mask_stacked}
 
 
 def simultaneous_brightness_contrast(ppd=PPD):
-    return illusions.sbc.simultaneous_brightness_contrast(
+    stim1 = illusions.sbc.simultaneous_contrast(
         ppd=ppd,
-        target_shape=(2.1, 2.1),
-        inner_padding=(3.9, 4.0, 3.9, 4.0),
-        left=9.0,
-        right=1.0,
-        target=5.0,
+        im_size=(10.0, 10.0),
+        target_size=(2.1, 2.1),
+        target_pos=(3.9, 3.9),
+        vback=9.0,
+        vtarget=5.0,
     )
+    stim2 = illusions.sbc.simultaneous_contrast(
+        ppd=ppd,
+        im_size=(10.0, 10.0),
+        target_size=(2.1, 2.1),
+        target_pos=(3.9, 3.9),
+        vback=1.0,
+        vtarget=5.0,
+    )
+
+    # Increase target index of right stimulus half
+    mask2 = stim2["mask"] + 1
+    mask2[mask2 == 1] = 0
+
+    # Stacking
+    img_stacked = np.hstack([stim1["img"], stim2["img"]])
+    mask_stacked = np.hstack([stim1["mask"], mask2])
+    return {"img": img_stacked, "mask": mask_stacked}
 
 
 def white(ppd=PPD):
@@ -161,12 +230,16 @@ def white(ppd=PPD):
 def benary(ppd=PPD):
     stim = illusions.benary_cross.benarys_cross(
         ppd=PPD,
-        cross_size=(3, 3, 3, 3),
+        cross_size=(3.0, 3.0, 3.0, 3.0),
         cross_thickness=2.1,
-        target_size=1.1,
-        back=9.0,
-        cross=1.0,
-        target=5.0,
+        target_type=("r", "r"),
+        target_ori=(0.0, 0.0),
+        target_size=(1.1, 1.1),
+        target_posx=(1.9, 7.0),
+        target_posy=(1.9, 3.0),
+        vback=9.0,
+        vcross=1.0,
+        vtarget=5.0,
     )
 
     padding = (0.9, 1.0, 0.9, 1.0)
@@ -176,16 +249,41 @@ def benary(ppd=PPD):
 
 
 def todorovic(ppd=PPD):
-    return illusions.todorovic.todorovic_illusion(
-        target_shape=(4.1, 4.1),
+    stim1 = illusions.todorovic.todorovic_in(
+        im_size=(10.0, 10.0),
         ppd=ppd,
-        covers_shape=(3.1, 3.1),
-        spacing=(1.5, 1.5, 1.5, 1.5),
-        padding=(2.9, 3.0, 2.9, 3.0),
-        grid=9.0,
-        back=1.0,
-        target=5.0,
+        target_size=(4.1, 4.1),
+        target_pos=(2.9, 2.9),
+        covers_height=3.1,
+        covers_width=3.1,
+        covers_posx=(1.4, 5.4, 1.4, 5.4),
+        covers_posy=(1.4, 5.4, 5.4, 1.4),
+        vback=1.0,
+        vtarget=5.0,
+        vcovers=9.0,
     )
+    stim2 = illusions.todorovic.todorovic_in(
+        im_size=(10.0, 10.0),
+        ppd=ppd,
+        target_size=(4.1, 4.1),
+        target_pos=(2.9, 2.9),
+        covers_height=3.1,
+        covers_width=3.1,
+        covers_posx=(1.4, 5.4, 1.4, 5.4),
+        covers_posy=(1.4, 5.4, 5.4, 1.4),
+        vback=9.0,
+        vtarget=5.0,
+        vcovers=1.0,
+    )
+
+    # Increase target index of right stimulus half
+    mask2 = stim2["mask"] + 1
+    mask2[mask2 == 1] = 0
+
+    # Stacking
+    img_stacked = np.hstack([stim1["img"], stim2["img"]])
+    mask_stacked = np.hstack([stim1["mask"], mask2])
+    return {"img": img_stacked, "mask": mask_stacked}
 
 
 def checkerboard_contrast_contrast(ppd=PPD):
@@ -238,6 +336,93 @@ def checkerboard_extended(ppd=PPD):
     img = pad_img(stim["img"], padding, ppd=ppd, val=5.0)
     mask = pad_img(stim["mask"], padding, ppd=ppd, val=0)
 
+    return {"img": img, "mask": mask}
+
+
+def white_yazdanbakhsh(ppd=PPD):
+    (
+        height,
+        width,
+    ) = (8.0, 8.0)
+    n_cycles = 4
+    frequency = n_cycles / width
+
+    stim = illusions.whites.white_yazdanbakhsh(
+        shape=(height, width),
+        ppd=ppd,
+        frequency=frequency,
+        stripe_height=height / 10,
+        target_height=height / 4,
+        target_indices_top=(2,),
+        target_ypos_top=(height / 2.7,),
+        target_indices_bottom=(5,),
+        target_ypos_bottom=(height / 2.7,),
+        vbars=(1.0, 9.0),
+        vtarget=5.0,
+        vtopstripe=9.0,
+        vbotstripe=1.0,
+    )
+    padding = (0.9, 1.1, 0.9, 1.1)
+    img = pad_img(stim["img"], padding, ppd=ppd, val=5.0)
+    mask = pad_img(stim["mask"], padding, ppd=ppd, val=0)
+    return {"img": img, "mask": mask}
+
+
+def white_anderson(ppd=PPD):
+    (
+        height,
+        width,
+    ) = (10.0, 10.0)
+    n_cycles = 5
+    frequency = n_cycles / width
+
+    stim = illusions.whites.white_anderson(
+        shape=(height, width),
+        ppd=ppd,
+        frequency=frequency,
+        stripe_height=height / 5,
+        stripe_ypos=(height / 5, 3 * height / 5),
+        target_height=height / 5,
+        target_indices_top=(2,),
+        target_offsets_top=(height / 10,),
+        target_indices_bottom=(7,),
+        target_offsets_bottom=(-height / 10,),
+        vbars=(9.0, 1.0),
+        vtarget=5.0,
+        vtopstripe=1.0,
+        vbotstripe=9.0,
+    )
+    padding = (0.9, 1.1, 0.9, 1.1)
+    img = pad_img(stim["img"], padding, ppd=ppd, val=5.0)
+    mask = pad_img(stim["mask"], padding, ppd=ppd, val=0)
+    return {"img": img, "mask": mask}
+
+
+def white_howe(ppd=PPD):
+    (
+        height,
+        width,
+    ) = (10.0, 10.0)
+    n_cycles = 5
+    frequency = n_cycles / width
+
+    stim = illusions.whites.white_howe(
+        shape=(height, width),
+        ppd=ppd,
+        frequency=frequency,
+        stripe_height=height / 5,
+        stripe_ypos=(height / 5, 3 * height / 5),
+        target_height=height / 5,
+        target_indices_top=(2,),
+        target_indices_bottom=(7,),
+        vbars=(9.0, 1.0),
+        vtarget=5.0,
+        vtopstripe=1.0,
+        vbotstripe=9.0,
+    )
+    padding = (0.9, 1.1, 0.9, 1.1)
+    img = pad_img(stim["img"], padding, ppd=ppd, val=5.0)
+    mask = pad_img(stim["mask"], padding, ppd=ppd, val=0)
     return {"img": img, "mask": mask}
 
 

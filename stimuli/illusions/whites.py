@@ -1,6 +1,3 @@
-import math
-
-import matplotlib.pyplot as plt
 import numpy as np
 from stimuli.illusions.square_wave import square_wave
 from stimuli.utils import degrees_to_pixels, get_annulus_mask
@@ -296,20 +293,20 @@ def white_anderson(
     shape=(5, 5),
     ppd=40,
     frequency=2,
-    height_bars=1,
-    height_horizontal_top=1,
+    stripe_height=1,
+    stripe_ypos=(1, 3),
     target_height=1,
     target_indices_top=(5,),
     target_offsets_top=(0.5,),
     target_indices_bottom=(12,),
     target_offsets_bottom=(-0.5,),
-    high=1.0,
-    low=0.0,
-    target=0.5,
-    top="low",
+    vbars=(1.0, 0.0),
+    vtarget=0.5,
+    vtopstripe=1.0,
+    vbotstripe=0.0,
 ):
     """
-    Anderson's white illusion
+    Anderson's White stimulus
 
     Parameters
     ----------
@@ -319,42 +316,39 @@ def white_anderson(
         pixels per degree (visual angle)
     frequency : float
         frequency of the grid in cycles per degree visual angle
-    height_bars : float
-        height of the bars in degrees visual angle
+    stripe_height : float
+        height of the stripes in degrees visual angle
+    stripe_ypos : (float, float)
+        y coordinate of top and bottom stripe
     target_height : float
-        height of the target in degrees visual angle. If it's None, the target will be 1/3 of the illusion height
+        target height in degrees visual angle
     target_indices_top : (int, )
-        indices of the stripes where the target(s) will be placed. If None, two targets are put on (0, n_parts // 2).
+        bar indices where the top target(s) will be placed
     target_offsets_top : (float, )
-        vertical offsets of targets in the top
+        vertical offsets of top targets
     target_indices_bottom : (int, )
-        indices of the stripes where the target(s) will be placed. If None, two targets are put on (0, n_parts // 2).
+        bar indices where the bottom target(s) will be placed
     target_offsets_bottom : (float, )
-        vertical offsets of targets in the bottom
-    high : float
-        value of the bright stripes
-    low : float
-        value of the dark stripes
-    target : float
+        vertical offsets of bottom targets
+    vbars : (float, float)
+        values of grating bars
+    vtarget : float
         value for target
-    top : string in ['low', 'high']
-        specify whether the top should be bright or dark
+    vtopstripe : float
+        value of top stripe
+    vbotstripe : float
+        value of bottom stripe
 
     Returns
     -------
-    A stimulus object
+    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
     """
     height, width = degrees_to_pixels(shape, ppd)
     pixels_per_cycle = degrees_to_pixels(1.0 / (frequency * 2), ppd) * 2
-    height_bars, height_horizontal_top = degrees_to_pixels(
-        height_bars, ppd
-    ), degrees_to_pixels(height_horizontal_top, ppd)
-    spacing_bottom = height - 3 * height_bars - height_horizontal_top
+    stripe_ypos = degrees_to_pixels(stripe_ypos, ppd).astype(int)
+    stripe_height = degrees_to_pixels(stripe_height, ppd)
 
-    top = low if top == "low" else high
-    bottom = high if top == low else low
-
-    img = np.ones((height, width)) * bottom
+    img = np.ones((height, width)) * vbars[1]
     mask = np.zeros((height, width))
 
     index = [
@@ -364,9 +358,10 @@ def white_anderson(
         if i + j < width
     ]
 
-    img[: height_bars * 2 + height_horizontal_top, index] = top
-    img[-height_bars:, index] = top
-    img[height_bars : height_bars + height_horizontal_top, :] = top
+    # Create grating and add top and bottom stripes
+    img[:, index] = vbars[0]
+    img[stripe_ypos[0] : stripe_ypos[0] + stripe_height, :] = vtopstripe
+    img[stripe_ypos[1] : stripe_ypos[1] + stripe_height, :] = vbotstripe
 
     target_height = degrees_to_pixels(target_height, ppd)
     target_offsets_top = tuple(
@@ -376,32 +371,377 @@ def white_anderson(
         degrees_to_pixels(x, ppd) for x in target_offsets_bottom
     )
 
+    # Add top targets
     for i, ind in enumerate(target_indices_top):
         st = int(pixels_per_cycle / 2 * ind)
         end = int(st + pixels_per_cycle / 2)
-        img[: height_bars * 2 + height_horizontal_top, st:end] = bottom
+        img[0 : stripe_ypos[1] :, st:end] = vbotstripe
         offset = target_offsets_top[i]
         target_start = (
-            height_bars + (height_horizontal_top - target_height) // 2 + offset
+            stripe_ypos[0] + (stripe_height - target_height) // 2 + offset
         )
         target_end = target_start + target_height
-        img[target_start:target_end, st:end] = target
-        mask[target_start:target_end, st:end] = i + 1
+        img[target_start:target_end, st:end] = vtarget
+        mask[target_start:target_end, st:end] = 1
 
+    # Add bottom targets
     for i, ind in enumerate(target_indices_bottom):
         st = int(pixels_per_cycle / 2 * ind)
         end = int(st + pixels_per_cycle / 2)
-        img[height_bars + height_horizontal_top :, st:end] = top
+        img[stripe_ypos[0] + stripe_height : :, st:end] = vtopstripe
         offset = target_offsets_bottom[i]
-        target_start = -height_bars - spacing_bottom + offset
+        target_start = stripe_ypos[1] + offset
         target_end = target_start + target_height
-        img[target_start:target_end, st:end] = target
-        mask[target_start:target_end, st:end] = len(target_indices_top) + i + 1
+        img[target_start:target_end, st:end] = vtarget
+        mask[target_start:target_end, st:end] = 2
+    return {"img": img, "mask": mask}
 
+
+def white_howe(
+    shape=(5, 5),
+    ppd=40,
+    frequency=2,
+    stripe_height=1,
+    stripe_ypos=(1, 3),
+    target_height=1,
+    target_indices_top=(5,),
+    target_indices_bottom=(12,),
+    vbars=(1.0, 0.0),
+    vtarget=0.5,
+    vtopstripe=1.0,
+    vbotstripe=0.0,
+):
+    """
+    Howe's White stimulus
+
+    Parameters
+    ----------
+    shape : (float, float)
+        The shape of the illustion in degrees of visual angle (height, width)
+    ppd : int
+        pixels per degree (visual angle)
+    frequency : float
+        frequency of the grid in cycles per degree visual angle
+    stripe_height : float
+        height of the stripes in degrees visual angle
+    stripe_ypos : (float, float)
+        y coordinate of top and bottom stripe
+    target_height : float
+        target height in degrees visual angle
+    target_indices_top : (int, )
+        bar indices where the top target(s) will be placed
+    target_indices_bottom : (int, )
+        bar indices where the bottom target(s) will be placed
+    vbars : (float, float)
+        values of grating bars
+    vtarget : float
+        value for target
+    vtopstripe : float
+        value of top stripe
+    vbotstripe : float
+        value of bottom stripe
+
+    Returns
+    -------
+    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    """
+    return white_anderson(
+        shape=shape,
+        ppd=ppd,
+        frequency=frequency,
+        stripe_height=stripe_height,
+        stripe_ypos=stripe_ypos,
+        target_height=target_height,
+        target_indices_top=target_indices_top,
+        target_offsets_top=np.zeros(len(target_indices_top)),
+        target_indices_bottom=target_indices_bottom,
+        target_offsets_bottom=np.zeros(len(target_indices_bottom)),
+        vbars=vbars,
+        vtarget=vtarget,
+        vtopstripe=vtopstripe,
+        vbotstripe=vbotstripe,
+    )
+
+
+def white_yazdanbakhsh(
+    shape=(5, 5),
+    ppd=40,
+    frequency=2,
+    stripe_height=0.2,
+    target_height=1,
+    target_indices_top=(5,),
+    target_ypos_top=(1.5,),
+    target_indices_bottom=(12,),
+    target_ypos_bottom=(3.0,),
+    vbars=(1.0, 0.0),
+    vtarget=0.5,
+    vtopstripe=1.0,
+    vbotstripe=0.0,
+):
+    """
+    Yazsdanbakhsh's White stimulus
+
+    Parameters
+    ----------
+    shape : (float, float)
+        The shape of the illustion in degrees of visual angle (height, width)
+    ppd : int
+        pixels per degree (visual angle)
+    frequency : float
+        frequency of the grid in cycles per degree visual angle
+    stripe_height : float
+        height of the stripes in degrees visual angle
+    target_height : float
+        target height in degrees visual angle
+    target_indices_top : (int, )
+        bar indices where the top target(s) will be placed
+    target_ypos_top : (float, )
+        y coordinates of top targets
+    target_indices_bottom : (int, )
+        bar indices where the bottom target(s) will be placed
+    target_ypos_bottom : (float, )
+        y coordinates of bottom targets
+    vbars : (float, float)
+        values of grating bars
+    vtarget : float
+        value for target
+    vtopstripe : float
+        value of top stripe
+    vbotstripe : float
+        value of bottom stripe
+
+    Returns
+    -------
+    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    """
+    height, width = degrees_to_pixels(shape, ppd)
+    pixels_per_cycle = degrees_to_pixels(1.0 / (frequency * 2), ppd) * 2
+    stripe_height = degrees_to_pixels(stripe_height, ppd)
+
+    img = np.ones((height, width)) * vbars[1]
+    mask = np.zeros((height, width))
+
+    index = [
+        i + j
+        for i in range(pixels_per_cycle // 2)
+        for j in range(0, width, pixels_per_cycle)
+        if i + j < width
+    ]
+
+    # Create grating
+    img[:, index] = vbars[0]
+
+    target_height = degrees_to_pixels(target_height, ppd)
+    target_ypos_top = tuple(degrees_to_pixels(x, ppd) for x in target_ypos_top)
+    target_ypos_bottom = tuple(
+        degrees_to_pixels(x, ppd) for x in target_ypos_bottom
+    )
+
+    # Add top targets
+    for i, ind in enumerate(target_indices_top):
+        st = int(pixels_per_cycle / 2 * ind)
+        end = int(st + pixels_per_cycle / 2)
+        target_start = target_ypos_top[i]
+        target_end = target_start + target_height
+        img[target_start - stripe_height : target_start, st:end] = vtopstripe
+        img[target_end : target_end + stripe_height, st:end] = vtopstripe
+        img[target_start:target_end, st:end] = vtarget
+        mask[target_start:target_end, st:end] = 1
+
+    # Add bottom targets
+    for i, ind in enumerate(target_indices_bottom):
+        st = int(pixels_per_cycle / 2 * ind)
+        end = int(st + pixels_per_cycle / 2)
+        target_start = target_ypos_bottom[i]
+        target_end = target_start + target_height
+        img[target_start - stripe_height : target_start, st:end] = vbotstripe
+        img[target_end : target_end + stripe_height, st:end] = vbotstripe
+        img[target_start:target_end, st:end] = vtarget
+        mask[target_start:target_end, st:end] = 2
+    return {"img": img, "mask": mask}
+
+
+def white_zigzag(
+    ppd=10,
+    L_size=(10.0, 10.0, 2.0),
+    L_distance=2.0,
+    L_repeats=(3.0, 3.0),
+    target_height=4.0,
+    target_idx_v1=((-1, 0), (0, 0), (1, 0)),
+    target_idx_v2=None,
+    v1=0.0,
+    v2=1.0,
+    vtarget=0.5,
+):
+    """
+    White zigzag stimulus (also wedding cake stimulus)
+
+    Parameters
+    ----------
+    ppd : int
+        pixels per degree (visual angle)
+    L_size : (float, float, float)
+        size of individual jags (height, width, thickness) in degree visual angle
+    L_distance : float
+        distance between parallel jags in degree visual angle
+    L_repeats : (float, float)
+        number of repeats of jags in y and x direction
+    target_height : float
+        height of targets in degree visual angle
+    target_idx_v1 : nested tuples
+        target indices with v1-value; as many tuples as there are targets each with (y, x) indices;
+        (0, 0) places a target in the center
+    target_idx_v2 : nested tuples
+        target indices with v2-value; as many tuples as there are targets each with (y, x) indices;
+        (0, 0) places a target in the center
+    v1 : float
+        first value for grating
+    v2 : float
+        second value for grating
+    vtarget : float
+        value for target(s)
+
+    Returns
+    -------
+    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    """
+    Ly, Lx, Lw = degrees_to_pixels(L_size, ppd)
+    Ld = degrees_to_pixels(L_distance, ppd)
+    Lywd, Lxwd = Ly, Lx
+    nL = L_repeats
+    theight = degrees_to_pixels(target_height, ppd)
+
+    mval2 = 2
+    if target_idx_v1 is None:
+        target_idx_v1 = ()
+        mval2 = 1
+    if target_idx_v2 is None:
+        target_idx_v2 = ()
+
+    if len(L_size) != 3:
+        raise Exception("L_size needs to have a length of 3")
+
+    if isinstance(nL, (int, float)):
+        nL = (nL, nL)
+    if np.min(nL) < 2:
+        raise Exception("L_repeats should be larger than 1")
+
+    # Create grid patch
+    L_patch = np.zeros([Ly, Lx])
+    L_patch[0:Lw, 0:Lx] = v1 - v2
+    L_patch[0:Ly, Lx - Lw : :] = v1 - v2
+    L_patch[0:Lw, 0:Lw] = (v1 - v2) / 2.0
+    L_patch[Ly - Lw : :, Lx - Lw : :] = (v1 - v2) / 2.0
+
+    # Create target and mask patch 1
+    tpatch1 = np.zeros([Ly, Lx])
+    tpatch1[
+        int(Ly / 2 - theight / 2) : int(Ly / 2 + theight / 2), Lx - Lw : :
+    ] = (vtarget - v1)
+    mpatch1 = np.zeros([Ly, Lx])
+    mpatch1[
+        int(Ly / 2 - theight / 2) : int(Ly / 2 + theight / 2), Lx - Lw : :
+    ] = 1
+
+    # Create target and mask patch 2
+    tpatch2 = np.zeros([Ly, Lx])
+    tpatch2[
+        int(Ly / 2 - theight / 2) : int(Ly / 2 + theight / 2),
+        Lx - Lw - Ld : Lx - Lw,
+    ] = (
+        vtarget - v2
+    )
+    mpatch2 = np.zeros([Ly, Lx])
+    mpatch2[
+        int(Ly / 2 - theight / 2) : int(Ly / 2 + theight / 2),
+        Lx - Lw - Ld : Lx - Lw,
+    ] = mval2
+
+    # Create image slightly larger than needed
+    img = np.ones([int(Lywd * (nL[0] + 2)), int(Lxwd * (nL[1] + 2))]) * v2
+    height, width = img.shape
+    mask = np.zeros([height, width])
+
+    # Create indices to place grid
+    idx_y = np.arange(0, height - Ly, Ly - Lw)
+    idx_x = np.arange(0, width - Lx, Lx - Lw)
+
+    for j in range(int(np.max(nL) ** 2)):
+        # Calculate starting coordinates in grid
+        ny, nx = j * (Ly + Ld) - (Ly - Lw) * j, j * (Lx + Ld) - (Lx - Lw) * j
+        my, mx = (
+            j * (Ly - Ld - Lw * 2) - (Ly - Lw) * j,
+            j * (Lx - Ld - Lw * 2) - (Lx - Lw) * j,
+        )
+        for i in range(np.minimum(len(idx_x), len(idx_y))):
+            if idx_y[i] + ny >= 0 and idx_x[i] + mx >= 0:
+                # Add grid in lower left half
+                if idx_y[i] + ny < height - Ly and idx_x[i] + mx < width - Lx:
+                    img[
+                        idx_y[i] + ny : idx_y[i] + ny + Ly,
+                        idx_x[i] + mx : idx_x[i] + mx + Lx,
+                    ] += L_patch
+
+                # Add targets in lower left half
+                tr = i - int(np.minimum(len(idx_x), len(idx_y)) / 2)
+                tc = j
+                if (tr, tc) == target_idx_v1 or (tr, tc) in target_idx_v1:
+                    img[
+                        idx_y[i] + ny : idx_y[i] + ny + Ly,
+                        idx_x[i] + mx : idx_x[i] + mx + Lx,
+                    ] += tpatch1
+                    mask[
+                        idx_y[i] + ny : idx_y[i] + ny + Ly,
+                        idx_x[i] + mx : idx_x[i] + mx + Lx,
+                    ] += mpatch1
+                if (tr, tc) == target_idx_v2 or (tr, tc) in target_idx_v2:
+                    img[
+                        idx_y[i] + ny + Lw : idx_y[i] + ny + Ly + Lw,
+                        idx_x[i] + mx : idx_x[i] + mx + Lx,
+                    ] += tpatch2
+                    mask[
+                        idx_y[i] + ny + Lw : idx_y[i] + ny + Ly + Lw,
+                        idx_x[i] + mx : idx_x[i] + mx + Lx,
+                    ] += mpatch2
+
+            if idx_y[i] + my >= 0 and idx_x[i] + nx >= 0 and j > 0:
+                # Add grid in upper right half
+                if idx_y[i] + my < height - Ly and idx_x[i] + nx < width - Lx:
+                    img[
+                        idx_y[i] + my : idx_y[i] + my + Ly,
+                        idx_x[i] + nx : idx_x[i] + nx + Lx,
+                    ] += L_patch
+
+                # Add targets in upper right half
+                if (tr, -tc) == target_idx_v1 or (tr, -tc) in target_idx_v1:
+                    img[
+                        idx_y[i] + my : idx_y[i] + my + Ly,
+                        idx_x[i] + nx : idx_x[i] + nx + Lx,
+                    ] += tpatch1
+                    mask[
+                        idx_y[i] + my : idx_y[i] + my + Ly,
+                        idx_x[i] + nx : idx_x[i] + nx + Lx,
+                    ] += mpatch1
+                if (tr, -tc) == target_idx_v2 or (tr, -tc) in target_idx_v2:
+                    img[
+                        idx_y[i] + my + Lw : idx_y[i] + my + Ly + Lw,
+                        idx_x[i] + nx : idx_x[i] + nx + Lx,
+                    ] += tpatch2
+                    mask[
+                        idx_y[i] + my + Lw : idx_y[i] + my + Ly + Lw,
+                        idx_x[i] + nx : idx_x[i] + nx + Lx,
+                    ] += mpatch2
+
+    # Crop to relevant size
+    img = img[Lywd : Lywd + int(Lywd * nL[0]), Lxwd : Lxwd + int(Lxwd * nL[1])]
+    mask = mask[
+        Lywd : Lywd + int(Lywd * nL[0]), Lxwd : Lxwd + int(Lxwd * nL[1])
+    ]
     return {"img": img, "mask": mask}
 
 
 if __name__ == "__main__":
+    import matplotlib.pyplot as plt
     from stimuli.utils import plot_stimuli
 
     stims = {
@@ -409,6 +749,10 @@ if __name__ == "__main__":
         "Circular White's effect": circular_white(),
         "Wheel-of-fortune": wheel_of_fortune_white(),
         "Anderson's variation": white_anderson(),
+        "Yazdanbakhsh variation": white_yazdanbakhsh(),
+        "Howe's variation": white_howe(),
+        "Wedding cake illusion": white_zigzag(),
     }
 
     plot_stimuli(stims)
+    plt.show()
