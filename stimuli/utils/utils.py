@@ -498,3 +498,117 @@ def plot_stimuli(stims, mask=False):
 
     plt.tight_layout()
     plt.show()
+
+
+###################################
+#          Lynns utils            #
+###################################
+def randomize_sign(array):
+    """Helper function that randomizes the sign of values in an array.
+
+    Parameters
+    ----------
+    array
+        N-dimensional array
+
+    Returns
+    -------
+    array
+        Same array with randomized signs
+
+    """
+    sign = np.random.rand(*array.shape) - 0.5
+    sign[sign <= 0.] = -1.
+    sign[sign > 0.] = 1.
+    array = array * sign
+    return array
+
+
+# Calculate peak frequency and boundaries for bandwidth
+def filter_statistics(f, gauss):
+    nX = len(f)
+    f_test = f[int(nX/2.)::]
+    gauss_test = gauss[int(nX/2.)::, int(nX/2.)]
+
+    # Calculate peak freq of 1d gaussian filter:
+    max_index = np.where(gauss_test == np.max(gauss_test))
+    max_index = max_index[0][0]
+    fpeak = f_test[max_index]
+
+    # Calculate lower and upper boundary for FWHM
+    idx_low = np.abs(gauss_test[0:max_index] - np.max(gauss_test) / 2.).argmin()
+    idx_high = np.abs(gauss_test[max_index::] - np.max(gauss_test) / 2.).argmin()
+    flow = f_test[idx_low]
+    fhigh = f_test[max_index+idx_high]
+    return fpeak, flow, fhigh
+
+
+def bandpass_filter(fx, fy, fcenter, sigma):
+    """Function to create a bandpass filter
+
+    Parameters
+    ----------
+    fx
+        Array with frequencies in x-direction.
+    fy
+        Array with frequencies in y-direction.
+    fcenter
+        Center frequency of the bandpass filter
+    sigma
+        Sigma that defines the spread of the Gaussian in deg.
+
+    Returns
+    -------
+    dog
+        2D Difference-of-Gaussian filter in frequency domain.
+
+    """
+    # Calculate the distance of each 2d spatial frequency from requested center frequency
+    distance = np.abs(fcenter - np.sqrt(fx**2. + fy**2.))
+
+    # Create bandpass filter:
+    gauss = 1. / (np.sqrt(2.*np.pi) * sigma) * np.exp(-(distance**2.) / (2.*sigma**2.))
+    gauss = gauss / gauss.max()
+    return gauss
+
+
+# Create oriented Gaussian filter:
+def oriented_filter(fx, fy, sigma, orientation):
+    # convert orientation parameter to radians
+    theta = np.deg2rad(orientation)
+
+    # determine a, b, c coefficients
+    a = (np.cos(theta)**2 / (2*sigma**2))
+    b = -(np.sin(2*theta) / (4*sigma**2))
+    c = (np.sin(theta)**2 / (2*sigma**2))
+
+    # create Gaussian
+    ofilter = np.exp(-(a*fx**2 + 2*b*fx*fy + c*fy**2))
+    return ofilter
+
+
+# Apply Gaussian envelope to a stimulus
+def apply_gaussian_env(stimulus, sigma):
+    # Inputs:
+    #    stimulus: Input stimulus, numpy array
+    #    sigma: Sigma of Gaussian in px
+    #    norm: Bool, if True normalize output array between 0 and 1
+    # Output:
+    # 2d numpy array with stimulus multiplied with Gaussian envelope
+
+    # Create a meshgrid:
+    size = stimulus.shape[0]
+    xx, yy = np.mgrid[:size, :size] - size/2.
+
+    # Create a Gaussian envelope:
+    gauss = 1. / (np.sqrt(2.*np.pi) * sigma) * np.exp(-(xx**2. + yy**2.) / (2.*sigma**2.))
+    gauss = gauss / gauss.max()
+    stimulus = stimulus * gauss
+    return stimulus
+
+
+def adapt_mc(stimulus, mc=1., mean_lum=0.5):
+    # Adapt Michelson contrast
+    stimulus = (stimulus - stimulus.min()) / (stimulus.max() - stimulus.min())
+    stimulus = (stimulus*mc*2.*mean_lum) + (mean_lum-mc*mean_lum)
+    return stimulus
