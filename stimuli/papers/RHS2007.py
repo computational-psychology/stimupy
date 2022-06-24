@@ -1,7 +1,5 @@
-import math
-
 import numpy as np
-import stimuli
+from stimuli import illusions
 from stimuli.utils import degrees_to_pixels, pad_img, pad_img_to_shape
 
 __all__ = [
@@ -67,7 +65,7 @@ def WE_thick(ppd=PPD):
     n_cycles = 4.0
     frequency = n_cycles / width
     target_height = 4 + (1 / ppd)
-    stim = stimuli.illusions.whites.white(
+    stim = illusions.whites.white(
         shape=(height, width),
         ppd=ppd,
         frequency=frequency,
@@ -87,7 +85,7 @@ def WE_thin_wide(ppd=PPD):
     n_cycles = 8.0
     frequency = n_cycles / width
     target_height = 2
-    stim = stimuli.illusions.whites.white(
+    stim = illusions.whites.white(
         shape=(height, width),
         ppd=ppd,
         frequency=frequency,
@@ -108,7 +106,7 @@ def WE_dual(ppd=PPD):
     frequency = n_cycles / width
     target_height = 2.0
 
-    stim1 = stimuli.illusions.whites.white(
+    stim1 = illusions.whites.white(
         shape=(height, width),
         ppd=ppd,
         frequency=frequency,
@@ -121,7 +119,7 @@ def WE_dual(ppd=PPD):
     stim1["img"] = pad_img_to_shape(stim1["img"], shape / (1, 2), val=0.5)
     stim1["mask"] = pad_img_to_shape(stim1["mask"], shape / (1, 2), val=0)
 
-    stim2 = stimuli.illusions.whites.white(
+    stim2 = illusions.whites.white(
         shape=(height, width),
         ppd=ppd,
         frequency=frequency,
@@ -147,7 +145,7 @@ def WE_anderson(ppd=PPD):
     n_cycles = 8.0
     frequency = n_cycles / width
 
-    stim = stimuli.illusions.whites.white_anderson(
+    stim = illusions.whites.white_anderson(
         shape=(height, width),
         ppd=ppd,
         frequency=frequency,
@@ -174,7 +172,7 @@ def WE_howe(ppd=PPD):
     n_cycles = 8.0
     frequency = n_cycles / width
 
-    stim = stimuli.illusions.whites.white_howe(
+    stim = illusions.whites.white_howe(
         shape=(height, width),
         ppd=ppd,
         frequency=frequency,
@@ -196,7 +194,7 @@ def WE_howe(ppd=PPD):
 
 def WE_zigzag(ppd=PPD):
     i1, i2 = -1, 0
-    stim = stimuli.illusions.whites.white_zigzag(
+    stim = illusions.whites.white_zigzag(
         ppd=PPD,
         L_size=(5.0, 6.3, 1.0),
         L_distance=1.0,
@@ -217,7 +215,7 @@ def WE_zigzag(ppd=PPD):
 def WE_radial_thick_small(ppd=PPD):
     radius = 8.0
     n_cycles = 7.0
-    stim = stimuli.illusions.whites.wheel_of_fortune_white(
+    stim = illusions.whites.wheel_of_fortune_white(
         radius=radius,
         ppd=ppd,
         n_cycles=n_cycles,
@@ -235,7 +233,7 @@ def WE_radial_thick_small(ppd=PPD):
 def WE_radial_thick(ppd=PPD):
     radius = 12.0
     n_cycles = 9.0
-    stim = stimuli.illusions.whites.wheel_of_fortune_white(
+    stim = illusions.whites.wheel_of_fortune_white(
         radius=radius,
         ppd=ppd,
         n_cycles=n_cycles,
@@ -253,7 +251,7 @@ def WE_radial_thick(ppd=PPD):
 def WE_radial_thin_small(ppd=PPD):
     radius = 8.0
     n_cycles = 13.0
-    stim = stimuli.illusions.whites.wheel_of_fortune_white(
+    stim = illusions.whites.wheel_of_fortune_white(
         radius=radius,
         ppd=ppd,
         n_cycles=n_cycles,
@@ -271,7 +269,7 @@ def WE_radial_thin_small(ppd=PPD):
 def WE_radial_thin(ppd=PPD):
     radius = 12.0
     n_cycles = 21.0
-    stim = stimuli.illusions.whites.wheel_of_fortune_white(
+    stim = illusions.whites.wheel_of_fortune_white(
         radius=radius,
         ppd=ppd,
         n_cycles=n_cycles,
@@ -290,7 +288,7 @@ def WE_circular1(ppd=PPD):
     radius = 8.0
     n_cycles = 4.0
     frequency = n_cycles / radius
-    stim1 = stimuli.illusions.whites.circular_white(
+    stim1 = illusions.whites.circular_white(
         radius=radius,
         ppd=ppd,
         frequency=frequency,
@@ -298,7 +296,7 @@ def WE_circular1(ppd=PPD):
         start="high",
     )
 
-    stim2 = stimuli.illusions.whites.circular_white(
+    stim2 = illusions.whites.circular_white(
         radius=radius,
         ppd=ppd,
         frequency=frequency,
@@ -323,14 +321,14 @@ def WE_circular05(ppd=PPD):
     radius = 8
     n_cycles = 8
     frequency = n_cycles / radius
-    stim1 = stimuli.illusions.whites.circular_white(
+    stim1 = illusions.whites.circular_white(
         radius=radius,
         ppd=ppd,
         frequency=frequency,
         target_indices=(10,),
         start="high",
     )
-    stim2 = stimuli.illusions.whites.circular_white(
+    stim2 = illusions.whites.circular_white(
         radius=radius,
         ppd=ppd,
         frequency=frequency,
@@ -355,14 +353,14 @@ def WE_circular025(ppd=PPD):
     radius = 8.0
     n_cycles = 16.0
     frequency = n_cycles / radius
-    stim1 = stimuli.illusions.whites.circular_white(
+    stim1 = illusions.whites.circular_white(
         radius=radius,
         ppd=ppd,
         frequency=frequency,
         target_indices=(22,),
         start="high",
     )
-    stim2 = stimuli.illusions.whites.circular_white(
+    stim2 = illusions.whites.circular_white(
         radius=radius,
         ppd=ppd,
         frequency=frequency,
@@ -387,7 +385,7 @@ def grating_induction(ppd=PPD):
     n_cycles = 4.0
     height, width = 12.0, 16.0
     frequency = n_cycles / width
-    stim = stimuli.illusions.grating_induction.grating_illusion(
+    stim = illusions.grating_induction.grating_illusion(
         shape=(height, width),
         ppd=ppd,
         frequency=frequency,
@@ -410,7 +408,7 @@ def sbc_large(ppd=PPD):
         im_size[0] / 2.0 - tsize / 2.0,
         im_size[1] / 2.0 - tsize / 2.0,
     )
-    stim1 = stimuli.illusions.sbc.simultaneous_contrast(
+    stim1 = illusions.sbc.simultaneous_contrast(
         ppd=ppd,
         im_size=im_size,
         target_size=(tsize, tsize),
@@ -418,7 +416,7 @@ def sbc_large(ppd=PPD):
         vback=0.0,
         vtarget=0.5,
     )
-    stim2 = stimuli.illusions.sbc.simultaneous_contrast(
+    stim2 = illusions.sbc.simultaneous_contrast(
         ppd=ppd,
         im_size=im_size,
         target_size=(tsize, tsize),
@@ -448,7 +446,7 @@ def sbc_small(ppd=PPD):
         im_size[0] / 2.0 - tsize / 2.0,
         im_size[1] / 2.0 - tsize / 2.0,
     )
-    stim1 = stimuli.illusions.sbc.simultaneous_contrast(
+    stim1 = illusions.sbc.simultaneous_contrast(
         ppd=ppd,
         im_size=im_size,
         target_size=(tsize, tsize),
@@ -456,7 +454,7 @@ def sbc_small(ppd=PPD):
         vback=0.0,
         vtarget=0.5,
     )
-    stim2 = stimuli.illusions.sbc.simultaneous_contrast(
+    stim2 = illusions.sbc.simultaneous_contrast(
         ppd=ppd,
         im_size=im_size,
         target_size=(tsize, tsize),
@@ -488,7 +486,7 @@ def todorovic_equal(ppd=PPD):
     posy1 = im_size[0] / 2.0 - csize - tthick / 2.0
     posy2 = im_size[0] / 2.0 + tthick / 2.0 - 1 / ppd
 
-    stim1 = stimuli.illusions.todorovic.todorovic_out(
+    stim1 = illusions.todorovic.todorovic_out(
         im_size=im_size,
         ppd=ppd,
         target_size=(csize,) * 4,
@@ -501,7 +499,7 @@ def todorovic_equal(ppd=PPD):
         vtarget=0.5,
         vcovers=0.0,
     )
-    stim2 = stimuli.illusions.todorovic.todorovic_out(
+    stim2 = illusions.todorovic.todorovic_out(
         im_size=im_size,
         ppd=ppd,
         target_size=(csize,) * 4,
@@ -539,7 +537,7 @@ def todorovic_in_large(ppd=PPD):
     posy1 = im_size[0] / 2.0 - csize - csize / 4.0
     posy2 = im_size[0] / 2.0 + csize / 4.0 - 1 / ppd
 
-    stim1 = stimuli.illusions.todorovic.todorovic_in(
+    stim1 = illusions.todorovic.todorovic_in(
         im_size=im_size,
         ppd=ppd,
         target_size=(tsize, tsize),
@@ -552,7 +550,7 @@ def todorovic_in_large(ppd=PPD):
         vtarget=0.5,
         vcovers=0.0,
     )
-    stim2 = stimuli.illusions.todorovic.todorovic_in(
+    stim2 = illusions.todorovic.todorovic_in(
         im_size=im_size,
         ppd=ppd,
         target_size=(tsize, tsize),
@@ -590,7 +588,7 @@ def todorovic_in_small(ppd=PPD):
     posy1 = im_size[0] / 2.0 - csize - csize / 4.0
     posy2 = im_size[0] / 2.0 + csize / 4.0 - 1 / ppd
 
-    stim1 = stimuli.illusions.todorovic.todorovic_in(
+    stim1 = illusions.todorovic.todorovic_in(
         im_size=im_size,
         ppd=ppd,
         target_size=(tsize, tsize),
@@ -603,7 +601,7 @@ def todorovic_in_small(ppd=PPD):
         vtarget=0.5,
         vcovers=0.0,
     )
-    stim2 = stimuli.illusions.todorovic.todorovic_in(
+    stim2 = illusions.todorovic.todorovic_in(
         im_size=im_size,
         ppd=ppd,
         target_size=(tsize, tsize),
@@ -640,7 +638,7 @@ def todorovic_out(ppd=PPD):
     posy1 = im_size[0] / 2.0 - csize - tthick / 2.0
     posy2 = im_size[0] / 2.0 + tthick / 2.0 - 1 / ppd
 
-    stim1 = stimuli.illusions.todorovic.todorovic_out(
+    stim1 = illusions.todorovic.todorovic_out(
         im_size=im_size,
         ppd=ppd,
         target_size=(3.7,) * 4,
@@ -653,7 +651,7 @@ def todorovic_out(ppd=PPD):
         vtarget=0.5,
         vcovers=0.0,
     )
-    stim2 = stimuli.illusions.todorovic.todorovic_out(
+    stim2 = illusions.todorovic.todorovic_out(
         im_size=im_size,
         ppd=ppd,
         target_size=(3.7,) * 4,
@@ -688,7 +686,7 @@ def checkerboard_016(ppd=PPD):
 
     check1, check2, target = 1, 0, 0.5
     target_height = height_checks // 2
-    stim = stimuli.illusions.checkerboard_sbc.checkerboard_contrast(
+    stim = illusions.checkerboard_sbc.checkerboard_contrast(
         ppd=ppd,
         board_shape=board_shape,
         check_size=check_height,
@@ -713,7 +711,7 @@ def checkerboard_0938(ppd=PPD):
 
     check1, check2, target = 0, 1, 0.5
     target_height = height_checks // 2
-    stim = stimuli.illusions.checkerboard_sbc.checkerboard_contrast(
+    stim = illusions.checkerboard_sbc.checkerboard_contrast(
         ppd=ppd,
         board_shape=board_shape,
         check_size=check_height,
@@ -738,7 +736,7 @@ def checkerboard209(ppd=PPD):
 
     check1, check2, target = 0, 1, 0.5
     target_height = height_checks // 2
-    stim = stimuli.illusions.checkerboard_sbc.checkerboard_contrast(
+    stim = illusions.checkerboard_sbc.checkerboard_contrast(
         ppd=ppd,
         board_shape=board_shape,
         check_size=check_height,
@@ -767,7 +765,7 @@ def corrugated_mondrian(ppd=PPD):
     )
     target_idx = ((1, 2), (3, 2))
 
-    stim = stimuli.illusions.mondrians.corrugated_mondrians(
+    stim = illusions.mondrians.corrugated_mondrians(
         ppd=PPD,
         widths=2.0,
         heights=2.0,
@@ -787,7 +785,7 @@ def benary_cross(ppd=PPD):
     vback = 1.0
     vtarget = 0.5
     padding = (0.0, 0.0, 4.0, 4.0)
-    stim = stimuli.illusions.benary_cross.benarys_cross(
+    stim = illusions.benary_cross.benarys_cross(
         ppd=PPD,
         cross_size=(4.5, 4.5, 9.5, 9.5),
         cross_thickness=4.0,
@@ -812,7 +810,7 @@ def benary_cross(ppd=PPD):
 def todorovic_benary1_2(ppd=PPD):
     vback = 1.0
     vtarget = 0.5
-    stim = stimuli.illusions.benary_cross.todorovic_benary(
+    stim = illusions.benary_cross.todorovic_benary(
         ppd=PPD,
         L_size=(6.5, 6.5, 2.5, 28.5),
         target_size=(2.5, 2.5),
@@ -834,7 +832,7 @@ def todorovic_benary1_2(ppd=PPD):
 def todorovic_benary3_4(ppd=PPD):
     vback = 1.0
     vtarget = 0.5
-    stim = stimuli.illusions.benary_cross.todorovic_benary(
+    stim = illusions.benary_cross.todorovic_benary(
         ppd=PPD,
         L_size=(6.5, 6.5, 2.5, 28.5),
         target_size=(2.5, 2.5),
@@ -856,7 +854,7 @@ def todorovic_benary3_4(ppd=PPD):
 def todorovic_benary1_2_3_4(ppd=PPD):
     vback = 1.0
     vtarget = 0.5
-    stim = stimuli.illusions.benary_cross.todorovic_benary(
+    stim = illusions.benary_cross.todorovic_benary(
         ppd=PPD,
         L_size=(6.5, 6.5, 2.5, 28.5),
         target_size=(2.5, 2.5),
@@ -879,7 +877,7 @@ def bullseye_thin(ppd=PPD):
     v1, v2, v3 = 1.0, 0.5, 0.0
     shape_ind = degrees_to_pixels(np.array(VISEXTENT) / 2.0, ppd)
     shape_all = degrees_to_pixels(VISEXTENT, ppd)
-    stim1 = stimuli.illusions.bullseye.bullseye_stimulus(
+    stim1 = illusions.bullseye.bullseye_stimulus(
         ppd=ppd,
         n_rings=8,
         ring_width=0.1,
@@ -887,7 +885,7 @@ def bullseye_thin(ppd=PPD):
         vring2=v3,
         vtarget=v2,
     )
-    stim2 = stimuli.illusions.bullseye.bullseye_stimulus(
+    stim2 = illusions.bullseye.bullseye_stimulus(
         ppd=ppd,
         n_rings=8,
         ring_width=0.1,
@@ -920,7 +918,7 @@ def bullseye_thick(ppd=PPD):
     v1, v2, v3 = 1.0, 0.5, 0.0
     shape_ind = degrees_to_pixels(np.array(VISEXTENT) / 2.0, ppd)
     shape_all = degrees_to_pixels(VISEXTENT, ppd)
-    stim1 = stimuli.illusions.bullseye.bullseye_stimulus(
+    stim1 = illusions.bullseye.bullseye_stimulus(
         ppd=ppd,
         n_rings=6,
         ring_width=0.2,
@@ -928,7 +926,7 @@ def bullseye_thick(ppd=PPD):
         vring2=v3,
         vtarget=v2,
     )
-    stim2 = stimuli.illusions.bullseye.bullseye_stimulus(
+    stim2 = illusions.bullseye.bullseye_stimulus(
         ppd=ppd,
         n_rings=6,
         ring_width=0.2,

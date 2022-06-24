@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.ndimage import rotate
 from stimuli.components import cross, triangle
-from stimuli.utils import degrees_to_pixels, plot_stim
+from stimuli.utils import degrees_to_pixels
 
 
 def benarys_cross(
