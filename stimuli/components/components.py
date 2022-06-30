@@ -19,9 +19,9 @@ def rectangle(
         pixels per degree (visual angle)
     im_size : (float, float)
         size of the image in degrees visual angle
-    square_size : (float, float)
+    rect_size : (float, float)
         size of the square in degrees visual angle
-    square_pos : (float, float)
+    rect_pos : (float, float)
         coordinates of the square in degrees visual angle
     vback : float
         background value
