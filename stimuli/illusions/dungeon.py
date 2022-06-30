@@ -7,9 +7,9 @@ def dungeon_illusion(
     n_cells=5,
     target_radius=1,
     cell_size=1.0,
-    back=0.0,
-    grid=1.0,
-    target=0.5,
+    vback=0.0,
+    vgrid=1.0,
+    vtarget=0.5,
 ):
     """
     Dungeon illusion (Bressan, 2001) with diamond target.
@@ -24,21 +24,21 @@ def dungeon_illusion(
         the "Manhattan radius" of the diamond target in # cells
     cell_size : float
         size per cell in degrees visual angle
-    back : float
+    vback : float
         value for background
-    grid : float
+    vgrid : float
         value for grid cells
-    target : float
+    vtarget : float
         value for target
 
     Returns
     -------
-    A stimulus object
+    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
     """
     cell_size_px = degrees_to_pixels(cell_size, ppd)
 
     # create 2D array of grid
-    arr = np.ones((n_cells * 2 - 1, n_cells * 2 - 1)) * grid
+    arr = np.ones((n_cells * 2 - 1, n_cells * 2 - 1)) * vgrid
     mask_arr = np.zeros((n_cells * 2 - 1, n_cells * 2 - 1))
 
     # compute Manhattan distances from image center (=radius) of each pixel
@@ -47,7 +47,7 @@ def dungeon_illusion(
 
     # add targets
     idx = radii <= (target_radius * 2)
-    arr[idx] = target
+    arr[idx] = vtarget
     mask_arr[idx] = 1
 
     # compute and apply grid mask
@@ -59,20 +59,11 @@ def dungeon_illusion(
         for j in range(n_cells * 2 - 1)
     ]
     grid_mask = np.array(grid_mask)
-    arr[grid_mask] = back
+    arr[grid_mask] = vback
     mask_arr[grid_mask] = 0
 
-    # This is used to number each target square individually instead of giving them all an index of 1
-    # ind1, ind2 = np.nonzero(mask_arr)
-    # for i in range(len(ind1)):
-    #     mask_arr[ind1[i], ind2[i]] = i+1
-
-    img = np.repeat(np.repeat(arr, cell_size_px, axis=0), cell_size_px, axis=1)
-
-    mask = np.repeat(
-        np.repeat(mask_arr, cell_size_px, axis=0), cell_size_px, axis=1
-    )
-
+    img = arr.repeat(cell_size_px, axis=0).repeat(cell_size_px, axis=1)
+    mask = mask_arr.repeat(cell_size_px, axis=0).repeat(cell_size_px, axis=1)
     return {"img": img, "mask": mask}
 
 
