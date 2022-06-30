@@ -1,18 +1,16 @@
 import numpy as np
-from stimuli.utils import degrees_to_pixels, pad_img
+from stimuli.utils import degrees_to_pixels
 
 
 def grating_illusion(
     ppd=10,
-    n_bars=5,
-    target_length=2,
+    n_bars=8,
+    target_indices=(2, 4),
     bar_width=1.0,
     bar_height=8.0,
-    padding=(1.0, 1.0, 1.0, 1.0),
-    back=0.0,
-    grid=1.0,
-    target=0.5,
-    double=True,
+    vbar1=0.0,
+    vbar2=1.0,
+    vtarget=0.5
 ):
     """
     Grating illusion
@@ -23,26 +21,22 @@ def grating_illusion(
         pixels per degree (visual angle)
     n_bars : int
         the number of vertical bars
-    target_length : int
-        #bars that make up the target
+    target_indices : tuple
+        tuple with bar target indices from left to right
     bar_width : float
         width of bar in degrees visual angle
     bar_height : float
         height of bar in degrees visual angle
-    padding : (float, float, float, float)
-        4-valued tuple specifying padding (top, bottom, left, right) in degrees visual angle
-    back : float
-        value for background
-    grid : float
-        value for grid cells
-    target : float
+    vbar1 : float
+        value for bar 1
+    vbar2 : float
+        value for bar 2
+    vtarget : float
         value for target
-    double : bool
-        whether to return the full illusion with two grids side-by-side (inverting back and grid values)
 
     Returns
     -------
-    A stimulus object
+    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
     """
 
     bar_height_px, bar_width_px = degrees_to_pixels(
@@ -50,48 +44,19 @@ def grating_illusion(
     ), degrees_to_pixels(bar_width, ppd)
 
     # create array of grating
-    arr = np.ones(n_bars) * grid
-    mask_arr = np.zeros(n_bars)
+    img = np.ones([1, n_bars]) * vbar2
+    img[:, ::2] = vbar1
+    mask = np.zeros([1, n_bars])
 
-    target_offset = (n_bars - target_length) // 2
-    arr[target_offset : target_offset + target_length] = target
-    for i, j in enumerate(range(target_offset, target_offset + target_length)):
-        mask_arr[j] = i + 1
+    if isinstance(target_indices, (float, int)):
+        target_indices = (target_indices,)
 
-    # final image array
-    width_px = (n_bars * 2 - 1) * bar_width_px
-    height_px = bar_height_px
-    img = np.ones((height_px, width_px)) * back
-    mask = np.zeros((height_px, width_px))
+    for i, idx in enumerate(target_indices):
+        img[:, idx] = vtarget
+        mask[:, idx] = i + 1
 
-    for i, val in np.ndenumerate(arr):
-        target_val = val == target
-        x = i[0] * 2 * bar_width_px
-        img[:, x : x + bar_width_px] = val
-        if target_val:
-            mask[:, x : x + bar_width_px] = mask_arr[i]
-
-    img = pad_img(img, padding, ppd, back)
-    mask = pad_img(mask, padding, ppd, 0)
-
-    # Repeat stimulus and add to single-stimulus:
-    if double:
-        stim2 = grating_illusion(
-            ppd=ppd,
-            n_bars=n_bars,
-            target_length=target_length,
-            bar_width=bar_width,
-            bar_height=bar_height,
-            padding=padding,
-            back=grid,
-            grid=back,
-            target=target,
-            double=False,
-        )
-        img = np.hstack([img, stim2["img"]])
-        # Increase target mask values to differentiate from single-stimulus targets:
-        stim2["mask"][stim2["mask"] != 0] += 1
-        mask = np.hstack([mask, stim2["mask"]])
+    img = img.repeat(bar_width_px, axis=1).repeat(bar_height_px, axis=0)
+    mask = mask.repeat(bar_width_px, axis=1).repeat(bar_height_px, axis=0)
 
     return {"img": img, "mask": mask}
 
