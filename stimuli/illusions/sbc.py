@@ -1,6 +1,6 @@
 import numpy as np
-from stimuli.utils import pixels_to_degrees, pad_img
-from stimuli.components import rectangle, disc
+from stimuli.utils import pixels_to_degrees, degrees_to_pixels, pad_img, pad_img_to_shape
+from stimuli.components import rectangle, disc, square_wave_grating
 
 
 def simultaneous_contrast(
@@ -89,11 +89,13 @@ def sbc_with_dots(
     tposx = (img_width-rec_width) / 2.
     img = rectangle(ppd, im_size=(img_height, img_width), rect_size=(rec_height, rec_width),
                     rect_pos=(tposy, tposx), vback=vback, vrect=vtarget)
+    mask = np.zeros(img.shape)
+    mask[img == vtarget] = 1
 
     patch = np.tile(patch, (n_dots[0], n_dots[1]))
     indices_dots = np.where((patch != 0))
     img[indices_dots] = vdots
-    mask = None
+    mask[indices_dots] = 0
     return {"img": img, "mask": mask}
 
 
@@ -155,7 +157,8 @@ def dotted_sbc(
     indices_dots_target = np.where((patch != 0) & (sbc == vtarget))
     img[indices_dots_back] = vdots
     img[indices_dots_target] = vtarget
-    mask = None
+    mask = np.zeros(img.shape)
+    mask[indices_dots_target] = 1
     return {"img": img, "mask": mask}
 
 
@@ -169,5 +172,5 @@ if __name__ == "__main__":
         "Dotted SBC": dotted_sbc(),
     }
 
-    plot_stimuli(stims)
+    plot_stimuli(stims, mask=True)
     plt.show()
