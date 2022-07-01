@@ -23,10 +23,8 @@ def grating_illusion(
         the number of vertical bars
     target_indices : tuple
         tuple with bar target indices from left to right
-    bar_width : float
-        width of bar in degrees visual angle
-    bar_height : float
-        height of bar in degrees visual angle
+    bar_shape : (float, float)
+        bar height and width in degrees visual angle
     vbar1 : float
         value for bar 1
     vbar2 : float
