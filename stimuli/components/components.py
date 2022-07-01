@@ -279,3 +279,38 @@ def disc(
     sampler = resize_array(np.eye(img.shape[0] // ssf), (1, ssf))
     img = np.dot(sampler, np.dot(img, sampler.T)) / ssf**2
     return img
+
+
+def square_wave_grating(
+        ppd=10,
+        n_bars=8,
+        bar_shape=(8., 1.),
+        vbar1=0.0,
+        vbar2=1.0,
+        ):
+    """
+    Square-wave grating
+
+    Parameters
+    ----------
+    ppd : int
+        pixels per degree (visual angle)
+    n_bars : int
+        the number of vertical bars
+    bar_shape : (float, float)
+        bar height and width in degrees visual angle
+    vbar1 : float
+        value for bar 1
+    vbar2 : float
+        value for bar 2
+
+    Returns
+    -------
+    A 2d-array with a square-wave grating
+    """
+
+    bar_height_px, bar_width_px = degrees_to_pixels(bar_shape, ppd)
+    img = np.ones([1, n_bars]) * vbar2
+    img[:, ::2] = vbar1
+    img = img.repeat(bar_width_px, axis=1).repeat(bar_height_px, axis=0)
+    return img
