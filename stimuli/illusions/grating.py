@@ -120,12 +120,12 @@ def grating_grating(
         bar height and width in degrees visual angle
     im_size : (float, float)
         height and width of stimulus in visual angle
-    vback : float
-        value for background
-    vbar : float
-        value for bar
+    vbar1 : float
+        value for bar1
+    vbar2 : float
+        value for bar2
     vtarget : float
-        value for other bar which indicates target
+        value for target bar
 
     Returns
     -------
@@ -169,6 +169,31 @@ def grating_grating_shifted(
         vbar2=1.,
         vtarget=0.5,
         ):
+    """
+    Grating on a shifted grating
+
+    Parameters
+    ----------
+    ppd : int
+        pixels per degree (visual angle)
+    n_bars : int
+        the number of vertical bars
+    bar_shape : (float, float)
+        bar height and width in degrees visual angle
+    im_size : (float, float)
+        height and width of stimulus in visual angle
+    vbar1 : float
+        value for bar1
+    vbar2 : float
+        value for bar2
+    vtarget : float
+        value for target bar
+
+    Returns
+    -------
+    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    """
+
     stim = grating_grating(ppd, n_bars, bar_shape, im_size, vbar1, vbar2, vtarget)
     img = stim['img']
     mask = stim['mask']
