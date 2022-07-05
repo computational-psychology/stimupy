@@ -1,6 +1,6 @@
 import numpy as np
 from stimuli import illusions
-from stimuli.utils import pad_img, pad_img_to_shape
+from stimuli.utils import pad_img
 
 __all__ = [
     "dungeon",
@@ -20,7 +20,9 @@ __all__ = [
     "white_yazdanbakhsh",
 ]
 
-PPD = 10
+PPD = 1             # default: 1
+HEIGHT_DEG = None   # default: None
+PAD = True
 
 
 def gen_all(ppd=PPD, skip=False):
@@ -45,10 +47,35 @@ def gen_all(ppd=PPD, skip=False):
     return stims
 
 
-def dungeon(ppd=PPD):
+def check_requirements(original_size_px, height_px, height_deg, ppd):
+    if height_px is None and (height_deg is None or ppd is None):
+        raise ValueError('You need to define two out of ppd, height_px and height_deg')
+    if height_deg is None and (height_px is None or ppd is None):
+        raise ValueError('You need to define two out of ppd, height_px and height_deg')
+
+    if height_px is not None and ppd is not None:
+        conversion_fac = height_px / original_size_px / ppd
+
+    if height_deg is not None and ppd is not None:
+        conversion_fac = height_deg / original_size_px
+
+    if height_px is not None and height_deg is not None and ppd is not None:
+        ppd_calc = int(np.round(height_px / height_deg))
+        assert ppd_calc == ppd
+        conversion_fac = height_px / original_size_px / ppd
+
+    if height_px is not None and height_deg is not None and ppd is None:
+        ppd = int(np.round(height_px / height_deg))
+        conversion_fac = height_px / original_size_px / ppd
+    return height_px, height_deg, ppd, conversion_fac
+
+
+def dungeon(height_px=110, ppd=PPD, height_deg=HEIGHT_DEG):
+    height_px, height_deg, ppd, conversion_fac = check_requirements(110, height_px, height_deg, ppd)
+
     n_cells = 5
-    target_radius = 1
-    cell_size = 1.0
+    target_radius = 1.
+    cell_size = 10. * conversion_fac
     v1, v2, v3 = 1., 5., 9.
 
     stim1 = illusions.dungeon.dungeon_illusion(
@@ -60,9 +87,6 @@ def dungeon(ppd=PPD):
         vgrid=v3,
         vtarget=v2,
     )
-    padding = (0.9, 1.1, 0.9, 1.1)
-    stim1["img"] = pad_img(stim1["img"], padding, ppd, v1)
-    stim1["mask"] = pad_img(stim1["mask"], padding, ppd, 0)
 
     stim2 = illusions.dungeon.dungeon_illusion(
         ppd=ppd,
@@ -73,29 +97,33 @@ def dungeon(ppd=PPD):
         vgrid=v1,
         vtarget=v2,
     )
-    padding = (0.9, 1.1, 0.9, 1.1)
+
+    padding = np.array((9., 11., 9., 11.)) * conversion_fac
+    stim1["img"] = pad_img(stim1["img"], padding, ppd, v1)
+    stim1["mask"] = pad_img(stim1["mask"], padding, ppd, 0)
     stim2["img"] = pad_img(stim2["img"], padding, ppd, v3)
     stim2["mask"] = pad_img(stim2["mask"], padding, ppd, 0)
 
     img = np.hstack([stim1["img"], stim2["img"]])
     mask = np.hstack([stim1["mask"], stim2["mask"] * 2])
-
     return {"img": img, "mask": mask}
 
 
-def cube(ppd=PPD):
+def cube(height_px=100, ppd=PPD, height_deg=HEIGHT_DEG):
+    height_px, height_deg, ppd, conversion_fac = check_requirements(100, height_px, height_deg, ppd)
+
     v1, v2, v3 = 1.0, 5.0, 9.0
-    pad = (0.9, 1.0, 0.9, 1.0)
+    occlusion = np.array((7,)*4) * conversion_fac
     stim1 = illusions.cube.cube_illusion(
         ppd=ppd,
         n_cells=4,
         target_length=2,
-        cell_long=1.5,
-        cell_short=1.1,
-        corner_cell_width=1.8,
-        corner_cell_height=1.8,
-        cell_spacing=0.5,
-        occlusion_overlap=(0.7, 0.7, 0.7, 0.7),
+        cell_long=15.*conversion_fac,
+        cell_short=11.*conversion_fac,
+        corner_cell_width=18.*conversion_fac,
+        corner_cell_height=18.*conversion_fac,
+        cell_spacing=5.*conversion_fac,
+        occlusion_overlap=occlusion,
         vback=v1,
         vgrid=v3,
         vtarget=v2,
@@ -104,22 +132,23 @@ def cube(ppd=PPD):
         ppd=ppd,
         n_cells=4,
         target_length=2,
-        cell_long=1.5,
-        cell_short=1.1,
-        corner_cell_width=1.8,
-        corner_cell_height=1.8,
-        cell_spacing=0.5,
-        occlusion_overlap=(0.7, 0.7, 0.7, 0.7),
+        cell_long=15.*conversion_fac,
+        cell_short=11.*conversion_fac,
+        corner_cell_width=18.*conversion_fac,
+        corner_cell_height=18.*conversion_fac,
+        cell_spacing=5.*conversion_fac,
+        occlusion_overlap=occlusion,
         vback=v3,
         vgrid=v1,
         vtarget=v2,
     )
 
     # Padding
-    img1 = pad_img(stim1["img"], pad, ppd, v1)
-    mask1 = pad_img(stim1["mask"], pad, ppd, 0)
-    img2 = pad_img(stim2["img"], pad, ppd, v3)
-    mask2 = pad_img(stim2["mask"], pad, ppd, 0)
+    padding = np.array((9., 10., 9., 10.)) * conversion_fac
+    img1 = pad_img(stim1["img"], padding, ppd, v1)
+    mask1 = pad_img(stim1["mask"], padding, ppd, 0)
+    img2 = pad_img(stim2["img"], padding, ppd, v3)
+    mask2 = pad_img(stim2["mask"], padding, ppd, 0)
 
     # Increase target index of right stimulus half
     mask2 = mask2 + 1
@@ -131,14 +160,16 @@ def cube(ppd=PPD):
     return {"img": img_stacked, "mask": mask_stacked}
 
 
-def grating(ppd=PPD):
+def grating(height_px=100, ppd=PPD, height_deg=HEIGHT_DEG):
+    height_px, height_deg, ppd, conversion_fac = check_requirements(100, height_px, height_deg, ppd)
+
     v1, v2, v3 = 1.0, 5.0, 9.0
-    pad = (0.9, 1.0, 0.9, 1.1)
+    bar_shape = np.array((81, 10)) * conversion_fac
     stim1 = illusions.grating.grating_illusion(
         ppd=ppd,
         n_bars=9,
         target_indices=(4,),
-        bar_shape=(8.1, 1.0),
+        bar_shape=bar_shape,
         vbar1=v3,
         vbar2=v1,
         vtarget=v2,
@@ -147,17 +178,18 @@ def grating(ppd=PPD):
         ppd=ppd,
         n_bars=9,
         target_indices=(4,),
-        bar_shape=(8.1, 1.0),
+        bar_shape=bar_shape,
         vbar1=v1,
         vbar2=v3,
         vtarget=v2,
     )
 
     # Padding
-    img1 = pad_img(stim1["img"], pad, ppd, v1)
-    mask1 = pad_img(stim1["mask"], pad, ppd, 0)
-    img2 = pad_img(stim2["img"], pad, ppd, v3)
-    mask2 = pad_img(stim2["mask"], pad, ppd, 0)
+    padding = np.array((9., 10., 9., 11.)) * conversion_fac
+    img1 = pad_img(stim1["img"], padding, ppd, v1)
+    mask1 = pad_img(stim1["mask"], padding, ppd, 0)
+    img2 = pad_img(stim2["img"], padding, ppd, v3)
+    mask2 = pad_img(stim2["mask"], padding, ppd, 0)
 
     # Increase target index of right stimulus half
     mask2 = mask2 + 1
@@ -169,14 +201,15 @@ def grating(ppd=PPD):
     return {"img": img_stacked, "mask": mask_stacked}
 
 
-def rings(ppd=PPD):
+def rings(height_px=100, ppd=PPD, height_deg=HEIGHT_DEG):
+    height_px, height_deg, ppd, conversion_fac = check_requirements(100, height_px, height_deg, ppd)
+
     v1, v2, v3 = 1.0, 5.0, 9.0
-    pad = (0.9, 1.0, 0.9, 1.0)
     stim1 = illusions.rings.ring_stimulus(
         ppd=ppd,
         n_rings=8,
         target_idx=4,
-        ring_width=0.5,
+        ring_width=5.*conversion_fac,
         vring1=v1,
         vring2=v3,
         vtarget=v2,
@@ -185,19 +218,18 @@ def rings(ppd=PPD):
         ppd=ppd,
         n_rings=8,
         target_idx=3,
-        ring_width=0.5,
+        ring_width=5.*conversion_fac,
         vring1=v1,
         vring2=v3,
         vtarget=v2,
     )
 
     # Padding
-    img1, mask1 = pad_img(stim1["img"], pad, ppd, v1), pad_img(
-        stim1["mask"], pad, ppd, 0
-    )
-    img2, mask2 = pad_img(stim2["img"], pad, ppd, v1), pad_img(
-        stim2["mask"], pad, ppd, 0
-    )
+    padding = np.array((9., 10., 9., 10.)) * conversion_fac
+    img1 = pad_img(stim1["img"], padding, ppd, v1)
+    mask1 = pad_img(stim1["mask"], padding, ppd, 0)
+    img2 = pad_img(stim2["img"], padding, ppd, v1)
+    mask2 = pad_img(stim2["mask"], padding, ppd, 0)
 
     # Increase target index of right stimulus half
     mask2 = mask2 + 1
@@ -209,13 +241,14 @@ def rings(ppd=PPD):
     return {"img": img_stacked, "mask": mask_stacked}
 
 
-def bullseye(ppd=PPD):
+def bullseye(height_px=100, ppd=PPD, height_deg=HEIGHT_DEG):
+    height_px, height_deg, ppd, conversion_fac = check_requirements(100, height_px, height_deg, ppd)
+
     v1, v2, v3 = 1.0, 5.0, 9.0
-    pad = (0.9, 1.0, 0.9, 1.0)
     stim1 = illusions.bullseye.bullseye_stimulus(
         ppd=ppd,
         n_rings=8,
-        ring_width=0.5,
+        ring_width=5.*conversion_fac,
         vring1=v1,
         vring2=v3,
         vtarget=v2,
@@ -223,19 +256,18 @@ def bullseye(ppd=PPD):
     stim2 = illusions.bullseye.bullseye_stimulus(
         ppd=ppd,
         n_rings=8,
-        ring_width=0.5,
+        ring_width=5.*conversion_fac,
         vring1=v3,
         vring2=v1,
         vtarget=v2,
     )
 
     # Padding
-    img1, mask1 = pad_img(stim1["img"], pad, ppd, v1), pad_img(
-        stim1["mask"], pad, ppd, 0
-    )
-    img2, mask2 = pad_img(stim2["img"], pad, ppd, v1), pad_img(
-        stim2["mask"], pad, ppd, 0
-    )
+    padding = np.array((9., 10., 9., 10.)) * conversion_fac
+    img1 = pad_img(stim1["img"], padding, ppd, v1)
+    mask1 = pad_img(stim1["mask"], padding, ppd, 0)
+    img2 = pad_img(stim2["img"], padding, ppd, v1)
+    mask2 = pad_img(stim2["mask"], padding, ppd, 0)
 
     # Increase target index of right stimulus half
     mask2 = mask2 + 1
@@ -247,20 +279,25 @@ def bullseye(ppd=PPD):
     return {"img": img_stacked, "mask": mask_stacked}
 
 
-def simultaneous_brightness_contrast(ppd=PPD):
+def simultaneous_brightness_contrast(height_px=100, ppd=PPD, height_deg=HEIGHT_DEG):
+    height_px, height_deg, ppd, conversion_fac = check_requirements(100, height_px, height_deg, ppd)
+    im_size = np.array((100, 100)) * conversion_fac
+    target_size = np.array((21, 21)) * conversion_fac
+    target_pos = np.array((39, 39)) * conversion_fac
+
     stim1 = illusions.sbc.simultaneous_contrast(
         ppd=ppd,
-        im_size=(10.0, 10.0),
-        target_size=(2.1, 2.1),
-        target_pos=(3.9, 3.9),
+        im_size=im_size,
+        target_size=target_size,
+        target_pos=target_pos,
         vback=9.0,
         vtarget=5.0,
     )
     stim2 = illusions.sbc.simultaneous_contrast(
         ppd=ppd,
-        im_size=(10.0, 10.0),
-        target_size=(2.1, 2.1),
-        target_pos=(3.9, 3.9),
+        im_size=im_size,
+        target_size=target_size,
+        target_pos=target_pos,
         vback=1.0,
         vtarget=5.0,
     )
@@ -275,11 +312,11 @@ def simultaneous_brightness_contrast(ppd=PPD):
     return {"img": img_stacked, "mask": mask_stacked}
 
 
-def white(ppd=PPD):
-    height, width, = (
-        8.1,
-        8.0,
-    )
+def white(height_px=80, ppd=PPD, height_deg=HEIGHT_DEG, pad=PAD):
+    height_px, height_deg, ppd, conversion_fac = check_requirements(80, height_px, height_deg, ppd)
+
+    height = 80 * conversion_fac
+    width = 80 * conversion_fac
     n_cycles = 4
     frequency = n_cycles / width
     stim = illusions.whites.white(
@@ -292,64 +329,78 @@ def white(ppd=PPD):
         period="ignore",
         start="low",
         target_indices=(3, 6),
-        target_height=2.1,
+        target_height=21*conversion_fac,
         targets_offset=0,
         orientation="horizontal",
     )
 
-    padding = (0.9, 1.0, 0.9, 1.1)
-    stim["img"] = pad_img(stim["img"], padding, ppd, val=5.0)
-    stim["mask"] = pad_img(stim["mask"], padding, ppd, val=0)
+    if pad:
+        padding = np.array((9., 11., 9., 11.)) * conversion_fac
+        stim["img"] = pad_img(stim["img"], padding, ppd, val=5.0)
+        stim["mask"] = pad_img(stim["mask"], padding, ppd, val=0)
     return stim
 
 
-def benary(ppd=PPD):
+def benary(height_px=100, ppd=PPD, height_deg=HEIGHT_DEG):
+    height_px, height_deg, ppd, conversion_fac = check_requirements(100, height_px, height_deg, ppd)
+    cross_size = np.array((30,)*4) * conversion_fac
+    target_size = np.array((11, 11)) * conversion_fac
+    target_posx = np.array((19, 70)) * conversion_fac
+    target_posy = np.array((19, 30)) * conversion_fac
+
     stim = illusions.benary_cross.benarys_cross(
-        ppd=PPD,
-        cross_size=(3.0, 3.0, 3.0, 3.0),
-        cross_thickness=2.1,
+        ppd=ppd,
+        cross_size=cross_size,
+        cross_thickness=21*conversion_fac,
         target_type=("r", "r"),
         target_ori=(0.0, 0.0),
-        target_size=(1.1, 1.1),
-        target_posx=(1.9, 7.0),
-        target_posy=(1.9, 3.0),
+        target_size=target_size,
+        target_posx=target_posx,
+        target_posy=target_posy,
         vback=9.0,
         vcross=1.0,
         vtarget=5.0,
     )
 
-    padding = (0.9, 1.0, 0.9, 1.0)
+    padding = np.array((9., 10., 9., 10.)) * conversion_fac
     stim["img"] = pad_img(stim["img"], padding, ppd, val=9.0)
     stim["mask"] = pad_img(stim["mask"], padding, ppd, val=0)
     return stim
 
 
-def todorovic(ppd=PPD):
+def todorovic(height_px=100, ppd=PPD, height_deg=HEIGHT_DEG):
+    height_px, height_deg, ppd, conversion_fac = check_requirements(100, height_px, height_deg, ppd)
+    im_size = np.array((100, 100)) * conversion_fac
+    target_size = np.array((41, 41)) * conversion_fac
+    target_pos = np.array((29, 29)) * conversion_fac
+    covers_posx = np.array((14, 54, 14, 54)) * conversion_fac
+    covers_posy = np.array((14, 54, 54, 14)) * conversion_fac
+
     stim1 = illusions.todorovic.todorovic_in(
-        im_size=(10.0, 10.0),
+        im_size=im_size,
         ppd=ppd,
-        target_size=(4.1, 4.1),
-        target_pos=(2.9, 2.9),
-        covers_height=3.1,
-        covers_width=3.1,
-        covers_posx=(1.4, 5.4, 1.4, 5.4),
-        covers_posy=(1.4, 5.4, 5.4, 1.4),
-        vback=1.0,
-        vtarget=5.0,
-        vcovers=9.0,
+        target_size=target_size,
+        target_pos=target_pos,
+        covers_height=31*conversion_fac,
+        covers_width=31*conversion_fac,
+        covers_posx=covers_posx,
+        covers_posy=covers_posy,
+        vback=1.,
+        vtarget=5.,
+        vcovers=9.,
     )
     stim2 = illusions.todorovic.todorovic_in(
-        im_size=(10.0, 10.0),
+        im_size=im_size,
         ppd=ppd,
-        target_size=(4.1, 4.1),
-        target_pos=(2.9, 2.9),
-        covers_height=3.1,
-        covers_width=3.1,
-        covers_posx=(1.4, 5.4, 1.4, 5.4),
-        covers_posy=(1.4, 5.4, 5.4, 1.4),
-        vback=9.0,
-        vtarget=5.0,
-        vcovers=1.0,
+        target_size=target_size,
+        target_pos=target_pos,
+        covers_height=31*conversion_fac,
+        covers_width=31*conversion_fac,
+        covers_posx=covers_posx,
+        covers_posy=covers_posy,
+        vback=9.,
+        vtarget=5.,
+        vcovers=1.,
     )
 
     # Increase target index of right stimulus half
@@ -362,14 +413,16 @@ def todorovic(ppd=PPD):
     return {"img": img_stacked, "mask": mask_stacked}
 
 
-def checkerboard_contrast_contrast(ppd=PPD):
+def checkerboard_contrast_contrast(height_px=80, ppd=PPD, height_deg=HEIGHT_DEG, pad=PAD):
+    height_px, height_deg, ppd, conversion_fac = check_requirements(80, height_px, height_deg, ppd)
+
     stim1 = illusions.checkerboards.contrast_contrast(
         ppd=ppd,
         board_shape=(8, 8),
-        check_size=1.0,
+        check_size=10*conversion_fac,
         target_shape=(4, 4),
-        vcheck1=1.0,
-        vcheck2=9.0,
+        vcheck1=1.,
+        vcheck2=9.,
         tau=5.,
         alpha=0.5,
     )
@@ -377,10 +430,10 @@ def checkerboard_contrast_contrast(ppd=PPD):
     stim2 = illusions.checkerboards.contrast_contrast(
         ppd=ppd,
         board_shape=(4, 4),
-        check_size=1.0,
+        check_size=10*conversion_fac,
         target_shape=(4, 4),
-        vcheck1=1.0,
-        vcheck2=9.0,
+        vcheck1=1.,
+        vcheck2=9.,
         tau=5.,
         alpha=0.5,
     )
@@ -390,24 +443,28 @@ def checkerboard_contrast_contrast(ppd=PPD):
     mask2[mask2 == 1] = 0
 
     # Padding
-    padding1 = (0.9, 1.1, 0.9, 1.1)
-    padding2 = np.array(padding1) + 2.
-    img1 = pad_img(stim1['img'], padding1, ppd=10, val=5.0)
-    mask1 = pad_img(stim1['mask'], padding1, ppd=10, val=0)
-    img2 = pad_img(img2, padding2, ppd=10, val=5.0)
-    mask2 = pad_img(mask2, padding2, ppd=10, val=0)
+    padding = np.array((20., 20., 20., 20.)) * conversion_fac
+    if PAD:
+        padding1 = np.array((9., 11., 9., 11.)) * conversion_fac
+        padding = np.array(padding1) + padding
+        stim1['img'] = pad_img(stim1['img'], padding1, ppd=ppd, val=5.0)
+        stim1['mask'] = pad_img(stim1['mask'], padding1, ppd=ppd, val=0)
+    img2 = pad_img(img2, padding, ppd=ppd, val=5.0)
+    mask2 = pad_img(mask2, padding, ppd=ppd, val=0)
 
     # Stacking
-    img = np.hstack([img1, img2])
-    mask = np.hstack([mask1, mask2])
+    img = np.hstack([stim1['img'], img2])
+    mask = np.hstack([stim1['mask'], mask2])
     return {"img": img, "mask": mask}
 
 
-def checkerboard(ppd=PPD):
+def checkerboard(height_px=80, ppd=PPD, height_deg=HEIGHT_DEG, pad=PAD):
+    height_px, height_deg, ppd, conversion_fac = check_requirements(80, height_px, height_deg, ppd)
+
     stim = illusions.checkerboards.contrast(
         ppd=ppd,
         board_shape=(8, 8),
-        check_size=1.0,
+        check_size=10*conversion_fac,
         target_indices=((3, 2), (5, 5)),
         extend_targets=False,
         vcheck1=1.0,
@@ -415,17 +472,20 @@ def checkerboard(ppd=PPD):
         vtarget=5.0,
     )
 
-    padding = (0.9, 1.1, 0.9, 1.1)
-    img = pad_img(stim["img"], padding, ppd=10, val=5.0)
-    mask = pad_img(stim["mask"], padding, ppd=10, val=0)
-    return {"img": img, "mask": mask}
+    if pad:
+        padding = np.array((9., 11., 9., 11.)) * conversion_fac
+        stim["img"] = pad_img(stim["img"], padding, ppd=ppd, val=5.0)
+        stim["mask"] = pad_img(stim["mask"], padding, ppd=ppd, val=0)
+    return stim
 
 
-def checkerboard_extended(ppd=PPD):
+def checkerboard_extended(height_px=80, ppd=PPD, height_deg=HEIGHT_DEG, pad=PAD):
+    height_px, height_deg, ppd, conversion_fac = check_requirements(80, height_px, height_deg, ppd)
+
     stim = illusions.checkerboards.contrast(
         ppd=ppd,
         board_shape=(8, 8),
-        check_size=1.0,
+        check_size=10*conversion_fac,
         target_indices=((3, 2), (5, 5)),
         extend_targets=True,
         vcheck1=1.0,
@@ -433,17 +493,18 @@ def checkerboard_extended(ppd=PPD):
         vtarget=5.0,
     )
 
-    padding = (0.9, 1.1, 0.9, 1.1)
-    img = pad_img(stim["img"], padding, ppd=ppd, val=5.0)
-    mask = pad_img(stim["mask"], padding, ppd=ppd, val=0)
-    return {"img": img, "mask": mask}
+    if pad:
+        padding = np.array((9., 11., 9., 11.)) * conversion_fac
+        stim["img"] = pad_img(stim["img"], padding, ppd=ppd, val=5.0)
+        stim["mask"] = pad_img(stim["mask"], padding, ppd=ppd, val=0)
+    return stim
 
 
-def white_yazdanbakhsh(ppd=PPD):
-    (
-        height,
-        width,
-    ) = (8.0, 8.0)
+def white_yazdanbakhsh(height_px=80, ppd=PPD, height_deg=HEIGHT_DEG, pad=PAD):
+    height_px, height_deg, ppd, conversion_fac = check_requirements(80, height_px, height_deg, ppd)
+
+    height = 80 * conversion_fac
+    width = 80 * conversion_fac
     n_cycles = 4
     frequency = n_cycles / width
 
@@ -462,17 +523,19 @@ def white_yazdanbakhsh(ppd=PPD):
         vtopstripe=9.0,
         vbotstripe=1.0,
     )
-    padding = (0.9, 1.1, 0.9, 1.1)
-    img = pad_img(stim["img"], padding, ppd=ppd, val=5.0)
-    mask = pad_img(stim["mask"], padding, ppd=ppd, val=0)
-    return {"img": img, "mask": mask}
+
+    if pad:
+        padding = np.array((9., 11., 9., 11.)) * conversion_fac
+        stim["img"] = pad_img(stim["img"], padding, ppd=ppd, val=5.0)
+        stim["mask"] = pad_img(stim["mask"], padding, ppd=ppd, val=0)
+    return stim
 
 
-def white_anderson(ppd=PPD):
-    (
-        height,
-        width,
-    ) = (10.0, 10.0)
+def white_anderson(height_px=80, ppd=PPD, height_deg=HEIGHT_DEG, pad=PAD):
+    height_px, height_deg, ppd, conversion_fac = check_requirements(80, height_px, height_deg, ppd)
+
+    height = 100 * conversion_fac
+    width = 100 * conversion_fac
     n_cycles = 5
     frequency = n_cycles / width
 
@@ -492,17 +555,19 @@ def white_anderson(ppd=PPD):
         vtopstripe=1.0,
         vbotstripe=9.0,
     )
-    padding = (0.9, 1.1, 0.9, 1.1)
-    img = pad_img(stim["img"], padding, ppd=ppd, val=5.0)
-    mask = pad_img(stim["mask"], padding, ppd=ppd, val=0)
-    return {"img": img, "mask": mask}
+
+    if pad:
+        padding = np.array((9., 11., 9., 11.)) * conversion_fac
+        stim["img"] = pad_img(stim["img"], padding, ppd=ppd, val=5.0)
+        stim["mask"] = pad_img(stim["mask"], padding, ppd=ppd, val=0)
+    return stim
 
 
-def white_howe(ppd=PPD):
-    (
-        height,
-        width,
-    ) = (10.0, 10.0)
+def white_howe(height_px=80, ppd=PPD, height_deg=HEIGHT_DEG, pad=PAD):
+    height_px, height_deg, ppd, conversion_fac = check_requirements(80, height_px, height_deg, ppd)
+
+    height = 100 * conversion_fac
+    width = 100 * conversion_fac
     n_cycles = 5
     frequency = n_cycles / width
 
@@ -520,15 +585,19 @@ def white_howe(ppd=PPD):
         vtopstripe=1.0,
         vbotstripe=9.0,
     )
-    padding = (0.9, 1.1, 0.9, 1.1)
-    img = pad_img(stim["img"], padding, ppd=ppd, val=5.0)
-    mask = pad_img(stim["mask"], padding, ppd=ppd, val=0)
-    return {"img": img, "mask": mask}
+
+    if pad:
+        padding = np.array((9., 11., 9., 11.)) * conversion_fac
+        stim["img"] = pad_img(stim["img"], padding, ppd=ppd, val=5.0)
+        stim["mask"] = pad_img(stim["mask"], padding, ppd=ppd, val=0)
+    return stim
 
 
 if __name__ == "__main__":
     from stimuli.utils import plot_stimuli
 
     stims = gen_all(skip=True)
+    for stim in stims:
+        print(stim, stims[stim]['img'].shape)
 
     plot_stimuli(stims, mask=False)
