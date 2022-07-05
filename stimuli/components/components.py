@@ -1,5 +1,5 @@
 import numpy as np
-from stimuli.utils import degrees_to_pixels
+from stimuli.utils import degrees_to_pixels, resize_array
 
 
 def rectangle(
@@ -19,9 +19,9 @@ def rectangle(
         pixels per degree (visual angle)
     im_size : (float, float)
         size of the image in degrees visual angle
-    square_size : (float, float)
+    rect_size : (float, float)
         size of the square in degrees visual angle
-    square_pos : (float, float)
+    rect_pos : (float, float)
         coordinates of the square in degrees visual angle
     vback : float
         background value
@@ -215,3 +215,102 @@ def square_wave(
     ]
     stim[:, index] = low if start == "low" else high
     return (stim, pixels_per_cycle)
+
+
+def checkerboard(
+        ppd=10,
+        board_shape=(8, 8),
+        check_size=1.0,
+        vcheck1=0.0,
+        vcheck2=1.0,
+        ):
+
+    check_size_px = degrees_to_pixels(check_size, ppd)
+    nchecks_height, nchecks_width = board_shape
+
+    img = np.ndarray((nchecks_height, nchecks_width))
+
+    for i, j in np.ndindex((nchecks_height, nchecks_width)):
+        img[i, j] = vcheck1 if i % 2 == j % 2 else vcheck2
+
+    img = img.repeat(check_size_px, axis=0).repeat(check_size_px, axis=1)
+    return img
+
+
+def disc(
+        ppd=20,
+        radius=3,
+        vback=0.,
+        vdisc=1.,
+        ssf=5,
+        ):
+    """
+    Create a central disc
+
+    Parameters
+    ----------
+    ppd : int
+        pixels per degree (visual angle)
+    radius : float
+        radius of disc in degree visual angle
+    vback : float
+        value of background
+    vdisc : float
+        value of disc
+    ssf : int (optional)
+          the supersampling-factor used for anti-aliasing. Default is 5.
+
+    Returns
+    -------
+    A 2d-array with a disc
+    """
+    radius_px = degrees_to_pixels(radius, ppd) * ssf
+
+    # create stimulus at 5 times size to allow for supersampling antialiasing
+    img = np.ones([radius_px*2, radius_px*2]) * vback
+
+    # compute distance from center of array for every point, cap at 1.0
+    x = np.linspace(-img.shape[1] / 2.0, img.shape[1] / 2.0, img.shape[1])
+    y = np.linspace(-img.shape[0] / 2.0, img.shape[0] / 2.0, img.shape[0])
+    dist = np.sqrt(x[np.newaxis, :] ** 2 + y[:, np.newaxis] ** 2)
+    img[dist < radius_px] = vdisc
+
+    # downsample the stimulus by local averaging along rows and columns
+    sampler = resize_array(np.eye(img.shape[0] // ssf), (1, ssf))
+    img = np.dot(sampler, np.dot(img, sampler.T)) / ssf**2
+    return img
+
+
+def square_wave_grating(
+        ppd=10,
+        n_bars=8,
+        bar_shape=(8., 1.),
+        vbar1=0.0,
+        vbar2=1.0,
+        ):
+    """
+    Square-wave grating
+
+    Parameters
+    ----------
+    ppd : int
+        pixels per degree (visual angle)
+    n_bars : int
+        the number of vertical bars
+    bar_shape : (float, float)
+        bar height and width in degrees visual angle
+    vbar1 : float
+        value for bar 1
+    vbar2 : float
+        value for bar 2
+
+    Returns
+    -------
+    A 2d-array with a square-wave grating
+    """
+
+    bar_height_px, bar_width_px = degrees_to_pixels(bar_shape, ppd)
+    img = np.ones([1, n_bars]) * vbar2
+    img[:, ::2] = vbar1
+    img = img.repeat(bar_width_px, axis=1).repeat(bar_height_px, axis=0)
+    return img

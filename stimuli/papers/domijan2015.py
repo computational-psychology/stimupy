@@ -1,6 +1,6 @@
 import numpy as np
 from stimuli import illusions
-from stimuli.utils import pad_img
+from stimuli.utils import pad_img, pad_img_to_shape
 
 __all__ = [
     "dungeon",
@@ -49,21 +49,19 @@ def dungeon(ppd=PPD):
     n_cells = 5
     target_radius = 1
     cell_size = 1.0
-    back = 1.0
-    grid = 9.0
-    target = 5.0
+    v1, v2, v3 = 1., 5., 9.
 
     stim1 = illusions.dungeon.dungeon_illusion(
         ppd=ppd,
         n_cells=n_cells,
         target_radius=target_radius,
         cell_size=cell_size,
-        back=back,
-        grid=grid,
-        target=target,
+        vback=v1,
+        vgrid=v3,
+        vtarget=v2,
     )
     padding = (0.9, 1.1, 0.9, 1.1)
-    stim1["img"] = pad_img(stim1["img"], padding, ppd, back)
+    stim1["img"] = pad_img(stim1["img"], padding, ppd, v1)
     stim1["mask"] = pad_img(stim1["mask"], padding, ppd, 0)
 
     stim2 = illusions.dungeon.dungeon_illusion(
@@ -71,12 +69,12 @@ def dungeon(ppd=PPD):
         n_cells=n_cells,
         target_radius=target_radius,
         cell_size=cell_size,
-        back=grid,
-        grid=back,
-        target=target,
+        vback=v3,
+        vgrid=v1,
+        vtarget=v2,
     )
     padding = (0.9, 1.1, 0.9, 1.1)
-    stim2["img"] = pad_img(stim2["img"], padding, ppd, grid)
+    stim2["img"] = pad_img(stim2["img"], padding, ppd, v3)
     stim2["mask"] = pad_img(stim2["mask"], padding, ppd, 0)
 
     img = np.hstack([stim1["img"], stim2["img"]])
@@ -86,7 +84,9 @@ def dungeon(ppd=PPD):
 
 
 def cube(ppd=PPD):
-    return illusions.cube.cube_illusion(
+    v1, v2, v3 = 1.0, 5.0, 9.0
+    pad = (0.9, 1.0, 0.9, 1.0)
+    stim1 = illusions.cube.cube_illusion(
         ppd=ppd,
         n_cells=4,
         target_length=2,
@@ -95,28 +95,78 @@ def cube(ppd=PPD):
         corner_cell_width=1.8,
         corner_cell_height=1.8,
         cell_spacing=0.5,
-        padding=(0.9, 1.0, 0.9, 1.0),
         occlusion_overlap=(0.7, 0.7, 0.7, 0.7),
-        back=1.0,
-        grid=9.0,
-        target=5.0,
-        double=True,
+        vback=v1,
+        vgrid=v3,
+        vtarget=v2,
     )
+    stim2 = illusions.cube.cube_illusion(
+        ppd=ppd,
+        n_cells=4,
+        target_length=2,
+        cell_long=1.5,
+        cell_short=1.1,
+        corner_cell_width=1.8,
+        corner_cell_height=1.8,
+        cell_spacing=0.5,
+        occlusion_overlap=(0.7, 0.7, 0.7, 0.7),
+        vback=v3,
+        vgrid=v1,
+        vtarget=v2,
+    )
+
+    # Padding
+    img1 = pad_img(stim1["img"], pad, ppd, v1)
+    mask1 = pad_img(stim1["mask"], pad, ppd, 0)
+    img2 = pad_img(stim2["img"], pad, ppd, v3)
+    mask2 = pad_img(stim2["mask"], pad, ppd, 0)
+
+    # Increase target index of right stimulus half
+    mask2 = mask2 + 1
+    mask2[mask2 == 1] = 0
+
+    # Stacking
+    img_stacked = np.hstack([img1, img2])
+    mask_stacked = np.hstack([mask1, mask2])
+    return {"img": img_stacked, "mask": mask_stacked}
 
 
 def grating(ppd=PPD):
-    return illusions.grating.grating_illusion(
+    v1, v2, v3 = 1.0, 5.0, 9.0
+    pad = (0.9, 1.0, 0.9, 1.1)
+    stim1 = illusions.grating.grating_illusion(
         ppd=ppd,
-        n_bars=5,
-        target_length=1,
-        bar_width=1.0,
-        bar_height=8.1,
-        padding=(0.9, 1.0, 0.9, 1.1),
-        back=1,
-        grid=9,
-        target=5,
-        double=True,
+        n_bars=9,
+        target_indices=(4,),
+        bar_shape=(8.1, 1.0),
+        vbar1=v3,
+        vbar2=v1,
+        vtarget=v2,
     )
+    stim2 = illusions.grating.grating_illusion(
+        ppd=ppd,
+        n_bars=9,
+        target_indices=(4,),
+        bar_shape=(8.1, 1.0),
+        vbar1=v1,
+        vbar2=v3,
+        vtarget=v2,
+    )
+
+    # Padding
+    img1 = pad_img(stim1["img"], pad, ppd, v1)
+    mask1 = pad_img(stim1["mask"], pad, ppd, 0)
+    img2 = pad_img(stim2["img"], pad, ppd, v3)
+    mask2 = pad_img(stim2["mask"], pad, ppd, 0)
+
+    # Increase target index of right stimulus half
+    mask2 = mask2 + 1
+    mask2[mask2 == 1] = 0
+
+    # Stacking
+    img_stacked = np.hstack([img1, img2])
+    mask_stacked = np.hstack([mask1, mask2])
+    return {"img": img_stacked, "mask": mask_stacked}
 
 
 def rings(ppd=PPD):
@@ -313,55 +363,79 @@ def todorovic(ppd=PPD):
 
 
 def checkerboard_contrast_contrast(ppd=PPD):
-    # TODO: add mask
-    return illusions.checkerboard_contrast_contrast.checkerboard_contrast_contrast_effect(
-        ppd=ppd,
-        n_checks=8,
-        check_size=1.0,
-        target_length=4,
-        padding=(0.9, 1.1, 0.9, 1.1),
-        check1=1.0,
-        check2=9.0,
-        tau=5,
-        alpha=0.5,
-    )
-
-
-def checkerboard(ppd=PPD):
-    stim = illusions.checkerboard_sbc.checkerboard_contrast(
+    stim1 = illusions.checkerboards.contrast_contrast(
         ppd=ppd,
         board_shape=(8, 8),
         check_size=1.0,
-        targets_coords=((3, 2), (5, 5)),
+        target_shape=(4, 4),
+        vcheck1=1.0,
+        vcheck2=9.0,
+        tau=5.,
+        alpha=0.5,
+    )
+
+    stim2 = illusions.checkerboards.contrast_contrast(
+        ppd=ppd,
+        board_shape=(4, 4),
+        check_size=1.0,
+        target_shape=(4, 4),
+        vcheck1=1.0,
+        vcheck2=9.0,
+        tau=5.,
+        alpha=0.5,
+    )
+
+    # Increase target index of right stimulus half
+    img2, mask2 = stim2["img"], stim2["mask"] + 1
+    mask2[mask2 == 1] = 0
+
+    # Padding
+    padding1 = (0.9, 1.1, 0.9, 1.1)
+    padding2 = np.array(padding1) + 2.
+    img1 = pad_img(stim1['img'], padding1, ppd=10, val=5.0)
+    mask1 = pad_img(stim1['mask'], padding1, ppd=10, val=0)
+    img2 = pad_img(img2, padding2, ppd=10, val=5.0)
+    mask2 = pad_img(mask2, padding2, ppd=10, val=0)
+
+    # Stacking
+    img = np.hstack([img1, img2])
+    mask = np.hstack([mask1, mask2])
+    return {"img": img, "mask": mask}
+
+
+def checkerboard(ppd=PPD):
+    stim = illusions.checkerboards.contrast(
+        ppd=ppd,
+        board_shape=(8, 8),
+        check_size=1.0,
+        target_indices=((3, 2), (5, 5)),
         extend_targets=False,
-        check1=1.0,
-        check2=9.0,
-        target=5.0,
+        vcheck1=1.0,
+        vcheck2=9.0,
+        vtarget=5.0,
     )
 
     padding = (0.9, 1.1, 0.9, 1.1)
     img = pad_img(stim["img"], padding, ppd=10, val=5.0)
     mask = pad_img(stim["mask"], padding, ppd=10, val=0)
-
     return {"img": img, "mask": mask}
 
 
 def checkerboard_extended(ppd=PPD):
-    stim = illusions.checkerboard_sbc.checkerboard_contrast(
+    stim = illusions.checkerboards.contrast(
         ppd=ppd,
         board_shape=(8, 8),
         check_size=1.0,
-        targets_coords=((3, 2), (5, 5)),
+        target_indices=((3, 2), (5, 5)),
         extend_targets=True,
-        check1=1.0,
-        check2=9.0,
-        target=5.0,
+        vcheck1=1.0,
+        vcheck2=9.0,
+        vtarget=5.0,
     )
 
     padding = (0.9, 1.1, 0.9, 1.1)
     img = pad_img(stim["img"], padding, ppd=ppd, val=5.0)
     mask = pad_img(stim["mask"], padding, ppd=ppd, val=0)
-
     return {"img": img, "mask": mask}
 
 

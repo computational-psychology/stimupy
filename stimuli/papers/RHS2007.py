@@ -196,10 +196,10 @@ def WE_zigzag(ppd=PPD):
     i1, i2 = -1, 0
     stim = illusions.whites.white_zigzag(
         ppd=PPD,
-        L_size=(5.0, 6.3, 1.0),
+        L_size=(4.0, 5, 1.0),
         L_distance=1.0,
-        L_repeats=(3.5, 3.6),
-        target_height=3.0,
+        L_repeats=(3.5, 3.4),
+        target_height=2.0,
         target_idx_v1=((i1, -1), (i1, -0), (i1, 1), (i1, 2)),
         target_idx_v2=((i2, -1), (i2, -0), (i2, 1), (i2, -2)),
         v1=0.0,
@@ -680,21 +680,21 @@ def todorovic_out(ppd=PPD):
 
 
 def checkerboard_016(ppd=PPD):
-    height_checks, width_checks = 40, 102
-    check_height = 32.0 / 102.0
-    board_shape = (height_checks, width_checks)
+    nchecks_height, nchecks_width = 40, 102
+    check_height = 0.156
+    board_shape = (nchecks_height, nchecks_width)
 
-    check1, check2, target = 1, 0, 0.5
-    target_height = height_checks // 2
-    stim = illusions.checkerboard_sbc.checkerboard_contrast(
+    vcheck1, vcheck2, vtarget = 1, 0, 0.5
+    target_posy = nchecks_height // 2
+    stim = illusions.checkerboards.contrast(
         ppd=ppd,
         board_shape=board_shape,
         check_size=check_height,
-        targets_coords=((target_height, 16), (target_height, 85)),
+        target_indices=((target_posy, 16), (target_posy, 85)),
         extend_targets=False,
-        check1=check1,
-        check2=check2,
-        target=target,
+        vcheck1=vcheck1,
+        vcheck2=vcheck2,
+        vtarget=vtarget,
     )
 
     shape = degrees_to_pixels(VISEXTENT, ppd)
@@ -705,21 +705,21 @@ def checkerboard_016(ppd=PPD):
 
 
 def checkerboard_0938(ppd=PPD):
-    height_checks, width_checks = 7, 25
+    nchecks_height, nchecks_width = 7, 25
     check_height = 0.938
-    board_shape = (height_checks, width_checks)
+    board_shape = (nchecks_height, nchecks_width)
 
-    check1, check2, target = 0, 1, 0.5
-    target_height = height_checks // 2
-    stim = illusions.checkerboard_sbc.checkerboard_contrast(
+    vcheck1, vcheck2, vtarget = 0, 1, 0.5
+    target_posy = nchecks_height // 2
+    stim = illusions.checkerboards.contrast(
         ppd=ppd,
         board_shape=board_shape,
         check_size=check_height,
-        targets_coords=((target_height, 6), (target_height, 17)),
+        target_indices=((target_posy, 6), (target_posy, 17)),
         extend_targets=False,
-        check1=check1,
-        check2=check2,
-        target=target,
+        vcheck1=vcheck1,
+        vcheck2=vcheck2,
+        vtarget=vtarget,
     )
 
     shape = degrees_to_pixels(VISEXTENT, ppd)
@@ -730,21 +730,21 @@ def checkerboard_0938(ppd=PPD):
 
 
 def checkerboard209(ppd=PPD):
-    height_checks, width_checks = 3, 10
+    nchecks_height, nchecks_width = 3, 10
     check_height = 2.09
-    board_shape = (height_checks, width_checks)
+    board_shape = (nchecks_height, nchecks_width)
 
-    check1, check2, target = 0, 1, 0.5
-    target_height = height_checks // 2
-    stim = illusions.checkerboard_sbc.checkerboard_contrast(
+    vcheck1, vcheck2, vtarget = 0, 1, 0.5
+    target_posy = nchecks_height // 2
+    stim = illusions.checkerboards.contrast(
         ppd=ppd,
         board_shape=board_shape,
         check_size=check_height,
-        targets_coords=((target_height, 2), (target_height, 7)),
+        target_indices=((target_posy, 2), (target_posy, 7)),
         extend_targets=False,
-        check1=check1,
-        check2=check2,
-        target=target,
+        vcheck1=vcheck1,
+        vcheck2=vcheck2,
+        vtarget=vtarget,
     )
 
     shape = degrees_to_pixels(VISEXTENT, ppd)
