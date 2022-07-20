@@ -663,9 +663,10 @@ def todorovic_in_small(ppd=PPD, pad=True):
     img = np.hstack([stim1["img"], stim2["img"]])
     mask = np.hstack([stim1["mask"], mask2])
 
-    shape = degrees_to_pixels(VISEXTENT, ppd)
-    img = pad_img_to_shape(img, shape, val=0.5)
-    mask = pad_img_to_shape(mask, shape, val=0)
+    if pad:
+        shape = degrees_to_pixels(VISEXTENT, ppd)
+        img = pad_img_to_shape(img, shape, val=0.5)
+        mask = pad_img_to_shape(mask, shape, val=0)
     return {"img": img, "mask": mask}
 
 
