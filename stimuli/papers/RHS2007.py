@@ -952,18 +952,19 @@ def bullseye_thin(ppd=PPD, pad=True):
     )
 
     # Individual padding
-    img1 = pad_img_to_shape(stim1["img"], shape_ind, v2)
-    mask1 = pad_img_to_shape(stim1["mask"], shape_ind, 0)
-    img2 = pad_img_to_shape(stim2["img"], shape_ind, v2)
-    mask2 = pad_img_to_shape(stim2["mask"], shape_ind, 0)
+    if pad:
+        stim1["img"] = pad_img_to_shape(stim1["img"], shape_ind, v2)
+        stim1["mask"] = pad_img_to_shape(stim1["mask"], shape_ind, 0)
+        stim2["img"] = pad_img_to_shape(stim2["img"], shape_ind, v2)
+        stim2["mask"] = pad_img_to_shape(stim2["mask"], shape_ind, 0)
 
     # Increase target index of right stimulus half
-    mask2 = mask2 + 1
-    mask2[mask2 == 1] = 0
+    stim2["mask"] = stim2["mask"] + 1
+    stim2["mask"][stim2["mask"] == 1] = 0
 
     # Stacking
-    img = np.hstack([img1, img2])
-    mask = np.hstack([mask1, mask2])
+    img = np.hstack([stim1["img"], stim2["img"]])
+    mask = np.hstack([stim1["mask"], stim2["mask"]])
 
     # Full padding
     if pad:
@@ -995,18 +996,19 @@ def bullseye_thick(ppd=PPD, pad=True):
     )
 
     # Individual padding
-    img1 = pad_img_to_shape(stim1["img"], shape_ind, v2)
-    mask1 = pad_img_to_shape(stim1["mask"], shape_ind, 0)
-    img2 = pad_img_to_shape(stim2["img"], shape_ind, v2)
-    mask2 = pad_img_to_shape(stim2["mask"], shape_ind, 0)
+    if pad:
+        stim1["img"] = pad_img_to_shape(stim1["img"], shape_ind, v2)
+        stim1["mask"] = pad_img_to_shape(stim1["mask"], shape_ind, 0)
+        stim2["img"] = pad_img_to_shape(stim2["img"], shape_ind, v2)
+        stim2["mask"] = pad_img_to_shape(stim2["mask"], shape_ind, 0)
 
     # Increase target index of right stimulus half
-    mask2 = mask2 + 1
-    mask2[mask2 == 1] = 0
+    stim2["mask"] = stim2["mask"] + 1
+    stim2["mask"][stim2["mask"] == 1] = 0
 
     # Stacking
-    img = np.hstack([img1, img2])
-    mask = np.hstack([mask1, mask2])
+    img = np.hstack([stim1["img"], stim2["img"]])
+    mask = np.hstack([stim1["mask"], stim2["mask"]])
 
     # Full padding
     if pad:
@@ -1020,5 +1022,4 @@ if __name__ == "__main__":
     from stimuli.utils import plot_stimuli
 
     stims = gen_all(pad=False, skip=True)
-
     plot_stimuli(stims, mask=False)
