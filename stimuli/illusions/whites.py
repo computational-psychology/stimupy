@@ -223,7 +223,7 @@ def wheel_of_fortune_white(
     yy_max = yy.max()
     yy = yy / yy_max * (n_grid - 1)
 
-    img = np.zeros([n_grid, n_grid]) + 0.5
+    img = np.zeros([n_grid, n_grid]) + target
     mask = np.zeros([n_grid, n_grid])
 
     st = high if start == "high" else low
@@ -286,6 +286,8 @@ def wheel_of_fortune_white(
     for i, val in enumerate(mask_vals):
         mask[mask == val] = i + 1
 
+    cond = ((img != target) & (mask != 0))
+    mask[cond] = 0
     return {"img": img, "mask": mask}
 
 
@@ -754,5 +756,5 @@ if __name__ == "__main__":
         "Wedding cake illusion": white_zigzag(),
     }
 
-    plot_stimuli(stims)
+    plot_stimuli(stims, mask=True)
     plt.show()
