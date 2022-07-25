@@ -3,7 +3,6 @@ from .bullseye import bullseye_stimulus
 from .checkerboards import *
 from .cornsweet import cornsweet
 from .cube import cube_illusion
-from .disc_and_ring import disc_and_ring
 from .dungeon import dungeon_illusion
 from .grating import *
 from .grating_induction import *

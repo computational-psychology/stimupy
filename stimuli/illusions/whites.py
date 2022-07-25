@@ -1,6 +1,6 @@
 import numpy as np
-from stimuli.components import square_wave
-from stimuli.utils import degrees_to_pixels, get_annulus_mask
+from stimuli.components import square_wave, disc_and_rings
+from stimuli.utils import degrees_to_pixels, resize_array
 
 
 def white(
@@ -88,84 +88,73 @@ def white(
 
 
 def circular_white(
+    ppd=20,
     radius=5,
-    ppd=50,
-    frequency=1.0,
-    high=1.0,
-    low=0.0,
-    target=0.5,
-    target_indices=(2, 6),
-    start="low",
+    n_discs=6,
+    vdisc1=0.,
+    vdisc2=1.,
+    vtarget=0.5,
+    target_indices=(1, 3,),
 ):
     """
     Circular Whites's illusion
 
     Parameters
     ----------
-    radius : float
-        radius of the circle in degrees visual angle
     ppd : int
         pixels per degree (visual angle)
-    frequency : float
-        frequency of the circles in cycles per degree visual angle
-    high : float
-        value of the bright stripes
-    low : float
-        value of the dark stripes
-    target : float
-        value for target
+    radius : float
+        radius of the circle in degrees visual angle
+    n_circles : int
+        number of circles and rings
+    vdisc1 : float
+        value of first disc
+    vdisc2 : float
+        value of second disc
+    vtarget : float
+        value of target discs
     target_indices : (int, )
-        indices of the stripes where the target(s) will be placed. There will be as many targets as indices specified.
-    start : string in ['low','high']
-        whether to start with a bright or a low stripes
+        indices of target discs
 
     Returns
     ----------
-    A stimulus object
+    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
     """
 
-    height, width = (degrees_to_pixels(radius * 2, ppd),) * 2
-    pixels_per_cycle = degrees_to_pixels(1.0 / (frequency * 2), ppd) * 2
-    circle_width = pixels_per_cycle // 2
-    n_cycles = (max(height, width)) // (circle_width * 2)
-
-    st = low if start == "low" else high
-    other = high if start == "low" else low
-    img = np.ones((height, width)) * target
-    mask = np.zeros((height, width))
-
+    radii = []
+    vdiscs_img = []
+    vdics_mask = []
     mask_counter = 1
-    for i in range(0, n_cycles):
-        radius = circle_width * i
-        annulus_mask = get_annulus_mask(
-            (height, width),
-            (height // 2, width // 2),
-            radius,
-            radius + circle_width,
-        )
-        img[annulus_mask] = st if i % 2 == 0 else other
+    for i in range(n_discs):
+        radii.append(radius*(i+1))
         if i in target_indices:
-            img[annulus_mask] = target
-            mask[annulus_mask] = mask_counter
+            vdiscs_img.append(vtarget)
+            vdics_mask.append(mask_counter)
             mask_counter += 1
-        else:
-            img[annulus_mask] = st if i % 2 == 0 else other
+        elif i not in target_indices and i % 2 == 0:
+            vdiscs_img.append(vdisc1)
+            vdics_mask.append(0)
+        elif i not in target_indices and i % 2 == 1:
+            vdiscs_img.append(vdisc2)
+            vdics_mask.append(0)
 
+    img = disc_and_rings(ppd, radii, vtarget, vdiscs_img)
+    mask = disc_and_rings(ppd, radii, 0, vdics_mask)
     return {"img": img, "mask": mask}
 
 
 def wheel_of_fortune_white(
     radius=10,
-    ppd=50,
+    ppd=32,
     n_cycles=5,
     target_width=0.7,
     target_indices=None,
     target_start=0.5,
     angle_shift=0,
-    high=1.0,
-    low=0.0,
-    target=0.5,
-    start="high",
+    vpie1=1.0,
+    vpie2=0.0,
+    vtarget=0.5,
+    ssf=1
 ):
     # TODO: make this faster
     """
@@ -202,7 +191,7 @@ def wheel_of_fortune_white(
     """
 
     n_parts = n_cycles * 2
-    n_grid = degrees_to_pixels(radius, ppd) * 2
+    n_grid = degrees_to_pixels(radius, ppd) * 2 * ssf
     n_numbers = n_grid * 2
 
     if target_indices is None:
@@ -223,11 +212,8 @@ def wheel_of_fortune_white(
     yy_max = yy.max()
     yy = yy / yy_max * (n_grid - 1)
 
-    img = np.zeros([n_grid, n_grid]) + target
+    img = np.zeros([n_grid, n_grid]) + vtarget
     mask = np.zeros([n_grid, n_grid])
-
-    st = high if start == "high" else low
-    other = low if start == "high" else high
 
     # Divide circle in n_parts parts:
     x = np.linspace(0 + angle_shift, 2 * np.pi + angle_shift, int(n_parts + 1))
@@ -248,9 +234,9 @@ def wheel_of_fortune_white(
             sep_y = np.linspace(n_grid / 2, yyyy[j], int(n_numbers))
             # Switch between bright and dark areas:
             if i % 2 == 0:
-                img[sep_x.astype(int), sep_y.astype(int)] = st
+                img[sep_x.astype(int), sep_y.astype(int)] = vpie1
             else:
-                img[sep_x.astype(int), sep_y.astype(int)] = other
+                img[sep_x.astype(int), sep_y.astype(int)] = vpie2
 
             if i in target_indices:
                 # Place a single target inside the area
@@ -265,7 +251,7 @@ def wheel_of_fortune_white(
                             n_numbers * (target_start - target_width / 2)
                         ) : int(n_numbers * (target_start + target_width / 2))
                     ].astype(int),
-                ] = target
+                ] = vtarget
 
                 mask[
                     sep_x[
@@ -286,9 +272,28 @@ def wheel_of_fortune_white(
     for i, val in enumerate(mask_vals):
         mask[mask == val] = i + 1
 
-    cond = ((img != target) & (mask != 0))
-    mask[cond] = 0
-    return {"img": img, "mask": mask}
+    # downsample the stimulus by local averaging along rows and columns
+    sampler = resize_array(np.eye(img.shape[0] // ssf), (1, ssf))
+    img = np.dot(sampler, np.dot(img, sampler.T)) / ssf**2
+    
+    # Round values to the ones closest of given values
+    img = round_to_vals(img, (vpie1, vpie2, vtarget))
+    mask = np.dot(sampler, np.dot(mask, sampler.T)) / ssf**2
+    return {"img": img, "mask": mask.astype(int)}
+
+
+def round_to_vals(input_arr, vals):
+    n_val = len(vals)
+    input_arr = np.repeat(np.expand_dims(input_arr, -1), n_val, axis=2)
+    vals_arr = np.ones(input_arr.shape) * np.array(np.expand_dims(vals, [0, 1]))
+
+    indices = np.argmin(np.abs(input_arr - vals_arr), axis=2)
+    out_arr = np.copy(indices).astype(float)
+
+    for i in range(n_val):
+        out_arr[indices == i] = vals[i]
+    return out_arr
+
 
 
 def white_anderson(
@@ -756,5 +761,5 @@ if __name__ == "__main__":
         "Wedding cake illusion": white_zigzag(),
     }
 
-    plot_stimuli(stims, mask=True)
+    plot_stimuli(stims, mask=False)
     plt.show()

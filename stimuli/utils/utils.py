@@ -612,3 +612,16 @@ def adapt_mc(stimulus, mc=1., mean_lum=0.5):
     stimulus = (stimulus - stimulus.min()) / (stimulus.max() - stimulus.min())
     stimulus = (stimulus*mc*2.*mean_lum) + (mean_lum-mc*mean_lum)
     return stimulus
+
+
+def round_to_vals(input_arr, vals):
+    n_val = len(vals)
+    input_arr = np.repeat(np.expand_dims(input_arr, -1), n_val, axis=2)
+    vals_arr = np.ones(input_arr.shape) * np.array(np.expand_dims(vals, [0, 1]))
+
+    indices = np.argmin(np.abs(input_arr - vals_arr), axis=2)
+    out_arr = np.copy(indices).astype(float)
+
+    for i in range(n_val):
+        out_arr[indices == i] = vals[i]
+    return out_arr

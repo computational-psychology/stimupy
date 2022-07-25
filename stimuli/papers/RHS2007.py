@@ -3,35 +3,35 @@ from stimuli import illusions
 from stimuli.utils import degrees_to_pixels, pad_img, pad_img_to_shape
 
 __all__ = [
-    "WE_thick",
-    "WE_thin_wide",
-    "WE_dual",
-    "WE_anderson",
-    "WE_howe",
-    "WE_zigzag",
+    # "WE_thick",
+    # "WE_thin_wide",
+    # "WE_dual",
+    # "WE_anderson",
+    # "WE_howe",
+    # "WE_zigzag",
     "WE_radial_thick_small",
     "WE_radial_thick",
     "WE_radial_thin_small",
     "WE_circular1",
     "WE_circular05",
     "WE_circular025",
-    "grating_induction",
-    "sbc_large",
-    "sbc_small",
-    "todorovic_equal",
-    "todorovic_in_large",
-    "todorovic_in_small",
-    "todorovic_out",
-    "checkerboard_016",
-    "checkerboard_0938",
-    "checkerboard209",
-    "corrugated_mondrian",
-    "benary_cross",
-    "todorovic_benary1_2",
-    "todorovic_benary3_4",
-    "todorovic_benary1_2_3_4",
-    "bullseye_thin",
-    "bullseye_thick",
+    # "grating_induction",
+    # "sbc_large",
+    # "sbc_small",
+    # "todorovic_equal",
+    # "todorovic_in_large",
+    # "todorovic_in_small",
+    # "todorovic_out",
+    # "checkerboard_016",
+    # "checkerboard_0938",
+    # "checkerboard209",
+    # "corrugated_mondrian",
+    # "benary_cross",
+    # "todorovic_benary1_2",
+    # "todorovic_benary3_4",
+    # "todorovic_benary1_2_3_4",
+    # "bullseye_thin",
+    # "bullseye_thick",
 ]
 
 VISEXTENT = (32.0, 32.0)
@@ -313,23 +313,24 @@ def WE_radial_thin(ppd=PPD, pad=True):
 
 
 def WE_circular1(ppd=PPD, pad=True):
-    radius = 8.0
-    n_cycles = 4.0
-    frequency = n_cycles / radius
     stim1 = illusions.whites.circular_white(
-        radius=radius,
         ppd=ppd,
-        frequency=frequency,
+        radius=1.,
+        n_discs=8,
+        vdisc1=1.,
+        vdisc2=0.,
+        vtarget=0.5,
         target_indices=(4,),
-        start="high",
     )
 
     stim2 = illusions.whites.circular_white(
-        radius=radius,
         ppd=ppd,
-        frequency=frequency,
+        radius=1.,
+        n_discs=8,
+        vdisc1=0.,
+        vdisc2=1.,
+        vtarget=0.5,
         target_indices=(4,),
-        start="low",
     )
     stim2["mask"] *= 2
 
@@ -342,27 +343,28 @@ def WE_circular1(ppd=PPD, pad=True):
         shape = degrees_to_pixels(VISEXTENT, ppd)
         stim["img"] = pad_img_to_shape(stim["img"], shape, val=0.5)
         stim["mask"] = pad_img_to_shape(stim["mask"], shape, val=0)
-
     return stim
 
 
 def WE_circular05(ppd=PPD, pad=True):
-    radius = 8
-    n_cycles = 8
-    frequency = n_cycles / radius
     stim1 = illusions.whites.circular_white(
-        radius=radius,
         ppd=ppd,
-        frequency=frequency,
+        radius=0.5,
+        n_discs=16,
+        vdisc1=1.,
+        vdisc2=0.,
+        vtarget=0.5,
         target_indices=(10,),
-        start="high",
     )
+
     stim2 = illusions.whites.circular_white(
-        radius=radius,
         ppd=ppd,
-        frequency=frequency,
+        radius=0.5,
+        n_discs=16,
+        vdisc1=0.,
+        vdisc2=1.,
+        vtarget=0.5,
         target_indices=(10,),
-        start="low",
     )
     stim2["mask"] *= 2
 
@@ -375,27 +377,28 @@ def WE_circular05(ppd=PPD, pad=True):
         shape = degrees_to_pixels(VISEXTENT, ppd)
         stim["img"] = pad_img_to_shape(stim["img"], shape, val=0.5)
         stim["mask"] = pad_img_to_shape(stim["mask"], shape, val=0)
-
     return stim
 
 
 def WE_circular025(ppd=PPD, pad=True):
-    radius = 8.0
-    n_cycles = 16.0
-    frequency = n_cycles / radius
     stim1 = illusions.whites.circular_white(
-        radius=radius,
         ppd=ppd,
-        frequency=frequency,
+        radius=0.25,
+        n_discs=32,
+        vdisc1=1.,
+        vdisc2=0.,
+        vtarget=0.5,
         target_indices=(22,),
-        start="high",
     )
+
     stim2 = illusions.whites.circular_white(
-        radius=radius,
         ppd=ppd,
-        frequency=frequency,
+        radius=0.25,
+        n_discs=32,
+        vdisc1=0.,
+        vdisc2=1.,
+        vtarget=0.5,
         target_indices=(22,),
-        start="low",
     )
     stim2["mask"] *= 2
 
@@ -408,7 +411,6 @@ def WE_circular025(ppd=PPD, pad=True):
         shape = degrees_to_pixels(VISEXTENT, ppd)
         stim["img"] = pad_img_to_shape(stim["img"], shape, val=0.5)
         stim["mask"] = pad_img_to_shape(stim["mask"], shape, val=0)
-
     return stim
 
 
@@ -1022,4 +1024,4 @@ if __name__ == "__main__":
     from stimuli.utils import plot_stimuli
 
     stims = gen_all(pad=False, skip=True)
-    plot_stimuli(stims, mask=True)
+    plot_stimuli(stims, mask=False)
