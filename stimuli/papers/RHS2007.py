@@ -841,7 +841,7 @@ def benary_cross(ppd=PPD, pad=True):
         target_type=("t", "t"),
         target_ori=(45.0, 0.0),
         target_size=(2.5, 2.5),
-        target_posx=(9.5 - np.sqrt(11.25), 13.5),
+        target_posx=(9.5 - np.sqrt(12.5)+2/ppd, 13.5),
         target_posy=(4.5, 2.0),
         vback=vback,
         vcross=0.0,
@@ -892,7 +892,7 @@ def todorovic_benary3_4(ppd=PPD, pad=True):
         target_type=("t", "t"),
         target_ori=(45.0, 225.0),
         target_posx=(9.5, 18.0),
-        target_posy=(6.5, 6.5 - np.sqrt(11.25) / 2.0),
+        target_posy=(6.5, 6.5 - np.sqrt(12.5)/2.+1/ppd),
         vback=vback,
         vcross=0.0,
         vtarget=vtarget,
@@ -916,7 +916,7 @@ def todorovic_benary1_2_3_4(ppd=PPD, pad=True):
         target_type=("t", "t", "t", "t"),
         target_ori=(0.0, 45.0, 225.0, 180.0),
         target_posx=(2.5, 9.5, 18.0, 26.0),
-        target_posy=(4.0, 6.5, 6.5 - np.sqrt(11.25) / 2.0, 6.5),
+        target_posy=(4.0, 6.5, 6.5 - np.sqrt(12.5)/2.+1/ppd, 6.5),
         vback=vback,
         vcross=0.0,
         vtarget=vtarget,
@@ -1022,4 +1022,4 @@ if __name__ == "__main__":
     from stimuli.utils import plot_stimuli
 
     stims = gen_all(pad=False, skip=True)
-    plot_stimuli(stims, mask=False)
+    plot_stimuli(stims, mask=True)

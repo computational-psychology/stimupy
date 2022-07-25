@@ -85,8 +85,9 @@ def benarys_cross(
 
         # Rotate, resize to original shape and clean
         tpatch = rotate(tpatch, angle=target_ori[i])
-        tpatch[tpatch < vtarget * 0.9] = 0.0
-        tpatch[tpatch > vtarget * 0.9] = vtarget
+        thresh = 0.7
+        tpatch[tpatch < vtarget * thresh] = 0.0
+        tpatch[tpatch > vtarget * thresh] = vtarget
         tpatch = tpatch[
             ~np.all(tpatch == 0, axis=1)
         ]  # Remove all rows with only zeros
@@ -205,8 +206,9 @@ def todorovic_benary(
 
         # Rotate, resize to original shape and clean
         tpatch = rotate(tpatch, angle=target_ori[i])
-        tpatch[tpatch < vtarget * 0.9] = 0.0
-        tpatch[tpatch > vtarget * 0.9] = vtarget
+        thresh = 0.7
+        tpatch[tpatch < vtarget * thresh] = 0.0
+        tpatch[tpatch > vtarget * thresh] = vtarget
         tpatch = tpatch[
             ~np.all(tpatch == 0, axis=1)
         ]  # Remove all rows with only zeros
