@@ -33,6 +33,8 @@ probabilistic assumptions about lighting and reflectance.
 Journal of Vision, 20(7), 28. https://doi.org/10/gh57gf
 """
 
+from stimuli import illusions
+from stimuli.utils import pad_img_to_shape
 import os.path
 
 import numpy as np
@@ -58,7 +60,7 @@ mat_fname = os.path.join(data_dir, "murray2020.mat")
 mat_content = scipy.io.loadmat(mat_fname)
 
 PPD = 16 / 8.0
-normalize = True
+PAD = True
 
 
 def gen_all(skip=False):
@@ -103,7 +105,7 @@ def get_mask(target1, target2, shape):
     return mask
 
 
-def argyle(ppd=PPD, normalize=normalize):
+def argyle(ppd=PPD):
     """Argyle illusion, Murray (2020) Fig 1a
 
     Returns
@@ -135,7 +137,7 @@ def argyle(ppd=PPD, normalize=normalize):
     return {"img": normed_img, "mask": mask, "original_range": original_range}
 
 
-def argyle_control(ppd=PPD, normalize=normalize):
+def argyle_control(ppd=PPD):
     """Argyle control figure, Murray (2020) Fig 1c
 
     Returns
@@ -167,7 +169,7 @@ def argyle_control(ppd=PPD, normalize=normalize):
     return {"img": normed_img, "mask": mask, "original_range": original_range}
 
 
-def argyle_long(ppd=PPD, normalize=normalize):
+def argyle_long(ppd=PPD):
     """Long-range Argyle illusion, Murray (2020) Fig 1b
 
     Returns
@@ -199,7 +201,7 @@ def argyle_long(ppd=PPD, normalize=normalize):
     return {"img": normed_img, "mask": mask, "original_range": original_range}
 
 
-def snake(ppd=PPD, normalize=normalize):
+def snake(ppd=PPD):
     """Snake illusion, Murray (2020) Fig 1i
 
     Returns
@@ -231,7 +233,7 @@ def snake(ppd=PPD, normalize=normalize):
     return {"img": normed_img, "mask": mask, "original_range": original_range}
 
 
-def snake_control(ppd=PPD, normalize=normalize):
+def snake_control(ppd=PPD):
     """Snake control figure, Murray (2020) Fig 1j
 
     Returns
@@ -263,7 +265,7 @@ def snake_control(ppd=PPD, normalize=normalize):
     return {"img": normed_img, "mask": mask, "original_range": original_range}
 
 
-def koffka_adelson(ppd=PPD, normalize=normalize):
+def koffka_adelson(ppd=PPD):
     """Koffka-Adelson figure, Murray (2020) Fig 1e
 
     Returns
@@ -295,7 +297,7 @@ def koffka_adelson(ppd=PPD, normalize=normalize):
     return {"img": normed_img, "mask": mask, "original_range": original_range}
 
 
-def koffka_broken(ppd=PPD, normalize=normalize):
+def koffka_broken(ppd=PPD):
     """Koffka ring, broken, Murray (2020) Fig 1d
 
     Returns
@@ -327,7 +329,7 @@ def koffka_broken(ppd=PPD, normalize=normalize):
     return {"img": normed_img, "mask": mask, "original_range": original_range}
 
 
-def koffka_connected(ppd=PPD, normalize=normalize):
+def koffka_connected(ppd=PPD):
     """Koffka ring, connected, Murray (2020) Fig 1f
 
     Returns
@@ -359,39 +361,36 @@ def koffka_connected(ppd=PPD, normalize=normalize):
     return {"img": normed_img, "mask": mask, "original_range": original_range}
 
 
-def checkassim(ppd=PPD, normalize=normalize):
-    """Checkerboard assimilation, Murray (2020) Fig 1h
+def checkassim(ppd=PPD, pad=PAD):
+    stim = illusions.checkerboards.contrast(
+        ppd=ppd,
+        board_shape=(7, 10),
+        check_size=1/ppd,
+        target_indices=((3, 3), (3, 6)),
+        extend_targets=False,
+        vcheck1=17.5,
+        vcheck2=70.,
+        vtarget=35.,
+    )
 
-    Returns
-    -------
-    dict of str
-        dict with the stimulus, with at least the keys:
-        - "img" containing a 2D numpy array providing the stimulus image
-          [in cd/m2]
-        - "mask", containing a 2D numpy array providing a mask for the
-          target regions in the stimulus, each indicated by an integer index.
-    """
-    a = mat_content["checkassim"]
-    img = np.array(((a[0])[0])[0])
-    target1 = np.array((((a[0])[0])[1])[0])
-    target2 = np.array((((a[0])[0])[2])[0])
-    mask = get_mask(target1, target2, img.shape)
+    if pad:
+        stim["img"] = pad_img_to_shape(stim["img"], (16, 16), val=35.)
+        stim["mask"] = pad_img_to_shape(stim["mask"], (16, 16), val=0)
 
-    img = img.repeat(repeats=int(ppd / PPD), axis=0).repeat(
+    img = stim['img'].repeat(repeats=int(ppd / PPD), axis=0).repeat(
         repeats=int(ppd / PPD), axis=1
     )
-    mask = mask.repeat(repeats=int(ppd / PPD), axis=0).repeat(
+    mask = stim['mask'].repeat(repeats=int(ppd / PPD), axis=0).repeat(
         repeats=int(ppd / PPD), axis=1
     )
 
     # Normalize intensity values to [0, 1]
     original_range = (img.min(), img.max())
     normed_img = (img - img.min()) / (img.max() - img.min())
-
     return {"img": normed_img, "mask": mask, "original_range": original_range}
 
 
-def simcon(ppd=PPD, normalize=normalize):
+def simcon(ppd=PPD):
     """Classic simultaneous contrast figure, Murray (2020) Fig 1k
 
     Returns
@@ -423,7 +422,7 @@ def simcon(ppd=PPD, normalize=normalize):
     return {"img": normed_img, "mask": mask, "original_range": original_range}
 
 
-def simcon_articulated(ppd=PPD, normalize=normalize):
+def simcon_articulated(ppd=PPD):
     """Articulated simultaneous contrast figure, Murray (2020) Fig 1l
 
     Returns
@@ -455,7 +454,7 @@ def simcon_articulated(ppd=PPD, normalize=normalize):
     return {"img": normed_img, "mask": mask, "original_range": original_range}
 
 
-def white(ppd=PPD, normalize=normalize):
+def white(ppd=PPD):
     """White's illusion, Murray (2020) Fig 1A
 
     Returns
