@@ -1,6 +1,6 @@
 import numpy as np
 from stimuli.components import square_wave, disc_and_rings
-from stimuli.utils import degrees_to_pixels, resize_array
+from stimuli.utils import degrees_to_pixels, resize_array, round_to_vals
 
 
 def white(
@@ -95,6 +95,7 @@ def circular_white(
     vdisc2=1.,
     vtarget=0.5,
     target_indices=(1, 3,),
+    ssf=1,
 ):
     """
     Circular Whites's illusion
@@ -138,9 +139,12 @@ def circular_white(
             vdiscs_img.append(vdisc2)
             vdics_mask.append(0)
 
-    img = disc_and_rings(ppd, radii, vtarget, vdiscs_img)
-    mask = disc_and_rings(ppd, radii, 0, vdics_mask)
-    return {"img": img, "mask": mask}
+    img = disc_and_rings(ppd, radii, vtarget, vdiscs_img, ssf)
+    mask = disc_and_rings(ppd, radii, 0, vdics_mask, ssf)
+    
+    cond = ((img != vtarget) & (mask != 0))
+    mask[cond] = 0
+    return {"img": img, "mask": mask.astype(int)}
 
 
 def wheel_of_fortune_white(
@@ -275,25 +279,11 @@ def wheel_of_fortune_white(
     # downsample the stimulus by local averaging along rows and columns
     sampler = resize_array(np.eye(img.shape[0] // ssf), (1, ssf))
     img = np.dot(sampler, np.dot(img, sampler.T)) / ssf**2
-    
-    # Round values to the ones closest of given values
-    img = round_to_vals(img, (vpie1, vpie2, vtarget))
     mask = np.dot(sampler, np.dot(mask, sampler.T)) / ssf**2
+
+    cond = ((img != vtarget) & (mask != 0))
+    mask[cond] = 0
     return {"img": img, "mask": mask.astype(int)}
-
-
-def round_to_vals(input_arr, vals):
-    n_val = len(vals)
-    input_arr = np.repeat(np.expand_dims(input_arr, -1), n_val, axis=2)
-    vals_arr = np.ones(input_arr.shape) * np.array(np.expand_dims(vals, [0, 1]))
-
-    indices = np.argmin(np.abs(input_arr - vals_arr), axis=2)
-    out_arr = np.copy(indices).astype(float)
-
-    for i in range(n_val):
-        out_arr[indices == i] = vals[i]
-    return out_arr
-
 
 
 def white_anderson(
