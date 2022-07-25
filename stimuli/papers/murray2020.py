@@ -58,6 +58,7 @@ mat_fname = os.path.join(data_dir, "murray2020.mat")
 mat_content = scipy.io.loadmat(mat_fname)
 
 PPD = 16 / 8.0
+normalize = True
 
 
 def gen_all(skip=False):
@@ -102,7 +103,7 @@ def get_mask(target1, target2, shape):
     return mask
 
 
-def argyle(ppd=PPD):
+def argyle(ppd=PPD, normalize=normalize):
     """Argyle illusion, Murray (2020) Fig 1a
 
     Returns
@@ -127,10 +128,13 @@ def argyle(ppd=PPD):
         repeats=int(ppd / PPD), axis=1
     )
 
+    if normalize:
+        img = img - img.min()
+        img = img / img.max()
     return {"img": img, "mask": mask}
 
 
-def argyle_control(ppd=PPD):
+def argyle_control(ppd=PPD, normalize=normalize):
     """Argyle control figure, Murray (2020) Fig 1c
 
     Returns
@@ -155,10 +159,13 @@ def argyle_control(ppd=PPD):
         repeats=int(ppd / PPD), axis=1
     )
 
+    if normalize:
+        img = img - img.min()
+        img = img / img.max()
     return {"img": img, "mask": mask}
 
 
-def argyle_long(ppd=PPD):
+def argyle_long(ppd=PPD, normalize=normalize):
     """Long-range Argyle illusion, Murray (2020) Fig 1b
 
     Returns
@@ -183,10 +190,13 @@ def argyle_long(ppd=PPD):
         repeats=int(ppd / PPD), axis=1
     )
 
+    if normalize:
+        img = img - img.min()
+        img = img / img.max()
     return {"img": img, "mask": mask}
 
 
-def snake(ppd=PPD):
+def snake(ppd=PPD, normalize=normalize):
     """Snake illusion, Murray (2020) Fig 1i
 
     Returns
@@ -211,10 +221,13 @@ def snake(ppd=PPD):
         repeats=int(ppd / PPD), axis=1
     )
 
+    if normalize:
+        img = img - img.min()
+        img = img / img.max()
     return {"img": img, "mask": mask}
 
 
-def snake_control(ppd=PPD):
+def snake_control(ppd=PPD, normalize=normalize):
     """Snake control figure, Murray (2020) Fig 1j
 
     Returns
@@ -239,10 +252,13 @@ def snake_control(ppd=PPD):
         repeats=int(ppd / PPD), axis=1
     )
 
+    if normalize:
+        img = img - img.min()
+        img = img / img.max()
     return {"img": img, "mask": mask}
 
 
-def koffka_adelson(ppd=PPD):
+def koffka_adelson(ppd=PPD, normalize=normalize):
     """Koffka-Adelson figure, Murray (2020) Fig 1e
 
     Returns
@@ -267,10 +283,13 @@ def koffka_adelson(ppd=PPD):
         repeats=int(ppd / PPD), axis=1
     )
 
+    if normalize:
+        img = img - img.min()
+        img = img / img.max()
     return {"img": img, "mask": mask}
 
 
-def koffka_broken(ppd=PPD):
+def koffka_broken(ppd=PPD, normalize=normalize):
     """Koffka ring, broken, Murray (2020) Fig 1d
 
     Returns
@@ -295,10 +314,13 @@ def koffka_broken(ppd=PPD):
         repeats=int(ppd / PPD), axis=1
     )
 
+    if normalize:
+        img = img - img.min()
+        img = img / img.max()
     return {"img": img, "mask": mask}
 
 
-def koffka_connected(ppd=PPD):
+def koffka_connected(ppd=PPD, normalize=normalize):
     """Koffka ring, connected, Murray (2020) Fig 1f
 
     Returns
@@ -323,10 +345,13 @@ def koffka_connected(ppd=PPD):
         repeats=int(ppd / PPD), axis=1
     )
 
+    if normalize:
+        img = img - img.min()
+        img = img / img.max()
     return {"img": img, "mask": mask}
 
 
-def checkassim(ppd=PPD):
+def checkassim(ppd=PPD, normalize=normalize):
     """Checkerboard assimilation, Murray (2020) Fig 1h
 
     Returns
@@ -351,10 +376,13 @@ def checkassim(ppd=PPD):
         repeats=int(ppd / PPD), axis=1
     )
 
+    if normalize:
+        img = img - img.min()
+        img = img / img.max()
     return {"img": img, "mask": mask}
 
 
-def simcon(ppd=PPD):
+def simcon(ppd=PPD, normalize=normalize):
     """Classic simultaneous contrast figure, Murray (2020) Fig 1k
 
     Returns
@@ -379,10 +407,13 @@ def simcon(ppd=PPD):
         repeats=int(ppd / PPD), axis=1
     )
 
+    if normalize:
+        img = img - img.min()
+        img = img / img.max()
     return {"img": img, "mask": mask}
 
 
-def simcon_articulated(ppd=PPD):
+def simcon_articulated(ppd=PPD, normalize=normalize):
     """Articulated simultaneous contrast figure, Murray (2020) Fig 1l
 
     Returns
@@ -407,10 +438,13 @@ def simcon_articulated(ppd=PPD):
         repeats=int(ppd / PPD), axis=1
     )
 
+    if normalize:
+        img = img - img.min()
+        img = img / img.max()
     return {"img": img, "mask": mask}
 
 
-def white(ppd=PPD):
+def white(ppd=PPD, normalize=normalize):
     """White's illusion, Murray (2020) Fig 1A
 
     Returns
@@ -435,6 +469,9 @@ def white(ppd=PPD):
         repeats=int(ppd / PPD), axis=1
     )
 
+    if normalize:
+        img = img - img.min()
+        img = img / img.max()
     return {"img": img, "mask": mask}
 
 
