@@ -1,50 +1,98 @@
 {
     "argyle": {
-        "img": "cb4ed25c9e5d878c4daf41a57656e4ba",
-        "mask": "b9c1760d980dc13c5bb2fda8ebe537c2"
+        "img": "04ed9d8b14438f82d895627cda6772ce",
+        "mask": "b9c1760d980dc13c5bb2fda8ebe537c2",
+        "original_range": [
+            17.5,
+            70.0
+        ]
     },
     "argyle_control": {
-        "img": "e3e1e33d7eb3f1e4ea2c0100e551b3e6",
-        "mask": "91dbc28e28a6209bcd187a11e0321cae"
+        "img": "7e536ea55c47d78b6d87e98f9415573a",
+        "mask": "91dbc28e28a6209bcd187a11e0321cae",
+        "original_range": [
+            17.5,
+            70.0
+        ]
     },
     "argyle_long": {
-        "img": "ce09cf6536bc04037536c767c973ef9c",
-        "mask": "83ffc7391ddcbebfe6cec7b0944c6dc0"
+        "img": "1cd257d79521e175611b3a36d01be3a6",
+        "mask": "83ffc7391ddcbebfe6cec7b0944c6dc0",
+        "original_range": [
+            17.5,
+            70.0
+        ]
     },
     "snake": {
-        "img": "06337656c123eeb36dd75963639adaa2",
-        "mask": "02636e9e6289b9ae0bb36e518fc20e3f"
+        "img": "cc5ca4f2eaff7d975b3b7ad3826a05db",
+        "mask": "02636e9e6289b9ae0bb36e518fc20e3f",
+        "original_range": [
+            29.166666666666668,
+            70.0
+        ]
     },
     "snake_control": {
-        "img": "3473bf614bdf0eb68b4c7c8ce1b29697",
-        "mask": "02636e9e6289b9ae0bb36e518fc20e3f"
+        "img": "f347cdc2e44b80606951aabe4a31b6dd",
+        "mask": "02636e9e6289b9ae0bb36e518fc20e3f",
+        "original_range": [
+            35.0,
+            58.333333333333336
+        ]
     },
     "koffka_adelson": {
-        "img": "16f09cb37a170053a73f5183f289b6df",
-        "mask": "ecf8713ae03549fa9ee16b1462ff5bf1"
+        "img": "288e84fa25ec1c41e92e493034132f42",
+        "mask": "ecf8713ae03549fa9ee16b1462ff5bf1",
+        "original_range": [
+            35.0,
+            70.0
+        ]
     },
     "koffka_broken": {
-        "img": "f710a7d1ceb75d1f6cac9d91e1c2a821",
-        "mask": "40c249e4d8835580b7f57d04e0df65c4"
+        "img": "87e0641a83cd250cd23fe5a5c3a3951d",
+        "mask": "40c249e4d8835580b7f57d04e0df65c4",
+        "original_range": [
+            35.0,
+            70.0
+        ]
     },
     "koffka_connected": {
-        "img": "9ffb69c20afbaf731877b4626d61c404",
-        "mask": "4e4fa0cbe12df9fa7bdab6b0fc073270"
+        "img": "467685525438b7367576a345f9e0890a",
+        "mask": "4e4fa0cbe12df9fa7bdab6b0fc073270",
+        "original_range": [
+            35.0,
+            70.0
+        ]
     },
     "checkassim": {
-        "img": "ef5b9b410280b3f2e2ff45ee165e32d7",
-        "mask": "4bc92371e105629f30513c1050f99cf4"
+        "img": "04506275ba5cf710ab52381d19105a6f",
+        "mask": "4bc92371e105629f30513c1050f99cf4",
+        "original_range": [
+            17.5,
+            70.0
+        ]
     },
     "simcon": {
-        "img": "87da2163dcd4ce3ef214c48fa243c787",
-        "mask": "99fbc73e5c8aefd70501838130b806e9"
+        "img": "f5ade637e91f9bd48241ec6d6dbbb405",
+        "mask": "99fbc73e5c8aefd70501838130b806e9",
+        "original_range": [
+            11.666666666666666,
+            46.666666666666664
+        ]
     },
     "simcon_articulated": {
-        "img": "61685f75a7352ff756d566a6ffcc8faf",
-        "mask": "99fbc73e5c8aefd70501838130b806e9"
+        "img": "f821f9b506f1e93a3a189722fc4a7837",
+        "mask": "99fbc73e5c8aefd70501838130b806e9",
+        "original_range": [
+            5.890989196679777,
+            69.01546585994937
+        ]
     },
     "white": {
-        "img": "0fb691c397d4bdcbb0eb5f89134be5aa",
-        "mask": "b0f4ec00fd2d12d15f005af9b53b29f8"
+        "img": "2de859186dffc30ad1ab4d6b9b83bb0d",
+        "mask": "b0f4ec00fd2d12d15f005af9b53b29f8",
+        "original_range": [
+            17.5,
+            70.0
+        ]
     }
 }

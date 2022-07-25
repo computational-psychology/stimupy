@@ -128,10 +128,11 @@ def argyle(ppd=PPD, normalize=normalize):
         repeats=int(ppd / PPD), axis=1
     )
 
-    if normalize:
-        img = img - img.min()
-        img = img / img.max()
-    return {"img": img, "mask": mask}
+    # Normalize intensity values to [0, 1]
+    original_range = (img.min(), img.max())
+    normed_img = (img - img.min()) / (img.max() - img.min())
+
+    return {"img": normed_img, "mask": mask, "original_range": original_range}
 
 
 def argyle_control(ppd=PPD, normalize=normalize):
@@ -159,10 +160,11 @@ def argyle_control(ppd=PPD, normalize=normalize):
         repeats=int(ppd / PPD), axis=1
     )
 
-    if normalize:
-        img = img - img.min()
-        img = img / img.max()
-    return {"img": img, "mask": mask}
+    # Normalize intensity values to [0, 1]
+    original_range = (img.min(), img.max())
+    normed_img = (img - img.min()) / (img.max() - img.min())
+
+    return {"img": normed_img, "mask": mask, "original_range": original_range}
 
 
 def argyle_long(ppd=PPD, normalize=normalize):
@@ -190,10 +192,11 @@ def argyle_long(ppd=PPD, normalize=normalize):
         repeats=int(ppd / PPD), axis=1
     )
 
-    if normalize:
-        img = img - img.min()
-        img = img / img.max()
-    return {"img": img, "mask": mask}
+    # Normalize intensity values to [0, 1]
+    original_range = (img.min(), img.max())
+    normed_img = (img - img.min()) / (img.max() - img.min())
+
+    return {"img": normed_img, "mask": mask, "original_range": original_range}
 
 
 def snake(ppd=PPD, normalize=normalize):
@@ -221,10 +224,11 @@ def snake(ppd=PPD, normalize=normalize):
         repeats=int(ppd / PPD), axis=1
     )
 
-    if normalize:
-        img = img - img.min()
-        img = img / img.max()
-    return {"img": img, "mask": mask}
+    # Normalize intensity values to [0, 1]
+    original_range = (img.min(), img.max())
+    normed_img = (img - img.min()) / (img.max() - img.min())
+
+    return {"img": normed_img, "mask": mask, "original_range": original_range}
 
 
 def snake_control(ppd=PPD, normalize=normalize):
@@ -252,10 +256,11 @@ def snake_control(ppd=PPD, normalize=normalize):
         repeats=int(ppd / PPD), axis=1
     )
 
-    if normalize:
-        img = img - img.min()
-        img = img / img.max()
-    return {"img": img, "mask": mask}
+    # Normalize intensity values to [0, 1]
+    original_range = (img.min(), img.max())
+    normed_img = (img - img.min()) / (img.max() - img.min())
+
+    return {"img": normed_img, "mask": mask, "original_range": original_range}
 
 
 def koffka_adelson(ppd=PPD, normalize=normalize):
@@ -283,10 +288,11 @@ def koffka_adelson(ppd=PPD, normalize=normalize):
         repeats=int(ppd / PPD), axis=1
     )
 
-    if normalize:
-        img = img - img.min()
-        img = img / img.max()
-    return {"img": img, "mask": mask}
+    # Normalize intensity values to [0, 1]
+    original_range = (img.min(), img.max())
+    normed_img = (img - img.min()) / (img.max() - img.min())
+
+    return {"img": normed_img, "mask": mask, "original_range": original_range}
 
 
 def koffka_broken(ppd=PPD, normalize=normalize):
@@ -314,10 +320,11 @@ def koffka_broken(ppd=PPD, normalize=normalize):
         repeats=int(ppd / PPD), axis=1
     )
 
-    if normalize:
-        img = img - img.min()
-        img = img / img.max()
-    return {"img": img, "mask": mask}
+    # Normalize intensity values to [0, 1]
+    original_range = (img.min(), img.max())
+    normed_img = (img - img.min()) / (img.max() - img.min())
+
+    return {"img": normed_img, "mask": mask, "original_range": original_range}
 
 
 def koffka_connected(ppd=PPD, normalize=normalize):
@@ -345,10 +352,11 @@ def koffka_connected(ppd=PPD, normalize=normalize):
         repeats=int(ppd / PPD), axis=1
     )
 
-    if normalize:
-        img = img - img.min()
-        img = img / img.max()
-    return {"img": img, "mask": mask}
+    # Normalize intensity values to [0, 1]
+    original_range = (img.min(), img.max())
+    normed_img = (img - img.min()) / (img.max() - img.min())
+
+    return {"img": normed_img, "mask": mask, "original_range": original_range}
 
 
 def checkassim(ppd=PPD, normalize=normalize):
@@ -376,10 +384,11 @@ def checkassim(ppd=PPD, normalize=normalize):
         repeats=int(ppd / PPD), axis=1
     )
 
-    if normalize:
-        img = img - img.min()
-        img = img / img.max()
-    return {"img": img, "mask": mask}
+    # Normalize intensity values to [0, 1]
+    original_range = (img.min(), img.max())
+    normed_img = (img - img.min()) / (img.max() - img.min())
+
+    return {"img": normed_img, "mask": mask, "original_range": original_range}
 
 
 def simcon(ppd=PPD, normalize=normalize):
@@ -407,10 +416,11 @@ def simcon(ppd=PPD, normalize=normalize):
         repeats=int(ppd / PPD), axis=1
     )
 
-    if normalize:
-        img = img - img.min()
-        img = img / img.max()
-    return {"img": img, "mask": mask}
+    # Normalize intensity values to [0, 1]
+    original_range = (img.min(), img.max())
+    normed_img = (img - img.min()) / (img.max() - img.min())
+
+    return {"img": normed_img, "mask": mask, "original_range": original_range}
 
 
 def simcon_articulated(ppd=PPD, normalize=normalize):
@@ -438,10 +448,11 @@ def simcon_articulated(ppd=PPD, normalize=normalize):
         repeats=int(ppd / PPD), axis=1
     )
 
-    if normalize:
-        img = img - img.min()
-        img = img / img.max()
-    return {"img": img, "mask": mask}
+    # Normalize intensity values to [0, 1]
+    original_range = (img.min(), img.max())
+    normed_img = (img - img.min()) / (img.max() - img.min())
+
+    return {"img": normed_img, "mask": mask, "original_range": original_range}
 
 
 def white(ppd=PPD, normalize=normalize):
@@ -469,10 +480,11 @@ def white(ppd=PPD, normalize=normalize):
         repeats=int(ppd / PPD), axis=1
     )
 
-    if normalize:
-        img = img - img.min()
-        img = img / img.max()
-    return {"img": img, "mask": mask}
+    # Normalize intensity values to [0, 1]
+    original_range = (img.min(), img.max())
+    normed_img = (img - img.min()) / (img.max() - img.min())
+
+    return {"img": normed_img, "mask": mask, "original_range": original_range}
 
 
 if __name__ == "__main__":
