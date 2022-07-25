@@ -345,8 +345,8 @@ def white(height_px=80, ppd=PPD, height_deg=HEIGHT_DEG, pad=PAD):
 def benary(height_px=100, ppd=PPD, height_deg=HEIGHT_DEG):
     height_px, height_deg, ppd, conversion_fac = check_requirements(100, height_px, height_deg, ppd)
     cross_size = np.array((30,)*4) * conversion_fac
-    target_size = np.array((11.1, 11.1)) * conversion_fac  # TODO: take out 0.1 (currently needed!)
-    target_posx = np.array((19, 70.1)) * conversion_fac    # TODO: take out 0.1 (currently needed!)
+    target_size = np.array((11, 11)) * conversion_fac
+    target_posx = np.array((19, 70)) * conversion_fac
     target_posy = np.array((19, 30)) * conversion_fac
 
     stim = illusions.benary_cross.benarys_cross(
