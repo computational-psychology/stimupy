@@ -112,10 +112,10 @@ def argyle(ppd=PPD):
     -------
     dict of str
         dict with the stimulus, with at least the keys:
-        - "img" containing a 2D numpy array providing the stimulus image
-          [in cd/m2]
+        - "img" containing a 2D numpy array providing the stimulus image normalized between 0-1
         - "mask", containing a 2D numpy array providing a mask for the
           target regions in the stimulus, each indicated by an integer index.
+        - "original_range" containing the original stimulus intensities in cd/m**2
     """
     a = mat_content["argyle"]
     img = np.array(((a[0])[0])[0])
@@ -144,10 +144,10 @@ def argyle_control(ppd=PPD):
     -------
     dict of str
         dict with the stimulus, with at least the keys:
-        - "img" containing a 2D numpy array providing the stimulus image
-          [in cd/m2]
+        - "img" containing a 2D numpy array providing the stimulus image normalized between 0-1
         - "mask", containing a 2D numpy array providing a mask for the
           target regions in the stimulus, each indicated by an integer index.
+        - "original_range" containing the original stimulus intensities in cd/m**2
     """
     a = mat_content["argyle_control"]
     img = np.array(((a[0])[0])[0])
@@ -176,10 +176,10 @@ def argyle_long(ppd=PPD):
     -------
     dict of str
         dict with the stimulus, with at least the keys:
-        - "img" containing a 2D numpy array providing the stimulus image
-          [in cd/m2]
+        - "img" containing a 2D numpy array providing the stimulus image normalized between 0-1
         - "mask", containing a 2D numpy array providing a mask for the
           target regions in the stimulus, each indicated by an integer index.
+        - "original_range" containing the original stimulus intensities in cd/m**2
     """
     a = mat_content["argyle_long"]
     img = np.array(((a[0])[0])[0])
@@ -208,10 +208,10 @@ def snake(ppd=PPD):
     -------
     dict of str
         dict with the stimulus, with at least the keys:
-        - "img" containing a 2D numpy array providing the stimulus image
-          [in cd/m2]
+        - "img" containing a 2D numpy array providing the stimulus image normalized between 0-1
         - "mask", containing a 2D numpy array providing a mask for the
           target regions in the stimulus, each indicated by an integer index.
+        - "original_range" containing the original stimulus intensities in cd/m**2
     """
     a = mat_content["snake"]
     img = np.array(((a[0])[0])[0])
@@ -240,10 +240,10 @@ def snake_control(ppd=PPD):
     -------
     dict of str
         dict with the stimulus, with at least the keys:
-        - "img" containing a 2D numpy array providing the stimulus image
-          [in cd/m2]
+        - "img" containing a 2D numpy array providing the stimulus image normalized between 0-1
         - "mask", containing a 2D numpy array providing a mask for the
           target regions in the stimulus, each indicated by an integer index.
+        - "original_range" containing the original stimulus intensities in cd/m**2
     """
     a = mat_content["snake_control"]
     img = np.array(((a[0])[0])[0])
@@ -272,10 +272,10 @@ def koffka_adelson(ppd=PPD):
     -------
     dict of str
         dict with the stimulus, with at least the keys:
-        - "img" containing a 2D numpy array providing the stimulus image
-          [in cd/m2]
+        - "img" containing a 2D numpy array providing the stimulus image normalized between 0-1
         - "mask", containing a 2D numpy array providing a mask for the
           target regions in the stimulus, each indicated by an integer index.
+        - "original_range" containing the original stimulus intensities in cd/m**2
     """
     a = mat_content["koffka_adelson"]
     img = np.array(((a[0])[0])[0])
@@ -304,10 +304,10 @@ def koffka_broken(ppd=PPD):
     -------
     dict of str
         dict with the stimulus, with at least the keys:
-        - "img" containing a 2D numpy array providing the stimulus image
-          [in cd/m2]
+        - "img" containing a 2D numpy array providing the stimulus image normalized between 0-1
         - "mask", containing a 2D numpy array providing a mask for the
           target regions in the stimulus, each indicated by an integer index.
+        - "original_range" containing the original stimulus intensities in cd/m**2
     """
     a = mat_content["koffka_broken"]
     img = np.array(((a[0])[0])[0])
@@ -336,10 +336,10 @@ def koffka_connected(ppd=PPD):
     -------
     dict of str
         dict with the stimulus, with at least the keys:
-        - "img" containing a 2D numpy array providing the stimulus image
-          [in cd/m2]
+        - "img" containing a 2D numpy array providing the stimulus image normalized between 0-1
         - "mask", containing a 2D numpy array providing a mask for the
           target regions in the stimulus, each indicated by an integer index.
+        - "original_range" containing the original stimulus intensities in cd/m**2
     """
     a = mat_content["koffka_connected"]
     img = np.array(((a[0])[0])[0])
@@ -362,6 +362,17 @@ def koffka_connected(ppd=PPD):
 
 
 def checkassim(ppd=PPD, pad=PAD):
+    """Checkerboard assimilation, Murray (2020) Fig 1h
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus, with at least the keys:
+        - "img" containing a 2D numpy array providing the stimulus image normalized between 0-1
+        - "mask", containing a 2D numpy array providing a mask for the
+          target regions in the stimulus, each indicated by an integer index.
+        - "original_range" containing the original stimulus intensities in cd/m**2
+    """
     stim = illusions.checkerboards.contrast(
         ppd=ppd,
         board_shape=(7, 10),
@@ -384,6 +395,11 @@ def checkassim(ppd=PPD, pad=PAD):
         repeats=int(ppd / PPD), axis=1
     )
 
+    # Switch mask target values:
+    tmp = np.copy(mask)
+    mask[tmp == 1] = 2
+    mask[tmp == 2] = 1
+
     # Normalize intensity values to [0, 1]
     original_range = (img.min(), img.max())
     normed_img = (img - img.min()) / (img.max() - img.min())
@@ -397,10 +413,10 @@ def simcon(ppd=PPD):
     -------
     dict of str
         dict with the stimulus, with at least the keys:
-        - "img" containing a 2D numpy array providing the stimulus image
-          [in cd/m2]
+        - "img" containing a 2D numpy array providing the stimulus image normalized between 0-1
         - "mask", containing a 2D numpy array providing a mask for the
           target regions in the stimulus, each indicated by an integer index.
+        - "original_range" containing the original stimulus intensities in cd/m**2
     """
     a = mat_content["simcon"]
     img = np.array(((a[0])[0])[0])
@@ -429,10 +445,10 @@ def simcon_articulated(ppd=PPD):
     -------
     dict of str
         dict with the stimulus, with at least the keys:
-        - "img" containing a 2D numpy array providing the stimulus image
-          [in cd/m2]
+        - "img" containing a 2D numpy array providing the stimulus image normalized between 0-1
         - "mask", containing a 2D numpy array providing a mask for the
           target regions in the stimulus, each indicated by an integer index.
+        - "original_range" containing the original stimulus intensities in cd/m**2
     """
     a = mat_content["simcon_articulated"]
     img = np.array(((a[0])[0])[0])
@@ -461,10 +477,10 @@ def white(ppd=PPD):
     -------
     dict of str
         dict with the stimulus, with at least the keys:
-        - "img" containing a 2D numpy array providing the stimulus image
-          [in cd/m2]
+        - "img" containing a 2D numpy array providing the stimulus image normalized between 0-1
         - "mask", containing a 2D numpy array providing a mask for the
           target regions in the stimulus, each indicated by an integer index.
+        - "original_range" containing the original stimulus intensities in cd/m**2
     """
     a = mat_content["white"]
     img = np.array(((a[0])[0])[0])
@@ -492,4 +508,4 @@ if __name__ == "__main__":
     # Generate all stimuli exported in __all__
     stims = gen_all(skip=True)
 
-    plot_stimuli(stims, mask=False)
+    plot_stimuli(stims, mask=True)
