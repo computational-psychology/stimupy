@@ -29,3 +29,24 @@ from stimuli.utils import sizes
 def test_ppd_from_shape_visual_size(shape, visual_size, expected_ppd):
     ppd = sizes.ppd_from_shape_visual_size(shape, visual_size)
     assert ppd.horizontal == expected_ppd[1] and ppd.vertical == expected_ppd[0]
+
+
+#############################
+#   shape from size & ppd   #
+#############################
+@pytest.mark.parametrize(
+    "visual_size, ppd, expected_shape",
+    [
+        ((32, 32), (32, 32), (1024, 1024)),
+        ((16, 16), (64, 64), (1024, 1024)),
+        ((32, 32), (16, 16), (512, 512)),
+        ((32), (32, 32), (1024, 1024)),
+        (32, (32, 32), (1024, 1024)),
+        ((32, 48), (32, 16), [1024, 768]),
+        ([None, None], (32, 24), (None, None)),
+        ((32, 24), (16, None), [512, None]),
+    ],
+)
+def test_shape_from_visual_size_ppd(visual_size, ppd, expected_shape):
+    shape = sizes.shape_from_visual_size_ppd(visual_size, ppd)
+    assert shape.height == expected_shape[0] and shape.width == expected_shape[1]
