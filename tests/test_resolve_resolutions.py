@@ -28,4 +28,4 @@ from stimuli.utils import sizes
 )
 def test_ppd_from_shape_visual_size(shape, visual_size, expected_ppd):
     ppd = sizes.ppd_from_shape_visual_size(shape, visual_size)
-    assert ppd.horizontal == expected_ppd[0] and ppd.vertical == expected_ppd[1]
+    assert ppd.horizontal == expected_ppd[1] and ppd.vertical == expected_ppd[0]

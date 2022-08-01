@@ -1,8 +1,8 @@
 from collections import namedtuple
 
-Visual_size = namedtuple("Visual_size", "width height")
-Shape = namedtuple("Shape", "width height")
-Ppd = namedtuple("Ppd", "horizontal vertical")
+Visual_size = namedtuple("Visual_size", "height width")
+Shape = namedtuple("Shape", "height width")
+Ppd = namedtuple("Ppd", "vertical horizontal")
 
 
 def ppd_from_shape_visual_size(shape, visual_size):
@@ -46,8 +46,8 @@ def validate_shape(shape):
         raise TypeError(f"shape must be of length 1 or 2, not greater: {shape}")
 
     # Unpack
-    width = shape[0]
-    height = shape[1]
+    width = shape[1]
+    height = shape[0]
 
     # TODO: check if whole integer?
 
@@ -62,7 +62,7 @@ def validate_shape(shape):
         raise ValueError(f"shape has to be positive; {width, height}")
 
     # Initiate namedtuple:
-    return Shape(width, height)
+    return Shape(height=height, width=width)
 
 
 def validate_ppd(ppd):
@@ -85,8 +85,8 @@ def validate_ppd(ppd):
         raise TypeError(f"ppd must be of length 1 or 2, not greater: {ppd}")
 
     # Unpack
-    horizontal = ppd[0]
-    vertical = ppd[1]
+    horizontal = ppd[1]
+    vertical = ppd[0]
 
     # TODO: check if whole integer?
 
@@ -103,7 +103,7 @@ def validate_ppd(ppd):
         raise ValueError(f"ppd has to be positive; {horizontal, vertical}")
 
     # Initiate namedtuple:
-    return Ppd(horizontal, vertical)
+    return Ppd(horizontal=horizontal, vertical=vertical)
 
 
 def validate_visual_size(visual_size):
@@ -128,8 +128,8 @@ def validate_visual_size(visual_size):
         )
 
     # Unpack
-    width = visual_size[0]
-    height = visual_size[1]
+    width = visual_size[1]
+    height = visual_size[0]
 
     # Convert to float
     if width is not None:
@@ -142,4 +142,4 @@ def validate_visual_size(visual_size):
         raise ValueError(f"visual_size has to be positive; {width, height}")
 
     # Initiate namedtuple:
-    return Visual_size(width, height)
+    return Visual_size(height=height, width=width)

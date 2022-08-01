@@ -23,7 +23,7 @@ from stimuli.utils import sizes
 )
 def test_validate_visual_size(visual_size, expected):
     out = sizes.validate_visual_size(visual_size)
-    assert out.width == expected[0] and out.height == expected[1]
+    assert out.width == expected[1] and out.height == expected[0]
 
 
 @pytest.mark.parametrize(
@@ -58,7 +58,7 @@ def test_raises_visual_size(visual_size, exception):
 )
 def test_validate_shape(shape, expected):
     out = sizes.validate_shape(shape)
-    assert out.width == expected[0] and out.height == expected[1]
+    assert out.width == expected[1] and out.height == expected[0]
 
 
 @pytest.mark.parametrize(
@@ -93,7 +93,7 @@ def test_raises_shape(shape, exception):
 )
 def test_validate_ppd(ppd, expected):
     out = sizes.validate_ppd(ppd)
-    assert out.horizontal == expected[0] and out.vertical == expected[1]
+    assert out.horizontal == expected[1] and out.vertical == expected[0]
 
 
 @pytest.mark.parametrize(
