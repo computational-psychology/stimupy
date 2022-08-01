@@ -5,6 +5,27 @@ Shape = namedtuple("Shape", "width height")
 Ppd = namedtuple("Ppd", "horizontal vertical")
 
 
+def ppd_from_shape_visual_size(shape, visual_size):
+    shape = validate_shape(shape)
+    visual_size = validate_visual_size(visual_size)
+
+    # Calculate horizontal and vertical ppds
+    if visual_size.width is not None and shape.width is not None:
+        horizontal = shape.width / visual_size.width
+    else:
+        horizontal = None
+
+    if visual_size.height is not None and shape.height is not None:
+        vertical = shape.height / visual_size.height
+    else:
+        vertical = None
+
+    # Construct ppd namedtuple
+    ppd = Ppd(horizontal=horizontal, vertical=vertical)
+
+    return ppd
+
+
 def validate_shape(shape):
     # Check if string:
     if isinstance(shape, str):
