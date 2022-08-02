@@ -33,12 +33,12 @@ probabilistic assumptions about lighting and reflectance.
 Journal of Vision, 20(7), 28. https://doi.org/10/gh57gf
 """
 
-from stimuli import illusions
-from stimuli.utils import pad_img_to_shape, pad_img
 import os.path
 
 import numpy as np
 import scipy.io
+from stimuli import illusions
+from stimuli.utils import pad_img, pad_img_to_shape
 
 __all__ = [
     "argyle",
@@ -434,21 +434,20 @@ def checkassim(ppd=PPD, pad=PAD):
     params = {
         "ppd": ppd,
         "board_shape": (7, 10),
-        "check_size": 1/PPD,
-        "target_indices": ((3, 6), (3, 3)),
+        "check_visual_size": 1 / PPD,
+        "targets": ((3, 6), (3, 3)),
         "extend_targets": False,
-        }
-
-    stim = illusions.checkerboards.contrast(
+        "intensity_low": 17.5,
+        "intensity_high": 70.0,
+        "intensity_target": 35.0,
+    }
+    stim = illusions.checkerboards.checkerboard(
         **params,
-        vcheck1=17.5,
-        vcheck2=70.,
-        vtarget=35.,
     )
 
     if pad:
         padding = np.array((4, 5, 3, 3)) / PPD
-        stim["img"] = pad_img(stim["img"], padding, ppd=ppd, val=35.)
+        stim["img"] = pad_img(stim["img"], padding, ppd=ppd, val=35.0)
         stim["mask"] = pad_img(stim["mask"], padding, ppd=ppd, val=0)
         params["padding"] = padding
 
