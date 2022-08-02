@@ -1,3 +1,4 @@
+import warnings
 from collections import namedtuple
 
 Visual_size = namedtuple("Visual_size", "height width")
@@ -75,18 +76,24 @@ def shape_from_visual_size_ppd(visual_size, ppd):
     visual_size = validate_visual_size(visual_size)
     ppd = validate_ppd(ppd)
 
-    # TODO: error if one input is None?
-
     # Calculate width and height in pixels
     if visual_size.width is not None and ppd.horizontal is not None:
-        width = visual_size.width * ppd.horizontal
-        # TODO: warning rounding?
+        fwidth = visual_size.width * ppd.horizontal
+        width = int(fwidth)
+        if fwidth % width:
+            warnings.warn(
+                f"Rounding shape; {visual_size.width} * {ppd.horizontal} = {fwidth}"
+            )
     else:
         width = None
 
     if visual_size.height is not None and ppd.vertical is not None:
-        height = visual_size.height * ppd.vertical
-        # TODO: warning rounding?
+        fheight = visual_size.height * ppd.vertical
+        height = int(fheight)
+        if fheight % height:
+            warnings.warn(
+                f"Rounding shape; {visual_size.height} * {ppd.vertical} = {fheight}"
+            )
     else:
         height = None
 
