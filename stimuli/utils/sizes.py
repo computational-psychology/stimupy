@@ -9,6 +9,35 @@ class ResolutionError(ValueError):
     pass
 
 
+def resolve(shape=None, visual_size=None, ppd=None):
+    # TODO: make 2D
+    n_unknowns = (
+        (shape is None or shape == (None, None))
+        + (visual_size is None or visual_size == (None, None))
+        + (ppd is None or ppd == (None, None))
+    )
+    if n_unknowns > 1:
+        raise ValueError(
+            f"Too many unkowns to resolve resolution; {visual_size},{shape},{ppd}"
+        )
+    elif n_unknowns == 0:
+        valid_resolution(shape=shape, visual_size=visual_size, ppd=ppd)
+    else:  # 1 unknown
+        if shape is None or shape == (None, None):
+            shape = shape_from_visual_size_ppd(visual_size=visual_size, ppd=ppd)
+        elif visual_size is None or visual_size == (None, None):
+            visual_size = visual_size_from_shape_ppd(shape=shape, ppd=ppd)
+        elif ppd is None or ppd == (None, None):
+            ppd = ppd_from_shape_visual_size(shape=shape, visual_size=visual_size)
+
+    shape = validate_shape(shape)
+    ppd = validate_ppd(ppd)
+    visual_size = validate_visual_size(visual_size)
+    valid_resolution(shape=shape, visual_size=visual_size, ppd=ppd)
+
+    return shape, visual_size, ppd
+
+
 def valid_resolution(shape, visual_size, ppd):
     shape = validate_shape(shape)
     ppd = validate_ppd(ppd)
