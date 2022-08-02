@@ -764,19 +764,18 @@ def todorovic_out(ppd=PPD, pad=True):
 
 def checkerboard_016(ppd=PPD, pad=True):
     nchecks_height, nchecks_width = 40, 102
-    target_posy = nchecks_height // 2
+    target_row = nchecks_height // 2
     params = {
         "ppd": ppd,
         "board_shape": (nchecks_height, nchecks_width),
-        "check_size": 0.156,
-        "target_indices": ((target_posy, 16), (target_posy, 85)),
+        "check_visual_size": (5 / 32, 5 / 32),
+        "targets": ((target_row, 16), (target_row, 85)),
         "extend_targets": False,
-        "vcheck1": v3,
-        "vcheck2": v1,
-        "vtarget": v2,
-        }
-
-    stim = illusions.checkerboards.contrast(**params)
+        "intensity_low": v3,
+        "intensity_high": v1,
+        "intensity_target": v2,
+    }
+    stim = illusions.checkerboards.checkerboard(**params)
 
     if pad:
         shape = degrees_to_pixels(VISEXTENT, ppd)
@@ -792,19 +791,18 @@ def checkerboard_016(ppd=PPD, pad=True):
 
 def checkerboard_0938(ppd=PPD, pad=True):
     nchecks_height, nchecks_width = 7, 25
-    target_posy = nchecks_height // 2
+    target_row = nchecks_height // 2
     params = {
         "ppd": ppd,
         "board_shape": (nchecks_height, nchecks_width),
-        "check_size": 0.938,
-        "target_indices": ((target_posy, 6), (target_posy, 17)),
+        "check_visual_size": (30 / 32, 30 / 32),
+        "targets": ((target_row, 6), (target_row, 17)),
         "extend_targets": False,
-        "vcheck1": v1,
-        "vcheck2": v3,
-        "vtarget": v2,
-        }
-
-    stim = illusions.checkerboards.contrast(**params)
+        "intensity_low": v1,
+        "intensity_high": v3,
+        "intensity_target": v2,
+    }
+    stim = illusions.checkerboards.checkerboard(**params)
 
     if pad:
         shape = degrees_to_pixels(VISEXTENT, ppd)
@@ -820,19 +818,18 @@ def checkerboard_0938(ppd=PPD, pad=True):
 
 def checkerboard209(ppd=PPD, pad=True):
     nchecks_height, nchecks_width = 3, 10
-    target_posy = nchecks_height // 2
+    target_row = nchecks_height // 2
     params = {
         "ppd": ppd,
         "board_shape": (nchecks_height, nchecks_width),
-        "check_size": 2.09,
-        "target_indices": ((target_posy, 2), (target_posy, 7)),
+        "check_visual_size": (67 / 32, 67 / 32),
+        "targets": ((target_row, 2), (target_row, 7)),
         "extend_targets": False,
-        "vcheck1": v1,
-        "vcheck2": v3,
-        "vtarget": v2,
-        }
-
-    stim = illusions.checkerboards.contrast(**params)
+        "intensity_low": v1,
+        "intensity_high": v3,
+        "intensity_target": v2,
+    }
+    stim = illusions.checkerboards.checkerboard(**params)
 
     if pad:
         shape = degrees_to_pixels(VISEXTENT, ppd)
