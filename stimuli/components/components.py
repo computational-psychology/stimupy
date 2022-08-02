@@ -17,11 +17,11 @@ def rectangle(
     ----------
     ppd : int
         pixels per degree (visual angle)
-    im_size : (float, float)
+    im_size : float or (float, float)
         size of the image in degrees visual angle
-    rect_size : (float, float)
+    rect_size : float (float, float)
         size of the square in degrees visual angle
-    rect_pos : (float, float)
+    rect_pos : float or (float, float)
         coordinates of the square in degrees visual angle
     vback : float
         background value
@@ -32,6 +32,15 @@ def rectangle(
     -------
     A 2d-array with a rectangle
     """
+    if isinstance(im_size, (float, int)):
+        im_size = (im_size, im_size)
+    if isinstance(rect_size, (float, int)):
+        rect_size = (rect_size, rect_size)
+    if isinstance(rect_pos, (float, int)):
+        rect_pos = (rect_pos, rect_pos)
+    if rect_pos[0]+rect_size[0] > im_size[0] or rect_pos[1]+rect_size[1] > im_size[1]:
+        raise ValueError("rectangle does not fully fit into stimulus")
+
     im_height, im_width = degrees_to_pixels(im_size, ppd)
     rect_height, rect_width = degrees_to_pixels(rect_size, ppd)
     rect_posy, rect_posx = degrees_to_pixels(rect_pos, ppd)
@@ -109,6 +118,15 @@ def cross(
     -------
     A 2d-array with a cross
     """
+    if isinstance(cross_size, (float, int)):
+        cross_size = (cross_size, cross_size, cross_size, cross_size)
+    if len(cross_size) == 2:
+        cross_size = (cross_size[0], cross_size[0], cross_size[1], cross_size[1])
+    if len(cross_size) != 4:
+        raise ValueError("cross_size should be a single number, or a tuple of two or four")
+    if not isinstance(cross_thickness, (float, int)):
+        raise ValueError("cross_thickness should be a single number")
+
     (cross_top, cross_bottom, cross_left, cross_right) = degrees_to_pixels(
         cross_size, ppd
     )
@@ -154,10 +172,8 @@ def square_wave(
     shape=(10, 10),
     ppd=10,
     frequency=1,
-    high=1.0,
-    low=0.0,
+    vbars=(0., 1.),
     period="ignore",
-    start="high",
 ):
     """
     Create a horizontal square wave of given spatial frequency.
@@ -168,44 +184,42 @@ def square_wave(
         The shape of the stimulus in degrees of visual angle. (y,x)
     ppd : int
         pixels per degree (visual angle)
-    high : float
-        value of the bright pixels
-    low : float
-        value of the dark pixels
+    vbars : (float, float)
+        value of bars
     frequency : float
         the spatial frequency of the wave in cycles per degree
     period : string in ['ignore', 'full', 'half']
-        specifies if the period of the wave is taken into account when determining exact stimulus dimensions.
+        specifies if the period of the wave is considered for stimulus dimensions.
             'ignore' simply converts degrees to pixels
             'full' rounds down to guarantee a full period
             'half' adds a half period to the size 'full' would yield.
         Default is 'ignore'.
-    start : string in ['high', 'low']
-        specifies if the wave starts with a high or low value. Default is 'high'.
 
     Returns
     -------
-    (2D ndarray, pixels_per_cycle)
+    A 2d-array with a square-wave grating
     """
 
     if period not in ["ignore", "full", "half"]:
-        raise TypeError("size not understood: %s" % period)
-    if start not in ["high", "low"]:
-        raise TypeError("start value not understood: %s" % start)
+        raise TypeError("period not understood: %s" % period)
     if frequency > ppd / 2:
-        raise ValueError("The frequency is limited to 1/2 cycle per pixel.")
+        raise ValueError("The frequency is limited to ppd/2.")
 
     height, width = degrees_to_pixels(shape, ppd)
-    pixels_per_cycle = degrees_to_pixels(1.0 / (frequency * 2.0), ppd) * 2
+    pixels_per_cycle = degrees_to_pixels(1. / (frequency*2), ppd) * 2
+    frequency_used = 1. / pixels_per_cycle*ppd
+    if degrees_to_pixels(1./frequency, ppd) % 2 != 0:
+        print("Warning: Square-wave frequency changed from %f to %f ensure an even-numbered cycle width!" % (frequency, frequency_used))
 
     if period == "full":
         width = (width // pixels_per_cycle) * pixels_per_cycle
     elif period == "half":
         width = (
-            height // pixels_per_cycle
+            width // pixels_per_cycle
         ) * pixels_per_cycle + pixels_per_cycle / 2
+    width = int(width)
 
-    stim = np.ones((height, width)) * (low if start == "high" else high)
+    stim = np.ones((height, width)) * vbars[1]
 
     index = [
         i + j
@@ -213,8 +227,8 @@ def square_wave(
         for j in range(0, width, pixels_per_cycle)
         if i + j < width
     ]
-    stim[:, index] = low if start == "low" else high
-    return (stim, pixels_per_cycle)
+    stim[:, index] = vbars[0]
+    return stim
 
 
 def checkerboard(
