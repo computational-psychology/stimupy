@@ -54,9 +54,7 @@ def grating_illusion(
     height_px, width_px = degrees_to_pixels(shape, ppd)
     target_height_px = degrees_to_pixels(target_height, ppd)
 
-    img, pixels_per_cycle = square_wave(
-        shape, ppd, frequency, high, low, period, start
-    )
+    img = square_wave(shape, ppd, frequency, (high, low), period)
 
     target_start = height_px // 2 - target_height_px // 2
     target_end = target_start + target_height_px
