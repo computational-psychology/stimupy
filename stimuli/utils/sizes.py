@@ -5,6 +5,20 @@ Shape = namedtuple("Shape", "height width")
 Ppd = namedtuple("Ppd", "vertical horizontal")
 
 
+class ResolutionError(ValueError):
+    pass
+
+
+def valid_resolution(shape, visual_size, ppd):
+    shape = validate_shape(shape)
+    ppd = validate_ppd(ppd)
+    visual_size = validate_visual_size(visual_size)
+
+    calculated = shape_from_visual_size_ppd(visual_size=visual_size, ppd=ppd)
+    if calculated != shape:
+        raise ResolutionError(f"Invalid resolution; {visual_size},{shape},{ppd}")
+
+
 def visual_size_from_shape_ppd(shape, ppd):
     shape = validate_shape(shape)
     ppd = validate_ppd(ppd)
