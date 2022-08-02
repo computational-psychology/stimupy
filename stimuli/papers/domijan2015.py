@@ -1,6 +1,6 @@
 import numpy as np
 from stimuli import illusions
-from stimuli.utils import pad_img
+from stimuli.utils import pad_img, pad_img_to_shape
 
 __all__ = [
     "dungeon",
@@ -322,16 +322,12 @@ def white(height_px=80, ppd=PPD, height_deg=HEIGHT_DEG, pad=PAD):
     stim = illusions.whites.white(
         shape=(height, width),
         ppd=ppd,
-        frequency=frequency,
-        high=1.,
-        low=0.,
-        target=0.5,
+        grating_frequency=frequency,
+        vbars=(0., 1.),
+        vtarget=0.5,
+        target_indices=(2, 5),
+        target_size=21*conversion_fac,
         period="ignore",
-        start="low",
-        target_indices=(3, 6),
-        target_height=21*conversion_fac,
-        targets_offset=0,
-        orientation="horizontal",
     )
 
     if pad:
@@ -372,38 +368,37 @@ def benary(height_px=100, ppd=PPD, height_deg=HEIGHT_DEG):
 
 def todorovic(height_px=100, ppd=PPD, height_deg=HEIGHT_DEG):
     height_px, height_deg, ppd, conversion_fac = check_requirements(100, height_px, height_deg, ppd)
-    im_size = np.array((100, 100)) * conversion_fac
+    shape = np.array((100, 100)) * conversion_fac
     target_size = np.array((41, 41)) * conversion_fac
-    target_pos = np.array((29, 29)) * conversion_fac
-    covers_posx = np.array((14, 54, 14, 54)) * conversion_fac
-    covers_posy = np.array((14, 54, 54, 14)) * conversion_fac
+    covers_size = np.array((31, 31)) * conversion_fac
+    covers_offset = np.array((20, 20)) * conversion_fac
 
-    stim1 = illusions.todorovic.todorovic_in(
-        im_size=im_size,
+    stim1 = illusions.todorovic.todorovic_rectangle(
+        shape=shape-1,
         ppd=ppd,
         target_size=target_size,
-        target_pos=target_pos,
-        covers_height=31*conversion_fac,
-        covers_width=31*conversion_fac,
-        covers_posx=covers_posx,
-        covers_posy=covers_posy,
+        covers_size=covers_size,
+        covers_offset=covers_offset,
         vback=0.,
         vtarget=0.5,
         vcovers=1.,
     )
-    stim2 = illusions.todorovic.todorovic_in(
-        im_size=im_size,
+    stim2 = illusions.todorovic.todorovic_rectangle(
+        shape=shape-1,
         ppd=ppd,
         target_size=target_size,
-        target_pos=target_pos,
-        covers_height=31*conversion_fac,
-        covers_width=31*conversion_fac,
-        covers_posx=covers_posx,
-        covers_posy=covers_posy,
+        covers_size=covers_size,
+        covers_offset=covers_offset,
         vback=1.,
         vtarget=0.5,
         vcovers=0.,
     )
+
+    # In original stimulus, the targets are not placed perfectly centered
+    stim1['img'] = pad_img_to_shape(stim1['img'], shape, val=0.)
+    stim1['mask'] = pad_img_to_shape(stim1['mask'], shape, val=0)
+    stim2['img'] = pad_img_to_shape(stim2['img'], shape, val=1.)
+    stim2['mask'] = pad_img_to_shape(stim2['mask'], shape, val=0)
 
     # Increase target index of right stimulus half
     mask2 = stim2["mask"] + 1
@@ -515,17 +510,16 @@ def white_yazdanbakhsh(height_px=80, ppd=PPD, height_deg=HEIGHT_DEG, pad=PAD):
     stim = illusions.whites.white_yazdanbakhsh(
         shape=(height, width),
         ppd=ppd,
-        frequency=frequency,
-        stripe_height=height / 10,
-        target_height=height / 4,
-        target_indices_top=(2,),
-        target_ypos_top=(height / 2.7,),
-        target_indices_bottom=(5,),
-        target_ypos_bottom=(height / 2.7,),
+        grating_frequency=frequency,
         vbars=(0., 1.),
         vtarget=0.5,
-        vtopstripe=1.,
-        vbotstripe=0.,
+        target_size=height / 4,
+        target_indices_top=(2,),
+        target_indices_bottom=(5,),
+        target_center_offset=0,
+        vstripes=(1., 0.),
+        gap_size=height/10,
+        period="ignore",
     )
 
     if pad:
@@ -547,18 +541,17 @@ def white_anderson(height_px=80, ppd=PPD, height_deg=HEIGHT_DEG, pad=PAD):
     stim = illusions.whites.white_anderson(
         shape=(height, width),
         ppd=ppd,
-        frequency=frequency,
-        stripe_height=height / 5,
-        stripe_ypos=(height / 5, 3 * height / 5),
-        target_height=height / 5,
-        target_indices_top=(2,),
-        target_offsets_top=(height / 10,),
-        target_indices_bottom=(7,),
-        target_offsets_bottom=(-height / 10,),
+        grating_frequency=frequency,
         vbars=(1., 0.),
         vtarget=0.5,
-        vtopstripe=0.,
-        vbotstripe=1.,
+        target_indices_top=(2,),
+        target_indices_bottom=(7,),
+        target_center_offset=height/10,
+        target_size=height/5,
+        vstripes=(0., 1.),
+        stripe_center_offset=height/5,
+        stripe_size=height/5,
+        period="ignore",
     )
 
     if pad:
@@ -580,16 +573,15 @@ def white_howe(height_px=80, ppd=PPD, height_deg=HEIGHT_DEG, pad=PAD):
     stim = illusions.whites.white_howe(
         shape=(height, width),
         ppd=ppd,
-        frequency=frequency,
-        stripe_height=height / 5,
-        stripe_ypos=(height / 5, 3 * height / 5),
-        target_height=height / 5,
-        target_indices_top=(2,),
-        target_indices_bottom=(7,),
+        grating_frequency=frequency,
         vbars=(1., 0.),
         vtarget=0.5,
-        vtopstripe=0.,
-        vbotstripe=1.,
+        target_indices_top=(2,),
+        target_indices_bottom=(7,),
+        target_center_offset=height/5,
+        target_size=height/5,
+        vstripes=(0., 1.),
+        period="ignore",
     )
 
     if pad:

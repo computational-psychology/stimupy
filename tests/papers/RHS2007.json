@@ -1,7 +1,7 @@
 {
     "WE_thick": {
-        "img": "4e6d0130b6f37eeaff7f568c31c68325",
-        "mask": "b523788d266b5f7ded635717acad5a54"
+        "img": "5e9d1edfb41c0c89794bd4879f7d7573",
+        "mask": "f6e0d7b4a85ce130183865d8cd148385"
     },
     "WE_thin_wide": {
         "img": "d0540819930d454dd272f9ee91739114",
@@ -12,40 +12,40 @@
         "mask": "88a5faacb4e5db2d7f5761066dc92f38"
     },
     "WE_anderson": {
-        "img": "a057e8d6351df6b13b25bd08519fc5d1",
-        "mask": "22c5f87f558a47eba9f85a9a5a882fac"
+        "img": "d79db2ef642517a1282bcdd5c553557b",
+        "mask": "1631afdd77437c9d2c8e894c9c10208d"
     },
     "WE_howe": {
-        "img": "73ba7876b0f5cc8f5579f78686d27da8",
-        "mask": "4f6c94d2041e950d11e9ad593044d8d6"
+        "img": "f16aefda2e63dd138e83e6877964cd9f",
+        "mask": "8dddcbb4577323fe7b0a330ac2b20b49"
     },
     "WE_zigzag": {
         "img": "dd572c472d0f2efd33d9e6a69384035b",
         "mask": "b8e04105d00d5d4db2ab424a1ca0b511"
     },
     "WE_radial_thick_small": {
-        "img": "b92d533177eed4a009625d6d2cb0da59",
-        "mask": "78da2d5ec63b48e53f5bdbd90d2b82b9"
+        "img": "f84c5d580eb8f64b927d430cdf1812d0",
+        "mask": "33a3e1d67475e375c0cdd160caa681d6"
     },
     "WE_radial_thick": {
-        "img": "d0067dfb57016354f7b107ae410d217c",
-        "mask": "482a1a903b54df01f3e16cb284b8bfeb"
+        "img": "271959addaa346be6fdbc097da5f0ac7",
+        "mask": "3c858f7d61086fb2864e8cfcbcfbfe3e"
     },
     "WE_radial_thin_small": {
-        "img": "94e6b546f8ad5c6b95a502a8b409c00d",
-        "mask": "38a4da8d63237ac33b1a7f5e1cd021ec"
+        "img": "cbf42828115cfa163e9d9d73e1a5c5a8",
+        "mask": "c1ff630e09a08090a0914f4e9a5bd3a6"
     },
     "WE_circular1": {
-        "img": "2ecc5cb5ad9cfef50de681ee3b923f46",
-        "mask": "32f876b2d56ce7a9f712f7784dc60289"
+        "img": "4de256176b6c94d9f1be3e764927295d",
+        "mask": "0f14ffffd96a8ee414090658f314f808"
     },
     "WE_circular05": {
-        "img": "5d09c011b57d3afffcaf82e7aea84b34",
-        "mask": "dde7cc1ee48b2d47b37fbe9422e0f677"
+        "img": "cb326c7d60fbbfdc7c7f9c180c53abc9",
+        "mask": "b2298b6395e4718508633a873f55c57c"
     },
     "WE_circular025": {
-        "img": "ec3feee88c49aed0a5554c3838be8519",
-        "mask": "e4e9c650c9a247180211dbcde0e38fb2"
+        "img": "6363fea9e7e6b1549668aebe4298f467",
+        "mask": "99d7f9eef441d747393a87d23f32c17e"
     },
     "grating_induction": {
         "img": "da62004fdc198660b44529f8b6358362",
@@ -64,12 +64,12 @@
         "mask": "1af5899340e16372d463125c9ecc5c62"
     },
     "todorovic_in_large": {
-        "img": "f6be5d6dbd1df8f5ca6491a2a1565ba6",
-        "mask": "41ee1a58ac2d85b2ec4482a704cc03d6"
+        "img": "67535cba28a73e53b15704d4d20dbf9f",
+        "mask": "85dbfdfbf2eb9e08f8c2a447b1a0db1c"
     },
     "todorovic_in_small": {
-        "img": "97987ddd99bc4e777f72df9a9206a726",
-        "mask": "ade125ed9b2687abf39ad7b29487fef2"
+        "img": "82259659aad77c6c7e90921fbf832f88",
+        "mask": "97f2a609a19d840ad8997cabcb815380"
     },
     "todorovic_out": {
         "img": "f572675132ccab13b0e9d582a29c300b",
@@ -92,20 +92,20 @@
         "mask": "5adb129c8fc3b7068b68a75e3494d5bb"
     },
     "benary_cross": {
-        "img": "dd0b0fbf02ffb17fb164567fb4dec913",
-        "mask": "70de53075b5eb0044afcf47ffe3b2a4f"
+        "img": "2865af1cc6d35f7e36400703addd7f2a",
+        "mask": "1ead7f41d55427c9cb86d097410bde7d"
     },
     "todorovic_benary1_2": {
         "img": "973b958be7468c55e2f86094d21690e8",
         "mask": "5d88a4fcec3e947ea38035c5ac488ac7"
     },
     "todorovic_benary3_4": {
-        "img": "d4b235af442ff1566723b4e47678e57b",
-        "mask": "e16df058cafdd6baae081b21bdc9d70a"
+        "img": "29a0fc49e9a8071c5499ee5cea2499f9",
+        "mask": "dbed76db344a4f31676e58f63df31341"
     },
     "todorovic_benary1_2_3_4": {
-        "img": "4e4c9d93f1466c203a53ca139f69f9b6",
-        "mask": "6c49f3d5cf37a7d89c669fef07c735b8"
+        "img": "5796edd6dc6153a2a47f6b9a06ed698d",
+        "mask": "eef13c95285d0614c30cfc14e55c59a4"
     },
     "bullseye_thin": {
         "img": "4e14a7c79d4c8aa8bec6aa6455745ccc",
