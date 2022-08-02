@@ -484,18 +484,24 @@ def white(ppd=PPD):
           target regions in the stimulus, each indicated by an integer index.
         - "original_range" containing the original stimulus intensities in cd/m**2
     """
-    a = mat_content["white"]
-    img = np.array(((a[0])[0])[0])
-    target1 = np.array((((a[0])[0])[1])[0])
-    target2 = np.array((((a[0])[0])[2])[0])
-    mask = get_mask(target1, target2, img.shape)
+    params = {
+        "ppd": 16 / 8.0,
+        "shape": (8.0, 8.0),
+        "grating_frequency": 4 / 8.0,
+        "target_indices_top": (1, 3, 5),
+        "target_indices_bottom": (2, 4, 6),
+        "target_center_offset": 2,
+        "target_size": 2,
+        "vbars": (70, 17.5),
+        "vtarget": 35.0,
+    }
 
-    img = img.repeat(repeats=int(ppd / PPD), axis=0).repeat(
-        repeats=int(ppd / PPD), axis=1
-    )
-    mask = mask.repeat(repeats=int(ppd / PPD), axis=0).repeat(
-        repeats=int(ppd / PPD), axis=1
-    )
+    stim = illusions.whites.white_two_rows(**params)
+    img = np.rot90(stim["img"])
+    mask = np.rot90(stim["mask"])
+
+    reduced_mask = np.where(mask == 2, 2, 0)
+    reduced_mask = np.where(mask == 5, 1, reduced_mask)
 
     # Normalize intensity values to [0, 1]
     original_range = (img.min(), img.max())
