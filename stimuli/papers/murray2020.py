@@ -102,6 +102,8 @@ def get_mask(target1, target2, shape):
         for y in range(target2[0], target2[2] + 1):
             mask[y, x] = 2
 
+    mask = np.array(mask, dtype=int)
+
     return mask
 
 
