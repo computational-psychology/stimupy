@@ -1,5 +1,5 @@
 import pytest
-from stimuli.utils import sizes
+from stimuli.utils import resolution
 
 
 @pytest.mark.parametrize(
@@ -15,7 +15,7 @@ from stimuli.utils import sizes
     ),
 )
 def test_pass_valid_resolution(shape, visual_size, ppd):
-    sizes.valid_resolution(shape=shape, visual_size=visual_size, ppd=ppd)
+    resolution.valid_resolution(shape=shape, visual_size=visual_size, ppd=ppd)
 
 
 @pytest.mark.parametrize(
@@ -32,7 +32,7 @@ def test_pass_valid_resolution(shape, visual_size, ppd):
 )
 def test_raises_valid_resolution(shape, visual_size, ppd):
     with pytest.raises(ValueError) as e_info:
-        sizes.valid_resolution(shape=shape, visual_size=visual_size, ppd=ppd)
+        resolution.valid_resolution(shape=shape, visual_size=visual_size, ppd=ppd)
 
 
 def test_resolve():

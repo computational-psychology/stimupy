@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from stimuli.utils import sizes
+from stimuli.utils import resolution
 
 
 #############################
@@ -22,7 +22,7 @@ from stimuli.utils import sizes
     ],
 )
 def test_validate_visual_size(visual_size, expected):
-    out = sizes.validate_visual_size(visual_size)
+    out = resolution.validate_visual_size(visual_size)
     assert out.width == expected[1] and out.height == expected[0]
 
 
@@ -38,7 +38,7 @@ def test_validate_visual_size(visual_size, expected):
 )
 def test_raises_visual_size(visual_size, exception):
     with pytest.raises(exception) as e_info:
-        sizes.validate_visual_size(visual_size)
+        resolution.validate_visual_size(visual_size)
 
 
 #############################
@@ -54,10 +54,11 @@ def test_raises_visual_size(visual_size, exception):
         ("32", (32, 32)),
         ((16, "32"), (16, 32)),
         (("16", "32"), (16, 32)),
+        # Add None cases
     ],
 )
 def test_validate_shape(shape, expected):
-    out = sizes.validate_shape(shape)
+    out = resolution.validate_shape(shape)
     assert out.width == expected[1] and out.height == expected[0]
 
 
@@ -73,7 +74,7 @@ def test_validate_shape(shape, expected):
 )
 def test_raises_shape(shape, exception):
     with pytest.raises(exception) as e_info:
-        sizes.validate_shape(shape)
+        resolution.validate_shape(shape)
 
 
 ############################
@@ -89,10 +90,11 @@ def test_raises_shape(shape, exception):
         ("32", (32, 32)),
         ((16, "32"), (16, 32)),
         (("16", "32"), (16, 32)),
+        # Add None cases
     ],
 )
 def test_validate_ppd(ppd, expected):
-    out = sizes.validate_ppd(ppd)
+    out = resolution.validate_ppd(ppd)
     assert out.horizontal == expected[1] and out.vertical == expected[0]
 
 
@@ -108,4 +110,4 @@ def test_validate_ppd(ppd, expected):
 )
 def test_raises_ppd(ppd, exception):
     with pytest.raises(exception) as e_info:
-        sizes.validate_ppd(ppd)
+        resolution.validate_ppd(ppd)

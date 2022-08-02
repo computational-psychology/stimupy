@@ -43,6 +43,8 @@ def valid_resolution(shape, visual_size, ppd):
     ppd = validate_ppd(ppd)
     visual_size = validate_visual_size(visual_size)
 
+    # TODO: error is one input is None
+
     calculated = shape_from_visual_size_ppd(visual_size=visual_size, ppd=ppd)
     if calculated != shape:
         raise ResolutionError(f"Invalid resolution; {visual_size},{shape},{ppd}")
@@ -72,6 +74,8 @@ def visual_size_from_shape_ppd(shape, ppd):
 def shape_from_visual_size_ppd(visual_size, ppd):
     visual_size = validate_visual_size(visual_size)
     ppd = validate_ppd(ppd)
+
+    # TODO: error if one input is None?
 
     # Calculate width and height in pixels
     if visual_size.width is not None and ppd.horizontal is not None:

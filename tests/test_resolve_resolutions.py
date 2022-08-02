@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from stimuli.utils import sizes
+from stimuli.utils import resolution
 
 
 #############################
@@ -20,7 +20,7 @@ from stimuli.utils import sizes
     ],
 )
 def test_ppd_from_shape_visual_size(shape, visual_size, ppd):
-    out = sizes.ppd_from_shape_visual_size(shape, visual_size)
+    out = resolution.ppd_from_shape_visual_size(shape, visual_size)
     assert out.horizontal == ppd[1] and out.vertical == ppd[0]
 
 
@@ -41,7 +41,7 @@ def test_ppd_from_shape_visual_size(shape, visual_size, ppd):
     ],
 )
 def test_shape_from_visual_size_ppd(visual_size, ppd, shape):
-    out = sizes.shape_from_visual_size_ppd(visual_size, ppd)
+    out = resolution.shape_from_visual_size_ppd(visual_size, ppd)
     assert out.height == shape[0] and out.width == shape[1]
 
 
@@ -62,5 +62,5 @@ def test_shape_from_visual_size_ppd(visual_size, ppd, shape):
     ],
 )
 def test_visual_size_from_shape_ppd(visual_size, ppd, shape):
-    out = sizes.visual_size_from_shape_ppd(shape=shape, ppd=ppd)
+    out = resolution.visual_size_from_shape_ppd(shape=shape, ppd=ppd)
     assert out.height == visual_size[0] and out.width == visual_size[1]
