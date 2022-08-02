@@ -111,12 +111,14 @@ def checkerboard(
 
 
 def contrast_contrast(
-    ppd=10,
-    board_shape=(4, 6),
-    check_size=1.0,
+    shape=None,
+    ppd=None,
+    visual_size=None,
+    board_shape=None,
+    check_visual_size=None,
     target_shape=(2, 3),
-    vcheck1=0.0,
-    vcheck2=1.0,
+    intensity_low=0.0,
+    intensity_high=1.0,
     tau=0.5,
     alpha=0.2,
 ):
@@ -147,28 +149,32 @@ def contrast_contrast(
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
     """
 
-    check_size_px = degrees_to_pixels(check_size, ppd)
-    nchecks_height, nchecks_width = board_shape
-
     stim = board(
         ppd=ppd,
+        shape=shape,
+        visual_size=visual_size,
         board_shape=board_shape,
-        check_visual_size=check_size,
-        intensity_low=vcheck1,
-        intensity_high=vcheck2,
+        check_visual_size=check_visual_size,
+        intensity_low=intensity_low,
+        intensity_high=intensity_high,
     )
     img = stim["img"]
-    mask = np.zeros(img.shape)
 
-    idx = np.zeros(img.shape, dtype=bool)
-    tposy = (img.shape[0] - target_shape[0] * check_size_px) // 2
-    tposx = (img.shape[1] - target_shape[1] * check_size_px) // 2
-    idx[
-        tposy : tposy + target_shape[0] * check_size_px,
-        tposx : tposx + target_shape[1] * check_size_px,
+    check_size_px = resolution.shape_from_visual_size_ppd(
+        visual_size=check_visual_size, ppd=stim["ppd"]
+    )
+    target_idx = np.zeros(img.shape, dtype=bool)
+    tposy = (img.shape[0] - target_shape[0] * check_size_px.height) // 2
+    tposx = (img.shape[1] - target_shape[1] * check_size_px.width) // 2
+    target_idx[
+        tposy : tposy + target_shape[0] * check_size_px[0],
+        tposx : tposx + target_shape[1] * check_size_px[1],
     ] = True
-    img[idx] = alpha * img[idx] + (1 - alpha) * tau
-    mask[idx] = 1
+    img[target_idx] = alpha * img[target_idx] + (1 - alpha) * tau
+
+    mask = np.zeros(img.shape)
+    mask[target_idx] = 1
+
     return {"img": img, "mask": mask}
 
 
@@ -185,7 +191,9 @@ if __name__ == "__main__":
             check_visual_size=(2, 2),
             targets=[(3, 2), (5, 5)],
         ),
-        "Checkerboard contrast-contrast": contrast_contrast(),
+        "Checkerboard contrast-contrast": contrast_contrast(
+            ppd=32, board_shape=(8, 8), check_visual_size=(2, 2), target_shape=(4, 4)
+        ),
     }
     ax = plot_stimuli(stims, mask=False)
     plt.show()
