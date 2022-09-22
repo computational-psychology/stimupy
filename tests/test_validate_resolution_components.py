@@ -42,6 +42,7 @@ from stimuli.utils import resolution
         ((16.1, None), (16.1, None)),
         ((None, "32"), (None, 32)),
         ((None, None), (None, None)),
+        (None, (None, None)),
     ],
 )
 def test_valid_visual_size(visual_size, expected):
@@ -81,6 +82,7 @@ def test_invalid_visual_size(visual_size, exception):
         ((16.1, None), (16, None)),
         ((None, "32"), (None, 32)),
         ((None, None), (None, None)),
+        (None, (None, None)),
     ],
 )
 def test_valid_shape(shape, expected):
@@ -120,6 +122,7 @@ def test_invalid_shape(shape, exception):
         ((16.1, None), (16.1, None)),
         ((None, "32"), (None, 32)),
         ((None, None), (None, None)),
+        (None, (None, None)),
     ],
 )
 def test_valid_ppd(ppd, expected):
