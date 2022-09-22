@@ -191,13 +191,11 @@ def validate_ppd(ppd):
     horizontal = ppd[1]
     vertical = ppd[0]
 
-    # TODO: check if whole integer?
-
     # Convert to float
     if horizontal is not None:
-        horizontal = int(horizontal)
+        horizontal = float(horizontal)
     if vertical is not None:
-        vertical = int(vertical)
+        vertical = float(vertical)
 
     # Check non-negative
     if (horizontal is not None and horizontal <= 0) or (
