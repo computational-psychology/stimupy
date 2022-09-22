@@ -40,18 +40,63 @@ def resolve(shape=None, visual_size=None, ppd=None):
 
 
 def valid_resolution(shape, visual_size, ppd):
+    """Asserts that the combined specification of resulation is geometrically valid.
+
+    Asserts the combined specification of shape (in pixels), visual_size (deg) and ppd.
+    If this makes sense, i.e. (roughly), int(visual_size * ppd) == shape,
+    this function passes without output.
+    If the specification does not make sense, raises a ResolutionError.
+
+    Note that the resolution specification has to be fully resolved,
+    i.e., none of the parameters can be/contain None
+
+    Parameters
+    ----------
+    shape : 2-tuple (height, width), or something that can be cast (see validate_shape)
+    visual_size : 2-tuple (height, width), or something that can be cast (see validate_visual_size)
+    ppd : 2-tuple (vertical, horizontal), or something that can be cast (see validate_ppd)
+
+    Raises
+    ------
+    ResolutionError
+        if resolution specification is invalid,
+        i.e. (roughly), if int(visual_size * ppd) != shape
+    """
+
+    # Canonize inputs
     shape = validate_shape(shape)
     ppd = validate_ppd(ppd)
     visual_size = validate_visual_size(visual_size)
 
-    # TODO: error is one input is None
-
+    # Check by calculating one component
     calculated = shape_from_visual_size_ppd(visual_size=visual_size, ppd=ppd)
     if calculated != shape:
         raise ResolutionError(f"Invalid resolution; {visual_size},{shape},{ppd}")
 
 
+#############################
+#    Resolve components     #
+#############################
 def visual_size_from_shape_ppd(shape, ppd):
+    """Calculate visual size (degrees) from given shape (pixels) and pixels-per-degree
+
+    Parameters
+    ----------
+    shape : Sequence[int, int]; or int, or None
+        each element has to be of type that can be cast to int, or None.
+        See validate_shape
+    ppd : Sequence[int, int]; or int, or None
+        each element has to be of type that can be cast to int, or None.
+        See validate_ppd
+
+    Returns
+    -------
+    Visual_size named tuple, with two attributes:
+        .height: float, height in degrees visual angle
+        .width: float, width in degrees visual angle
+        See validate_visual_size
+    """
+
     # Canonize inputs
     shape = validate_shape(shape)
     ppd = validate_ppd(ppd)
@@ -75,6 +120,24 @@ def visual_size_from_shape_ppd(shape, ppd):
 
 
 def shape_from_visual_size_ppd(visual_size, ppd):
+    """Calculate shape (pixels) from given visual size (degrees) and pixels-per-degree
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number]; or Number; or None
+        each element has to be of type that can be cast to float, or None.
+    ppd : Sequence[int, int]; or int, or None
+        each element has to be of type that can be cast to int, or None.
+        See validate_ppd
+
+    Returns
+    -------
+    Shape named tuple, with two attributes:
+        .height: int, height in pixels
+        .width: int, width in pixels
+        See validate_shape
+    """
+
     # Canonize inputs
     visual_size = validate_visual_size(visual_size)
     ppd = validate_ppd(ppd)
@@ -103,6 +166,25 @@ def shape_from_visual_size_ppd(visual_size, ppd):
 
 
 def ppd_from_shape_visual_size(shape, visual_size):
+    """Calculate resolution (ppd) from given shape (pixels) and visual size (degrees)
+
+    Parameters
+    ----------
+    shape : Sequence[int, int]; or int, or None
+        each element has to be of type that can be cast to int, or None.
+        See validate_shape
+    visual_size : Sequence[Number, Number]; or Number; or None
+        each element has to be of type that can be cast to float, or None.
+        See validate_visual_size
+
+    Returns
+    -------
+    ppd named tuple, with two attributes:
+        .vertical: int, vertical pixels per degree (ppd)
+        .horizontal: int, horizontal pixels per degree (ppd)
+        see validate_ppd
+    """
+
     # Canonize inputs
     shape = validate_shape(shape)
     visual_size = validate_visual_size(visual_size)
@@ -125,7 +207,36 @@ def ppd_from_shape_visual_size(shape, visual_size):
     return ppd
 
 
+#############################
+#    Validate components    #
+#############################
 def validate_shape(shape):
+    """Put specification of shape (in pixels) in canonical form, if possible
+
+    Parameters
+    ----------
+    shape : Sequence of length 1 or 2; or None
+        if 2 elements: interpret as (height, width)
+        if 1 element: use as both height and width
+        if None: return (None, None)
+        each element has to be of type that can be cast to int, or None.
+
+    Returns
+    -------
+    Shape named tuple, with two attributes:
+        .height: int, height in pixels
+        .width: int, width in pixels
+
+    Raises
+    ------
+    ValueError
+        if input does not have at least 1 element
+    TypeError
+        if input is not a Sequence(int, int) and cannot be cast to one
+    ValueError
+        if input has more than 2 elements
+    """
+
     # Check if string:
     if isinstance(shape, str):
         shape = float(shape)
@@ -152,7 +263,7 @@ def validate_shape(shape):
 
     # TODO: check if whole integer?
 
-    # Convert to float
+    # Convert to int
     if width is not None:
         width = int(width)
     if height is not None:
@@ -167,6 +278,32 @@ def validate_shape(shape):
 
 
 def validate_ppd(ppd):
+    """Put specification of ppd in canonical form, if possible
+
+    Parameters
+    ----------
+    ppd : Sequence of length 1 or 2; or None
+        if 2 elements: interpret as (vertical, horizontal)
+        if 1 element: use as both vertical and horizontal
+        if None: return (None, None)
+        each element has to be of type that can be cast to int, or None.
+
+    Returns
+    -------
+    ppd named tuple, with two attributes:
+        .vertical: int, vertical pixels per degree (ppd)
+        .horizontal: int, horizontal pixels per degree (ppd)
+
+    Raises
+    ------
+    ValueError
+        if input does not have at least 1 element
+    TypeError
+        if input is not a Sequence(int, int) and cannot be cast to one
+    ValueError
+        if input has more than 2 elements
+    """
+
     # Check if string:
     if isinstance(ppd, str):
         ppd = float(ppd)
@@ -208,6 +345,32 @@ def validate_ppd(ppd):
 
 
 def validate_visual_size(visual_size):
+    """Put specification of visual size in canonical form, if possible
+
+    Parameters
+    ----------
+    visual_size : Sequence of length 1 or 2; or None
+        if 2 elements: interpret as (height, width)
+        if 1 element: use as both height and width
+        if None: return (None, None)
+        each element has to be of type that can be cast to float, or None.
+
+    Returns
+    -------
+    Visual_size named tuple, with two attributes:
+        .height: float, height in degrees visual angle
+        .width: float, width in degrees visual angle
+
+    Raises
+    ------
+    ValueError
+        if input does not have at least 1 element
+    TypeError
+        if input is not a Sequence(float, float) and cannot be cast to one
+    ValueError
+        if input has more than 2 elements
+    """
+
     # Check if string:
     if isinstance(visual_size, str):
         visual_size = float(visual_size)
