@@ -52,73 +52,74 @@ def valid_resolution(shape, visual_size, ppd):
 
 
 def visual_size_from_shape_ppd(shape, ppd):
+    # Canonize inputs
     shape = validate_shape(shape)
     ppd = validate_ppd(ppd)
 
+    # Define function for 1D case:
+    def visual_angle_from_length_ppd_1D(length, ppd):
+        if length is not None and ppd is not None:
+            visual_angle = length / ppd
+        else:
+            visual_angle = None
+        return visual_angle
+
     # Calculate width and height in pixels
-    if shape.width is not None and ppd.horizontal is not None:
-        width = shape.width / ppd.horizontal
-    else:
-        width = None
+    width = visual_angle_from_length_ppd_1D(shape.width, ppd.horizontal)
+    height = visual_angle_from_length_ppd_1D(shape.height, ppd.vertical)
 
-    if shape.height is not None and ppd.vertical is not None:
-        height = shape.height / ppd.vertical
-    else:
-        height = None
-
-    # Construct shape:
+    # Construct Visual size NamedTuple:
     visual_size = Visual_size(width=width, height=height)
 
     return visual_size
 
 
 def shape_from_visual_size_ppd(visual_size, ppd):
+    # Canonize inputs
     visual_size = validate_visual_size(visual_size)
     ppd = validate_ppd(ppd)
 
+    # Define function for 1D case:
+    def pix_from_visual_angle_ppd_1D(visual_angle, ppd):
+        if visual_angle is not None and ppd is not None:
+            fpix = visual_angle * ppd
+            pix = int(fpix)
+            if fpix % pix:
+                warnings.warn(
+                    f"Rounding shape; {visual_angle} * {ppd} = {fpix} -> {pix}"
+                )
+        else:
+            pix = None
+        return pix
+
     # Calculate width and height in pixels
-    if visual_size.width is not None and ppd.horizontal is not None:
-        fwidth = visual_size.width * ppd.horizontal
-        width = int(fwidth)
-        if fwidth % width:
-            warnings.warn(
-                f"Rounding shape; {visual_size.width} * {ppd.horizontal} = {fwidth}"
-            )
-    else:
-        width = None
+    width = pix_from_visual_angle_ppd_1D(visual_size.width, ppd.horizontal)
+    height = pix_from_visual_angle_ppd_1D(visual_size.height, ppd.vertical)
 
-    if visual_size.height is not None and ppd.vertical is not None:
-        fheight = visual_size.height * ppd.vertical
-        height = int(fheight)
-        if fheight % height:
-            warnings.warn(
-                f"Rounding shape; {visual_size.height} * {ppd.vertical} = {fheight}"
-            )
-    else:
-        height = None
-
-    # Construct shape:
+    # Construct Shape NamedTuple:
     shape = Shape(width=width, height=height)
 
     return shape
 
 
 def ppd_from_shape_visual_size(shape, visual_size):
+    # Canonize inputs
     shape = validate_shape(shape)
     visual_size = validate_visual_size(visual_size)
 
+    # Define function for 1D case:
+    def ppd_from_length_visual_angle_1D(length, visual_angle):
+        if visual_angle is not None and length is not None:
+            ppd = length / visual_angle
+        else:
+            ppd = None
+        return ppd
+
     # Calculate horizontal and vertical ppds
-    if visual_size.width is not None and shape.width is not None:
-        horizontal = shape.width / visual_size.width
-    else:
-        horizontal = None
+    horizontal = ppd_from_length_visual_angle_1D(shape.width, visual_size.width)
+    vertical = ppd_from_length_visual_angle_1D(shape.height, visual_size.height)
 
-    if visual_size.height is not None and shape.height is not None:
-        vertical = shape.height / visual_size.height
-    else:
-        vertical = None
-
-    # Construct ppd namedtuple
+    # Construct Ppd NamedTuple
     ppd = Ppd(horizontal=horizontal, vertical=vertical)
 
     return ppd
