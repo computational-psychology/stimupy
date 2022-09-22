@@ -132,7 +132,9 @@ def validate_shape(shape):
 
     # Check if sequence
     try:
-        len(shape)
+        if len(shape) < 1:
+            # Empty sequence
+            raise ValueError(f"shape must be of at least length 1: {shape}")
     except TypeError:  # not a sequence; make it one
         shape = (shape, shape)
 
@@ -171,7 +173,9 @@ def validate_ppd(ppd):
 
     # Check if sequence
     try:
-        len(ppd)
+        if len(ppd) < 1:
+            # Empty sequence
+            raise ValueError(f"ppd must be of at least length 1: {ppd}")
     except TypeError:  # not a sequence; make it one
         ppd = (ppd, ppd)
 
@@ -212,7 +216,9 @@ def validate_visual_size(visual_size):
 
     # Check if sequence
     try:
-        len(visual_size)
+        if len(visual_size) < 1:
+            # Empty sequence
+            raise ValueError(f"visual_size must be of at least length 1: {visual_size}")
     except TypeError:  # not a sequence; make it one
         visual_size = (visual_size, visual_size)
 
