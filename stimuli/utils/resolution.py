@@ -11,29 +11,28 @@ class ResolutionError(ValueError):
 
 
 def resolve(shape=None, visual_size=None, ppd=None):
-    # TODO: make 2D
-    n_unknowns = (
-        (shape is None or shape == (None, None))
-        + (visual_size is None or visual_size == (None, None))
-        + (ppd is None or ppd == (None, None))
+    # Vertical
+    ppd_vertical = ppd[0] if ppd is not None else None
+    visual_height = visual_size[0] if visual_size is not None else None
+    height = shape[0] if shape is not None else None
+    height, visual_height, ppd_vertical = resolve_1D(
+        height, visual_height, ppd_vertical
     )
-    if n_unknowns > 1:
-        raise ValueError(
-            f"Too many unkowns to resolve resolution; {visual_size},{shape},{ppd}"
-        )
-    elif n_unknowns == 0:
-        valid_resolution(shape=shape, visual_size=visual_size, ppd=ppd)
-    else:  # 1 unknown
-        if shape is None or shape == (None, None):
-            shape = shape_from_visual_size_ppd(visual_size=visual_size, ppd=ppd)
-        elif visual_size is None or visual_size == (None, None):
-            visual_size = visual_size_from_shape_ppd(shape=shape, ppd=ppd)
-        elif ppd is None or ppd == (None, None):
-            ppd = ppd_from_shape_visual_size(shape=shape, visual_size=visual_size)
 
-    shape = validate_shape(shape)
-    ppd = validate_ppd(ppd)
-    visual_size = validate_visual_size(visual_size)
+    # Horizontal
+    ppd_horizontal = ppd[1] if ppd is not None else None
+    visual_width = visual_size[1] if visual_size is not None else None
+    width = shape[1] if shape is not None else None
+    width, visual_width, ppd_horizontal = resolve_1D(
+        width, visual_width, ppd_horizontal
+    )
+
+    # Check & canonize outputs
+    shape = validate_shape((height, width))
+    ppd = validate_ppd((ppd_vertical, ppd_horizontal))
+    visual_size = validate_visual_size((visual_height, visual_width))
+
+    # Assert that resolved resolution is valid
     valid_resolution(shape=shape, visual_size=visual_size, ppd=ppd)
 
     return shape, visual_size, ppd
