@@ -11,6 +11,42 @@ class ResolutionError(ValueError):
 
 
 def resolve(shape=None, visual_size=None, ppd=None):
+    """Resolves the full resolution, for 2 givens and 1 unknown
+
+    A resolution consists of a visual size in degrees, a shape in pixels,
+    and specification of the number of pixels per degree.
+    Since there is a strict geometric relation between these,
+    shape = visual_size * ppd,
+    if two are given, the third can be calculated using this function.
+
+    This function resolves the resolution in both dimensions.
+
+
+    Parameters
+    ----------
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] in pixels
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+
+    Returns
+    -------
+    Shape NamedTuple, with two attributes:
+        .height: int, height in pixels
+        .width: int, width in pixels
+        See validate_shape
+    Visual_size NamedTuple, with two attributes:
+        .height: float, height in degrees visual angle
+        .width: float, width in degrees visual angle
+        See validate_visual_size
+    ppd NamedTuple, with two attributes:
+        .vertical: int, vertical pixels per degree (ppd)
+        .horizontal: int, horizontal pixels per degree (ppd)
+        see validate_ppd
+    """
+
     # Vertical
     ppd_vertical = ppd[0] if ppd is not None else None
     visual_height = visual_size[0] if visual_size is not None else None
@@ -39,6 +75,30 @@ def resolve(shape=None, visual_size=None, ppd=None):
 
 
 def resolve_1D(length=None, visual_angle=None, ppd=None):
+    """Resolves the full resolution, for 2 givens and 1 unknown
+
+    A resolution consists of a visual size in degrees, a shape in pixels,
+    and specification of the number of pixels per degree.
+    Since there is a strict geometric relation between these,
+    shape = visual_size * ppd,
+    if two are given, the third can be calculated using this function.
+
+    This function resolves the resolution in a single dimension.
+
+
+    Parameters
+    ----------
+    length : Number, length in pixels, or None (default)
+    visual_angle : Number, length in degrees, or None (default)
+    ppd : Number, pixels per degree, or None (default)
+
+    Returns
+    -------
+    length : int, length in pixels
+    visual_angle : float, length in degrees
+    ppd : float, pixels per degree
+    """
+
     # How many unknowns passed in?
     n_unknowns = (length is None) + (visual_angle is None) + (ppd is None)
 
@@ -94,7 +154,7 @@ def valid_1D(length, visual_angle, ppd):
 
 
 def valid_resolution(shape, visual_size, ppd):
-    """Asserts that the combined specification of resulation is geometrically valid.
+    """Asserts that the combined specification of resolution is geometrically valid.
 
     Asserts the combined specification of shape (in pixels), visual_size (deg) and ppd.
     If this makes sense, i.e. (roughly), int(visual_size * ppd) == shape,
@@ -153,7 +213,7 @@ def visual_size_from_shape_ppd(shape, ppd):
 
     Returns
     -------
-    Visual_size named tuple, with two attributes:
+    Visual_size NamedTuple, with two attributes:
         .height: float, height in degrees visual angle
         .width: float, width in degrees visual angle
         See validate_visual_size
@@ -197,7 +257,7 @@ def shape_from_visual_size_ppd(visual_size, ppd):
 
     Returns
     -------
-    Shape named tuple, with two attributes:
+    Shape NamedTuple, with two attributes:
         .height: int, height in pixels
         .width: int, width in pixels
         See validate_shape
@@ -231,7 +291,7 @@ def ppd_from_shape_visual_size(shape, visual_size):
 
     Returns
     -------
-    ppd named tuple, with two attributes:
+    ppd NamedTuple, with two attributes:
         .vertical: int, vertical pixels per degree (ppd)
         .horizontal: int, horizontal pixels per degree (ppd)
         see validate_ppd
@@ -275,7 +335,7 @@ def validate_shape(shape):
 
     Returns
     -------
-    Shape named tuple, with two attributes:
+    Shape NamedTuple, with two attributes:
         .height: int, height in pixels
         .width: int, width in pixels
 
@@ -342,7 +402,7 @@ def validate_ppd(ppd):
 
     Returns
     -------
-    ppd named tuple, with two attributes:
+    ppd NamedTuple, with two attributes:
         .vertical: int, vertical pixels per degree (ppd)
         .horizontal: int, horizontal pixels per degree (ppd)
 
@@ -409,7 +469,7 @@ def validate_visual_size(visual_size):
 
     Returns
     -------
-    Visual_size named tuple, with two attributes:
+    Visual_size NamedTuple, with two attributes:
         .height: float, height in degrees visual angle
         .width: float, width in degrees visual angle
 
