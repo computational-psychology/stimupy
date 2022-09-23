@@ -47,20 +47,19 @@ def resolve(shape=None, visual_size=None, ppd=None):
         see validate_ppd
     """
 
+    # Canonize inputs
+    ppd = validate_ppd(ppd)
+    visual_size = validate_visual_size(visual_size)
+    shape = validate_shape(shape)
+
     # Vertical
-    ppd_vertical = ppd[0] if ppd is not None else None
-    visual_height = visual_size[0] if visual_size is not None else None
-    height = shape[0] if shape is not None else None
     height, visual_height, ppd_vertical = resolve_1D(
-        height, visual_height, ppd_vertical
+        length=shape.height, visual_angle=visual_size.height, ppd=ppd.vertical
     )
 
     # Horizontal
-    ppd_horizontal = ppd[1] if ppd is not None else None
-    visual_width = visual_size[1] if visual_size is not None else None
-    width = shape[1] if shape is not None else None
     width, visual_width, ppd_horizontal = resolve_1D(
-        width, visual_width, ppd_horizontal
+        length=shape.width, visual_angle=visual_size.width, ppd=ppd.horizontal
     )
 
     # Check & canonize outputs
@@ -144,8 +143,6 @@ def valid_1D(length, visual_angle, ppd):
         if resolution specification is invalid,
         i.e. (roughly), if int(visual_angle * ppd) != length
     """
-
-    # TODO: Validate inputs
 
     # Check by calculating one component
     calculated = pix_from_visual_angle_ppd_1D(visual_angle=visual_angle, ppd=ppd)

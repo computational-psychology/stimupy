@@ -104,6 +104,7 @@ def test_visual_size_from_shape_ppd(visual_size, ppd, shape):
         ((None, 1024), (32, None), (32, 32)),  # One unknown in each dimension
         ((None, 1024), (32, 32), (32, None)),  # One unknown in each dimension
         ((1024, None), (32, 32), (None, 32)),  # One unknown in each dimension
+        (1024, 32, None),
     ],
 )
 def test_resolve_resolution(shape, visual_size, ppd):
