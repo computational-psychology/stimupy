@@ -439,24 +439,17 @@ def grating_induction(ppd=PPD, pad=True):
 
 def sbc_large(ppd=PPD, pad=True):
     im_size = (13.0, 15.5)
-    tsize = 3.0
-    target_pos = (
-        im_size[0] / 2.0 - tsize / 2.0,
-        im_size[1] / 2.0 - tsize / 2.0,
-    )
     stim1 = illusions.sbc.simultaneous_contrast(
+        shape=im_size,
         ppd=ppd,
-        im_size=im_size,
-        target_size=(tsize, tsize),
-        target_pos=target_pos,
+        target_size=3.,
         vback=0.0,
         vtarget=0.5,
     )
     stim2 = illusions.sbc.simultaneous_contrast(
+        shape=im_size,
         ppd=ppd,
-        im_size=im_size,
-        target_size=(tsize, tsize),
-        target_pos=target_pos,
+        target_size=3.,
         vback=1.0,
         vtarget=0.5,
     )
@@ -479,24 +472,17 @@ def sbc_large(ppd=PPD, pad=True):
 
 def sbc_small(ppd=PPD, pad=True):
     im_size = (13.0, 15.5)
-    tsize = 1.0
-    target_pos = (
-        im_size[0] / 2.0 - tsize / 2.0,
-        im_size[1] / 2.0 - tsize / 2.0,
-    )
     stim1 = illusions.sbc.simultaneous_contrast(
+        shape=im_size,
         ppd=ppd,
-        im_size=im_size,
-        target_size=(tsize, tsize),
-        target_pos=target_pos,
+        target_size=1.,
         vback=0.0,
         vtarget=0.5,
     )
     stim2 = illusions.sbc.simultaneous_contrast(
+        shape=im_size,
         ppd=ppd,
-        im_size=im_size,
-        target_size=(tsize, tsize),
-        target_pos=target_pos,
+        target_size=1.,
         vback=1.0,
         vtarget=0.5,
     )

@@ -285,17 +285,17 @@ def simultaneous_brightness_contrast(height_px=100, ppd=PPD, height_deg=HEIGHT_D
     target_size = np.array((21, 21)) * conversion_fac
     target_pos = np.array((39, 39)) * conversion_fac
 
-    stim1 = illusions.sbc.simultaneous_contrast(
+    stim1 = illusions.sbc.simultaneous_contrast_general(
+        shape=im_size,
         ppd=ppd,
-        im_size=im_size,
         target_size=target_size,
         target_pos=target_pos,
         vback=1.,
         vtarget=0.5,
     )
-    stim2 = illusions.sbc.simultaneous_contrast(
+    stim2 = illusions.sbc.simultaneous_contrast_general(
+        shape=im_size,
         ppd=ppd,
-        im_size=im_size,
         target_size=target_size,
         target_pos=target_pos,
         vback=0.,

@@ -1,29 +1,29 @@
 import numpy as np
-from stimuli.utils import pixels_to_degrees, degrees_to_pixels, pad_img, pad_img_to_shape
-from stimuli.components import rectangle, disc, square_wave_grating
+from stimuli.utils import pixels_to_degrees, pad_img
+from stimuli.components import rectangle, disc
 
 
-def simultaneous_contrast(
+def simultaneous_contrast_generalized(
+    shape=(2., 2.),
     ppd=10,
-    im_size=(4.0, 4.0),
     target_size=(2.0, 2.0),
     target_pos=(1.0, 1.0),
     vback=0.0,
     vtarget=0.5,
 ):
     """
-    Simultaneous contrast stimulus
+    Simultaneous contrast stimulus with free target placement.
 
     Parameters
     ----------
+    shape : float or (float, float)
+        size of the stimulus in degrees of visual angle (height, width)
     ppd : int
         pixels per degree (visual angle)
-    im_size : (float, float)
-        size of the image in degree visual angle
-    target_size : (float, float)
-        size of the target in degree visual angle
-    target_pos : (float, float)
-        coordinates of the target in degree visual angle
+    target_size : float or (float, float)
+        size of the target in degree visual angle (height, width)
+    target_pos : float or (float, float)
+        size of the target in degree visual angle (height, width)
     vback : float
         value for background
     vtarget : float
@@ -33,9 +33,60 @@ def simultaneous_contrast(
     -------
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
     """
-    img = rectangle(ppd, im_size, target_size, target_pos, vback, vtarget)
-    mask = rectangle(ppd, im_size, target_size, target_pos, 0, 1)
+
+    if isinstance(shape, (float, int)):
+        shape = (shape, shape)
+    if isinstance(target_size, (float, int)):
+        target_size = (target_size, target_size)
+    if isinstance(target_pos, (float, int)):
+        target_pos = (target_pos, target_pos)
+
+    if target_size[0] > shape[0] or target_size[1] > shape[1]:
+        raise ValueError('Requested target is larger than stimulus')
+    if target_size[0]+target_pos[0] > shape[0] or target_size[1]+target_pos[1] > shape[1]:
+        raise ValueError('Target does not fully fit into the stimulus')
+
+    img = rectangle(ppd, shape, target_size, target_pos, vback, vtarget)
+    mask = rectangle(ppd, shape, target_size, target_pos, 0, 1)
     return {"img": img, "mask": mask}
+
+
+def simultaneous_contrast(
+    shape=(2., 3.),
+    ppd=10,
+    target_size=(1., 0.5),
+    vback=0.0,
+    vtarget=0.5,
+):
+    """
+    Simultaneous contrast stimulus with central target.
+
+    Parameters
+    ----------
+    shape : float or (float, float)
+        size of the stimulus in degrees of visual angle (height, width)
+    ppd : int
+        pixels per degree (visual angle)
+    target_size : float or (float, float)
+        size of the target in degree visual angle (height, width)
+    vback : float
+        value for background
+    vtarget : float
+        value for target
+
+    Returns
+    -------
+    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    """
+    if isinstance(shape, (float, int)):
+        shape = (shape, shape)
+    if isinstance(target_size, (float, int)):
+        target_size = (target_size, target_size)
+
+    # Rectangle should be placed centrally
+    target_pos = (shape[0]/2. - target_size[0]/2., shape[1]/2. - target_size[1]/2.)
+    stim = simultaneous_contrast_generalized(shape, ppd, target_size, target_pos, vback, vtarget)
+    return stim
 
 
 def sbc_with_dots(
@@ -55,13 +106,13 @@ def sbc_with_dots(
     ----------
     ppd : int
         pixels per degree (visual angle)
-    n_dots : (int, int)
+    n_dots : int or (int, int)
         stimulus size defined as the number of dots in y and x-directions
     dot_radius : float
         radius of dots
     distance : float
         distance between dots in degree visual angle
-    target_shape : (int, int)
+    target_shape : int or (int, int)
         target shape defined as the number of dots that fit into the target
     vback : float
         value for background
@@ -74,6 +125,11 @@ def sbc_with_dots(
     -------
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
     """
+
+    if isinstance(n_dots, (float, int)):
+        n_dots = (n_dots, n_dots)
+    if isinstance(target_shape, (float, int)):
+        target_shape = (target_shape, target_shape)
 
     padding = (distance/2., distance/2., distance/2., distance/2.)
     patch = disc(ppd, dot_radius, vback=0., vdisc=vdots)
@@ -116,13 +172,13 @@ def dotted_sbc(
     ----------
     ppd : int
         pixels per degree (visual angle)
-    n_dots : (int, int)
+    n_dots : int or (int, int)
         stimulus size defined as the number of dots in y and x-directions
     dot_radius : float
         radius of dots
     distance : float
         distance between dots in degree visual angle
-    target_shape : (int, int)
+    target_shape : int or (int, int)
         target shape defined as the number of dots that fit into the target
     vback : float
         value for background
@@ -135,6 +191,11 @@ def dotted_sbc(
     -------
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
     """
+
+    if isinstance(n_dots, (float, int)):
+        n_dots = (n_dots, n_dots)
+    if isinstance(target_shape, (float, int)):
+        target_shape = (target_shape, target_shape)
 
     padding = (distance/2., distance/2., distance/2., distance/2.)
     patch = disc(ppd, dot_radius, vback=0., vdisc=vdots)
