@@ -2,11 +2,11 @@ import numpy as np
 
 
 def cornsweet(
-    size=(10.0, 10.0),
+    shape=(10.0, 10.0),
     ppd=10.0,
     vmax=1.0,
     vmin=0.0,
-    vtarget=0.5,
+    vplateu=0.5,
     ramp_width=2.0,
     exponent=2.75,
 ):
@@ -23,16 +23,16 @@ def cornsweet(
 
     Parameters
     ----------
-    size : tuple of 2 numbers
-        size in degrees of visual angle
-    ppd : float
-        number of pixels in one degree of visual angle
+    shape : (float, float)
+        The shape of the stimulus in degrees of visual angle. (y,x)
+    ppd : int
+        pixels per degree (visual angle)
     vmax : float
         maximum luminance value
     vmin : float
         minimum luminance value
-    vtarget : float
-        luminance value of targets (=plateaus)
+    vplateu : float
+        luminance value of plateu
     ramp_width : float
         width of luminance ramp in degrees of visual angle
     exponent : float
@@ -49,17 +49,17 @@ def cornsweet(
     Visual Cortex. Current Biology 17, 989-993.
     """
 
-    size = [int(size[0] * ppd), int(size[1] * ppd)]
+    size = [int(shape[0] * ppd), int(shape[1] * ppd)]
     ramp_width = int(ramp_width * ppd)
-    img = np.ones(size) * vtarget
+    img = np.ones(size) * vplateu
     mask = np.zeros(size)
 
     # Create ramp profiles individually for left and right side
     dist = np.arange(size[1] / 2.0)
     dist = dist / ramp_width
     dist[dist > 1.0] = 1.0
-    profile1 = (1.0 - dist) ** exponent * (vmax - vtarget)
-    profile2 = (1.0 - dist) ** exponent * (vmin - vtarget)
+    profile1 = (1.0 - dist) ** exponent * (vmax - vplateu)
+    profile2 = (1.0 - dist) ** exponent * (vmin - vplateu)
     img[:, : int(size[1] / 2.0)] += profile1[::-1]
     img[:, size[1] // 2 :] += profile2
 
