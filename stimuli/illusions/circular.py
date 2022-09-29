@@ -1,6 +1,6 @@
 import numpy as np
 
-from stimuli.components import disc_and_rings
+from stimuli.components.circular import disc_and_rings
 from stimuli.utils import degrees_to_pixels, pad_to_visual_size, resize_array
 
 
