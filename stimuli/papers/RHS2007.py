@@ -766,9 +766,9 @@ def benary_cross(ppd=PPD, pad=True):
     vback = 1.0
     vtarget = 0.5
     padding = (0.0, 0.0, 4.0, 4.0)
-    stim = illusions.benary_cross.benarys_cross(
+    stim = illusions.benary_cross.benarys_cross_generalized(
+        shape=(13, 23),
         ppd=PPD,
-        cross_size=(4.5, 4.5, 9.5, 9.5),
         cross_thickness=4.0,
         target_type=("t", "t"),
         target_ori=(45.0, 0.0),

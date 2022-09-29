@@ -20,7 +20,7 @@ __all__ = [
     "white_yazdanbakhsh",
 ]
 
-PPD = 1             # default: 1
+PPD = 10            # default: 10
 HEIGHT_DEG = None   # default: None
 PAD = True
 
@@ -54,20 +54,20 @@ def check_requirements(original_size_px, height_px, height_deg, ppd):
         raise ValueError('You need to define two out of ppd, height_px and height_deg')
 
     if height_px is not None and ppd is not None:
-        conversion_fac = height_px / original_size_px / ppd
+        conversion_fac = height_px / original_size_px * PPD / ppd
 
     if height_deg is not None and ppd is not None:
-        conversion_fac = height_deg / original_size_px
+        conversion_fac = height_deg / original_size_px * PPD
 
     if height_px is not None and height_deg is not None and ppd is not None:
         ppd_calc = int(np.round(height_px / height_deg))
         assert ppd_calc == ppd
-        conversion_fac = height_px / original_size_px / ppd
+        conversion_fac = height_px / original_size_px * PPD / ppd
 
     if height_px is not None and height_deg is not None and ppd is None:
         ppd = int(np.round(height_px / height_deg))
-        conversion_fac = height_px / original_size_px / ppd
-    return height_px, height_deg, ppd, conversion_fac
+        conversion_fac = height_px / original_size_px * PPD / ppd
+    return height_px, height_deg, ppd, conversion_fac / PPD
 
 
 def dungeon(height_px=110, ppd=PPD, height_deg=HEIGHT_DEG):
@@ -285,7 +285,7 @@ def simultaneous_brightness_contrast(height_px=100, ppd=PPD, height_deg=HEIGHT_D
     target_size = np.array((21, 21)) * conversion_fac
     target_pos = np.array((39, 39)) * conversion_fac
 
-    stim1 = illusions.sbc.simultaneous_contrast_general(
+    stim1 = illusions.sbc.simultaneous_contrast_generalized(
         shape=im_size,
         ppd=ppd,
         target_size=target_size,
@@ -293,7 +293,7 @@ def simultaneous_brightness_contrast(height_px=100, ppd=PPD, height_deg=HEIGHT_D
         vback=1.,
         vtarget=0.5,
     )
-    stim2 = illusions.sbc.simultaneous_contrast_general(
+    stim2 = illusions.sbc.simultaneous_contrast_generalized(
         shape=im_size,
         ppd=ppd,
         target_size=target_size,
@@ -340,26 +340,19 @@ def white(height_px=80, ppd=PPD, height_deg=HEIGHT_DEG, pad=PAD):
 
 def benary(height_px=100, ppd=PPD, height_deg=HEIGHT_DEG):
     height_px, height_deg, ppd, conversion_fac = check_requirements(100, height_px, height_deg, ppd)
-    cross_size = np.array((30,)*4) * conversion_fac
-    target_size = np.array((11.1, 11.1)) * conversion_fac  # TODO: fix rounding problem for different ppds
-    target_posx = np.array((19, 70)) * conversion_fac
-    target_posy = np.array((19, 30)) * conversion_fac
+    target_size = np.array((11, 11)) * conversion_fac
 
-    stim = illusions.benary_cross.benarys_cross(
+    stim = illusions.benary_cross.benarys_cross_rectangles(
+        shape=81*conversion_fac,
         ppd=ppd,
-        cross_size=cross_size,
         cross_thickness=21*conversion_fac,
-        target_type=("r", "r"),
-        target_ori=(0.0, 0.0),
         target_size=target_size,
-        target_posx=target_posx,
-        target_posy=target_posy,
         vback=1.,
         vcross=0.,
         vtarget=0.5,
     )
 
-    padding = np.array((9., 10., 9., 10.)) * conversion_fac
+    padding = np.array((9, 10., 9, 10.)) * conversion_fac
     stim["img"] = pad_img(stim["img"], padding, ppd, val=1.)
     stim["mask"] = pad_img(stim["mask"], padding, ppd, val=0)
     stim["original_range"] = (1, 9)
@@ -367,6 +360,7 @@ def benary(height_px=100, ppd=PPD, height_deg=HEIGHT_DEG):
 
 
 def todorovic(height_px=100, ppd=PPD, height_deg=HEIGHT_DEG):
+    # Note: Compared to original, targets are misplaced by one pixel
     height_px, height_deg, ppd, conversion_fac = check_requirements(100, height_px, height_deg, ppd)
     shape = np.array((100, 100)) * conversion_fac
     target_size = np.array((41, 41)) * conversion_fac
@@ -374,7 +368,7 @@ def todorovic(height_px=100, ppd=PPD, height_deg=HEIGHT_DEG):
     covers_offset = np.array((20, 20)) * conversion_fac
 
     stim1 = illusions.todorovic.todorovic_rectangle(
-        shape=shape-1,
+        shape=shape,
         ppd=ppd,
         target_size=target_size,
         covers_size=covers_size,
@@ -384,7 +378,7 @@ def todorovic(height_px=100, ppd=PPD, height_deg=HEIGHT_DEG):
         vcovers=1.,
     )
     stim2 = illusions.todorovic.todorovic_rectangle(
-        shape=shape-1,
+        shape=shape,
         ppd=ppd,
         target_size=target_size,
         covers_size=covers_size,
@@ -393,12 +387,6 @@ def todorovic(height_px=100, ppd=PPD, height_deg=HEIGHT_DEG):
         vtarget=0.5,
         vcovers=0.,
     )
-
-    # In original stimulus, the targets are not placed perfectly centered
-    stim1['img'] = pad_img_to_shape(stim1['img'], shape, val=0.)
-    stim1['mask'] = pad_img_to_shape(stim1['mask'], shape, val=0)
-    stim2['img'] = pad_img_to_shape(stim2['img'], shape, val=1.)
-    stim2['mask'] = pad_img_to_shape(stim2['mask'], shape, val=0)
 
     # Increase target index of right stimulus half
     mask2 = stim2["mask"] + 1

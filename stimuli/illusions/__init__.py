@@ -1,4 +1,4 @@
-from .benary_cross import benarys_cross
+from .benary_cross import *
 from .bullseye import bullseye_stimulus
 from .checkerboards import *
 from .circular import *
