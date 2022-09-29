@@ -183,9 +183,7 @@ def pad_array(arr, amount, pad_value=0):
         amount = np.array(((amount, amount), (amount, amount)))
     assert amount.amin() >= 0
     if len(arr.shape) != 2:
-        raise NotImplementedError(
-            "pad_array currently only works for 2D arrays"
-        )
+        raise NotImplementedError("pad_array currently only works for 2D arrays")
     if amount.sum() == 0:
         return arr
 
@@ -286,9 +284,7 @@ def smooth_window(shape, plateau, min_val, max_val, width):
             plateau[1],
             (plateau[1][0], plateau[0][1]),
         )
-        distance[
-            plateau[0][0] : plateau[1][0], plateau[0][1] : plateau[1][1]
-        ] = 0
+        distance[plateau[0][0] : plateau[1][0], plateau[0][1] : plateau[1][1]] = 0
     else:
         plateau_points = plateau
     for i in range(len(plateau_points)):
@@ -437,14 +433,10 @@ def pad_img_to_shape(img, shape, val=0):
         raise ValueError("the image is bigger than the size after padding")
 
     padding_vertical_top = int((height_px - height_img_px) // 2)
-    padding_vertical_bottom = int(
-        height_px - height_img_px - padding_vertical_top
-    )
+    padding_vertical_bottom = int(height_px - height_img_px - padding_vertical_top)
 
     padding_horizontal_left = int((width_px - width_img_px) // 2)
-    padding_horizontal_right = int(
-        width_px - width_img_px - padding_horizontal_left
-    )
+    padding_horizontal_right = int(width_px - width_img_px - padding_horizontal_left)
 
     return np.pad(
         img,
@@ -518,8 +510,8 @@ def randomize_sign(array):
 
     """
     sign = np.random.rand(*array.shape) - 0.5
-    sign[sign <= 0.] = -1.
-    sign[sign > 0.] = 1.
+    sign[sign <= 0.0] = -1.0
+    sign[sign > 0.0] = 1.0
     array = array * sign
     return array
 
@@ -527,8 +519,8 @@ def randomize_sign(array):
 # Calculate peak frequency and boundaries for bandwidth
 def filter_statistics(f, gauss):
     nX = len(f)
-    f_test = f[int(nX/2.)::]
-    gauss_test = gauss[int(nX/2.)::, int(nX/2.)]
+    f_test = f[int(nX / 2.0) : :]
+    gauss_test = gauss[int(nX / 2.0) : :, int(nX / 2.0)]
 
     # Calculate peak freq of 1d gaussian filter:
     max_index = np.where(gauss_test == np.max(gauss_test))
@@ -536,10 +528,10 @@ def filter_statistics(f, gauss):
     fpeak = f_test[max_index]
 
     # Calculate lower and upper boundary for FWHM
-    idx_low = np.abs(gauss_test[0:max_index] - np.max(gauss_test) / 2.).argmin()
-    idx_high = np.abs(gauss_test[max_index::] - np.max(gauss_test) / 2.).argmin()
+    idx_low = np.abs(gauss_test[0:max_index] - np.max(gauss_test) / 2.0).argmin()
+    idx_high = np.abs(gauss_test[max_index::] - np.max(gauss_test) / 2.0).argmin()
     flow = f_test[idx_low]
-    fhigh = f_test[max_index+idx_high]
+    fhigh = f_test[max_index + idx_high]
     return fpeak, flow, fhigh
 
 
@@ -564,10 +556,14 @@ def bandpass_filter(fx, fy, fcenter, sigma):
 
     """
     # Calculate the distance of each 2d spatial frequency from requested center frequency
-    distance = np.abs(fcenter - np.sqrt(fx**2. + fy**2.))
+    distance = np.abs(fcenter - np.sqrt(fx**2.0 + fy**2.0))
 
     # Create bandpass filter:
-    gauss = 1. / (np.sqrt(2.*np.pi) * sigma) * np.exp(-(distance**2.) / (2.*sigma**2.))
+    gauss = (
+        1.0
+        / (np.sqrt(2.0 * np.pi) * sigma)
+        * np.exp(-(distance**2.0) / (2.0 * sigma**2.0))
+    )
     gauss = gauss / gauss.max()
     return gauss
 
@@ -578,12 +574,12 @@ def oriented_filter(fx, fy, sigma, orientation):
     theta = np.deg2rad(orientation)
 
     # determine a, b, c coefficients
-    a = (np.cos(theta)**2 / (2*sigma**2))
-    b = -(np.sin(2*theta) / (4*sigma**2))
-    c = (np.sin(theta)**2 / (2*sigma**2))
+    a = np.cos(theta) ** 2 / (2 * sigma**2)
+    b = -(np.sin(2 * theta) / (4 * sigma**2))
+    c = np.sin(theta) ** 2 / (2 * sigma**2)
 
     # create Gaussian
-    ofilter = np.exp(-(a*fx**2 + 2*b*fx*fy + c*fy**2))
+    ofilter = np.exp(-(a * fx**2 + 2 * b * fx * fy + c * fy**2))
     return ofilter
 
 
@@ -598,19 +594,23 @@ def apply_gaussian_env(stimulus, sigma):
 
     # Create a meshgrid:
     size = stimulus.shape[0]
-    xx, yy = np.mgrid[:size, :size] - size/2.
+    xx, yy = np.mgrid[:size, :size] - size / 2.0
 
     # Create a Gaussian envelope:
-    gauss = 1. / (np.sqrt(2.*np.pi) * sigma) * np.exp(-(xx**2. + yy**2.) / (2.*sigma**2.))
+    gauss = (
+        1.0
+        / (np.sqrt(2.0 * np.pi) * sigma)
+        * np.exp(-(xx**2.0 + yy**2.0) / (2.0 * sigma**2.0))
+    )
     gauss = gauss / gauss.max()
     stimulus = stimulus * gauss
     return stimulus
 
 
-def adapt_mc(stimulus, mc=1., mean_lum=0.5):
+def adapt_mc(stimulus, mc=1.0, mean_lum=0.5):
     # Adapt Michelson contrast
     stimulus = (stimulus - stimulus.min()) / (stimulus.max() - stimulus.min())
-    stimulus = (stimulus*mc*2.*mean_lum) + (mean_lum-mc*mean_lum)
+    stimulus = (stimulus * mc * 2.0 * mean_lum) + (mean_lum - mc * mean_lum)
     return stimulus
 
 
