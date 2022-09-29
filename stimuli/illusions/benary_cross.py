@@ -128,9 +128,9 @@ def benarys_cross_generalized(
 
 def benarys_cross_rectangles(
     shape=(21., 21.),
-    ppd=18,
-    cross_thickness=5.0,
-    target_size=(2.0, 4.0),
+    ppd=20,
+    cross_thickness=5.,
+    target_size=(3.0, 4.0),
     vback=1.0,
     vcross=0.0,
     vtarget=0.5,
@@ -171,9 +171,9 @@ def benarys_cross_rectangles(
     target_type = ("r",) * 2
     target_ori = (0., 0.)
     target_posx = ((shape[1]-cross_thickness)/2. - target_size[1], shape[1]-target_size[1])
-    target_posx = np.floor(np.array(target_posx) * ppd) / ppd
+    target_posx = np.round(np.array(target_posx) * ppd) / ppd
     target_posy = ((shape[0]-cross_thickness)/2. - target_size[0], (shape[0]-cross_thickness)/2.)
-    target_posy = np.floor(np.array(target_posy) * ppd) / ppd
+    target_posy = np.round(np.array(target_posy) * ppd) / ppd
     stim = benarys_cross_generalized(shape, ppd, cross_thickness, target_size, target_type,
                                      target_ori, target_posx, target_posy, vback, vcross, vtarget)
     return stim
@@ -181,15 +181,15 @@ def benarys_cross_rectangles(
 
 def benarys_cross_triangles(
     shape=(21., 21.),
-    ppd=18,
-    cross_thickness=5.0,
-    target_size=(2.0, 4.0),
+    ppd=20,
+    cross_thickness=5.2,
+    target_size=4.,
     vback=1.0,
     vcross=0.0,
     vtarget=0.5,
 ):
     """
-    Benary's Cross stimulus with two rectangular targets with default placement
+    Benary's Cross stimulus with two triangular targets with default placement
 
     Parameters
     ----------
@@ -199,8 +199,8 @@ def benarys_cross_triangles(
         pixels per degree (visual angle)
     cross_thickness : float
         width of the cross bars in degrees visual angle
-    target_size : (float, float)
-        size of all target(s) in degrees visual angle
+    target_size : float
+        size of adjacent and opposite of target triangle in degrees visual angle
     vback : float
         background value
     vcross : float
@@ -217,24 +217,27 @@ def benarys_cross_triangles(
         shape = (shape, shape)
     if isinstance(target_size, (float, int)):
         target_size = (target_size, target_size)
+    else:
+        raise ValueError("target_size should be a single float")
     if target_size[0] > cross_thickness:
         raise ValueError("Target size is larger than cross thickness")
 
     # Calculate parameters for classical Benarys cross with two targets
     target_type = ("t",) * 2
-    target_ori = (0., 0.)
-    target_posx = ((shape[1]-cross_thickness)/2. - target_size[1], shape[1]-target_size[1])
-    target_posx = np.floor(np.array(target_posx) * ppd) / ppd
+    target_ori = (90., 45.)
+    target_posx = ((shape[1]-cross_thickness)/2. - target_size[0], (shape[1]+cross_thickness)/2.)
+    target_posx = np.round(np.array(target_posx) * ppd) / ppd
     target_posy = ((shape[0]-cross_thickness)/2. - target_size[0], (shape[0]-cross_thickness)/2.)
-    target_posy = np.floor(np.array(target_posy) * ppd) / ppd
+    target_posy = np.round(np.array(target_posy) * ppd) / ppd
     stim = benarys_cross_generalized(shape, ppd, cross_thickness, target_size, target_type,
                                      target_ori, target_posx, target_posy, vback, vcross, vtarget)
     return stim
 
 
-def todorovic_benary(
+def todorovic_benary_generalized(
+    shape=(16., 16.),
     ppd=10.0,
-    L_size=(8.0, 8.0, 2.0, 14.0),
+    L_width=2.,
     target_size=(2.0, 2.0),
     target_type=("r", "r"),
     target_ori=(0.0, 0.0),
@@ -249,11 +252,12 @@ def todorovic_benary(
 
     Parameters
     ----------
+    shape : float or (float, float)
+        size of the stimulus in degrees of visual angle (height, width)
     ppd : int
         pixels per degree (visual angle)
-    L_size : (float, float, float, float)
-        size of the L's arms in degrees visual angle in form (height-top-L, height-bottom-L,
-        width-finger-Ls, width-basis-Ls)
+    L_width : float
+        width of L in degree visual angle
     target_size : (float, float)
         size of all target(s) in degrees visual angle
     target_type : tuple of strings
@@ -275,6 +279,8 @@ def todorovic_benary(
     -------
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
     """
+    if isinstance(shape, (float, int)):
+        shape = (shape, shape)
     if any(
         len(lst) != len(target_type)
         for lst in [target_ori, target_posx, target_posy]
@@ -283,6 +289,7 @@ def todorovic_benary(
             "target_type, target_ori, target_posx and target_posy need to be"
             " of same length."
         )
+    L_size = (shape[0]/2, shape[0]/2, L_width, shape[1]-L_width)
 
     (
         L_top_px,
@@ -361,7 +368,7 @@ if __name__ == "__main__":
         "Benary's cross - generalized": benarys_cross_generalized(),
         "Benary's cross - rectangles": benarys_cross_rectangles(),
         "Benary's cross - triangles": benarys_cross_triangles(),
-        "Todorovic' version of Benary's cross": todorovic_benary(),
+        "Todorovic' version of Benary's cross": todorovic_benary_generalized(),
     }
     ax = plot_stimuli(stims)
     plt.show()

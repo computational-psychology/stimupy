@@ -762,7 +762,7 @@ def corrugated_mondrian(ppd=PPD, pad=True):
     return stim
 
 
-def benary_cross(ppd=PPD, pad=True):
+def benary_cross2(ppd=PPD, pad=True):
     vback = 1.0
     vtarget = 0.5
     padding = (0.0, 0.0, 4.0, 4.0)
@@ -790,12 +790,40 @@ def benary_cross(ppd=PPD, pad=True):
     return stim
 
 
+def benary_cross(ppd=PPD, pad=True):
+    vback = 1.0
+    vtarget = 0.5
+    padding = (0.0, 0.0, 4.0, 4.0)
+    stim = illusions.benary_cross.benarys_cross_triangles(
+        shape=(13, 23),
+        ppd=PPD,
+        cross_thickness=4.0,
+        target_size=2.5,
+        vback=vback,
+        vcross=0.0,
+        vtarget=vtarget,
+    )
+    stim['img'] = np.fliplr(stim['img'])
+    stim['mask'] = np.fliplr(stim['mask'])
+    stim['mask'][stim['mask'] != 0] = np.abs(stim['mask'][stim['mask'] != 0] - 3)
+
+    if pad:
+        shape = degrees_to_pixels(VISEXTENT, ppd)
+        stim["img"] = pad_img(stim["img"], padding, ppd, val=vback)
+        stim["img"] = pad_img_to_shape(stim["img"], shape, vtarget)
+        stim["mask"] = pad_img(stim["mask"], padding, ppd, val=0)
+        stim["mask"] = pad_img_to_shape(stim["mask"], shape, 0)
+
+    return stim
+
+
 def todorovic_benary1_2(ppd=PPD, pad=True):
     vback = 1.0
     vtarget = 0.5
-    stim = illusions.benary_cross.todorovic_benary(
+    stim = illusions.benary_cross.todorovic_benary_generalized(
+        shape=(13., 31.),
         ppd=PPD,
-        L_size=(6.5, 6.5, 2.5, 28.5),
+        L_width=2.5,
         target_size=(2.5, 2.5),
         target_type=("t", "t"),
         target_ori=(0.0, 180.0),
@@ -817,9 +845,10 @@ def todorovic_benary1_2(ppd=PPD, pad=True):
 def todorovic_benary3_4(ppd=PPD, pad=True):
     vback = 1.0
     vtarget = 0.5
-    stim = illusions.benary_cross.todorovic_benary(
+    stim = illusions.benary_cross.todorovic_benary_generalized(
+        shape=(13., 31.),
         ppd=PPD,
-        L_size=(6.5, 6.5, 2.5, 28.5),
+        L_width=2.5,
         target_size=(2.5, 2.5),
         target_type=("t", "t"),
         target_ori=(45.0, 225.0),
@@ -841,9 +870,10 @@ def todorovic_benary3_4(ppd=PPD, pad=True):
 def todorovic_benary1_2_3_4(ppd=PPD, pad=True):
     vback = 1.0
     vtarget = 0.5
-    stim = illusions.benary_cross.todorovic_benary(
+    stim = illusions.benary_cross.todorovic_benary_generalized(
+        shape=(13., 31.),
         ppd=PPD,
-        L_size=(6.5, 6.5, 2.5, 28.5),
+        L_width=2.5,
         target_size=(2.5, 2.5),
         target_type=("t", "t", "t", "t"),
         target_ori=(0.0, 45.0, 225.0, 180.0),
