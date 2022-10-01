@@ -281,6 +281,8 @@ def todorovic_benary_generalized(
     """
     if isinstance(shape, (float, int)):
         shape = (shape, shape)
+    if isinstance(target_size, (float, int)):
+        target_size = (target_size, target_size)
     if any(
         len(lst) != len(target_type)
         for lst in [target_ori, target_posx, target_posy]
