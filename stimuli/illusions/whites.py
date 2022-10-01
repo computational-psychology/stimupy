@@ -110,8 +110,8 @@ def white_generalized(
         img[y_start:y_end, x_start:x_end] = vtarget
         mask[y_start:y_end, x_start:x_end] = i + 1
 
-    if period != "ignore":
-        new_shape = (img.shape[0]/ppd, img.shape[1]/ppd)
+    new_shape = (img.shape[0]/ppd, img.shape[1]/ppd)
+    if period != "ignore" and shape != new_shape:
         print("Warning: White shape changed from %s to %s" % (shape, new_shape))
 
     return {"img": img, "mask": mask}
