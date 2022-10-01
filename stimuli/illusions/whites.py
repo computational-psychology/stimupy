@@ -79,7 +79,8 @@ def white_generalized(
         target_sizes_px = (target_sizes_px,)*len(target_indices)
     if any(np.array(target_center_offsets)*ppd % 1 != 0):
         offsets_new = target_offsets_px / ppd
-        print("Warning: White target offsets rounded to %s because of ppd" % offsets_new)
+        print("Warning: White target offsets rounded from %s to %s because of ppd" %
+              (target_center_offsets, offsets_new))
     if len(target_sizes) != len(target_indices):
         raise ValueError("# of target indices != # of target sizes")
 
@@ -330,10 +331,12 @@ def white_anderson(
     if stripe_size_px/2. > stripe_center_offset_px:
         raise ValueError("Stripes overlap! Increase stripe offset or decrease stripe size.")
     if (target_size/2 - target_center_offset + stripe_size/2 - stripe_center_offset) > 0:
-        raise ValueError("Stripes overlap with targets! Increase stripe or target offsets or decrease stripe or target size")
+        raise ValueError("Stripes overlap with targets! Increase stripe or target offsets or"
+                         "decrease stripe or target size")
     if stripe_center_offset*ppd % 1 != 0:
         offsets_new = stripe_center_offset_px / ppd
-        print("Warning: Anderson stripe offsets rounded to %s because of ppd" % offsets_new)
+        print("Warning: Anderson stripe offsets rounded from %s to %s because of ppd" %
+              (stripe_center_offset, offsets_new))
 
     # Add stripe at top
     ystart = height // 2 - stripe_center_offset_px - stripe_size_px // 2
