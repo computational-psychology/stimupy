@@ -89,8 +89,16 @@ def circular_white(
             vdiscs_img.append(intensity_discs[1])
             vdics_mask.append(0)
 
-    img = disc_and_rings(ppd, radii, intensity_background, vdiscs_img, ssf)
-    mask = disc_and_rings(ppd, radii, 0, vdics_mask, ssf)
+    img = disc_and_rings(
+        radii=radii,
+        intensities=vdiscs_img,
+        background=intensity_background,
+        ppd=ppd,
+        supersampling=ssf,
+    )
+    mask = disc_and_rings(
+        radii=radii, intensities=vdics_mask, background=0, ppd=ppd, supersampling=ssf
+    )
 
     # Pad to desired size
     img = pad_to_visual_size(

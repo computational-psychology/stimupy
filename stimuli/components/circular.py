@@ -3,50 +3,64 @@ from stimuli.utils import degrees_to_pixels, resize_array
 
 
 def disc_and_rings(
-    ppd=20,
-    radii=(3, 6, 9),
-    vback=0.0,
-    vdiscs=(1.0, 0.0, 1.0),
-    ssf=5,
+    radii,
+    intensities,
+    shape=None,
+    visual_size=None,
+    ppd=None,
+    background=0.0,
+    supersampling=5,
 ):
     """
-    Create a central disc with rings
+    Draw a central solid disc with one or more solid rings (annuli)
 
     Parameters
     ----------
-    ppd : int
-        pixels per degree (visual angle)
-    radii : tuple of floats
-        radii of disc in degree visual angle
-    vback : float
-        value of background
-    vdiscs : tuple of floats
-        values of discs
-    ssf : int (optional)
-          the supersampling-factor used for anti-aliasing. Default is 5.
+    radii : Sequence[Number]
+        outer radii of rings (& disc) in degree visual angle
+    intensities : Sequence[Number]
+        intensity values of (disc &) rings
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] in pixels
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    background : float (optional)
+        value of background. Default is 0.0
+    supersampling : int (optional)
+        supersampling-factor used for anti-aliasing. Default is 5.
 
     Returns
     -------
-    A 2d-array with a disc
+    A 2d-array with disc and rings
     """
-    radii_px = degrees_to_pixels(radii, ppd) * ssf
 
-    # create stimulus at 5 times size to allow for supersampling antialiasing
-    img = np.ones([radii_px.max() * 2, radii_px.max() * 2]) * vback
+    # Convert radii to pixels
+    radii_px = degrees_to_pixels(radii, ppd)
 
-    # compute distance from center of array for every point, cap at 1.0
+    # Create stimulus at 5 times size to allow for supersampling antialiasing
+    if shape is None:
+        shape = [radii_px.max() * 2, radii_px.max() * 2]
+
+    # Supersample shape (in pixels), to allow for antialiasing
+    shape = (shape[0] * supersampling, shape[1] * supersampling)
+
+    # Create image array
+    img = np.ones(shape) * background
+
+    # Compute distance from center of array for every pixel, cap at 1.0
     x = np.linspace(-img.shape[1] / 2.0, img.shape[1] / 2.0, img.shape[1])
     y = np.linspace(-img.shape[0] / 2.0, img.shape[0] / 2.0, img.shape[0])
-    dist = np.sqrt(x[np.newaxis, :] ** 2 + y[:, np.newaxis] ** 2)
+    distances = np.sqrt(x[np.newaxis, :] ** 2 + y[:, np.newaxis] ** 2)
 
-    radii_px = radii_px[::-1]
-    vdiscs = vdiscs[::-1]
-    for radius, value in zip(radii_px, vdiscs):
-        img[dist < radius] = value
+    # Draw rings
+    for radius, intensity in zip(radii_px[::-1] * supersampling, intensities[::-1]):
+        img[distances < radius] = intensity
 
-    # downsample the stimulus by local averaging along rows and columns
-    sampler = resize_array(np.eye(img.shape[0] // ssf), (1, ssf))
-    img = np.dot(sampler, np.dot(img, sampler.T)) / ssf**2
+    # Downsample the stimulus by local averaging along rows and columns
+    sampler = resize_array(np.eye(img.shape[0] // supersampling), (1, supersampling))
+    img = np.dot(sampler, np.dot(img, sampler.T)) / supersampling**2
     return img
 
 
@@ -85,5 +99,7 @@ def disc(
     if len(vdisc) > 1:
         raise ValueError("Too many values for discs passed")
 
-    img = disc_and_rings(ppd, radius, vback, vdisc, ssf)
+    img = disc_and_rings(
+        radii=radius, intensities=vdisc, ppd=ppd, background=vback, supersampling=ssf
+    )
     return img
