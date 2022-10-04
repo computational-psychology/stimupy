@@ -120,7 +120,7 @@ def get_conversion_2d(original_shape, shape, visual_size, ppd):
     return c1
 
 
-def dungeon(shape=SHAPES["dungeon"], ppd=PPD, visual_size=None):
+def dungeon(shape=SHAPES["dungeon"], ppd=PPD, visual_size=np.array(SHAPES["dungeon"])/PPD):
     shape = resolve_input(shape)
     visual_size = resolve_input(visual_size)
     c = get_conversion_2d(SHAPES["dungeon"], shape, visual_size, ppd)
@@ -169,7 +169,7 @@ def dungeon(shape=SHAPES["dungeon"], ppd=PPD, visual_size=None):
     return {"img": img, "mask": mask, **params}
 
 
-def cube(shape=SHAPES["cube"], ppd=PPD, visual_size=None):
+def cube(shape=SHAPES["cube"], ppd=PPD, visual_size=np.array(SHAPES["cube"])/PPD):
     shape = resolve_input(shape)
     visual_size = resolve_input(visual_size)
     c = get_conversion_2d(SHAPES["cube"], shape, visual_size, ppd)
@@ -227,7 +227,7 @@ def cube(shape=SHAPES["cube"], ppd=PPD, visual_size=None):
     return {"img": img, "mask": mask, **params}
 
 
-def grating(shape=SHAPES["grating"], ppd=PPD, visual_size=None):
+def grating(shape=SHAPES["grating"], ppd=PPD, visual_size=np.array(SHAPES["grating"])/PPD):
     shape = resolve_input(shape)
     visual_size = resolve_input(visual_size)
     c = get_conversion_2d(SHAPES["grating"], shape, visual_size, ppd)
@@ -280,7 +280,7 @@ def grating(shape=SHAPES["grating"], ppd=PPD, visual_size=None):
     return {"img": img, "mask": mask, **params}
 
 
-def rings(shape=SHAPES["rings"], ppd=PPD, visual_size=None):
+def rings(shape=SHAPES["rings"], ppd=PPD, visual_size=np.array(SHAPES["rings"])/PPD):
     shape = resolve_input(shape)
     visual_size = resolve_input(visual_size)
     c = get_conversion_2d(SHAPES["rings"], shape, visual_size, ppd)
@@ -336,7 +336,7 @@ def rings(shape=SHAPES["rings"], ppd=PPD, visual_size=None):
     return {"img": img, "mask": mask, **params}
 
 
-def bullseye(shape=SHAPES["bullseye"], ppd=PPD, visual_size=None):
+def bullseye(shape=SHAPES["bullseye"], ppd=PPD, visual_size=np.array(SHAPES["bullseye"])/PPD):
     shape = resolve_input(shape)
     visual_size = resolve_input(visual_size)
     c = get_conversion_2d(SHAPES["bullseye"], shape, visual_size, ppd)
@@ -390,7 +390,7 @@ def bullseye(shape=SHAPES["bullseye"], ppd=PPD, visual_size=None):
 
 def simultaneous_brightness_contrast(shape=SHAPES["simultaneous_brightness_contrast"],
                                      ppd=PPD,
-                                     visual_size=None):
+                                     visual_size=np.array(SHAPES["simultaneous_brightness_contrast"])/PPD):
     shape = resolve_input(shape)
     visual_size = resolve_input(visual_size)
     c = get_conversion_2d(SHAPES["simultaneous_brightness_contrast"], shape, visual_size, ppd)
@@ -436,7 +436,7 @@ def simultaneous_brightness_contrast(shape=SHAPES["simultaneous_brightness_contr
     return {"img": img, "mask": mask, **params}
 
 
-def white(shape=SHAPES["white"], ppd=PPD, visual_size=None, pad=PAD):
+def white(shape=SHAPES["white"], ppd=PPD, visual_size=np.array(SHAPES["white"])/PPD, pad=PAD):
     shape = resolve_input(shape)
     visual_size = resolve_input(visual_size)
     c = get_conversion_2d(SHAPES["white"], shape, visual_size, ppd)
@@ -475,7 +475,7 @@ def white(shape=SHAPES["white"], ppd=PPD, visual_size=None, pad=PAD):
     return {**stim, **params}
 
 
-def benary(shape=SHAPES["benary"], ppd=PPD, visual_size=None):
+def benary(shape=SHAPES["benary"], ppd=PPD, visual_size=np.array(SHAPES["benary"])/PPD):
     shape = resolve_input(shape)
     visual_size = resolve_input(visual_size)
     c = get_conversion_2d(SHAPES["benary"], shape, visual_size, ppd)
@@ -512,7 +512,7 @@ def benary(shape=SHAPES["benary"], ppd=PPD, visual_size=None):
     return {**stim, **params}
 
 
-def todorovic(shape=SHAPES["todorovic"], ppd=PPD, visual_size=None):
+def todorovic(shape=SHAPES["todorovic"], ppd=PPD, visual_size=np.array(SHAPES["todorovic"])/PPD):
     # Note: Compared to original, targets are moved by one pixel
     shape = resolve_input(shape)
     visual_size = resolve_input(visual_size)
@@ -561,7 +561,9 @@ def todorovic(shape=SHAPES["todorovic"], ppd=PPD, visual_size=None):
 
 
 def checkerboard_contrast_contrast(shape=SHAPES["checkerboard_contrast_contrast"],
-                                   ppd=PPD, visual_size=None, pad=PAD):
+                                   ppd=PPD,
+                                   visual_size=np.array(SHAPES["checkerboard_contrast_contrast"])/PPD,
+                                   pad=PAD):
     shape = resolve_input(shape)
     visual_size = resolve_input(visual_size)
     c = get_conversion_2d(SHAPES["checkerboard_contrast_contrast"], shape, visual_size, ppd)
@@ -624,7 +626,10 @@ def checkerboard_contrast_contrast(shape=SHAPES["checkerboard_contrast_contrast"
     return {"img": img, "mask": mask, **params}
 
 
-def checkerboard(shape=SHAPES["checkerboard"], ppd=PPD, visual_size=None, pad=PAD):
+def checkerboard(shape=SHAPES["checkerboard"],
+                 ppd=PPD,
+                 visual_size=np.array(SHAPES["checkerboard"])/PPD,
+                 pad=PAD):
     shape = resolve_input(shape)
     visual_size = resolve_input(visual_size)
     c = get_conversion_2d(SHAPES["checkerboard"], shape, visual_size, ppd)
@@ -663,7 +668,9 @@ def checkerboard(shape=SHAPES["checkerboard"], ppd=PPD, visual_size=None, pad=PA
     return {**stim, **params}
 
 
-def checkerboard_extended(shape=SHAPES["checkerboard_extended"], ppd=PPD, visual_size=None,
+def checkerboard_extended(shape=SHAPES["checkerboard_extended"],
+                          ppd=PPD,
+                          visual_size=np.array(SHAPES["checkerboard_extended"])/PPD,
                           pad=PAD):
     shape = resolve_input(shape)
     visual_size = resolve_input(visual_size)
@@ -703,7 +710,10 @@ def checkerboard_extended(shape=SHAPES["checkerboard_extended"], ppd=PPD, visual
     return {**stim, **params}
 
 
-def white_anderson(shape=SHAPES["white_anderson"], ppd=PPD, visual_size=None, pad=PAD):
+def white_anderson(shape=SHAPES["white_anderson"],
+                   ppd=PPD,
+                   visual_size=np.array(SHAPES["white_anderson"])/PPD,
+                   pad=PAD):
     shape = resolve_input(shape)
     visual_size = resolve_input(visual_size)
     c = get_conversion_2d(SHAPES["white_anderson"], shape, visual_size, ppd)
@@ -747,7 +757,10 @@ def white_anderson(shape=SHAPES["white_anderson"], ppd=PPD, visual_size=None, pa
     return {**stim, **params}
 
 
-def white_howe(shape=SHAPES["white_howe"], ppd=PPD, visual_size=None, pad=PAD):
+def white_howe(shape=SHAPES["white_howe"],
+               ppd=PPD,
+               visual_size=np.array(SHAPES["white_howe"])/PPD,
+               pad=PAD):
     shape = resolve_input(shape)
     visual_size = resolve_input(visual_size)
     c = get_conversion_2d(SHAPES["white_howe"], shape, visual_size, ppd)
@@ -789,7 +802,10 @@ def white_howe(shape=SHAPES["white_howe"], ppd=PPD, visual_size=None, pad=PAD):
     return {**stim, **params}
 
 
-def white_yazdanbakhsh(shape=SHAPES["white_yazdanbakhsh"], ppd=PPD, visual_size=None, pad=PAD):
+def white_yazdanbakhsh(shape=SHAPES["white_yazdanbakhsh"],
+                       ppd=PPD,
+                       visual_size=np.array(SHAPES["white_yazdanbakhsh"])/PPD,
+                       pad=PAD):
     shape = resolve_input(shape)
     visual_size = resolve_input(visual_size)
     c = get_conversion_2d(SHAPES["white_yazdanbakhsh"], shape, visual_size, ppd)
