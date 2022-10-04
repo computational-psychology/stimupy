@@ -583,7 +583,7 @@ def white(ppd=PPD):
                   original_range=original_range,
                   intensity_range=(0., 1.),
                   )
-    return {"img": normed_img, "mask": mask, **params}
+    return {"img": normed_img, "mask": reduced_mask, **params}
 
 
 if __name__ == "__main__":
