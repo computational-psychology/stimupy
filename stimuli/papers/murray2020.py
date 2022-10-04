@@ -555,9 +555,9 @@ def white(ppd=PPD):
         - "original_range" containing the original stimulus intensities in cd/m**2
     """
     params = {
-        "ppd": PPD,
+        "ppd": ppd,
         "shape": (8.0, 8.0),
-        "grating_frequency": 4 / 8.0,
+        "grating_frequency": 4. / 8.,
         "target_indices_top": (1, 3, 5),
         "target_indices_bottom": (2, 4, 6),
         "target_center_offset": 2,
@@ -580,7 +580,6 @@ def white(ppd=PPD):
 
     params.update(visual_size=np.array(normed_img.shape)/ppd,
                   shape=normed_img.shape,
-                  ppd=ppd,
                   original_range=original_range,
                   intensity_range=(0., 1.),
                   )
