@@ -1,5 +1,5 @@
 import numpy as np
-from stimuli.components.checkerboard import checkerboard as board
+from stimuli.components import checkerboard as board
 from stimuli.utils import degrees_to_pixels, resolution
 
 
@@ -13,15 +13,8 @@ def mask_from_idx(checkerboard_stim, check_idc):
 
     mask = np.zeros(checkerboard_stim["shape"])
     for coords in check_idc:
-        if (
-            coords[0] < 0
-            or coords[0] > coords[0]
-            or coords[1] < 0
-            or coords[1] > board_shape[1]
-        ):
-            raise ValueError(
-                f"Cannot provide mask for check {coords} outside board {board_shape}"
-            )
+        if coords[0] < 0 or coords[0] > coords[0] or coords[1] < 0 or coords[1] > board_shape[1]:
+            raise ValueError(f"Cannot provide mask for check {coords} outside board {board_shape}")
         ypos = int(coords[0] * check_size_px.height)
         xpos = int(coords[1] * check_size_px.width)
         mask[

@@ -4,7 +4,7 @@ import numpy as np
 from stimuli.utils import resolution
 
 
-def resolve_checkerboard_params(
+def resolve_params(
     ppd=None,
     shape=None,
     visual_size=None,
@@ -148,11 +148,11 @@ def checkerboard(
 
     See also
     --------
-    stimuli.components.checkerboard.resolve_checkerboard_params :
+    stimuli.components.checkerboard.resolve_params :
         how the size & resolution parameters can be resolved
     """
 
-    params = resolve_checkerboard_params(
+    params = resolve_params(
         ppd=ppd,
         shape=shape,
         visual_size=visual_size,

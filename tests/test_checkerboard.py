@@ -1,5 +1,5 @@
 import pytest
-from stimuli.components.checkerboard import checkerboard, resolve_checkerboard_params
+from stimuli.components.checkerboard import checkerboard, resolve_params
 
 
 @pytest.mark.parametrize(
@@ -17,7 +17,7 @@ from stimuli.components.checkerboard import checkerboard, resolve_checkerboard_p
     ),
 )
 def test_valid_params(ppd, shape, visual_size, board_shape, check_visual_size):
-    resolve_checkerboard_params(
+    resolve_params(
         ppd=ppd,
         shape=shape,
         visual_size=visual_size,
@@ -37,7 +37,7 @@ def test_valid_params(ppd, shape, visual_size, board_shape, check_visual_size):
 )
 def test_too_many_unknowns(ppd, shape, visual_size, board_shape, check_visual_size):
     with pytest.raises(ValueError):
-        resolve_checkerboard_params(
+        resolve_params(
             ppd=ppd,
             shape=shape,
             visual_size=visual_size,
