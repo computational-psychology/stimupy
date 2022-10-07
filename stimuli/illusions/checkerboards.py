@@ -1,9 +1,31 @@
 import numpy as np
 from stimuli.components import checkerboard as board
-from stimuli.utils import degrees_to_pixels, resolution
+from stimuli.components import transparency
+from stimuli.utils import resolution
 
 
 def mask_from_idx(checkerboard_stim, check_idc):
+    """Create binary mask for specified check indidces
+
+    Parameters
+    ----------
+    checkerboard_stim : dict
+        stimulus dictionary of checkerboard,
+        needs to contain at least 'board_shape', 'check_visual_size' and 'ppd'
+    check_idc : Sequence[(Number, Number),...]
+        target indices (row, column of checkerboard) of checks to create mask for
+
+    Returns
+    -------
+    numpy.ndarray
+        mask, as binary 2D numpy.ndarray with 1 for all pixels beloning to
+        specified check(s), and 0 everywhere else
+
+    Raises
+    ------
+    ValueError
+        Check index is invalid given the board shape
+    """
     board_shape = checkerboard_stim["board_shape"]
 
     check_size = checkerboard_stim["check_visual_size"]
@@ -26,6 +48,21 @@ def mask_from_idx(checkerboard_stim, check_idc):
 
 
 def extend_target_idx(target_idx, offsets=[(-1, 0), (0, -1), (0, 0), (0, 1), (1, 0)]):
+    """Extend target indices, to not just the specified check(s) but also surrounding
+
+    Parameters
+    ----------
+    target_idx : (Number, Number)
+        target indices (row, column of checkerboard)
+    offsets : list, optional
+        relative indices of neighboring checks to include in target,
+        by default [(-1, 0), (0, -1), (0, 0), (0, 1), (1, 0)]
+
+    Returns
+    -------
+    List[Tuple(Number, Number),...]
+        List of all target indices
+    """
     extended_idc = []
     for offset in offsets:
         new_idx = (target_idx[0] + offset[0], target_idx[1] + offset[1])
@@ -34,6 +71,31 @@ def extend_target_idx(target_idx, offsets=[(-1, 0), (0, -1), (0, 0), (0, 1), (1,
 
 
 def add_targets(checkerboard_stim, targets, extend_targets=False, intensity_target=0.5):
+    """Add targets to a checkerboard stimulus
+
+    Parameters
+    ----------
+    checkerboard_stim : dict
+        stimulus dictionary of checkerboard,
+        needs to contain at least 'img' and 'board_shape'
+    targets : Sequence[(Number, Number),...]
+        target indices (row, column of checkerboard)
+    extend_targets : bool, optional
+        if true, extends the targets by 1 check in all 4 directions, by default False
+    intensity_target : float, optional
+        intensity value of the target checks, by default 0.5
+
+    Returns
+    -------
+    dict
+        Stimulus dictionary that was passed in, with an updated 'img',
+        and 'mask' : target region(s) mask, as 2D numpy.ndarray with integer values
+        indicating target region
+
+    See also
+    --------
+    stimuli.components.checkerboard
+    """
     mask = np.zeros(checkerboard_stim["shape"])
     for i, target in enumerate(targets):
         if extend_targets:
@@ -61,6 +123,59 @@ def checkerboard(
     intensity_high=1.0,
     intensity_target=0.5,
 ):
+    """Checkerboard assimilation effect
+
+    High-contrast checkerboard, with intermediate targets embedded in it.
+    Target brightness assimilates to direct surround, rather than contrast with it.
+
+    These kinds of checkerboard displays are described by De Valois & De Valois (1988),
+    and the brightness effect of it by Blakeslee & McCourt (2004).
+
+    Parameters
+    ----------
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] in pixels
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size of the total board [height, width] in degrees
+    board_shape : Sequence[Number, Number], Number, or None (default)
+        number of checks in [height, width] of checkerboard
+    check_visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size of a single check [height, width] in degrees
+    targets : Sequence[(Number, Number),...], optional
+        target indices (row, column of checkerboard), by default None
+    extend_targets : bool, optional
+        if true, extends the targets by 1 check in all 4 directions, by default False
+    intensity_low : float, optional
+        intensity value of the dark checks (top left corner), by default 0.0
+    intensity_high : float, optional
+        intensity value of the light checks, by default 1.0
+    intensity_target : float, optional
+        intensity value of the target checks, by default 0.5
+
+    Returns
+    -------
+    dict
+        Stimulus dictionary, with all the (resolved) params and:
+            'img' : stimulus image as 2D numpy.ndarray
+            'mask' : target region(s) mask,
+                     as 2D numpy.ndarray with integer values indicating target region
+
+    See also
+    --------
+    stimuli.components.checkerboard
+
+    References
+    ----------
+    Blakeslee, B., & McCourt, M. E. (2004). A unified theory of brightness contrast and
+        assimilation incorporating oriented multiscale spatial filtering and contrast
+        normalization. Vision Research, 44(21), 2483-2503. https://doi.org/10/fmcx5p
+    De Valois, R. L., & De Valois, K. K. (1988). Spatial Vision. Oxford University Press.
+
+    """
+
+    # Set up basic checkerboard
     stim = board(
         ppd=ppd,
         shape=shape,
@@ -71,6 +186,7 @@ def checkerboard(
         intensity_high=intensity_high,
     )
 
+    # Add targets
     if targets is not None:
         stim = add_targets(
             stim,
@@ -80,38 +196,6 @@ def checkerboard(
         )
 
     return stim
-
-
-# def contrast(
-#     ppd=30,
-#     board_shape=(8, 8),
-#     check_size=1.0,
-#     target_indices=((3, 2), (5, 5)),
-#     extend_targets=False,
-#     vcheck1=0.0,
-#     vcheck2=1.0,
-#     vtarget=0.5,
-# ):
-#     check_size_px = degrees_to_pixels(check_size, ppd)
-#     nchecks_height, nchecks_width = board_shape
-
-#     img = checkerboard(ppd, board_shape, check_size, vcheck1, vcheck2)
-#     mask = np.zeros(img.shape)
-
-#     for i, coords in enumerate(target_indices):
-#         ypos = int(coords[0] * check_size_px)
-#         xpos = int(coords[1] * check_size_px)
-#         img[ypos : ypos + check_size_px, xpos : xpos + check_size_px] = vtarget
-#         mask[ypos : ypos + check_size_px, xpos : xpos + check_size_px] = i + 1
-
-#     if extend_targets:
-#         for i, coords in enumerate(target_indices):
-#             for idx in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
-#                 ypos = int(coords[0] * check_size_px + idx[0] * check_size_px)
-#                 xpos = int(coords[1] * check_size_px + idx[1] * check_size_px)
-#                 img[ypos : ypos + check_size_px, xpos : xpos + check_size_px] = vtarget
-#                 mask[ypos : ypos + check_size_px, xpos : xpos + check_size_px] = i + 1
-#     return {"img": img, "mask": mask}
 
 
 def contrast_contrast(
@@ -126,33 +210,46 @@ def contrast_contrast(
     tau=0.5,
     alpha=0.2,
 ):
-    """
-    Contrast-contrast effect on checkerboard with square transparency layer.
+    """Contrast-contrast effect on checkerboard with square transparency layer
 
     Parameters
     ----------
-    ppd : int
-        pixels per degree (visual angle)
-    board shape : (int, int)
-        number of checks in y, x direction
-    check_size : float
-        size of a check in degrees visual angle
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] in pixels
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size of the total board [height, width] in degrees
+    board_shape : Sequence[Number, Number], Number, or None (default)
+        number of checks in [height, width] of checkerboard
+    check_visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size of a single check [height, width] in degrees
     targets_shape : (int, int)
-        number of checks with transparecny in y, x direction
-    vcheck1 : float
-        first check value
-    vcheck2 : float
-        other check value
-    tau : float
-        tau of transparency (i.e. value of transparent medium)
-    alpha : float
-        alpha of transparency (i.e. how transparant the medium is)
+        number of checks with transparency in y, x direction
+    intensity_low : float, optional
+        intensity value of the dark checks, by default 0.0
+    intensity_high : float, optional
+        intensity value of the light checks, by default 1.0
+    tau : Number
+        tau of transparency (i.e. value of transparent medium), default 0.5
+    alpha : Number
+        alpha of transparency (i.e. how transparant the medium is), default 0.2
 
     Returns
     -------
-    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    dict
+        Stimulus dictionary, with all  of the (resolved) params, and:
+            'img' : stimulus image as 2D numpy.ndarray
+            'mask' : target region(s) mask,
+                     as 2D numpy.ndarray with integer values indicating target region
+
+
+    References:
+    -----------
+    Chubb
     """
 
+    # Set up basic checkerboard
     stim = board(
         ppd=ppd,
         shape=shape,
@@ -164,8 +261,9 @@ def contrast_contrast(
     )
     img = stim["img"]
 
+    # Determine target locations
     check_size_px = resolution.shape_from_visual_size_ppd(
-        visual_size=check_visual_size, ppd=stim["ppd"]
+        visual_size=stim["check_visual_size"], ppd=stim["ppd"]
     )
     target_idx = np.zeros(img.shape, dtype=bool)
     tposy = (img.shape[0] - target_shape[0] * check_size_px.height) // 2
@@ -174,12 +272,21 @@ def contrast_contrast(
         tposy : tposy + target_shape[0] * check_size_px[0],
         tposx : tposx + target_shape[1] * check_size_px[1],
     ] = True
-    img[target_idx] = alpha * img[target_idx] + (1 - alpha) * tau
 
+    # Construct mask for target region
     mask = np.zeros(img.shape)
     mask[target_idx] = 1
 
-    return {"img": img, "mask": mask}
+    # Apply transparency to target locations
+    img = transparency(img, mask, alpha, tau)
+
+    # Update stim dict
+    stim["img"] = img
+    stim["mask"] = mask
+    stim["alpha"] = alpha
+    stim["tau"] = tau
+
+    return stim
 
 
 if __name__ == "__main__":

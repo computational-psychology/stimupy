@@ -136,8 +136,9 @@ def checkerboard(
 
     Returns
     -------
-    np.ndarray
-        image array (2D) containing exactly the checkerboard
+    dict
+        Stimulus dictionary, with all the (resolved) parameters and
+        'img' : stimulus image as 2D numpy.ndarray
 
     Raises
     ------
