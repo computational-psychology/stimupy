@@ -13,6 +13,7 @@ from stimuli.components.checkerboard import checkerboard, resolve_checkerboard_p
         ((None, None), (1024, 1024), (32, 32), (16, 16), (2, 2)),
         (None, (1024, 1024), (32, 32), (16, 16), (2, 2)),
         (None, (1024, 1024), (32, 32), (16, 16), None),
+        (None, (1024, 1024), None, (16, 16), (2, 2)),
     ),
 )
 def test_valid_params(ppd, shape, visual_size, board_shape, check_visual_size):
@@ -29,7 +30,9 @@ def test_valid_params(ppd, shape, visual_size, board_shape, check_visual_size):
     "ppd, shape, visual_size, board_shape, check_visual_size",
     (
         (None, None, (32, 32), (16, 16), (2, 2)),
-        (None, (1024, 1024), None, (16, 16), (2, 2)),
+        (None, None, (32, 32), (16, 16), None),
+        (None, (1024, 1024), (32, 32), None, None),
+        ((32, 32), None, (32, 32), None, None),
     ),
 )
 def test_too_many_unknowns(ppd, shape, visual_size, board_shape, check_visual_size):

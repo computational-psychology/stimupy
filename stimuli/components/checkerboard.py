@@ -11,104 +11,93 @@ def resolve_checkerboard_params(
     board_shape=None,
     check_visual_size=None,
 ):
+    """Resolves (if possible) the various size parameters of the checkerboard
+
+    Checkerboard component takes the regular resolution parameters(shape, ppd,
+    visual_size). In addition, there has to be an additional specification of the size
+    of the checkerboard. This can be done in two ways: either through a board_shape
+    (height and width in integer number of checks), and/or by specifying the size the
+    visual size (in degrees) of a single check.
+
+    The total shape (in pixels) and visual size (in degrees) has to match the
+    specification of the board shape (in checks) and check size (in degrees). Thus,
+    not all 5 parameters have to be specified, as long as the both the resolution
+    and the checkerboard size can be resolved.
+
+    Note: all checks in a single board have the same size and shape.
+
+
+    Parameters
+    ----------
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] in pixels
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size of the total board [height, width] in degrees
+    board_shape : Sequence[Number, Number], Number, or None (default)
+        number of checks in [height, width] of checkerboard
+    check_visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size of a single check [height, width] in degrees
+
+    Returns
+    -------
+    dict
+        dictionary with all five resolution & size parameters resolved.
+
+    Raises
+    ------
+    ResolutionError
+        if the total resolution (ppd, shape, visual_size) cannot be resolved
+    ResolutionError
+        if the board_shape and/or check_visual_size cannot be resolved
+    ValueError
+        if the (resolved) ppd does not allow for drawing (resolved) check_visual_size
+
+    See also:
+    ---------
+    stimuli.components.checkerboard.checkerboard :
+        to draw the actual checkerboard
+    """
 
     # Try to resolve resolution
     try:
-        shape, visual_size, ppd = resolution.resolve(
-            shape=shape, visual_size=visual_size, ppd=ppd
-        )
+        shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
     except ValueError:
         ppd = resolution.validate_ppd(ppd)
         shape = resolution.validate_shape(shape)
         visual_size = resolution.validate_visual_size(visual_size)
 
+    # Put intput check_visual_size and board_shape into canonical form
     check_visual_size = resolution.validate_visual_size(check_visual_size)
     board_shape = resolution.validate_shape(board_shape)
 
-    # Resolve board_shape
-    if board_shape.width is None:
-        # Board shape is not specified, try to figure it out
-        if check_visual_size.width is None:
-            raise ValueError("Need to specify either board_shape or check_visual_size")
-        elif visual_size.width is None:
-            raise ValueError(
-                "Cannot compute board_shape.width without check_visual_size.width or"
-                " visual_size.width"
-            )
-        else:
-            board_width = visual_size.width / check_visual_size.width
-    else:
-        board_width = board_shape.width
-    if int(board_width) % board_width:
-        warnings.warn(f"Rounding shape of board")
-    board_width = int(board_width)
-    if board_shape.height is None:
-        # Board shape is not specified, try to figure it out
-        if check_visual_size.height is None:
-            raise ValueError("Need to specify either board_shape or check_visual_size")
-        elif visual_size.height is None:
-            raise ValueError(
-                "Cannot compute board_shape.height without check_visual_size.height or"
-                " visual_size.height"
-            )
-        else:
-            board_height = visual_size.height / check_visual_size.height
-    else:
-        board_height = board_shape.height
-    if int(board_height) % board_height:
-        warnings.warn(f"Rounding shape of board")
-    board_height = int(board_height)
-    board_shape = resolution.Shape(height=board_height, width=board_width)
-    assert board_shape is not None and all(board_shape)
-
-    # Resolve visual_size
-    if visual_size.width is None:
-        if check_visual_size.width is not None:
-            visual_width = check_visual_size.width * board_shape.width
-        else:
-            raise ValueError("Need to specify either check_visual_size, or visual_size")
-    else:
-        visual_width = visual_size.width
-    if visual_size.height is None:
-        if check_visual_size.height is not None:
-            visual_height = check_visual_size.height * board_shape.height
-        else:
-            raise ValueError("Need to specify either check_visual_size, or visual_size")
-    else:
-        visual_height = visual_size.height
-    visual_size = resolution.Visual_size(visual_height, visual_width)
-    assert visual_size is not None and all(visual_size)
-
-    # Resolve check_visual_size
-    if check_visual_size.width is None:
-        if visual_size.width is not None:
-            check_width = visual_size.width / board_shape.width
-    else:
-        check_width = check_visual_size.width
-    if check_visual_size.height is None:
-        if visual_size.height is not None:
-            check_height = visual_size.height / board_shape.height
-    else:
-        check_height = check_visual_size.height
-    check_visual_size = resolution.Visual_size(height=check_height, width=check_width)
-
-    # Check that board shape * check size == visual size
-    # resolution.valid_resolution(shape=visual_size, visual_size=board_shape, ppd=check_visual_size)
+    # Try to resolve board dimensions
+    # The logic here is that inverting check_visual_size, which expresses
+    # degrees per check, gives "checks per degree", which functions analogous to ppd
+    # Thus we can resolve the board dimensions also as a "resolution",
+    # and then just invert the resolved "checks_per_degree" back to check_visual_size
+    checks_per_degree = (
+        1 / check_visual_size.height if check_visual_size.height is not None else None,
+        1 / check_visual_size.width if check_visual_size.width is not None else None,
+    )
+    board_shape, visual_size, checks_per_degree = resolution.resolve(
+        shape=board_shape,
+        visual_size=visual_size,
+        ppd=checks_per_degree,
+    )
+    check_visual_size = resolution.validate_visual_size(
+        (1 / checks_per_degree.vertical, 1 / checks_per_degree.horizontal)
+    )
 
     # Now resolve ppd
-    shape, visual_size, ppd = resolution.resolve(
-        shape=shape, visual_size=visual_size, ppd=ppd
-    )
-    if ppd is None or not all(ppd):
-        raise ValueError("Could not resolve ppd")
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
 
     # Is check_shape possible?
     if (check_visual_size.height * ppd.vertical) % 1 or (
         check_visual_size.width * ppd.horizontal
     ) % 1:
-        raise ValueError(
-            f"Cannot produce checks of {check_visual_size} with resolution of {ppd}"
-        )
+        raise ValueError(f"Cannot produce checks of {check_visual_size} with resolution of {ppd}")
 
     return {
         "shape": shape,
@@ -128,6 +117,41 @@ def checkerboard(
     intensity_low=0.0,
     intensity_high=1.0,
 ):
+    """Draws a checkerboard with given specifications
+
+    Parameters
+    ----------
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] in pixels
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size of the total board [height, width] in degrees
+    board_shape : Sequence[Number, Number], Number, or None (default)
+        number of checks in [height, width] of checkerboard
+    check_visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size of a single check [height, width] in degrees
+    intensity_low : float, optional
+        intensity value of the dark checks, by default 0.0
+    intensity_high : float, optional
+        intensity value of the light checks, by default 1.0
+
+    Returns
+    -------
+    np.ndarray
+        image array (2D) containing exactly the checkerboard
+
+    Raises
+    ------
+    ValueError
+        if checkerboard does not fit into specified/resolved shape
+
+    See also
+    --------
+    stimuli.components.checkerboard.resolve_checkerboard_params :
+        how the size & resolution parameters can be resolved
+    """
+
     params = resolve_checkerboard_params(
         ppd=ppd,
         shape=shape,
