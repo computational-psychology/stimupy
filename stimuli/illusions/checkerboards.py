@@ -11,7 +11,6 @@ def mask_from_idx(checkerboard_stim, check_idc):
     ----------
     checkerboard_stim : dict
         stimulus dictionary of checkerboard,
-        needs to contain at least 'board_shape', 'check_visual_size' and 'ppd'
     check_idc : Sequence[(Number, Number),...]
         target indices (row, column of checkerboard) of checks to create mask for
 
@@ -25,6 +24,10 @@ def mask_from_idx(checkerboard_stim, check_idc):
     ------
     ValueError
         Check index is invalid given the board shape
+
+    See also
+    --------
+    stimuli.components.checkerboard
     """
     board_shape = checkerboard_stim["board_shape"]
 
@@ -77,7 +80,7 @@ def add_targets(checkerboard_stim, targets, extend_targets=False, intensity_targ
     ----------
     checkerboard_stim : dict
         stimulus dictionary of checkerboard,
-        needs to contain at least 'img' and 'board_shape'
+        needs to contain at least "img" and "board_shape"
     targets : Sequence[(Number, Number),...]
         target indices (row, column of checkerboard)
     extend_targets : bool, optional
@@ -88,8 +91,8 @@ def add_targets(checkerboard_stim, targets, extend_targets=False, intensity_targ
     Returns
     -------
     dict
-        Stimulus dictionary that was passed in, with an updated 'img',
-        and 'mask' : target region(s) mask, as 2D numpy.ndarray with integer values
+        Stimulus dictionary that was passed in, with an updated "img",
+        and "mask" : target region(s) mask, as 2D numpy.ndarray with integer values
         indicating target region
 
     See also
@@ -212,6 +215,9 @@ def contrast_contrast(
 ):
     """Contrast-contrast effect on checkerboard with square transparency layer
 
+    Checkerboard version of the contrast-contrast illusion (Chubb, Sperling, Solomon,
+    1989), as used by Domijan (2015).
+
     Parameters
     ----------
     shape : Sequence[Number, Number], Number, or None (default)
@@ -239,14 +245,20 @@ def contrast_contrast(
     -------
     dict
         Stimulus dictionary, with all  of the (resolved) params, and:
-            'img' : stimulus image as 2D numpy.ndarray
-            'mask' : target region(s) mask,
+            "img" : stimulus image as 2D numpy.ndarray
+            "mask" : target region(s) mask,
                      as 2D numpy.ndarray with integer values indicating target region
 
 
     References:
     -----------
-    Chubb
+    Chubb, C., Sperling, G., & Solomon, J. A. (1989). Texture interactions determine
+        perceived contrast. Proc. Natl. Acad. Sci. USA, 5.
+        https://doi.org/10.1073/pnas.86.23.9631
+    Domijan, D. (2015). A Neurocomputational account of the role of contour facilitation
+        in brightness perception. Frontiers in Human Neuroscience, 9(February), 1-16.
+        https://doi.org/10/gh62x2
+
     """
 
     # Set up basic checkerboard

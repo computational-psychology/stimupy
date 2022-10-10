@@ -176,6 +176,7 @@ def checkerboard(
     # Collect stim + params
     stim = params
     stim["img"] = img
-    stim["board_shape"] = board_shape
+    stim["intensity_low"] = intensity_low
+    stim["intensity_high"] = intensity_high
 
     return stim
