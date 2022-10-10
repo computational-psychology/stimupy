@@ -8,11 +8,12 @@ def wedding_cake_stimulus(
     L_size=(10.0, 10.0, 2.0),
     L_repeats=(3.0, 3.0),
     target_height=4.0,
-    target_idx_v1=((-1, 0), (0, 0), (1, 0)),
-    target_idx_v2=None,
-    v1=0.0,
-    v2=1.0,
-    vtarget=0.5,
+    target_idx_intensity1=((-1, 0), (0, 0), (1, 0)),
+    target_idx_intensity2=None,
+    intensity_grating=(0., 1),
+    intensity1=0.,
+    intensity2=1.,
+    intensity_target=0.5,
 ):
     """
     White zigzag stimulus (also wedding cake stimulus)
@@ -29,17 +30,17 @@ def wedding_cake_stimulus(
         number of repeats of jags in y and x direction
     target_height : float
         height of targets in degree visual angle
-    target_idx_v1 : nested tuples
-        target indices with v1-value; as many tuples as there are targets each with (y, x) indices;
+    target_idx_intensity1 : nested tuples
+        target indices with intensity1-value; as many tuples as there are targets each with (y, x) indices;
         (0, 0) places a target in the center
-    target_idx_v2 : nested tuples
-        target indices with v2-value; as many tuples as there are targets each with (y, x) indices;
+    target_idx_intensity2 : nested tuples
+        target indices with intensity2-value; as many tuples as there are targets each with (y, x) indices;
         (0, 0) places a target in the center
-    v1 : float
-        first value for grating
-    v2 : float
-        second value for grating
-    vtarget : float
+    intensity1 : float
+        first intensity value for grating
+    intensity2 : float
+        second intensity value for grating
+    intensity_target : float
         value for target(s)
 
     Returns
@@ -53,11 +54,11 @@ def wedding_cake_stimulus(
     theight = degrees_to_pixels(target_height, ppd)
 
     mval2 = 2
-    if target_idx_v1 is None:
-        target_idx_v1 = ()
+    if target_idx_intensity1 is None:
+        target_idx_intensity1 = ()
         mval2 = 1
-    if target_idx_v2 is None:
-        target_idx_v2 = ()
+    if target_idx_intensity2 is None:
+        target_idx_intensity2 = ()
 
     if len(L_size) != 3:
         raise Exception("L_size needs to have a length of 3")
@@ -69,16 +70,16 @@ def wedding_cake_stimulus(
 
     # Create grid patch
     L_patch = np.zeros([Ly, Lx])
-    L_patch[0:Lw, 0:Lx] = v1 - v2
-    L_patch[0:Ly, Lx - Lw : :] = v1 - v2
-    L_patch[0:Lw, 0:Lw] = (v1 - v2) / 2.0
-    L_patch[Ly - Lw : :, Lx - Lw : :] = (v1 - v2) / 2.0
+    L_patch[0:Lw, 0:Lx] = intensity1 - intensity2
+    L_patch[0:Ly, Lx - Lw : :] = intensity1 - intensity2
+    L_patch[0:Lw, 0:Lw] = (intensity1 - intensity2) / 2.0
+    L_patch[Ly - Lw : :, Lx - Lw : :] = (intensity1 - intensity2) / 2.0
 
     # Create target and mask patch 1
     tpatch1 = np.zeros([Ly, Lx])
     tpatch1[
         int(Ly / 2 - theight / 2) : int(Ly / 2 + theight / 2), Lx - Lw : :
-    ] = (vtarget - v1)
+    ] = (intensity_target - intensity1)
     mpatch1 = np.zeros([Ly, Lx])
     mpatch1[
         int(Ly / 2 - theight / 2) : int(Ly / 2 + theight / 2), Lx - Lw : :
@@ -90,7 +91,7 @@ def wedding_cake_stimulus(
         int(Ly / 2 - theight / 2) : int(Ly / 2 + theight / 2),
         Lx - Lw - Ld : Lx - Lw,
     ] = (
-        vtarget - v2
+        intensity_target - intensity2
     )
     mpatch2 = np.zeros([Ly, Lx])
     mpatch2[
@@ -99,7 +100,7 @@ def wedding_cake_stimulus(
     ] = mval2
 
     # Create image slightly larger than needed
-    img = np.ones([int(Lywd * (nL[0] + 2)), int(Lxwd * (nL[1] + 2))]) * v2
+    img = np.ones([int(Lywd * (nL[0] + 2)), int(Lxwd * (nL[1] + 2))]) * intensity2
     height, width = img.shape
     mask = np.zeros([height, width])
 
@@ -126,7 +127,7 @@ def wedding_cake_stimulus(
                 # Add targets in lower left half
                 tr = i - int(np.minimum(len(idx_x), len(idx_y)) / 2)
                 tc = j
-                if (tr, tc) == target_idx_v1 or (tr, tc) in target_idx_v1:
+                if (tr, tc) == target_idx_intensity1 or (tr, tc) in target_idx_intensity1:
                     img[
                         idx_y[i] + ny : idx_y[i] + ny + Ly,
                         idx_x[i] + mx : idx_x[i] + mx + Lx,
@@ -135,7 +136,7 @@ def wedding_cake_stimulus(
                         idx_y[i] + ny : idx_y[i] + ny + Ly,
                         idx_x[i] + mx : idx_x[i] + mx + Lx,
                     ] += mpatch1
-                if (tr, tc) == target_idx_v2 or (tr, tc) in target_idx_v2:
+                if (tr, tc) == target_idx_intensity2 or (tr, tc) in target_idx_intensity2:
                     img[
                         idx_y[i] + ny + Lw : idx_y[i] + ny + Ly + Lw,
                         idx_x[i] + mx : idx_x[i] + mx + Lx,
@@ -154,7 +155,7 @@ def wedding_cake_stimulus(
                     ] += L_patch
 
                 # Add targets in upper right half
-                if (tr, -tc) == target_idx_v1 or (tr, -tc) in target_idx_v1:
+                if (tr, -tc) == target_idx_intensity1 or (tr, -tc) in target_idx_intensity1:
                     img[
                         idx_y[i] + my : idx_y[i] + my + Ly,
                         idx_x[i] + nx : idx_x[i] + nx + Lx,
@@ -163,7 +164,7 @@ def wedding_cake_stimulus(
                         idx_y[i] + my : idx_y[i] + my + Ly,
                         idx_x[i] + nx : idx_x[i] + nx + Lx,
                     ] += mpatch1
-                if (tr, -tc) == target_idx_v2 or (tr, -tc) in target_idx_v2:
+                if (tr, -tc) == target_idx_intensity2 or (tr, -tc) in target_idx_intensity2:
                     img[
                         idx_y[i] + my + Lw : idx_y[i] + my + Ly + Lw,
                         idx_x[i] + nx : idx_x[i] + nx + Lx,

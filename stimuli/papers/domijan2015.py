@@ -136,16 +136,16 @@ def dungeon(shape=SHAPES["dungeon"], ppd=PPD, visual_size=np.array(SHAPES["dunge
 
     stim1 = illusions.dungeon.dungeon_illusion(
         **params,
-        vback=v1,
-        vgrid=v3,
-        vtarget=v2,
+        intensity_background=v1,
+        intensity_grid=v3,
+        intensity_target=v2,
     )
 
     stim2 = illusions.dungeon.dungeon_illusion(
         **params,
-        vback=v3,
-        vgrid=v1,
-        vtarget=v2,
+        intensity_background=v3,
+        intensity_grid=v1,
+        intensity_target=v2,
     )
 
     padding = np.array((9., 11., 9., 11.)) * c
@@ -190,15 +190,15 @@ def cube(shape=SHAPES["cube"], ppd=PPD, visual_size=np.array(SHAPES["cube"])/PPD
 
     stim1 = illusions.cube.cube_illusion(
         **params,
-        vback=v1,
-        vgrid=v3,
-        vtarget=v2,
+        intensity_background=v1,
+        intensity_grid=v3,
+        intensity_target=v2,
     )
     stim2 = illusions.cube.cube_illusion(
         **params,
-        vback=v3,
-        vgrid=v1,
-        vtarget=v2,
+        intensity_background=v3,
+        intensity_grid=v1,
+        intensity_target=v2,
     )
 
     # Padding
@@ -243,15 +243,13 @@ def grating(shape=SHAPES["grating"], ppd=PPD, visual_size=np.array(SHAPES["grati
 
     stim1 = illusions.grating.grating_illusion(
         **params,
-        vbar1=v3,
-        vbar2=v1,
-        vtarget=v2,
+        intensity_bars=(v3, v1),
+        intensity_target=v2,
     )
     stim2 = illusions.grating.grating_illusion(
         **params,
-        vbar1=v1,
-        vbar2=v3,
-        vtarget=v2,
+        intensity_bars=(v1, v3),
+        intensity_target=v2,
     )
 
     # Padding
@@ -296,16 +294,14 @@ def rings(shape=SHAPES["rings"], ppd=PPD, visual_size=np.array(SHAPES["rings"])/
     stim1 = illusions.rings.ring_stimulus(
         **params,
         target_idx=4,
-        vring1=v1,
-        vring2=v3,
-        vtarget=v2,
+        intensity_rings=(v1, v3),
+        intensity_target=v2,
     )
     stim2 = illusions.rings.ring_stimulus(
         **params,
         target_idx=3,
-        vring1=v1,
-        vring2=v3,
-        vtarget=v2,
+        intensity_rings=(v1, v3),
+        intensity_target=v2,
     )
 
     # Padding
@@ -351,15 +347,13 @@ def bullseye(shape=SHAPES["bullseye"], ppd=PPD, visual_size=np.array(SHAPES["bul
 
     stim1 = illusions.bullseye.bullseye_stimulus(
         **params,
-        vring1=v1,
-        vring2=v3,
-        vtarget=v2,
+        intensity_rings=(v1, v3),
+        intensity_target=v2,
     )
     stim2 = illusions.bullseye.bullseye_stimulus(
         **params,
-        vring1=v3,
-        vring2=v1,
-        vtarget=v2,
+        intensity_rings=(v3, v1),
+        intensity_target=v2,
     )
 
     # Padding
@@ -400,7 +394,7 @@ def simultaneous_brightness_contrast(shape=SHAPES["simultaneous_brightness_contr
     ppd = ppd[0]
 
     params = {
-        "shape": visual_size[0],
+        "visual_size": visual_size[0],
         "ppd": ppd,
         "target_size": (21*c, 21*c),
         "target_pos": (39*c, 39*c),
@@ -408,13 +402,13 @@ def simultaneous_brightness_contrast(shape=SHAPES["simultaneous_brightness_contr
 
     stim1 = illusions.sbc.simultaneous_contrast_generalized(
         **params,
-        vback=v3,
-        vtarget=v2,
+        intensity_background=v3,
+        intensity_target=v2,
     )
     stim2 = illusions.sbc.simultaneous_contrast_generalized(
         **params,
-        vback=v1,
-        vtarget=v2,
+        intensity_background=v1,
+        intensity_target=v2,
     )
 
     # Increase target index of right stimulus half
@@ -444,7 +438,7 @@ def white(shape=SHAPES["white"], ppd=PPD, visual_size=np.array(SHAPES["white"])/
     ppd = ppd[0]
 
     params = {
-        "shape": visual_size,
+        "visual_size": visual_size,
         "ppd": ppd,
         "grating_frequency": 4 / visual_size[1],
         "target_indices": (2, 5),
@@ -454,8 +448,8 @@ def white(shape=SHAPES["white"], ppd=PPD, visual_size=np.array(SHAPES["white"])/
 
     stim = illusions.whites.white(
         **params,
-        vbars=(v1, v3),
-        vtarget=v2,
+        intensity_bars=(v1, v3),
+        intensity_target=v2,
     )
 
     if pad:
@@ -464,9 +458,15 @@ def white(shape=SHAPES["white"], ppd=PPD, visual_size=np.array(SHAPES["white"])/
         stim["mask"] = pad_img(stim["mask"], padding, ppd, val=0)
         params["padding"] = padding
 
-    params.update(original_shape=SHAPES["white"],
+    original_shape_np = np.array(SHAPES["white"])
+    original_visual_np = np.array(original_shape_np) / PPD
+    original_shape = original_shape_np + 20
+    original_visual_size = original_shape / PPD
+    params.update(original_shape=original_shape,
                   original_ppd=PPD,
-                  original_visual_size=np.array(SHAPES["white"])/PPD,
+                  original_visual_size=original_visual_size,
+                  original_shape_no_padding=original_shape_np,
+                  original_visual_size_no_padding=original_visual_np,
                   original_range=(1, 9),
                   intensity_range=(v1, v3),
                   visual_size=np.array(stim["img"].shape)/ppd,
@@ -483,7 +483,7 @@ def benary(shape=SHAPES["benary"], ppd=PPD, visual_size=np.array(SHAPES["benary"
     ppd = ppd[0]
 
     params = {
-        "shape": 81*c,
+        "visual_size": 81*c,
         "ppd": ppd,
         "cross_thickness": 21*c,
         "target_size": 11*c,
@@ -491,9 +491,9 @@ def benary(shape=SHAPES["benary"], ppd=PPD, visual_size=np.array(SHAPES["benary"
 
     stim = illusions.benary_cross.benarys_cross_rectangles(
         **params,
-        vback=v3,
-        vcross=v1,
-        vtarget=v2,
+        intensity_background=v3,
+        intensity_cross=v1,
+        intensity_target=v2,
     )
 
     # Padding
@@ -521,7 +521,7 @@ def todorovic(shape=SHAPES["todorovic"], ppd=PPD, visual_size=np.array(SHAPES["t
     ppd = ppd[0]
 
     params = {
-        "shape": visual_size[0],
+        "visual_size": visual_size[0],
         "ppd": ppd,
         "target_size": 41*c,
         "covers_size": 31*c,
@@ -530,15 +530,15 @@ def todorovic(shape=SHAPES["todorovic"], ppd=PPD, visual_size=np.array(SHAPES["t
 
     stim1 = illusions.todorovic.todorovic_rectangle(
         **params,
-        vback=0.,
-        vtarget=0.5,
-        vcovers=1.,
+        intensity_background=0.,
+        intensity_target=0.5,
+        intensity_covers=1.,
     )
     stim2 = illusions.todorovic.todorovic_rectangle(
         **params,
-        vback=1.,
-        vtarget=0.5,
-        vcovers=0.,
+        intensity_background=1.,
+        intensity_target=0.5,
+        intensity_covers=0.,
     )
 
     # Increase target index of right stimulus half
@@ -613,9 +613,15 @@ def checkerboard_contrast_contrast(shape=SHAPES["checkerboard_contrast_contrast"
     img = np.hstack([stim1['img'], img2])
     mask = np.hstack([stim1['mask'], mask2])
 
-    params.update(original_shape=SHAPES["checkerboard_contrast_contrast"],
+    original_shape_np = np.array(SHAPES["checkerboard_contrast_contrast"])
+    original_visual_np = np.array(original_shape_np) / PPD
+    original_shape = original_shape_np + 20
+    original_visual_size = original_shape / PPD
+    params.update(original_shape=original_shape,
                   original_ppd=PPD,
-                  original_visual_size=np.array(SHAPES["checkerboard_contrast_contrast"])/PPD,
+                  original_visual_size=original_visual_size,
+                  original_shape_no_padding=original_shape_np,
+                  original_visual_size_no_padding=original_visual_np,
                   original_range=(1, 9),
                   intensity_range=(v1, v3),
                   visual_size=np.array(img.shape)/ppd,
@@ -657,9 +663,15 @@ def checkerboard(shape=SHAPES["checkerboard"],
         stim["mask"] = pad_img(stim["mask"], padding, ppd=ppd, val=0)
         params["padding"] = padding
 
-    params.update(original_shape=SHAPES["checkerboard"],
+    original_shape_np = np.array(SHAPES["checkerboard"])
+    original_visual_np = np.array(original_shape_np) / PPD
+    original_shape = original_shape_np + 20
+    original_visual_size = original_shape / PPD
+    params.update(original_shape=original_shape,
                   original_ppd=PPD,
-                  original_visual_size=np.array(SHAPES["checkerboard"])/PPD,
+                  original_visual_size=original_visual_size,
+                  original_shape_no_padding=original_shape_np,
+                  original_visual_size_no_padding=original_visual_np,
                   original_range=(1, 9),
                   intensity_range=(v1, v3),
                   visual_size=np.array(stim["img"].shape)/ppd,
@@ -699,9 +711,15 @@ def checkerboard_extended(shape=SHAPES["checkerboard_extended"],
         stim["mask"] = pad_img(stim["mask"], padding, ppd=ppd, val=0)
         params["padding"] = padding
 
-    params.update(original_shape=SHAPES["checkerboard_extended"],
+    original_shape_np = np.array(SHAPES["checkerboard_extended"])
+    original_visual_np = np.array(original_shape_np) / PPD
+    original_shape = original_shape_np + 20
+    original_visual_size = original_shape / PPD
+    params.update(original_shape=original_shape,
                   original_ppd=PPD,
-                  original_visual_size=np.array(SHAPES["checkerboard_extended"])/PPD,
+                  original_visual_size=original_visual_size,
+                  original_shape_no_padding=original_shape_np,
+                  original_visual_size_no_padding=original_visual_np,
                   original_range=(1, 9),
                   intensity_range=(v1, v3),
                   visual_size=np.array(stim["img"].shape)/ppd,
@@ -721,7 +739,7 @@ def white_anderson(shape=SHAPES["white_anderson"],
     ppd = ppd[0]
 
     params = {
-        "shape": visual_size,
+        "visual_size": visual_size,
         "ppd": ppd,
         "grating_frequency": 5. / visual_size[1],
         "target_indices_top": (2,),
@@ -735,9 +753,9 @@ def white_anderson(shape=SHAPES["white_anderson"],
 
     stim = illusions.whites.white_anderson(
         **params,
-        vbars=(v3, v1),
-        vtarget=v2,
-        vstripes=(v1, v3),
+        intensity_bars=(v3, v1),
+        intensity_target=v2,
+        intensity_stripes=(v1, v3),
     )
 
     if pad:
@@ -746,9 +764,15 @@ def white_anderson(shape=SHAPES["white_anderson"],
         stim["mask"] = pad_img(stim["mask"], padding, ppd=ppd, val=0)
         params["padding"] = padding
 
-    params.update(original_shape=SHAPES["white_anderson"],
+    original_shape_np = np.array(SHAPES["white_anderson"])
+    original_visual_np = np.array(original_shape_np) / PPD
+    original_shape = original_shape_np + 20
+    original_visual_size = original_shape / PPD
+    params.update(original_shape=original_shape,
                   original_ppd=PPD,
-                  original_visual_size=np.array(SHAPES["white_anderson"])/PPD,
+                  original_visual_size=original_visual_size,
+                  original_shape_no_padding=original_shape_np,
+                  original_visual_size_no_padding=original_visual_np,
                   original_range=(1, 9),
                   intensity_range=(v1, v3),
                   visual_size=np.array(stim["img"].shape)/ppd,
@@ -768,7 +792,7 @@ def white_howe(shape=SHAPES["white_howe"],
     ppd = ppd[0]
 
     params = {
-        "shape": visual_size,
+        "visual_size": visual_size,
         "ppd": ppd,
         "grating_frequency": 5. / visual_size[1],
         "target_indices_top": (2,),
@@ -780,9 +804,9 @@ def white_howe(shape=SHAPES["white_howe"],
 
     stim = illusions.whites.white_howe(
         **params,
-        vbars=(v3, v1),
-        vtarget=v2,
-        vstripes=(v1, v3),
+        intensity_bars=(v3, v1),
+        intensity_target=v2,
+        intensity_stripes=(v1, v3),
     )
 
     if pad:
@@ -791,9 +815,15 @@ def white_howe(shape=SHAPES["white_howe"],
         stim["mask"] = pad_img(stim["mask"], padding, ppd=ppd, val=0)
         params["padding"] = padding
 
-    params.update(original_shape=SHAPES["white_howe"],
+    original_shape_np = np.array(SHAPES["white_howe"])
+    original_visual_np = np.array(original_shape_np) / PPD
+    original_shape = original_shape_np + 20
+    original_visual_size = original_shape / PPD
+    params.update(original_shape=original_shape,
                   original_ppd=PPD,
-                  original_visual_size=np.array(SHAPES["white_howe"])/PPD,
+                  original_visual_size=original_visual_size,
+                  original_shape_no_padding=original_shape_np,
+                  original_visual_size_no_padding=original_visual_np,
                   original_range=(1, 9),
                   intensity_range=(v1, v3),
                   visual_size=np.array(stim["img"].shape)/ppd,
@@ -813,7 +843,7 @@ def white_yazdanbakhsh(shape=SHAPES["white_yazdanbakhsh"],
     ppd = ppd[0]
 
     params = {
-        "shape": visual_size,
+        "visual_size": visual_size,
         "ppd": ppd,
         "grating_frequency": 4. / visual_size[1],
         "target_indices_top": (2,),
@@ -826,9 +856,9 @@ def white_yazdanbakhsh(shape=SHAPES["white_yazdanbakhsh"],
 
     stim = illusions.whites.white_yazdanbakhsh(
         **params,
-        vbars=(v1, v3),
-        vtarget=v2,
-        vstripes=(v3, v1),
+        intensity_bars=(v1, v3),
+        intensity_target=v2,
+        intensity_stripes=(v3, v1),
     )
 
     if pad:
@@ -837,9 +867,15 @@ def white_yazdanbakhsh(shape=SHAPES["white_yazdanbakhsh"],
         stim["mask"] = pad_img(stim["mask"], padding, ppd=ppd, val=0)
         params["padding"] = padding
 
-    params.update(original_shape=SHAPES["white_yazdanbakhsh"],
+    original_shape_np = np.array(SHAPES["white_yazdanbakhsh"])
+    original_visual_np = np.array(original_shape_np) / PPD
+    original_shape = original_shape_np + 20
+    original_visual_size = original_shape / PPD
+    params.update(original_shape=original_shape,
                   original_ppd=PPD,
-                  original_visual_size=np.array(SHAPES["white_yazdanbakhsh"])/PPD,
+                  original_visual_size=original_visual_size,
+                  original_shape_no_padding=original_shape_np,
+                  original_visual_size_no_padding=original_visual_np,
                   original_range=(1, 9),
                   intensity_range=(v1, v3),
                   visual_size=np.array(stim["img"].shape)/ppd,

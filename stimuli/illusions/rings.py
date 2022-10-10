@@ -7,9 +7,8 @@ def ring_stimulus(
     n_rings=8,
     target_idx=4,
     ring_width=0.5,
-    vring1=1.0,
-    vring2=0.0,
-    vtarget=0.5,
+    intensity_rings=(1., 0.),
+    intensity_target=0.5,
 ):
     """
     Ring Pattern stimulus
@@ -24,12 +23,10 @@ def ring_stimulus(
         indices of target ring(s)
     ring_width : float
         width per ring in degrees visual angle
-    vring1 : float
-        value for even rings
-    vring2 : float
-        value for odd rings
-    vtarget : float
-        value for target
+    intensity_rings : (float, float)
+        intensity values for even rings
+    intensity_target : float
+        intensity value for target
 
     Returns
     -------
@@ -44,16 +41,16 @@ def ring_stimulus(
     radii = np.maximum(np.abs(x[np.newaxis]), np.abs(x[:, np.newaxis]))
 
     # build array representing rings
-    arr = np.ones((n_rings * 2, n_rings * 2)) * vring1
+    arr = np.ones((n_rings * 2, n_rings * 2)) * intensity_rings[0]
     mask_arr = np.zeros((n_rings * 2, n_rings * 2))
-    arr[radii % 2 == 1] = vring2
+    arr[radii % 2 == 1] = intensity_rings[1]
     if isinstance(target_idx, int):
         target_idx = [target_idx]
     elif isinstance(target_idx, tuple):
         target_idx = list(target_idx)
     target_idx = list(np.array(target_idx))
     for idx in target_idx:
-        arr[radii == idx] = vtarget
+        arr[radii == idx] = intensity_target
         mask_arr[radii == idx] = 1
 
     # build image from array

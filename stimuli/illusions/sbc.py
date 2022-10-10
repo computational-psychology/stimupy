@@ -4,19 +4,19 @@ from stimuli.components import rectangle, disc
 
 
 def simultaneous_contrast_generalized(
-    shape=(2., 2.),
+    visual_size=(2., 2.),
     ppd=10,
     target_size=(2.0, 2.0),
     target_pos=(1.0, 1.0),
-    vback=0.0,
-    vtarget=0.5,
+    intensity_background=0.0,
+    intensity_target=0.5,
 ):
     """
     Simultaneous contrast stimulus with free target placement.
 
     Parameters
     ----------
-    shape : float or (float, float)
+    visual_size : float or (float, float)
         size of the stimulus in degrees of visual angle (height, width)
     ppd : int
         pixels per degree (visual angle)
@@ -24,68 +24,88 @@ def simultaneous_contrast_generalized(
         size of the target in degree visual angle (height, width)
     target_pos : float or (float, float)
         size of the target in degree visual angle (height, width)
-    vback : float
-        value for background
-    vtarget : float
-        value for target
+    intensity_background : float
+        intensity value for background
+    intensity_target : float
+        intensity value for target
 
     Returns
     -------
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
     """
 
-    if isinstance(shape, (float, int)):
-        shape = (shape, shape)
+    if isinstance(visual_size, (float, int)):
+        visual_size = (visual_size, visual_size)
     if isinstance(target_size, (float, int)):
         target_size = (target_size, target_size)
     if isinstance(target_pos, (float, int)):
         target_pos = (target_pos, target_pos)
 
-    if target_size[0] > shape[0] or target_size[1] > shape[1]:
+    if target_size[0] > visual_size[0] or target_size[1] > visual_size[1]:
         raise ValueError('Requested target is larger than stimulus')
-    if target_size[0]+target_pos[0] > shape[0] or target_size[1]+target_pos[1] > shape[1]:
+    if target_size[0]+target_pos[0] > visual_size[0] or target_size[1]+target_pos[1] > visual_size[1]:
         raise ValueError('Target does not fully fit into the stimulus')
 
-    img = rectangle(ppd, shape, target_size, target_pos, vback, vtarget)
-    mask = rectangle(ppd, shape, target_size, target_pos, 0, 1)
-    return {"img": img, "mask": mask}
+    img = rectangle(ppd,
+                    visual_size,
+                    target_size,
+                    target_pos,
+                    intensity_background,
+                    intensity_target)
+    mask = rectangle(ppd, visual_size, target_size, target_pos, 0, 1)
+
+    params = {"shape": img.shape,
+              "visual_size": np.array(img.shape)/ppd,
+              "ppd": ppd,
+              "target_size": target_size,
+              "target_pos": target_pos,
+              "intensity_background": intensity_background,
+              "intensity_target": intensity_target,
+              }
+
+    return {"img": img, "mask": mask, **params}
 
 
 def simultaneous_contrast(
-    shape=(2., 3.),
+    visual_size=(2., 3.),
     ppd=10,
     target_size=(1., 0.5),
-    vback=0.0,
-    vtarget=0.5,
+    intensity_background=0.0,
+    intensity_target=0.5,
 ):
     """
     Simultaneous contrast stimulus with central target.
 
     Parameters
     ----------
-    shape : float or (float, float)
+    visual_size : float or (float, float)
         size of the stimulus in degrees of visual angle (height, width)
     ppd : int
         pixels per degree (visual angle)
     target_size : float or (float, float)
         size of the target in degree visual angle (height, width)
-    vback : float
-        value for background
-    vtarget : float
-        value for target
+    intensity_background : float
+        intensity value for background
+    intensity_target : float
+        intensity value for target
 
     Returns
     -------
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
     """
-    if isinstance(shape, (float, int)):
-        shape = (shape, shape)
+    if isinstance(visual_size, (float, int)):
+        visual_size = (visual_size, visual_size)
     if isinstance(target_size, (float, int)):
         target_size = (target_size, target_size)
 
     # Rectangle should be placed centrally
-    target_pos = (shape[0]/2. - target_size[0]/2., shape[1]/2. - target_size[1]/2.)
-    stim = simultaneous_contrast_generalized(shape, ppd, target_size, target_pos, vback, vtarget)
+    t_pos = (visual_size[0]/2. - target_size[0]/2., visual_size[1]/2. - target_size[1]/2.)
+    stim = simultaneous_contrast_generalized(visual_size,
+                                             ppd,
+                                             target_size,
+                                             t_pos,
+                                             intensity_background,
+                                             intensity_target)
     return stim
 
 
@@ -95,9 +115,9 @@ def sbc_with_dots(
         dot_radius=3.,
         distance=1.,
         target_shape=(4, 3),
-        vback=0.,
-        vdots=1.,
-        vtarget=0.5,
+        intensity_background=0.,
+        intensity_dots=1.,
+        intensity_target=0.5,
         ):
     """
     Simultaneous contrast stimulus with dots
@@ -114,12 +134,12 @@ def sbc_with_dots(
         distance between dots in degree visual angle
     target_shape : int or (int, int)
         target shape defined as the number of dots that fit into the target
-    vback : float
-        value for background
-    vdots : float
-        value for dots
-    vtarget : float
-        value for target
+    intensity_background : float
+        intensity value for background
+    intensity_dots : float
+        intensity value for dots
+    intensity_target : float
+        intensity value for target
 
     Returns
     -------
@@ -132,7 +152,7 @@ def sbc_with_dots(
         target_shape = (target_shape, target_shape)
 
     padding = (distance/2., distance/2., distance/2., distance/2.)
-    patch = disc(ppd, dot_radius, vback=0., vdisc=vdots)
+    patch = disc(ppd, dot_radius, vback=0., vdisc=intensity_dots)
     patch = pad_img(patch, padding, ppd, 0.)
 
     img_height = pixels_to_degrees(n_dots[0] * patch.shape[0], ppd)
@@ -144,15 +164,28 @@ def sbc_with_dots(
     tposy = (img_height-rec_height) / 2.
     tposx = (img_width-rec_width) / 2.
     img = rectangle(ppd, im_size=(img_height, img_width), rect_size=(rec_height, rec_width),
-                    rect_pos=(tposy, tposx), vback=vback, vrect=vtarget)
+                    rect_pos=(tposy, tposx), vback=intensity_background, vrect=intensity_target)
     mask = np.zeros(img.shape)
-    mask[img == vtarget] = 1
+    mask[img == intensity_target] = 1
 
     patch = np.tile(patch, (n_dots[0], n_dots[1]))
     indices_dots = np.where((patch != 0))
-    img[indices_dots] = vdots
+    img[indices_dots] = intensity_dots
     mask[indices_dots] = 0
-    return {"img": img, "mask": mask}
+
+    params = {"shape": img.shape,
+              "visual_size": np.array(img.shape)/ppd,
+              "ppd": ppd,
+              "n_dots": n_dots,
+              "dot_radius": dot_radius,
+              "distance": distance,
+              "target_shape": target_shape,
+              "intensity_background": intensity_background,
+              "intensity_dots": intensity_dots,
+              "intensity_target": intensity_target,
+              }
+
+    return {"img": img, "mask": mask, **params}
 
 
 def dotted_sbc(
@@ -161,9 +194,9 @@ def dotted_sbc(
         dot_radius=3.,
         distance=1.,
         target_shape=(4, 3),
-        vback=0.,
-        vdots=1.,
-        vtarget=0.5,
+        intensity_background=0.,
+        intensity_dots=1.,
+        intensity_target=0.5,
         ):
     """
     Simultaneous contrast stimulus with dots
@@ -180,12 +213,12 @@ def dotted_sbc(
         distance between dots in degree visual angle
     target_shape : int or (int, int)
         target shape defined as the number of dots that fit into the target
-    vback : float
-        value for background
-    vdots : float
-        value for dots
-    vtarget : float
-        value for target
+    intensity_background : float
+        intensity value for background
+    intensity_dots : float
+        intensity value for dots
+    intensity_target : float
+        intensity value for target
 
     Returns
     -------
@@ -198,7 +231,7 @@ def dotted_sbc(
         target_shape = (target_shape, target_shape)
 
     padding = (distance/2., distance/2., distance/2., distance/2.)
-    patch = disc(ppd, dot_radius, vback=0., vdisc=vdots)
+    patch = disc(ppd, dot_radius, vback=0., vdisc=intensity_dots)
     patch = pad_img(patch, padding, ppd, 0.)
 
     img_height = pixels_to_degrees(n_dots[0] * patch.shape[0], ppd)
@@ -210,17 +243,30 @@ def dotted_sbc(
     tposy = (img_height-rec_height) / 2.
     tposx = (img_width-rec_width) / 2.
     sbc = rectangle(ppd, im_size=(img_height, img_width), rect_size=(rec_height, rec_width),
-                    rect_pos=(tposy, tposx), vback=vback, vrect=vtarget)
-    img = np.ones(sbc.shape) * vback
+                    rect_pos=(tposy, tposx), vback=intensity_background, vrect=intensity_target)
+    img = np.ones(sbc.shape) * intensity_background
 
     patch = np.tile(patch, (n_dots[0], n_dots[1]))
-    indices_dots_back = np.where((patch != 0) & (sbc == vback))
-    indices_dots_target = np.where((patch != 0) & (sbc == vtarget))
-    img[indices_dots_back] = vdots
-    img[indices_dots_target] = vtarget
+    indices_dots_back = np.where((patch != 0) & (sbc == intensity_background))
+    indices_dots_target = np.where((patch != 0) & (sbc == intensity_target))
+    img[indices_dots_back] = intensity_dots
+    img[indices_dots_target] = intensity_target
     mask = np.zeros(img.shape)
     mask[indices_dots_target] = 1
-    return {"img": img, "mask": mask}
+
+    params = {"shape": img.shape,
+              "visual_size": np.array(img.shape)/ppd,
+              "ppd": ppd,
+              "n_dots": n_dots,
+              "dot_radius": dot_radius,
+              "distance": distance,
+              "target_shape": target_shape,
+              "intensity_background": intensity_background,
+              "intensity_dots": intensity_dots,
+              "intensity_target": intensity_target,
+              }
+
+    return {"img": img, "mask": mask, **params}
 
 
 if __name__ == "__main__":

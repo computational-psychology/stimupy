@@ -4,11 +4,11 @@ from stimuli.utils import degrees_to_pixels
 
 
 def white_generalized(
-    shape=(10, 10),
+    visual_size=(10, 10),
     ppd=10,
     grating_frequency=0.8,
-    vbars=(1., 0.),
-    vtarget=0.5,
+    intensity_bars=(1., 0.),
+    intensity_target=0.5,
     target_indices=(2, 5, 8, 11, 14),
     target_center_offsets=(3, 1.5, 0, -1.5, -3),
     target_sizes=(0.1, 0.2, 0.4, 0.8, 1),
@@ -19,16 +19,16 @@ def white_generalized(
 
     Parameters
     ----------
-    shape : (float, float)
+    visual_size : (float, float)
         The shape of the stimulus in degrees of visual angle. (y,x)
     ppd : int
         pixels per degree (visual angle)
     grating_frequency : float
         the spatial frequency of the grating in cycles per degree
-    vbars : (float, float)
+    intensity_bars : (float, float)
         intensity values of bars
-    vtarget : float
-        intensity value of target
+    intensity_target : float
+        intensity value of targets
     target_indices : int or tuple of ints
         bar indices where target(s) will be placed. As many targets as ints.
     target_center_offsets : float or tuple of floats
@@ -48,32 +48,28 @@ def white_generalized(
     -------
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
     """
+    if isinstance(visual_size, (float, int)):
+        visual_size = (visual_size, visual_size)
+    if target_indices is None:
+        target_indices = ()
+    if isinstance(target_indices, (float, int)):
+        target_indices = (target_indices,)
 
-    height_px, width_px = degrees_to_pixels(shape, ppd)
+    height_px, width_px = degrees_to_pixels(visual_size, ppd)
     target_offsets_px = degrees_to_pixels(target_center_offsets, ppd)
     target_sizes_px = degrees_to_pixels(target_sizes, ppd)
     cycle_width_px = degrees_to_pixels(1. / (grating_frequency*2), ppd) * 2
     phase_width_px = cycle_width_px // 2
 
-    if isinstance(shape, (float, int)):
-        shape = (shape, shape)
-    if len(shape) != 2:
-        raise ValueError("shape needs to be a single float or a tuple of two floats")
-
-    if target_indices is None:
-        target_indices = ()
-    if isinstance(target_indices, (float, int)):
-        target_indices = (target_indices,)
     if isinstance(target_center_offsets, (float, int)):
         target_center_offsets = (target_center_offsets,) * len(target_indices)
         target_offsets_px = (target_offsets_px,) * len(target_indices)
-
-    if len(vbars) != 2:
-        raise ValueError("vbars needs to be a tuple of two floats")
+    if len(intensity_bars) != 2:
+        raise ValueError("intensity_bars needs to be a tuple of two floats")
     if len(target_indices) != len(target_offsets_px):
         raise ValueError("# of target indices != # of target offsets")
-    if not isinstance(vtarget, (float, int)):
-        raise ValueError("vtarget should be a single float / int")
+    if not isinstance(intensity_target, (float, int)):
+        raise ValueError("intensity_target should be a single float / int")
     if isinstance(target_sizes, (float, int)):
         target_sizes = (target_sizes,)*len(target_indices)
         target_sizes_px = (target_sizes_px,)*len(target_indices)
@@ -84,7 +80,7 @@ def white_generalized(
     if len(target_sizes) != len(target_indices):
         raise ValueError("# of target indices != # of target sizes")
 
-    img = square_wave(shape, ppd, grating_frequency, vbars, period=period)
+    img = square_wave(visual_size, ppd, grating_frequency, intensity_bars, period=period)
     mask = np.zeros((height_px, width_px))
     height, width = img.shape
 
@@ -104,26 +100,38 @@ def white_generalized(
             x_start = index * phase_width_px
         else:
             # Calculate the number of phases based on resolution of grating:
-            phases = int(2 * (int(shape[1] * ppd / phase_width_px) // 2))
+            phases = int(2 * (int(visual_size[1] * ppd / phase_width_px) // 2))
             x_start = int((phases + index) * phase_width_px)
         x_end = x_start + phase_width_px
 
-        img[y_start:y_end, x_start:x_end] = vtarget
+        img[y_start:y_end, x_start:x_end] = intensity_target
         mask[y_start:y_end, x_start:x_end] = i + 1
 
-    new_shape = (img.shape[0]/ppd, img.shape[1]/ppd)
-    if period != "ignore" and shape != new_shape:
-        print("Warning: White shape changed from %s to %s" % (shape, new_shape))
+    new_size = (img.shape[0]/ppd, img.shape[1]/ppd)
+    if period != "ignore" and visual_size != new_size:
+        print("Warning: White shape changed from %s to %s" % (visual_size, new_size))
 
-    return {"img": img, "mask": mask}
+    params = {"shape": img.shape,
+              "visual_size": np.array(img.shape)/ppd,
+              "ppd": ppd,
+              "grating_frequency": grating_frequency,
+              "intensity_bars": intensity_bars,
+              "intensity_target": intensity_target,
+              "target_indices": target_indices,
+              "target_center_offsets": target_center_offsets,
+              "target_sizes": target_sizes,
+              "period": period,
+              }
+
+    return {"img": img, "mask": mask, **params}
 
 
 def white(
-    shape=(4.2, 4.2),
+    visual_size=(4.2, 4.2),
     ppd=20,
     grating_frequency=1.2,
-    vbars=(1., 0.),
-    vtarget=0.5,
+    intensity_bars=(1., 0.),
+    intensity_target=0.5,
     target_indices=(1, 3, -2, -4),
     target_size=1.,
     period="ignore",
@@ -133,15 +141,15 @@ def white(
 
     Parameters
     ----------
-    shape : (float, float)
+    visual_size : (float, float)
         The shape of the stimulus in degrees of visual angle. (y,x)
     ppd : int
         pixels per degree (visual angle)
     grating_frequency : float
         the spatial frequency of the grating in cycles per degree
-    vbars : (float, float)
+    intensity_bars : (float, float)
         intensity values of bars
-    vtarget : float
+    intensity_target : float
         intensity value of target
     target_indices : int or tuple of ints
         bar indices where target(s) will be placed. As many targets as ints.
@@ -160,11 +168,11 @@ def white(
     """
 
     stim = white_generalized(
-        shape=shape,
+        visual_size=visual_size,
         ppd=ppd,
         grating_frequency=grating_frequency,
-        vbars=vbars,
-        vtarget=vtarget,
+        intensity_bars=intensity_bars,
+        intensity_target=intensity_target,
         target_indices=target_indices,
         target_center_offsets=0,
         target_sizes=target_size,
@@ -175,11 +183,11 @@ def white(
 
 # TODO: Add another function in which you specify n_targets instead of target_indices
 def white_two_rows(
-    shape=(4, 4),
+    visual_size=(4, 4),
     ppd=20,
     grating_frequency=2,
-    vbars=(1., 0.),
-    vtarget=0.5,
+    intensity_bars=(1., 0.),
+    intensity_target=0.5,
     target_indices_top=(1, 3, 5, 7, 9, 11),
     target_indices_bottom=(-2, -4, -6),
     target_center_offset=0.8,
@@ -192,15 +200,15 @@ def white_two_rows(
 
     Parameters
     ----------
-    shape : (float, float)
+    visual_size : (float, float)
         The shape of the stimulus in degrees of visual angle. (y,x)
     ppd : int
         pixels per degree (visual angle)
     grating_frequency : float
         the spatial frequency of the grating in cycles per degree
-    vbars : (float, float)
+    intensity_bars : (float, float)
         intensity values of bars
-    vtarget : float
+    intensity_target : float
         intensity value of target
     target_indices_top : int or tuple of ints
         bar indices where top target(s) will be placed. As many targets as ints.
@@ -234,11 +242,11 @@ def white_two_rows(
     target_center_offsets = offsets_top + offsets_bottom
 
     stim = white_generalized(
-        shape=shape,
+        visual_size=visual_size,
         ppd=ppd,
         grating_frequency=grating_frequency,
-        vbars=vbars,
-        vtarget=vtarget,
+        intensity_bars=intensity_bars,
+        intensity_target=intensity_target,
         target_indices=target_indices,
         target_center_offsets=target_center_offsets,
         target_sizes=target_size,
@@ -248,16 +256,16 @@ def white_two_rows(
 
 
 def white_anderson(
-    shape=(4, 4),
+    visual_size=(4, 4),
     ppd=20,
     grating_frequency=2,
-    vbars=(1., 0.),
-    vtarget=0.5,
+    intensity_bars=(1., 0.),
+    intensity_target=0.5,
     target_indices_top=5,
     target_indices_bottom=-6,
     target_center_offset=0.6,
     target_size=0.8,
-    vstripes=(1., 0.),
+    intensity_stripes=(1., 0.),
     stripe_center_offset=0.8,
     stripe_size=0.8,
     period="ignore",
@@ -267,15 +275,15 @@ def white_anderson(
 
     Parameters
     ----------
-    shape : (float, float)
+    visual_size : (float, float)
         The shape of the stimulus in degrees of visual angle. (y,x)
     ppd : int
         pixels per degree (visual angle)
     grating_frequency : float
         the spatial frequency of the grating in cycles per degree
-    vbars : (float, float)
+    intensity_bars : (float, float)
         intensity values of bars
-    vtarget : float
+    intensity_target : float
         intensity value of target
     target_indices_top : int or tuple of ints
         bar indices where top target(s) will be placed. As many targets as ints.
@@ -285,7 +293,7 @@ def white_anderson(
         offset from target centers to image center in degree visual angle.
     target_size : float
         target size (i.e. height / length) in degrees visual angle
-    vstripes : (float, float)
+    intensity_stripes : (float, float)
         intensity values of horizontal stripes
     stripe_center_offset : float
         offset from stripe centers to image center in degree visual angle.
@@ -304,11 +312,11 @@ def white_anderson(
     """
 
     stim = white_two_rows(
-        shape=shape,
+        visual_size=visual_size,
         ppd=ppd,
         grating_frequency=grating_frequency,
-        vbars=vbars,
-        vtarget=vtarget,
+        intensity_bars=intensity_bars,
+        intensity_target=intensity_target,
         target_indices_top=target_indices_top,
         target_indices_bottom=target_indices_bottom,
         target_center_offset=target_center_offset,
@@ -340,32 +348,45 @@ def white_anderson(
 
     # Add stripe at top
     ystart = height // 2 - stripe_center_offset_px - stripe_size_px // 2
-    img[ystart:ystart+stripe_size_px, 0:phase_width_px*np.min(ttop)] = vstripes[0]
-    img[ystart:ystart+stripe_size_px, phase_width_px*(np.max(ttop)+1)::] = vstripes[0]
+    img[ystart:ystart+stripe_size_px, 0:phase_width_px*np.min(ttop)] = intensity_stripes[0]
+    img[ystart:ystart+stripe_size_px, phase_width_px*(np.max(ttop)+1)::] = intensity_stripes[0]
     if (ystart < 0) or (ystart+stripe_size_px > height):
         raise ValueError("Anderson stripes do not fully fit into stimulus")
 
     # Add stripe at bottom
     ystart = height // 2 + stripe_center_offset_px - stripe_size_px // 2
-    img[ystart:ystart+stripe_size_px, 0:phase_width_px*np.min(tbot)] = vstripes[1]
-    img[ystart:ystart+stripe_size_px, phase_width_px*(np.max(tbot)+1)::] = vstripes[1]
+    img[ystart:ystart+stripe_size_px, 0:phase_width_px*np.min(tbot)] = intensity_stripes[1]
+    img[ystart:ystart+stripe_size_px, phase_width_px*(np.max(tbot)+1)::] = intensity_stripes[1]
     if (ystart < 0) or (ystart+stripe_size_px > height):
         raise ValueError("Anderson stripes do not fully fit into stimulus")
 
-    return {"img": img, "mask": mask}
+    params = {"shape": img.shape,
+              "visual_size": np.array(img.shape)/ppd,
+              "ppd": ppd,
+              "grating_frequency": grating_frequency,
+              "intensity_bars": intensity_bars,
+              "intensity_target": intensity_target,
+              "target_indices_top": target_indices_top,
+              "target_indices_bottom": target_indices_bottom,
+              "target_center_offset": target_center_offset,
+              "target_size": target_size,
+              "period": period,
+              }
+
+    return {"img": img, "mask": mask, **params}
 
 
 def white_howe(
-    shape=(4, 4),
+    visual_size=(4, 4),
     ppd=20,
     grating_frequency=2,
-    vbars=(1., 0.),
-    vtarget=0.5,
+    intensity_bars=(1., 0.),
+    intensity_target=0.5,
     target_indices_top=5,
     target_indices_bottom=-6,
     target_center_offset=0.3,
     target_size=0.5,
-    vstripes=(1., 0.),
+    intensity_stripes=(1., 0.),
     period="ignore",
 ):
     """
@@ -373,15 +394,15 @@ def white_howe(
 
     Parameters
     ----------
-    shape : (float, float)
+    visual_size : (float, float)
         The shape of the stimulus in degrees of visual angle. (y,x)
     ppd : int
         pixels per degree (visual angle)
     grating_frequency : float
         the spatial frequency of the grating in cycles per degree
-    vbars : (float, float)
+    intensity_bars : (float, float)
         intensity values of bars
-    vtarget : float
+    intensity_target : float
         intensity value of target
     target_indices_top : int or tuple of ints
         bar indices where top target(s) will be placed. As many targets as ints.
@@ -391,7 +412,7 @@ def white_howe(
         offset from target centers to image center in degree visual angle.
     target_size : float
         target size (i.e. height / length) in degrees visual angle
-    vstripes : (float, float)
+    intensity_stripes : (float, float)
         intensity values of horizontal stripes
     period : string in ['ignore', 'full', 'half']
         specifies if the period of the wave is considered for stimulus dimensions.
@@ -405,16 +426,16 @@ def white_howe(
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
     """
     return white_anderson(
-        shape=shape,
+        visual_size=visual_size,
         ppd=ppd,
         grating_frequency=grating_frequency,
-        vbars=vbars,
-        vtarget=vtarget,
+        intensity_bars=intensity_bars,
+        intensity_target=intensity_target,
         target_indices_top=target_indices_top,
         target_indices_bottom=target_indices_bottom,
         target_center_offset=target_center_offset,
         target_size=target_size,
-        vstripes=vstripes,
+        intensity_stripes=intensity_stripes,
         stripe_center_offset=target_center_offset,
         stripe_size=target_size,
         period=period,
@@ -422,16 +443,16 @@ def white_howe(
 
 
 def white_yazdanbakhsh(
-    shape=(4, 4),
+    visual_size=(4, 4),
     ppd=20,
     grating_frequency=2,
-    vbars=(1., 0.),
-    vtarget=0.5,
+    intensity_bars=(1., 0.),
+    intensity_target=0.5,
     target_indices_top=5,
     target_indices_bottom=-6,
     target_center_offset=0.6,
     target_size=1.,
-    vstripes=(1., 0.),
+    intensity_stripes=(1., 0.),
     gap_size=0.2,
     period="ignore",
 ):
@@ -440,15 +461,15 @@ def white_yazdanbakhsh(
 
     Parameters
     ----------
-    shape : (float, float)
+    visual_size : (float, float)
         The shape of the stimulus in degrees of visual angle. (y,x)
     ppd : int
         pixels per degree (visual angle)
     grating_frequency : float
         the spatial frequency of the grating in cycles per degree
-    vbars : (float, float)
+    intensity_bars : (float, float)
         intensity values of bars
-    vtarget : float
+    intensity_target : float
         intensity value of target
     target_indices_top : int or tuple of ints
         bar indices where top target(s) will be placed. As many targets as ints.
@@ -458,7 +479,7 @@ def white_yazdanbakhsh(
         offset from target centers to image center in degree visual angle.
     target_size : float
         target size (i.e. height / length) in degrees visual angle
-    vstripes : (float, float)
+    intensity_stripes : (float, float)
         intensity values of horizontal stripes
     stripe_size = float
         stripe size (i.e. height / length) in degrees visual angle
@@ -475,11 +496,11 @@ def white_yazdanbakhsh(
     """
 
     stim = white_two_rows(
-        shape=shape,
+        visual_size=visual_size,
         ppd=ppd,
         grating_frequency=grating_frequency,
-        vbars=vbars,
-        vtarget=vtarget,
+        intensity_bars=intensity_bars,
+        intensity_target=intensity_target,
         target_indices_top=target_indices_top,
         target_indices_bottom=target_indices_bottom,
         target_center_offset=target_center_offset,
@@ -512,17 +533,30 @@ def white_yazdanbakhsh(
     ystart = height // 2 - target_offset_px - gap_size_px - tsize_px // 2
     ystart2 = height // 2 - target_offset_px + tsize_px // 2
     for t in ttop:
-        img[ystart:ystart+gap_size_px, t*phase_width_px:(t+1)*phase_width_px] = vstripes[0]
-        img[ystart2:ystart2+gap_size_px, t*phase_width_px:(t+1)*phase_width_px] = vstripes[0]
+        img[ystart:ystart+gap_size_px, t*phase_width_px:(t+1)*phase_width_px] = intensity_stripes[0]
+        img[ystart2:ystart2+gap_size_px, t*phase_width_px:(t+1)*phase_width_px] = intensity_stripes[0]
 
     # Add stripes at bottom
     ystart = height // 2 + target_offset_px - tsize_px // 2 - gap_size_px
     ystart2 = height // 2 + target_offset_px + tsize_px // 2
     for t in tbot:
-        img[ystart:ystart+gap_size_px, t*phase_width_px:(t+1)*phase_width_px] = vstripes[1]
-        img[ystart2:ystart2+gap_size_px, t*phase_width_px:(t+1)*phase_width_px] = vstripes[1]
+        img[ystart:ystart+gap_size_px, t*phase_width_px:(t+1)*phase_width_px] = intensity_stripes[1]
+        img[ystart2:ystart2+gap_size_px, t*phase_width_px:(t+1)*phase_width_px] = intensity_stripes[1]
 
-    return {"img": img, "mask": mask}
+    params = {"shape": img.shape,
+              "visual_size": np.array(img.shape)/ppd,
+              "ppd": ppd,
+              "grating_frequency": grating_frequency,
+              "intensity_bars": intensity_bars,
+              "intensity_target": intensity_target,
+              "target_indices_top": target_indices_top,
+              "target_indices_bottom": target_indices_bottom,
+              "target_center_offset": target_center_offset,
+              "target_size": target_size,
+              "period": period,
+              }
+
+    return {"img": img, "mask": mask, **params}
 
 
 if __name__ == "__main__":

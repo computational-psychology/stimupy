@@ -5,9 +5,8 @@ def bullseye_stimulus(
     ppd=10,
     n_rings=8,
     ring_width=0.5,
-    vring1=1.0,
-    vring2=0.0,
-    vtarget=0.5,
+    intensity_rings=(1., 0.),
+    intensity_target=0.5,
 ):
     """
     Bullseye Illusion.
@@ -20,12 +19,10 @@ def bullseye_stimulus(
         the number of rings
     ring_width : float
         width per ring in degrees visual angle
-    vring1 : float
-        value for even rings
-    vring2 : float
-        value for odd rings
-    vtarget : float
-        value for target
+    intensity_rings : (float, float)
+        intensity values for even rings
+    intensity_target : float
+        intensity value for target
 
     Returns
     -------
@@ -36,12 +33,11 @@ def bullseye_stimulus(
         n_rings=n_rings,
         target_idx=0,
         ring_width=ring_width,
-        vring1=vring1,
-        vring2=vring2,
-        vtarget=vtarget,
+        intensity_rings=intensity_rings,
+        intensity_target=intensity_target,
     )
 
-    return {"img": stim["img"], "mask": stim["mask"]}
+    return stim
 
 
 if __name__ == "__main__":

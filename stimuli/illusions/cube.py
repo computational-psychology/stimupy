@@ -12,9 +12,9 @@ def cube_illusion(
     corner_cell_height=1.8,
     cell_spacing=0.5,
     occlusion_overlap=(0.7, 0.7, 0.7, 0.7),
-    vback=0.0,
-    vgrid=1.0,
-    vtarget=0.5,
+    intensity_background=0.0,
+    intensity_grid=1.0,
+    intensity_target=0.5,
 ):
 
     """
@@ -41,12 +41,12 @@ def cube_illusion(
     occlusion_overlap : (float, float, float, float)
         4-valued tuple specifying how much the big central square overlaps the cells on
         (top, bottom, left, right) in degrees visual angle
-    vback : float
-        value for background
-    vgrid : float
-        value for grid cells
-    vtarget : float
-        value for target
+    intensity_background : float
+        intensity value for background
+    intensity_grid : float
+        intensity value for grid cells
+    intensity_target : float
+        intensity value for target
 
     Returns
     -------
@@ -60,16 +60,16 @@ def cube_illusion(
     ), degrees_to_pixels(corner_cell_height, ppd)
     cell_spacing_px = degrees_to_pixels(cell_spacing, ppd)
     # array representing grid cells
-    arr = np.ones((n_cells, n_cells)) * vgrid
+    arr = np.ones((n_cells, n_cells)) * intensity_grid
 
     # add target pattern (floor and ceil leads to asymmetry in case of odd target size)
     target_offset = (n_cells - target_length) / 2
     offs_c = int(np.ceil(target_offset))
     offs_f = int(np.floor(target_offset))
-    arr[0, offs_c : offs_c + target_length] = vtarget
-    arr[-1, offs_f : offs_f + target_length] = vtarget
-    arr[offs_f : offs_f + target_length, 0] = vtarget
-    arr[offs_c : offs_c + target_length, -1] = vtarget
+    arr[0, offs_c : offs_c + target_length] = intensity_target
+    arr[-1, offs_f : offs_f + target_length] = intensity_target
+    arr[offs_f : offs_f + target_length, 0] = intensity_target
+    arr[offs_c : offs_c + target_length, -1] = intensity_target
 
     # final image array
     width_px = (
@@ -83,12 +83,12 @@ def cube_illusion(
         + (n_cells - 1) * cell_spacing_px
     )
 
-    img = np.ones((height_px, width_px)) * vback
+    img = np.ones((height_px, width_px)) * intensity_background
     mask = np.zeros((height_px, width_px))
     mask_id = 0
 
     for i, val in np.ndenumerate(arr):
-        target_cell = val == vtarget
+        target_cell = val == intensity_target
 
         if target_cell:
             mask_id = 1
@@ -163,7 +163,7 @@ def cube_illusion(
     occ_y_top = corner_cell_height_px - occlusion_top
     occ_y_bottom = height_px - corner_cell_height_px + occlusion_bottom
 
-    img[occ_y_top:occ_y_bottom, occ_x_left:occ_x_right] = vback
+    img[occ_y_top:occ_y_bottom, occ_x_left:occ_x_right] = intensity_background
     mask[occ_y_top:occ_y_bottom, occ_x_left:occ_x_right] = False
 
     return {"img": img, "mask": mask}

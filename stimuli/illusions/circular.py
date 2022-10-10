@@ -4,12 +4,12 @@ from stimuli.utils import degrees_to_pixels, resize_array, pad_img_to_shape
 
 
 def circular_white(
-    shape=(10, 10),
+    visual_size=(10, 10),
     ppd=18,
     frequency=1,
-    vdiscs=(0., 1.),
-    vbackground=0.2,
-    vtarget=0.5,
+    intensity_discs=(0., 1.),
+    intensity_background=0.2,
+    intensity_target=0.5,
     target_indices=(3, 6,),
     ssf=1,
 ):
@@ -18,18 +18,18 @@ def circular_white(
 
     Parameters
     ----------
-    shape : (float, float)
+    visual_size : (float, float)
         The shape of the stimulus in degrees of visual angle. (y,x)
     ppd : int
         pixels per degree (visual angle)
     frequency : float
         the spatial frequency of the circular grating in cycles per degree
-    vdiscs : (float, float)
+    intensity_discs : (float, float)
         intensity values of discs
-    vbackground : float
-        value of background
-    vtarget : float
-        value of target discs
+    intensity_background : float
+        intensity value of background
+    intensity_target : float
+        intensity value of target discs
     target_indices : (int, )
         indices of target discs
     ssf : int (optional)
@@ -40,8 +40,10 @@ def circular_white(
     ----------
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
     """
+    if isinstance(visual_size, (float, int)):
+        visual_size = (visual_size, visual_size)
 
-    height_px, width_px = degrees_to_pixels(shape, ppd)
+    height_px, width_px = degrees_to_pixels(visual_size, ppd)
     cycle_width_px = degrees_to_pixels(1. / (frequency*2), ppd) * 2
     radius = (cycle_width_px / 2) / ppd
     n_discs = np.minimum(height_px, width_px) // cycle_width_px
@@ -50,13 +52,9 @@ def circular_white(
         target_indices = ()
     if isinstance(target_indices, (float, int)):
         target_indices = (target_indices,)
-    if isinstance(shape, (float, int)):
-        shape = (shape, shape)
-    if len(shape) != 2:
-        raise ValueError("shape needs to be a single float or a tuple of two floats")
-    if len(vdiscs) != 2:
+    if len(intensity_discs) != 2:
         raise ValueError("vdiscs needs to be a tuple of two floats")
-    if not isinstance(vtarget, (float, int)):
+    if not isinstance(intensity_target, (float, int)):
         raise ValueError("vtarget should be a single float / int")
     if not isinstance(frequency, (float, int)):
         raise ValueError("frequency should be a single float / int")
@@ -74,40 +72,52 @@ def circular_white(
     for i in range(n_discs):
         radii.append(radius*(i+1))
         if i in target_indices:
-            vdiscs_img.append(vtarget)
+            vdiscs_img.append(intensity_target)
             vdics_mask.append(mask_counter)
             mask_counter += 1
         elif i not in target_indices and i % 2 == 0:
-            vdiscs_img.append(vdiscs[0])
+            vdiscs_img.append(intensity_discs[0])
             vdics_mask.append(0)
         elif i not in target_indices and i % 2 == 1:
-            vdiscs_img.append(vdiscs[1])
+            vdiscs_img.append(intensity_discs[1])
             vdics_mask.append(0)
 
-    img = disc_and_rings(ppd, radii, vbackground, vdiscs_img, ssf)
+    img = disc_and_rings(ppd, radii, intensity_background, vdiscs_img, ssf)
     mask = disc_and_rings(ppd, radii, 0, vdics_mask, ssf)
 
     # Pad to desired size
-    img = pad_img_to_shape(img, np.array(shape)*ppd, vbackground)
-    mask = pad_img_to_shape(mask, np.array(shape)*ppd, 0)
+    img = pad_img_to_shape(img, np.array(visual_size)*ppd, intensity_background)
+    mask = pad_img_to_shape(mask, np.array(visual_size)*ppd, 0)
 
     # Target masks should only cover areas where target intensity is exactly vtarget
-    cond = ((img != vtarget) & (mask != 0))
+    cond = ((img != intensity_target) & (mask != 0))
     mask[cond] = 0
-    return {"img": img, "mask": mask.astype(int)}
+
+    params = {"shape": img.shape,
+              "visual_size": np.array(img.shape)/ppd,
+              "ppd": ppd,
+              "frequency": frequency,
+              "intensity_discs": intensity_discs,
+              "intensity_background": intensity_background,
+              "intensity_target": intensity_target,
+              "target_indices": target_indices,
+              "ssf": ssf,
+              }
+
+    return {"img": img, "mask": mask.astype(int),  **params}
 
 
 def radial_white(
-    shape=(10, 12),
+    visual_size=(10, 12),
     ppd=20,
     n_segments=8,
     rotate=3*np.pi,
     target_width=2.5,
     target_center=2.5,
     target_indices=(0, 1, 2, 3, 4),
-    vslices=(1., 0.),
-    vbackground=0.3,
-    vtarget=0.5,
+    intensity_slices=(1., 0.),
+    intensity_background=0.3,
+    intensity_target=0.5,
     ssf=1,
 ):
     """
@@ -115,7 +125,7 @@ def radial_white(
 
     Parameters
     ----------
-    shape : (float, float)
+    visual_size : (float, float)
         The shape of the stimulus in degrees of visual angle. (y,x)
     ppd : int
         pixels per degree (visual angle)
@@ -129,10 +139,12 @@ def radial_white(
         target center within slice in deg
     target_indices : int or (int, )
         indices of target slices
-    vslices : (float, float)
+    intensity_slices : (float, float)
         intensity values of slices
-    vtarget : float
-        value of target discs
+    intensity_background : float
+        intensity value of target discs
+    intensity_target : float
+        intensity value of target discs
     ssf : int (optional)
           the supersampling-factor used for anti-aliasing if >1. Default is 1.
           Warning: produces smoother circles but might introduce gradients that affect vision!
@@ -141,10 +153,12 @@ def radial_white(
     ----------
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
     """
+    if isinstance(visual_size, (float, int)):
+        visual_size = (visual_size, visual_size)
 
-    shape_px = degrees_to_pixels(np.minimum(shape[0], shape[1]), ppd) * ssf
+    shape_px = degrees_to_pixels(np.minimum(visual_size[0], visual_size[1]), ppd) * ssf
     x = np.arange(-int(shape_px/2), int(shape_px/2))
-    img = np.ones([shape_px, shape_px]) * vbackground
+    img = np.ones([shape_px, shape_px]) * intensity_background
     mask = np.zeros([shape_px, shape_px])
     rotate = rotate % (2*np.pi)
 
@@ -152,8 +166,6 @@ def radial_white(
         target_indices = ()
     if isinstance(target_indices, (float, int)):
         target_indices = (target_indices,)
-    if isinstance(shape, (float, int)):
-        shape = (shape, shape)
     if not isinstance(n_segments, (float, int)):
         raise ValueError("n_segments should be a single float or int")
     if not n_segments % 2 == 0:
@@ -166,7 +178,7 @@ def radial_white(
         raise ValueError("Warning: targets do not fully fit into stimulus")
     if not isinstance(rotate, (float, int)):
         raise ValueError("rotate should be a single float or int")
-    if len(vslices) != 2:
+    if len(intensity_slices) != 2:
         raise ValueError("vdiscs needs to be a tuple of two floats")
 
     # Create circle (i.e. radial part)
@@ -194,10 +206,10 @@ def radial_white(
         ang[angular > theta[i+1]] = 0
         indices = ang * radial
         tindices = ang * tradial
-        img[indices != 0] = vslices[i % 2]
+        img[indices != 0] = intensity_slices[i % 2]
 
         if i in target_indices:
-            img[tindices != 0] = vtarget
+            img[tindices != 0] = intensity_target
             mask[tindices != 0] = target_indices.index(i) + 1
 
     # downsample the stimulus by local averaging along rows and columns
@@ -206,14 +218,28 @@ def radial_white(
     mask = np.dot(sampler, np.dot(mask, sampler.T)) / ssf**2
 
     # Pad to desired size
-    img = pad_img_to_shape(img, np.array(shape)*ppd, vbackground)
-    mask = pad_img_to_shape(mask, np.array(shape)*ppd, 0)
+    img = pad_img_to_shape(img, np.array(visual_size)*ppd, intensity_background)
+    mask = pad_img_to_shape(mask, np.array(visual_size)*ppd, 0)
 
     # Target masks should only cover areas where target intensity is exactly vtarget
-    cond = ((img != vtarget) & (mask != 0))
+    cond = ((img != intensity_target) & (mask != 0))
     mask[cond] = 0
 
-    return {"img": img, "mask": mask}
+    params = {"shape": img.shape,
+              "visual_size": np.array(img.shape)/ppd,
+              "ppd": ppd,
+              "n_segments": n_segments,
+              "rotate": rotate,
+              "target_width": target_width,
+              "target_center": target_center,
+              "intensity_slices": intensity_slices,
+              "intensity_background": intensity_background,
+              "intensity_target": intensity_target,
+              "target_indices": target_indices,
+              "ssf": ssf,
+              }
+
+    return {"img": img, "mask": mask,  **params}
 
 
 if __name__ == "__main__":

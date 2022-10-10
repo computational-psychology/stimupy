@@ -7,9 +7,9 @@ def dungeon_illusion(
     n_cells=5,
     target_radius=1,
     cell_size=1.0,
-    vback=0.0,
-    vgrid=1.0,
-    vtarget=0.5,
+    intensity_background=0.0,
+    intensity_grid=1.0,
+    intensity_target=0.5,
 ):
     """
     Dungeon illusion (Bressan, 2001) with diamond target.
@@ -24,12 +24,12 @@ def dungeon_illusion(
         the "Manhattan radius" of the diamond target in # cells
     cell_size : float
         size per cell in degrees visual angle
-    vback : float
-        value for background
-    vgrid : float
-        value for grid cells
-    vtarget : float
-        value for target
+    intensity_background : float
+        intensity value for background
+    intensity_grid : float
+        intensity value for grid cells
+    intensity_target : float
+        intensity value for target
 
     Returns
     -------
@@ -38,7 +38,7 @@ def dungeon_illusion(
     cell_size_px = degrees_to_pixels(cell_size, ppd)
 
     # create 2D array of grid
-    arr = np.ones((n_cells * 2 - 1, n_cells * 2 - 1)) * vgrid
+    arr = np.ones((n_cells * 2 - 1, n_cells * 2 - 1)) * intensity_grid
     mask_arr = np.zeros((n_cells * 2 - 1, n_cells * 2 - 1))
 
     # compute Manhattan distances from image center (=radius) of each pixel
@@ -47,7 +47,7 @@ def dungeon_illusion(
 
     # add targets
     idx = radii <= (target_radius * 2)
-    arr[idx] = vtarget
+    arr[idx] = intensity_target
     mask_arr[idx] = 1
 
     # compute and apply grid mask
@@ -59,7 +59,7 @@ def dungeon_illusion(
         for j in range(n_cells * 2 - 1)
     ]
     grid_mask = np.array(grid_mask)
-    arr[grid_mask] = vback
+    arr[grid_mask] = intensity_background
     mask_arr[grid_mask] = 0
 
     img = arr.repeat(cell_size_px, axis=0).repeat(cell_size_px, axis=1)

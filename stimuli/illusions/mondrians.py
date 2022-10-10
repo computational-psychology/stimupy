@@ -9,13 +9,13 @@ def corrugated_mondrians(
     heights=2.0,
     depths=(0.0, 1.0, 0.0, -1.0),
     target_idx=((1, 1), (3, 1)),
-    values=(
+    intensities=(
         (0.4, 0.75, 0.4, 0.75),
         (0.75, 0.4, 0.75, 1.0),
         (0.4, 0.75, 0.4, 0.75),
         (0.0, 0.4, 0.0, 0.4),
     ),
-    vback=0.5,
+    intensity_background=0.5,
 ):
     """
     Corrugated mondrians
@@ -32,10 +32,10 @@ def corrugated_mondrians(
         depth of rectangles; as many depths as there are rows
     target_idx : nested tuples
         index of targets; as many tuples as there are targets each with (x, y) indices
-    values : nested tuples
-        values of indiidual rectangles; as many tuples as there are rows and as many numbers in each
+    intensities : nested tuples
+        intensities of indiidual rectangles; as many tuples as there are rows and as many numbers in each
         tuple as there are columns
-    vback : float
+    intensity_background : float
         value for background
 
     Returns
@@ -46,18 +46,18 @@ def corrugated_mondrians(
     if isinstance(heights, (float, int)):
         heights = [heights] * len(depths)
 
-    if any(len(lst) != len(heights) for lst in [depths, values]):
-        raise Exception("heights, depths, and values need the same length.")
+    if any(len(lst) != len(heights) for lst in [depths, intensities]):
+        raise Exception("heights, depths, and intensities need the same length.")
 
     widths_px = degrees_to_pixels(widths, ppd)
     heights_px = degrees_to_pixels(heights, ppd)
     depths_px = degrees_to_pixels(depths, ppd)
 
     nrows = len(depths)
-    ncols = len(values[0])
+    ncols = len(intensities[0])
     height = int(np.array(heights_px).sum())
     width = int(widths_px * ncols + np.abs(np.array(depths_px)).sum())
-    img = np.ones([height, width]) * vback
+    img = np.ones([height, width]) * intensity_background
     mask = np.zeros([height, width])
     mval = 1
 
@@ -78,7 +78,7 @@ def corrugated_mondrians(
 
         for c in range(ncols):
             img[yst:yen, xst:xen] += parallelogram(
-                ppd, (heights[r], widths, depths[r]), 0.0, values[r][c] - vback
+                ppd, (heights[r], widths, depths[r]), 0.0, intensities[r][c] - intensity_background
             )
 
             if (r, c) in target_idx:
@@ -93,7 +93,7 @@ def corrugated_mondrians(
         yen += heights_px[r]
 
     # Find and delete all irrelevant columns:
-    idx = np.argwhere(np.all(img == vback, axis=0))
+    idx = np.argwhere(np.all(img == intensity_background, axis=0))
     img = np.delete(img, idx, axis=1)
     mask = np.delete(mask, idx, axis=1)
 
