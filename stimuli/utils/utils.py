@@ -463,7 +463,7 @@ def plot_stim(stim, mask=False, stim_name="stim", ax=None):
         ax = plt.gca()
 
     if not mask:
-        ax.imshow(stim["img"], cmap="gray")
+        ax.imshow(stim["img"], cmap="gray", vmin=0.0, vmax=1.0)
     else:
         img, mask = stim["img"], stim["mask"]
         img = np.dstack([img, img, img])
