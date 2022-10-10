@@ -4,7 +4,6 @@ from stimuli.utils import pad_img
 from stimuli.utils.resolution import resolve
 
 ## TODO: Add warning when stimulus shape or visual_size is different from what requested!
-## TODO: Should shape / visual_size include padding or not?
 
 __all__ = [
     "dungeon",
@@ -560,38 +559,40 @@ def todorovic(shape=SHAPES["todorovic"], ppd=PPD, visual_size=np.array(SHAPES["t
     return {"img": img, "mask": mask, **params}
 
 
-def checkerboard_contrast_contrast(shape=SHAPES["checkerboard_contrast_contrast"],
-                                   ppd=PPD,
-                                   visual_size=np.array(SHAPES["checkerboard_contrast_contrast"])/PPD,
-                                   pad=PAD):
+def checkerboard_contrast_contrast(
+    shape=SHAPES["checkerboard_contrast_contrast"],
+    ppd=PPD,
+    visual_size=np.array(SHAPES["checkerboard_contrast_contrast"]) / PPD,
+    pad=PAD,
+):
     shape = resolve_input(shape)
     visual_size = resolve_input(visual_size)
-    c = get_conversion_2d(SHAPES["checkerboard_contrast_contrast"], shape, visual_size, ppd)
-    shape, visual_size, ppd = resolve(None,
-                                      np.array(SHAPES["checkerboard_contrast_contrast"]) * c,
-                                      ppd)
+    conversion_fac = get_conversion_2d(
+        SHAPES["checkerboard_contrast_contrast"], shape, visual_size, ppd
+    )
+    shape, visual_size, ppd = resolve(
+        None, np.array(SHAPES["checkerboard_contrast_contrast"]) * conversion_fac, ppd
+    )
     ppd = ppd[0]
 
     params = {
         "ppd": ppd,
-        "check_size": 10*c,
+        "check_visual_size": 10 * conversion_fac,
         "target_shape": (4, 4),
         "tau": 0.5,
         "alpha": 0.5,
-        }
+        "intensity_low": v1,
+        "intensity_high": v3,
+    }
 
     stim1 = illusions.checkerboards.contrast_contrast(
         **params,
         board_shape=(8, 8),
-        vcheck1=v1,
-        vcheck2=v3,
     )
 
     stim2 = illusions.checkerboards.contrast_contrast(
         **params,
         board_shape=(4, 4),
-        vcheck1=v1,
-        vcheck2=v3,
     )
 
     # Increase target index of right stimulus half
@@ -599,19 +600,19 @@ def checkerboard_contrast_contrast(shape=SHAPES["checkerboard_contrast_contrast"
     mask2[mask2 == 1] = 0
 
     # Padding
-    padding = np.array((20., 20., 20., 20.)) * c
+    padding = np.array((20.0, 20.0, 20.0, 20.0)) * conversion_fac
     if pad:
-        padding1 = np.array((9., 11., 9., 11.)) * c
+        padding1 = np.array((9.0, 11.0, 9.0, 11.0)) * conversion_fac
         padding = np.array(padding1) + padding
-        stim1['img'] = pad_img(stim1['img'], padding1, ppd=ppd, val=v2)
-        stim1['mask'] = pad_img(stim1['mask'], padding1, ppd=ppd, val=0)
+        stim1["img"] = pad_img(stim1["img"], padding1, ppd=ppd, val=v2)
+        stim1["mask"] = pad_img(stim1["mask"], padding1, ppd=ppd, val=0)
         params["padding"] = padding1
     img2 = pad_img(img2, padding, ppd=ppd, val=v2)
     mask2 = pad_img(mask2, padding, ppd=ppd, val=0)
 
     # Stacking
-    img = np.hstack([stim1['img'], img2])
-    mask = np.hstack([stim1['mask'], mask2])
+    img = np.hstack([stim1["img"], img2])
+    mask = np.hstack([stim1["mask"], mask2])
 
     original_shape_np = np.array(SHAPES["checkerboard_contrast_contrast"])
     original_visual_np = np.array(original_shape_np) / PPD
@@ -629,36 +630,36 @@ def checkerboard_contrast_contrast(shape=SHAPES["checkerboard_contrast_contrast"
                   board_shape_left=(8, 8),
                   board_shape_right=(4, 4),
                   )
+
     return {"img": img, "mask": mask, **params}
 
 
-def checkerboard(shape=SHAPES["checkerboard"],
-                 ppd=PPD,
-                 visual_size=np.array(SHAPES["checkerboard"])/PPD,
-                 pad=PAD):
+def checkerboard(
+    shape=SHAPES["checkerboard"],
+    ppd=PPD,
+    visual_size=np.array(SHAPES["checkerboard"]) / PPD,
+    pad=PAD,
+):
     shape = resolve_input(shape)
     visual_size = resolve_input(visual_size)
-    c = get_conversion_2d(SHAPES["checkerboard"], shape, visual_size, ppd)
-    shape, visual_size, ppd = resolve(None, np.array(SHAPES["checkerboard"]) * c, ppd)
+    conversion_fac = get_conversion_2d(SHAPES["checkerboard"], shape, visual_size, ppd)
+    shape, visual_size, ppd = resolve(None, np.array(SHAPES["checkerboard"]) * conversion_fac, ppd)
     ppd = ppd[0]
 
     params = {
         "ppd": ppd,
         "board_shape": (8, 8),
-        "check_size": 10*c,
-        "target_indices": ((3, 2), (5, 5)),
+        "check_visual_size": (10 * conversion_fac, 10 * conversion_fac),
+        "targets": [(3, 2), (5, 5)],
         "extend_targets": False,
-        }
-
-    stim = illusions.checkerboards.contrast(
-        **params,
-        vcheck1=v1,
-        vcheck2=v3,
-        vtarget=v2,
-    )
+        "intensity_low": 0,
+        "intensity_high": 1,
+        "intensity_target": 0.5,
+    }
+    stim = illusions.checkerboards.checkerboard(**params)
 
     if pad:
-        padding = np.array((9., 11., 9., 11.)) * c
+        padding = np.array((9.0, 11.0, 9.0, 11.0)) * conversion_fac
         stim["img"] = pad_img(stim["img"], padding, ppd=ppd, val=v2)
         stim["mask"] = pad_img(stim["mask"], padding, ppd=ppd, val=0)
         params["padding"] = padding
@@ -677,36 +678,38 @@ def checkerboard(shape=SHAPES["checkerboard"],
                   visual_size=np.array(stim["img"].shape)/ppd,
                   shape=stim["img"].shape,
                   )
+
     return {**stim, **params}
 
 
-def checkerboard_extended(shape=SHAPES["checkerboard_extended"],
-                          ppd=PPD,
-                          visual_size=np.array(SHAPES["checkerboard_extended"])/PPD,
-                          pad=PAD):
+def checkerboard_extended(
+    shape=SHAPES["checkerboard_extended"],
+    ppd=PPD,
+    visual_size=np.array(SHAPES["checkerboard_extended"]) / PPD,
+    pad=PAD,
+):
     shape = resolve_input(shape)
     visual_size = resolve_input(visual_size)
-    c = get_conversion_2d(SHAPES["checkerboard_extended"], shape, visual_size, ppd)
-    shape, visual_size, ppd = resolve(None, np.array(SHAPES["checkerboard_extended"]) * c, ppd)
+    conversion_fac = get_conversion_2d(SHAPES["checkerboard_extended"], shape, visual_size, ppd)
+    shape, visual_size, ppd = resolve(
+        None, np.array(SHAPES["checkerboard_extended"]) * conversion_fac, ppd
+    )
     ppd = ppd[0]
 
     params = {
         "ppd": ppd,
         "board_shape": (8, 8),
-        "check_size": 10*c,
-        "target_indices": ((3, 2), (5, 5)),
+        "check_visual_size": (10 * conversion_fac, 10 * conversion_fac),
+        "targets": [(3, 2), (5, 5)],
         "extend_targets": True,
-        }
-
-    stim = illusions.checkerboards.contrast(
-        **params,
-        vcheck1=v1,
-        vcheck2=v3,
-        vtarget=v2,
-    )
+        "intensity_low": 0,
+        "intensity_high": 1,
+        "intensity_target": 0.5,
+    }
+    stim = illusions.checkerboards.checkerboard(**params)
 
     if pad:
-        padding = np.array((9., 11., 9., 11.)) * c
+        padding = np.array((9.0, 11.0, 9.0, 11.0)) * conversion_fac
         stim["img"] = pad_img(stim["img"], padding, ppd=ppd, val=v2)
         stim["mask"] = pad_img(stim["mask"], padding, ppd=ppd, val=0)
         params["padding"] = padding
@@ -725,6 +728,7 @@ def checkerboard_extended(shape=SHAPES["checkerboard_extended"],
                   visual_size=np.array(stim["img"].shape)/ppd,
                   shape=stim["img"].shape,
                   )
+
     return {**stim, **params}
 
 

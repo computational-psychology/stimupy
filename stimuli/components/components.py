@@ -231,26 +231,6 @@ def square_wave(
     return stim
 
 
-def checkerboard(
-        ppd=10,
-        board_shape=(8, 8),
-        check_size=1.0,
-        vcheck1=0.0,
-        vcheck2=1.0,
-        ):
-
-    check_size_px = degrees_to_pixels(check_size, ppd)
-    nchecks_height, nchecks_width = board_shape
-
-    img = np.ndarray((nchecks_height, nchecks_width))
-
-    for i, j in np.ndindex((nchecks_height, nchecks_width)):
-        img[i, j] = vcheck1 if i % 2 == j % 2 else vcheck2
-
-    img = img.repeat(check_size_px, axis=0).repeat(check_size_px, axis=1)
-    return img
-
-
 def disc_and_rings(
         ppd=20,
         radii=(3, 6, 9),
@@ -371,3 +351,25 @@ def square_wave_grating(
     img[:, ::2] = vbar1
     img = img.repeat(bar_width_px, axis=1).repeat(bar_height_px, axis=0)
     return img
+
+
+def transparency(img, mask, alpha=0.5, tau=0.2):
+    """Applies a transparency layer to given image at specified (mask) location
+
+    Parameters
+    ----------
+    img : numpy.ndarray
+        2D image array that transparency should be applied to
+    mask : numpy.ndarray
+        2D binary array indicating which pixels to apply transparency to
+    tau : Number
+        tau of transparency (i.e. value of transparent medium), default 0.5
+    alpha : Number
+        alpha of transparency (i.e. how transparant the medium is), default 0.2
+
+    Returns
+    -------
+    numpy.ndarray
+        img, with the transparency applied to the masked region
+    """
+    return np.where(mask, alpha * img + (1 - alpha) * tau, img)
