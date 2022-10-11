@@ -7,8 +7,8 @@ def rectangle(
     im_size=(4.0, 4.0),
     rect_size=(2.0, 2.0),
     rect_pos=(1.0, 1.0),
-    vback=0.0,
-    vrect=0.5,
+    intensity_background=0.0,
+    intensity_rectangle=0.5,
 ):
     """
     Function to create a 2d array with a rectangle
@@ -23,10 +23,10 @@ def rectangle(
         size of the square in degrees visual angle
     rect_pos : float or (float, float)
         coordinates of the square in degrees visual angle
-    vback : float
-        background value
-    vrect : float
-        rectangle value
+    intensity_background : float
+        intensity value for background
+    intensity_rectangle : float
+        intensity value for rectangle
 
     Returns
     -------
@@ -46,15 +46,15 @@ def rectangle(
     rect_posy, rect_posx = degrees_to_pixels(rect_pos, ppd)
 
     # Create image and add square
-    img = np.ones((im_height, im_width)) * vback
-    target = np.ones((rect_height, rect_width)) * vrect
+    img = np.ones((im_height, im_width)) * intensity_background
+    target = np.ones((rect_height, rect_width)) * intensity_rectangle
     img[
         rect_posy : rect_posy + rect_height, rect_posx : rect_posx + rect_width
     ] = target
     return img
 
 
-def triangle(ppd=10, target_size=(2.0, 2.0), vback=0.0, vtriangle=0.5):
+def triangle(ppd=10, target_size=(2.0, 2.0), intensity_background=0.0, intensity_triangle=0.5):
     """
     Function to create a 2d array with a triangle in the lower left diagonal
 
@@ -64,17 +64,17 @@ def triangle(ppd=10, target_size=(2.0, 2.0), vback=0.0, vtriangle=0.5):
         pixels per degree (visual angle)
     target_size : (float, float)
         size of the target in degrees visual angle
-    vback : float
-        background value
-    vtriangle : float
-        triangle value
+    intensity_background : float
+        intensity value for background
+    intensity_triangle : float
+        intensity value for triangle
 
     Returns
     -------
     A 2d-array with a triangle
     """
     target_y_px, target_x_px = degrees_to_pixels(target_size, ppd)
-    img = np.ones([target_y_px, target_x_px]) * vback
+    img = np.ones([target_y_px, target_x_px]) * intensity_background
     line1 = np.linspace(
         0, target_y_px - 1, np.maximum(target_y_px, target_x_px) * 2
     ).astype(int)
@@ -87,7 +87,7 @@ def triangle(ppd=10, target_size=(2.0, 2.0), vback=0.0, vtriangle=0.5):
     line2 = np.repeat(
         np.expand_dims(line2, -1), np.maximum(target_y_px, target_x_px) * 2, 1
     )
-    img[line1, line2] = vtriangle
+    img[line1, line2] = intensity_triangle
     return img
 
 
@@ -95,8 +95,8 @@ def cross(
     ppd=10,
     cross_size=(8.0, 8.0, 8.0, 8.0),
     cross_thickness=4.0,
-    vback=0.0,
-    vcross=1.0,
+    intensity_background=0.0,
+    intensity_cross=1.0,
 ):
     """
     Function to create a 2d array with a cross
@@ -109,10 +109,10 @@ def cross(
         size of the cross' arms in degrees visual angle in form (top, bottom, left, right)
     cross_thickness : float
         width of the cross bars in degrees visual angle
-    vback : float
-        background value
-    vcross : float
-        cross value
+    intensity_background : float
+        intensity value for background
+    intensity_cross : float
+        intensity value for cross
 
     Returns
     -------
@@ -135,15 +135,15 @@ def cross(
     height = cross_top + cross_thickness + cross_bottom
 
     # Create image and add cross
-    img = np.ones((height, width)) * vback
+    img = np.ones((height, width)) * intensity_background
     x_edge_left, x_edge_right = cross_left, -cross_right
     y_edge_top, y_edge_bottom = cross_top, -cross_bottom
-    img[:, x_edge_left:x_edge_right] = vcross
-    img[y_edge_top:y_edge_bottom, :] = vcross
+    img[:, x_edge_left:x_edge_right] = intensity_cross
+    img[y_edge_top:y_edge_bottom, :] = intensity_cross
     return img
 
 
-def parallelogram(ppd=10, para_size=(2.0, 3.0, -1.0), vback=0.0, vpara=0.5):
+def parallelogram(ppd=10, para_size=(2.0, 3.0, -1.0), intensity_background=0.0, vpara=0.5):
     para_height, para_width, para_depth = degrees_to_pixels(para_size, ppd)
     para_depth = np.abs(para_depth)
 
@@ -152,10 +152,10 @@ def parallelogram(ppd=10, para_size=(2.0, 3.0, -1.0), vback=0.0, vpara=0.5):
         img = np.ones((para_height, para_width)) * vpara
     else:
         tri1 = triangle(
-            ppd, (para_size[0], np.abs(para_size[2])), 0.0, -vpara + vback
+            ppd, (para_size[0], np.abs(para_size[2])), 0.0, -vpara + intensity_background
         )
         tri2 = triangle(
-            ppd, (para_size[0], np.abs(para_size[2])), -vpara + vback, 0.0
+            ppd, (para_size[0], np.abs(para_size[2])), -vpara + intensity_background, 0.0
         )
 
         # Create image, add rectangle and subtract triangles
@@ -172,7 +172,7 @@ def square_wave(
     shape=(10, 10),
     ppd=10,
     frequency=1,
-    vbars=(0., 1.),
+    intensity_bars=(0., 1.),
     period="ignore",
 ):
     """
@@ -184,8 +184,8 @@ def square_wave(
         The shape of the stimulus in degrees of visual angle. (y,x)
     ppd : int
         pixels per degree (visual angle)
-    vbars : (float, float)
-        value of bars
+    intensity_bars : (float, float)
+        intensity values for bars
     frequency : float
         the spatial frequency of the wave in cycles per degree
     period : string in ['ignore', 'full', 'half']
@@ -219,7 +219,7 @@ def square_wave(
         ) * pixels_per_cycle + pixels_per_cycle / 2
     width = int(width)
 
-    stim = np.ones((height, width)) * vbars[1]
+    stim = np.ones((height, width)) * intensity_bars[1]
 
     index = [
         i + j
@@ -227,15 +227,15 @@ def square_wave(
         for j in range(0, width, pixels_per_cycle)
         if i + j < width
     ]
-    stim[:, index] = vbars[0]
+    stim[:, index] = intensity_bars[0]
     return stim
 
 
 def disc_and_rings(
         ppd=20,
         radii=(3, 6, 9),
-        vback=0.,
-        vdiscs=(1., 0., 1.),
+        intensity_background=0.,
+        intensity_discs=(1., 0., 1.),
         ssf=5,
         ):
     """
@@ -247,10 +247,10 @@ def disc_and_rings(
         pixels per degree (visual angle)
     radii : tuple of floats
         radii of disc in degree visual angle
-    vback : float
-        value of background
-    vdiscs : tuple of floats
-        values of discs
+    intensity_background : float
+        intensity value for background
+    intensity_discs : tuple of floats
+        intensity values for discs
     ssf : int (optional)
           the supersampling-factor used for anti-aliasing. Default is 5.
 
@@ -261,7 +261,7 @@ def disc_and_rings(
     radii_px = degrees_to_pixels(radii, ppd) * ssf
 
     # create stimulus at 5 times size to allow for supersampling antialiasing
-    img = np.ones([radii_px.max()*2, radii_px.max()*2]) * vback
+    img = np.ones([radii_px.max()*2, radii_px.max()*2]) * intensity_background
 
     # compute distance from center of array for every point, cap at 1.0
     x = np.linspace(-img.shape[1] / 2.0, img.shape[1] / 2.0, img.shape[1])
@@ -269,8 +269,8 @@ def disc_and_rings(
     dist = np.sqrt(x[np.newaxis, :] ** 2 + y[:, np.newaxis] ** 2)
 
     radii_px = radii_px[::-1]
-    vdiscs = vdiscs[::-1]
-    for radius, value in zip(radii_px, vdiscs):
+    intensity_discs = intensity_discs[::-1]
+    for radius, value in zip(radii_px, intensity_discs):
         img[dist < radius] = value
 
     # downsample the stimulus by local averaging along rows and columns
@@ -282,8 +282,8 @@ def disc_and_rings(
 def disc(
         ppd=20,
         radius=3,
-        vback=0.,
-        vdisc=1.,
+        intensity_background=0.,
+        intensity_disc=1.,
         ssf=5,
         ):
     """
@@ -295,10 +295,10 @@ def disc(
         pixels per degree (visual angle)
     radius : float
         radius of disc in degree visual angle
-    vback : float
-        value of background
-    vdisc : float
-        value of disc
+    intensity_background : float
+        intensity value for background
+    intensity_disc : float
+        intensity value for disc
     ssf : int (optional)
           the supersampling-factor used for anti-aliasing. Default is 5.
 
@@ -307,14 +307,14 @@ def disc(
     A 2d-array with a disc
     """
     radius = [radius]
-    vdisc = [vdisc]
+    intensity_disc = [intensity_disc]
 
     if len(radius) > 1:
         raise ValueError("Too many radii passed")
-    if len(vdisc) > 1:
+    if len(intensity_disc) > 1:
         raise ValueError("Too many values for discs passed")
 
-    img = disc_and_rings(ppd, radius, vback, vdisc, ssf)
+    img = disc_and_rings(ppd, radius, intensity_background, intensity_disc, ssf)
     return img
 
 
@@ -322,8 +322,8 @@ def square_wave_grating(
         ppd=10,
         n_bars=8,
         bar_shape=(8., 1.),
-        vbar1=0.0,
-        vbar2=1.0,
+        intensity_min=0.0,
+        intensity_max=1.0,
         ):
     """
     Square-wave grating
@@ -336,10 +336,10 @@ def square_wave_grating(
         the number of vertical bars
     bar_shape : (float, float)
         bar height and width in degrees visual angle
-    vbar1 : float
-        value for bar 1
-    vbar2 : float
-        value for bar 2
+    intensity_min : float
+        intensity value for first bar
+    intensity_max : float
+        intensity value for second bar
 
     Returns
     -------
@@ -347,8 +347,8 @@ def square_wave_grating(
     """
 
     bar_height_px, bar_width_px = degrees_to_pixels(bar_shape, ppd)
-    img = np.ones([1, n_bars]) * vbar2
-    img[:, ::2] = vbar1
+    img = np.ones([1, n_bars]) * intensity_max
+    img[:, ::2] = intensity_min
     img = img.repeat(bar_width_px, axis=1).repeat(bar_height_px, axis=0)
     return img
 
