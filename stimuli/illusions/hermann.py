@@ -1,25 +1,60 @@
 import numpy as np
-from stimuli.utils import plot_stim
-from stimuli.Stimulus import Stimulus
-from stimuli.utils import  plot_stim
-
-###################################
-#           Hermann Grid          #
-###################################
-def hermann_grid(n_grid=100, space=5):
-    #TODO: the parameters aren't analogous to the other stimuli
-
-    grid = np.zeros([n_grid, n_grid], dtype=np.float32)
-    grid[::space, :] = 1
-    grid[:, ::space] = 1
-
-    img = grid
-    mask = None #TODO add this
-
-    return {"img": img, "mask": mask}
+from stimuli.utils import degrees_to_pixels
 
 
-if __name__ == '__main__':
+def hermann_grid(
+        visual_size=(10, 10),
+        ppd=10,
+        element_size=(1.5, 1.5, 0.2),
+        intensity_background=0.,
+        intensity_grid=1.
+        ):
+    """
+    Hermann grid
+
+    Parameters
+    ----------
+    visual_size : (float, float)
+        The shape of the stimulus in degrees of visual angle. (y,x)
+    ppd : int
+        pixels per degree (visual angle)
+    element_size : (float, float, float)
+        height, width and thickness of individual elements in degree visual angle
+    intensity_background : float
+        value of background
+    intensity_grid : float
+        value of grid
+
+    Returns
+    -------
+    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    """
+    if isinstance(visual_size, (float, int)):
+        visual_size = (visual_size, visual_size)
+
+    grid_height, grid_width = degrees_to_pixels(visual_size, ppd)
+    element_height, element_width, element_thick = degrees_to_pixels(element_size, ppd)
+
+    img = np.ones([grid_height, grid_width], dtype=np.float32) * intensity_background
+    for i in range(element_thick):
+        img[i::element_height, :] = intensity_grid
+        img[:, i::element_width] = intensity_grid
+
+    params = {"shape": img.shape,
+              "visual_size": np.array(img.shape)/ppd,
+              "ppd": ppd,
+              "element_size": element_size,
+              "intensity_background": intensity_background,
+              "intensity_grid": intensity_grid,
+              }
+
+    return {"img": img, "mask": None, **params}  # TODO: add mask
+
+
+if __name__ == "__main__":
     import matplotlib.pyplot as plt
+    from stimuli.utils import plot_stim
+
     stim = hermann_grid()
-    plot_stim(stim)
+    plot_stim(stim, stim_name="Hermann Grid")
+    plt.show()

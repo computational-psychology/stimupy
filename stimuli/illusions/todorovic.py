@@ -1,342 +1,326 @@
 import numpy as np
-from stimuli.utils import degrees_to_pixels, pad_img, plot_stim
+from stimuli.components import cross, rectangle
+from stimuli.utils import degrees_to_pixels, pad_img_to_shape
 
 
-def todorovic_illusion(
-    target_shape=(4, 4),
+def todorovic_rectangle_generalized(
+    visual_size=10,
     ppd=10,
-    covers_shape=(2.5, 2.5),
-    spacing=(1.5, 1.5, 1.5, 1.5),
-    padding=(2, 2, 2, 2),
-    back=0.0,
-    grid=1.0,
-    target=0.5,
-    double=True,
+    target_size=(4.0, 4.0),
+    target_pos=(3.0, 3.0),
+    covers_size=(2., 2.),
+    covers_posx=(2.0, 6.0, 2.0, 6.0),
+    covers_posy=(2.0, 6.0, 6.0, 2.0),
+    intensity_background=0.0,
+    intensity_target=0.5,
+    intensity_covers=1.0,
 ):
     """
-    Todorovic's illusion
+    Todorovic's illusion with rectangular target and rectangular covers added with flexible
+    number of covers and flexible target and cover placement
 
     Parameters
     ----------
-    target_shape : (float, float)
-        The shape of the target in degrees of visual angle (height, width)
+    visual_size : float or (float, float)
+        size of the stimulus in degrees of visual angle (height, width)
     ppd : int
         pixels per degree (visual angle)
-    covers_shape : (float, float)
-        The shape of the covers in degrees of visual angle (height, width)
-    spacing : (float, float, float, float)
-        Spacing between the covers in the form of (top, bottom, left, right).
-    padding : (float, float, float, float)
-        4-valued tuple specifying padding (top, bottom, left, right) in degrees visual angle
-    back : float
-        value for background
-    grid : float
-        value for grid cells
-    target : float
-        value for target
-    double: bool
-        whether to return the full illusion with two grids side-by-side
+    target_size : float or (float, float)
+        size of the target in degrees of visual angle (height, width)
+    target_pos : float or (float, float)
+        coordinates where to place the target
+    covers_size : float or (float, float)
+        size of the covers in degrees of visual angle (height, width)
+    covers_posx : tuple of floats
+        x coordinates of covers; as many covers as there are coordinates
+    covers_posy : tuple of floats
+        y coordinates of covers; as many covers as there are coordinates
+    intensity_background : float
+        intensity value for background
+    intensity_target : float
+        intensity value for target
+    intensity_covers : float
+        intensity value for covers
 
     Returns
     -------
-    A stimulus object
+    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
     """
 
-    target_height, target_width = target_shape
-    target_height_px, target_width_px = degrees_to_pixels(target_shape, ppd)
+    if isinstance(visual_size, (float, int)):
+        visual_size = (visual_size, visual_size)
+    if isinstance(covers_size, (float, int)):
+        covers_size = (covers_size, covers_size)
+    if len(covers_posx) != len(covers_posy):
+        raise ValueError("Need as many x- as y-coordinates")
 
-    img = np.ones((target_height_px, target_width_px)) * target
-    img = pad_img(img, padding, ppd, back)
+    # Create image with square
+    img = rectangle(ppd, visual_size, target_size, target_pos, intensity_background, intensity_target)
 
-    mask = np.ones((target_height_px, target_width_px))
-    mask = pad_img(mask, padding, ppd, 0)
+    # Add covers
+    cheight, cwidth = degrees_to_pixels(covers_size, ppd)
+    cposx = degrees_to_pixels(covers_posx, ppd)
+    cposy = degrees_to_pixels(covers_posy, ppd)
 
-    padding_px = degrees_to_pixels(padding, ppd)
-    (
-        padding_top_px,
-        padding_bottom_px,
-        padding_left_px,
-        padding_right_px,
-    ) = padding_px
+    if np.max(cposx) < np.min(cposx)+cwidth or np.max(cposy) < np.min(cposy)+cheight:
+        raise ValueError("Covers overlap")
 
-    width_px = padding_left_px + target_width_px + padding_right_px
-    height_px = padding_top_px + target_height_px + padding_bottom_px
+    for i in range(len(covers_posx)):
+        img[cposy[i]:cposy[i]+cheight, cposx[i]:cposx[i]+cwidth] = intensity_covers
+        if cposy[i]+cheight > visual_size[0]*ppd or cposx[i]+cwidth > visual_size[1]*ppd:
+            raise ValueError("Covers do not fully fit into stimulus")
 
-    cover_height_px, cover_width_px = degrees_to_pixels(covers_shape, ppd)
-    spacing_px = degrees_to_pixels(spacing, ppd)
-    (
-        spacing_top_px,
-        spacing_bottom_px,
-        spacing_left_px,
-        spacing_right_px,
-    ) = spacing_px
+    mask = np.copy(img)
+    mask[mask == intensity_background] = 0
+    mask[mask == intensity_covers] = 0
+    mask[mask == intensity_target] = 1
 
-    target_top_left_x = (width_px - target_width_px) // 2
-    target_top_left_y = (height_px - target_height_px) // 2
+    params = {"shape": img.shape,
+              "visual_size": np.array(img.shape)/ppd,
+              "ppd": ppd,
+              "target_size": target_size,
+              "target_pos": target_pos,
+              "covers_size": covers_size,
+              "covers_posx": covers_posx,
+              "covers_posy": covers_posy,
+              "intensity_background": intensity_background,
+              "intensity_target": intensity_target,
+              "intensity_covers": intensity_covers,
+              }
 
-    # top left square
-    cover_start_x = target_top_left_x - spacing_top_px
-    cover_start_y = target_top_left_y - spacing_left_px
-    img[
-        cover_start_y : cover_start_y + cover_height_px,
-        cover_start_x : cover_start_x + cover_width_px,
-    ] = grid
-    mask[
-        cover_start_y : cover_start_y + cover_height_px,
-        cover_start_x : cover_start_x + cover_width_px,
-    ] = 0
+    return {"img": img, "mask": mask, **params}
 
-    # top right square
-    cover_end_x = target_top_left_x + target_width_px + spacing_top_px
-    cover_start_y = target_top_left_y - spacing_right_px
-    img[
-        cover_start_y : cover_start_y + cover_height_px,
-        cover_end_x - cover_width_px : cover_end_x,
-    ] = grid
-    mask[
-        cover_start_y : cover_start_y + cover_height_px,
-        cover_end_x - cover_width_px : cover_end_x,
-    ] = 0
 
-    # bottom left square
-    cover_start_x = target_top_left_x - spacing_bottom_px
-    cover_end_y = target_top_left_y + target_height_px + spacing_left_px
-    img[
-        cover_end_y - cover_height_px : cover_end_y,
-        cover_start_x : cover_start_x + cover_width_px,
-    ] = grid
-    mask[
-        cover_end_y - cover_height_px : cover_end_y,
-        cover_start_x : cover_start_x + cover_width_px,
-    ] = 0
+def todorovic_rectangle(
+    visual_size=(10, 10),
+    ppd=10,
+    target_size=(4, 4),
+    covers_size=(3., 3.),
+    covers_offset=(2., 2.),
+    intensity_background=0.0,
+    intensity_target=0.5,
+    intensity_covers=1.0,
+):
+    """
+    Todorovic's illusion with rectangular target in the center and four rectangular covers added
+    symmetrically around target center
 
-    # bottom right square
-    cover_end_x = target_top_left_x + target_width_px + spacing_bottom_px
-    cover_end_y = target_top_left_y + target_height_px + spacing_right_px
-    img[
-        cover_end_y - cover_height_px : cover_end_y,
-        cover_end_x - cover_width_px : cover_end_x,
-    ] = grid
-    mask[
-        cover_end_y - cover_height_px : cover_end_y,
-        cover_end_x - cover_width_px : cover_end_x,
-    ] = 0
+    Parameters
+    ----------
+    visual_size : float or (float, float)
+        size of the stimulus in degrees of visual angle (height, width)
+    ppd : int
+        pixels per degree (visual angle)
+    target_size : float or (float, float)
+        size of the target in degrees of visual angle (height, width)
+    covers_size : float or (float, float)
+        size of covers in degrees of visual angle (height, width)
+    covers_offset : float or (float, float)
+        distance from cover center to target center in (y, x)
+    intensity_background : float
+        intensity value for background
+    intensity_target : float
+        intensity value for target
+    intensity_covers : float
+        intensity value for covers
 
-    # create right half of stimulus
-    if double:
-        stim2 = todorovic_illusion(
-            target_shape=target_shape,
-            ppd=ppd,
-            covers_shape=covers_shape,
-            spacing=spacing,
-            padding=padding,
-            back=grid,
-            grid=back,
-            target=target,
-            double=False,
+    Returns
+    -------
+    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    """
+    if isinstance(visual_size, (float, int)):
+        visual_size = (visual_size, visual_size)
+    if isinstance(target_size, (float, int)):
+        target_size = (target_size, target_size)
+    if isinstance(covers_size, (float, int)):
+        covers_size = (covers_size, covers_size)
+    if isinstance(covers_offset, (float, int)):
+        covers_offset = (covers_offset, covers_offset)
+
+    # Calculate placement of target and covers for generalized function:
+    tpos = np.array(visual_size) / 2 - np.array(target_size) / 2
+    y1 = tpos[0] + target_size[0]/2 - covers_offset[0] - covers_size[0]/2
+    x1 = tpos[1] + target_size[1]/2 - covers_offset[0] - covers_size[1]/2
+    y2 = tpos[0] + target_size[0]/2 + covers_offset[0] - covers_size[0]/2
+    x2 = tpos[1] + target_size[1]/2 + covers_offset[0] - covers_size[1]/2
+
+    stim = todorovic_rectangle_generalized(
+        visual_size=visual_size,
+        ppd=ppd,
+        target_size=target_size,
+        target_pos=tpos,
+        covers_size=covers_size,
+        covers_posx=(x1, x2, x2, x1),
+        covers_posy=(y1, y2, y1, y2),
+        intensity_background=intensity_background,
+        intensity_target=intensity_target,
+        intensity_covers=intensity_covers,
         )
-        img = np.hstack([img, stim2["img"]])
-        mask = np.hstack([mask, stim2["mask"] * 2])
-
-    # img = pad_img(img, padding, ppd, target)
-    # mask = pad_img(mask, padding, ppd, 0)
-
-    return {"img": img, "mask": mask}
+    return stim
 
 
-def domijan2015():
-    return todorovic_illusion(
-        target_shape=(4.1, 4.1),
-        ppd=10,
-        covers_shape=(3.1, 3.1),
-        spacing=(1.5, 1.5, 1.5, 1.5),
-        padding=(2.9, 3.0, 2.9, 3.0),
-        grid=9.0,
-        back=1.0,
-        target=5.0,
-    )
+def todorovic_cross_generalized(
+    visual_size=(12.0, 12.0),
+    ppd=10,
+    target_arms_size=(4.0, 4.0, 4.0, 4.0),
+    target_thickness=2.,
+    covers_size=2.0,
+    covers_posx=(3.0, 7.0, 3.0, 7.0),
+    covers_posy=(3.0, 7.0, 7.0, 3.0),
+    intensity_background=0.0,
+    intensity_target=0.5,
+    intensity_covers=1.0,
+):
+    """
+    Todorovic's illusion with cross target and rectangular covers added with flexible number of
+    covers and flexible cover placement
+
+    Parameters
+    ----------
+    visual_size : (float, float)
+        size of the stimulus in degrees of visual angle (height, width)
+    ppd : int
+        pixels per degree (visual angle)
+    target_arms_size : (float, float, float)
+        size of the target's arms in degrees visual angle in form (top, bottom, left, right)
+    target_thickness : float
+        thickness of target cross
+    covers_size : float or (float, float)
+        size of covers in degrees visual angle (height, width)
+    covers_posx : tuple of floats
+        x coordinates of covers; as many covers as there are coordinates
+    covers_posy : tuple of floats
+        y coordinates of covers; as many covers as there are coordinates
+    intensity_background : float
+        intensity value for background
+    intensity_target : float
+        intensity value for target
+    intensity_covers : float
+        intensity value for covers
+
+    Returns
+    -------
+    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    """
+
+    if isinstance(visual_size, (float, int)):
+        visual_size = (visual_size, visual_size)
+    if isinstance(covers_size, (float, int)):
+        covers_size = (covers_size, covers_size)
+    if len(covers_posx) != len(covers_posy):
+        raise ValueError("Need as many x- as y-coordinates")
+
+    img = cross(ppd, target_arms_size, target_thickness, intensity_background, intensity_target)
+    if img.shape[0] > visual_size[0]*ppd or img.shape[1] > visual_size[1]*ppd:
+        raise ValueError("your cross does not fit in requested stimulus size")
+    img = pad_img_to_shape(img, np.array(visual_size) * ppd, val=intensity_background)
+
+    cheight, cwidth = degrees_to_pixels(covers_size, ppd)
+    cposx = degrees_to_pixels(covers_posx, ppd)
+    cposy = degrees_to_pixels(covers_posy, ppd)
+
+    for i in range(len(covers_posx)):
+        img[cposy[i]:cposy[i]+cheight, cposx[i]:cposx[i]+cwidth] = intensity_covers
+        if cposy[i]+cheight > visual_size[0]*ppd or cposx[i]+cwidth > visual_size[1]*ppd:
+            raise ValueError("Covers do not fully fit into stimulus")
+
+    mask = np.copy(img)
+    mask[mask == intensity_background] = 0
+    mask[mask == intensity_covers] = 0
+    mask[mask == intensity_target] = 1
+
+    params = {"shape": img.shape,
+              "visual_size": np.array(img.shape)/ppd,
+              "ppd": ppd,
+              "target_arms_size": target_arms_size,
+              "target_thickness": target_thickness,
+              "covers_size": covers_size,
+              "covers_posx": covers_posx,
+              "covers_posy": covers_posy,
+              "intensity_background": intensity_background,
+              "intensity_target": intensity_target,
+              "intensity_covers": intensity_covers,
+              }
+
+    return {"img": img, "mask": mask, **params}
 
 
-def RHS2007_todorovic_equal():
-    total_height, total_width, ppd = (32,) * 3
-    height, width = 12, 15
-    target_height, target_width = 8, 8
+def todorovic_cross(
+    visual_size=(10, 10),
+    ppd=32,
+    target_arms_size=3.,
+    target_thickness=1.,
+    covers_size=3.2,
+    intensity_background=1.0,
+    intensity_target=0.5,
+    intensity_covers=0.0,
+):
+    """
+    Todorovic's illusion with cross target and four rectangular covers added at inner cross corners
 
-    inner_padding_vertical, inner_padding_horizontal = (
-        height - target_height
-    ) / 2, (width - target_width) / 2
-    inner_padding = (
-        inner_padding_vertical,
-        inner_padding_vertical,
-        inner_padding_horizontal,
-        inner_padding_horizontal,
-    )
+    Parameters
+    ----------
+    visual_size : float or (float, float)
+        size of the stimulus in degrees of visual angle (height, width)
+    ppd : int
+        pixels per degree (visual angle)
+    target_arms_size : float or (float, float)
+        size of target arms in degrees of visual angle (top/bottom, right/left)
+    covers_size : float or (float, float)
+        size of covers in degrees of visual angle (height, width)
+    intensity_background : float
+        intensity value for background
+    intensity_target : float
+        intensity value for target
+    intensity_covers : float
+        intensity value for covers
 
-    covers_shape = (0.4 * 8,) * 2
-    spacing = (0,) * 4
+    Returns
+    -------
+    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    """
+    if isinstance(visual_size, (float, int)):
+        visual_size = (visual_size, visual_size)
+    if isinstance(target_arms_size, (float, int)):
+        target_arms_size = (target_arms_size, target_arms_size)
+    if isinstance(covers_size, (float, int)):
+        covers_size = (covers_size, covers_size)
+    if len(target_arms_size) != 2:
+        raise ValueError("target_arms_size should be single number of (float, float)")
 
-    back, grid, target = 1.0, 0.0, 0.5
-    stim = todorovic_illusion(
-        target_shape=(target_height, target_width),
+    # Calculate placement of target and covers for generalized function:
+    center = np.array(visual_size) / 2
+    y1 = center[0] - target_thickness/2 - covers_size[0]
+    x1 = center[1] - target_thickness/2 - covers_size[1]
+    y2 = center[0] + target_thickness/2 - 1/ppd
+    x2 = center[1] + target_thickness/2 - 1/ppd
+
+    arm_size = (target_arms_size[0], target_arms_size[0], target_arms_size[1], target_arms_size[1])
+    stim = todorovic_cross_generalized(
+        visual_size=visual_size,
         ppd=ppd,
-        covers_shape=covers_shape,
-        spacing=spacing,
-        padding=inner_padding,
-        back=back,
-        grid=grid,
-        target=target,
-    )
-    height_px, width_px = stim["img"].shape
-
-    padding_vertical_top = degrees_to_pixels((total_height - height) / 2, ppd)
-    padding_vertical_bottom = 1024 - padding_vertical_top - height_px
-    padding_horizontal_left = degrees_to_pixels(
-        (total_width - width * 2) / 2, ppd
-    )
-    padding_horizontal_right = 1024 - padding_horizontal_left - width_px
-
-    img = np.pad(
-        stim["img"],
-        (
-            (padding_vertical_top, padding_vertical_bottom),
-            (padding_horizontal_left, padding_horizontal_right),
-        ),
-        "constant",
-        constant_values=target,
-    )
-    mask = np.pad(
-        stim["mask"],
-        (
-            (padding_vertical_top, padding_vertical_bottom),
-            (padding_horizontal_left, padding_horizontal_right),
-        ),
-        "constant",
-        constant_values=0,
-    )
-
-    return {"img": img, "mask": mask}
-
-
-def RHS2007_todorovic_in_large():
-    total_height, total_width, ppd = (32,) * 3
-    height, width = 12, 15
-    target_height, target_width = 5.3, 5.3
-
-    inner_padding_vertical, inner_padding_horizontal = (
-        height - target_height
-    ) / 2, (width - target_width) / 2
-    inner_padding = (
-        inner_padding_vertical,
-        inner_padding_vertical,
-        inner_padding_horizontal,
-        inner_padding_horizontal,
-    )
-
-    covers_shape = (0.4 * 8,) * 2
-    spacing = ((8 - 5.3) / 2,) * 4
-
-    back, grid, target = 1.0, 0.0, 0.5
-    stim = todorovic_illusion(
-        target_shape=(target_height, target_width),
-        ppd=ppd,
-        covers_shape=covers_shape,
-        spacing=spacing,
-        padding=inner_padding,
-        back=back,
-        grid=grid,
-        target=target,
-    )
-    height_px, width_px = stim["img"].shape
-
-    padding_vertical_top = degrees_to_pixels((total_height - height) / 2, ppd)
-    padding_vertical_bottom = 1024 - padding_vertical_top - height_px
-    padding_horizontal_left = degrees_to_pixels(
-        (total_width - width * 2) / 2, ppd
-    )
-    padding_horizontal_right = 1024 - padding_horizontal_left - width_px
-
-    img = np.pad(
-        stim["img"],
-        (
-            (padding_vertical_top, padding_vertical_bottom),
-            (padding_horizontal_left, padding_horizontal_right),
-        ),
-        "constant",
-        constant_values=target,
-    )
-    mask = np.pad(
-        stim["mask"],
-        (
-            (padding_vertical_top, padding_vertical_bottom),
-            (padding_horizontal_left, padding_horizontal_right),
-        ),
-        "constant",
-        constant_values=0,
-    )
-
-    return {"img": img, "mask": mask}
-
-
-def RHS2007_todorovic_in_small():
-    total_height, total_width, ppd = (32,) * 3
-    height, width = 12, 15
-    target_height, target_width = 3, 3
-
-    inner_padding_vertical, inner_padding_horizontal = (
-        height - target_height
-    ) / 2, (width - target_width) / 2
-    inner_padding = (
-        inner_padding_vertical,
-        inner_padding_vertical,
-        inner_padding_horizontal,
-        inner_padding_horizontal,
-    )
-
-    covers_shape = (0.4 * 8,) * 2
-    spacing = ((8 - 3) / 2,) * 4
-
-    back, grid, target = 1.0, 0.0, 0.5
-    stim = todorovic_illusion(
-        target_shape=(target_height, target_width),
-        ppd=ppd,
-        covers_shape=covers_shape,
-        spacing=spacing,
-        padding=inner_padding,
-        back=back,
-        grid=grid,
-        target=target,
-    )
-    height_px, width_px = stim["img"].shape
-
-    padding_vertical_top = degrees_to_pixels((total_height - height) / 2, ppd)
-    padding_vertical_bottom = 1024 - padding_vertical_top - height_px
-    padding_horizontal_left = degrees_to_pixels(
-        (total_width - width * 2) / 2, ppd
-    )
-    padding_horizontal_right = 1024 - padding_horizontal_left - width_px
-
-    stim["img"] = np.pad(
-        stim["img"],
-        (
-            (padding_vertical_top, padding_vertical_bottom),
-            (padding_horizontal_left, padding_horizontal_right),
-        ),
-        "constant",
-        constant_values=target,
-    )
-    stim["mask"] = np.pad(
-        stim["mask"],
-        (
-            (padding_vertical_top, padding_vertical_bottom),
-            (padding_horizontal_left, padding_horizontal_right),
-        ),
-        "constant",
-        constant_values=0,
-    )
+        target_arms_size=arm_size,
+        target_thickness=target_thickness,
+        covers_size=covers_size,
+        covers_posx=(x1, x2, x2, x1),
+        covers_posy=(y1, y2, y1, y2),
+        intensity_background=intensity_background,
+        intensity_target=intensity_target,
+        intensity_covers=intensity_covers,
+        )
 
     return stim
 
 
 if __name__ == "__main__":
-    stim = todorovic_illusion()
-    plot_stim(stim, mask=True)
+    import matplotlib.pyplot as plt
+    from stimuli.utils import plot_stimuli
+
+    stims = {
+        "Todorovic rectangle": todorovic_rectangle(),
+        "Todorovic rectangle, flex": todorovic_rectangle_generalized(),
+        "Todorovic cross": todorovic_cross(),
+        "Todorovic cross, flex": todorovic_cross_generalized(),
+    }
+    plot_stimuli(stims)
+    plt.show()

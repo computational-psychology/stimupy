@@ -1,3 +1,4 @@
+from stimuli import components
 from stimuli import contrast_metrics
 from stimuli import illusions
 from stimuli import texture

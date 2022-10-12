@@ -1,2 +1,1 @@
-from . import domijan2015
-from . import RHS2007
+__all__ = ["RHS2007", "domijan2015", "murray2020"]

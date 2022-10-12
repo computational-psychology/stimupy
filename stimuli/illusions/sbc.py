@@ -1,123 +1,283 @@
 import numpy as np
-import stimuli
-from stimuli.utils import degrees_to_pixels, pad_img, plot_stim
-from stimuli.Stimulus import Stimulus
+from stimuli.utils import pixels_to_degrees, pad_img
+from stimuli.components import rectangle, disc
 
 
-def simultaneous_brightness_contrast(
+def simultaneous_contrast_generalized(
+    visual_size=(2., 2.),
     ppd=10,
-    target_shape=(5, 5),
-    padding=(2, 2, 2, 2),
-    inner_padding=(3, 3, 3, 3),
-    left=1.0,
-    right=0.0,
-    target=0.5,
+    target_size=(2.0, 2.0),
+    target_pos=(1.0, 1.0),
+    intensity_background=0.0,
+    intensity_target=0.5,
 ):
     """
-    Simultaneous brightness contrast
+    Simultaneous contrast stimulus with free target placement.
+
+    Parameters
+    ----------
+    visual_size : float or (float, float)
+        size of the stimulus in degrees of visual angle (height, width)
+    ppd : int
+        pixels per degree (visual angle)
+    target_size : float or (float, float)
+        size of the target in degree visual angle (height, width)
+    target_pos : float or (float, float)
+        size of the target in degree visual angle (height, width)
+    intensity_background : float
+        intensity value for background
+    intensity_target : float
+        intensity value for target
+
+    Returns
+    -------
+    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    """
+
+    if isinstance(visual_size, (float, int)):
+        visual_size = (visual_size, visual_size)
+    if isinstance(target_size, (float, int)):
+        target_size = (target_size, target_size)
+    if isinstance(target_pos, (float, int)):
+        target_pos = (target_pos, target_pos)
+
+    if target_size[0] > visual_size[0] or target_size[1] > visual_size[1]:
+        raise ValueError('Requested target is larger than stimulus')
+    if target_size[0]+target_pos[0] > visual_size[0] or target_size[1]+target_pos[1] > visual_size[1]:
+        raise ValueError('Target does not fully fit into the stimulus')
+
+    img = rectangle(ppd,
+                    visual_size,
+                    target_size,
+                    target_pos,
+                    intensity_background,
+                    intensity_target)
+    mask = rectangle(ppd, visual_size, target_size, target_pos, 0, 1)
+
+    params = {"shape": img.shape,
+              "visual_size": np.array(img.shape)/ppd,
+              "ppd": ppd,
+              "target_size": target_size,
+              "target_pos": target_pos,
+              "intensity_background": intensity_background,
+              "intensity_target": intensity_target,
+              }
+
+    return {"img": img, "mask": mask, **params}
+
+
+def simultaneous_contrast(
+    visual_size=(2., 3.),
+    ppd=10,
+    target_size=(1., 0.5),
+    intensity_background=0.0,
+    intensity_target=0.5,
+):
+    """
+    Simultaneous contrast stimulus with central target.
+
+    Parameters
+    ----------
+    visual_size : float or (float, float)
+        size of the stimulus in degrees of visual angle (height, width)
+    ppd : int
+        pixels per degree (visual angle)
+    target_size : float or (float, float)
+        size of the target in degree visual angle (height, width)
+    intensity_background : float
+        intensity value for background
+    intensity_target : float
+        intensity value for target
+
+    Returns
+    -------
+    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    """
+    if isinstance(visual_size, (float, int)):
+        visual_size = (visual_size, visual_size)
+    if isinstance(target_size, (float, int)):
+        target_size = (target_size, target_size)
+
+    # Rectangle should be placed centrally
+    t_pos = (visual_size[0]/2. - target_size[0]/2., visual_size[1]/2. - target_size[1]/2.)
+    stim = simultaneous_contrast_generalized(visual_size,
+                                             ppd,
+                                             target_size,
+                                             t_pos,
+                                             intensity_background,
+                                             intensity_target)
+    return stim
+
+
+def sbc_with_dots(
+        ppd=10,
+        n_dots=(8, 9),
+        dot_radius=3.,
+        distance=1.,
+        target_shape=(4, 3),
+        intensity_background=0.,
+        intensity_dots=1.,
+        intensity_target=0.5,
+        ):
+    """
+    Simultaneous contrast stimulus with dots
 
     Parameters
     ----------
     ppd : int
         pixels per degree (visual angle)
-    target shape : (float, float)
-        target shape in degrees visual angle (height, width)
-    padding : (float, float, float, float)
-        4-valued tuple specifying outer padding (top, bottom, left, right) in degrees visual angle
-    inner_padding: 
-        4-valued tuple specifying inner padding (top, bottom, left, right) in degrees visual angle
-    left : float 
-        left background value
-    right : float
-        right background value
-    target : float 
-        target value
+    n_dots : int or (int, int)
+        stimulus size defined as the number of dots in y and x-directions
+    dot_radius : float
+        radius of dots
+    distance : float
+        distance between dots in degree visual angle
+    target_shape : int or (int, int)
+        target shape defined as the number of dots that fit into the target
+    intensity_background : float
+        intensity value for background
+    intensity_dots : float
+        intensity value for dots
+    intensity_target : float
+        intensity value for target
 
     Returns
     -------
-    A stimulus object
+    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
     """
 
-    target_height, target_width = target_shape
+    if isinstance(n_dots, (float, int)):
+        n_dots = (n_dots, n_dots)
+    if isinstance(target_shape, (float, int)):
+        target_shape = (target_shape, target_shape)
 
-    target_height_px, target_width_px = stimuli.utils.degrees_to_pixels(target_shape, ppd)
+    padding = (distance/2., distance/2., distance/2., distance/2.)
+    patch = disc(ppd, dot_radius, vback=0., vdisc=intensity_dots)
+    patch = pad_img(patch, padding, ppd, 0.)
 
-    img = np.ones((target_height_px, target_width_px)) * target
-    mask = np.ones((target_height_px, target_width_px))
+    img_height = pixels_to_degrees(n_dots[0] * patch.shape[0], ppd)
+    img_width = pixels_to_degrees(n_dots[1] * patch.shape[1], ppd)
+    rec_height = pixels_to_degrees(target_shape[0] * patch.shape[0], ppd)
+    rec_width = pixels_to_degrees(target_shape[1] * patch.shape[1], ppd)
 
-    img1 = pad_img(img, inner_padding, ppd, left)
-    img2 = pad_img(img, inner_padding, ppd, right)
-    img = np.hstack((img1, img2))
+    # Create the sbc in the background:
+    tposy = (img_height-rec_height) / 2.
+    tposx = (img_width-rec_width) / 2.
+    img = rectangle(ppd, im_size=(img_height, img_width), rect_size=(rec_height, rec_width),
+                    rect_pos=(tposy, tposx), vback=intensity_background, vrect=intensity_target)
+    mask = np.zeros(img.shape)
+    mask[img == intensity_target] = 1
 
-    mask1 = pad_img(mask, inner_padding, ppd, 0)
-    mask2 = pad_img(mask, inner_padding, ppd, 0)
-    mask = np.hstack((mask1, mask2*2))
+    patch = np.tile(patch, (n_dots[0], n_dots[1]))
+    indices_dots = np.where((patch != 0))
+    img[indices_dots] = intensity_dots
+    mask[indices_dots] = 0
 
-    img = pad_img(img, padding, ppd, target)
-    mask = pad_img(mask, padding, ppd, 0)
+    params = {"shape": img.shape,
+              "visual_size": np.array(img.shape)/ppd,
+              "ppd": ppd,
+              "n_dots": n_dots,
+              "dot_radius": dot_radius,
+              "distance": distance,
+              "target_shape": target_shape,
+              "intensity_background": intensity_background,
+              "intensity_dots": intensity_dots,
+              "intensity_target": intensity_target,
+              }
 
-    return {"img": img, "mask": mask}
+    return {"img": img, "mask": mask, **params}
 
 
-def domijan2015():
-    return simultaneous_brightness_contrast(
+def dotted_sbc(
         ppd=10,
-        target_shape=(2.1, 2.1),
-        inner_padding=(3.9, 4.0, 3.9, 4.0),
-        padding=(0, 0, 0, 0),
-        left=9.0,
-        right=1.0,
-        target=5.0,
-    )
+        n_dots=(8, 9),
+        dot_radius=3.,
+        distance=1.,
+        target_shape=(4, 3),
+        intensity_background=0.,
+        intensity_dots=1.,
+        intensity_target=0.5,
+        ):
+    """
+    Simultaneous contrast stimulus with dots
+
+    Parameters
+    ----------
+    ppd : int
+        pixels per degree (visual angle)
+    n_dots : int or (int, int)
+        stimulus size defined as the number of dots in y and x-directions
+    dot_radius : float
+        radius of dots
+    distance : float
+        distance between dots in degree visual angle
+    target_shape : int or (int, int)
+        target shape defined as the number of dots that fit into the target
+    intensity_background : float
+        intensity value for background
+    intensity_dots : float
+        intensity value for dots
+    intensity_target : float
+        intensity value for target
+
+    Returns
+    -------
+    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    """
+
+    if isinstance(n_dots, (float, int)):
+        n_dots = (n_dots, n_dots)
+    if isinstance(target_shape, (float, int)):
+        target_shape = (target_shape, target_shape)
+
+    padding = (distance/2., distance/2., distance/2., distance/2.)
+    patch = disc(ppd, dot_radius, vback=0., vdisc=intensity_dots)
+    patch = pad_img(patch, padding, ppd, 0.)
+
+    img_height = pixels_to_degrees(n_dots[0] * patch.shape[0], ppd)
+    img_width = pixels_to_degrees(n_dots[1] * patch.shape[1], ppd)
+    rec_height = pixels_to_degrees(target_shape[0] * patch.shape[0], ppd)
+    rec_width = pixels_to_degrees(target_shape[1] * patch.shape[1], ppd)
+
+    # Create the sbc and img:
+    tposy = (img_height-rec_height) / 2.
+    tposx = (img_width-rec_width) / 2.
+    sbc = rectangle(ppd, im_size=(img_height, img_width), rect_size=(rec_height, rec_width),
+                    rect_pos=(tposy, tposx), vback=intensity_background, vrect=intensity_target)
+    img = np.ones(sbc.shape) * intensity_background
+
+    patch = np.tile(patch, (n_dots[0], n_dots[1]))
+    indices_dots_back = np.where((patch != 0) & (sbc == intensity_background))
+    indices_dots_target = np.where((patch != 0) & (sbc == intensity_target))
+    img[indices_dots_back] = intensity_dots
+    img[indices_dots_target] = intensity_target
+    mask = np.zeros(img.shape)
+    mask[indices_dots_target] = 1
+
+    params = {"shape": img.shape,
+              "visual_size": np.array(img.shape)/ppd,
+              "ppd": ppd,
+              "n_dots": n_dots,
+              "dot_radius": dot_radius,
+              "distance": distance,
+              "target_shape": target_shape,
+              "intensity_background": intensity_background,
+              "intensity_dots": intensity_dots,
+              "intensity_target": intensity_target,
+              }
+
+    return {"img": img, "mask": mask, **params}
 
 
-def RHS2007_sbc_large():
-    total_height, total_width, ppd = (32,)*3
-    height, width = 12, 15
-    target_height, target_width = 3,3
-
-    inner_padding_vertical, inner_padding_horizontal = (height-target_height)/2, (width-target_width)/2
-    inner_padding = (inner_padding_vertical, inner_padding_vertical, inner_padding_horizontal, inner_padding_horizontal)
-
-    padding_vertical, padding_horizontal = (total_height - height)/2, (total_width - 2 * width)/2
-    padding = (padding_vertical, padding_vertical, padding_horizontal, padding_horizontal)
-
-    return simultaneous_brightness_contrast(
-        target_shape=(target_height, target_width),
-        ppd=ppd,
-        inner_padding=inner_padding,
-        padding=padding,
-    )
-
-
-def RHS2007_sbc_small():
-    total_height, total_width, ppd = (32,)*3
-    height, width = 12, 15
-    target_height, target_width = 1,1
-
-    inner_padding_vertical, inner_padding_horizontal = (height - target_height) / 2, (width - target_width) / 2
-    inner_padding = (inner_padding_vertical, inner_padding_vertical, inner_padding_horizontal, inner_padding_horizontal)
-
-    padding_vertical, padding_horizontal = (total_height - height) / 2, (
-        total_width - 2 * width
-    ) / 2
-    padding = (
-        padding_vertical,
-        padding_vertical,
-        padding_horizontal,
-        padding_horizontal,
-    )
-
-    return simultaneous_brightness_contrast(
-        target_shape=(target_height, target_width),
-        ppd=ppd,
-        inner_padding=inner_padding,
-        padding=padding,
-    )
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     import matplotlib.pyplot as plt
-    stim = simultaneous_brightness_contrast()
-    plot_stim(stim, mask=True)
+    from stimuli.utils import plot_stimuli
 
+    stims = {
+        "SBC": simultaneous_contrast(),
+        "SBC with dots": sbc_with_dots(),
+        "Dotted SBC": dotted_sbc(),
+    }
+
+    plot_stimuli(stims, mask=True)
+    plt.show()

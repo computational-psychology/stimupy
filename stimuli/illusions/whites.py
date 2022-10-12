@@ -1,805 +1,576 @@
 import numpy as np
-import matplotlib.pyplot as plt
-import math
+from stimuli.components import square_wave
+from stimuli.utils import degrees_to_pixels
 
-from stimuli.utils import degrees_to_pixels, pad_img, get_annulus_mask
-from stimuli.Stimulus import Stimulus
-from stimuli.illusions.square_wave import square_wave
+
+def white_generalized(
+    visual_size=(10, 10),
+    ppd=10,
+    grating_frequency=0.8,
+    intensity_bars=(1., 0.),
+    intensity_target=0.5,
+    target_indices=(2, 5, 8, 11, 14),
+    target_center_offsets=(3, 1.5, 0, -1.5, -3),
+    target_sizes=(0.1, 0.2, 0.4, 0.8, 1),
+    period="full",
+):
+    """
+    White's stimulus
+
+    Parameters
+    ----------
+    visual_size : (float, float)
+        The shape of the stimulus in degrees of visual angle. (y,x)
+    ppd : int
+        pixels per degree (visual angle)
+    grating_frequency : float
+        the spatial frequency of the grating in cycles per degree
+    intensity_bars : (float, float)
+        intensity values of bars
+    intensity_target : float
+        intensity value of targets
+    target_indices : int or tuple of ints
+        bar indices where target(s) will be placed. As many targets as ints.
+    target_center_offsets : float or tuple of floats
+        offset from target center to image center in degree visual angle.
+        If only one float is passed, the same offset is used for all targets.
+        If a tuple of floats is passed, pass as many floats as there are targets.
+    target_sizes : float or tuple of floats
+        target sizes (i.e. height / length) in degrees visual angle
+    period : string in ['ignore', 'full', 'half']
+        specifies if the period of the wave is considered for stimulus dimensions.
+            'ignore' simply converts degrees to pixels
+            'full' rounds down to guarantee a full period
+            'half' adds a half period to the size 'full' would yield.
+        Default is 'ignore'.
+
+    Returns
+    -------
+    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    """
+    if isinstance(visual_size, (float, int)):
+        visual_size = (visual_size, visual_size)
+    if target_indices is None:
+        target_indices = ()
+    if isinstance(target_indices, (float, int)):
+        target_indices = (target_indices,)
+
+    height_px, width_px = degrees_to_pixels(visual_size, ppd)
+    target_offsets_px = degrees_to_pixels(target_center_offsets, ppd)
+    target_sizes_px = degrees_to_pixels(target_sizes, ppd)
+    cycle_width_px = degrees_to_pixels(1. / (grating_frequency*2), ppd) * 2
+    phase_width_px = cycle_width_px // 2
+
+    if isinstance(target_center_offsets, (float, int)):
+        target_center_offsets = (target_center_offsets,) * len(target_indices)
+        target_offsets_px = (target_offsets_px,) * len(target_indices)
+    if len(intensity_bars) != 2:
+        raise ValueError("intensity_bars needs to be a tuple of two floats")
+    if len(target_indices) != len(target_offsets_px):
+        raise ValueError("# of target indices != # of target offsets")
+    if not isinstance(intensity_target, (float, int)):
+        raise ValueError("intensity_target should be a single float / int")
+    if isinstance(target_sizes, (float, int)):
+        target_sizes = (target_sizes,)*len(target_indices)
+        target_sizes_px = (target_sizes_px,)*len(target_indices)
+    if any(np.array(target_center_offsets)*ppd % 1 != 0):
+        offsets_new = target_offsets_px / ppd
+        print("Warning: White target offsets rounded from %s to %s because of ppd" %
+              (target_center_offsets, offsets_new))
+    if len(target_sizes) != len(target_indices):
+        raise ValueError("# of target indices != # of target sizes")
+
+    img = square_wave(visual_size, ppd, grating_frequency, intensity_bars, period=period)
+    mask = np.zeros((height_px, width_px))
+    height, width = img.shape
+
+    for i, index in enumerate(target_indices):
+        # Calculate vertical placement of targets
+        if target_offsets_px[i] < 0:
+            offset = target_offsets_px[i] - target_sizes_px[i] // 2
+        else:
+            offset = target_offsets_px[i] - target_sizes_px[i] // 2
+        y_start = height // 2 + offset
+        y_end = y_start + target_sizes_px[i]
+        if (y_start < 0) or (y_end > height):
+            raise ValueError("White targets do not fully fit into stimulus")
+
+        # Calculate horizontal placement of targets
+        if index >= 0:
+            x_start = index * phase_width_px
+        else:
+            # Calculate the number of phases based on resolution of grating:
+            phases = int(2 * (int(visual_size[1] * ppd / phase_width_px) // 2))
+            x_start = int((phases + index) * phase_width_px)
+        x_end = x_start + phase_width_px
+
+        img[y_start:y_end, x_start:x_end] = intensity_target
+        mask[y_start:y_end, x_start:x_end] = i + 1
+
+    new_size = (img.shape[0]/ppd, img.shape[1]/ppd)
+    if period != "ignore" and visual_size != new_size:
+        print("Warning: White shape changed from %s to %s" % (visual_size, new_size))
+
+    params = {"shape": img.shape,
+              "visual_size": np.array(img.shape)/ppd,
+              "ppd": ppd,
+              "grating_frequency": grating_frequency,
+              "intensity_bars": intensity_bars,
+              "intensity_target": intensity_target,
+              "target_indices": target_indices,
+              "target_center_offsets": target_center_offsets,
+              "target_sizes": target_sizes,
+              "period": period,
+              }
+
+    return {"img": img, "mask": mask, **params}
 
 
 def white(
-    shape=(10, 10),
-    ppd=50,
-    frequency=0.4,
-    high=1.0,
-    low=0.0,
-    target=0.5,
+    visual_size=(4.2, 4.2),
+    ppd=20,
+    grating_frequency=1.2,
+    intensity_bars=(1., 0.),
+    intensity_target=0.5,
+    target_indices=(1, 3, -2, -4),
+    target_size=1.,
     period="ignore",
-    start="low",
-    target_indices=(2, -3),
-    target_height=None,
-    targets_offset=0,
-    orientation="horizontal",
-    padding=(2, 2, 2, 2),
-    padding_val=0.5,
 ):
     """
-    Whites's illusion
+    White's stimulus where all targets are vertically aligned at half the stimulus height
 
     Parameters
     ----------
-    shape : (float, float)
-        The shape of the illustion in degrees of visual angle (height, width)
+    visual_size : (float, float)
+        The shape of the stimulus in degrees of visual angle. (y,x)
     ppd : int
         pixels per degree (visual angle)
-    frequency : float
-        frequency of the grid in cycles per degree visual angle
-    high : float
-        value of the bright stripes
-    low : float
-        value of the dark stripes
-    target : float
-        value for target
+    grating_frequency : float
+        the spatial frequency of the grating in cycles per degree
+    intensity_bars : (float, float)
+        intensity values of bars
+    intensity_target : float
+        intensity value of target
+    target_indices : int or tuple of ints
+        bar indices where target(s) will be placed. As many targets as ints.
+    target_size : float
+        target size (i.e. height / length) in degrees visual angle
     period : string in ['ignore', 'full', 'half']
-        see square_wave.py for details about this
-    start : string in ['low','high']
-        whether to start with a bright or a low stripes
-    target_indices : (int, )
-        indices of the stripes where the target(s) will be placed. There will be as many targets as indices specified.
-    target_height : float
-        height of the target in degrees visual angle. If it's None, the target will be 1/3 of the illusion height
-    targets_offset : int
-        Vertical offset of the target in pixels
-    orientation : string in ['horizontal', 'vertical']
-        orientation of the illusion
-    padding : (float, float, float, float)
-        4-valued tuple specifying padding (top, bottom, left, right) in degrees visual angle
+        specifies if the period of the wave is considered for stimulus dimensions.
+            'ignore' simply converts degrees to pixels
+            'full' rounds down to guarantee a full period
+            'half' adds a half period to the size 'full' would yield.
+        Default is 'ignore'.
 
     Returns
     -------
-    A stimulus object
+    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
     """
 
-    height_px, width_px = degrees_to_pixels(shape, ppd)
-
-    if target_height is None:
-        target_height_px = degrees_to_pixels(shape[1] / 3, ppd)
-    else:
-        target_height_px = degrees_to_pixels(target_height, ppd)
-
-    img, pixels_per_cycle = square_wave(
-        shape, ppd, frequency, high, low, period, start
-    )
-    mask = np.zeros((height_px, width_px))
-
-    height, width = img.shape
-    phase_width = pixels_per_cycle // 2
-    y_start = height // 2 - target_height_px // 2 - targets_offset
-    y_end = y_start + target_height_px
-
-    for i, index in enumerate(target_indices):
-        if index >= 0:
-            x_start = (index-1) * phase_width
-        else:
-            # Calculate the number of phases based on resolution of grating:
-            phases = int(2 * (int(shape[1] * ppd / phase_width) // 2))
-            x_start = int((phases + index) * phase_width)
-        x_end = x_start + phase_width
-        img[y_start:y_end, x_start:x_end] = target
-        mask[y_start:y_end, x_start:x_end] = i+1.
-
-    if orientation == "vertical":
-        img = np.rot90(img, 3)
-        mask = np.rot90(mask, 3)
-
-    img = pad_img(img, padding, ppd, padding_val)
-    mask = pad_img(mask, padding, ppd, 0)
-
-    return {"img": img, "mask": mask}
-
-
-def circular_white(
-    radius=5,
-    ppd=50,
-    frequency=1.0,
-    high=1.0,
-    low=0.0,
-    target=0.5,
-    target_indices=(2, 6),
-    start="low",
-    padding=(2, 2, 2, 2),
-):
-    """
-    Circular Whites's illusion
-
-    Parameters
-    ----------
-    radius : float
-        radius of the circle in degrees visual angle
-    ppd : int
-        pixels per degree (visual angle)
-    frequency : float
-        frequency of the circles in cycles per degree visual angle
-    high : float
-        value of the bright stripes
-    low : float
-        value of the dark stripes
-    target : float
-        value for target
-    target_indices : (int, )
-        indices of the stripes where the target(s) will be placed. There will be as many targets as indices specified.
-    start : string in ['low','high']
-        whether to start with a bright or a low stripes
-    padding : (float, float, float, float)
-        4-valued tuple specifying padding (top, bottom, left, right) in degrees visual angle
-
-    Returns
-    ----------
-    A stimulus object
-    """
-
-    height, width = (degrees_to_pixels(radius * 2, ppd),) * 2
-    pixels_per_cycle = degrees_to_pixels(1.0 / (frequency * 2), ppd) * 2
-    circle_width = pixels_per_cycle // 2
-    n_cycles = (max(height, width)) // (circle_width * 2)
-
-    st = low if start == "low" else high
-    other = high if start == "low" else low
-    img = np.ones((height, width)) * target
-    mask = np.zeros((height, width))
-
-    mask_counter = 1
-    for i in range(0, n_cycles):
-        radius = circle_width * i
-        annulus_mask = get_annulus_mask(
-            (height, width),
-            (height // 2, width // 2),
-            radius,
-            radius + circle_width,
+    stim = white_generalized(
+        visual_size=visual_size,
+        ppd=ppd,
+        grating_frequency=grating_frequency,
+        intensity_bars=intensity_bars,
+        intensity_target=intensity_target,
+        target_indices=target_indices,
+        target_center_offsets=0,
+        target_sizes=target_size,
+        period=period,
         )
-        img[annulus_mask] = st if i % 2 == 0 else other
-        if i in target_indices:
-            img[annulus_mask] = target
-            mask[annulus_mask] = mask_counter
-            mask_counter += 1
-        else:
-            img[annulus_mask] = st if i % 2 == 0 else other
-
-    img = pad_img(img, padding, ppd, target)
-    mask = pad_img(mask, padding, ppd, 0)
-
-    return {"img": img, "mask": mask}
+    return stim
 
 
-def wheel_of_fortune_white(
-    radius=10,
-    ppd=50,
-    n_cycles=5,
-    target_width=0.7,
-    target_indices=None,
-    target_start=0.5,
-    angle_shift=0,
-    high=1.0,
-    low=0.0,
-    target=0.5,
-    start="high",
-    padding=(1, 1, 1, 1),
+# TODO: Add another function in which you specify n_targets instead of target_indices
+def white_two_rows(
+    visual_size=(4, 4),
+    ppd=20,
+    grating_frequency=2,
+    intensity_bars=(1., 0.),
+    intensity_target=0.5,
+    target_indices_top=(1, 3, 5, 7, 9, 11),
+    target_indices_bottom=(-2, -4, -6),
+    target_center_offset=0.8,
+    target_size=0.8,
+    period="ignore",
 ):
-    # TODO: make this faster
     """
-    Wheel of fortune Whites's illusion
+    White's stimulus where targets are placed in two rows (top, bottom) that have the same
+    distance from the center.
 
     Parameters
     ----------
-    radius : float
-        radius of the circle in degrees visual angle
+    visual_size : (float, float)
+        The shape of the stimulus in degrees of visual angle. (y,x)
     ppd : int
         pixels per degree (visual angle)
-    n_cycles : int
-        number of full grid cycles in the circle
-    target_width :  float in interval [0,1]
-        width of the target, 1 means target goes from center all the way to the edge of the circle
-    target_indices : (int, )
-        indices of the stripes where the target(s) will be placed
-    target_start : float in interval [0,1]
-        specify where the target starts relative to the radius
-    angle_shift : float
-        rotate the circle for specified amount of radians
-    high : float
-        value of the bright stripes
-    low : float
-        value of the dark stripes
-    target : float
-        value for target
-    start : string in ['low','high']
-        whether to start with a bright or a low stripes
-    padding : (float, float, float, float)
-        4-valued tuple specifying padding (top, bottom, left, right) in degrees visual angle
+    grating_frequency : float
+        the spatial frequency of the grating in cycles per degree
+    intensity_bars : (float, float)
+        intensity values of bars
+    intensity_target : float
+        intensity value of target
+    target_indices_top : int or tuple of ints
+        bar indices where top target(s) will be placed. As many targets as ints.
+    target_indices_bottom : int or tuple of ints
+        bar indices where bottom target(s) will be placed. As many targets as ints.
+    target_center_offset : float
+        offset from target centers to image center in degree visual angle.
+    target_size : float
+        target size (i.e. height / length) in degrees visual angle
+    period : string in ['ignore', 'full', 'half']
+        specifies if the period of the wave is considered for stimulus dimensions.
+            'ignore' simply converts degrees to pixels
+            'full' rounds down to guarantee a full period
+            'half' adds a half period to the size 'full' would yield.
+        Default is 'ignore'.
 
     Returns
-    ----------
-    A stimulus object
+    -------
+    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
     """
+    if not isinstance(target_center_offset, (float, int)):
+        raise ValueError("target_center_offset should be a single float / int")
+    if isinstance(target_indices_top, (float, int)):
+        target_indices_top = (target_indices_top,)
+    if isinstance(target_indices_bottom, (float, int)):
+        target_indices_bottom = (target_indices_bottom,)
 
-    n_parts = n_cycles * 2
-    n_grid = degrees_to_pixels(radius, ppd) * 2
-    n_numbers = n_grid * 2
+    target_indices = target_indices_top + target_indices_bottom
+    offsets_top = (-target_center_offset,)*len(target_indices_top)
+    offsets_bottom = (target_center_offset,)*len(target_indices_bottom)
+    target_center_offsets = offsets_top + offsets_bottom
 
-    if target_indices is None:
-        target_indices = (0, n_parts // 2)
-
-    # Create a circle
-    x = np.linspace(0, 2 * np.pi, int(n_numbers))
-
-    xx = np.cos(x)
-    xx_min = np.abs(xx.min())
-    xx += xx_min
-    xx_max = xx.max()
-    xx = xx / xx_max * (n_grid - 1)
-
-    yy = np.sin(x)
-    yy_min = np.abs(yy.min())
-    yy += yy_min
-    yy_max = yy.max()
-    yy = yy / yy_max * (n_grid - 1)
-
-    img = np.zeros([n_grid, n_grid]) + 0.5
-    mask = np.zeros([n_grid, n_grid])
-
-    st = high if start == "high" else low
-    other = low if start == "high" else high
-
-    # Divide circle in n_parts parts:
-    x = np.linspace(0 + angle_shift, 2 * np.pi + angle_shift, int(n_parts + 1))
-
-    mask_counter = 1
-    for i in range(len(x) - 1):
-        xxx = np.linspace(x[i], x[i + 1], int(n_numbers))
-        xxxx = np.cos(xxx)
-        xxxx += xx_min
-        xxxx = xxxx / xx_max * (n_grid - 1)
-
-        yyyy = np.sin(xxx)
-        yyyy += yy_min
-        yyyy = yyyy / yy_max * (n_grid - 1)
-
-        for j in range(int(n_numbers)):
-            sep_x = np.linspace(n_grid / 2, xxxx[j], int(n_numbers))
-            sep_y = np.linspace(n_grid / 2, yyyy[j], int(n_numbers))
-            # Switch between bright and dark areas:
-            if i % 2 == 0:
-                img[sep_x.astype(int), sep_y.astype(int)] = st
-            else:
-                img[sep_x.astype(int), sep_y.astype(int)] = other
-
-            if i in target_indices:
-                # Place a single target inside the area
-                img[
-                    sep_x[
-                        int(
-                            n_numbers * (target_start - target_width / 2)
-                        ) : int(n_numbers * (target_start + target_width / 2))
-                    ].astype(int),
-                    sep_y[
-                        int(
-                            n_numbers * (target_start - target_width / 2)
-                        ) : int(n_numbers * (target_start + target_width / 2))
-                    ].astype(int),
-                ] = target
-
-                mask[
-                    sep_x[
-                        int(
-                            n_numbers * (target_start - target_width / 2)
-                        ) : int(n_numbers * (target_start + target_width / 2))
-                    ].astype(int),
-                    sep_y[
-                        int(
-                            n_numbers * (target_start - target_width / 2)
-                        ) : int(n_numbers * (target_start + target_width / 2))
-                    ].astype(int),
-                ] = mask_counter
-        mask_counter += 1
-
-    mask_vals = np.unique(mask)
-    mask_vals = mask_vals[1:]
-    for i, val in enumerate(mask_vals):
-        mask[mask == val] = i + 1
-
-    img = pad_img(img, padding, ppd, target)
-    mask = pad_img(mask, padding, ppd, 0)
-
-    return {"img": img, "mask": mask}
+    stim = white_generalized(
+        visual_size=visual_size,
+        ppd=ppd,
+        grating_frequency=grating_frequency,
+        intensity_bars=intensity_bars,
+        intensity_target=intensity_target,
+        target_indices=target_indices,
+        target_center_offsets=target_center_offsets,
+        target_sizes=target_size,
+        period=period,
+        )
+    return stim
 
 
 def white_anderson(
-    shape=(5, 5),
-    ppd=40,
-    frequency=2,
-    height_bars=1,
-    height_horizontal_top=1,
-    target_height=1,
-    target_indices_top=(5,),
-    target_offsets_top=(0.5,),
-    target_indices_bottom=(12,),
-    target_offsets_bottom=(-0.5,),
-    high=1.0,
-    low=0.0,
-    target=0.5,
-    top="low",
-    padding=(1, 1, 1, 1),
+    visual_size=(4, 4),
+    ppd=20,
+    grating_frequency=2,
+    intensity_bars=(1., 0.),
+    intensity_target=0.5,
+    target_indices_top=5,
+    target_indices_bottom=-6,
+    target_center_offset=0.6,
+    target_size=0.8,
+    intensity_stripes=(1., 0.),
+    stripe_center_offset=0.8,
+    stripe_size=0.8,
+    period="ignore",
 ):
     """
-    Anderson's white illusion
+    Anderson variation of White's stimulus
 
     Parameters
     ----------
-    shape : (float, float)
-        The shape of the illustion in degrees of visual angle (height, width)
+    visual_size : (float, float)
+        The shape of the stimulus in degrees of visual angle. (y,x)
     ppd : int
         pixels per degree (visual angle)
-    frequency : float
-        frequency of the grid in cycles per degree visual angle
-    height_bars : float
-        height of the bars in degrees visual angle
-    target_height : float
-        height of the target in degrees visual angle. If it's None, the target will be 1/3 of the illusion height
-    target_indices_top : (int, )
-        indices of the stripes where the target(s) will be placed. If None, two targets are put on (0, n_parts // 2).
-    target_offsets_top : (float, )
-        vertical offsets of targets in the top
-    target_indices_bottom : (int, )
-        indices of the stripes where the target(s) will be placed. If None, two targets are put on (0, n_parts // 2).
-    target_offsets_bottom : (float, )
-        vertical offsets of targets in the bottom
-    high : float
-        value of the bright stripes
-    low : float
-        value of the dark stripes
-    target : float
-        value for target
-    top : string in ['low', 'high']
-        specify whether the top should be bright or dark
-    padding : (float, float, float, float)
-        4-valued tuple specifying padding (top, bottom, left, right) in degrees visual angle
+    grating_frequency : float
+        the spatial frequency of the grating in cycles per degree
+    intensity_bars : (float, float)
+        intensity values of bars
+    intensity_target : float
+        intensity value of target
+    target_indices_top : int or tuple of ints
+        bar indices where top target(s) will be placed. As many targets as ints.
+    target_indices_bottom : int or tuple of ints
+        bar indices where bottom target(s) will be placed. As many targets as ints.
+    target_center_offset : float
+        offset from target centers to image center in degree visual angle.
+    target_size : float
+        target size (i.e. height / length) in degrees visual angle
+    intensity_stripes : (float, float)
+        intensity values of horizontal stripes
+    stripe_center_offset : float
+        offset from stripe centers to image center in degree visual angle.
+    stripe_size = float
+        stripe size (i.e. height / length) in degrees visual angle
+    period : string in ['ignore', 'full', 'half']
+        specifies if the period of the wave is considered for stimulus dimensions.
+            'ignore' simply converts degrees to pixels
+            'full' rounds down to guarantee a full period
+            'half' adds a half period to the size 'full' would yield.
+        Default is 'ignore'.
 
     Returns
     -------
-    A stimulus object
+    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
     """
-    height, width = degrees_to_pixels(shape, ppd)
-    pixels_per_cycle = degrees_to_pixels(1.0 / (frequency * 2), ppd) * 2
-    height_bars, height_horizontal_top = degrees_to_pixels(
-        height_bars, ppd
-    ), degrees_to_pixels(height_horizontal_top, ppd)
-    spacing_bottom = height - 3 * height_bars - height_horizontal_top
 
-    top = low if top == "low" else high
-    bottom = high if top == low else low
-
-    img = np.ones((height, width)) * bottom
-    mask = np.zeros((height, width))
-
-    index = [
-        i + j
-        for i in range(pixels_per_cycle // 2)
-        for j in range(0, width, pixels_per_cycle)
-        if i + j < width
-    ]
-
-    img[: height_bars * 2 + height_horizontal_top, index] = top
-    img[-height_bars:, index] = top
-    img[height_bars : height_bars + height_horizontal_top, :] = top
-
-    target_height = degrees_to_pixels(target_height, ppd)
-    target_offsets_top = tuple(
-        degrees_to_pixels(x, ppd) for x in target_offsets_top
-    )
-    target_offsets_bottom = tuple(
-        degrees_to_pixels(x, ppd) for x in target_offsets_bottom
-    )
-
-    for i, ind in enumerate(target_indices_top):
-        st = int(pixels_per_cycle / 2 * ind)
-        end = int(st + pixels_per_cycle / 2)
-        img[: height_bars * 2 + height_horizontal_top, st:end] = bottom
-        offset = target_offsets_top[i]
-        target_start = (
-            height_bars + (height_horizontal_top - target_height) // 2 + offset
+    stim = white_two_rows(
+        visual_size=visual_size,
+        ppd=ppd,
+        grating_frequency=grating_frequency,
+        intensity_bars=intensity_bars,
+        intensity_target=intensity_target,
+        target_indices_top=target_indices_top,
+        target_indices_bottom=target_indices_bottom,
+        target_center_offset=target_center_offset,
+        target_size=target_size,
+        period=period,
         )
-        target_end = target_start + target_height
-        img[target_start:target_end, st:end] = target
-        mask[target_start:target_end, st:end] = i + 1
 
-    for i, ind in enumerate(target_indices_bottom):
-        st = int(pixels_per_cycle / 2 * ind)
-        end = int(st + pixels_per_cycle / 2)
-        img[height_bars + height_horizontal_top :, st:end] = top
-        offset = target_offsets_bottom[i]
-        target_start = -height_bars - spacing_bottom + offset
-        target_end = target_start + target_height
-        img[target_start:target_end, st:end] = target
-        mask[target_start:target_end, st:end] = len(target_indices_top) + i + 1
+    img = stim['img']
+    mask = stim['mask']
+    stripe_center_offset_px = degrees_to_pixels(stripe_center_offset, ppd)
+    stripe_size_px = degrees_to_pixels(stripe_size, ppd)
+    cycle_width_px = degrees_to_pixels(1. / (grating_frequency*2), ppd) * 2
+    phase_width_px = cycle_width_px // 2
+    height, width = img.shape
+    nbars = width // phase_width_px
+    ttop, tbot = np.array(target_indices_top), np.array(target_indices_bottom)
+    ttop[ttop < 0] = nbars + ttop[ttop < 0]
+    tbot[tbot < 0] = nbars + tbot[tbot < 0]
 
-    img = pad_img(img, padding, ppd, target)
-    mask = pad_img(mask, padding, ppd, 0)
+    if stripe_size_px/2. > stripe_center_offset_px:
+        raise ValueError("Stripes overlap! Increase stripe offset or decrease stripe size.")
+    if (target_size/2 - target_center_offset + stripe_size/2 - stripe_center_offset) > 0:
+        raise ValueError("Stripes overlap with targets! Increase stripe or target offsets or"
+                         "decrease stripe or target size")
+    if stripe_center_offset*ppd % 1 != 0:
+        offsets_new = stripe_center_offset_px / ppd
+        print("Warning: Anderson stripe offsets rounded from %s to %s because of ppd" %
+              (stripe_center_offset, offsets_new))
 
-    return {"img": img, "mask": mask}
+    # Add stripe at top
+    ystart = height // 2 - stripe_center_offset_px - stripe_size_px // 2
+    img[ystart:ystart+stripe_size_px, 0:phase_width_px*np.min(ttop)] = intensity_stripes[0]
+    img[ystart:ystart+stripe_size_px, phase_width_px*(np.max(ttop)+1)::] = intensity_stripes[0]
+    if (ystart < 0) or (ystart+stripe_size_px > height):
+        raise ValueError("Anderson stripes do not fully fit into stimulus")
 
+    # Add stripe at bottom
+    ystart = height // 2 + stripe_center_offset_px - stripe_size_px // 2
+    img[ystart:ystart+stripe_size_px, 0:phase_width_px*np.min(tbot)] = intensity_stripes[1]
+    img[ystart:ystart+stripe_size_px, phase_width_px*(np.max(tbot)+1)::] = intensity_stripes[1]
+    if (ystart < 0) or (ystart+stripe_size_px > height):
+        raise ValueError("Anderson stripes do not fully fit into stimulus")
 
-def RHS2007_WE_thick():
-    total_height, total_width, ppd = (32.0,) * 3
-    height, width = 12.0, 16.0
-    n_cycles = 4.0
-    frequency = n_cycles / width
-    padding_horizontal = (total_width - width) / 2
-    padding_vertical = (total_height - height) / 2
-    padding = (
-        padding_vertical,
-        padding_vertical,
-        padding_horizontal,
-        padding_horizontal,
-    )
-    target_height = 4
-    return white(
-        shape=(height, width),
-        ppd=ppd,
-        frequency=frequency,
-        start="low",
-        target_indices=(3, 6),
-        padding=padding,
-        target_height=target_height + (1 / ppd),
-        targets_offset=1,
-    )
+    params = {"shape": img.shape,
+              "visual_size": np.array(img.shape)/ppd,
+              "ppd": ppd,
+              "grating_frequency": grating_frequency,
+              "intensity_bars": intensity_bars,
+              "intensity_target": intensity_target,
+              "target_indices_top": target_indices_top,
+              "target_indices_bottom": target_indices_bottom,
+              "target_center_offset": target_center_offset,
+              "target_size": target_size,
+              "period": period,
+              }
 
-
-def RHS2007_WE_thin_wide():
-    total_height, total_width, ppd = (32.0,) * 3
-    height, width = 12.0, 16.0
-    n_cycles = 8.0
-    frequency = n_cycles / width
-    padding_horizontal = (total_width - width) / 2.0
-    padding_vertical = (total_height - height) / 2.0
-    padding = (
-        padding_vertical,
-        padding_vertical,
-        padding_horizontal,
-        padding_horizontal,
-    )
-    target_height = 2
-    return white(
-        shape=(height, width),
-        ppd=ppd,
-        frequency=frequency,
-        start="high",
-        target_indices=(4, 13),
-        padding=padding,
-        target_height=target_height,
-    )
+    return {"img": img, "mask": mask, **params}
 
 
-def RHS2007_WE_dual():
-    total_height, total_width, ppd = (32.0,) * 3
-    height, width = 6.0, 8.0
-    n_cycles = 4.0
-    frequency = n_cycles / width
+def white_howe(
+    visual_size=(4, 4),
+    ppd=20,
+    grating_frequency=2,
+    intensity_bars=(1., 0.),
+    intensity_target=0.5,
+    target_indices_top=5,
+    target_indices_bottom=-6,
+    target_center_offset=0.3,
+    target_size=0.5,
+    intensity_stripes=(1., 0.),
+    period="ignore",
+):
+    """
+    Howe variation of White's stimulus
 
-    padding_horizontal1, padding_vertical1 = (
-        total_width / 2.0 - width
-    ) / 2.0, (total_height - height) / 2.0
-    padding1 = (
-        padding_vertical1,
-        padding_vertical1,
-        padding_horizontal1,
-        padding_horizontal1,
-    )
-    padding_horizontal2, padding_vertical2 = (
-        total_width / 2.0 - height
-    ) / 2.0, (total_height - width) / 2.0
-    padding2 = (
-        padding_vertical2,
-        padding_vertical2,
-        padding_horizontal2,
-        padding_horizontal2,
-    )
+    Parameters
+    ----------
+    visual_size : (float, float)
+        The shape of the stimulus in degrees of visual angle. (y,x)
+    ppd : int
+        pixels per degree (visual angle)
+    grating_frequency : float
+        the spatial frequency of the grating in cycles per degree
+    intensity_bars : (float, float)
+        intensity values of bars
+    intensity_target : float
+        intensity value of target
+    target_indices_top : int or tuple of ints
+        bar indices where top target(s) will be placed. As many targets as ints.
+    target_indices_bottom : int or tuple of ints
+        bar indices where bottom target(s) will be placed. As many targets as ints.
+    target_center_offset : float
+        offset from target centers to image center in degree visual angle.
+    target_size : float
+        target size (i.e. height / length) in degrees visual angle
+    intensity_stripes : (float, float)
+        intensity values of horizontal stripes
+    period : string in ['ignore', 'full', 'half']
+        specifies if the period of the wave is considered for stimulus dimensions.
+            'ignore' simply converts degrees to pixels
+            'full' rounds down to guarantee a full period
+            'half' adds a half period to the size 'full' would yield.
+        Default is 'ignore'.
 
-    target_height = 2.0
-    stim1 = white(
-        shape=(height, width),
-        ppd=ppd,
-        frequency=frequency,
-        start="low",
-        target_indices=(3, 6),
-        padding=padding1,
-        target_height=target_height,
-    )
-    stim2 = white(
-        shape=(height, width),
-        ppd=ppd,
-        frequency=frequency,
-        start="low",
-        target_indices=(3, 6),
-        padding=padding2,
-        target_height=target_height,
-        orientation="vertical",
-    )
-
-    img = np.hstack((stim1['img'], stim2['img']))
-    mask = np.hstack((stim1['mask'], stim2['mask']))
-
-    return {"img": img, "mask": mask}
-
-
-
-def RHS2007_WE_anderson():
-    total_height, total_width, ppd = (32,) * 3
-    height, width = 16.0, 16.0
-    n_cycles = 8.0
-    frequency = n_cycles / width
-    height_bars = height / 5
-    height_horizontal = height_bars
-    target_height = height_bars
-    padding_horizontal = (total_width - width) / 2
-    padding_vertical = (total_height - height) / 2
-    padding = (
-        padding_vertical,
-        padding_vertical,
-        padding_horizontal,
-        padding_horizontal,
-    )
+    Returns
+    -------
+    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    """
     return white_anderson(
-        shape=(height, width),
+        visual_size=visual_size,
         ppd=ppd,
-        frequency=frequency,
-        target_height=target_height,
-        target_indices_top=(5,),
-        target_offsets_top=(target_height / 2,),
-        target_indices_bottom=(10,),
-        target_offsets_bottom=(-target_height / 2,),
-        height_bars=height_bars,
-        height_horizontal_top=height_horizontal,
-        padding=padding,
-    )
+        grating_frequency=grating_frequency,
+        intensity_bars=intensity_bars,
+        intensity_target=intensity_target,
+        target_indices_top=target_indices_top,
+        target_indices_bottom=target_indices_bottom,
+        target_center_offset=target_center_offset,
+        target_size=target_size,
+        intensity_stripes=intensity_stripes,
+        stripe_center_offset=target_center_offset,
+        stripe_size=target_size,
+        period=period,
+        )
 
 
-def RHS2007_WE_howe():
-    total_height, total_width, ppd = (32.0,) * 3
-    height, width = 16.0, 16.0
-    n_cycles = 8.0
-    frequency = n_cycles / width
-    height_bars = height / 5.0
-    height_horizontal = height_bars
-    target_height = height_bars
-    padding_horizontal = (total_width - width) / 2.0
-    padding_vertical = (total_height - height) / 2.0
-    padding = (
-        padding_vertical,
-        padding_vertical,
-        padding_horizontal,
-        padding_horizontal,
-    )
-    return white_anderson(
-        shape=(height, width),
+def white_yazdanbakhsh(
+    visual_size=(4, 4),
+    ppd=20,
+    grating_frequency=2,
+    intensity_bars=(1., 0.),
+    intensity_target=0.5,
+    target_indices_top=5,
+    target_indices_bottom=-6,
+    target_center_offset=0.6,
+    target_size=1.,
+    intensity_stripes=(1., 0.),
+    gap_size=0.2,
+    period="ignore",
+):
+    """
+    Yazsdanbakhsh variation of White's stimulus
+
+    Parameters
+    ----------
+    visual_size : (float, float)
+        The shape of the stimulus in degrees of visual angle. (y,x)
+    ppd : int
+        pixels per degree (visual angle)
+    grating_frequency : float
+        the spatial frequency of the grating in cycles per degree
+    intensity_bars : (float, float)
+        intensity values of bars
+    intensity_target : float
+        intensity value of target
+    target_indices_top : int or tuple of ints
+        bar indices where top target(s) will be placed. As many targets as ints.
+    target_indices_bottom : int or tuple of ints
+        bar indices where bottom target(s) will be placed. As many targets as ints.
+    target_center_offset : float
+        offset from target centers to image center in degree visual angle.
+    target_size : float
+        target size (i.e. height / length) in degrees visual angle
+    intensity_stripes : (float, float)
+        intensity values of horizontal stripes
+    stripe_size = float
+        stripe size (i.e. height / length) in degrees visual angle
+    period : string in ['ignore', 'full', 'half']
+        specifies if the period of the wave is considered for stimulus dimensions.
+            'ignore' simply converts degrees to pixels
+            'full' rounds down to guarantee a full period
+            'half' adds a half period to the size 'full' would yield.
+        Default is 'ignore'.
+
+    Returns
+    -------
+    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    """
+
+    stim = white_two_rows(
+        visual_size=visual_size,
         ppd=ppd,
-        frequency=frequency,
-        target_height=target_height,
-        target_indices_top=(5,),
-        target_offsets_top=(0,),
-        target_indices_bottom=(10,),
-        target_offsets_bottom=(0,),
-        height_bars=height_bars,
-        height_horizontal_top=height_horizontal,
-        padding=padding,
-    )
+        grating_frequency=grating_frequency,
+        intensity_bars=intensity_bars,
+        intensity_target=intensity_target,
+        target_indices_top=target_indices_top,
+        target_indices_bottom=target_indices_bottom,
+        target_center_offset=target_center_offset,
+        target_size=target_size,
+        period=period,
+        )
 
+    img = stim['img']
+    mask = stim['mask']
+    gap_size_px = degrees_to_pixels(gap_size, ppd)
+    target_offset_px = degrees_to_pixels(target_center_offset, ppd)
+    tsize_px = degrees_to_pixels(target_size, ppd)
+    cycle_width_px = degrees_to_pixels(1. / (grating_frequency*2), ppd) * 2
+    phase_width_px = cycle_width_px // 2
+    height, width = img.shape
+    nbars = width // phase_width_px
+    ttop, tbot = np.array(target_indices_top), np.array(target_indices_bottom)
+    ttop[ttop < 0] = nbars + ttop[ttop < 0]
+    tbot[tbot < 0] = nbars + tbot[tbot < 0]
 
-def RHS2007_WE_radial_thick_small():
-    total_height, total_width, ppd = (32.0,) * 3
-    radius = 8.0
-    padding = ((total_width - 2 * radius) / 2.0,) * 4
-    n_cycles = 7.0
-    return wheel_of_fortune_white(
-        radius=radius,
-        ppd=ppd,
-        n_cycles=n_cycles,
-        angle_shift=np.pi / n_cycles / 2.0,
-        target_indices=(n_cycles - 1, 2 * n_cycles - 1),
-        target_width=0.5,
-        target_start=0.55,
-        padding=padding,
-    )
+    if isinstance(target_indices_top, (float, int)):
+        ttop = (ttop,)
+    if isinstance(target_indices_bottom, (float, int)):
+        tbot = (tbot,)
 
+    if any(t in ttop for t in tbot) and (target_offset_px - tsize_px//2 - gap_size_px) < 0:
+        raise ValueError("Stripes overlap! Replace or decrease targets or decrease stripe size.")
 
-def RHS2007_WE_radial_thick():
-    total_height, total_width, ppd = (32.0,) * 3
-    radius = 12.0
-    padding = ((total_width - 2 * radius) / 2.0,) * 4
-    n_cycles = 9.0
-    return wheel_of_fortune_white(
-        radius=radius,
-        ppd=ppd,
-        n_cycles=n_cycles,
-        angle_shift=np.pi / n_cycles / 2.0,
-        target_indices=(n_cycles - 1, 2 * n_cycles - 1),
-        target_width=0.3,
-        target_start=0.5,
-        padding=padding,
-    )
+    # Add stripes at top
+    ystart = height // 2 - target_offset_px - gap_size_px - tsize_px // 2
+    ystart2 = height // 2 - target_offset_px + tsize_px // 2
+    for t in ttop:
+        img[ystart:ystart+gap_size_px, t*phase_width_px:(t+1)*phase_width_px] = intensity_stripes[0]
+        img[ystart2:ystart2+gap_size_px, t*phase_width_px:(t+1)*phase_width_px] = intensity_stripes[0]
 
+    # Add stripes at bottom
+    ystart = height // 2 + target_offset_px - tsize_px // 2 - gap_size_px
+    ystart2 = height // 2 + target_offset_px + tsize_px // 2
+    for t in tbot:
+        img[ystart:ystart+gap_size_px, t*phase_width_px:(t+1)*phase_width_px] = intensity_stripes[1]
+        img[ystart2:ystart2+gap_size_px, t*phase_width_px:(t+1)*phase_width_px] = intensity_stripes[1]
 
-def RHS2007_WE_radial_thin_small():
-    total_height, total_width, ppd = (32.0,) * 3
-    radius = 8.0
-    padding = ((total_width - 2 * radius) / 2.0,) * 4
-    n_cycles = 13.0
-    return wheel_of_fortune_white(
-        radius=radius,
-        ppd=ppd,
-        n_cycles=n_cycles,
-        angle_shift=np.pi / n_cycles / 2,
-        target_indices=(n_cycles - 1, 2 * n_cycles - 1),
-        target_width=0.25,
-        target_start=0.5,
-        padding=padding,
-    )
+    params = {"shape": img.shape,
+              "visual_size": np.array(img.shape)/ppd,
+              "ppd": ppd,
+              "grating_frequency": grating_frequency,
+              "intensity_bars": intensity_bars,
+              "intensity_target": intensity_target,
+              "target_indices_top": target_indices_top,
+              "target_indices_bottom": target_indices_bottom,
+              "target_center_offset": target_center_offset,
+              "target_size": target_size,
+              "period": period,
+              }
 
-
-def RHS2007_WE_radial_thin():
-    total_height, total_width, ppd = (32,) * 3
-    radius = 12.0
-    padding = ((total_width - 2 * radius) / 2,) * 4
-    n_cycles = 21.0
-    return wheel_of_fortune_white(
-        radius=radius,
-        ppd=ppd,
-        n_cycles=n_cycles,
-        angle_shift=np.pi / n_cycles / 2,
-        target_indices=(n_cycles - 1, 2 * n_cycles - 1),
-        target_width=0.15,
-        target_start=0.55,
-        padding=padding,
-    )
-
-
-def RHS2007_WE_circular1():
-    total_height, total_width, ppd = (32,) * 3
-    radius = 8.0
-    n_cycles = 4.0
-    frequency = n_cycles / radius
-    padding_vertical = (total_height - 2 * radius) / 2
-    padding = (padding_vertical, padding_vertical, 0, 0)
-    stim1 = circular_white(
-        radius=radius,
-        ppd=ppd,
-        frequency=frequency,
-        target_indices=(4,),
-        start="high",
-        padding=padding,
-    )
-    stim2 = circular_white(
-        radius=radius,
-        ppd=ppd,
-        frequency=frequency,
-        target_indices=(4,),
-        start="low",
-        padding=padding,
-    )
-    stim2['mask'] *= 2
-
-    img = np.hstack((stim1['img'], stim2['img']))
-    mask = np.hstack((stim1['mask'], stim2['mask']))
-
-    return {"img": img, "mask": mask}
-
-
-def RHS2007_WE_circular05():
-    total_height, total_width, ppd = (32,) * 3
-    radius = 8
-    n_cycles = 8
-    frequency = n_cycles / radius
-    padding_vertical = (total_height - 2 * radius) / 2
-    padding = (padding_vertical, padding_vertical, 0, 0)
-    stim1 = circular_white(
-        radius=radius,
-        ppd=ppd,
-        frequency=frequency,
-        target_indices=(10,),
-        start="high",
-        padding=padding,
-    )
-    stim2 = circular_white(
-        radius=radius,
-        ppd=ppd,
-        frequency=frequency,
-        target_indices=(10,),
-        start="low",
-        padding=padding,
-    )
-    stim2['mask'] *= 2
-
-    img = np.hstack((stim1['img'], stim2['img']))
-    mask = np.hstack((stim1['mask'], stim2['mask']))
-
-    return {"img": img, "mask": mask}
-
-
-def RHS2007_WE_circular025():
-    total_height, total_width, ppd = (32.0,) * 3
-    radius = 8.0
-    n_cycles = 16.0
-    frequency = n_cycles / radius
-    padding_vertical = (total_height - 2 * radius) / 2.0
-    padding = (padding_vertical, padding_vertical, 0, 0)
-    stim1 = circular_white(
-        radius=radius,
-        ppd=ppd,
-        frequency=frequency,
-        target_indices=(22,),
-        start="high",
-        padding=padding,
-    )
-    stim2 = circular_white(
-        radius=radius,
-        ppd=ppd,
-        frequency=frequency,
-        target_indices=(22,),
-        start="low",
-        padding=padding,
-    )
-    stim2['mask'] *= 2
-
-    img = np.hstack((stim1['img'], stim2['img']))
-    mask = np.hstack((stim1['mask'], stim2['mask']))
-
-    return {"img": img, "mask": mask}
-
-
-def domijan2015_white():
-    height, width, ppd = 8.1, 8.0, 10
-    n_cycles = 4
-    frequency = n_cycles / width
-    return white(
-        shape=(height, width),
-        ppd=ppd,
-        frequency=frequency,
-        high=9.0,
-        low=1.0,
-        target=5.0,
-        period="ignore",
-        start="low",
-        target_indices=(3, 6),
-        target_height=2.1,
-        targets_offset=0,
-        orientation="horizontal",
-        padding=(0.9, 1.0, 0.9, 1.1),
-        padding_val=5.0,
-    )
+    return {"img": img, "mask": mask, **params}
 
 
 if __name__ == "__main__":
-    stim = white()
-    plt.subplot(4, 2, 1)
-    plt.imshow(stim['img'], cmap="gray")
-    plt.subplot(4, 2, 2)
-    plt.imshow(stim['mask'], cmap="gray")
+    import matplotlib.pyplot as plt
+    from stimuli.utils import plot_stimuli
 
-    stim = circular_white()
-    plt.subplot(4, 2, 3)
-    plt.imshow(stim['img'], cmap='gray')
-    plt.subplot(4, 2, 4)
-    plt.imshow(stim['mask'], cmap='gray')
+    stims = {
+        "White flexible": white_generalized(),
+        "White single row": white(),
+        "White two rows": white_two_rows(),
+        "Anderson's variation": white_anderson(),
+        "Yazdanbakhsh variation": white_yazdanbakhsh(),
+        "Howe's variation": white_howe(),
+    }
 
-    stim = wheel_of_fortune_white()
-    plt.subplot(4, 2, 5)
-    plt.imshow(stim['img'], cmap='gray')
-    plt.subplot(4, 2, 6)
-    plt.imshow(stim['mask'], cmap='gray')
-
-    stim = white_anderson()
-    plt.subplot(4, 2, 7)
-    plt.imshow(stim['img'], cmap='gray')
-    plt.subplot(4, 2, 8)
-    plt.imshow(stim['mask'], cmap='gray')
-
-    plt.tight_layout()
+    plot_stimuli(stims, mask=False)
     plt.show()

@@ -1,0 +1,50 @@
+{
+    "argyle": {
+        "img": "04ed9d8b14438f82d895627cda6772ce",
+        "mask": "dacc0a8cdde9f21b7773331befec4133"
+    },
+    "argyle_control": {
+        "img": "7e536ea55c47d78b6d87e98f9415573a",
+        "mask": "e3182d61a255c1ed78f6b89fd6a5f205"
+    },
+    "argyle_long": {
+        "img": "1cd257d79521e175611b3a36d01be3a6",
+        "mask": "c594bc21ca5dc6c4d05d6f15335fb68b"
+    },
+    "snake": {
+        "img": "cc5ca4f2eaff7d975b3b7ad3826a05db",
+        "mask": "bf139da09a4250ee4dce03ae6b5d78e5"
+    },
+    "snake_control": {
+        "img": "f347cdc2e44b80606951aabe4a31b6dd",
+        "mask": "bf139da09a4250ee4dce03ae6b5d78e5"
+    },
+    "koffka_adelson": {
+        "img": "288e84fa25ec1c41e92e493034132f42",
+        "mask": "f07e1cf6fdb804aa8ec5b0cbb308cef7"
+    },
+    "koffka_broken": {
+        "img": "87e0641a83cd250cd23fe5a5c3a3951d",
+        "mask": "1b14a63bcfdd06f631ae8dc04da5aa4e"
+    },
+    "koffka_connected": {
+        "img": "467685525438b7367576a345f9e0890a",
+        "mask": "9c827a08a4915550002f3fe21e388c06"
+    },
+    "checkassim": {
+        "img": "04506275ba5cf710ab52381d19105a6f",
+        "mask": "4bc92371e105629f30513c1050f99cf4"
+    },
+    "simcon": {
+        "img": "f5ade637e91f9bd48241ec6d6dbbb405",
+        "mask": "2c720ef61466c279c7965062a740aae9"
+    },
+    "simcon_articulated": {
+        "img": "f821f9b506f1e93a3a189722fc4a7837",
+        "mask": "2c720ef61466c279c7965062a740aae9"
+    },
+    "white": {
+        "img": "2de859186dffc30ad1ab4d6b9b83bb0d",
+        "mask": "85edd9940778f9cf8c81186eeced1617"
+    }
+}

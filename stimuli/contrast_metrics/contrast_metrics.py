@@ -305,3 +305,74 @@ def alpha_c_minmax(plain, medium):
     plain_mean = (plain.min() + plain.max()) / 2
     med_mean = (medium.min() + medium.max()) / 2
     return a_l / (1 + (med_mean - plain_mean) / plain_mean)
+
+
+###################################
+#          Lynns utils            #
+###################################
+def michelson_contrast(image):
+    """Calculate Michelson contrast for the image.
+
+    Parameters
+    ----------
+    image
+        2d array
+
+    Returns
+    -------
+    mc
+        Michelson contrast
+
+    """
+    if image.min() < 0.:
+        print('Stimulus values should be positive!')
+        raise SystemExit(0)
+    else:
+        mc = (image.max() - image.min()) / (image.max() + image.min())
+    return mc
+
+
+def rms_contrast(image):
+    """Calculate rms contrast for an image.
+
+    Parameters
+    ----------
+    image
+        2d array
+
+    Returns
+    -------
+    rms
+        rms contrast
+
+    """
+    if image.min() < 0.:
+        print('Stimulus values should be positive!')
+        raise SystemExit(0)
+    else:
+        rms = image.std()
+    return rms
+
+
+def rms_divided_by_mean(image):
+    """Calculate rms contrast for an image divided by the mean. This metric is useful
+    to quantify contrast in a masking paradigm because it contains information about the
+    efficiency of the mask.
+
+    Parameters
+    ----------
+    image
+        2d array
+
+    Returns
+    -------
+    rms
+        rms contrast divided by mean
+
+    """
+    if image.min() < 0.:
+        print('Stimulus values should be positive!')
+        raise SystemExit(0)
+    else:
+        rms = image.std() / image.mean()
+    return rms
