@@ -1,3 +1,33 @@
+"""Stimuli from Robinson, Hammon & de Sa (2007)
+https://doi.org/10.1016/j.visres.2007.02.017
+
+This module reproduces all of the stimuli used by Robinson,
+Hammon & de Sa (2007) as they were provided to the model described
+in that paper.
+
+Each stimulus is provided by a separate function,
+a full list can be found as stimuli.papers.RHS2007.__all__
+
+The output of each of these functions is a stimulus dictionary.
+
+For a visual representation of all the stimuli and their mask,
+simply run this module as a script:
+
+    $ python stimuli/papers/RHS2007.py
+
+Attributes
+----------
+__all__ (list of str): list of all stimulus-functions
+    that are exported by this module when executing
+        >>> from stimuli.papers.domijan2015 import *
+
+References
+-----------
+Robinson, A. E., Hammon, P. S., & de Sa, V. R. (2007). Explaining brightness
+illusions using spatial filtering and local response normalization. Vision
+research, 47(12), 1631-1644. https://doi.org/10.1016/j.visres.2007.02.017
+"""
+
 import numpy as np
 from stimuli import illusions
 from stimuli.utils import degrees_to_pixels, pad_img, pad_img_to_shape

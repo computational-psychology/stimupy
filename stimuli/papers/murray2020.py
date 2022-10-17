@@ -1,19 +1,15 @@
 """Stimuli from Murray (2020) https://doi.org/10/gh57gf
 
 This module reproduces most of the stimuli used by Murray (2020)
-exactly as they were provided to the model described in that paper.
+as they were provided to the model described in that paper but
+normalized between 0 and 1.
 The stimuli are show in Fig 1 of the paper.
 NOTE that the Haze illusion (Fig 1m) is not provided.
 
 Each stimulus is provided by a separate function,
 a full list can be found as stimuli.papers.murray2020.__all__
 
-The output of each of these functions is a dict
-with at least the keys:
-    - "img", containing a 2D numpy array providing the stimulus image
-      in cd/m2
-    - "mask", containing a 2D numpy array providing a mask for the
-      target regions in the stimulus, each indicated by an integer index.
+The output of each of these functions is a stimulus dictionary.
 
 For a visual representation of all the stimuli and their mask,
 simply run this module as a script:
