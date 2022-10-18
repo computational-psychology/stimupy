@@ -34,7 +34,7 @@ import os.path
 import numpy as np
 import scipy.io
 from stimuli import illusions
-from stimuli.utils import pad_img, pad_img_to_shape
+from stimuli.utils import pad_img
 
 __all__ = [
     "argyle",
@@ -106,14 +106,16 @@ def get_mask(target1, target2, shape):
 def argyle(ppd=PPD):
     """Argyle illusion, Murray (2020) Fig 1a
 
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+
     Returns
     -------
     dict of str
-        dict with the stimulus, with at least the keys:
-        - "img" containing a 2D numpy array providing the stimulus image normalized between 0-1
-        - "mask", containing a 2D numpy array providing a mask for the
-          target regions in the stimulus, each indicated by an integer index.
-        - "original_range" containing the original stimulus intensities in cd/m**2
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
     """
     a = mat_content["argyle"]
     img = np.array(((a[0])[0])[0])
@@ -145,14 +147,16 @@ def argyle(ppd=PPD):
 def argyle_control(ppd=PPD):
     """Argyle control figure, Murray (2020) Fig 1c
 
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+
     Returns
     -------
     dict of str
-        dict with the stimulus, with at least the keys:
-        - "img" containing a 2D numpy array providing the stimulus image normalized between 0-1
-        - "mask", containing a 2D numpy array providing a mask for the
-          target regions in the stimulus, each indicated by an integer index.
-        - "original_range" containing the original stimulus intensities in cd/m**2
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
     """
     a = mat_content["argyle_control"]
     img = np.array(((a[0])[0])[0])
@@ -184,14 +188,16 @@ def argyle_control(ppd=PPD):
 def argyle_long(ppd=PPD):
     """Long-range Argyle illusion, Murray (2020) Fig 1b
 
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+
     Returns
     -------
     dict of str
-        dict with the stimulus, with at least the keys:
-        - "img" containing a 2D numpy array providing the stimulus image normalized between 0-1
-        - "mask", containing a 2D numpy array providing a mask for the
-          target regions in the stimulus, each indicated by an integer index.
-        - "original_range" containing the original stimulus intensities in cd/m**2
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
     """
     a = mat_content["argyle_long"]
     img = np.array(((a[0])[0])[0])
@@ -223,14 +229,16 @@ def argyle_long(ppd=PPD):
 def snake(ppd=PPD):
     """Snake illusion, Murray (2020) Fig 1i
 
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+
     Returns
     -------
     dict of str
-        dict with the stimulus, with at least the keys:
-        - "img" containing a 2D numpy array providing the stimulus image normalized between 0-1
-        - "mask", containing a 2D numpy array providing a mask for the
-          target regions in the stimulus, each indicated by an integer index.
-        - "original_range" containing the original stimulus intensities in cd/m**2
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
     """
     a = mat_content["snake"]
     img = np.array(((a[0])[0])[0])
@@ -262,14 +270,16 @@ def snake(ppd=PPD):
 def snake_control(ppd=PPD):
     """Snake control figure, Murray (2020) Fig 1j
 
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+
     Returns
     -------
     dict of str
-        dict with the stimulus, with at least the keys:
-        - "img" containing a 2D numpy array providing the stimulus image normalized between 0-1
-        - "mask", containing a 2D numpy array providing a mask for the
-          target regions in the stimulus, each indicated by an integer index.
-        - "original_range" containing the original stimulus intensities in cd/m**2
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
     """
     a = mat_content["snake_control"]
     img = np.array(((a[0])[0])[0])
@@ -301,14 +311,16 @@ def snake_control(ppd=PPD):
 def koffka_adelson(ppd=PPD):
     """Koffka-Adelson figure, Murray (2020) Fig 1e
 
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+
     Returns
     -------
     dict of str
-        dict with the stimulus, with at least the keys:
-        - "img" containing a 2D numpy array providing the stimulus image normalized between 0-1
-        - "mask", containing a 2D numpy array providing a mask for the
-          target regions in the stimulus, each indicated by an integer index.
-        - "original_range" containing the original stimulus intensities in cd/m**2
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
     """
     a = mat_content["koffka_adelson"]
     img = np.array(((a[0])[0])[0])
@@ -340,14 +352,16 @@ def koffka_adelson(ppd=PPD):
 def koffka_broken(ppd=PPD):
     """Koffka ring, broken, Murray (2020) Fig 1d
 
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+
     Returns
     -------
     dict of str
-        dict with the stimulus, with at least the keys:
-        - "img" containing a 2D numpy array providing the stimulus image normalized between 0-1
-        - "mask", containing a 2D numpy array providing a mask for the
-          target regions in the stimulus, each indicated by an integer index.
-        - "original_range" containing the original stimulus intensities in cd/m**2
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
     """
     a = mat_content["koffka_broken"]
     img = np.array(((a[0])[0])[0])
@@ -379,14 +393,16 @@ def koffka_broken(ppd=PPD):
 def koffka_connected(ppd=PPD):
     """Koffka ring, connected, Murray (2020) Fig 1f
 
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+
     Returns
     -------
     dict of str
-        dict with the stimulus, with at least the keys:
-        - "img" containing a 2D numpy array providing the stimulus image normalized between 0-1
-        - "mask", containing a 2D numpy array providing a mask for the
-          target regions in the stimulus, each indicated by an integer index.
-        - "original_range" containing the original stimulus intensities in cd/m**2
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
     """
     a = mat_content["koffka_connected"]
     img = np.array(((a[0])[0])[0])
@@ -418,14 +434,16 @@ def koffka_connected(ppd=PPD):
 def checkassim(ppd=PPD, pad=PAD):
     """Checkerboard assimilation, Murray (2020) Fig 1h
 
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+
     Returns
     -------
     dict of str
-        dict with the stimulus, with at least the keys:
-        - "img" containing a 2D numpy array providing the stimulus image normalized between 0-1
-        - "mask", containing a 2D numpy array providing a mask for the
-          target regions in the stimulus, each indicated by an integer index.
-        - "original_range" containing the original stimulus intensities in cd/m**2
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
     """
     params = {
         "ppd": ppd,
@@ -462,14 +480,16 @@ def checkassim(ppd=PPD, pad=PAD):
 def simcon(ppd=PPD):
     """Classic simultaneous contrast figure, Murray (2020) Fig 1k
 
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+
     Returns
     -------
     dict of str
-        dict with the stimulus, with at least the keys:
-        - "img" containing a 2D numpy array providing the stimulus image normalized between 0-1
-        - "mask", containing a 2D numpy array providing a mask for the
-          target regions in the stimulus, each indicated by an integer index.
-        - "original_range" containing the original stimulus intensities in cd/m**2
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
     """
     a = mat_content["simcon"]
     img = np.array(((a[0])[0])[0])
@@ -501,14 +521,16 @@ def simcon(ppd=PPD):
 def simcon_articulated(ppd=PPD):
     """Articulated simultaneous contrast figure, Murray (2020) Fig 1l
 
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+
     Returns
     -------
     dict of str
-        dict with the stimulus, with at least the keys:
-        - "img" containing a 2D numpy array providing the stimulus image normalized between 0-1
-        - "mask", containing a 2D numpy array providing a mask for the
-          target regions in the stimulus, each indicated by an integer index.
-        - "original_range" containing the original stimulus intensities in cd/m**2
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
     """
     a = mat_content["simcon_articulated"]
     img = np.array(((a[0])[0])[0])
@@ -540,14 +562,16 @@ def simcon_articulated(ppd=PPD):
 def white(ppd=PPD):
     """White's illusion, Murray (2020) Fig 1A
 
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+
     Returns
     -------
     dict of str
-        dict with the stimulus, with at least the keys:
-        - "img" containing a 2D numpy array providing the stimulus image normalized between 0-1
-        - "mask", containing a 2D numpy array providing a mask for the
-          target regions in the stimulus, each indicated by an integer index.
-        - "original_range" containing the original stimulus intensities in cd/m**2
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
     """
     params = {
         "ppd": ppd,

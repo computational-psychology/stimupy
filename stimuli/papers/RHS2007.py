@@ -93,6 +93,32 @@ def gen_all(ppd=PPD, pad=True, skip=False):
 
 
 def WE_thick(ppd=PPD, pad=True):
+    """White stimulus as shown in Robinson, Hammon, & de Sa (2007) Fig 1a.
+    Grating size: 12x16 deg
+    Grating frequency: 0.25 cpd
+    Target size: 4x2 deg
+
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+    pad : bool
+        If True, include padding to 32x32 deg (default: True)
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Blakeslee, B., & McCourt, M. E. (1999). A multiscale spatial ﬁltering account of the
+        White eﬀect, simultaneous brightness contrast and grating induction. Vision
+        Research, 39, 4361–4377.
+    White, M. (1979). A new eﬀect of pattern on perceived lightness. Perception, 8, 413–416.
+    """
+
     height, width = 12.0, 16.0
     params = {
         "ppd": ppd,
@@ -122,6 +148,32 @@ def WE_thick(ppd=PPD, pad=True):
 
 
 def WE_thin_wide(ppd=PPD, pad=True):
+    """White stimulus as shown in Robinson, Hammon, & de Sa (2007) Fig 1b.
+    Grating size: 12x16 deg
+    Grating frequency: 0.5 cpd
+    Target size: 2x1 deg
+
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+    pad : bool
+        If True, include padding to 32x32 deg (default: True)
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Blakeslee, B., & McCourt, M. E. (1999). A multiscale spatial ﬁltering account of the
+        White eﬀect, simultaneous brightness contrast and grating induction. Vision
+        Research, 39, 4361–4377.
+    White, M. (1979). A new eﬀect of pattern on perceived lightness. Perception, 8, 413–416.
+    """
+
     height, width = 12.0, 16.0
     params = {
         "ppd": ppd,
@@ -151,6 +203,25 @@ def WE_thin_wide(ppd=PPD, pad=True):
 
 
 def WE_dual(ppd=PPD, pad=True):
+    """Dual White stimulus as shown in Robinson, Hammon, & de Sa (2007) Fig 1c.
+    Grating sizes: 6x8 deg
+    Grating frequency: 0.5 cpd
+    Target size: 2x1 deg
+
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+    pad : bool
+        If True, include padding to 32x32 deg (default: True)
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+    """
+
     height, width = 6.0, 8.0
     params = {
         "ppd": ppd,
@@ -196,6 +267,33 @@ def WE_dual(ppd=PPD, pad=True):
 
 
 def WE_anderson(ppd=PPD, pad=True):
+    """Anderson variation of White stimulus as shown in Robinson, Hammon, & de Sa (2007) Fig 1d.
+    Grating size: 16x16 deg
+    Grating frequency: 0.5 cpd
+    Target size: 3.2x1 deg
+
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+    pad : bool
+        If True, include padding to 32x32 deg (default: True)
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Anderson, B. L. (2001). Contrasting theories of White’s illusion. Perception, 30, 1499–1501
+    Blakeslee, B., Pasieka, W., & McCourt, M. E. (2005). Oriented multiscale spatial ﬁltering
+        and contrast normalization: a parsimonious model of brightness induction in a continuum
+        of stimuli including White, Howe and simultaneous brightness contrast. Vision Research,
+        45, 607–615.
+    """
+
     height, width = 16.0, 16.0
     params = {
         "ppd": ppd,
@@ -230,6 +328,34 @@ def WE_anderson(ppd=PPD, pad=True):
 
 
 def WE_howe(ppd=PPD, pad=True):
+    """Howe variation of White stimulus as shown in Robinson, Hammon, & de Sa (2007) Fig 1e.
+    Grating size: 16x16 deg
+    Grating frequency: 0.5 cpd
+    Target size: 3.2x1 deg
+
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+    pad : bool
+        If True, include padding to 32x32 deg (default: True)
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Blakeslee, B., Pasieka, W., & McCourt, M. E. (2005). Oriented multiscale spatial ﬁltering
+        and contrast normalization: a parsimonious model of brightness induction in a continuum
+        of stimuli including White, Howe and simultaneous brightness contrast. Vision Research,
+        45, 607–615.
+    Howe, P. D. L. (2001). A comment on the Anderson (1997), the Todorovic (1997), and the Ross
+        and Pessoa (2000) explanations of White’s eﬀect. Perception, 30, 1023–1026
+    """
+
     height, width = 16.0, 16.0
     params = {
         "ppd": ppd,
@@ -262,6 +388,27 @@ def WE_howe(ppd=PPD, pad=True):
 
 
 def WE_zigzag(ppd=PPD, pad=True):
+    """Wedding cake stimulus as shown in Robinson, Hammon, & de Sa (2007) Fig 1f.
+
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+    pad : bool
+        If True, include padding to 32x32 deg (default: True)
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Cliﬀord, C. W. G., & Spehar, B. (2003). Using colour to disambiguate contrast and
+        assimilation in White’s eﬀect. Journal of Vision, 3, 294a.
+    """
+
     i1, i2 = -1, 0
     stim = illusions.wedding_cake.wedding_cake_stimulus(
         ppd=PPD,
@@ -284,6 +431,29 @@ def WE_zigzag(ppd=PPD, pad=True):
 
 
 def WE_radial_thick_small(ppd=PPD, pad=True):
+    """Radial White stimulus as shown in Robinson, Hammon, & de Sa (2007) Fig 1g.
+    Circle size: 16x16 deg
+    Number of segments: 14
+    Target length: 4 deg
+
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+    pad : bool
+        If True, include padding to 32x32 deg (default: True)
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Anstis, S. (2003). White’s eﬀect in brightness & color. Online Demonstration
+    """
+
     n_cycles = 7
     params = {
         "ppd": ppd,
@@ -315,6 +485,29 @@ def WE_radial_thick_small(ppd=PPD, pad=True):
 
 
 def WE_radial_thick(ppd=PPD, pad=True):
+    """Radial White stimulus as shown in Robinson, Hammon, & de Sa (2007) Fig 1h.
+    Circle size: 24x24 deg
+    Number of segments: 18
+    Target length: 4 deg
+
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+    pad : bool
+        If True, include padding to 32x32 deg (default: True)
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Anstis, S. (2003). White’s eﬀect in brightness & color. Online Demonstration
+    """
+
     n_cycles = 9
     params = {
         "ppd": ppd,
@@ -346,6 +539,29 @@ def WE_radial_thick(ppd=PPD, pad=True):
 
 
 def WE_radial_thin_small(ppd=PPD, pad=True):
+    """Radial White stimulus as shown in Robinson, Hammon, & de Sa (2007) Fig 1i.
+    Circle size: 16x16 deg
+    Number of segments: 26
+    Target length: 2 deg
+
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+    pad : bool
+        If True, include padding to 32x32 deg (default: True)
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Anstis, S. (2003). White’s eﬀect in brightness & color. Online Demonstration
+    """
+
     n_cycles = 13
     params = {
         "ppd": ppd,
@@ -377,6 +593,29 @@ def WE_radial_thin_small(ppd=PPD, pad=True):
 
 
 def WE_radial_thin(ppd=PPD, pad=True):
+    """Radial White stimulus as shown in Robinson, Hammon, & de Sa (2007) Fig 1j.
+    Circle size: 24x24 deg
+    Number of segments: 42
+    Target length: 2 deg
+
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+    pad : bool
+        If True, include padding to 32x32 deg (default: True)
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Anstis, S. (2003). White’s eﬀect in brightness & color. Online Demonstration
+    """
+
     n_cycles = 21
     params = {
         "ppd": ppd,
@@ -408,6 +647,30 @@ def WE_radial_thin(ppd=PPD, pad=True):
 
 
 def WE_circular1(ppd=PPD, pad=True):
+    """Ring (or circular White) stimulus as shown in Robinson, Hammon, & de Sa (2007) Fig 1k.
+    Circle size: 16x16 deg
+    Ring frequency: 0.5 cpd
+    Ring width: 1 deg
+
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+    pad : bool
+        If True, include padding to 32x32 deg (default: True)
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Howe, P. D. L. (2005). White’s eﬀect: removing the junctions but preserving the strength
+        of the illusion. Perception, 34, 557–564.
+    """
+
     height, width = 16., 16.
     params = {
         "ppd": ppd,
@@ -448,6 +711,30 @@ def WE_circular1(ppd=PPD, pad=True):
 
 
 def WE_circular05(ppd=PPD, pad=True):
+    """Ring (or circular White) stimulus as shown in Robinson, Hammon, & de Sa (2007) Fig 1l.
+    Circle size: 16x16 deg
+    Ring frequency: 1 cpd
+    Ring width: 0.5 deg
+
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+    pad : bool
+        If True, include padding to 32x32 deg (default: True)
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Howe, P. D. L. (2005). White’s eﬀect: removing the junctions but preserving the strength
+        of the illusion. Perception, 34, 557–564.
+    """
+
     height, width = 16., 16.
     params = {
         "ppd": ppd,
@@ -488,6 +775,30 @@ def WE_circular05(ppd=PPD, pad=True):
 
 
 def WE_circular025(ppd=PPD, pad=True):
+    """Ring (or circular White) stimulus as shown in Robinson, Hammon, & de Sa (2007) Fig 1m.
+    Circle size: 16x16 deg
+    Ring frequency: 2 cpd
+    Ring width: 0.25 deg
+
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+    pad : bool
+        If True, include padding to 32x32 deg (default: True)
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Howe, P. D. L. (2005). White’s eﬀect: removing the junctions but preserving the strength
+        of the illusion. Perception, 34, 557–564.
+    """
+
     height, width = 16., 16.
     params = {
         "ppd": ppd,
@@ -528,6 +839,33 @@ def WE_circular025(ppd=PPD, pad=True):
 
 
 def grating_induction(ppd=PPD, pad=True):
+    """Grating induction as shown in Robinson, Hammon, & de Sa (2007) Fig 1n.
+    Circle size: 12x16 deg
+    Grating frequency: 0.25 cpd
+    Target size: 1x16 deg
+
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+    pad : bool
+        If True, include padding to 32x32 deg (default: True)
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Blakeslee, B., & McCourt, M. E. (1999). A multiscale spatial ﬁltering account of the
+        White eﬀect, simultaneous brightness contrast and grating induction. Vision
+        Research, 39, 4361–4377.
+    McCourt, M. E. (1982). A spatial frequency dependent grating-induction effect. Vision
+        Research, 22, 119–134.
+    """
+
     height, width = 12.0, 16.0
     params = {
         "ppd": ppd,
@@ -555,6 +893,30 @@ def grating_induction(ppd=PPD, pad=True):
 
 
 def sbc_large(ppd=PPD, pad=True):
+    """Simultaneous brightness contrast as shown in Robinson, Hammon, & de Sa (2007) Fig 1o.
+    Stimulus size: 13x31 deg
+    Target sizes: 3x3 deg
+
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+    pad : bool
+        If True, include padding to 32x32 deg (default: True)
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Blakeslee, B., & McCourt, M. E. (1999). A multiscale spatial ﬁltering account of the
+        White eﬀect, simultaneous brightness contrast and grating induction. Vision
+        Research, 39, 4361–4377.
+    """
+
     params = {
         "ppd": ppd,
         "target_size": 3.,
@@ -592,6 +954,30 @@ def sbc_large(ppd=PPD, pad=True):
 
 
 def sbc_small(ppd=PPD, pad=True):
+    """Simultaneous brightness contrast as shown in Robinson, Hammon, & de Sa (2007) Fig 1p.
+    Stimulus size: 13x31 deg
+    Target sizes: 1x1 deg
+
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+    pad : bool
+        If True, include padding to 32x32 deg (default: True)
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Blakeslee, B., & McCourt, M. E. (1999). A multiscale spatial ﬁltering account of the
+        White eﬀect, simultaneous brightness contrast and grating induction. Vision
+        Research, 39, 4361–4377.
+    """
+
     params = {
         "ppd": ppd,
         "target_size": 1.,
@@ -629,6 +1015,33 @@ def sbc_small(ppd=PPD, pad=True):
 
 
 def todorovic_equal(ppd=PPD, pad=True):
+    """Todorovic stimulus - equal as shown in Robinson, Hammon, & de Sa (2007) Fig 1q.
+    Stimulus size: 13x31 deg
+    Target size: 8x8 deg
+
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+    pad : bool
+        If True, include padding to 32x32 deg (default: True)
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Blakeslee, B., & McCourt, M. E. (1999). A multiscale spatial ﬁltering account of the
+        White eﬀect, simultaneous brightness contrast and grating induction. Vision
+        Research, 39, 4361–4377.
+    Pessoa, L., Baratoff, G., Neumann, H., & Todorovic, D. (1998). Lightness and junctions:
+        variations on White’s display. Investigative Ophthalmology and Visual Science
+        (Supplement), 39, S159.
+    """
+
     params = {
         "ppd": ppd,
         "target_arms_size": 3.2,
@@ -670,6 +1083,31 @@ def todorovic_equal(ppd=PPD, pad=True):
 
 
 def todorovic_in_large(ppd=PPD, pad=True):
+    """Todorovic stimulus - in as shown in Robinson, Hammon, & de Sa (2007) Fig 1r.
+    Stimulus size: 13x31 deg
+    Target size: 5.3x5.3 deg
+
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+    pad : bool
+        If True, include padding to 32x32 deg (default: True)
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Blakeslee, B., & McCourt, M. E. (1999). A multiscale spatial ﬁltering account of the
+        White eﬀect, simultaneous brightness contrast and grating induction. Vision
+        Research, 39, 4361–4377.
+    Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
+    """
+
     params = {
         "ppd": ppd,
         "target_size": 5.3,
@@ -711,6 +1149,31 @@ def todorovic_in_large(ppd=PPD, pad=True):
 
 
 def todorovic_in_small(ppd=PPD, pad=True):
+    """Todorovic stimulus - in as shown in Robinson, Hammon, & de Sa (2007) Fig 1s.
+    Stimulus size: 13x31 deg
+    Target size: 3x3 deg
+
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+    pad : bool
+        If True, include padding to 32x32 deg (default: True)
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Blakeslee, B., & McCourt, M. E. (1999). A multiscale spatial ﬁltering account of the
+        White eﬀect, simultaneous brightness contrast and grating induction. Vision
+        Research, 39, 4361–4377.
+    Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
+    """
+
     params = {
         "ppd": ppd,
         "target_arms_size": 0.7,  # TODO: overall target len = 1.4+1.7=3.1 (in paper: 3)
@@ -752,6 +1215,33 @@ def todorovic_in_small(ppd=PPD, pad=True):
 
 
 def todorovic_out(ppd=PPD, pad=True):
+    """Todorovic stimulus - out as shown in Robinson, Hammon, & de Sa (2007) Fig 1t.
+    Stimulus size: 13x31 deg
+    Target size: 8.7x8.7 deg
+
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+    pad : bool
+        If True, include padding to 32x32 deg (default: True)
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Blakeslee, B., & McCourt, M. E. (1999). A multiscale spatial ﬁltering account of the
+        White eﬀect, simultaneous brightness contrast and grating induction. Vision
+        Research, 39, 4361–4377.
+    Pessoa, L., Baratoff, G., Neumann, H., & Todorovic, D. (1998). Lightness and junctions:
+        variations on White’s display. Investigative Ophthalmology and Visual Science
+        (Supplement), 39, S159.
+    """
+
     params = {
         "ppd": ppd,
         "target_arms_size": 3.7,  # TODO: overall target len = 7.4+1.6=9 (in paper: 8.7)
@@ -793,6 +1283,31 @@ def todorovic_out(ppd=PPD, pad=True):
 
 
 def checkerboard_016(ppd=PPD, pad=True):
+    """Checkerboard stimulus as shown in Robinson, Hammon, & de Sa (2007) Fig 1u.
+    Stimulus size: 6.25x15.9375 deg
+    Target size: 0.156x0.156 deg
+
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+    pad : bool
+        If True, include padding to 32x32 deg (default: True)
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Blakeslee, B., & McCourt, M. E. (2004). A uniﬁed theory of brightness contrast and
+        assimilation incorporating oriented multi-scale spatial ﬁltering and contrast
+        normalization. Vision Research, 44, 2483–2503.
+    DeValois, R. L., & DeValois, K. K. (1988). Spatial vision. New York: Oxford University Press.
+    """
+
     nchecks_height, nchecks_width = 40, 102
     target_row = nchecks_height // 2
     params = {
@@ -820,6 +1335,31 @@ def checkerboard_016(ppd=PPD, pad=True):
 
 
 def checkerboard_0938(ppd=PPD, pad=True):
+    """Checkerboard stimulus as shown in Robinson, Hammon, & de Sa (2007) Fig 1v.
+    Stimulus size: 6.5625x23.4375 deg
+    Target size: 0.938x0.938 deg
+
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+    pad : bool
+        If True, include padding to 32x32 deg (default: True)
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Blakeslee, B., & McCourt, M. E. (2004). A uniﬁed theory of brightness contrast and
+        assimilation incorporating oriented multi-scale spatial ﬁltering and contrast
+        normalization. Vision Research, 44, 2483–2503.
+    DeValois, R. L., & DeValois, K. K. (1988). Spatial vision. New York: Oxford University Press.
+    """
+
     nchecks_height, nchecks_width = 7, 25
     target_row = nchecks_height // 2
     params = {
@@ -847,6 +1387,31 @@ def checkerboard_0938(ppd=PPD, pad=True):
 
 
 def checkerboard209(ppd=PPD, pad=True):
+    """Checkerboard stimulus as shown in Robinson, Hammon, & de Sa (2007) Fig 1w.
+    Stimulus size: 6.28125x20.9375 deg
+    Target size: 2.09x2.09 deg
+
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+    pad : bool
+        If True, include padding to 32x32 deg (default: True)
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Blakeslee, B., & McCourt, M. E. (2004). A uniﬁed theory of brightness contrast and
+        assimilation incorporating oriented multi-scale spatial ﬁltering and contrast
+        normalization. Vision Research, 44, 2483–2503.
+    DeValois, R. L., & DeValois, K. K. (1988). Spatial vision. New York: Oxford University Press.
+    """
+
     nchecks_height, nchecks_width = 3, 10
     target_row = nchecks_height // 2
     params = {
@@ -874,6 +1439,29 @@ def checkerboard209(ppd=PPD, pad=True):
 
 
 def corrugated_mondrian(ppd=PPD, pad=True):
+    """Corrugated Mondrians as shown in Robinson, Hammon, & de Sa (2007) Fig 1x.
+
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+    pad : bool
+        If True, include padding to 32x32 deg (default: True)
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Blakeslee, B., & McCourt, M. E. (2001). A multiscale spatial filtering account of the
+        Wertheimer-Benary effect and the corrugated Mondrian. Vision Research, 41, 2487–2502.
+    Adelson, E. H. (1993). Perceptual organization and the judgment of brightness. Science,
+        262, 2042–2044.
+    """
+
     v1, v2, v3, v4 = 0.0, 0.4, 0.75, 1.0
     values = (
         (v3, v2, v3, v2, v3),
@@ -907,6 +1495,29 @@ def corrugated_mondrian(ppd=PPD, pad=True):
 
 
 def benary_cross(ppd=PPD, pad=True):
+    """Benarys cross as shown in Robinson, Hammon, & de Sa (2007) Fig 1y.
+
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+    pad : bool
+        If True, include padding to 32x32 deg (default: True)
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Blakeslee, B., & McCourt, M. E. (2001). A multiscale spatial filtering account of the
+        Wertheimer-Benary effect and the corrugated Mondrian. Vision Research, 41, 2487–2502.
+    Benary, W. (1924). Beobachtungen zu einem Experiment über Helligkeitskontrast.
+        Psychologische Forschung, 5, 131–142.
+    """
+
     params = {
         "ppd": ppd,
         "cross_thickness": 4.,
@@ -939,6 +1550,29 @@ def benary_cross(ppd=PPD, pad=True):
 
 
 def todorovic_benary1_2(ppd=PPD, pad=True):
+    """Todorovic variation of Benarys cross as shown in Robinson, Hammon, & de Sa (2007) Fig 1z.
+    Only contains the first two targets (1-2).
+
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+    pad : bool
+        If True, include padding to 32x32 deg (default: True)
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Blakeslee, B., & McCourt, M. E. (2001). A multiscale spatial filtering account of the
+        Wertheimer-Benary effect and the corrugated Mondrian. Vision Research, 41, 2487–2502.
+    Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
+    """
+
     params = {
         "ppd": ppd,
         "L_width": 2.5,
@@ -970,6 +1604,29 @@ def todorovic_benary1_2(ppd=PPD, pad=True):
 
 
 def todorovic_benary3_4(ppd=PPD, pad=True):
+    """Todorovic variation of Benarys cross as shown in Robinson, Hammon, & de Sa (2007) Fig 1z.
+    Only contains the last two targets (3-4).
+
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+    pad : bool
+        If True, include padding to 32x32 deg (default: True)
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Blakeslee, B., & McCourt, M. E. (2001). A multiscale spatial filtering account of the
+        Wertheimer-Benary effect and the corrugated Mondrian. Vision Research, 41, 2487–2502.
+    Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
+    """
+
     params = {
         "ppd": ppd,
         "L_width": 2.5,
@@ -1001,6 +1658,29 @@ def todorovic_benary3_4(ppd=PPD, pad=True):
 
 
 def todorovic_benary1_2_3_4(ppd=PPD, pad=True):
+    """Todorovic variation of Benarys cross as shown in Robinson, Hammon, & de Sa (2007) Fig 1z.
+    Contains all four targets (1-2-3-4).
+
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+    pad : bool
+        If True, include padding to 32x32 deg (default: True)
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Blakeslee, B., & McCourt, M. E. (2001). A multiscale spatial filtering account of the
+        Wertheimer-Benary effect and the corrugated Mondrian. Vision Research, 41, 2487–2502.
+    Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
+    """
+
     params = {
         "ppd": ppd,
         "L_width": 2.5,
@@ -1032,6 +1712,29 @@ def todorovic_benary1_2_3_4(ppd=PPD, pad=True):
 
 
 def bullseye_thin(ppd=PPD, pad=True):
+    """Bullseye stimulus as shown in Robinson, Hammon, & de Sa (2007) Fig 1aa.
+    Contains all four targets (1-2-3-4).
+    Ring width: 0.1 deg
+
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+    pad : bool
+        If True, include padding to 32x32 deg (default: True)
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Bindman, D., & Chubb, C. (2004). Brightness assimilation in bullseye displays. Vision
+        Research, 44, 309–319.
+    """
+
     params = {
         "ppd": ppd,
         "n_rings": 8,
@@ -1079,6 +1782,29 @@ def bullseye_thin(ppd=PPD, pad=True):
 
 
 def bullseye_thick(ppd=PPD, pad=True):
+    """Bullseye stimulus as shown in Robinson, Hammon, & de Sa (2007) Fig 1bb.
+    Contains all four targets (1-2-3-4).
+    Ring width: 0.2 deg
+
+    Parameters
+    ----------
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 32)
+    pad : bool
+        If True, include padding to 32x32 deg (default: True)
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Bindman, D., & Chubb, C. (2004). Brightness assimilation in bullseye displays. Vision
+        Research, 44, 309–319.
+    """
+
     params = {
         "ppd": ppd,
         "n_rings": 6,

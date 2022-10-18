@@ -54,9 +54,9 @@ __all__ = [
     "checkerboard_contrast_contrast",
     "checkerboard",
     "checkerboard_extended",
+    "white_yazdanbakhsh",
     "white_anderson",
     "white_howe",
-    "white_yazdanbakhsh",
 ]
 
 PPD = 10    # default: 10
@@ -156,6 +156,15 @@ def get_conversion_2d(original_shape, shape, visual_size, ppd):
 
 
 def dungeon(shape=None, ppd=PPD, visual_size=None):
+    """Dungeon illusion, Domijan (2015) Fig 6A
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+    """
+
     if shape is None:
         shape = SHAPES["dungeon"]
     if visual_size is None:
@@ -210,6 +219,15 @@ def dungeon(shape=None, ppd=PPD, visual_size=None):
 
 
 def cube(shape=None, ppd=PPD, visual_size=None):
+    """Cube illusion, Domijan (2015) Fig 6B
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+    """
+
     if shape is None:
         shape = SHAPES["cube"]
     if visual_size is None:
@@ -273,6 +291,15 @@ def cube(shape=None, ppd=PPD, visual_size=None):
 
 
 def grating(shape=None, ppd=PPD, visual_size=None):
+    """Grating illusion, Domijan (2015) Fig 6C
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+    """
+
     if shape is None:
         shape = SHAPES["grating"]
     if visual_size is None:
@@ -329,6 +356,15 @@ def grating(shape=None, ppd=PPD, visual_size=None):
 
 
 def rings(shape=None, ppd=PPD, visual_size=None):
+    """Ring patterns, Domijan (2015) Fig 7A
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+    """
+
     if shape is None:
         shape = SHAPES["rings"]
     if visual_size is None:
@@ -388,6 +424,15 @@ def rings(shape=None, ppd=PPD, visual_size=None):
 
 
 def bullseye(shape=None, ppd=PPD, visual_size=None):
+    """Bullseye illusion, Domijan (2015) Fig 7B
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+    """
+
     if shape is None:
         shape = SHAPES["bullseye"]
     if visual_size is None:
@@ -443,6 +488,15 @@ def bullseye(shape=None, ppd=PPD, visual_size=None):
 
 
 def simultaneous_brightness_contrast(shape=None, ppd=PPD, visual_size=None):
+    """Simultaneous brightness contrast, Domijan (2015) Fig 7C
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+    """
+
     if shape is None:
         shape = SHAPES["simultaneous_brightness_contrast"]
     if visual_size is None:
@@ -494,6 +548,15 @@ def simultaneous_brightness_contrast(shape=None, ppd=PPD, visual_size=None):
 
 
 def white(shape=None, ppd=PPD, visual_size=None, pad=PAD):
+    """White stimulus, Domijan (2015) Fig 8A
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+    """
+
     if shape is None:
         shape = SHAPES["white"]
     if visual_size is None:
@@ -544,6 +607,15 @@ def white(shape=None, ppd=PPD, visual_size=None, pad=PAD):
 
 
 def benary(shape=None, ppd=PPD, visual_size=None):
+    """Benarys cross, Domijan (2015) Fig 8B
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+    """
+
     if shape is None:
         shape = SHAPES["benary"]
     if visual_size is None:
@@ -586,6 +658,15 @@ def benary(shape=None, ppd=PPD, visual_size=None):
 
 
 def todorovic(shape=None, ppd=PPD, visual_size=None):
+    """Todorovic stimulus, Domijan (2015) Fig 9A
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+    """
+
     if shape is None:
         shape = SHAPES["todorovic"]
     if visual_size is None:
@@ -639,6 +720,15 @@ def todorovic(shape=None, ppd=PPD, visual_size=None):
 
 
 def checkerboard_contrast_contrast(shape=None, ppd=PPD, visual_size=None, pad=PAD):
+    """Checkerboard contrast-contrast effect, Domijan (2015) Fig 9B
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+    """
+
     if shape is None:
         shape = SHAPES["checkerboard_contrast_contrast"]
     if visual_size is None:
@@ -714,6 +804,15 @@ def checkerboard_contrast_contrast(shape=None, ppd=PPD, visual_size=None, pad=PA
 
 
 def checkerboard(shape=None, ppd=PPD, visual_size=None, pad=PAD):
+    """Classic checkerboard contrast with single-check targets, Domijan (2015) Fig 10A
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+    """
+
     if shape is None:
         shape = SHAPES["checkerboard"]
     if visual_size is None:
@@ -762,6 +861,15 @@ def checkerboard(shape=None, ppd=PPD, visual_size=None, pad=PAD):
 
 
 def checkerboard_extended(shape=None, ppd=PPD, visual_size=None, pad=PAD):
+    """Checkerboard contrast with cross-like targets, Domijan (2015) Fig 10B
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+    """
+
     if shape is None:
         shape = SHAPES["checkerboard_extended"]
     if visual_size is None:
@@ -811,7 +919,79 @@ def checkerboard_extended(shape=None, ppd=PPD, visual_size=None, pad=PAD):
     return {**stim, **params}
 
 
+def white_yazdanbakhsh(shape=None, ppd=PPD, visual_size=None, pad=PAD):
+    """Yazdanbakhsh variation of White stimulus, Domijan (2015) Fig 11A
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+    """
+
+    if shape is None:
+        shape = SHAPES["white_yazdanbakhsh"]
+    if visual_size is None:
+        visual_size = np.array(SHAPES["white_yazdanbakhsh"])/PPD
+
+    shape = resolve_input(shape)
+    visual_size = resolve_input(visual_size)
+    c = get_conversion_2d(SHAPES["white_yazdanbakhsh"], shape, visual_size, ppd)
+    shape, visual_size, ppd = resolve(None, np.array(SHAPES["white_yazdanbakhsh"]) * c, ppd)
+    ppd = ppd[0]
+
+    params = {
+        "visual_size": visual_size,
+        "ppd": ppd,
+        "grating_frequency": 4. / visual_size[1],
+        "target_indices_top": (2,),
+        "target_indices_bottom": (5,),
+        "target_center_offset": 0.,
+        "target_size": visual_size[0]/4.,
+        "gap_size": visual_size[0]/10.,
+        "period": "full",
+        }
+
+    stim = illusions.whites.white_yazdanbakhsh(
+        **params,
+        intensity_bars=(v1, v3),
+        intensity_target=v2,
+        intensity_stripes=(v3, v1),
+    )
+
+    if pad:
+        padding = np.array((9., 11., 9., 11.)) * c
+        stim["img"] = pad_img(stim["img"], padding, ppd=ppd, val=v2)
+        stim["mask"] = pad_img(stim["mask"], padding, ppd=ppd, val=0)
+        params["padding"] = padding
+
+    original_shape_np = np.array(SHAPES["white_yazdanbakhsh"])
+    original_visual_np = np.array(original_shape_np) / PPD
+    original_shape = original_shape_np + 20
+    original_visual_size = original_shape / PPD
+    params.update(original_shape=original_shape,
+                  original_ppd=PPD,
+                  original_visual_size=original_visual_size,
+                  original_shape_no_padding=original_shape_np,
+                  original_visual_size_no_padding=original_visual_np,
+                  original_range=(1, 9),
+                  intensity_range=(v1, v3),
+                  visual_size=np.array(stim["img"].shape)/ppd,
+                  shape=stim["img"].shape,
+                  )
+    return {**stim, **params}
+
+
 def white_anderson(shape=None, ppd=PPD, visual_size=None, pad=PAD):
+    """Anderson variation of White stimulus, Domijan (2015) Fig 11B
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+    """
+
     if shape is None:
         shape = SHAPES["white_anderson"]
     if visual_size is None:
@@ -867,6 +1047,15 @@ def white_anderson(shape=None, ppd=PPD, visual_size=None, pad=PAD):
 
 
 def white_howe(shape=None, ppd=PPD, visual_size=None, pad=PAD):
+    """Howe variation of White stimulus, Domijan (2015) Fig 11C
+
+    Returns
+    -------
+    dict of str
+        dict with the stimulus (key: "img") and target mask (key: "mask")
+        and additional keys containing stimulus parameters
+    """
+
     if shape is None:
         shape = SHAPES["white_howe"]
     if visual_size is None:
@@ -903,60 +1092,6 @@ def white_howe(shape=None, ppd=PPD, visual_size=None, pad=PAD):
         params["padding"] = padding
 
     original_shape_np = np.array(SHAPES["white_howe"])
-    original_visual_np = np.array(original_shape_np) / PPD
-    original_shape = original_shape_np + 20
-    original_visual_size = original_shape / PPD
-    params.update(original_shape=original_shape,
-                  original_ppd=PPD,
-                  original_visual_size=original_visual_size,
-                  original_shape_no_padding=original_shape_np,
-                  original_visual_size_no_padding=original_visual_np,
-                  original_range=(1, 9),
-                  intensity_range=(v1, v3),
-                  visual_size=np.array(stim["img"].shape)/ppd,
-                  shape=stim["img"].shape,
-                  )
-    return {**stim, **params}
-
-
-def white_yazdanbakhsh(shape=None, ppd=PPD, visual_size=None, pad=PAD):
-    if shape is None:
-        shape = SHAPES["white_yazdanbakhsh"]
-    if visual_size is None:
-        visual_size = np.array(SHAPES["white_yazdanbakhsh"])/PPD
-
-    shape = resolve_input(shape)
-    visual_size = resolve_input(visual_size)
-    c = get_conversion_2d(SHAPES["white_yazdanbakhsh"], shape, visual_size, ppd)
-    shape, visual_size, ppd = resolve(None, np.array(SHAPES["white_yazdanbakhsh"]) * c, ppd)
-    ppd = ppd[0]
-
-    params = {
-        "visual_size": visual_size,
-        "ppd": ppd,
-        "grating_frequency": 4. / visual_size[1],
-        "target_indices_top": (2,),
-        "target_indices_bottom": (5,),
-        "target_center_offset": 0.,
-        "target_size": visual_size[0]/4.,
-        "gap_size": visual_size[0]/10.,
-        "period": "full",
-        }
-
-    stim = illusions.whites.white_yazdanbakhsh(
-        **params,
-        intensity_bars=(v1, v3),
-        intensity_target=v2,
-        intensity_stripes=(v3, v1),
-    )
-
-    if pad:
-        padding = np.array((9., 11., 9., 11.)) * c
-        stim["img"] = pad_img(stim["img"], padding, ppd=ppd, val=v2)
-        stim["mask"] = pad_img(stim["mask"], padding, ppd=ppd, val=0)
-        params["padding"] = padding
-
-    original_shape_np = np.array(SHAPES["white_yazdanbakhsh"])
     original_visual_np = np.array(original_shape_np) / PPD
     original_shape = original_shape_np + 20
     original_visual_size = original_shape / PPD
