@@ -116,7 +116,14 @@ def argyle(ppd=PPD):
     dict of str
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Murray, R. F. (2020). A model of lightness perception guided by
+        probabilistic assumptions about lighting and reflectance.
+        Journal of Vision, 20(7), 28. https://doi.org/10/gh57gf
     """
+
     a = mat_content["argyle"]
     img = np.array(((a[0])[0])[0])
     target1 = np.array((((a[0])[0])[1])[0])
@@ -157,7 +164,14 @@ def argyle_control(ppd=PPD):
     dict of str
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Murray, R. F. (2020). A model of lightness perception guided by
+        probabilistic assumptions about lighting and reflectance.
+        Journal of Vision, 20(7), 28. https://doi.org/10/gh57gf
     """
+
     a = mat_content["argyle_control"]
     img = np.array(((a[0])[0])[0])
     target1 = np.array((((a[0])[0])[1])[0])
@@ -198,7 +212,14 @@ def argyle_long(ppd=PPD):
     dict of str
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Murray, R. F. (2020). A model of lightness perception guided by
+        probabilistic assumptions about lighting and reflectance.
+        Journal of Vision, 20(7), 28. https://doi.org/10/gh57gf
     """
+
     a = mat_content["argyle_long"]
     img = np.array(((a[0])[0])[0])
     target1 = np.array((((a[0])[0])[1])[0])
@@ -239,7 +260,14 @@ def snake(ppd=PPD):
     dict of str
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Murray, R. F. (2020). A model of lightness perception guided by
+        probabilistic assumptions about lighting and reflectance.
+        Journal of Vision, 20(7), 28. https://doi.org/10/gh57gf
     """
+
     a = mat_content["snake"]
     img = np.array(((a[0])[0])[0])
     target1 = np.array((((a[0])[0])[1])[0])
@@ -280,7 +308,14 @@ def snake_control(ppd=PPD):
     dict of str
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Murray, R. F. (2020). A model of lightness perception guided by
+        probabilistic assumptions about lighting and reflectance.
+        Journal of Vision, 20(7), 28. https://doi.org/10/gh57gf
     """
+
     a = mat_content["snake_control"]
     img = np.array(((a[0])[0])[0])
     target1 = np.array((((a[0])[0])[1])[0])
@@ -321,7 +356,14 @@ def koffka_adelson(ppd=PPD):
     dict of str
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Murray, R. F. (2020). A model of lightness perception guided by
+        probabilistic assumptions about lighting and reflectance.
+        Journal of Vision, 20(7), 28. https://doi.org/10/gh57gf
     """
+
     a = mat_content["koffka_adelson"]
     img = np.array(((a[0])[0])[0])
     target1 = np.array((((a[0])[0])[1])[0])
@@ -362,7 +404,14 @@ def koffka_broken(ppd=PPD):
     dict of str
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Murray, R. F. (2020). A model of lightness perception guided by
+        probabilistic assumptions about lighting and reflectance.
+        Journal of Vision, 20(7), 28. https://doi.org/10/gh57gf
     """
+
     a = mat_content["koffka_broken"]
     img = np.array(((a[0])[0])[0])
     target1 = np.array((((a[0])[0])[1])[0])
@@ -403,7 +452,14 @@ def koffka_connected(ppd=PPD):
     dict of str
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Murray, R. F. (2020). A model of lightness perception guided by
+        probabilistic assumptions about lighting and reflectance.
+        Journal of Vision, 20(7), 28. https://doi.org/10/gh57gf
     """
+
     a = mat_content["koffka_connected"]
     img = np.array(((a[0])[0])[0])
     target1 = np.array((((a[0])[0])[1])[0])
@@ -444,7 +500,14 @@ def checkassim(ppd=PPD, pad=PAD):
     dict of str
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Murray, R. F. (2020). A model of lightness perception guided by
+        probabilistic assumptions about lighting and reflectance.
+        Journal of Vision, 20(7), 28. https://doi.org/10/gh57gf
     """
+
     params = {
         "ppd": ppd,
         "board_shape": (7, 10),
@@ -490,7 +553,14 @@ def simcon(ppd=PPD):
     dict of str
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Murray, R. F. (2020). A model of lightness perception guided by
+        probabilistic assumptions about lighting and reflectance.
+        Journal of Vision, 20(7), 28. https://doi.org/10/gh57gf
     """
+
     a = mat_content["simcon"]
     img = np.array(((a[0])[0])[0])
     target1 = np.array((((a[0])[0])[1])[0])
@@ -531,7 +601,14 @@ def simcon_articulated(ppd=PPD):
     dict of str
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Murray, R. F. (2020). A model of lightness perception guided by
+        probabilistic assumptions about lighting and reflectance.
+        Journal of Vision, 20(7), 28. https://doi.org/10/gh57gf
     """
+
     a = mat_content["simcon_articulated"]
     img = np.array(((a[0])[0])[0])
     target1 = np.array((((a[0])[0])[1])[0])
@@ -572,7 +649,14 @@ def white(ppd=PPD):
     dict of str
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Murray, R. F. (2020). A model of lightness perception guided by
+        probabilistic assumptions about lighting and reflectance.
+        Journal of Vision, 20(7), 28. https://doi.org/10/gh57gf
     """
+
     params = {
         "ppd": ppd,
         "visual_size": (8.0, 8.0),

@@ -178,11 +178,32 @@ def get_conversion_2d(original_shape, shape, visual_size, ppd):
 def dungeon(shape=SHAPES["dungeon"], ppd=PPD, visual_size=VSIZES["dungeon"]):
     """Dungeon illusion, Domijan (2015) Fig 6A
 
+    Parameters
+    ----------
+    shape : None, int or (int/None, int/None)
+        Stimulus shape in deg, (height, width), default: (110, 220)
+        If None, will infer shape from ppd and visual size.
+        If int, it will be used as height.
+        If either height=None or width=None, the other will be inferred.
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 10)
+    visual_size : None, int or (int/None, int/None)
+        Stimulus size in degree, (height, width), default: (11, 22)
+        If None, will infer size from shape and ppd.
+        If int, it will be used as height.
+        If either height=None or width=None, the other will be inferred.
+
     Returns
     -------
     dict of str
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Domijan, D. (2015). A neurocomputational account of the role of contour
+        facilitation in brightness perception. Frontiers in Human Neuroscience,
+        9, 93. https://doi.org/10.3389/fnhum.2015.00093
     """
 
     shape = resolve_input(shape)
@@ -236,11 +257,32 @@ def dungeon(shape=SHAPES["dungeon"], ppd=PPD, visual_size=VSIZES["dungeon"]):
 def cube(shape=SHAPES["cube"], ppd=PPD, visual_size=VSIZES["cube"]):
     """Cube illusion, Domijan (2015) Fig 6B
 
+    Parameters
+    ----------
+    shape : None, int or (int/None, int/None)
+        Stimulus shape in deg, (height, width), default: (100, 200)
+        If None, will infer shape from ppd and visual size.
+        If int, it will be used as height.
+        If either height=None or width=None, the other will be inferred.
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 10)
+    visual_size : None, int or (int/None, int/None)
+        Stimulus size in degree, (height, width), default: (10, 20)
+        If None, will infer size from shape and ppd.
+        If int, it will be used as height.
+        If either height=None or width=None, the other will be inferred.
+
     Returns
     -------
     dict of str
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Domijan, D. (2015). A neurocomputational account of the role of contour
+        facilitation in brightness perception. Frontiers in Human Neuroscience,
+        9, 93. https://doi.org/10.3389/fnhum.2015.00093
     """
 
     shape = resolve_input(shape)
@@ -303,11 +345,32 @@ def cube(shape=SHAPES["cube"], ppd=PPD, visual_size=VSIZES["cube"]):
 def grating(shape=SHAPES["grating"], ppd=PPD, visual_size=VSIZES["grating"]):
     """Grating illusion, Domijan (2015) Fig 6C
 
+    Parameters
+    ----------
+    shape : None, int or (int/None, int/None)
+        Stimulus shape in deg, (height, width), default: (100, 220)
+        If None, will infer shape from ppd and visual size.
+        If int, it will be used as height.
+        If either height=None or width=None, the other will be inferred.
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 10)
+    visual_size : None, int or (int/None, int/None)
+        Stimulus size in degree, (height, width), default: (10, 22)
+        If None, will infer size from shape and ppd.
+        If int, it will be used as height.
+        If either height=None or width=None, the other will be inferred.
+
     Returns
     -------
     dict of str
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Domijan, D. (2015). A neurocomputational account of the role of contour
+        facilitation in brightness perception. Frontiers in Human Neuroscience,
+        9, 93. https://doi.org/10.3389/fnhum.2015.00093
     """
 
     shape = resolve_input(shape)
@@ -363,11 +426,32 @@ def grating(shape=SHAPES["grating"], ppd=PPD, visual_size=VSIZES["grating"]):
 def rings(shape=SHAPES["rings"], ppd=PPD, visual_size=VSIZES["rings"]):
     """Ring patterns, Domijan (2015) Fig 7A
 
+    Parameters
+    ----------
+    shape : None, int or (int/None, int/None)
+        Stimulus shape in deg, (height, width), default: (100, 200)
+        If None, will infer shape from ppd and visual size.
+        If int, it will be used as height.
+        If either height=None or width=None, the other will be inferred.
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 10)
+    visual_size : None, int or (int/None, int/None)
+        Stimulus size in degree, (height, width), default: (10, 20)
+        If None, will infer size from shape and ppd.
+        If int, it will be used as height.
+        If either height=None or width=None, the other will be inferred.
+
     Returns
     -------
     dict of str
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Domijan, D. (2015). A neurocomputational account of the role of contour
+        facilitation in brightness perception. Frontiers in Human Neuroscience,
+        9, 93. https://doi.org/10.3389/fnhum.2015.00093
     """
 
     shape = resolve_input(shape)
@@ -426,11 +510,32 @@ def rings(shape=SHAPES["rings"], ppd=PPD, visual_size=VSIZES["rings"]):
 def bullseye(shape=SHAPES["bullseye"], ppd=PPD, visual_size=VSIZES["bullseye"]):
     """Bullseye illusion, Domijan (2015) Fig 7B
 
+    Parameters
+    ----------
+    shape : None, int or (int/None, int/None)
+        Stimulus shape in deg, (height, width), default: (100, 200)
+        If None, will infer shape from ppd and visual size.
+        If int, it will be used as height.
+        If either height=None or width=None, the other will be inferred.
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 10)
+    visual_size : None, int or (int/None, int/None)
+        Stimulus size in degree, (height, width), default: (10, 20)
+        If None, will infer size from shape and ppd.
+        If int, it will be used as height.
+        If either height=None or width=None, the other will be inferred.
+
     Returns
     -------
     dict of str
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Domijan, D. (2015). A neurocomputational account of the role of contour
+        facilitation in brightness perception. Frontiers in Human Neuroscience,
+        9, 93. https://doi.org/10.3389/fnhum.2015.00093
     """
 
     shape = resolve_input(shape)
@@ -487,11 +592,32 @@ def simultaneous_brightness_contrast(shape=SHAPES["simultaneous_brightness_contr
                                      visual_size=VSIZES["simultaneous_brightness_contrast"]):
     """Simultaneous brightness contrast, Domijan (2015) Fig 7C
 
+    Parameters
+    ----------
+    shape : None, int or (int/None, int/None)
+        Stimulus shape in deg, (height, width), default: (100, 200)
+        If None, will infer shape from ppd and visual size.
+        If int, it will be used as height.
+        If either height=None or width=None, the other will be inferred.
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 10)
+    visual_size : None, int or (int/None, int/None)
+        Stimulus size in degree, (height, width), default: (10, 20)
+        If None, will infer size from shape and ppd.
+        If int, it will be used as height.
+        If either height=None or width=None, the other will be inferred.
+
     Returns
     -------
     dict of str
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Domijan, D. (2015). A neurocomputational account of the role of contour
+        facilitation in brightness perception. Frontiers in Human Neuroscience,
+        9, 93. https://doi.org/10.3389/fnhum.2015.00093
     """
 
     shape = resolve_input(shape)
@@ -542,11 +668,34 @@ def simultaneous_brightness_contrast(shape=SHAPES["simultaneous_brightness_contr
 def white(shape=SHAPES["white"], ppd=PPD, visual_size=VSIZES["white"], pad=PAD):
     """White stimulus, Domijan (2015) Fig 8A
 
+    Parameters
+    ----------
+    shape : None, int or (int/None, int/None)
+        Stimulus shape in deg, (height, width), default: (80, 80)
+        If None, will infer shape from ppd and visual size.
+        If int, it will be used as height.
+        If either height=None or width=None, the other will be inferred.
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 10)
+    visual_size : None, int or (int/None, int/None)
+        Stimulus size in degree, (height, width), default: (80, 80)
+        If None, will infer size from shape and ppd.
+        If int, it will be used as height.
+        If either height=None or width=None, the other will be inferred.
+    pad : bool
+        If True, include original padding (default: False)
+
     Returns
     -------
     dict of str
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Domijan, D. (2015). A neurocomputational account of the role of contour
+        facilitation in brightness perception. Frontiers in Human Neuroscience,
+        9, 93. https://doi.org/10.3389/fnhum.2015.00093
     """
 
     shape = resolve_input(shape)
@@ -558,7 +707,7 @@ def white(shape=SHAPES["white"], ppd=PPD, visual_size=VSIZES["white"], pad=PAD):
     params = {
         "visual_size": visual_size,
         "ppd": ppd,
-        "grating_frequency": 4 / visual_size[1],
+        "grating_frequency": 4. / visual_size[1],
         "target_indices": (2, 5),
         "target_size": 21*c,
         "period": "full",
@@ -596,11 +745,32 @@ def white(shape=SHAPES["white"], ppd=PPD, visual_size=VSIZES["white"], pad=PAD):
 def benary(shape=SHAPES["benary"], ppd=PPD, visual_size=VSIZES["benary"]):
     """Benarys cross, Domijan (2015) Fig 8B
 
+    Parameters
+    ----------
+    shape : None, int or (int/None, int/None)
+        Stimulus shape in deg, (height, width), default: (100, 100)
+        If None, will infer shape from ppd and visual size.
+        If int, it will be used as height.
+        If either height=None or width=None, the other will be inferred.
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 10)
+    visual_size : None, int or (int/None, int/None)
+        Stimulus size in degree, (height, width), default: (10, 10)
+        If None, will infer size from shape and ppd.
+        If int, it will be used as height.
+        If either height=None or width=None, the other will be inferred.
+
     Returns
     -------
     dict of str
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Domijan, D. (2015). A neurocomputational account of the role of contour
+        facilitation in brightness perception. Frontiers in Human Neuroscience,
+        9, 93. https://doi.org/10.3389/fnhum.2015.00093
     """
 
     shape = resolve_input(shape)
@@ -642,11 +812,32 @@ def benary(shape=SHAPES["benary"], ppd=PPD, visual_size=VSIZES["benary"]):
 def todorovic(shape=SHAPES["todorovic"], ppd=PPD, visual_size=VSIZES["todorovic"]):
     """Todorovic stimulus, Domijan (2015) Fig 9A
 
+    Parameters
+    ----------
+    shape : None, int or (int/None, int/None)
+        Stimulus shape in deg, (height, width), default: (100, 200)
+        If None, will infer shape from ppd and visual size.
+        If int, it will be used as height.
+        If either height=None or width=None, the other will be inferred.
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 10)
+    visual_size : None, int or (int/None, int/None)
+        Stimulus size in degree, (height, width), default: (10, 20)
+        If None, will infer size from shape and ppd.
+        If int, it will be used as height.
+        If either height=None or width=None, the other will be inferred.
+
     Returns
     -------
     dict of str
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Domijan, D. (2015). A neurocomputational account of the role of contour
+        facilitation in brightness perception. Frontiers in Human Neuroscience,
+        9, 93. https://doi.org/10.3389/fnhum.2015.00093
     """
 
     # Note: Compared to original, targets are moved by one pixel
@@ -702,11 +893,34 @@ def checkerboard_contrast_contrast(shape=SHAPES["checkerboard_contrast_contrast"
                                    pad=PAD):
     """Checkerboard contrast-contrast effect, Domijan (2015) Fig 9B
 
+    Parameters
+    ----------
+    shape : None, int or (int/None, int/None)
+        Stimulus shape in deg, (height, width), default: (80, 160)
+        If None, will infer shape from ppd and visual size.
+        If int, it will be used as height.
+        If either height=None or width=None, the other will be inferred.
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 10)
+    visual_size : None, int or (int/None, int/None)
+        Stimulus size in degree, (height, width), default: (8, 16)
+        If None, will infer size from shape and ppd.
+        If int, it will be used as height.
+        If either height=None or width=None, the other will be inferred.
+    pad : bool
+        If True, include original padding (default: False)
+
     Returns
     -------
     dict of str
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Domijan, D. (2015). A neurocomputational account of the role of contour
+        facilitation in brightness perception. Frontiers in Human Neuroscience,
+        9, 93. https://doi.org/10.3389/fnhum.2015.00093
     """
 
     shape = resolve_input(shape)
@@ -778,14 +992,40 @@ def checkerboard_contrast_contrast(shape=SHAPES["checkerboard_contrast_contrast"
     return {"img": img, "mask": mask, **params}
 
 
-def checkerboard(shape=SHAPES["checkerboard"], ppd=PPD, visual_size=VSIZES["checkerboard"], pad=PAD):
+def checkerboard(shape=SHAPES["checkerboard"],
+                 ppd=PPD,
+                 visual_size=VSIZES["checkerboard"],
+                 pad=PAD):
     """Classic checkerboard contrast with single-check targets, Domijan (2015) Fig 10A
+
+    Parameters
+    ----------
+    shape : None, int or (int/None, int/None)
+        Stimulus shape in deg, (height, width), default: (80, 80)
+        If None, will infer shape from ppd and visual size.
+        If int, it will be used as height.
+        If either height=None or width=None, the other will be inferred.
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 10)
+    visual_size : None, int or (int/None, int/None)
+        Stimulus size in degree, (height, width), default: (8, 8)
+        If None, will infer size from shape and ppd.
+        If int, it will be used as height.
+        If either height=None or width=None, the other will be inferred.
+    pad : bool
+        If True, include original padding (default: False)
 
     Returns
     -------
     dict of str
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Domijan, D. (2015). A neurocomputational account of the role of contour
+        facilitation in brightness perception. Frontiers in Human Neuroscience,
+        9, 93. https://doi.org/10.3389/fnhum.2015.00093
     """
 
     shape = resolve_input(shape)
@@ -836,11 +1076,34 @@ def checkerboard_extended(shape=SHAPES["checkerboard_extended"],
                           pad=PAD):
     """Checkerboard contrast with cross-like targets, Domijan (2015) Fig 10B
 
+    Parameters
+    ----------
+    shape : None, int or (int/None, int/None)
+        Stimulus shape in deg, (height, width), default: (80, 80)
+        If None, will infer shape from ppd and visual size.
+        If int, it will be used as height.
+        If either height=None or width=None, the other will be inferred.
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 10)
+    visual_size : None, int or (int/None, int/None)
+        Stimulus size in degree, (height, width), default: (8, 8)
+        If None, will infer size from shape and ppd.
+        If int, it will be used as height.
+        If either height=None or width=None, the other will be inferred.
+    pad : bool
+        If True, include original padding (default: False)
+
     Returns
     -------
     dict of str
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Domijan, D. (2015). A neurocomputational account of the role of contour
+        facilitation in brightness perception. Frontiers in Human Neuroscience,
+        9, 93. https://doi.org/10.3389/fnhum.2015.00093
     """
 
     shape = resolve_input(shape)
@@ -893,11 +1156,34 @@ def white_yazdanbakhsh(shape=SHAPES["white_yazdanbakhsh"],
                        pad=PAD):
     """Yazdanbakhsh variation of White stimulus, Domijan (2015) Fig 11A
 
+    Parameters
+    ----------
+    shape : None, int or (int/None, int/None)
+        Stimulus shape in deg, (height, width), default: (80, 80)
+        If None, will infer shape from ppd and visual size.
+        If int, it will be used as height.
+        If either height=None or width=None, the other will be inferred.
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 10)
+    visual_size : None, int or (int/None, int/None)
+        Stimulus size in degree, (height, width), default: (8, 8)
+        If None, will infer size from shape and ppd.
+        If int, it will be used as height.
+        If either height=None or width=None, the other will be inferred.
+    pad : bool
+        If True, include original padding (default: False)
+
     Returns
     -------
     dict of str
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Domijan, D. (2015). A neurocomputational account of the role of contour
+        facilitation in brightness perception. Frontiers in Human Neuroscience,
+        9, 93. https://doi.org/10.3389/fnhum.2015.00093
     """
 
     shape = resolve_input(shape)
@@ -954,11 +1240,34 @@ def white_anderson(shape=SHAPES["white_anderson"],
                    pad=PAD):
     """Anderson variation of White stimulus, Domijan (2015) Fig 11B
 
+    Parameters
+    ----------
+    shape : None, int or (int/None, int/None)
+        Stimulus shape in deg, (height, width), default: (100, 100)
+        If None, will infer shape from ppd and visual size.
+        If int, it will be used as height.
+        If either height=None or width=None, the other will be inferred.
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 10)
+    visual_size : None, int or (int/None, int/None)
+        Stimulus size in degree, (height, width), default: (10, 10)
+        If None, will infer size from shape and ppd.
+        If int, it will be used as height.
+        If either height=None or width=None, the other will be inferred.
+    pad : bool
+        If True, include original padding (default: False)
+
     Returns
     -------
     dict of str
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Domijan, D. (2015). A neurocomputational account of the role of contour
+        facilitation in brightness perception. Frontiers in Human Neuroscience,
+        9, 93. https://doi.org/10.3389/fnhum.2015.00093
     """
 
     shape = resolve_input(shape)
@@ -1013,11 +1322,34 @@ def white_anderson(shape=SHAPES["white_anderson"],
 def white_howe(shape=SHAPES["white_howe"], ppd=PPD, visual_size=VSIZES["white_howe"], pad=PAD):
     """Howe variation of White stimulus, Domijan (2015) Fig 11C
 
+    Parameters
+    ----------
+    shape : None, int or (int/None, int/None)
+        Stimulus shape in deg, (height, width), default: (100, 100)
+        If None, will infer shape from ppd and visual size.
+        If int, it will be used as height.
+        If either height=None or width=None, the other will be inferred.
+    ppd : int
+        Resolution of stimulus in pixels per degree. (default: 10)
+    visual_size : None, int or (int/None, int/None)
+        Stimulus size in degree, (height, width), default: (10, 10)
+        If None, will infer size from shape and ppd.
+        If int, it will be used as height.
+        If either height=None or width=None, the other will be inferred.
+    pad : bool
+        If True, include original padding (default: False)
+
     Returns
     -------
     dict of str
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Domijan, D. (2015). A neurocomputational account of the role of contour
+        facilitation in brightness perception. Frontiers in Human Neuroscience,
+        9, 93. https://doi.org/10.3389/fnhum.2015.00093
     """
 
     shape = resolve_input(shape)
