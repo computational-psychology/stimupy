@@ -72,12 +72,12 @@
         "mask": "85dbfdfbf2eb9e08f8c2a447b1a0db1c"
     },
     "todorovic_in_small": {
-        "img": "82259659aad77c6c7e90921fbf832f88",
-        "mask": "97f2a609a19d840ad8997cabcb815380"
+        "img": "28d652fc5c00d77a9a20d996a294f527",
+        "mask": "6ad0489f74c89d18b3105769d976a2f7"
     },
     "todorovic_out": {
-        "img": "f572675132ccab13b0e9d582a29c300b",
-        "mask": "6f0277e6ea561b0849319b43f76fdeed"
+        "img": "02e0a8c720737973c48d232247b1c45f",
+        "mask": "34d1cc1bba64f169927029baf5940242"
     },
     "checkerboard_016": {
         "img": "2480266193d1a643ecaffa9bcf267498",

@@ -1176,8 +1176,8 @@ def todorovic_in_small(ppd=PPD, pad=True):
 
     params = {
         "ppd": ppd,
-        "target_arms_size": 0.7,  # TODO: overall target len = 1.4+1.7=3.1 (in paper: 3)
-        "target_thickness": 1.7,
+        "target_arms_size": 0.7,
+        "target_thickness": 1.6,
         "covers_size": 3.2,
         "intensity_target": v2,
         }
@@ -1217,7 +1217,8 @@ def todorovic_in_small(ppd=PPD, pad=True):
 def todorovic_out(ppd=PPD, pad=True):
     """Todorovic stimulus - out as shown in Robinson, Hammon, & de Sa (2007) Fig 1t.
     Stimulus size: 13x31 deg
-    Target size: 8.7x8.7 deg
+    Target size: 9.4x9.4 deg (note: in RHS2007, it says 8.7x8.7 deg, however that does not
+                              match with Fig 1t)
 
     Parameters
     ----------
@@ -1244,7 +1245,7 @@ def todorovic_out(ppd=PPD, pad=True):
 
     params = {
         "ppd": ppd,
-        "target_arms_size": 3.7,  # TODO: overall target len = 7.4+1.6=9 (in paper: 8.7)
+        "target_arms_size": 3.9,
         "target_thickness": 1.6,
         "covers_size": 3.2,
         "intensity_target": v2,
