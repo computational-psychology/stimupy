@@ -53,8 +53,35 @@ def benarys_cross_generalized(
         visual_size = (visual_size, visual_size)
     if isinstance(target_size, (float, int)):
         target_size = (target_size, target_size)
+    if isinstance(target_type, (str)):
+        target_type = [target_type]
+    if isinstance(target_ori, (float, int)):
+        target_ori = [target_ori]
+    if isinstance(target_posx, (float, int)):
+        target_posx = [target_posx]
+    if isinstance(target_posy, (float, int)):
+        target_posy = [target_posy]
+    if np.min(target_posx) < 0:
+        raise ValueError("Leftmost target does not fit into image")
+    if np.min(target_posy) < 0:
+        raise ValueError("Topmost target does not fit into image")
+
+    n_targets = np.max(np.array([len(target_type),
+                                 len(target_ori),
+                                 len(target_posx),
+                                 len(target_posy)]))
+
+    if len(target_type) == 1:
+        target_type = target_type * n_targets
+    if len(target_ori) == 1:
+        target_ori = target_ori * n_targets
+    if len(target_posx) == 1:
+        target_posx = target_posx * n_targets
+    if len(target_posy) == 1:
+        target_posy = target_posy * n_targets
+
     if any(
-        len(lst) != len(target_type)
+        len(lst) != n_targets
         for lst in [target_ori, target_posx, target_posy]
     ):
         raise Exception(
@@ -311,14 +338,42 @@ def todorovic_benary_generalized(
         visual_size = (visual_size, visual_size)
     if isinstance(target_size, (float, int)):
         target_size = (target_size, target_size)
+    if isinstance(target_type, (str)):
+        target_type = [target_type]
+    if isinstance(target_ori, (float, int)):
+        target_ori = [target_ori]
+    if isinstance(target_posx, (float, int)):
+        target_posx = [target_posx]
+    if isinstance(target_posy, (float, int)):
+        target_posy = [target_posy]
+    if np.min(target_posx) < 0:
+        raise ValueError("Leftmost target does not fit into image")
+    if np.min(target_posy) < 0:
+        raise ValueError("Topmost target does not fit into image")
+
+    n_targets = np.max(np.array([len(target_type),
+                                 len(target_ori),
+                                 len(target_posx),
+                                 len(target_posy)]))
+
+    if len(target_type) == 1:
+        target_type = target_type * n_targets
+    if len(target_ori) == 1:
+        target_ori = target_ori * n_targets
+    if len(target_posx) == 1:
+        target_posx = target_posx * n_targets
+    if len(target_posy) == 1:
+        target_posy = target_posy * n_targets
+
     if any(
-        len(lst) != len(target_type)
+        len(lst) != n_targets
         for lst in [target_ori, target_posx, target_posy]
     ):
         raise Exception(
-            "target_type, target_ori, target_posx and target_posy need to be"
-            " of same length."
+            "target_type, target_ori, target_posx and target_posy need the"
+            " same length."
         )
+
     L_size = (visual_size[0]/2, visual_size[0]/2, L_width, visual_size[1]-L_width)
 
     (
@@ -405,6 +460,132 @@ def todorovic_benary_generalized(
     return {"img": img, "mask": mask, **params}
 
 
+def todorovic_benary_rectangles(
+    visual_size=(21., 21.),
+    ppd=20,
+    L_width=5.,
+    target_size=(3.0, 4.0),
+    intensity_background=1.0,
+    intensity_cross=0.0,
+    intensity_target=0.5,
+):
+    """
+    Todorovic version of Benary's Cross stimulus with two rectangular targets and default placement
+
+    Parameters
+    ----------
+    visual_size : float or (float, float)
+        size of the stimulus in degrees of visual angle (height, width)
+    ppd : int
+        pixels per degree (visual angle)
+    L_width : float
+        width of L in degree visual angle
+    target_size : (float, float)
+        size of all target(s) in degrees visual angle
+    intensity_background : float
+        intensity value for background
+    intensity_cross : float
+        intensity value for cross
+    intensity_target : float
+        intensity value for target
+
+    Returns
+    -------
+    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    """
+
+    if isinstance(visual_size, (float, int)):
+        visual_size = (visual_size, visual_size)
+    if isinstance(target_size, (float, int)):
+        target_size = (target_size, target_size)
+
+    # Calculate parameters for classical Benarys cross with two targets
+    target_type = ("r",) * 2
+    target_ori = (0., 0.)
+    target_posx = (L_width,
+                   visual_size[1] - L_width - target_size[1])
+    target_posx = np.round(np.array(target_posx) * ppd) / ppd
+    target_posy = (visual_size[0]/2. - target_size[0],
+                   visual_size[0]/2.)
+    target_posy = np.round(np.array(target_posy) * ppd) / ppd
+    stim = todorovic_benary_generalized(visual_size,
+                                        ppd,
+                                        L_width,
+                                        target_size,
+                                        target_type,
+                                        target_ori,
+                                        target_posx,
+                                        target_posy,
+                                        intensity_background,
+                                        intensity_cross,
+                                        intensity_target)
+    return stim
+
+
+def todorovic_benary_triangles(
+    visual_size=(21., 21.),
+    ppd=20,
+    L_width=5.2,
+    target_size=4.,
+    intensity_background=1.0,
+    intensity_cross=0.0,
+    intensity_target=0.5,
+):
+    """
+    Todorovic version of Benary's Cross stimulus with two triangular targets and default placement
+
+    Parameters
+    ----------
+    visual_size : float or (float, float)
+        size of the stimulus in degrees of visual angle (height, width)
+    ppd : int
+        pixels per degree (visual angle)
+    L_width : float
+        width of L in degree visual angle
+    target_size : float
+        size of adjacent and opposite of target triangle in degrees visual angle
+    intensity_background : float
+        intensity value for background
+    intensity_cross : float
+        intensity value for cross
+    intensity_target : float
+        intensity value for target
+
+    Returns
+    -------
+    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    """
+
+    if isinstance(visual_size, (float, int)):
+        visual_size = (visual_size, visual_size)
+    if isinstance(target_size, (float, int)):
+        target_size = (target_size, target_size)
+    else:
+        raise ValueError("target_size should be a single float")
+
+    # Calculate parameters for classical Benarys cross with two targets
+    target_type = ("t",) * 2
+    target_ori = (0., 180.)
+    target_posx = (L_width,
+                   visual_size[1] - L_width - target_size[1])
+    target_posx = np.round(np.array(target_posx) * ppd) / ppd
+    target_posy = (visual_size[0]/2. - target_size[0],
+                   visual_size[0]/2.)
+    target_posy = np.round(np.array(target_posy) * ppd) / ppd
+    stim = todorovic_benary_generalized(visual_size,
+                                        ppd,
+                                        L_width,
+                                        target_size,
+                                        target_type,
+                                        target_ori,
+                                        target_posx,
+                                        target_posy,
+                                        intensity_background,
+                                        intensity_cross,
+                                        intensity_target)
+    return stim
+
+
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
     from stimuli.utils import plot_stimuli
@@ -413,7 +594,9 @@ if __name__ == "__main__":
         "Benary's cross - generalized": benarys_cross_generalized(),
         "Benary's cross - rectangles": benarys_cross_rectangles(),
         "Benary's cross - triangles": benarys_cross_triangles(),
-        "Todorovic' version of Benary's cross": todorovic_benary_generalized(),
+        "Todorovic' Benary - generalized": todorovic_benary_generalized(),
+        "Todorovic' Benary - rectangles": todorovic_benary_rectangles(),
+        "Todorovic' Benary - triangles": todorovic_benary_triangles(),
     }
     ax = plot_stimuli(stims)
     plt.show()
