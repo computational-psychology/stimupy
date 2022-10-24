@@ -152,7 +152,7 @@ def sbc_with_dots(
         target_shape = (target_shape, target_shape)
 
     padding = (distance/2., distance/2., distance/2., distance/2.)
-    patch = disc(ppd, dot_radius, vback=0., vdisc=intensity_dots)
+    patch = disc(ppd, dot_radius, intensity_background=0., intensity_disc=intensity_dots)
     patch = pad_img(patch, padding, ppd, 0.)
 
     img_height = pixels_to_degrees(n_dots[0] * patch.shape[0], ppd)
@@ -164,7 +164,8 @@ def sbc_with_dots(
     tposy = (img_height-rec_height) / 2.
     tposx = (img_width-rec_width) / 2.
     img = rectangle(ppd, im_size=(img_height, img_width), rect_size=(rec_height, rec_width),
-                    rect_pos=(tposy, tposx), vback=intensity_background, vrect=intensity_target)
+                    rect_pos=(tposy, tposx), intensity_background=intensity_background,
+                    intensity_rectangle=intensity_target)
     mask = np.zeros(img.shape)
     mask[img == intensity_target] = 1
 
@@ -231,7 +232,7 @@ def dotted_sbc(
         target_shape = (target_shape, target_shape)
 
     padding = (distance/2., distance/2., distance/2., distance/2.)
-    patch = disc(ppd, dot_radius, vback=0., vdisc=intensity_dots)
+    patch = disc(ppd, dot_radius, intensity_background=0., intensity_disc=intensity_dots)
     patch = pad_img(patch, padding, ppd, 0.)
 
     img_height = pixels_to_degrees(n_dots[0] * patch.shape[0], ppd)
@@ -243,7 +244,8 @@ def dotted_sbc(
     tposy = (img_height-rec_height) / 2.
     tposx = (img_width-rec_width) / 2.
     sbc = rectangle(ppd, im_size=(img_height, img_width), rect_size=(rec_height, rec_width),
-                    rect_pos=(tposy, tposx), vback=intensity_background, vrect=intensity_target)
+                    rect_pos=(tposy, tposx), intensity_background=intensity_background,
+                    intensity_rectangle=intensity_target)
     img = np.ones(sbc.shape) * intensity_background
 
     patch = np.tile(patch, (n_dots[0], n_dots[1]))
