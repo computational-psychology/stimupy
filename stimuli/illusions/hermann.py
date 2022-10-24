@@ -35,6 +35,13 @@ def hermann_grid(
     grid_height, grid_width = degrees_to_pixels(visual_size, ppd)
     element_height, element_width, element_thick = degrees_to_pixels(element_size, ppd)
 
+    if element_height <= element_thick:
+        raise ValueError("Element thickness larger than height")
+    if element_width <= element_thick:
+        raise ValueError("Element thickness larger than width")
+    if element_thick <= 0:
+        raise ValueError("Increase element thickness")
+
     img = np.ones([grid_height, grid_width], dtype=np.float32) * intensity_background
     for i in range(element_thick):
         img[i::element_height, :] = intensity_grid
