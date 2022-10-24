@@ -64,20 +64,20 @@
         "mask": "88d8d68cd2cc0ba75ffe6f0056dcdb80"
     },
     "todorovic_equal": {
-        "img": "ada47272e5695d41a0cc1000afe7ed7b",
-        "mask": "1af5899340e16372d463125c9ecc5c62"
+        "img": "cd365a8e11d4e221dd182020e057fb27",
+        "mask": "16fcb9e3a92df2a26b4917e92656e25c"
     },
     "todorovic_in_large": {
         "img": "67535cba28a73e53b15704d4d20dbf9f",
         "mask": "85dbfdfbf2eb9e08f8c2a447b1a0db1c"
     },
     "todorovic_in_small": {
-        "img": "28d652fc5c00d77a9a20d996a294f527",
-        "mask": "6ad0489f74c89d18b3105769d976a2f7"
+        "img": "193ab7b9090bdbcb7acec0f3d10f5b29",
+        "mask": "5eaf6d957c5e5622c093d7ed6633a27e"
     },
     "todorovic_out": {
-        "img": "02e0a8c720737973c48d232247b1c45f",
-        "mask": "34d1cc1bba64f169927029baf5940242"
+        "img": "d5fb4714d6917bd1a80c8b8d4cf2c1ae",
+        "mask": "f8e43128209de4a1a7d75af488ea64fb"
     },
     "checkerboard_016": {
         "img": "2480266193d1a643ecaffa9bcf267498",

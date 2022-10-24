@@ -140,9 +140,9 @@ def todorovic_rectangle(
     # Calculate placement of target and covers for generalized function:
     tpos = np.array(visual_size) / 2 - np.array(target_size) / 2
     y1 = tpos[0] + target_size[0]/2 - covers_offset[0] - covers_size[0]/2
-    x1 = tpos[1] + target_size[1]/2 - covers_offset[0] - covers_size[1]/2
+    x1 = tpos[1] + target_size[1]/2 - covers_offset[1] - covers_size[1]/2
     y2 = tpos[0] + target_size[0]/2 + covers_offset[0] - covers_size[0]/2
-    x2 = tpos[1] + target_size[1]/2 + covers_offset[0] - covers_size[1]/2
+    x2 = tpos[1] + target_size[1]/2 + covers_offset[1] - covers_size[1]/2
 
     stim = todorovic_rectangle_generalized(
         visual_size=visual_size,
@@ -290,17 +290,19 @@ def todorovic_cross(
 
     # Calculate placement of target and covers for generalized function:
     center = np.array(visual_size) / 2
+    t2 = np.floor(target_thickness * ppd) / ppd
+    t3 = np.ceil(target_thickness * ppd) / ppd
     y1 = center[0] - target_thickness/2 - covers_size[0]
     x1 = center[1] - target_thickness/2 - covers_size[1]
-    y2 = center[0] + target_thickness/2 - 1/ppd
-    x2 = center[1] + target_thickness/2 - 1/ppd
+    y2 = center[0] + t2/2
+    x2 = center[1] + t2/2
 
     arm_size = (target_arms_size[0], target_arms_size[0], target_arms_size[1], target_arms_size[1])
     stim = todorovic_cross_generalized(
         visual_size=visual_size,
         ppd=ppd,
         target_arms_size=arm_size,
-        target_thickness=target_thickness,
+        target_thickness=t3,
         covers_size=covers_size,
         covers_posx=(x1, x2, x2, x1),
         covers_posy=(y1, y2, y1, y2),
