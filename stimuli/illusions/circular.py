@@ -5,7 +5,7 @@ from stimuli.utils import degrees_to_pixels, resize_array, pad_img_to_shape
 
 def circular_white(
     visual_size=(10, 10),
-    ppd=18,
+    ppd=30,
     frequency=1,
     intensity_discs=(0., 1.),
     intensity_background=0.2,
@@ -105,6 +105,52 @@ def circular_white(
               }
 
     return {"img": img, "mask": mask.astype(int),  **params}
+
+
+def circular_bullseye(
+    visual_size=(10, 10),
+    ppd=30,
+    frequency=1,
+    intensity_discs=(0., 1.),
+    intensity_background=0.2,
+    intensity_target=0.5,
+    ssf=1,
+):
+    """
+    Circular Bullsseye stimulus
+
+    Parameters
+    ----------
+    visual_size : (float, float)
+        The shape of the stimulus in degrees of visual angle. (y,x)
+    ppd : int
+        pixels per degree (visual angle)
+    frequency : float
+        the spatial frequency of the circular grating in cycles per degree
+    intensity_discs : (float, float)
+        intensity values of discs
+    intensity_background : float
+        intensity value of background
+    intensity_target : float
+        intensity value of target discs
+    ssf : int (optional)
+          the supersampling-factor used for anti-aliasing if >1. Default is 1.
+          Warning: produces smoother circles but might introduce gradients that affect vision!
+
+    Returns
+    ----------
+    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    """
+    stim = circular_white(
+        visual_size=visual_size,
+        ppd=ppd,
+        frequency=frequency,
+        intensity_discs=intensity_discs,
+        intensity_background=intensity_background,
+        intensity_target=intensity_target,
+        target_indices=0,
+        ssf=ssf)
+    return stim
 
 
 def radial_white(
@@ -247,7 +293,8 @@ if __name__ == "__main__":
     from stimuli.utils import plot_stimuli
 
     stims = {
-        "Circular White's effect": circular_white(),
+        "Circular Whites": circular_white(),
+        "Circular Bullseye": circular_bullseye(),
         "Radial white": radial_white(),
     }
 
