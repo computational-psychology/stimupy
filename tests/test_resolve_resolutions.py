@@ -108,9 +108,7 @@ def test_visual_size_from_shape_ppd(visual_size, ppd, shape):
     ],
 )
 def test_resolve_resolution(shape, visual_size, ppd):
-    shape, visual_size, ppd = resolution.resolve(
-        shape=shape, visual_size=visual_size, ppd=ppd
-    )
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
     resolution.valid_resolution(shape=shape, visual_size=visual_size, ppd=ppd)
 
 

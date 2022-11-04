@@ -9,7 +9,7 @@ from stimuli.noises.utils import pseudo_white_spectrum
 
 def white(
     visual_size=(10, 20),
-    ppd=40.,
+    ppd=40.0,
     rms_contrast=0.2,
     pseudo_noise=True,
 ):
@@ -45,7 +45,7 @@ def white(
         white_noise = np.real(white_noise)
     else:
         # Create white noise and fft
-        white_noise = np.random.rand(*shape) * 2. - 1.
+        white_noise = np.random.rand(*shape) * 2.0 - 1.0
 
     # Adjust noise rms contrast:
     white_noise = rms_contrast * white_noise / white_noise.std()
@@ -57,7 +57,7 @@ def white(
         "rms_contrast": rms_contrast,
         "pseudo_noise": pseudo_noise,
         "intensity_range": [white_noise.min(), white_noise.max()],
-        }
+    }
     return {"img": white_noise, **params}
 
 

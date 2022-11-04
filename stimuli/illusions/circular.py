@@ -7,10 +7,13 @@ def circular_white(
     visual_size=(10, 10),
     ppd=30,
     frequency=1,
-    intensity_discs=(0., 1.),
+    intensity_discs=(0.0, 1.0),
     intensity_background=0.2,
     intensity_target=0.5,
-    target_indices=(3, 6,),
+    target_indices=(
+        3,
+        6,
+    ),
     ssf=1,
 ):
     """
@@ -44,7 +47,7 @@ def circular_white(
         visual_size = (visual_size, visual_size)
 
     height_px, width_px = degrees_to_pixels(visual_size, ppd)
-    cycle_width_px = degrees_to_pixels(1. / (frequency*2), ppd) * 2
+    cycle_width_px = degrees_to_pixels(1.0 / (frequency * 2), ppd) * 2
     radius = (cycle_width_px / 2) / ppd
     n_discs = np.minimum(height_px, width_px) // cycle_width_px
 
@@ -58,10 +61,13 @@ def circular_white(
         raise ValueError("vtarget should be a single float / int")
     if not isinstance(frequency, (float, int)):
         raise ValueError("frequency should be a single float / int")
-    if degrees_to_pixels(1./frequency, ppd) % 2 != 0:
-        frequency_used = 1. / cycle_width_px*ppd
+    if degrees_to_pixels(1.0 / frequency, ppd) % 2 != 0:
+        frequency_used = 1.0 / cycle_width_px * ppd
         freqs = (frequency, frequency_used)
-        print("Warning: Circular White frequency changed from %f to %f ensure an even-numbered cycle width!" % freqs)
+        print(
+            "Warning: Circular White frequency changed from %f to %f ensure an even-numbered cycle width!"
+            % freqs
+        )
     if n_discs < 1:
         raise ValueError("No circle fits in requested shape! Increase frequency or shape")
 
@@ -70,7 +76,7 @@ def circular_white(
     vdics_mask = []
     mask_counter = 1
     for i in range(n_discs):
-        radii.append(radius*(i+1))
+        radii.append(radius * (i + 1))
         if i in target_indices:
             vdiscs_img.append(intensity_target)
             vdics_mask.append(mask_counter)
@@ -86,32 +92,33 @@ def circular_white(
     mask = disc_and_rings(ppd, radii, 0, vdics_mask, ssf)
 
     # Pad to desired size
-    img = pad_img_to_shape(img, np.array(visual_size)*ppd, intensity_background)
-    mask = pad_img_to_shape(mask, np.array(visual_size)*ppd, 0)
+    img = pad_img_to_shape(img, np.array(visual_size) * ppd, intensity_background)
+    mask = pad_img_to_shape(mask, np.array(visual_size) * ppd, 0)
 
     # Target masks should only cover areas where target intensity is exactly vtarget
-    cond = ((img != intensity_target) & (mask != 0))
+    cond = (img != intensity_target) & (mask != 0)
     mask[cond] = 0
 
-    params = {"shape": img.shape,
-              "visual_size": np.array(img.shape)/ppd,
-              "ppd": ppd,
-              "frequency": frequency,
-              "intensity_discs": intensity_discs,
-              "intensity_background": intensity_background,
-              "intensity_target": intensity_target,
-              "target_indices": target_indices,
-              "ssf": ssf,
-              }
+    params = {
+        "shape": img.shape,
+        "visual_size": np.array(img.shape) / ppd,
+        "ppd": ppd,
+        "frequency": frequency,
+        "intensity_discs": intensity_discs,
+        "intensity_background": intensity_background,
+        "intensity_target": intensity_target,
+        "target_indices": target_indices,
+        "ssf": ssf,
+    }
 
-    return {"img": img, "mask": mask.astype(int),  **params}
+    return {"img": img, "mask": mask.astype(int), **params}
 
 
 def circular_bullseye(
     visual_size=(10, 10),
     ppd=30,
     frequency=1,
-    intensity_discs=(0., 1.),
+    intensity_discs=(0.0, 1.0),
     intensity_background=0.2,
     intensity_target=0.5,
     ssf=1,
@@ -149,7 +156,8 @@ def circular_bullseye(
         intensity_background=intensity_background,
         intensity_target=intensity_target,
         target_indices=0,
-        ssf=ssf)
+        ssf=ssf,
+    )
     return stim
 
 
@@ -157,11 +165,11 @@ def radial_white(
     visual_size=(10, 12),
     ppd=20,
     n_segments=8,
-    rotate=3*np.pi,
+    rotate=3 * np.pi,
     target_width=2.5,
     target_center=2.5,
     target_indices=(0, 1, 2, 3, 4),
-    intensity_slices=(1., 0.),
+    intensity_slices=(1.0, 0.0),
     intensity_background=0.3,
     intensity_target=0.5,
     ssf=1,
@@ -203,10 +211,10 @@ def radial_white(
         visual_size = (visual_size, visual_size)
 
     shape_px = degrees_to_pixels(np.minimum(visual_size[0], visual_size[1]), ppd) * ssf
-    x = np.arange(-int(shape_px/2), int(shape_px/2))
+    x = np.arange(-int(shape_px / 2), int(shape_px / 2))
     img = np.ones([shape_px, shape_px]) * intensity_background
     mask = np.zeros([shape_px, shape_px])
-    rotate = rotate % (2*np.pi)
+    rotate = rotate % (2 * np.pi)
 
     if target_indices is None:
         target_indices = ()
@@ -220,7 +228,9 @@ def radial_white(
         raise ValueError("target_width should be a single float or int")
     if not isinstance(target_center, (float, int)):
         raise ValueError("target_center should be a single float or int")
-    if (target_center-target_width/2)*ppd < 0 or (target_center+target_width/2)*ppd > shape_px/2:
+    if (target_center - target_width / 2) * ppd < 0 or (
+        target_center + target_width / 2
+    ) * ppd > shape_px / 2:
         raise ValueError("Warning: targets do not fully fit into stimulus")
     if not isinstance(rotate, (float, int)):
         raise ValueError("rotate should be a single float or int")
@@ -229,27 +239,27 @@ def radial_white(
 
     # Create circle (i.e. radial part)
     yy, xx = np.meshgrid(x, x)
-    radial = np.sqrt(yy**2. + xx**2.)
+    radial = np.sqrt(yy**2.0 + xx**2.0)
     radial[radial > x.max()] = 0
-    radial[int(shape_px/2), int(shape_px/2)] = 1
+    radial[int(shape_px / 2), int(shape_px / 2)] = 1
 
     tradial = np.copy(radial)
-    tradial[tradial < ppd*(target_center - target_width/2)] = 0
-    tradial[tradial > ppd*(target_center + target_width/2)] = 0
+    tradial[tradial < ppd * (target_center - target_width / 2)] = 0
+    tradial[tradial > ppd * (target_center + target_width / 2)] = 0
 
     # Calculate angular part
     angular = np.arctan2(yy, xx)
     angular = angular - angular.min() + rotate
-    angular[angular > 2*np.pi] -= 2*np.pi
+    angular[angular > 2 * np.pi] -= 2 * np.pi
     angular[angular == 0] = 0.0001
 
     # Divide circle in nparts:
-    theta = np.linspace(0, 2*np.pi, n_segments+1)
-    theta[theta > 2*np.pi] -= 2*np.pi
+    theta = np.linspace(0, 2 * np.pi, n_segments + 1)
+    theta[theta > 2 * np.pi] -= 2 * np.pi
     for i in range(n_segments):
         ang = np.copy(angular)
         ang[angular <= theta[i]] = 0
-        ang[angular > theta[i+1]] = 0
+        ang[angular > theta[i + 1]] = 0
         indices = ang * radial
         tindices = ang * tradial
         img[indices != 0] = intensity_slices[i % 2]
@@ -264,28 +274,29 @@ def radial_white(
     mask = np.dot(sampler, np.dot(mask, sampler.T)) / ssf**2
 
     # Pad to desired size
-    img = pad_img_to_shape(img, np.array(visual_size)*ppd, intensity_background)
-    mask = pad_img_to_shape(mask, np.array(visual_size)*ppd, 0)
+    img = pad_img_to_shape(img, np.array(visual_size) * ppd, intensity_background)
+    mask = pad_img_to_shape(mask, np.array(visual_size) * ppd, 0)
 
     # Target masks should only cover areas where target intensity is exactly vtarget
-    cond = ((img != intensity_target) & (mask != 0))
+    cond = (img != intensity_target) & (mask != 0)
     mask[cond] = 0
 
-    params = {"shape": img.shape,
-              "visual_size": np.array(img.shape)/ppd,
-              "ppd": ppd,
-              "n_segments": n_segments,
-              "rotate": rotate,
-              "target_width": target_width,
-              "target_center": target_center,
-              "intensity_slices": intensity_slices,
-              "intensity_background": intensity_background,
-              "intensity_target": intensity_target,
-              "target_indices": target_indices,
-              "ssf": ssf,
-              }
+    params = {
+        "shape": img.shape,
+        "visual_size": np.array(img.shape) / ppd,
+        "ppd": ppd,
+        "n_segments": n_segments,
+        "rotate": rotate,
+        "target_width": target_width,
+        "target_center": target_center,
+        "intensity_slices": intensity_slices,
+        "intensity_background": intensity_background,
+        "intensity_target": intensity_target,
+        "target_indices": target_indices,
+        "ssf": ssf,
+    }
 
-    return {"img": img, "mask": mask,  **params}
+    return {"img": img, "mask": mask, **params}
 
 
 if __name__ == "__main__":

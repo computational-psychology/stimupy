@@ -38,7 +38,7 @@ def rectangle(
         rect_size = (rect_size, rect_size)
     if isinstance(rect_pos, (float, int)):
         rect_pos = (rect_pos, rect_pos)
-    if rect_pos[0]+rect_size[0] > im_size[0] or rect_pos[1]+rect_size[1] > im_size[1]:
+    if rect_pos[0] + rect_size[0] > im_size[0] or rect_pos[1] + rect_size[1] > im_size[1]:
         raise ValueError("rectangle does not fully fit into stimulus")
 
     im_height, im_width = degrees_to_pixels(im_size, ppd)
@@ -48,9 +48,7 @@ def rectangle(
     # Create image and add square
     img = np.ones((im_height, im_width)) * intensity_background
     target = np.ones((rect_height, rect_width)) * intensity_rectangle
-    img[
-        rect_posy : rect_posy + rect_height, rect_posx : rect_posx + rect_width
-    ] = target
+    img[rect_posy : rect_posy + rect_height, rect_posx : rect_posx + rect_width] = target
     return img
 
 
@@ -75,18 +73,12 @@ def triangle(ppd=10, target_size=(2.0, 2.0), intensity_background=0.0, intensity
     """
     target_y_px, target_x_px = degrees_to_pixels(target_size, ppd)
     img = np.ones([target_y_px, target_x_px]) * intensity_background
-    line1 = np.linspace(
-        0, target_y_px - 1, np.maximum(target_y_px, target_x_px) * 2
-    ).astype(int)
-    line1 = np.linspace(
-        line1, target_y_px - 1, np.maximum(target_y_px, target_x_px) * 2
-    ).astype(int)
-    line2 = np.linspace(
-        0, target_x_px - 1, np.maximum(target_y_px, target_x_px) * 2
-    ).astype(int)
-    line2 = np.repeat(
-        np.expand_dims(line2, -1), np.maximum(target_y_px, target_x_px) * 2, 1
+    line1 = np.linspace(0, target_y_px - 1, np.maximum(target_y_px, target_x_px) * 2).astype(int)
+    line1 = np.linspace(line1, target_y_px - 1, np.maximum(target_y_px, target_x_px) * 2).astype(
+        int
     )
+    line2 = np.linspace(0, target_x_px - 1, np.maximum(target_y_px, target_x_px) * 2).astype(int)
+    line2 = np.repeat(np.expand_dims(line2, -1), np.maximum(target_y_px, target_x_px) * 2, 1)
     img[line1, line2] = intensity_triangle
     return img
 
@@ -127,9 +119,7 @@ def cross(
     if not isinstance(cross_thickness, (float, int)):
         raise ValueError("cross_thickness should be a single number")
 
-    (cross_top, cross_bottom, cross_left, cross_right) = degrees_to_pixels(
-        cross_size, ppd
-    )
+    (cross_top, cross_bottom, cross_left, cross_right) = degrees_to_pixels(cross_size, ppd)
     cross_thickness = degrees_to_pixels(cross_thickness, ppd)
     width = cross_left + cross_thickness + cross_right
     height = cross_top + cross_thickness + cross_bottom
@@ -172,7 +162,7 @@ def square_wave(
     shape=(10, 10),
     ppd=10,
     frequency=1,
-    intensity_bars=(0., 1.),
+    intensity_bars=(0.0, 1.0),
     period="ignore",
 ):
     """
@@ -206,17 +196,18 @@ def square_wave(
         raise ValueError("The frequency is limited to ppd/2.")
 
     height, width = degrees_to_pixels(shape, ppd)
-    pixels_per_cycle = degrees_to_pixels(1. / (frequency*2), ppd) * 2
-    frequency_used = 1. / pixels_per_cycle*ppd
-    if degrees_to_pixels(1./frequency, ppd) % 2 != 0:
-        print("Warning: Square-wave frequency changed from %f to %f ensure an even-numbered cycle width!" % (frequency, frequency_used))
+    pixels_per_cycle = degrees_to_pixels(1.0 / (frequency * 2), ppd) * 2
+    frequency_used = 1.0 / pixels_per_cycle * ppd
+    if degrees_to_pixels(1.0 / frequency, ppd) % 2 != 0:
+        print(
+            "Warning: Square-wave frequency changed from %f to %f ensure an even-numbered cycle width!"
+            % (frequency, frequency_used)
+        )
 
     if period == "full":
         width = (width // pixels_per_cycle) * pixels_per_cycle
     elif period == "half":
-        width = (
-            width // pixels_per_cycle
-        ) * pixels_per_cycle + pixels_per_cycle / 2
+        width = (width // pixels_per_cycle) * pixels_per_cycle + pixels_per_cycle / 2
     width = int(width)
 
     stim = np.ones((height, width)) * intensity_bars[1]
@@ -232,12 +223,12 @@ def square_wave(
 
 
 def disc_and_rings(
-        ppd=20,
-        radii=(3, 6, 9),
-        intensity_background=0.,
-        intensity_discs=(1., 0., 1.),
-        ssf=5,
-        ):
+    ppd=20,
+    radii=(3, 6, 9),
+    intensity_background=0.0,
+    intensity_discs=(1.0, 0.0, 1.0),
+    ssf=5,
+):
     """
     Create a central disc with rings
 
@@ -261,7 +252,7 @@ def disc_and_rings(
     radii_px = degrees_to_pixels(radii, ppd) * ssf
 
     # create stimulus at 5 times size to allow for supersampling antialiasing
-    img = np.ones([radii_px.max()*2, radii_px.max()*2]) * intensity_background
+    img = np.ones([radii_px.max() * 2, radii_px.max() * 2]) * intensity_background
 
     # compute distance from center of array for every point, cap at 1.0
     x = np.linspace(-img.shape[1] / 2.0, img.shape[1] / 2.0, img.shape[1])
@@ -280,12 +271,12 @@ def disc_and_rings(
 
 
 def disc(
-        ppd=20,
-        radius=3,
-        intensity_background=0.,
-        intensity_disc=1.,
-        ssf=5,
-        ):
+    ppd=20,
+    radius=3,
+    intensity_background=0.0,
+    intensity_disc=1.0,
+    ssf=5,
+):
     """
     Create a central disc
 
@@ -319,12 +310,12 @@ def disc(
 
 
 def square_wave_grating(
-        ppd=10,
-        n_bars=8,
-        bar_shape=(8., 1.),
-        intensity_min=0.0,
-        intensity_max=1.0,
-        ):
+    ppd=10,
+    n_bars=8,
+    bar_shape=(8.0, 1.0),
+    intensity_min=0.0,
+    intensity_max=1.0,
+):
     """
     Square-wave grating
 

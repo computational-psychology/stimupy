@@ -5,7 +5,7 @@ def bullseye_stimulus(
     ppd=10,
     n_rings=8,
     ring_width=0.5,
-    intensity_rings=(1., 0.),
+    intensity_rings=(1.0, 0.0),
     intensity_target=0.5,
 ):
     """

@@ -60,9 +60,7 @@ def grating_illusion(
     target_end = target_start + target_height_px
 
     mask = np.zeros((height_px, width_px))
-    mask[target_start:target_end, :] = (
-        img[target_start:target_end, :] - low
-    ) / (high - low) + 1
+    mask[target_start:target_end, :] = (img[target_start:target_end, :] - low) / (high - low) + 1
 
     img = gaussian_filter(img, blur)
     img[target_start:target_end, :] = target

@@ -103,9 +103,7 @@ def resolve_1D(length=None, visual_angle=None, ppd=None):
 
     # Triage based on number of unknowns
     if n_unknowns > 1:  # More than 1 unknown we cannot resolve
-        raise ValueError(
-            f"Too many unkowns to resolve resolution; {length},{visual_angle},{ppd}"
-        )
+        raise ValueError(f"Too many unkowns to resolve resolution; {length},{visual_angle},{ppd}")
     else:  # 1 unknown, so need to resolve
         # Which unknown?
         if length is None:
@@ -113,9 +111,7 @@ def resolve_1D(length=None, visual_angle=None, ppd=None):
         elif visual_angle is None:
             visual_angle = visual_angle_from_length_ppd_1D(length=length, ppd=ppd)
         elif ppd is None:
-            ppd = ppd_from_length_visual_angle_1D(
-                length=length, visual_angle=visual_angle
-            )
+            ppd = ppd_from_length_visual_angle_1D(length=length, visual_angle=visual_angle)
 
     return length, visual_angle, ppd
 
@@ -444,9 +440,7 @@ def validate_ppd(ppd):
         vertical = float(vertical)
 
     # Check non-negative
-    if (horizontal is not None and horizontal <= 0) or (
-        vertical is not None and vertical <= 0
-    ):
+    if (horizontal is not None and horizontal <= 0) or (vertical is not None and vertical <= 0):
         raise ValueError(f"ppd has to be positive; {horizontal, vertical}")
 
     # Initiate namedtuple:
@@ -498,9 +492,7 @@ def validate_visual_size(visual_size):
         visual_size = (visual_size[0], visual_size[0])
     elif len(visual_size) > 2:
         # If Sequence of len()>2 is passed in: error
-        raise TypeError(
-            f"visual_size must be of length 1 or 2, not greater: {visual_size}"
-        )
+        raise TypeError(f"visual_size must be of length 1 or 2, not greater: {visual_size}")
 
     # Unpack
     width = visual_size[1]

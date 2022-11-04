@@ -7,9 +7,9 @@ def grating_illusion(
     ppd=10,
     n_bars=8,
     target_indices=(2, 4),
-    bar_shape=(8, 1.),
-    intensity_bars=(0., 1.),
-    intensity_target=0.5
+    bar_shape=(8, 1.0),
+    intensity_bars=(0.0, 1.0),
+    intensity_target=0.5,
 ):
     """
     Grating illusion
@@ -42,20 +42,20 @@ def grating_illusion(
         target_indices = (target_indices,)
 
     for i, idx in enumerate(target_indices):
-        img[:, idx*bar_width_px:(idx+1)*bar_width_px] = intensity_target
-        mask[:, idx*bar_width_px:(idx+1)*bar_width_px] = i + 1
+        img[:, idx * bar_width_px : (idx + 1) * bar_width_px] = intensity_target
+        mask[:, idx * bar_width_px : (idx + 1) * bar_width_px] = i + 1
     return {"img": img, "mask": mask}
 
 
 def grating_uniform(
-        ppd=10,
-        n_bars=8,
-        bar_shape=(0.5, 4.),
-        im_size=(10., 10.),
-        intensity_background=0.,
-        intensity_bar=1.,
-        intensity_target=0.5,
-        ):
+    ppd=10,
+    n_bars=8,
+    bar_shape=(0.5, 4.0),
+    im_size=(10.0, 10.0),
+    intensity_background=0.0,
+    intensity_bar=1.0,
+    intensity_target=0.5,
+):
     """
     Grating on a uniform background
 
@@ -96,13 +96,13 @@ def grating_uniform(
 
 
 def grating_grating(
-        ppd=10,
-        n_bars=8,
-        bar_shape=(0.5, 4.),
-        im_size=(10.3, 10.3),
-        intensity_bars=(0., 1.),
-        intensity_target=0.5,
-        ):
+    ppd=10,
+    n_bars=8,
+    bar_shape=(0.5, 4.0),
+    im_size=(10.3, 10.3),
+    intensity_bars=(0.0, 1.0),
+    intensity_target=0.5,
+):
     """
     Grating on a grating
 
@@ -140,28 +140,28 @@ def grating_grating(
 
     # Reduce size to desired size
     im_size_px = degrees_to_pixels(im_size, ppd)
-    img_large = img_large[0:im_size_px[0], 0:im_size_px[1]]
+    img_large = img_large[0 : im_size_px[0], 0 : im_size_px[1]]
 
     # Incorporate small grating in large grating
     nbars = nbars + (nbars % 2)
     bar_height_px = degrees_to_pixels(bar_shape[1], ppd)
-    ys = int((nbars*bar_height_px - img_small.shape[0]) / 2)
+    ys = int((nbars * bar_height_px - img_small.shape[0]) / 2)
     xs = (im_size_px[1] - img_small.shape[1]) // 2
-    img_large[ys:ys+img_small.shape[0], xs:xs+img_small.shape[1]] = img_small
+    img_large[ys : ys + img_small.shape[0], xs : xs + img_small.shape[1]] = img_small
 
     mask_large = np.zeros(img_large.shape)
-    mask_large[ys:ys+img_small.shape[0], xs:xs+img_small.shape[1]] = mask_small
+    mask_large[ys : ys + img_small.shape[0], xs : xs + img_small.shape[1]] = mask_small
     return {"img": img_large, "mask": mask_large}
 
 
 def grating_grating_shifted(
-        ppd=10,
-        n_bars=8,
-        bar_shape=(0.5, 4.),
-        im_size=(10., 10.),
-        intensity_bars=(0., 1.),
-        intensity_target=0.5,
-        ):
+    ppd=10,
+    n_bars=8,
+    bar_shape=(0.5, 4.0),
+    im_size=(10.0, 10.0),
+    intensity_bars=(0.0, 1.0),
+    intensity_target=0.5,
+):
     """
     Grating on a shifted grating
 
@@ -186,18 +186,18 @@ def grating_grating_shifted(
     """
 
     stim = grating_grating(ppd, n_bars, bar_shape, im_size, intensity_bars, intensity_target)
-    img = stim['img']
-    mask = stim['mask']
+    img = stim["img"]
+    mask = stim["mask"]
 
     bar_height, bar_width = degrees_to_pixels(bar_shape, ppd)
     xs = int((img.shape[1] - bar_width) / 2)
     img_col = np.ones([img.shape[0], bar_width]) * intensity_bars[0]
-    img_col[bar_height::, :] = img[0:img_col.shape[0]-bar_height, xs:xs+bar_width]
-    img[:, xs:xs+bar_width] = img_col
+    img_col[bar_height::, :] = img[0 : img_col.shape[0] - bar_height, xs : xs + bar_width]
+    img[:, xs : xs + bar_width] = img_col
 
     mask_col = np.zeros([mask.shape[0], bar_width])
-    mask_col[bar_height::, :] = mask[0:mask_col.shape[0]-bar_height, xs:xs+bar_width]
-    mask[:, xs:xs+bar_width] = mask_col
+    mask_col[bar_height::, :] = mask[0 : mask_col.shape[0] - bar_height, xs : xs + bar_width]
+    mask[:, xs : xs + bar_width] = mask_col
     return {"img": img, "mask": mask}
 
 

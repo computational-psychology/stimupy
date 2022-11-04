@@ -52,9 +52,9 @@ def cube_illusion(
     -------
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
     """
-    cell_long_px, cell_short_px = degrees_to_pixels(
-        cell_long, ppd
-    ), degrees_to_pixels(cell_short, ppd)
+    cell_long_px, cell_short_px = degrees_to_pixels(cell_long, ppd), degrees_to_pixels(
+        cell_short, ppd
+    )
     corner_cell_width_px, corner_cell_height_px = degrees_to_pixels(
         corner_cell_width, ppd
     ), degrees_to_pixels(corner_cell_height, ppd)
@@ -73,14 +73,10 @@ def cube_illusion(
 
     # final image array
     width_px = (
-        (n_cells - 2) * cell_long_px
-        + 2 * corner_cell_width_px
-        + (n_cells - 1) * cell_spacing_px
+        (n_cells - 2) * cell_long_px + 2 * corner_cell_width_px + (n_cells - 1) * cell_spacing_px
     )
     height_px = (
-        (n_cells - 2) * cell_long_px
-        + 2 * corner_cell_height_px
-        + (n_cells - 1) * cell_spacing_px
+        (n_cells - 2) * cell_long_px + 2 * corner_cell_height_px + (n_cells - 1) * cell_spacing_px
     )
 
     img = np.ones((height_px, width_px)) * intensity_background

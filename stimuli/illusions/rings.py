@@ -7,7 +7,7 @@ def ring_stimulus(
     n_rings=8,
     target_idx=4,
     ring_width=0.5,
-    intensity_rings=(1., 0.),
+    intensity_rings=(1.0, 0.0),
     intensity_target=0.5,
 ):
     """
@@ -54,12 +54,8 @@ def ring_stimulus(
         mask_arr[radii == idx] = 1
 
     # build image from array
-    img = np.repeat(
-        np.repeat(arr, ring_width_px, axis=0), ring_width_px, axis=1
-    )
-    mask = np.repeat(
-        np.repeat(mask_arr, ring_width_px, axis=0), ring_width_px, axis=1
-    )
+    img = np.repeat(np.repeat(arr, ring_width_px, axis=0), ring_width_px, axis=1)
+    mask = np.repeat(np.repeat(mask_arr, ring_width_px, axis=0), ring_width_px, axis=1)
 
     y_c, x_c = img.shape
     y_c //= 2

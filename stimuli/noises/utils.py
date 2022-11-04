@@ -51,16 +51,16 @@ def pseudo_white_helper(
     if isinstance(shape, (float, int)):
         shape = (shape, shape)
 
-    Re = np.random.rand(*shape) * amplitude - amplitude/2.
-    Im = np.sqrt((amplitude/2.)**2 - Re**2)
+    Re = np.random.rand(*shape) * amplitude - amplitude / 2.0
+    Im = np.sqrt((amplitude / 2.0) ** 2 - Re**2)
     Im = randomize_sign(Im)
-    output = Re+Im*1j
+    output = Re + Im * 1j
     return output
 
 
 def pseudo_white_spectrum(
     shape=(100, 100),
-    amplitude=2.,
+    amplitude=2.0,
 ):
     """Function to create pseudorandom white noise. Code translated and adapted
     from Matlab scripts provided by T. Peromaa
@@ -90,67 +90,61 @@ def pseudo_white_spectrum(
         raise ValueError("shape needs to be even-numbered")
 
     # We divide the noise spectrum in four quadrants with pseudorandom white noise
-    quadrant1 = pseudo_white_helper((int(y/2)-1, int(x/2)-1), A)
-    quadrant2 = pseudo_white_helper((int(y/2)-1, int(x/2)-1), A)
+    quadrant1 = pseudo_white_helper((int(y / 2) - 1, int(x / 2) - 1), A)
+    quadrant2 = pseudo_white_helper((int(y / 2) - 1, int(x / 2) - 1), A)
     quadrant3 = quadrant2[::-1, ::-1].conj()
     quadrant4 = quadrant1[::-1, ::-1].conj()
 
     # We place the quadrants in the spectrum to eventuate that each frequency component has
     # an amplitude of A/2
     spectrum = np.zeros([y, x], dtype=complex)
-    spectrum[1:int(y/2), 1:int(x/2)] = quadrant1
-    spectrum[1:int(y/2), int(x/2)+1:x] = quadrant2
-    spectrum[int(y/2+1):y, 1:int(x/2)] = quadrant3
-    spectrum[int(y/2+1):y, int(x/2+1):x] = quadrant4
+    spectrum[1 : int(y / 2), 1 : int(x / 2)] = quadrant1
+    spectrum[1 : int(y / 2), int(x / 2) + 1 : x] = quadrant2
+    spectrum[int(y / 2 + 1) : y, 1 : int(x / 2)] = quadrant3
+    spectrum[int(y / 2 + 1) : y, int(x / 2 + 1) : x] = quadrant4
 
     # We need to fill the rows / columns that the quadrants do not cover
     # Fill first row:
     row = pseudo_white_helper((1, x), A)
     apu = np.fliplr(row)
-    row[0, int(x/2+1):x] = apu[0, int(x/2):x-1].conj()
+    row[0, int(x / 2 + 1) : x] = apu[0, int(x / 2) : x - 1].conj()
     spectrum[0, :] = np.squeeze(row)
 
     # Fill central row:
     row = pseudo_white_helper((1, x), A)
     apu = np.fliplr(row)
-    row[0, int(x/2+1):x] = apu[0, int(x/2):x-1].conj()
-    spectrum[int(y/2), :] = np.squeeze(row)
+    row[0, int(x / 2 + 1) : x] = apu[0, int(x / 2) : x - 1].conj()
+    spectrum[int(y / 2), :] = np.squeeze(row)
 
     # Fill first column:
     col = pseudo_white_helper((y, 1), A)
     apu = np.flipud(col)
-    col[int(y/2+1):y, 0] = apu[int(y/2):y-1, 0].conj()
-    spectrum[:, int(x/2)] = np.squeeze(col)
+    col[int(y / 2 + 1) : y, 0] = apu[int(y / 2) : y - 1, 0].conj()
+    spectrum[:, int(x / 2)] = np.squeeze(col)
 
     # Fill central column:
     col = pseudo_white_helper((y, 1), A)
     apu = np.flipud(col)
-    col[int(y/2+1):y, 0] = apu[int(y/2):y-1, 0].conj()
+    col[int(y / 2 + 1) : y, 0] = apu[int(y / 2) : y - 1, 0].conj()
     spectrum[:, 0] = np.squeeze(col)
 
     # Set amplitude at filled-corners to A/2:
-    spectrum[0, 0] = -A/2 + 0j
-    spectrum[0, int(x/2)] = -A/2 + 0j
-    spectrum[int(y/2), 0] = -A/2 + 0j
+    spectrum[0, 0] = -A / 2 + 0j
+    spectrum[0, int(x / 2)] = -A / 2 + 0j
+    spectrum[int(y / 2), 0] = -A / 2 + 0j
 
     # Set DC = 0:
-    spectrum[int(y/2), int(x/2)] = 0 + 0j
+    spectrum[int(y / 2), int(x / 2)] = 0 + 0j
     return spectrum
 
 
 # Function to orient noise
-def orient_noise(
-    noise,
-    sigma,
-    orientation,
-    ppd=60.,
-    rms_contrast=0.2
-):
+def orient_noise(noise, sigma, orientation, ppd=60.0, rms_contrast=0.2):
     shape = noise.shape
 
     # Prepare spatial frequency axes and create bandpass filter:
-    fy = np.fft.fftshift(np.fft.fftfreq(shape[0], d=1./ppd))
-    fx = np.fft.fftshift(np.fft.fftfreq(shape[1], d=1./ppd))
+    fy = np.fft.fftshift(np.fft.fftfreq(shape[0], d=1.0 / ppd))
+    fx = np.fft.fftshift(np.fft.fftfreq(shape[1], d=1.0 / ppd))
     Fx, Fy = np.meshgrid(fx, fy)
     ofilter = oriented_filter(Fx, Fy, sigma, orientation)
 
