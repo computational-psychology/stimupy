@@ -20,6 +20,34 @@ def pad_by_visual_size(img, padding, ppd, val):
     )
 
 
+def pad_by_shape(img, padding, pad_value=0):
+    """Pad image by specified amount(s).
+
+    Can specify different amount (before, after) each axis.
+
+    Parameters
+    ----------
+    img : numpy.ndarray
+        image-array to be padded
+    padding : int, or Sequence[int, int], or Sequence[Sequence[int, int], ...]
+        amount of padding, in pixels, in each direction:
+        ((before_1, after_1), … (before_N, after_N)) unique pad widths for each axis
+        (int,) or int is a shortcut for before = after = pad width for all axes.
+    pad_val : float, optional
+        value to pad with, by default 0.0
+
+    Returns
+    -------
+    numpy.ndarray
+        padded image
+    """
+
+    # Ensure padding is in integers
+    padding = np.array(padding, dtype=np.int32)
+
+    return np.pad(img, padding, mode="constant", constant_values=pad_value)
+
+
 def pad_img_to_shape(img, shape, val=0):
     """
     shape: shape of the resulting image in pixels (height, width)
@@ -44,47 +72,6 @@ def pad_img_to_shape(img, shape, val=0):
         "constant",
         constant_values=val,
     )
-
-
-def pad_array(arr, amount, pad_value=0):
-    """
-    Pad array with an arbitrary value. So far, only works for 2D arrays.
-
-    Parameters
-    ----------
-    arr : numpy ndarray
-          the array to be padded
-    amount : number or numpy ndarray
-             the amount of padding in each direction. Has to be of shape
-             len(arr.shape) X 2. the n-th row specifies the amount of padding
-             to be added to the n-th dimension of arr. The first value is the
-             amount of padding added before, the second value after the array.
-             If amount is a single number, it is used for padding in all
-             directions.
-    pad_value : number, optional
-                the value to be padded. Default is 0.
-
-    Returns
-    -------
-    output : numpy ndarray
-             the padded array
-    """
-    # if amount is a single number, use it for padding in all directions
-    if type(amount) is int or type(amount) is float:
-        amount = np.array(((amount, amount), (amount, amount)))
-    assert amount.amin() >= 0
-    if len(arr.shape) != 2:
-        raise NotImplementedError("pad_array currently only works for 2D arrays")
-    if amount.sum() == 0:
-        return arr
-
-    output_shape = [x + y.sum() for x, y in zip(arr.shape, amount)]
-    output = np.ones(output_shape, dtype=arr.dtype) * pad_value
-    output[
-        amount[0][0] : output_shape[0] - amount[0][1],
-        amount[1][0] : output_shape[1] - amount[1][1],
-    ] = arr
-    return output
 
 
 def center_array(arr, shape, pad_value=0):
