@@ -29,8 +29,9 @@ research, 47(12), 1631-1644. https://doi.org/10.1016/j.visres.2007.02.017
 """
 
 import numpy as np
+
 from stimuli import illusions
-from stimuli.utils import degrees_to_pixels, pad_img, pad_img_to_shape
+from stimuli.utils import degrees_to_pixels, pad_by_visual_size, pad_img_to_shape
 
 __all__ = [
     "WE_thick",
@@ -1561,9 +1562,9 @@ def benary_cross(ppd=PPD, pad=True):
 
     if pad:
         shape = degrees_to_pixels(VISEXTENT, ppd)
-        stim["img"] = pad_img(stim["img"], (0.0, 0.0, 4.0, 4.0), ppd, val=v3)
+        stim["img"] = pad_by_visual_size(stim["img"], (0.0, 0.0, 4.0, 4.0), ppd, val=v3)
         stim["img"] = pad_img_to_shape(stim["img"], shape, v2)
-        stim["mask"] = pad_img(stim["mask"], (0.0, 0.0, 4.0, 4.0), ppd, val=0)
+        stim["mask"] = pad_by_visual_size(stim["mask"], (0.0, 0.0, 4.0, 4.0), ppd, val=0)
         stim["mask"] = pad_img_to_shape(stim["mask"], shape, 0)
 
     params.update(

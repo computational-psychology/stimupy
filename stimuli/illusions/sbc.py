@@ -1,6 +1,7 @@
 import numpy as np
-from stimuli.utils import pixels_to_degrees, pad_img
-from stimuli.components import rectangle, disc
+
+from stimuli.components import disc, rectangle
+from stimuli.utils import pad_by_visual_size, pixels_to_degrees
 
 
 def simultaneous_contrast_generalized(
@@ -154,7 +155,7 @@ def sbc_with_dots(
 
     padding = (distance / 2.0, distance / 2.0, distance / 2.0, distance / 2.0)
     patch = disc(ppd, dot_radius, intensity_background=0.0, intensity_disc=intensity_dots)
-    patch = pad_img(patch, padding, ppd, 0.0)
+    patch = pad_by_visual_size(patch, padding, ppd, 0.0)
 
     img_height = pixels_to_degrees(n_dots[0] * patch.shape[0], ppd)
     img_width = pixels_to_degrees(n_dots[1] * patch.shape[1], ppd)
@@ -240,7 +241,7 @@ def dotted_sbc(
 
     padding = (distance / 2.0, distance / 2.0, distance / 2.0, distance / 2.0)
     patch = disc(ppd, dot_radius, intensity_background=0.0, intensity_disc=intensity_dots)
-    patch = pad_img(patch, padding, ppd, 0.0)
+    patch = pad_by_visual_size(patch, padding, ppd, 0.0)
 
     img_height = pixels_to_degrees(n_dots[0] * patch.shape[0], ppd)
     img_width = pixels_to_degrees(n_dots[1] * patch.shape[1], ppd)
@@ -286,6 +287,7 @@ def dotted_sbc(
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
+
     from stimuli.utils import plot_stimuli
 
     stims = {

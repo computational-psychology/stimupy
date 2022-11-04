@@ -33,8 +33,9 @@ import os.path
 
 import numpy as np
 import scipy.io
+
 from stimuli import illusions
-from stimuli.utils import pad_img
+from stimuli.utils import pad_by_visual_size
 
 __all__ = [
     "argyle",
@@ -492,8 +493,8 @@ def checkassim(ppd=PPD, pad=PAD):
 
     if pad:
         padding = np.array((4, 5, 3, 3)) / PPD
-        stim["img"] = pad_img(stim["img"], padding, ppd=ppd, val=35.0)
-        stim["mask"] = pad_img(stim["mask"], padding, ppd=ppd, val=0)
+        stim["img"] = pad_by_visual_size(stim["img"], padding, ppd=ppd, val=35.0)
+        stim["mask"] = pad_by_visual_size(stim["mask"], padding, ppd=ppd, val=0)
         params["padding"] = padding
 
     # Normalize intensity values to [0, 1]

@@ -3,7 +3,7 @@ import numpy as np
 from .utils import degrees_to_pixels
 
 
-def pad_img(img, padding, ppd, val):
+def pad_by_visual_size(img, padding, ppd, val):
     """
     padding: degrees visual angle (top, bottom, left, right)
     """
