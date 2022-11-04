@@ -495,46 +495,6 @@ def plot_stimuli(stims, mask=False):
 ###################################
 #          Lynns utils            #
 ###################################
-def randomize_sign(array):
-    """Helper function that randomizes the sign of values in an array.
-
-    Parameters
-    ----------
-    array
-        N-dimensional array
-
-    Returns
-    -------
-    array
-        Same array with randomized signs
-
-    """
-    sign = np.random.rand(*array.shape) - 0.5
-    sign[sign <= 0.0] = -1.0
-    sign[sign > 0.0] = 1.0
-    array = array * sign
-    return array
-
-
-# Calculate peak frequency and boundaries for bandwidth
-def filter_statistics(f, gauss):
-    nX = len(f)
-    f_test = f[int(nX / 2.0) : :]
-    gauss_test = gauss[int(nX / 2.0) : :, int(nX / 2.0)]
-
-    # Calculate peak freq of 1d gaussian filter:
-    max_index = np.where(gauss_test == np.max(gauss_test))
-    max_index = max_index[0][0]
-    fpeak = f_test[max_index]
-
-    # Calculate lower and upper boundary for FWHM
-    idx_low = np.abs(gauss_test[0:max_index] - np.max(gauss_test) / 2.0).argmin()
-    idx_high = np.abs(gauss_test[max_index::] - np.max(gauss_test) / 2.0).argmin()
-    flow = f_test[idx_low]
-    fhigh = f_test[max_index + idx_high]
-    return fpeak, flow, fhigh
-
-
 def bandpass_filter(fx, fy, fcenter, sigma):
     """Function to create a bandpass filter
 
