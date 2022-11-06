@@ -147,36 +147,6 @@ def pad_to_shape(img, shape, pad_value=0):
     )
 
 
-def center_array(arr, shape, pad_value=0):
-    """Center an array on a larger one. Selects appropriate pad amounts in
-    every direction.
-
-    Parameters
-    ----------
-    arr : numpy ndarray
-          the array to be padded
-    shape : tuple of two ints
-            the shape of the desired output array. Must be at least as large as
-            the input, and even for even input shapes, and odd for odd input
-            shapes.
-    pad_value : number, optional
-                the value to be padded. Default is 0.
-
-    Returns
-    -------
-    output : numpy ndarray
-             the padded array
-    """
-    if arr.shape == shape:
-        return arr
-    y_pad, x_pad = np.asarray(shape) - arr.shape
-    assert (y_pad % 2 == 0) and (x_pad % 2 == 0)
-    assert x_pad > 0 and y_pad > 0
-    out = np.ones(shape, dtype=arr.dtype) * pad_value
-    out[y_pad / 2 : -y_pad / 2, x_pad / 2 : -x_pad / 2] = arr
-    return out
-
-
 def resize_array(arr, factor):
     """
     Return a copy of an array, resized by the given factor. Every value is
