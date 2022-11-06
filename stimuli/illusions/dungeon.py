@@ -52,10 +52,7 @@ def dungeon_illusion(
 
     # compute and apply grid mask
     grid_mask = [
-        [
-            (False if i % 2 == 0 and j % 2 == 0 else True)
-            for i in range(n_cells * 2 - 1)
-        ]
+        [(False if i % 2 == 0 and j % 2 == 0 else True) for i in range(n_cells * 2 - 1)]
         for j in range(n_cells * 2 - 1)
     ]
     grid_mask = np.array(grid_mask)

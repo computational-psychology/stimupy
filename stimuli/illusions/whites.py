@@ -7,7 +7,7 @@ def white_generalized(
     visual_size=(10, 10),
     ppd=10,
     grating_frequency=0.8,
-    intensity_bars=(1., 0.),
+    intensity_bars=(1.0, 0.0),
     intensity_target=0.5,
     target_indices=(2, 5, 8, 11, 14),
     target_center_offsets=(3, 1.5, 0, -1.5, -3),
@@ -58,7 +58,7 @@ def white_generalized(
     height_px, width_px = degrees_to_pixels(visual_size, ppd)
     target_offsets_px = degrees_to_pixels(target_center_offsets, ppd)
     target_sizes_px = degrees_to_pixels(target_sizes, ppd)
-    cycle_width_px = degrees_to_pixels(1. / (grating_frequency*2), ppd) * 2
+    cycle_width_px = degrees_to_pixels(1.0 / (grating_frequency * 2), ppd) * 2
     phase_width_px = cycle_width_px // 2
 
     if isinstance(target_center_offsets, (float, int)):
@@ -71,12 +71,14 @@ def white_generalized(
     if not isinstance(intensity_target, (float, int)):
         raise ValueError("intensity_target should be a single float / int")
     if isinstance(target_sizes, (float, int)):
-        target_sizes = (target_sizes,)*len(target_indices)
-        target_sizes_px = (target_sizes_px,)*len(target_indices)
-    if any(np.array(target_center_offsets)*ppd % 1 != 0):
+        target_sizes = (target_sizes,) * len(target_indices)
+        target_sizes_px = (target_sizes_px,) * len(target_indices)
+    if any(np.array(target_center_offsets) * ppd % 1 != 0):
         offsets_new = target_offsets_px / ppd
-        print("Warning: White target offsets rounded from %s to %s because of ppd" %
-              (target_center_offsets, offsets_new))
+        print(
+            "Warning: White target offsets rounded from %s to %s because of ppd"
+            % (target_center_offsets, offsets_new)
+        )
     if len(target_sizes) != len(target_indices):
         raise ValueError("# of target indices != # of target sizes")
 
@@ -107,21 +109,22 @@ def white_generalized(
         img[y_start:y_end, x_start:x_end] = intensity_target
         mask[y_start:y_end, x_start:x_end] = i + 1
 
-    new_size = (img.shape[0]/ppd, img.shape[1]/ppd)
+    new_size = (img.shape[0] / ppd, img.shape[1] / ppd)
     if period != "ignore" and visual_size != new_size:
         print("Warning: White shape changed from %s to %s" % (visual_size, new_size))
 
-    params = {"shape": img.shape,
-              "visual_size": np.array(img.shape)/ppd,
-              "ppd": ppd,
-              "grating_frequency": grating_frequency,
-              "intensity_bars": intensity_bars,
-              "intensity_target": intensity_target,
-              "target_indices": target_indices,
-              "target_center_offsets": target_center_offsets,
-              "target_sizes": target_sizes,
-              "period": period,
-              }
+    params = {
+        "shape": img.shape,
+        "visual_size": np.array(img.shape) / ppd,
+        "ppd": ppd,
+        "grating_frequency": grating_frequency,
+        "intensity_bars": intensity_bars,
+        "intensity_target": intensity_target,
+        "target_indices": target_indices,
+        "target_center_offsets": target_center_offsets,
+        "target_sizes": target_sizes,
+        "period": period,
+    }
 
     return {"img": img, "mask": mask, **params}
 
@@ -130,10 +133,10 @@ def white(
     visual_size=(4.2, 4.2),
     ppd=20,
     grating_frequency=1.2,
-    intensity_bars=(1., 0.),
+    intensity_bars=(1.0, 0.0),
     intensity_target=0.5,
     target_indices=(1, 3, -2, -4),
-    target_size=1.,
+    target_size=1.0,
     period="ignore",
 ):
     """
@@ -177,7 +180,7 @@ def white(
         target_center_offsets=0,
         target_sizes=target_size,
         period=period,
-        )
+    )
     return stim
 
 
@@ -186,7 +189,7 @@ def white_two_rows(
     visual_size=(4, 4),
     ppd=20,
     grating_frequency=2,
-    intensity_bars=(1., 0.),
+    intensity_bars=(1.0, 0.0),
     intensity_target=0.5,
     target_indices_top=(1, 3, 5, 7, 9, 11),
     target_indices_bottom=(-2, -4, -6),
@@ -237,8 +240,8 @@ def white_two_rows(
         target_indices_bottom = (target_indices_bottom,)
 
     target_indices = target_indices_top + target_indices_bottom
-    offsets_top = (-target_center_offset,)*len(target_indices_top)
-    offsets_bottom = (target_center_offset,)*len(target_indices_bottom)
+    offsets_top = (-target_center_offset,) * len(target_indices_top)
+    offsets_bottom = (target_center_offset,) * len(target_indices_bottom)
     target_center_offsets = offsets_top + offsets_bottom
 
     stim = white_generalized(
@@ -251,7 +254,7 @@ def white_two_rows(
         target_center_offsets=target_center_offsets,
         target_sizes=target_size,
         period=period,
-        )
+    )
     return stim
 
 
@@ -259,13 +262,13 @@ def white_anderson(
     visual_size=(4, 4),
     ppd=20,
     grating_frequency=2,
-    intensity_bars=(1., 0.),
+    intensity_bars=(1.0, 0.0),
     intensity_target=0.5,
     target_indices_top=5,
     target_indices_bottom=-6,
     target_center_offset=0.6,
     target_size=0.8,
-    intensity_stripes=(1., 0.),
+    intensity_stripes=(1.0, 0.0),
     stripe_center_offset=0.8,
     stripe_size=0.8,
     period="ignore",
@@ -322,13 +325,13 @@ def white_anderson(
         target_center_offset=target_center_offset,
         target_size=target_size,
         period=period,
-        )
+    )
 
-    img = stim['img']
-    mask = stim['mask']
+    img = stim["img"]
+    mask = stim["mask"]
     stripe_center_offset_px = degrees_to_pixels(stripe_center_offset, ppd)
     stripe_size_px = degrees_to_pixels(stripe_size, ppd)
-    cycle_width_px = degrees_to_pixels(1. / (grating_frequency*2), ppd) * 2
+    cycle_width_px = degrees_to_pixels(1.0 / (grating_frequency * 2), ppd) * 2
     phase_width_px = cycle_width_px // 2
     height, width = img.shape
     nbars = width // phase_width_px
@@ -336,42 +339,51 @@ def white_anderson(
     ttop[ttop < 0] = nbars + ttop[ttop < 0]
     tbot[tbot < 0] = nbars + tbot[tbot < 0]
 
-    if stripe_size_px/2. > stripe_center_offset_px:
+    if stripe_size_px / 2.0 > stripe_center_offset_px:
         raise ValueError("Stripes overlap! Increase stripe offset or decrease stripe size.")
-    if (target_size/2 - target_center_offset + stripe_size/2 - stripe_center_offset) > 0:
-        raise ValueError("Stripes overlap with targets! Increase stripe or target offsets or"
-                         "decrease stripe or target size")
-    if stripe_center_offset*ppd % 1 != 0:
+    if (target_size / 2 - target_center_offset + stripe_size / 2 - stripe_center_offset) > 0:
+        raise ValueError(
+            "Stripes overlap with targets! Increase stripe or target offsets or"
+            "decrease stripe or target size"
+        )
+    if stripe_center_offset * ppd % 1 != 0:
         offsets_new = stripe_center_offset_px / ppd
-        print("Warning: Anderson stripe offsets rounded from %s to %s because of ppd" %
-              (stripe_center_offset, offsets_new))
+        print(
+            "Warning: Anderson stripe offsets rounded from %s to %s because of ppd"
+            % (stripe_center_offset, offsets_new)
+        )
 
     # Add stripe at top
     ystart = height // 2 - stripe_center_offset_px - stripe_size_px // 2
-    img[ystart:ystart+stripe_size_px, 0:phase_width_px*np.min(ttop)] = intensity_stripes[0]
-    img[ystart:ystart+stripe_size_px, phase_width_px*(np.max(ttop)+1)::] = intensity_stripes[0]
-    if (ystart < 0) or (ystart+stripe_size_px > height):
+    img[ystart : ystart + stripe_size_px, 0 : phase_width_px * np.min(ttop)] = intensity_stripes[0]
+    img[
+        ystart : ystart + stripe_size_px, phase_width_px * (np.max(ttop) + 1) : :
+    ] = intensity_stripes[0]
+    if (ystart < 0) or (ystart + stripe_size_px > height):
         raise ValueError("Anderson stripes do not fully fit into stimulus")
 
     # Add stripe at bottom
     ystart = height // 2 + stripe_center_offset_px - stripe_size_px // 2
-    img[ystart:ystart+stripe_size_px, 0:phase_width_px*np.min(tbot)] = intensity_stripes[1]
-    img[ystart:ystart+stripe_size_px, phase_width_px*(np.max(tbot)+1)::] = intensity_stripes[1]
-    if (ystart < 0) or (ystart+stripe_size_px > height):
+    img[ystart : ystart + stripe_size_px, 0 : phase_width_px * np.min(tbot)] = intensity_stripes[1]
+    img[
+        ystart : ystart + stripe_size_px, phase_width_px * (np.max(tbot) + 1) : :
+    ] = intensity_stripes[1]
+    if (ystart < 0) or (ystart + stripe_size_px > height):
         raise ValueError("Anderson stripes do not fully fit into stimulus")
 
-    params = {"shape": img.shape,
-              "visual_size": np.array(img.shape)/ppd,
-              "ppd": ppd,
-              "grating_frequency": grating_frequency,
-              "intensity_bars": intensity_bars,
-              "intensity_target": intensity_target,
-              "target_indices_top": target_indices_top,
-              "target_indices_bottom": target_indices_bottom,
-              "target_center_offset": target_center_offset,
-              "target_size": target_size,
-              "period": period,
-              }
+    params = {
+        "shape": img.shape,
+        "visual_size": np.array(img.shape) / ppd,
+        "ppd": ppd,
+        "grating_frequency": grating_frequency,
+        "intensity_bars": intensity_bars,
+        "intensity_target": intensity_target,
+        "target_indices_top": target_indices_top,
+        "target_indices_bottom": target_indices_bottom,
+        "target_center_offset": target_center_offset,
+        "target_size": target_size,
+        "period": period,
+    }
 
     return {"img": img, "mask": mask, **params}
 
@@ -380,13 +392,13 @@ def white_howe(
     visual_size=(4, 4),
     ppd=20,
     grating_frequency=2,
-    intensity_bars=(1., 0.),
+    intensity_bars=(1.0, 0.0),
     intensity_target=0.5,
     target_indices_top=5,
     target_indices_bottom=-6,
     target_center_offset=0.3,
     target_size=0.5,
-    intensity_stripes=(1., 0.),
+    intensity_stripes=(1.0, 0.0),
     period="ignore",
 ):
     """
@@ -439,20 +451,20 @@ def white_howe(
         stripe_center_offset=target_center_offset,
         stripe_size=target_size,
         period=period,
-        )
+    )
 
 
 def white_yazdanbakhsh(
     visual_size=(4, 4),
     ppd=20,
     grating_frequency=2,
-    intensity_bars=(1., 0.),
+    intensity_bars=(1.0, 0.0),
     intensity_target=0.5,
     target_indices_top=5,
     target_indices_bottom=-6,
     target_center_offset=0.6,
-    target_size=1.,
-    intensity_stripes=(1., 0.),
+    target_size=1.0,
+    intensity_stripes=(1.0, 0.0),
     gap_size=0.2,
     period="ignore",
 ):
@@ -506,14 +518,14 @@ def white_yazdanbakhsh(
         target_center_offset=target_center_offset,
         target_size=target_size,
         period=period,
-        )
+    )
 
-    img = stim['img']
-    mask = stim['mask']
+    img = stim["img"]
+    mask = stim["mask"]
     gap_size_px = degrees_to_pixels(gap_size, ppd)
     target_offset_px = degrees_to_pixels(target_center_offset, ppd)
     tsize_px = degrees_to_pixels(target_size, ppd)
-    cycle_width_px = degrees_to_pixels(1. / (grating_frequency*2), ppd) * 2
+    cycle_width_px = degrees_to_pixels(1.0 / (grating_frequency * 2), ppd) * 2
     phase_width_px = cycle_width_px // 2
     height, width = img.shape
     nbars = width // phase_width_px
@@ -526,35 +538,44 @@ def white_yazdanbakhsh(
     if isinstance(target_indices_bottom, (float, int)):
         tbot = (tbot,)
 
-    if any(t in ttop for t in tbot) and (target_offset_px - tsize_px//2 - gap_size_px) < 0:
+    if any(t in ttop for t in tbot) and (target_offset_px - tsize_px // 2 - gap_size_px) < 0:
         raise ValueError("Stripes overlap! Replace or decrease targets or decrease stripe size.")
 
     # Add stripes at top
     ystart = height // 2 - target_offset_px - gap_size_px - tsize_px // 2
     ystart2 = height // 2 - target_offset_px + tsize_px // 2
     for t in ttop:
-        img[ystart:ystart+gap_size_px, t*phase_width_px:(t+1)*phase_width_px] = intensity_stripes[0]
-        img[ystart2:ystart2+gap_size_px, t*phase_width_px:(t+1)*phase_width_px] = intensity_stripes[0]
+        img[
+            ystart : ystart + gap_size_px, t * phase_width_px : (t + 1) * phase_width_px
+        ] = intensity_stripes[0]
+        img[
+            ystart2 : ystart2 + gap_size_px, t * phase_width_px : (t + 1) * phase_width_px
+        ] = intensity_stripes[0]
 
     # Add stripes at bottom
     ystart = height // 2 + target_offset_px - tsize_px // 2 - gap_size_px
     ystart2 = height // 2 + target_offset_px + tsize_px // 2
     for t in tbot:
-        img[ystart:ystart+gap_size_px, t*phase_width_px:(t+1)*phase_width_px] = intensity_stripes[1]
-        img[ystart2:ystart2+gap_size_px, t*phase_width_px:(t+1)*phase_width_px] = intensity_stripes[1]
+        img[
+            ystart : ystart + gap_size_px, t * phase_width_px : (t + 1) * phase_width_px
+        ] = intensity_stripes[1]
+        img[
+            ystart2 : ystart2 + gap_size_px, t * phase_width_px : (t + 1) * phase_width_px
+        ] = intensity_stripes[1]
 
-    params = {"shape": img.shape,
-              "visual_size": np.array(img.shape)/ppd,
-              "ppd": ppd,
-              "grating_frequency": grating_frequency,
-              "intensity_bars": intensity_bars,
-              "intensity_target": intensity_target,
-              "target_indices_top": target_indices_top,
-              "target_indices_bottom": target_indices_bottom,
-              "target_center_offset": target_center_offset,
-              "target_size": target_size,
-              "period": period,
-              }
+    params = {
+        "shape": img.shape,
+        "visual_size": np.array(img.shape) / ppd,
+        "ppd": ppd,
+        "grating_frequency": grating_frequency,
+        "intensity_bars": intensity_bars,
+        "intensity_target": intensity_target,
+        "target_indices_top": target_indices_top,
+        "target_indices_bottom": target_indices_bottom,
+        "target_center_offset": target_center_offset,
+        "target_size": target_size,
+        "period": period,
+    }
 
     return {"img": img, "mask": mask, **params}
 

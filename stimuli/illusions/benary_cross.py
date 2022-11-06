@@ -5,7 +5,7 @@ from stimuli.utils import degrees_to_pixels
 
 
 def benarys_cross_generalized(
-    visual_size=(21., 21.),
+    visual_size=(21.0, 21.0),
     ppd=18.0,
     cross_thickness=5.0,
     target_size=(2.0, 2.0),
@@ -66,10 +66,9 @@ def benarys_cross_generalized(
     if np.min(target_posy) < 0:
         raise ValueError("Topmost target does not fit into image")
 
-    n_targets = np.max(np.array([len(target_type),
-                                 len(target_ori),
-                                 len(target_posx),
-                                 len(target_posy)]))
+    n_targets = np.max(
+        np.array([len(target_type), len(target_ori), len(target_posx), len(target_posy)])
+    )
 
     if len(target_type) == 1:
         target_type = target_type * n_targets
@@ -80,17 +79,13 @@ def benarys_cross_generalized(
     if len(target_posy) == 1:
         target_posy = target_posy * n_targets
 
-    if any(
-        len(lst) != n_targets
-        for lst in [target_ori, target_posx, target_posy]
-    ):
+    if any(len(lst) != n_targets for lst in [target_ori, target_posx, target_posy]):
         raise Exception(
-            "target_type, target_ori, target_posx and target_posy need the"
-            " same length."
+            "target_type, target_ori, target_posx and target_posy need the" " same length."
         )
 
-    cross_size = np.array((visual_size[0],)*2 + (visual_size[1],)*2) - cross_thickness
-    cross_size = cross_size / 2.
+    cross_size = np.array((visual_size[0],) * 2 + (visual_size[1],) * 2) - cross_thickness
+    cross_size = cross_size / 2.0
     target_y_px, target_x_px = degrees_to_pixels(target_size, ppd)
     tposy = degrees_to_pixels(target_posy, ppd)
     tposx = degrees_to_pixels(target_posx, ppd)
@@ -109,9 +104,7 @@ def benarys_cross_generalized(
             tpatch = np.zeros([target_y_px, target_x_px]) + intensity_target
 
         elif target_type[i] == "t":
-            tpatch = triangle(
-                ppd, (target_size[0], target_size[1]), 0.0, intensity_target
-            )
+            tpatch = triangle(ppd, (target_size[0], target_size[1]), 0.0, intensity_target)
 
         else:
             raise Exception("You can only use r or t as shapes")
@@ -121,12 +114,8 @@ def benarys_cross_generalized(
         thresh = 0.7
         tpatch[tpatch < intensity_target * thresh] = 0.0
         tpatch[tpatch > intensity_target * thresh] = intensity_target
-        tpatch = tpatch[
-            ~np.all(tpatch == 0, axis=1)
-        ]  # Remove all rows with only zeros
-        tpatch = tpatch[
-            :, ~np.all(tpatch == 0, axis=0)
-        ]  # Remove all cols with only zeros
+        tpatch = tpatch[~np.all(tpatch == 0, axis=1)]  # Remove all rows with only zeros
+        tpatch = tpatch[:, ~np.all(tpatch == 0, axis=0)]  # Remove all cols with only zeros
         mpatch = np.copy(tpatch)
         mpatch[mpatch != 0] = i + 1
 
@@ -148,30 +137,31 @@ def benarys_cross_generalized(
         ] = mpatch
 
     # Make sure that stimulus size is as requested
-    img = img[0:int(visual_size[0]*ppd), 0:int(visual_size[1]*ppd)]
-    mask = mask[0:int(visual_size[0]*ppd), 0:int(visual_size[1]*ppd)]
+    img = img[0 : int(visual_size[0] * ppd), 0 : int(visual_size[1] * ppd)]
+    mask = mask[0 : int(visual_size[0] * ppd), 0 : int(visual_size[1] * ppd)]
 
-    params = {"shape": img.shape,
-              "visual_size": np.array(img.shape)/ppd,
-              "ppd": ppd,
-              "cross_thickness": cross_thickness,
-              "target_size": target_size,
-              "target_type": target_type,
-              "target_ori": target_ori,
-              "target_posx": target_posx,
-              "target_posy": target_posy,
-              "intensity_background": intensity_background,
-              "intensity_cross": intensity_cross,
-              "intensity_target": intensity_target,
-              }
+    params = {
+        "shape": img.shape,
+        "visual_size": np.array(img.shape) / ppd,
+        "ppd": ppd,
+        "cross_thickness": cross_thickness,
+        "target_size": target_size,
+        "target_type": target_type,
+        "target_ori": target_ori,
+        "target_posx": target_posx,
+        "target_posy": target_posy,
+        "intensity_background": intensity_background,
+        "intensity_cross": intensity_cross,
+        "intensity_target": intensity_target,
+    }
 
     return {"img": img, "mask": mask, **params}
 
 
 def benarys_cross_rectangles(
-    visual_size=(21., 21.),
+    visual_size=(21.0, 21.0),
     ppd=20,
-    cross_thickness=5.,
+    cross_thickness=5.0,
     target_size=(3.0, 4.0),
     intensity_background=1.0,
     intensity_cross=0.0,
@@ -211,32 +201,38 @@ def benarys_cross_rectangles(
 
     # Calculate parameters for classical Benarys cross with two targets
     target_type = ("r",) * 2
-    target_ori = (0., 0.)
-    target_posx = ((visual_size[1]-cross_thickness)/2. - target_size[1],
-                   visual_size[1]-target_size[1])
+    target_ori = (0.0, 0.0)
+    target_posx = (
+        (visual_size[1] - cross_thickness) / 2.0 - target_size[1],
+        visual_size[1] - target_size[1],
+    )
     target_posx = np.round(np.array(target_posx) * ppd) / ppd
-    target_posy = ((visual_size[0]-cross_thickness)/2. - target_size[0],
-                   (visual_size[0]-cross_thickness)/2.)
+    target_posy = (
+        (visual_size[0] - cross_thickness) / 2.0 - target_size[0],
+        (visual_size[0] - cross_thickness) / 2.0,
+    )
     target_posy = np.round(np.array(target_posy) * ppd) / ppd
-    stim = benarys_cross_generalized(visual_size,
-                                     ppd,
-                                     cross_thickness,
-                                     target_size,
-                                     target_type,
-                                     target_ori,
-                                     target_posx,
-                                     target_posy,
-                                     intensity_background,
-                                     intensity_cross,
-                                     intensity_target)
+    stim = benarys_cross_generalized(
+        visual_size,
+        ppd,
+        cross_thickness,
+        target_size,
+        target_type,
+        target_ori,
+        target_posx,
+        target_posy,
+        intensity_background,
+        intensity_cross,
+        intensity_target,
+    )
     return stim
 
 
 def benarys_cross_triangles(
-    visual_size=(21., 21.),
+    visual_size=(21.0, 21.0),
     ppd=20,
     cross_thickness=5.2,
-    target_size=4.,
+    target_size=4.0,
     intensity_background=1.0,
     intensity_cross=0.0,
     intensity_target=0.5,
@@ -277,22 +273,37 @@ def benarys_cross_triangles(
 
     # Calculate parameters for classical Benarys cross with two targets
     target_type = ("t",) * 2
-    target_ori = (90., 45.)
-    target_posx = ((visual_size[1]-cross_thickness)/2. - target_size[0],
-                   (visual_size[1]+cross_thickness)/2.)
+    target_ori = (90.0, 45.0)
+    target_posx = (
+        (visual_size[1] - cross_thickness) / 2.0 - target_size[0],
+        (visual_size[1] + cross_thickness) / 2.0,
+    )
     target_posx = np.round(np.array(target_posx) * ppd) / ppd
-    target_posy = ((visual_size[0]-cross_thickness)/2. - target_size[0],
-                   (visual_size[0]-cross_thickness)/2.)
+    target_posy = (
+        (visual_size[0] - cross_thickness) / 2.0 - target_size[0],
+        (visual_size[0] - cross_thickness) / 2.0,
+    )
     target_posy = np.round(np.array(target_posy) * ppd) / ppd
-    stim = benarys_cross_generalized(visual_size, ppd, cross_thickness, target_size, target_type,
-                                     target_ori, target_posx, target_posy, intensity_background, intensity_cross, intensity_target)
+    stim = benarys_cross_generalized(
+        visual_size,
+        ppd,
+        cross_thickness,
+        target_size,
+        target_type,
+        target_ori,
+        target_posx,
+        target_posy,
+        intensity_background,
+        intensity_cross,
+        intensity_target,
+    )
     return stim
 
 
 def todorovic_benary_generalized(
-    visual_size=(16., 16.),
+    visual_size=(16.0, 16.0),
     ppd=10.0,
-    L_width=2.,
+    L_width=2.0,
     target_size=(2.0, 2.0),
     target_type=("r", "r"),
     target_ori=(0.0, 0.0),
@@ -351,10 +362,9 @@ def todorovic_benary_generalized(
     if np.min(target_posy) < 0:
         raise ValueError("Topmost target does not fit into image")
 
-    n_targets = np.max(np.array([len(target_type),
-                                 len(target_ori),
-                                 len(target_posx),
-                                 len(target_posy)]))
+    n_targets = np.max(
+        np.array([len(target_type), len(target_ori), len(target_posx), len(target_posy)])
+    )
 
     if len(target_type) == 1:
         target_type = target_type * n_targets
@@ -365,16 +375,12 @@ def todorovic_benary_generalized(
     if len(target_posy) == 1:
         target_posy = target_posy * n_targets
 
-    if any(
-        len(lst) != n_targets
-        for lst in [target_ori, target_posx, target_posy]
-    ):
+    if any(len(lst) != n_targets for lst in [target_ori, target_posx, target_posy]):
         raise Exception(
-            "target_type, target_ori, target_posx and target_posy need the"
-            " same length."
+            "target_type, target_ori, target_posx and target_posy need the" " same length."
         )
 
-    L_size = (visual_size[0]/2, visual_size[0]/2, L_width, visual_size[1]-L_width)
+    L_size = (visual_size[0] / 2, visual_size[0] / 2, L_width, visual_size[1] - L_width)
 
     (
         L_top_px,
@@ -405,9 +411,7 @@ def todorovic_benary_generalized(
             tpatch = np.zeros([target_y_px, target_x_px]) + intensity_target
 
         elif target_type[i] == "t":
-            tpatch = triangle(
-                ppd, (target_size[0], target_size[1]), 0.0, intensity_target
-            )
+            tpatch = triangle(ppd, (target_size[0], target_size[1]), 0.0, intensity_target)
 
         else:
             raise Exception("You can only use r or t as shapes")
@@ -417,12 +421,8 @@ def todorovic_benary_generalized(
         thresh = 0.7
         tpatch[tpatch < intensity_target * thresh] = 0.0
         tpatch[tpatch > intensity_target * thresh] = intensity_target
-        tpatch = tpatch[
-            ~np.all(tpatch == 0, axis=1)
-        ]  # Remove all rows with only zeros
-        tpatch = tpatch[
-            :, ~np.all(tpatch == 0, axis=0)
-        ]  # Remove all cols with only zeros
+        tpatch = tpatch[~np.all(tpatch == 0, axis=1)]  # Remove all rows with only zeros
+        tpatch = tpatch[:, ~np.all(tpatch == 0, axis=0)]  # Remove all cols with only zeros
         mpatch = np.copy(tpatch)
         mpatch[mpatch != 0] = i + 1
 
@@ -443,27 +443,28 @@ def todorovic_benary_generalized(
             tposx[i] : tposx[i] + tpatch.shape[1],
         ] = mpatch
 
-    params = {"shape": img.shape,
-              "visual_size": np.array(img.shape)/ppd,
-              "ppd": ppd,
-              "L_width": L_width,
-              "target_size": target_size,
-              "target_type": target_type,
-              "target_ori": target_ori,
-              "target_posx": target_posx,
-              "target_posy": target_posy,
-              "intensity_background": intensity_background,
-              "intensity_cross": intensity_cross,
-              "intensity_target": intensity_target,
-              }
+    params = {
+        "shape": img.shape,
+        "visual_size": np.array(img.shape) / ppd,
+        "ppd": ppd,
+        "L_width": L_width,
+        "target_size": target_size,
+        "target_type": target_type,
+        "target_ori": target_ori,
+        "target_posx": target_posx,
+        "target_posy": target_posy,
+        "intensity_background": intensity_background,
+        "intensity_cross": intensity_cross,
+        "intensity_target": intensity_target,
+    }
 
     return {"img": img, "mask": mask, **params}
 
 
 def todorovic_benary_rectangles(
-    visual_size=(21., 21.),
+    visual_size=(21.0, 21.0),
     ppd=20,
-    L_width=5.,
+    L_width=5.0,
     target_size=(3.0, 4.0),
     intensity_background=1.0,
     intensity_cross=0.0,
@@ -501,32 +502,32 @@ def todorovic_benary_rectangles(
 
     # Calculate parameters for classical Benarys cross with two targets
     target_type = ("r",) * 2
-    target_ori = (0., 0.)
-    target_posx = (L_width,
-                   visual_size[1] - L_width - target_size[1])
+    target_ori = (0.0, 0.0)
+    target_posx = (L_width, visual_size[1] - L_width - target_size[1])
     target_posx = np.round(np.array(target_posx) * ppd) / ppd
-    target_posy = (visual_size[0]/2. - target_size[0],
-                   visual_size[0]/2.)
+    target_posy = (visual_size[0] / 2.0 - target_size[0], visual_size[0] / 2.0)
     target_posy = np.round(np.array(target_posy) * ppd) / ppd
-    stim = todorovic_benary_generalized(visual_size,
-                                        ppd,
-                                        L_width,
-                                        target_size,
-                                        target_type,
-                                        target_ori,
-                                        target_posx,
-                                        target_posy,
-                                        intensity_background,
-                                        intensity_cross,
-                                        intensity_target)
+    stim = todorovic_benary_generalized(
+        visual_size,
+        ppd,
+        L_width,
+        target_size,
+        target_type,
+        target_ori,
+        target_posx,
+        target_posy,
+        intensity_background,
+        intensity_cross,
+        intensity_target,
+    )
     return stim
 
 
 def todorovic_benary_triangles(
-    visual_size=(21., 21.),
+    visual_size=(21.0, 21.0),
     ppd=20,
     L_width=5.2,
-    target_size=4.,
+    target_size=4.0,
     intensity_background=1.0,
     intensity_cross=0.0,
     intensity_target=0.5,
@@ -565,24 +566,24 @@ def todorovic_benary_triangles(
 
     # Calculate parameters for classical Benarys cross with two targets
     target_type = ("t",) * 2
-    target_ori = (0., 180.)
-    target_posx = (L_width,
-                   visual_size[1] - L_width - target_size[1])
+    target_ori = (0.0, 180.0)
+    target_posx = (L_width, visual_size[1] - L_width - target_size[1])
     target_posx = np.round(np.array(target_posx) * ppd) / ppd
-    target_posy = (visual_size[0]/2. - target_size[0],
-                   visual_size[0]/2.)
+    target_posy = (visual_size[0] / 2.0 - target_size[0], visual_size[0] / 2.0)
     target_posy = np.round(np.array(target_posy) * ppd) / ppd
-    stim = todorovic_benary_generalized(visual_size,
-                                        ppd,
-                                        L_width,
-                                        target_size,
-                                        target_type,
-                                        target_ori,
-                                        target_posx,
-                                        target_posy,
-                                        intensity_background,
-                                        intensity_cross,
-                                        intensity_target)
+    stim = todorovic_benary_generalized(
+        visual_size,
+        ppd,
+        L_width,
+        target_size,
+        target_type,
+        target_ori,
+        target_posx,
+        target_posy,
+        intensity_background,
+        intensity_cross,
+        intensity_target,
+    )
     return stim
 
 

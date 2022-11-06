@@ -29,8 +29,14 @@ research, 47(12), 1631-1644. https://doi.org/10.1016/j.visres.2007.02.017
 """
 
 import numpy as np
+
 from stimuli import illusions
-from stimuli.utils import degrees_to_pixels, pad_img, pad_img_to_shape
+from stimuli.utils import (
+    pad_by_visual_size,
+    pad_to_shape,
+    pad_to_visual_size,
+    resolution,
+)
 
 __all__ = [
     "WE_thick",
@@ -67,7 +73,7 @@ __all__ = [
 
 VISEXTENT = (32.0, 32.0)
 PPD = 32
-v1, v2, v3 = 0., 0.5, 1.
+v1, v2, v3 = 0.0, 0.5, 1.0
 
 
 def gen_all(ppd=PPD, pad=True, skip=False):
@@ -122,13 +128,13 @@ def WE_thick(ppd=PPD, pad=True):
     height, width = 12.0, 16.0
     params = {
         "ppd": ppd,
-        "grating_frequency": 4./width,
+        "grating_frequency": 4.0 / width,
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
         "target_indices": (2, 5),
-        "target_size": 4.,
+        "target_size": 4.0,
         "period": "full",
-        }
+    }
 
     stim = illusions.whites.white(
         visual_size=(height, width),
@@ -136,14 +142,14 @@ def WE_thick(ppd=PPD, pad=True):
     )
 
     if pad:
-        shape = degrees_to_pixels(VISEXTENT, ppd)
-        stim["img"] = pad_img_to_shape(stim["img"], shape, val=v2)
-        stim["mask"] = pad_img_to_shape(stim["mask"], shape, val=0)
+        stim["img"] = pad_to_visual_size(stim["img"], VISEXTENT, ppd, pad_value=v2)
+        stim["mask"] = pad_to_visual_size(stim["mask"], VISEXTENT, ppd, pad_value=0)
 
-    params.update(visual_size=np.array(stim["img"].shape)/ppd,
-                  shape=stim["img"].shape,
-                  intensity_range=(v1, v3),
-                  )
+    params.update(
+        visual_size=np.array(stim["img"].shape) / ppd,
+        shape=stim["img"].shape,
+        intensity_range=(v1, v3),
+    )
     return {**stim, **params}
 
 
@@ -177,13 +183,13 @@ def WE_thin_wide(ppd=PPD, pad=True):
     height, width = 12.0, 16.0
     params = {
         "ppd": ppd,
-        "grating_frequency": 8./width,
+        "grating_frequency": 8.0 / width,
         "intensity_bars": (v3, v1),
         "intensity_target": v2,
         "target_indices": (3, 12),
-        "target_size": 2.,
+        "target_size": 2.0,
         "period": "full",
-        }
+    }
 
     stim = illusions.whites.white(
         visual_size=(height, width),
@@ -191,14 +197,14 @@ def WE_thin_wide(ppd=PPD, pad=True):
     )
 
     if pad:
-        shape = degrees_to_pixels(VISEXTENT, ppd)
-        stim["img"] = pad_img_to_shape(stim["img"], shape, val=v2)
-        stim["mask"] = pad_img_to_shape(stim["mask"], shape, val=0)
+        stim["img"] = pad_to_visual_size(stim["img"], VISEXTENT, ppd, pad_value=v2)
+        stim["mask"] = pad_to_visual_size(stim["mask"], VISEXTENT, ppd, pad_value=0)
 
-    params.update(visual_size=np.array(stim["img"].shape)/ppd,
-                  shape=stim["img"].shape,
-                  intensity_range=(v1, v3),
-                  )
+    params.update(
+        visual_size=np.array(stim["img"].shape) / ppd,
+        shape=stim["img"].shape,
+        intensity_range=(v1, v3),
+    )
     return {**stim, **params}
 
 
@@ -225,13 +231,13 @@ def WE_dual(ppd=PPD, pad=True):
     height, width = 6.0, 8.0
     params = {
         "ppd": ppd,
-        "grating_frequency": 4./width,
+        "grating_frequency": 4.0 / width,
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
         "target_indices": (2, 5),
-        "target_size": 2.,
+        "target_size": 2.0,
         "period": "full",
-        }
+    }
 
     stim1 = illusions.whites.white(
         visual_size=(height, width),
@@ -242,27 +248,28 @@ def WE_dual(ppd=PPD, pad=True):
         visual_size=(height, width),
         **params,
     )
-    stim2['img'] = np.rot90(stim2['img'], 3)
-    stim2['mask'] = np.rot90(stim2['mask'], 3)
+    stim2["img"] = np.rot90(stim2["img"], 3)
+    stim2["mask"] = np.rot90(stim2["mask"], 3)
 
     if pad:
-        shape = degrees_to_pixels(VISEXTENT, ppd) / (1, 2)
+        shape = np.array(resolution.shape_from_visual_size_ppd(VISEXTENT, ppd)) / (1, 2)
     else:
         shape = np.max([stim1["img"].shape, stim2["img"].shape], axis=1)
-    stim1["img"] = pad_img_to_shape(stim1["img"], shape, val=v2)
-    stim1["mask"] = pad_img_to_shape(stim1["mask"], shape, val=0)
-    stim2["img"] = pad_img_to_shape(stim2["img"], shape, val=v2)
-    stim2["mask"] = pad_img_to_shape(stim2["mask"], shape, val=0)
+    stim1["img"] = pad_to_shape(stim1["img"], shape, pad_value=v2)
+    stim1["mask"] = pad_to_shape(stim1["mask"], shape, pad_value=0)
+    stim2["img"] = pad_to_shape(stim2["img"], shape, pad_value=v2)
+    stim2["mask"] = pad_to_shape(stim2["mask"], shape, pad_value=0)
 
     stim = {
         "img": np.hstack((stim1["img"], stim2["img"])),
         "mask": np.hstack((stim1["mask"], stim2["mask"])),
     }
 
-    params.update(visual_size=np.array(stim["img"].shape)/ppd,
-                  shape=stim["img"].shape,
-                  intensity_range=(v1, v3),
-                  )
+    params.update(
+        visual_size=np.array(stim["img"].shape) / ppd,
+        shape=stim["img"].shape,
+        intensity_range=(v1, v3),
+    )
     return {**stim, **params}
 
 
@@ -297,18 +304,18 @@ def WE_anderson(ppd=PPD, pad=True):
     height, width = 16.0, 16.0
     params = {
         "ppd": ppd,
-        "grating_frequency": 8./width,
+        "grating_frequency": 8.0 / width,
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
         "target_indices_top": (5,),
         "target_indices_bottom": (10,),
-        "target_center_offset": height/10.,
-        "target_size": height/5.,
+        "target_center_offset": height / 10.0,
+        "target_size": height / 5.0,
         "intensity_stripes": (v1, v3),
-        "stripe_center_offset": height/5.,
-        "stripe_size": height/5.,
+        "stripe_center_offset": height / 5.0,
+        "stripe_size": height / 5.0,
         "period": "full",
-        }
+    }
 
     stim = illusions.whites.white_anderson(
         visual_size=(height, width),
@@ -316,14 +323,14 @@ def WE_anderson(ppd=PPD, pad=True):
     )
 
     if pad:
-        shape = degrees_to_pixels(VISEXTENT, ppd)
-        stim["img"] = pad_img_to_shape(stim["img"], shape, val=v2)
-        stim["mask"] = pad_img_to_shape(stim["mask"], shape, val=0)
+        stim["img"] = pad_to_visual_size(stim["img"], VISEXTENT, ppd, pad_value=v2)
+        stim["mask"] = pad_to_visual_size(stim["mask"], VISEXTENT, ppd, pad_value=0)
 
-    params.update(visual_size=np.array(stim["img"].shape)/ppd,
-                  shape=stim["img"].shape,
-                  intensity_range=(v1, v3),
-                  )
+    params.update(
+        visual_size=np.array(stim["img"].shape) / ppd,
+        shape=stim["img"].shape,
+        intensity_range=(v1, v3),
+    )
     return {**stim, **params}
 
 
@@ -359,16 +366,16 @@ def WE_howe(ppd=PPD, pad=True):
     height, width = 16.0, 16.0
     params = {
         "ppd": ppd,
-        "grating_frequency": 8./width,
+        "grating_frequency": 8.0 / width,
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
         "target_indices_top": (5,),
         "target_indices_bottom": (10,),
-        "target_center_offset": height/5.,
-        "target_size": height/5.,
+        "target_center_offset": height / 5.0,
+        "target_size": height / 5.0,
         "intensity_stripes": (v1, v3),
         "period": "full",
-        }
+    }
 
     stim = illusions.whites.white_howe(
         visual_size=(height, width),
@@ -376,14 +383,14 @@ def WE_howe(ppd=PPD, pad=True):
     )
 
     if pad:
-        shape = degrees_to_pixels(VISEXTENT, ppd)
-        stim["img"] = pad_img_to_shape(stim["img"], shape, val=v2)
-        stim["mask"] = pad_img_to_shape(stim["mask"], shape, val=0)
+        stim["img"] = pad_to_visual_size(stim["img"], VISEXTENT, ppd, pad_value=v2)
+        stim["mask"] = pad_to_visual_size(stim["mask"], VISEXTENT, ppd, pad_value=0)
 
-    params.update(visual_size=np.array(stim["img"].shape)/ppd,
-                  shape=stim["img"].shape,
-                  intensity_range=(v1, v3),
-                  )
+    params.update(
+        visual_size=np.array(stim["img"].shape) / ppd,
+        shape=stim["img"].shape,
+        intensity_range=(v1, v3),
+    )
     return {**stim, **params}
 
 
@@ -423,9 +430,8 @@ def WE_zigzag(ppd=PPD, pad=True):
     )
 
     if pad:
-        shape = degrees_to_pixels(VISEXTENT, ppd)
-        stim["img"] = pad_img_to_shape(stim["img"], shape, val=0.5)
-        stim["mask"] = pad_img_to_shape(stim["mask"], shape, val=0)
+        stim["img"] = pad_to_visual_size(stim["img"], VISEXTENT, ppd, pad_value=0.5)
+        stim["mask"] = pad_to_visual_size(stim["mask"], VISEXTENT, ppd, pad_value=0)
 
     return stim
 
@@ -457,15 +463,15 @@ def WE_radial_thick_small(ppd=PPD, pad=True):
     n_cycles = 7
     params = {
         "ppd": ppd,
-        "n_segments": n_cycles*2,
-        "rotate": np.pi/n_cycles/2,
+        "n_segments": n_cycles * 2,
+        "rotate": np.pi / n_cycles / 2,
         "target_indices": (0, n_cycles),
-        "target_width": 4.,
+        "target_width": 4.0,
         "target_center": 4.5,
         "intensity_slices": (v3, v1),
         "intensity_background": v2,
         "intensity_target": v2,
-        }
+    }
 
     stim = illusions.circular.radial_white(
         visual_size=(16, 16),
@@ -473,14 +479,14 @@ def WE_radial_thick_small(ppd=PPD, pad=True):
     )
 
     if pad:
-        shape = degrees_to_pixels(VISEXTENT, ppd)
-        stim["img"] = pad_img_to_shape(stim["img"], shape, val=v2)
-        stim["mask"] = pad_img_to_shape(stim["mask"], shape, val=0)
+        stim["img"] = pad_to_visual_size(stim["img"], VISEXTENT, ppd, pad_value=v2)
+        stim["mask"] = pad_to_visual_size(stim["mask"], VISEXTENT, ppd, pad_value=0)
 
-    params.update(visual_size=np.array(stim["img"].shape)/ppd,
-                  shape=stim["img"].shape,
-                  intensity_range=(v1, v3),
-                  )
+    params.update(
+        visual_size=np.array(stim["img"].shape) / ppd,
+        shape=stim["img"].shape,
+        intensity_range=(v1, v3),
+    )
     return {**stim, **params}
 
 
@@ -511,15 +517,15 @@ def WE_radial_thick(ppd=PPD, pad=True):
     n_cycles = 9
     params = {
         "ppd": ppd,
-        "n_segments": n_cycles*2,
-        "rotate": np.pi/n_cycles/2,
+        "n_segments": n_cycles * 2,
+        "rotate": np.pi / n_cycles / 2,
         "target_indices": (0, n_cycles),
-        "target_width": 4.,
-        "target_center": 6.,
+        "target_width": 4.0,
+        "target_center": 6.0,
         "intensity_slices": (v3, v1),
         "intensity_background": v2,
         "intensity_target": v2,
-        }
+    }
 
     stim = illusions.circular.radial_white(
         visual_size=(24, 24),
@@ -527,14 +533,14 @@ def WE_radial_thick(ppd=PPD, pad=True):
     )
 
     if pad:
-        shape = degrees_to_pixels(VISEXTENT, ppd)
-        stim["img"] = pad_img_to_shape(stim["img"], shape, val=v2)
-        stim["mask"] = pad_img_to_shape(stim["mask"], shape, val=0)
+        stim["img"] = pad_to_visual_size(stim["img"], VISEXTENT, ppd, pad_value=v2)
+        stim["mask"] = pad_to_visual_size(stim["mask"], VISEXTENT, ppd, pad_value=0)
 
-    params.update(visual_size=np.array(stim["img"].shape)/ppd,
-                  shape=stim["img"].shape,
-                  intensity_range=(v1, v3),
-                  )
+    params.update(
+        visual_size=np.array(stim["img"].shape) / ppd,
+        shape=stim["img"].shape,
+        intensity_range=(v1, v3),
+    )
     return {**stim, **params}
 
 
@@ -565,15 +571,15 @@ def WE_radial_thin_small(ppd=PPD, pad=True):
     n_cycles = 13
     params = {
         "ppd": ppd,
-        "n_segments": n_cycles*2,
-        "rotate": np.pi/n_cycles/2,
+        "n_segments": n_cycles * 2,
+        "rotate": np.pi / n_cycles / 2,
         "target_indices": (0, n_cycles),
-        "target_width": 2.,
-        "target_center": 4.,
+        "target_width": 2.0,
+        "target_center": 4.0,
         "intensity_slices": (v3, v1),
         "intensity_background": v2,
         "intensity_target": v2,
-        }
+    }
 
     stim = illusions.circular.radial_white(
         visual_size=(16, 16),
@@ -581,14 +587,14 @@ def WE_radial_thin_small(ppd=PPD, pad=True):
     )
 
     if pad:
-        shape = degrees_to_pixels(VISEXTENT, ppd)
-        stim["img"] = pad_img_to_shape(stim["img"], shape, val=v2)
-        stim["mask"] = pad_img_to_shape(stim["mask"], shape, val=0)
+        stim["img"] = pad_to_visual_size(stim["img"], VISEXTENT, ppd, pad_value=v2)
+        stim["mask"] = pad_to_visual_size(stim["mask"], VISEXTENT, ppd, pad_value=0)
 
-    params.update(visual_size=np.array(stim["img"].shape)/ppd,
-                  shape=stim["img"].shape,
-                  intensity_range=(v1, v3),
-                  )
+    params.update(
+        visual_size=np.array(stim["img"].shape) / ppd,
+        shape=stim["img"].shape,
+        intensity_range=(v1, v3),
+    )
     return {**stim, **params}
 
 
@@ -619,15 +625,15 @@ def WE_radial_thin(ppd=PPD, pad=True):
     n_cycles = 21
     params = {
         "ppd": ppd,
-        "n_segments": n_cycles*2,
-        "rotate": np.pi/n_cycles/2,
+        "n_segments": n_cycles * 2,
+        "rotate": np.pi / n_cycles / 2,
         "target_indices": (0, n_cycles),
-        "target_width": 2.,
-        "target_center": 6.,
+        "target_width": 2.0,
+        "target_center": 6.0,
         "intensity_slices": (v3, v1),
         "intensity_background": v2,
         "intensity_target": v2,
-        }
+    }
 
     stim = illusions.circular.radial_white(
         visual_size=(24, 24),
@@ -635,14 +641,14 @@ def WE_radial_thin(ppd=PPD, pad=True):
     )
 
     if pad:
-        shape = degrees_to_pixels(VISEXTENT, ppd)
-        stim["img"] = pad_img_to_shape(stim["img"], shape, val=v2)
-        stim["mask"] = pad_img_to_shape(stim["mask"], shape, val=0)
+        stim["img"] = pad_to_visual_size(stim["img"], VISEXTENT, ppd, pad_value=v2)
+        stim["mask"] = pad_to_visual_size(stim["mask"], VISEXTENT, ppd, pad_value=0)
 
-    params.update(visual_size=np.array(stim["img"].shape)/ppd,
-                  shape=stim["img"].shape,
-                  intensity_range=(v1, v3),
-                  )
+    params.update(
+        visual_size=np.array(stim["img"].shape) / ppd,
+        shape=stim["img"].shape,
+        intensity_range=(v1, v3),
+    )
     return {**stim, **params}
 
 
@@ -671,14 +677,14 @@ def WE_circular1(ppd=PPD, pad=True):
         of the illusion. Perception, 34, 557–564.
     """
 
-    height, width = 16., 16.
+    height, width = 16.0, 16.0
     params = {
         "ppd": ppd,
-        "frequency": 8./height,
+        "frequency": 8.0 / height,
         "target_indices": 4,
         "intensity_background": v2,
         "intensity_target": v2,
-        }
+    }
 
     stim1 = illusions.circular.circular_white(
         visual_size=(height, width),
@@ -699,14 +705,14 @@ def WE_circular1(ppd=PPD, pad=True):
     }
 
     if pad:
-        shape = degrees_to_pixels(VISEXTENT, ppd)
-        stim["img"] = pad_img_to_shape(stim["img"], shape, val=v2)
-        stim["mask"] = pad_img_to_shape(stim["mask"], shape, val=0)
+        stim["img"] = pad_to_visual_size(stim["img"], VISEXTENT, ppd, pad_value=v2)
+        stim["mask"] = pad_to_visual_size(stim["mask"], VISEXTENT, ppd, pad_value=0)
 
-    params.update(visual_size=np.array(stim["img"].shape)/ppd,
-                  shape=stim["img"].shape,
-                  intensity_range=(v1, v3),
-                  )
+    params.update(
+        visual_size=np.array(stim["img"].shape) / ppd,
+        shape=stim["img"].shape,
+        intensity_range=(v1, v3),
+    )
     return {**stim, **params}
 
 
@@ -735,14 +741,14 @@ def WE_circular05(ppd=PPD, pad=True):
         of the illusion. Perception, 34, 557–564.
     """
 
-    height, width = 16., 16.
+    height, width = 16.0, 16.0
     params = {
         "ppd": ppd,
-        "frequency": 16./height,
+        "frequency": 16.0 / height,
         "target_indices": 10,
         "intensity_background": v2,
         "intensity_target": v2,
-        }
+    }
 
     stim1 = illusions.circular.circular_white(
         visual_size=(height, width),
@@ -763,14 +769,14 @@ def WE_circular05(ppd=PPD, pad=True):
     }
 
     if pad:
-        shape = degrees_to_pixels(VISEXTENT, ppd)
-        stim["img"] = pad_img_to_shape(stim["img"], shape, val=v2)
-        stim["mask"] = pad_img_to_shape(stim["mask"], shape, val=0)
+        stim["img"] = pad_to_visual_size(stim["img"], VISEXTENT, ppd, pad_value=v2)
+        stim["mask"] = pad_to_visual_size(stim["mask"], VISEXTENT, ppd, pad_value=0)
 
-    params.update(visual_size=np.array(stim["img"].shape)/ppd,
-                  shape=stim["img"].shape,
-                  intensity_range=(v1, v3),
-                  )
+    params.update(
+        visual_size=np.array(stim["img"].shape) / ppd,
+        shape=stim["img"].shape,
+        intensity_range=(v1, v3),
+    )
     return {**stim, **params}
 
 
@@ -799,14 +805,14 @@ def WE_circular025(ppd=PPD, pad=True):
         of the illusion. Perception, 34, 557–564.
     """
 
-    height, width = 16., 16.
+    height, width = 16.0, 16.0
     params = {
         "ppd": ppd,
-        "frequency": 32./height,
+        "frequency": 32.0 / height,
         "target_indices": 22,
         "intensity_background": v2,
         "intensity_target": v2,
-        }
+    }
 
     stim1 = illusions.circular.circular_white(
         visual_size=(height, width),
@@ -827,14 +833,14 @@ def WE_circular025(ppd=PPD, pad=True):
     }
 
     if pad:
-        shape = degrees_to_pixels(VISEXTENT, ppd)
-        stim["img"] = pad_img_to_shape(stim["img"], shape, val=v2)
-        stim["mask"] = pad_img_to_shape(stim["mask"], shape, val=0)
+        stim["img"] = pad_to_visual_size(stim["img"], VISEXTENT, ppd, pad_value=v2)
+        stim["mask"] = pad_to_visual_size(stim["mask"], VISEXTENT, ppd, pad_value=0)
 
-    params.update(visual_size=np.array(stim["img"].shape)/ppd,
-                  shape=stim["img"].shape,
-                  intensity_range=(v1, v3),
-                  )
+    params.update(
+        visual_size=np.array(stim["img"].shape) / ppd,
+        shape=stim["img"].shape,
+        intensity_range=(v1, v3),
+    )
     return {**stim, **params}
 
 
@@ -869,11 +875,11 @@ def grating_induction(ppd=PPD, pad=True):
     height, width = 12.0, 16.0
     params = {
         "ppd": ppd,
-        "frequency": 4./width,
-        "target_height": 1.,
+        "frequency": 4.0 / width,
+        "target_height": 1.0,
         "blur": 10,
         "start": "high",
-        }
+    }
 
     stim = illusions.grating_induction.grating_illusion(
         shape=(height, width),
@@ -881,14 +887,14 @@ def grating_induction(ppd=PPD, pad=True):
     )
 
     if pad:
-        shape = degrees_to_pixels(VISEXTENT, ppd)
-        stim["img"] = pad_img_to_shape(stim["img"], shape, val=v2)
-        stim["mask"] = pad_img_to_shape(stim["mask"], shape, val=0)
+        stim["img"] = pad_to_visual_size(stim["img"], VISEXTENT, ppd, pad_value=v2)
+        stim["mask"] = pad_to_visual_size(stim["mask"], VISEXTENT, ppd, pad_value=0)
 
-    params.update(visual_size=np.array(stim["img"].shape)/ppd,
-                  shape=stim["img"].shape,
-                  intensity_range=(v1, v3),
-                  )
+    params.update(
+        visual_size=np.array(stim["img"].shape) / ppd,
+        shape=stim["img"].shape,
+        intensity_range=(v1, v3),
+    )
     return {**stim, **params}
 
 
@@ -919,9 +925,9 @@ def sbc_large(ppd=PPD, pad=True):
 
     params = {
         "ppd": ppd,
-        "target_size": 3.,
+        "target_size": 3.0,
         "intensity_target": v2,
-        }
+    }
 
     stim1 = illusions.sbc.simultaneous_contrast(
         visual_size=(13.0, 15.5),
@@ -942,14 +948,14 @@ def sbc_large(ppd=PPD, pad=True):
     }
 
     if pad:
-        shape = degrees_to_pixels(VISEXTENT, ppd)
-        stim["img"] = pad_img_to_shape(stim["img"], shape, val=v2)
-        stim["mask"] = pad_img_to_shape(stim["mask"], shape, val=0)
+        stim["img"] = pad_to_visual_size(stim["img"], VISEXTENT, ppd, pad_value=v2)
+        stim["mask"] = pad_to_visual_size(stim["mask"], VISEXTENT, ppd, pad_value=0)
 
-    params.update(visual_size=np.array(stim["img"].shape)/ppd,
-                  shape=stim["img"].shape,
-                  intensity_range=(v1, v3),
-                  )
+    params.update(
+        visual_size=np.array(stim["img"].shape) / ppd,
+        shape=stim["img"].shape,
+        intensity_range=(v1, v3),
+    )
     return {**stim, **params}
 
 
@@ -980,9 +986,9 @@ def sbc_small(ppd=PPD, pad=True):
 
     params = {
         "ppd": ppd,
-        "target_size": 1.,
+        "target_size": 1.0,
         "intensity_target": v2,
-        }
+    }
 
     stim1 = illusions.sbc.simultaneous_contrast(
         visual_size=(13.0, 15.5),
@@ -1003,14 +1009,14 @@ def sbc_small(ppd=PPD, pad=True):
     }
 
     if pad:
-        shape = degrees_to_pixels(VISEXTENT, ppd)
-        stim["img"] = pad_img_to_shape(stim["img"], shape, val=v2)
-        stim["mask"] = pad_img_to_shape(stim["mask"], shape, val=0)
+        stim["img"] = pad_to_visual_size(stim["img"], VISEXTENT, ppd, pad_value=v2)
+        stim["mask"] = pad_to_visual_size(stim["mask"], VISEXTENT, ppd, pad_value=0)
 
-    params.update(visual_size=np.array(stim["img"].shape)/ppd,
-                  shape=stim["img"].shape,
-                  intensity_range=(v1, v3),
-                  )
+    params.update(
+        visual_size=np.array(stim["img"].shape) / ppd,
+        shape=stim["img"].shape,
+        intensity_range=(v1, v3),
+    )
     return {**stim, **params}
 
 
@@ -1048,7 +1054,7 @@ def todorovic_equal(ppd=PPD, pad=True):
         "target_thickness": 1.6,
         "covers_size": 3.2,
         "intensity_target": v2,
-        }
+    }
 
     stim1 = illusions.todorovic.todorovic_cross(
         visual_size=(13.0, 15.5),
@@ -1071,14 +1077,14 @@ def todorovic_equal(ppd=PPD, pad=True):
     }
 
     if pad:
-        shape = degrees_to_pixels(VISEXTENT, ppd)
-        stim["img"] = pad_img_to_shape(stim["img"], shape, val=v2)
-        stim["mask"] = pad_img_to_shape(stim["mask"], shape, val=0)
+        stim["img"] = pad_to_visual_size(stim["img"], VISEXTENT, ppd, pad_value=v2)
+        stim["mask"] = pad_to_visual_size(stim["mask"], VISEXTENT, ppd, pad_value=0)
 
-    params.update(visual_size=np.array(stim["img"].shape)/ppd,
-                  shape=stim["img"].shape,
-                  intensity_range=(v1, v3),
-                  )
+    params.update(
+        visual_size=np.array(stim["img"].shape) / ppd,
+        shape=stim["img"].shape,
+        intensity_range=(v1, v3),
+    )
     return {**stim, **params}
 
 
@@ -1114,7 +1120,7 @@ def todorovic_in_large(ppd=PPD, pad=True):
         "covers_size": 3.2,
         "covers_offset": 2.4,
         "intensity_target": v2,
-        }
+    }
 
     stim1 = illusions.todorovic.todorovic_rectangle(
         visual_size=(13.0, 15.5),
@@ -1137,14 +1143,14 @@ def todorovic_in_large(ppd=PPD, pad=True):
     }
 
     if pad:
-        shape = degrees_to_pixels(VISEXTENT, ppd)
-        stim["img"] = pad_img_to_shape(stim["img"], shape, val=v2)
-        stim["mask"] = pad_img_to_shape(stim["mask"], shape, val=0)
+        stim["img"] = pad_to_visual_size(stim["img"], VISEXTENT, ppd, pad_value=v2)
+        stim["mask"] = pad_to_visual_size(stim["mask"], VISEXTENT, ppd, pad_value=0)
 
-    params.update(visual_size=np.array(stim["img"].shape)/ppd,
-                  shape=stim["img"].shape,
-                  intensity_range=(v1, v3),
-                  )
+    params.update(
+        visual_size=np.array(stim["img"].shape) / ppd,
+        shape=stim["img"].shape,
+        intensity_range=(v1, v3),
+    )
     return {**stim, **params}
 
 
@@ -1180,7 +1186,7 @@ def todorovic_in_small(ppd=PPD, pad=True):
         "target_thickness": 1.6,
         "covers_size": 3.2,
         "intensity_target": v2,
-        }
+    }
 
     stim1 = illusions.todorovic.todorovic_cross(
         visual_size=(13.0, 15.5),
@@ -1203,14 +1209,14 @@ def todorovic_in_small(ppd=PPD, pad=True):
     }
 
     if pad:
-        shape = degrees_to_pixels(VISEXTENT, ppd)
-        stim["img"] = pad_img_to_shape(stim["img"], shape, val=v2)
-        stim["mask"] = pad_img_to_shape(stim["mask"], shape, val=0)
+        stim["img"] = pad_to_visual_size(stim["img"], VISEXTENT, ppd, pad_value=v2)
+        stim["mask"] = pad_to_visual_size(stim["mask"], VISEXTENT, ppd, pad_value=0)
 
-    params.update(visual_size=np.array(stim["img"].shape)/ppd,
-                  shape=stim["img"].shape,
-                  intensity_range=(v1, v3),
-                  )
+    params.update(
+        visual_size=np.array(stim["img"].shape) / ppd,
+        shape=stim["img"].shape,
+        intensity_range=(v1, v3),
+    )
     return {**stim, **params}
 
 
@@ -1249,7 +1255,7 @@ def todorovic_out(ppd=PPD, pad=True):
         "target_thickness": 1.6,
         "covers_size": 3.2,
         "intensity_target": v2,
-        }
+    }
 
     stim1 = illusions.todorovic.todorovic_cross(
         visual_size=(13.0, 15.5),
@@ -1272,14 +1278,14 @@ def todorovic_out(ppd=PPD, pad=True):
     }
 
     if pad:
-        shape = degrees_to_pixels(VISEXTENT, ppd)
-        stim["img"] = pad_img_to_shape(stim["img"], shape, val=v2)
-        stim["mask"] = pad_img_to_shape(stim["mask"], shape, val=0)
+        stim["img"] = pad_to_visual_size(stim["img"], VISEXTENT, ppd, pad_value=v2)
+        stim["mask"] = pad_to_visual_size(stim["mask"], VISEXTENT, ppd, pad_value=0)
 
-    params.update(visual_size=np.array(stim["img"].shape)/ppd,
-                  shape=stim["img"].shape,
-                  intensity_range=(v1, v3),
-                  )
+    params.update(
+        visual_size=np.array(stim["img"].shape) / ppd,
+        shape=stim["img"].shape,
+        intensity_range=(v1, v3),
+    )
     return {**stim, **params}
 
 
@@ -1324,14 +1330,14 @@ def checkerboard_016(ppd=PPD, pad=True):
     stim = illusions.checkerboards.checkerboard(**params)
 
     if pad:
-        shape = degrees_to_pixels(VISEXTENT, ppd)
-        stim["img"] = pad_img_to_shape(stim["img"], shape, val=v2)
-        stim["mask"] = pad_img_to_shape(stim["mask"], shape, val=0)
+        stim["img"] = pad_to_visual_size(stim["img"], VISEXTENT, ppd, pad_value=v2)
+        stim["mask"] = pad_to_visual_size(stim["mask"], VISEXTENT, ppd, pad_value=0)
 
-    params.update(visual_size=np.array(stim["img"].shape)/ppd,
-                  shape=stim["img"].shape,
-                  intensity_range=(v1, v3),
-                  )
+    params.update(
+        visual_size=np.array(stim["img"].shape) / ppd,
+        shape=stim["img"].shape,
+        intensity_range=(v1, v3),
+    )
     return {**stim, **params}
 
 
@@ -1376,14 +1382,14 @@ def checkerboard_0938(ppd=PPD, pad=True):
     stim = illusions.checkerboards.checkerboard(**params)
 
     if pad:
-        shape = degrees_to_pixels(VISEXTENT, ppd)
-        stim["img"] = pad_img_to_shape(stim["img"], shape, val=v2)
-        stim["mask"] = pad_img_to_shape(stim["mask"], shape, val=0)
+        stim["img"] = pad_to_visual_size(stim["img"], VISEXTENT, ppd, pad_value=v2)
+        stim["mask"] = pad_to_visual_size(stim["mask"], VISEXTENT, ppd, pad_value=0)
 
-    params.update(visual_size=np.array(stim["img"].shape)/ppd,
-                  shape=stim["img"].shape,
-                  intensity_range=(v1, v3),
-                  )
+    params.update(
+        visual_size=np.array(stim["img"].shape) / ppd,
+        shape=stim["img"].shape,
+        intensity_range=(v1, v3),
+    )
     return {**stim, **params}
 
 
@@ -1428,14 +1434,14 @@ def checkerboard209(ppd=PPD, pad=True):
     stim = illusions.checkerboards.checkerboard(**params)
 
     if pad:
-        shape = degrees_to_pixels(VISEXTENT, ppd)
-        stim["img"] = pad_img_to_shape(stim["img"], shape, val=v2)
-        stim["mask"] = pad_img_to_shape(stim["mask"], shape, val=0)
+        stim["img"] = pad_to_visual_size(stim["img"], VISEXTENT, ppd, pad_value=v2)
+        stim["mask"] = pad_to_visual_size(stim["mask"], VISEXTENT, ppd, pad_value=0)
 
-    params.update(visual_size=np.array(stim["img"].shape)/ppd,
-                  shape=stim["img"].shape,
-                  intensity_range=(v1, v3),
-                  )
+    params.update(
+        visual_size=np.array(stim["img"].shape) / ppd,
+        shape=stim["img"].shape,
+        intensity_range=(v1, v3),
+    )
     return {**stim, **params}
 
 
@@ -1473,25 +1479,25 @@ def corrugated_mondrian(ppd=PPD, pad=True):
     )
     params = {
         "ppd": ppd,
-        "widths": 2.,
-        "heights": 2.,
+        "widths": 2.0,
+        "heights": 2.0,
         "depths": (0.0, -1.0, 0.0, 1.0, 0.0),
         "target_idx": ((1, 2), (3, 2)),
         "intensities": values,
         "intensity_background": 0.5,
-        }
+    }
 
     stim = illusions.mondrians.corrugated_mondrians(**params)
 
     if pad:
-        shape = degrees_to_pixels(VISEXTENT, ppd)
-        stim["img"] = pad_img_to_shape(stim["img"], shape, val=0.5)
-        stim["mask"] = pad_img_to_shape(stim["mask"], shape, val=0)
+        stim["img"] = pad_to_visual_size(stim["img"], VISEXTENT, ppd, pad_value=0.5)
+        stim["mask"] = pad_to_visual_size(stim["mask"], VISEXTENT, ppd, pad_value=0)
 
-    params.update(visual_size=np.array(stim["img"].shape)/ppd,
-                  shape=stim["img"].shape,
-                  intensity_range=(v1, v4),
-                  )
+    params.update(
+        visual_size=np.array(stim["img"].shape) / ppd,
+        shape=stim["img"].shape,
+        intensity_range=(v1, v4),
+    )
     return {**stim, **params}
 
 
@@ -1521,32 +1527,32 @@ def benary_cross(ppd=PPD, pad=True):
 
     params = {
         "ppd": ppd,
-        "cross_thickness": 4.,
+        "cross_thickness": 4.0,
         "target_size": 2.5,
         "intensity_background": v3,
         "intensity_cross": v1,
         "intensity_target": v2,
-        }
+    }
 
     stim = illusions.benary_cross.benarys_cross_triangles(
         visual_size=(13, 23),
         **params,
     )
-    stim['img'] = np.fliplr(stim['img'])
-    stim['mask'] = np.fliplr(stim['mask'])
-    stim['mask'][stim['mask'] != 0] = np.abs(stim['mask'][stim['mask'] != 0] - 3)
+    stim["img"] = np.fliplr(stim["img"])
+    stim["mask"] = np.fliplr(stim["mask"])
+    stim["mask"][stim["mask"] != 0] = np.abs(stim["mask"][stim["mask"] != 0] - 3)
 
     if pad:
-        shape = degrees_to_pixels(VISEXTENT, ppd)
-        stim["img"] = pad_img(stim["img"], (0.0, 0.0, 4.0, 4.0), ppd, val=v3)
-        stim["img"] = pad_img_to_shape(stim["img"], shape, v2)
-        stim["mask"] = pad_img(stim["mask"], (0.0, 0.0, 4.0, 4.0), ppd, val=0)
-        stim["mask"] = pad_img_to_shape(stim["mask"], shape, 0)
+        stim["img"] = pad_by_visual_size(stim["img"], ((0.0, 0.0), (4.0, 4.0)), ppd, pad_value=v3)
+        stim["mask"] = pad_by_visual_size(stim["mask"], ((0.0, 0.0), (4.0, 4.0)), ppd, pad_value=0)
+        stim["img"] = pad_to_visual_size(stim["img"], VISEXTENT, ppd, pad_value=v2)
+        stim["mask"] = pad_to_visual_size(stim["mask"], VISEXTENT, ppd, pad_value=0)
 
-    params.update(visual_size=np.array(stim["img"].shape)/ppd,
-                  shape=stim["img"].shape,
-                  intensity_range=(v1, v3),
-                  )
+    params.update(
+        visual_size=np.array(stim["img"].shape) / ppd,
+        shape=stim["img"].shape,
+        intensity_range=(v1, v3),
+    )
     return {**stim, **params}
 
 
@@ -1585,22 +1591,22 @@ def todorovic_benary1_2(ppd=PPD, pad=True):
         "intensity_background": v3,
         "intensity_cross": v1,
         "intensity_target": v2,
-        }
+    }
 
     stim = illusions.benary_cross.todorovic_benary_generalized(
-        visual_size=(13., 31.),
+        visual_size=(13.0, 31.0),
         **params,
     )
 
     if pad:
-        shape = degrees_to_pixels(VISEXTENT, ppd)
-        stim["img"] = pad_img_to_shape(stim["img"], shape, v2)
-        stim["mask"] = pad_img_to_shape(stim["mask"], shape, 0)
+        stim["img"] = pad_to_visual_size(stim["img"], VISEXTENT, ppd, pad_value=v2)
+        stim["mask"] = pad_to_visual_size(stim["mask"], VISEXTENT, ppd, pad_value=0)
 
-    params.update(visual_size=np.array(stim["img"].shape)/ppd,
-                  shape=stim["img"].shape,
-                  intensity_range=(v1, v3),
-                  )
+    params.update(
+        visual_size=np.array(stim["img"].shape) / ppd,
+        shape=stim["img"].shape,
+        intensity_range=(v1, v3),
+    )
     return {**stim, **params}
 
 
@@ -1635,26 +1641,26 @@ def todorovic_benary3_4(ppd=PPD, pad=True):
         "target_type": ("t", "t"),
         "target_ori": (45.0, 225.0),
         "target_posx": (9.5, 18.0),
-        "target_posy": (6.5, 6.5 - np.sqrt(12.5)/2.+1/ppd),
+        "target_posy": (6.5, 6.5 - np.sqrt(12.5) / 2.0 + 1 / ppd),
         "intensity_background": v3,
         "intensity_cross": v1,
         "intensity_target": v2,
-        }
+    }
 
     stim = illusions.benary_cross.todorovic_benary_generalized(
-        visual_size=(13., 31.),
+        visual_size=(13.0, 31.0),
         **params,
     )
 
     if pad:
-        shape = degrees_to_pixels(VISEXTENT, ppd)
-        stim["img"] = pad_img_to_shape(stim["img"], shape, v2)
-        stim["mask"] = pad_img_to_shape(stim["mask"], shape, 0)
+        stim["img"] = pad_to_visual_size(stim["img"], VISEXTENT, ppd, pad_value=v2)
+        stim["mask"] = pad_to_visual_size(stim["mask"], VISEXTENT, ppd, pad_value=0)
 
-    params.update(visual_size=np.array(stim["img"].shape)/ppd,
-                  shape=stim["img"].shape,
-                  intensity_range=(v1, v3),
-                  )
+    params.update(
+        visual_size=np.array(stim["img"].shape) / ppd,
+        shape=stim["img"].shape,
+        intensity_range=(v1, v3),
+    )
     return {**stim, **params}
 
 
@@ -1689,26 +1695,26 @@ def todorovic_benary1_2_3_4(ppd=PPD, pad=True):
         "target_type": ("t", "t", "t", "t"),
         "target_ori": (0.0, 45.0, 225.0, 180.0),
         "target_posx": (2.5, 9.5, 18.0, 26.0),
-        "target_posy": (4.0, 6.5, 6.5 - np.sqrt(12.5)/2.+1/ppd, 6.5),
+        "target_posy": (4.0, 6.5, 6.5 - np.sqrt(12.5) / 2.0 + 1 / ppd, 6.5),
         "intensity_background": v3,
         "intensity_cross": v1,
         "intensity_target": v2,
-        }
+    }
 
     stim = illusions.benary_cross.todorovic_benary_generalized(
-        visual_size=(13., 31.),
+        visual_size=(13.0, 31.0),
         **params,
     )
 
     if pad:
-        shape = degrees_to_pixels(VISEXTENT, ppd)
-        stim["img"] = pad_img_to_shape(stim["img"], shape, v2)
-        stim["mask"] = pad_img_to_shape(stim["mask"], shape, 0)
+        stim["img"] = pad_to_visual_size(stim["img"], VISEXTENT, ppd, pad_value=v2)
+        stim["mask"] = pad_to_visual_size(stim["mask"], VISEXTENT, ppd, pad_value=0)
 
-    params.update(visual_size=np.array(stim["img"].shape)/ppd,
-                  shape=stim["img"].shape,
-                  intensity_range=(v1, v3),
-                  )
+    params.update(
+        visual_size=np.array(stim["img"].shape) / ppd,
+        shape=stim["img"].shape,
+        intensity_range=(v1, v3),
+    )
     return {**stim, **params}
 
 
@@ -1741,7 +1747,7 @@ def bullseye_thin(ppd=PPD, pad=True):
         "n_rings": 8,
         "ring_width": 0.1,
         "intensity_target": v2,
-        }
+    }
 
     stim1 = illusions.bullseye.bullseye_stimulus(
         **params,
@@ -1754,11 +1760,14 @@ def bullseye_thin(ppd=PPD, pad=True):
 
     # Individual padding
     if pad:
-        shape = degrees_to_pixels(np.array(VISEXTENT) / 2.0, ppd)
-        stim1["img"] = pad_img_to_shape(stim1["img"], shape, v2)
-        stim1["mask"] = pad_img_to_shape(stim1["mask"], shape, 0)
-        stim2["img"] = pad_img_to_shape(stim2["img"], shape, v2)
-        stim2["mask"] = pad_img_to_shape(stim2["mask"], shape, 0)
+        stim1["img"] = pad_to_visual_size(stim1["img"], np.array(VISEXTENT) / 2, ppd, pad_value=v2)
+        stim1["mask"] = pad_to_visual_size(
+            stim1["mask"], np.array(VISEXTENT) / 2, ppd, pad_value=0
+        )
+        stim2["img"] = pad_to_visual_size(stim2["img"], np.array(VISEXTENT) / 2, ppd, pad_value=v2)
+        stim2["mask"] = pad_to_visual_size(
+            stim2["mask"], np.array(VISEXTENT) / 2, ppd, pad_value=0
+        )
 
     # Increase target index of right stimulus half
     stim2["mask"] = stim2["mask"] + 1
@@ -1771,14 +1780,14 @@ def bullseye_thin(ppd=PPD, pad=True):
 
     # Full padding
     if pad:
-        shape = degrees_to_pixels(VISEXTENT, ppd)
-        stim["img"] = pad_img_to_shape(stim["img"], shape, v2)
-        stim["mask"] = pad_img_to_shape(stim["mask"], shape, 0)
+        stim["img"] = pad_to_visual_size(stim["img"], VISEXTENT, ppd, pad_value=v2)
+        stim["mask"] = pad_to_visual_size(stim["mask"], VISEXTENT, ppd, pad_value=0)
 
-    params.update(visual_size=np.array(stim["img"].shape)/ppd,
-                  shape=stim["img"].shape,
-                  intensity_range=(v1, v3),
-                  )
+    params.update(
+        visual_size=np.array(stim["img"].shape) / ppd,
+        shape=stim["img"].shape,
+        intensity_range=(v1, v3),
+    )
     return {**stim, **params}
 
 
@@ -1811,7 +1820,7 @@ def bullseye_thick(ppd=PPD, pad=True):
         "n_rings": 6,
         "ring_width": 0.2,
         "intensity_target": v2,
-        }
+    }
 
     stim1 = illusions.bullseye.bullseye_stimulus(
         **params,
@@ -1824,11 +1833,14 @@ def bullseye_thick(ppd=PPD, pad=True):
 
     # Individual padding
     if pad:
-        shape = degrees_to_pixels(np.array(VISEXTENT) / 2.0, ppd)
-        stim1["img"] = pad_img_to_shape(stim1["img"], shape, v2)
-        stim1["mask"] = pad_img_to_shape(stim1["mask"], shape, 0)
-        stim2["img"] = pad_img_to_shape(stim2["img"], shape, v2)
-        stim2["mask"] = pad_img_to_shape(stim2["mask"], shape, 0)
+        stim1["img"] = pad_to_visual_size(stim1["img"], np.array(VISEXTENT) / 2, ppd, pad_value=v2)
+        stim1["mask"] = pad_to_visual_size(
+            stim1["mask"], np.array(VISEXTENT) / 2, ppd, pad_value=0
+        )
+        stim2["img"] = pad_to_visual_size(stim2["img"], np.array(VISEXTENT) / 2, ppd, pad_value=v2)
+        stim2["mask"] = pad_to_visual_size(
+            stim2["mask"], np.array(VISEXTENT) / 2, ppd, pad_value=0
+        )
 
     # Increase target index of right stimulus half
     stim2["mask"] = stim2["mask"] + 1
@@ -1841,14 +1853,14 @@ def bullseye_thick(ppd=PPD, pad=True):
 
     # Full padding
     if pad:
-        shape = degrees_to_pixels(VISEXTENT, ppd)
-        stim["img"] = pad_img_to_shape(stim["img"], shape, v2)
-        stim["mask"] = pad_img_to_shape(stim["mask"], shape, 0)
+        stim["img"] = pad_to_visual_size(stim["img"], VISEXTENT, ppd, pad_value=v2)
+        stim["mask"] = pad_to_visual_size(stim["mask"], VISEXTENT, ppd, pad_value=0)
 
-    params.update(visual_size=np.array(stim["img"].shape)/ppd,
-                  shape=stim["img"].shape,
-                  intensity_range=(v1, v3),
-                  )
+    params.update(
+        visual_size=np.array(stim["img"].shape) / ppd,
+        shape=stim["img"].shape,
+        intensity_range=(v1, v3),
+    )
     return {**stim, **params}
 
 

@@ -1,6 +1,8 @@
 import warnings
 from collections import namedtuple
 
+import numpy as np
+
 Visual_size = namedtuple("Visual_size", "height width")
 Shape = namedtuple("Shape", "height width")
 Ppd = namedtuple("Ppd", "vertical horizontal")
@@ -103,9 +105,7 @@ def resolve_1D(length=None, visual_angle=None, ppd=None):
 
     # Triage based on number of unknowns
     if n_unknowns > 1:  # More than 1 unknown we cannot resolve
-        raise ValueError(
-            f"Too many unkowns to resolve resolution; {length},{visual_angle},{ppd}"
-        )
+        raise ValueError(f"Too many unkowns to resolve resolution; {length},{visual_angle},{ppd}")
     else:  # 1 unknown, so need to resolve
         # Which unknown?
         if length is None:
@@ -113,9 +113,7 @@ def resolve_1D(length=None, visual_angle=None, ppd=None):
         elif visual_angle is None:
             visual_angle = visual_angle_from_length_ppd_1D(length=length, ppd=ppd)
         elif ppd is None:
-            ppd = ppd_from_length_visual_angle_1D(
-                length=length, visual_angle=visual_angle
-            )
+            ppd = ppd_from_length_visual_angle_1D(length=length, visual_angle=visual_angle)
 
     return length, visual_angle, ppd
 
@@ -444,9 +442,7 @@ def validate_ppd(ppd):
         vertical = float(vertical)
 
     # Check non-negative
-    if (horizontal is not None and horizontal <= 0) or (
-        vertical is not None and vertical <= 0
-    ):
+    if (horizontal is not None and horizontal <= 0) or (vertical is not None and vertical <= 0):
         raise ValueError(f"ppd has to be positive; {horizontal, vertical}")
 
     # Initiate namedtuple:
@@ -498,9 +494,7 @@ def validate_visual_size(visual_size):
         visual_size = (visual_size[0], visual_size[0])
     elif len(visual_size) > 2:
         # If Sequence of len()>2 is passed in: error
-        raise TypeError(
-            f"visual_size must be of length 1 or 2, not greater: {visual_size}"
-        )
+        raise TypeError(f"visual_size must be of length 1 or 2, not greater: {visual_size}")
 
     # Unpack
     width = visual_size[1]
@@ -518,3 +512,53 @@ def validate_visual_size(visual_size):
 
     # Initiate namedtuple:
     return Visual_size(height=height, width=width)
+
+
+def degrees_to_pixels(degrees, ppd):
+    """
+    convert degrees of visual angle to pixels, given the number of pixels in
+    1deg of visual angle.
+
+    Parameters
+    ----------
+    degrees : number, tuple, list or a ndarray
+              the degree values to be converted.
+    ppd : number
+          the number of pixels in the central 1 degree of visual angle.
+
+    Returns
+    -------
+    pixels : number or ndarray
+    """
+    degrees = np.array(degrees)
+    return (np.round(degrees * ppd)).astype(int)
+
+    # This is the 'super correct' conversion, but it makes very little difference in practice
+    # return (np.tan(np.radians(degrees / 2.)) / np.tan(np.radians(.5)) * ppd).astype(int)
+
+
+def compute_ppd(screen_size, resolution, distance):
+    """
+    Compute the pixels per degree, i.e. the number of pixels in the central
+    one degree of visual angle, in a presentation setup.
+
+    Parameters
+    ----------
+    screen_size : scalar
+                  the size of the presentation screen, in whatever unti you
+                  prefer.
+    resolution : scalar
+                 the sceen resolution in the same direction that screen size
+                 was measured in.
+    distance : scalar
+               the distance between the observer and the screen, in the same
+               unit as screen_size.
+    Returns
+    -------
+    ppd : number
+          the number of pixels in one degree of visual angle.
+    """
+
+    ppmm = resolution / screen_size
+    mmpd = 2 * np.tan(np.radians(0.5)) * distance
+    return ppmm * mmpd

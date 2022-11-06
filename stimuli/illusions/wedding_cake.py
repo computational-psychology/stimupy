@@ -10,9 +10,9 @@ def wedding_cake_stimulus(
     target_height=4.0,
     target_idx_intensity1=((-1, 0), (0, 0), (1, 0)),
     target_idx_intensity2=None,
-    intensity_grating=(0., 1),
-    intensity1=0.,
-    intensity2=1.,
+    intensity_grating=(0.0, 1),
+    intensity1=0.0,
+    intensity2=1.0,
     intensity_target=0.5,
 ):
     """
@@ -77,20 +77,15 @@ def wedding_cake_stimulus(
 
     # Create target and mask patch 1
     tpatch1 = np.zeros([Ly, Lx])
-    tpatch1[
-        int(Ly / 2 - theight / 2) : int(Ly / 2 + theight / 2), Lx - Lw : :
-    ] = (intensity_target - intensity1)
+    tpatch1[int(Ly / 2 - theight / 2) : int(Ly / 2 + theight / 2), Lx - Lw : :] = (
+        intensity_target - intensity1
+    )
     mpatch1 = np.zeros([Ly, Lx])
-    mpatch1[
-        int(Ly / 2 - theight / 2) : int(Ly / 2 + theight / 2), Lx - Lw : :
-    ] = 1
+    mpatch1[int(Ly / 2 - theight / 2) : int(Ly / 2 + theight / 2), Lx - Lw : :] = 1
 
     # Create target and mask patch 2
     tpatch2 = np.zeros([Ly, Lx])
-    tpatch2[
-        int(Ly / 2 - theight / 2) : int(Ly / 2 + theight / 2),
-        Lx - Lw - Ld : Lx - Lw,
-    ] = (
+    tpatch2[int(Ly / 2 - theight / 2) : int(Ly / 2 + theight / 2), Lx - Lw - Ld : Lx - Lw,] = (
         intensity_target - intensity2
     )
     mpatch2 = np.zeros([Ly, Lx])
@@ -176,11 +171,8 @@ def wedding_cake_stimulus(
 
     # Crop to relevant size
     img = img[Lywd : Lywd + int(Lywd * nL[0]), Lxwd : Lxwd + int(Lxwd * nL[1])]
-    mask = mask[
-        Lywd : Lywd + int(Lywd * nL[0]), Lxwd : Lxwd + int(Lxwd * nL[1])
-    ]
+    mask = mask[Lywd : Lywd + int(Lywd * nL[0]), Lxwd : Lxwd + int(Lxwd * nL[1])]
     return {"img": img, "mask": mask}
-
 
 
 if __name__ == "__main__":

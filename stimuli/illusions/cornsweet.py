@@ -63,21 +63,22 @@ def cornsweet(
     profile1 = (1.0 - dist) ** exponent * (intensity_max - intensity_plateau)
     profile2 = (1.0 - dist) ** exponent * (intensity_min - intensity_plateau)
     img[:, : int(size[1] / 2.0)] += profile1[::-1]
-    img[:, size[1] // 2:] += profile2
+    img[:, size[1] // 2 :] += profile2
 
     # Generate the target mask
-    mask[:, 0: int(size[1] / 2.0 - ramp_width - 1)] = 1
-    mask[:, int(size[1] / 2.0 + ramp_width + 1)::] = 2
+    mask[:, 0 : int(size[1] / 2.0 - ramp_width - 1)] = 1
+    mask[:, int(size[1] / 2.0 + ramp_width + 1) : :] = 2
 
-    params = {"shape": img.shape,
-              "visual_size": np.array(img.shape)/ppd,
-              "ppd": ppd,
-              "intensity_max": intensity_max,
-              "intensity_min": intensity_min,
-              "intensity_plateau": intensity_plateau,
-              "ramp_width": ramp_width,
-              "exponent": exponent,
-              }
+    params = {
+        "shape": img.shape,
+        "visual_size": np.array(img.shape) / ppd,
+        "ppd": ppd,
+        "intensity_max": intensity_max,
+        "intensity_min": intensity_min,
+        "intensity_plateau": intensity_plateau,
+        "ramp_width": ramp_width,
+        "exponent": exponent,
+    }
 
     return {"img": img, "mask": mask, **params}
 

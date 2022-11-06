@@ -1,4 +1,5 @@
 import numpy as np
+
 from stimuli.utils import degrees_to_pixels, resize_array
 
 
@@ -38,7 +39,7 @@ def rectangle(
         rect_size = (rect_size, rect_size)
     if isinstance(rect_pos, (float, int)):
         rect_pos = (rect_pos, rect_pos)
-    if rect_pos[0]+rect_size[0] > im_size[0] or rect_pos[1]+rect_size[1] > im_size[1]:
+    if rect_pos[0] + rect_size[0] > im_size[0] or rect_pos[1] + rect_size[1] > im_size[1]:
         raise ValueError("rectangle does not fully fit into stimulus")
 
     im_height, im_width = degrees_to_pixels(im_size, ppd)
@@ -48,9 +49,7 @@ def rectangle(
     # Create image and add square
     img = np.ones((im_height, im_width)) * intensity_background
     target = np.ones((rect_height, rect_width)) * intensity_rectangle
-    img[
-        rect_posy : rect_posy + rect_height, rect_posx : rect_posx + rect_width
-    ] = target
+    img[rect_posy : rect_posy + rect_height, rect_posx : rect_posx + rect_width] = target
     return img
 
 
@@ -75,18 +74,12 @@ def triangle(ppd=10, target_size=(2.0, 2.0), intensity_background=0.0, intensity
     """
     target_y_px, target_x_px = degrees_to_pixels(target_size, ppd)
     img = np.ones([target_y_px, target_x_px]) * intensity_background
-    line1 = np.linspace(
-        0, target_y_px - 1, np.maximum(target_y_px, target_x_px) * 2
-    ).astype(int)
-    line1 = np.linspace(
-        line1, target_y_px - 1, np.maximum(target_y_px, target_x_px) * 2
-    ).astype(int)
-    line2 = np.linspace(
-        0, target_x_px - 1, np.maximum(target_y_px, target_x_px) * 2
-    ).astype(int)
-    line2 = np.repeat(
-        np.expand_dims(line2, -1), np.maximum(target_y_px, target_x_px) * 2, 1
+    line1 = np.linspace(0, target_y_px - 1, np.maximum(target_y_px, target_x_px) * 2).astype(int)
+    line1 = np.linspace(line1, target_y_px - 1, np.maximum(target_y_px, target_x_px) * 2).astype(
+        int
     )
+    line2 = np.linspace(0, target_x_px - 1, np.maximum(target_y_px, target_x_px) * 2).astype(int)
+    line2 = np.repeat(np.expand_dims(line2, -1), np.maximum(target_y_px, target_x_px) * 2, 1)
     img[line1, line2] = intensity_triangle
     return img
 
@@ -127,9 +120,7 @@ def cross(
     if not isinstance(cross_thickness, (float, int)):
         raise ValueError("cross_thickness should be a single number")
 
-    (cross_top, cross_bottom, cross_left, cross_right) = degrees_to_pixels(
-        cross_size, ppd
-    )
+    (cross_top, cross_bottom, cross_left, cross_right) = degrees_to_pixels(cross_size, ppd)
     cross_thickness = degrees_to_pixels(cross_thickness, ppd)
     width = cross_left + cross_thickness + cross_right
     height = cross_top + cross_thickness + cross_bottom
@@ -172,7 +163,7 @@ def square_wave(
     shape=(10, 10),
     ppd=10,
     frequency=1,
-    intensity_bars=(0., 1.),
+    intensity_bars=(0.0, 1.0),
     period="ignore",
 ):
     """
@@ -206,17 +197,18 @@ def square_wave(
         raise ValueError("The frequency is limited to ppd/2.")
 
     height, width = degrees_to_pixels(shape, ppd)
-    pixels_per_cycle = degrees_to_pixels(1. / (frequency*2), ppd) * 2
-    frequency_used = 1. / pixels_per_cycle*ppd
-    if degrees_to_pixels(1./frequency, ppd) % 2 != 0:
-        print("Warning: Square-wave frequency changed from %f to %f ensure an even-numbered cycle width!" % (frequency, frequency_used))
+    pixels_per_cycle = degrees_to_pixels(1.0 / (frequency * 2), ppd) * 2
+    frequency_used = 1.0 / pixels_per_cycle * ppd
+    if degrees_to_pixels(1.0 / frequency, ppd) % 2 != 0:
+        print(
+            "Warning: Square-wave frequency changed from %f to %f ensure an even-numbered cycle"
+            " width!" % (frequency, frequency_used)
+        )
 
     if period == "full":
         width = (width // pixels_per_cycle) * pixels_per_cycle
     elif period == "half":
-        width = (
-            width // pixels_per_cycle
-        ) * pixels_per_cycle + pixels_per_cycle / 2
+        width = (width // pixels_per_cycle) * pixels_per_cycle + pixels_per_cycle / 2
     width = int(width)
 
     stim = np.ones((height, width)) * intensity_bars[1]
@@ -232,12 +224,12 @@ def square_wave(
 
 
 def disc_and_rings(
-        ppd=20,
-        radii=(3, 6, 9),
-        intensity_background=0.,
-        intensity_discs=(1., 0., 1.),
-        ssf=5,
-        ):
+    ppd=20,
+    radii=(3, 6, 9),
+    intensity_background=0.0,
+    intensity_discs=(1.0, 0.0, 1.0),
+    ssf=5,
+):
     """
     Create a central disc with rings
 
@@ -261,7 +253,7 @@ def disc_and_rings(
     radii_px = degrees_to_pixels(radii, ppd) * ssf
 
     # create stimulus at 5 times size to allow for supersampling antialiasing
-    img = np.ones([radii_px.max()*2, radii_px.max()*2]) * intensity_background
+    img = np.ones([radii_px.max() * 2, radii_px.max() * 2]) * intensity_background
 
     # compute distance from center of array for every point, cap at 1.0
     x = np.linspace(-img.shape[1] / 2.0, img.shape[1] / 2.0, img.shape[1])
@@ -280,12 +272,12 @@ def disc_and_rings(
 
 
 def disc(
-        ppd=20,
-        radius=3,
-        intensity_background=0.,
-        intensity_disc=1.,
-        ssf=5,
-        ):
+    ppd=20,
+    radius=3,
+    intensity_background=0.0,
+    intensity_disc=1.0,
+    ssf=5,
+):
     """
     Create a central disc
 
@@ -319,12 +311,12 @@ def disc(
 
 
 def square_wave_grating(
-        ppd=10,
-        n_bars=8,
-        bar_shape=(8., 1.),
-        intensity_min=0.0,
-        intensity_max=1.0,
-        ):
+    ppd=10,
+    n_bars=8,
+    bar_shape=(8.0, 1.0),
+    intensity_min=0.0,
+    intensity_max=1.0,
+):
     """
     Square-wave grating
 
@@ -373,3 +365,145 @@ def transparency(img, mask, alpha=0.5, tau=0.2):
         img, with the transparency applied to the masked region
     """
     return np.where(mask, alpha * img + (1 - alpha) * tau, img)
+
+
+def smooth_window(shape, plateau, min_val, max_val, width):
+    """
+    Return an array that smoothly falls of from max_val to min_val. Plateau
+    specifies the location of max_val, width defines the width of the gradient,
+    i.e. the number of pixels to reach min_val.
+    TODO: only really works for unslanted rectangles, otherwise the inside of
+    the plateau is not filled in!
+
+    Parameters
+    ----------
+    shape : tuple of two ints
+            the shape of the output array, (y,x)
+    plateau : tuple of two-tuples ((y1, x1), ...)
+              the corner points of the plateau, i.e the region where the output
+              should be max_val. If two points are given, they are interpreted
+              as the upper left and lower right corner of the plateau.
+    min_val : number
+              the value of the output array at all locations further than width
+              from the plateau
+    max_val : number
+              the value of the output array at the plateau
+    width : int
+            the distance it takes for the gradient funcion to change from max
+            to min.
+
+    Returns
+    -------
+    mask : 2D array
+    """
+    x = np.arange(shape[1])[np.newaxis, :]
+    y = np.arange(shape[0])[:, np.newaxis]
+    distance = np.ones(shape) * width
+    if len(plateau) == 2:
+        plateau_points = (
+            plateau[0],
+            (plateau[0][0], plateau[1][1]),
+            plateau[1],
+            (plateau[1][0], plateau[0][1]),
+        )
+        distance[plateau[0][0] : plateau[1][0], plateau[0][1] : plateau[1][1]] = 0
+    else:
+        plateau_points = plateau
+    for i in range(len(plateau_points)):
+        p1 = plateau_points[i]
+        p2 = plateau_points[(i + 1) % len(plateau_points)]
+        distance = np.fmin(distance, dist_to_segment(y, x, p1, p2))
+    distance = distance / width * np.pi
+    mask = (np.cos(distance) + 1) / 2
+    mask = mask * (max_val - min_val) + min_val
+
+    return mask
+
+
+def dist_squared(y, x, p):
+    return (y - p[0]) ** 2 + (x - p[1]) ** 2
+
+
+def dist_to_segment(y, x, p1, p2):  # x3,y3 is the point
+    """
+    Compute the distance between a point, (y,x), and a line segment between p1
+    and p2.
+    """
+    y = np.atleast_1d(y)
+    x = np.atleast_1d(x)
+    sl = dist_squared(p1[0], p1[1], p2)
+    if sl == 0:
+        return np.sqrt(dist_squared(y, x, p1))
+    t = ((y - p1[0]) * (p2[0] - p1[0]) + (x - p1[1]) * (p2[1] - p1[1])) / sl
+    dist = dist_squared(y, x, (p1[0] + t * (p2[0] - p1[0]), p1[1] + t * (p2[1] - p1[1])))
+    dist[t > 1] = dist_squared(y, x, p2)[t > 1]
+    dist[t < 0] = dist_squared(y, x, p1)[t < 0]
+    return np.sqrt(dist)
+
+
+def get_circle_indices(n_numbers, grid_shape):
+
+    height, width = grid_shape
+
+    x = np.linspace(0, 2 * np.pi, n_numbers)
+
+    xx = np.cos(x)
+    xx_min = np.abs(xx.min())
+    xx += xx_min
+    xx_max = xx.max()
+    xx = xx / xx_max * (width - 1)
+
+    yy = np.sin(x)
+    yy_min = np.abs(yy.min())
+    yy += yy_min
+    yy_max = yy.max()
+    yy = yy / yy_max * (height - 1)
+
+    return (yy, xx)
+
+
+def get_circle_mask(shape, center, radius):
+    """
+    Get a circle shaped mask
+
+    Parameters
+    -------
+    shape: (height, width) of the mask in pixels
+    center: (y_center, x_center) in pixels
+    radius: radius of the circle in pixels
+
+    Returns
+    -------
+    mask: 2D boolean numpy array
+    """
+    height, width = shape
+    y_c, x_c = center
+
+    xx, yy = np.mgrid[:height, :width]
+    grid_radii = (xx - x_c) ** 2 + (yy - y_c) ** 2
+
+    circle_mask = grid_radii < (radius**2)
+
+    return circle_mask
+
+
+def get_annulus_mask(shape, center, inner_radius, outer_radius):
+    """
+    Get an annulus shaped mask
+
+    Parameters
+    -------
+    shape: (height, width) of the mask in pixels
+    radius: radius of the circle in pixels
+    center: width of the annulus in pixels
+
+    Returns
+    -------
+    mask: 2D boolean numpy array
+    """
+
+    mask1 = get_circle_mask(shape, center, inner_radius)
+    mask2 = get_circle_mask(shape, center, outer_radius)
+    mask = np.logical_xor(mask1, mask2)
+
+    return mask

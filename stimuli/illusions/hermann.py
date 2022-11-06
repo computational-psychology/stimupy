@@ -3,12 +3,12 @@ from stimuli.utils import degrees_to_pixels
 
 
 def hermann_grid(
-        visual_size=(10, 10),
-        ppd=10,
-        element_size=(1.5, 1.5, 0.2),
-        intensity_background=0.,
-        intensity_grid=1.
-        ):
+    visual_size=(10, 10),
+    ppd=10,
+    element_size=(1.5, 1.5, 0.2),
+    intensity_background=0.0,
+    intensity_grid=1.0,
+):
     """
     Hermann grid
 
@@ -47,13 +47,14 @@ def hermann_grid(
         img[i::element_height, :] = intensity_grid
         img[:, i::element_width] = intensity_grid
 
-    params = {"shape": img.shape,
-              "visual_size": np.array(img.shape)/ppd,
-              "ppd": ppd,
-              "element_size": element_size,
-              "intensity_background": intensity_background,
-              "intensity_grid": intensity_grid,
-              }
+    params = {
+        "shape": img.shape,
+        "visual_size": np.array(img.shape) / ppd,
+        "ppd": ppd,
+        "element_size": element_size,
+        "intensity_background": intensity_background,
+        "intensity_grid": intensity_grid,
+    }
 
     return {"img": img, "mask": None, **params}  # TODO: add mask
 

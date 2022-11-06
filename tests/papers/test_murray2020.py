@@ -25,6 +25,4 @@ def test_normalization(stim_name):
     stim = func()
     assert stim["img"].min() == 0, "img minimum is not 0"
     assert stim["img"].max() == 1, "img max is not 1"
-    assert (
-        "original_range" in stim
-    ), "No original_range in output stimulus-dict"
+    assert "original_range" in stim, "No original_range in output stimulus-dict"

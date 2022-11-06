@@ -4,7 +4,6 @@ import math
 from stimuli import illusions, papers
 
 
-
 stimuli = {
     "benary cross": illusions.benarys_cross(),
     "checkerboard contrast\ncontrast effect": illusions.checkerboard_contrast_contrast_effect(),
@@ -26,9 +25,8 @@ stimuli = {
     "circular white": illusions.circular_white(),
     "wheel of fortune_white": illusions.wheel_of_fortune_white(),
     "white anderson": illusions.white_anderson(),
-    "white howe": illusions.white_anderson(target_offsets_top=(0,), target_offsets_bottom=(0,))
+    "white howe": illusions.white_anderson(target_offsets_top=(0,), target_offsets_bottom=(0,)),
 }
-
 
 
 M = len(stimuli)
@@ -37,12 +35,12 @@ a = int(math.ceil(math.sqrt(M)))
 plt.figure(figsize=(20, 20))
 
 for i, (name, stim) in enumerate(stimuli.items()):
-    plt.subplot(a, a, i+1)
+    plt.subplot(a, a, i + 1)
     plt.subplots_adjust(wspace=0.3, hspace=0.2)
     plt.xticks([])
     plt.yticks([])
     plt.title(name, fontsize=25)
-    plt.imshow(stim['img'], cmap='gray')
+    plt.imshow(stim["img"], cmap="gray")
 
 plt.tight_layout()
 plt.show()

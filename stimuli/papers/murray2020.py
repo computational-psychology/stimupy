@@ -33,8 +33,9 @@ import os.path
 
 import numpy as np
 import scipy.io
+
 from stimuli import illusions
-from stimuli.utils import pad_img
+from stimuli.utils import pad_by_visual_size
 
 __all__ = [
     "argyle",
@@ -130,24 +131,20 @@ def argyle(ppd=PPD):
     target2 = np.array((((a[0])[0])[2])[0])
     mask = get_mask(target1, target2, img.shape)
 
-    img = img.repeat(repeats=int(ppd / PPD), axis=0).repeat(
-        repeats=int(ppd / PPD), axis=1
-    )
-    mask = mask.repeat(repeats=int(ppd / PPD), axis=0).repeat(
-        repeats=int(ppd / PPD), axis=1
-    )
+    img = img.repeat(repeats=int(ppd / PPD), axis=0).repeat(repeats=int(ppd / PPD), axis=1)
+    mask = mask.repeat(repeats=int(ppd / PPD), axis=0).repeat(repeats=int(ppd / PPD), axis=1)
 
     # Normalize intensity values to [0, 1]
     original_range = (img.min(), img.max())
     normed_img = (img - img.min()) / (img.max() - img.min())
 
     params = {
-        "visual_size": np.array(normed_img.shape)/ppd,
+        "visual_size": np.array(normed_img.shape) / ppd,
         "shape": normed_img.shape,
         "ppd": ppd,
-        "intensity_range": (0., 1.),
+        "intensity_range": (0.0, 1.0),
         "original_range": original_range,
-        }
+    }
     return {"img": normed_img, "mask": mask, **params}
 
 
@@ -178,24 +175,20 @@ def argyle_control(ppd=PPD):
     target2 = np.array((((a[0])[0])[2])[0])
     mask = get_mask(target1, target2, img.shape)
 
-    img = img.repeat(repeats=int(ppd / PPD), axis=0).repeat(
-        repeats=int(ppd / PPD), axis=1
-    )
-    mask = mask.repeat(repeats=int(ppd / PPD), axis=0).repeat(
-        repeats=int(ppd / PPD), axis=1
-    )
+    img = img.repeat(repeats=int(ppd / PPD), axis=0).repeat(repeats=int(ppd / PPD), axis=1)
+    mask = mask.repeat(repeats=int(ppd / PPD), axis=0).repeat(repeats=int(ppd / PPD), axis=1)
 
     # Normalize intensity values to [0, 1]
     original_range = (img.min(), img.max())
     normed_img = (img - img.min()) / (img.max() - img.min())
 
     params = {
-        "visual_size": np.array(normed_img.shape)/ppd,
+        "visual_size": np.array(normed_img.shape) / ppd,
         "shape": normed_img.shape,
         "ppd": ppd,
-        "intensity_range": (0., 1.),
+        "intensity_range": (0.0, 1.0),
         "original_range": original_range,
-        }
+    }
     return {"img": normed_img, "mask": mask, **params}
 
 
@@ -226,24 +219,20 @@ def argyle_long(ppd=PPD):
     target2 = np.array((((a[0])[0])[2])[0])
     mask = get_mask(target1, target2, img.shape)
 
-    img = img.repeat(repeats=int(ppd / PPD), axis=0).repeat(
-        repeats=int(ppd / PPD), axis=1
-    )
-    mask = mask.repeat(repeats=int(ppd / PPD), axis=0).repeat(
-        repeats=int(ppd / PPD), axis=1
-    )
+    img = img.repeat(repeats=int(ppd / PPD), axis=0).repeat(repeats=int(ppd / PPD), axis=1)
+    mask = mask.repeat(repeats=int(ppd / PPD), axis=0).repeat(repeats=int(ppd / PPD), axis=1)
 
     # Normalize intensity values to [0, 1]
     original_range = (img.min(), img.max())
     normed_img = (img - img.min()) / (img.max() - img.min())
 
     params = {
-        "visual_size": np.array(normed_img.shape)/ppd,
+        "visual_size": np.array(normed_img.shape) / ppd,
         "shape": normed_img.shape,
         "ppd": ppd,
-        "intensity_range": (0., 1.),
+        "intensity_range": (0.0, 1.0),
         "original_range": original_range,
-        }
+    }
     return {"img": normed_img, "mask": mask, **params}
 
 
@@ -274,24 +263,20 @@ def snake(ppd=PPD):
     target2 = np.array((((a[0])[0])[2])[0])
     mask = get_mask(target1, target2, img.shape)
 
-    img = img.repeat(repeats=int(ppd / PPD), axis=0).repeat(
-        repeats=int(ppd / PPD), axis=1
-    )
-    mask = mask.repeat(repeats=int(ppd / PPD), axis=0).repeat(
-        repeats=int(ppd / PPD), axis=1
-    )
+    img = img.repeat(repeats=int(ppd / PPD), axis=0).repeat(repeats=int(ppd / PPD), axis=1)
+    mask = mask.repeat(repeats=int(ppd / PPD), axis=0).repeat(repeats=int(ppd / PPD), axis=1)
 
     # Normalize intensity values to [0, 1]
     original_range = (img.min(), img.max())
     normed_img = (img - img.min()) / (img.max() - img.min())
 
     params = {
-        "visual_size": np.array(normed_img.shape)/ppd,
+        "visual_size": np.array(normed_img.shape) / ppd,
         "shape": normed_img.shape,
         "ppd": ppd,
-        "intensity_range": (0., 1.),
+        "intensity_range": (0.0, 1.0),
         "original_range": original_range,
-        }
+    }
     return {"img": normed_img, "mask": mask, **params}
 
 
@@ -322,24 +307,20 @@ def snake_control(ppd=PPD):
     target2 = np.array((((a[0])[0])[2])[0])
     mask = get_mask(target1, target2, img.shape)
 
-    img = img.repeat(repeats=int(ppd / PPD), axis=0).repeat(
-        repeats=int(ppd / PPD), axis=1
-    )
-    mask = mask.repeat(repeats=int(ppd / PPD), axis=0).repeat(
-        repeats=int(ppd / PPD), axis=1
-    )
+    img = img.repeat(repeats=int(ppd / PPD), axis=0).repeat(repeats=int(ppd / PPD), axis=1)
+    mask = mask.repeat(repeats=int(ppd / PPD), axis=0).repeat(repeats=int(ppd / PPD), axis=1)
 
     # Normalize intensity values to [0, 1]
     original_range = (img.min(), img.max())
     normed_img = (img - img.min()) / (img.max() - img.min())
 
     params = {
-        "visual_size": np.array(normed_img.shape)/ppd,
+        "visual_size": np.array(normed_img.shape) / ppd,
         "shape": normed_img.shape,
         "ppd": ppd,
-        "intensity_range": (0., 1.),
+        "intensity_range": (0.0, 1.0),
         "original_range": original_range,
-        }
+    }
     return {"img": normed_img, "mask": mask, **params}
 
 
@@ -370,24 +351,20 @@ def koffka_adelson(ppd=PPD):
     target2 = np.array((((a[0])[0])[2])[0])
     mask = get_mask(target1, target2, img.shape)
 
-    img = img.repeat(repeats=int(ppd / PPD), axis=0).repeat(
-        repeats=int(ppd / PPD), axis=1
-    )
-    mask = mask.repeat(repeats=int(ppd / PPD), axis=0).repeat(
-        repeats=int(ppd / PPD), axis=1
-    )
+    img = img.repeat(repeats=int(ppd / PPD), axis=0).repeat(repeats=int(ppd / PPD), axis=1)
+    mask = mask.repeat(repeats=int(ppd / PPD), axis=0).repeat(repeats=int(ppd / PPD), axis=1)
 
     # Normalize intensity values to [0, 1]
     original_range = (img.min(), img.max())
     normed_img = (img - img.min()) / (img.max() - img.min())
 
     params = {
-        "visual_size": np.array(normed_img.shape)/ppd,
+        "visual_size": np.array(normed_img.shape) / ppd,
         "shape": normed_img.shape,
         "ppd": ppd,
-        "intensity_range": (0., 1.),
+        "intensity_range": (0.0, 1.0),
         "original_range": original_range,
-        }
+    }
     return {"img": normed_img, "mask": mask, **params}
 
 
@@ -418,24 +395,20 @@ def koffka_broken(ppd=PPD):
     target2 = np.array((((a[0])[0])[2])[0])
     mask = get_mask(target1, target2, img.shape)
 
-    img = img.repeat(repeats=int(ppd / PPD), axis=0).repeat(
-        repeats=int(ppd / PPD), axis=1
-    )
-    mask = mask.repeat(repeats=int(ppd / PPD), axis=0).repeat(
-        repeats=int(ppd / PPD), axis=1
-    )
+    img = img.repeat(repeats=int(ppd / PPD), axis=0).repeat(repeats=int(ppd / PPD), axis=1)
+    mask = mask.repeat(repeats=int(ppd / PPD), axis=0).repeat(repeats=int(ppd / PPD), axis=1)
 
     # Normalize intensity values to [0, 1]
     original_range = (img.min(), img.max())
     normed_img = (img - img.min()) / (img.max() - img.min())
 
     params = {
-        "visual_size": np.array(normed_img.shape)/ppd,
+        "visual_size": np.array(normed_img.shape) / ppd,
         "shape": normed_img.shape,
         "ppd": ppd,
-        "intensity_range": (0., 1.),
+        "intensity_range": (0.0, 1.0),
         "original_range": original_range,
-        }
+    }
     return {"img": normed_img, "mask": mask, **params}
 
 
@@ -466,24 +439,20 @@ def koffka_connected(ppd=PPD):
     target2 = np.array((((a[0])[0])[2])[0])
     mask = get_mask(target1, target2, img.shape)
 
-    img = img.repeat(repeats=int(ppd / PPD), axis=0).repeat(
-        repeats=int(ppd / PPD), axis=1
-    )
-    mask = mask.repeat(repeats=int(ppd / PPD), axis=0).repeat(
-        repeats=int(ppd / PPD), axis=1
-    )
+    img = img.repeat(repeats=int(ppd / PPD), axis=0).repeat(repeats=int(ppd / PPD), axis=1)
+    mask = mask.repeat(repeats=int(ppd / PPD), axis=0).repeat(repeats=int(ppd / PPD), axis=1)
 
     # Normalize intensity values to [0, 1]
     original_range = (img.min(), img.max())
     normed_img = (img - img.min()) / (img.max() - img.min())
 
     params = {
-        "visual_size": np.array(normed_img.shape)/ppd,
+        "visual_size": np.array(normed_img.shape) / ppd,
         "shape": normed_img.shape,
         "ppd": ppd,
-        "intensity_range": (0., 1.),
+        "intensity_range": (0.0, 1.0),
         "original_range": original_range,
-        }
+    }
     return {"img": normed_img, "mask": mask, **params}
 
 
@@ -523,20 +492,21 @@ def checkassim(ppd=PPD, pad=PAD):
     )
 
     if pad:
-        padding = np.array((4, 5, 3, 3)) / PPD
-        stim["img"] = pad_img(stim["img"], padding, ppd=ppd, val=35.0)
-        stim["mask"] = pad_img(stim["mask"], padding, ppd=ppd, val=0)
+        padding = np.array(((4, 5), (3, 3))) / PPD
+        stim["img"] = pad_by_visual_size(stim["img"], padding, ppd=ppd, pad_value=35.0)
+        stim["mask"] = pad_by_visual_size(stim["mask"], padding, ppd=ppd, pad_value=0)
         params["padding"] = padding
 
     # Normalize intensity values to [0, 1]
     original_range = (stim["img"].min(), stim["img"].max())
     stim["img"] = (stim["img"] - stim["img"].min()) / (stim["img"].max() - stim["img"].min())
 
-    params.update(visual_size=np.array(stim["img"].shape)/ppd,
-                  shape=stim["img"].shape,
-                  original_range=original_range,
-                  intensity_range=(0., 1.),
-                  )
+    params.update(
+        visual_size=np.array(stim["img"].shape) / ppd,
+        shape=stim["img"].shape,
+        original_range=original_range,
+        intensity_range=(0.0, 1.0),
+    )
     return {**stim, **params}
 
 
@@ -567,24 +537,20 @@ def simcon(ppd=PPD):
     target2 = np.array((((a[0])[0])[2])[0])
     mask = get_mask(target1, target2, img.shape)
 
-    img = img.repeat(repeats=int(ppd / PPD), axis=0).repeat(
-        repeats=int(ppd / PPD), axis=1
-    )
-    mask = mask.repeat(repeats=int(ppd / PPD), axis=0).repeat(
-        repeats=int(ppd / PPD), axis=1
-    )
+    img = img.repeat(repeats=int(ppd / PPD), axis=0).repeat(repeats=int(ppd / PPD), axis=1)
+    mask = mask.repeat(repeats=int(ppd / PPD), axis=0).repeat(repeats=int(ppd / PPD), axis=1)
 
     # Normalize intensity values to [0, 1]
     original_range = (img.min(), img.max())
     normed_img = (img - img.min()) / (img.max() - img.min())
 
     params = {
-        "visual_size": np.array(normed_img.shape)/ppd,
+        "visual_size": np.array(normed_img.shape) / ppd,
         "shape": normed_img.shape,
         "ppd": ppd,
-        "intensity_range": (0., 1.),
+        "intensity_range": (0.0, 1.0),
         "original_range": original_range,
-        }
+    }
     return {"img": normed_img, "mask": mask, **params}
 
 
@@ -615,24 +581,20 @@ def simcon_articulated(ppd=PPD):
     target2 = np.array((((a[0])[0])[2])[0])
     mask = get_mask(target1, target2, img.shape)
 
-    img = img.repeat(repeats=int(ppd / PPD), axis=0).repeat(
-        repeats=int(ppd / PPD), axis=1
-    )
-    mask = mask.repeat(repeats=int(ppd / PPD), axis=0).repeat(
-        repeats=int(ppd / PPD), axis=1
-    )
+    img = img.repeat(repeats=int(ppd / PPD), axis=0).repeat(repeats=int(ppd / PPD), axis=1)
+    mask = mask.repeat(repeats=int(ppd / PPD), axis=0).repeat(repeats=int(ppd / PPD), axis=1)
 
     # Normalize intensity values to [0, 1]
     original_range = (img.min(), img.max())
     normed_img = (img - img.min()) / (img.max() - img.min())
 
     params = {
-        "visual_size": np.array(normed_img.shape)/ppd,
+        "visual_size": np.array(normed_img.shape) / ppd,
         "shape": normed_img.shape,
         "ppd": ppd,
-        "intensity_range": (0., 1.),
+        "intensity_range": (0.0, 1.0),
         "original_range": original_range,
-        }
+    }
     return {"img": normed_img, "mask": mask, **params}
 
 
@@ -660,7 +622,7 @@ def white(ppd=PPD):
     params = {
         "ppd": ppd,
         "visual_size": (8.0, 8.0),
-        "grating_frequency": 4. / 8.,
+        "grating_frequency": 4.0 / 8.0,
         "target_indices_top": (1, 3, 5),
         "target_indices_bottom": (2, 4, 6),
         "target_center_offset": 2,
@@ -681,11 +643,12 @@ def white(ppd=PPD):
     original_range = (img.min(), img.max())
     normed_img = (img - img.min()) / (img.max() - img.min())
 
-    params.update(visual_size=np.array(normed_img.shape)/ppd,
-                  shape=normed_img.shape,
-                  original_range=original_range,
-                  intensity_range=(0., 1.),
-                  )
+    params.update(
+        visual_size=np.array(normed_img.shape) / ppd,
+        shape=normed_img.shape,
+        original_range=original_range,
+        intensity_range=(0.0, 1.0),
+    )
     return {"img": normed_img, "mask": reduced_mask, **params}
 
 
