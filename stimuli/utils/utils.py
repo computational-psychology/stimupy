@@ -6,56 +6,6 @@ represented as numpy arrays.
 import numpy as np
 
 
-def degrees_to_pixels(degrees, ppd):
-    """
-    convert degrees of visual angle to pixels, given the number of pixels in
-    1deg of visual angle.
-
-    Parameters
-    ----------
-    degrees : number, tuple, list or a ndarray
-              the degree values to be converted.
-    ppd : number
-          the number of pixels in the central 1 degree of visual angle.
-
-    Returns
-    -------
-    pixels : number or ndarray
-    """
-    degrees = np.array(degrees)
-    return (np.round(degrees * ppd)).astype(int)
-
-    # This is the 'super correct' conversion, but it makes very little difference in practice
-    # return (np.tan(np.radians(degrees / 2.)) / np.tan(np.radians(.5)) * ppd).astype(int)
-
-
-def compute_ppd(screen_size, resolution, distance):
-    """
-    Compute the pixels per degree, i.e. the number of pixels in the central
-    one degree of visual angle, in a presentation setup.
-
-    Parameters
-    ----------
-    screen_size : scalar
-                  the size of the presentation screen, in whatever unti you
-                  prefer.
-    resolution : scalar
-                 the sceen resolution in the same direction that screen size
-                 was measured in.
-    distance : scalar
-               the distance between the observer and the screen, in the same
-               unit as screen_size.
-    Returns
-    -------
-    ppd : number
-          the number of pixels in one degree of visual angle.
-    """
-
-    ppmm = resolution / screen_size
-    mmpd = 2 * np.tan(np.radians(0.5)) * distance
-    return ppmm * mmpd
-
-
 def shift_pixels(img, shift):
     """
     Shift image by specified number of pixels. The pixels pushed on the edge will reappear on the other side (wrap around)
