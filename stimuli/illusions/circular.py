@@ -1,7 +1,7 @@
 import numpy as np
 
 from stimuli.components import disc_and_rings
-from stimuli.utils import degrees_to_pixels, pad_to_shape, resize_array
+from stimuli.utils import degrees_to_pixels, pad_to_visual_size, resize_array
 
 
 def circular_white(
@@ -66,8 +66,8 @@ def circular_white(
         frequency_used = 1.0 / cycle_width_px * ppd
         freqs = (frequency, frequency_used)
         print(
-            "Warning: Circular White frequency changed from %f to %f ensure an even-numbered cycle width!"
-            % freqs
+            "Warning: Circular White frequency changed from %f to %f ensure an even-numbered cycle"
+            " width!" % freqs
         )
     if n_discs < 1:
         raise ValueError("No circle fits in requested shape! Increase frequency or shape")
@@ -93,8 +93,10 @@ def circular_white(
     mask = disc_and_rings(ppd, radii, 0, vdics_mask, ssf)
 
     # Pad to desired size
-    img = pad_to_shape(img, np.array(visual_size) * ppd, intensity_background)
-    mask = pad_to_shape(mask, np.array(visual_size) * ppd, 0)
+    img = pad_to_visual_size(
+        img=img, visual_size=visual_size, ppd=ppd, pad_value=intensity_background
+    )
+    mask = pad_to_visual_size(img=mask, visual_size=visual_size, ppd=ppd, pad_value=0)
 
     # Target masks should only cover areas where target intensity is exactly vtarget
     cond = (img != intensity_target) & (mask != 0)
@@ -275,8 +277,10 @@ def radial_white(
     mask = np.dot(sampler, np.dot(mask, sampler.T)) / ssf**2
 
     # Pad to desired size
-    img = pad_to_shape(img, np.array(visual_size) * ppd, intensity_background)
-    mask = pad_to_shape(mask, np.array(visual_size) * ppd, 0)
+    img = pad_to_visual_size(
+        img=img, visual_size=visual_size, ppd=ppd, pad_value=intensity_background
+    )
+    mask = pad_to_visual_size(img=mask, visual_size=visual_size, ppd=ppd, pad_value=0)
 
     # Target masks should only cover areas where target intensity is exactly vtarget
     cond = (img != intensity_target) & (mask != 0)

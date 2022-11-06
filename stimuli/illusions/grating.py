@@ -1,7 +1,7 @@
 import numpy as np
 
 from stimuli.components import square_wave_grating
-from stimuli.utils import degrees_to_pixels, pad_to_shape
+from stimuli.utils import degrees_to_pixels, pad_to_visual_size
 
 
 def grating_illusion(
@@ -90,9 +90,9 @@ def grating_uniform(
     mask[img == intensity_target] = 1
 
     # Padding
-    im_size_px = degrees_to_pixels(im_size, ppd)
-    img = pad_to_shape(img, im_size_px, intensity_background)
-    mask = pad_to_shape(mask, im_size_px, 0)
+    img = pad_to_visual_size(img=img, visual_size=im_size, ppd=ppd, pad_value=intensity_background)
+    img = pad_to_visual_size(img=mask, visual_size=im_size, ppd=ppd, pad_value=0)
+
     return {"img": img, "mask": mask}
 
 
