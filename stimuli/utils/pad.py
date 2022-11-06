@@ -1,23 +1,54 @@
 import numpy as np
 
-from .utils import degrees_to_pixels
+from . import resolution
 
 
-def pad_by_visual_size(img, padding, ppd, val):
+def pad_by_visual_size(img, padding, ppd, pad_value=0.0):
+    """Pad image by specified degrees of visual angle
+
+    Can specify different amount (before, after) each axis.
+
+    Parameters
+    ----------
+    img : numpy.ndarray
+        image-array to be padded
+    padding : float, or Sequence[float, float], or Sequence[Sequence[float, float], ...]
+        amount of padding, in degrees visual angle, in each direction:
+        ((before_1, after_1), … (before_N, after_N)) unique pad widths for each axis
+        (float,) or float is a shortcut for before = after = pad width for all axes.
+    ppd : Sequence[Number] or Sequence[Number, Number]
+        pixels per degree
+    pad_value : Numeric, optional
+        value to pad with, by default 0.0
+
+    Returns
+    -------
+    numpy.ndarray
+        img padded by the specified amount(s)
+
+    See also
+    ---------
+    stimuli.utils.resolution
     """
-    padding: degrees visual angle (top, bottom, left, right)
-    """
-    padding_px = np.array(degrees_to_pixels(padding, ppd), dtype=np.int32)
-    padding_top, padding_bottom, padding_left, padding_right = padding_px
-    return np.pad(
-        img,
-        (
-            (int(padding_top), int(padding_bottom)),
-            (int(padding_left), int(padding_right)),
-        ),
-        "constant",
-        constant_values=((val, val), (val, val)),
-    )
+
+    # Broadcast to ((before_1, after_1),...(before_N, after_N))
+    padding_degs = np.broadcast_to(padding, (img.ndim, 2))
+
+    # ppd in canonical form
+    ppd = resolution.validate_ppd(ppd)
+
+    # Convert to shape in pixels
+    padding_px = []
+    for axis in padding_degs:
+        shape = [
+            resolution.pix_from_visual_angle_ppd_1D(i, ppd) if i > 0 else 0
+            for i, ppd in zip(axis, ppd)
+        ]
+        padding_px.append(shape)
+
+    # Pad by shape in pixels
+    return pad_by_shape(img=img, padding=padding_px, pad_value=pad_value)
+
 
 
 def pad_by_shape(img, padding, pad_value=0):

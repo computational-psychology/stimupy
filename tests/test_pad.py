@@ -36,3 +36,20 @@ def test_pad_to_shape(img_shape, shape):
     img = np.ones(img_shape)
     padded = pad.pad_to_shape(img, shape)
     assert padded.shape == shape
+
+
+@pytest.mark.parametrize(
+    "img_shape, padding, ppd, result_shape",
+    [
+        ((128, 128), (4.0, 4.0), (32, 32), (384, 384)),
+        ((100, 100), (2.0, 2.0), (32, 32), (228, 228)),
+        ((128, 128), ((2.0, 2.0), (2.0, 2.0)), 32, (256, 256)),
+        ((128, 128), ((1.0, 1.0), (2.0, 2.0)), 64, (256, 384)),
+        ((128, 100), ((6.4, 6.4), (10, 12.8)), 10, (256, 328)),
+        ((128, 100), 8, 8, (256, 228)),
+    ],
+)
+def test_pad_by_visual_size(img_shape, padding, ppd, result_shape):
+    img = np.ones(img_shape)
+    padded = pad.pad_by_visual_size(img, padding, ppd)
+    assert padded.shape == result_shape

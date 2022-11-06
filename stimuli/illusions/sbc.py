@@ -153,7 +153,7 @@ def sbc_with_dots(
     if isinstance(target_shape, (float, int)):
         target_shape = (target_shape, target_shape)
 
-    padding = (distance / 2.0, distance / 2.0, distance / 2.0, distance / 2.0)
+    padding = (distance / 2.0,)
     patch = disc(ppd, dot_radius, intensity_background=0.0, intensity_disc=intensity_dots)
     patch = pad_by_visual_size(patch, padding, ppd, 0.0)
 
@@ -239,7 +239,7 @@ def dotted_sbc(
     if isinstance(target_shape, (float, int)):
         target_shape = (target_shape, target_shape)
 
-    padding = (distance / 2.0, distance / 2.0, distance / 2.0, distance / 2.0)
+    padding = (distance / 2.0,)
     patch = disc(ppd, dot_radius, intensity_background=0.0, intensity_disc=intensity_dots)
     patch = pad_by_visual_size(patch, padding, ppd, 0.0)
 

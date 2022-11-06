@@ -1562,9 +1562,9 @@ def benary_cross(ppd=PPD, pad=True):
 
     if pad:
         shape = degrees_to_pixels(VISEXTENT, ppd)
-        stim["img"] = pad_by_visual_size(stim["img"], ((0.0, 0.0), (4.0, 4.0)), ppd, val=v3)
+        stim["img"] = pad_by_visual_size(stim["img"], ((0.0, 0.0), (4.0, 4.0)), ppd, pad_value=v3)
         stim["img"] = pad_to_shape(stim["img"], shape, v2)
-        stim["mask"] = pad_by_visual_size(stim["mask"], ((0.0, 0.0), (4.0, 4.0)), ppd, val=0)
+        stim["mask"] = pad_by_visual_size(stim["mask"], ((0.0, 0.0), (4.0, 4.0)), ppd, pad_value=0)
         stim["mask"] = pad_to_shape(stim["mask"], shape, 0)
 
     params.update(
