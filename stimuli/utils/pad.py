@@ -21,7 +21,7 @@ def pad_by_visual_size(img, padding, ppd, val):
 
 
 def pad_by_shape(img, padding, pad_value=0):
-    """Pad image by specified amount(s).
+    """Pad image by specified amount(s) of pixels
 
     Can specify different amount (before, after) each axis.
 
@@ -39,7 +39,7 @@ def pad_by_shape(img, padding, pad_value=0):
     Returns
     -------
     numpy.ndarray
-        padded image
+        img padded by the specified amount(s)
     """
 
     # Ensure padding is in integers
@@ -48,29 +48,41 @@ def pad_by_shape(img, padding, pad_value=0):
     return np.pad(img, padding, mode="constant", constant_values=pad_value)
 
 
-def pad_img_to_shape(img, shape, val=0):
+def pad_to_shape(img, shape, pad_value=0):
+    """Pad image to a resulting specified shape in pixels
+
+    Parameters
+    ----------
+    img : numpy.ndarray
+        image-array to be padded
+    shape : Sequence[int, int, ...]
+        desired shape of img after padding
+    pad_value : float, optional
+        value to pad with, by default 0.0
+
+    Returns
+    -------
+    numpy.ndarray
+        img padded to specified shape
+
+    Raises
+    ------
+    ValueError
+        if img.shape already exceeds shape
     """
-    shape: shape of the resulting image in pixels (height, width)
-    """
-    height_px, width_px = shape
-    height_img_px, width_img_px = img.shape
-    if height_img_px > height_px or width_img_px > width_px:
-        raise ValueError("the image is bigger than the size after padding")
 
-    padding_vertical_top = int((height_px - height_img_px) // 2)
-    padding_vertical_bottom = int(height_px - height_img_px - padding_vertical_top)
+    if np.any(img.shape > shape):
+        raise ValueError("img is bigger than size after padding")
 
-    padding_horizontal_left = int((width_px - width_img_px) // 2)
-    padding_horizontal_right = int(width_px - width_img_px - padding_horizontal_left)
+    padding_per_axis = np.array(shape) - np.array(img.shape)
+    padding_before = padding_per_axis // 2
+    padding_after = padding_per_axis - padding_before
+    padding = np.stack([padding_before, padding_after]).T
 
-    return np.pad(
+    return pad_by_shape(
         img,
-        (
-            (padding_vertical_top, padding_vertical_bottom),
-            (padding_horizontal_left, padding_horizontal_right),
-        ),
-        "constant",
-        constant_values=val,
+        padding=padding,
+        pad_value=pad_value,
     )
 
 

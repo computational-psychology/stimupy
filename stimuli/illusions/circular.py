@@ -1,6 +1,7 @@
 import numpy as np
+
 from stimuli.components import disc_and_rings
-from stimuli.utils import degrees_to_pixels, resize_array, pad_img_to_shape
+from stimuli.utils import degrees_to_pixels, pad_to_shape, resize_array
 
 
 def circular_white(
@@ -92,8 +93,8 @@ def circular_white(
     mask = disc_and_rings(ppd, radii, 0, vdics_mask, ssf)
 
     # Pad to desired size
-    img = pad_img_to_shape(img, np.array(visual_size) * ppd, intensity_background)
-    mask = pad_img_to_shape(mask, np.array(visual_size) * ppd, 0)
+    img = pad_to_shape(img, np.array(visual_size) * ppd, intensity_background)
+    mask = pad_to_shape(mask, np.array(visual_size) * ppd, 0)
 
     # Target masks should only cover areas where target intensity is exactly vtarget
     cond = (img != intensity_target) & (mask != 0)
@@ -274,8 +275,8 @@ def radial_white(
     mask = np.dot(sampler, np.dot(mask, sampler.T)) / ssf**2
 
     # Pad to desired size
-    img = pad_img_to_shape(img, np.array(visual_size) * ppd, intensity_background)
-    mask = pad_img_to_shape(mask, np.array(visual_size) * ppd, 0)
+    img = pad_to_shape(img, np.array(visual_size) * ppd, intensity_background)
+    mask = pad_to_shape(mask, np.array(visual_size) * ppd, 0)
 
     # Target masks should only cover areas where target intensity is exactly vtarget
     cond = (img != intensity_target) & (mask != 0)
@@ -301,6 +302,7 @@ def radial_white(
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
+
     from stimuli.utils import plot_stimuli
 
     stims = {

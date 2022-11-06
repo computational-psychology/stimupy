@@ -1,6 +1,7 @@
 import numpy as np
+
 from stimuli.components import cross, rectangle
-from stimuli.utils import degrees_to_pixels, pad_img_to_shape
+from stimuli.utils import degrees_to_pixels, pad_to_shape
 
 
 def todorovic_rectangle_generalized(
@@ -216,7 +217,7 @@ def todorovic_cross_generalized(
     img = cross(ppd, target_arms_size, target_thickness, intensity_background, intensity_target)
     if img.shape[0] > visual_size[0] * ppd or img.shape[1] > visual_size[1] * ppd:
         raise ValueError("your cross does not fit in requested stimulus size")
-    img = pad_img_to_shape(img, np.array(visual_size) * ppd, val=intensity_background)
+    img = pad_to_shape(img, np.array(visual_size) * ppd, pad_value=intensity_background)
 
     cheight, cwidth = degrees_to_pixels(covers_size, ppd)
     cposx = degrees_to_pixels(covers_posx, ppd)
@@ -319,6 +320,7 @@ def todorovic_cross(
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
+
     from stimuli.utils import plot_stimuli
 
     stims = {
