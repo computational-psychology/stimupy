@@ -50,6 +50,36 @@ def pad_by_visual_size(img, padding, ppd, pad_value=0.0):
     return pad_by_shape(img=img, padding=padding_px, pad_value=pad_value)
 
 
+def pad_to_visual_size(img, visual_size, ppd, pad_value=0):
+    """Pad image to specified visual size in degrees visual angle
+
+    Parameters
+    ----------
+    img : numpy.ndarray
+        image-array to be padded
+    visual_size : Sequence[int, int, ...]
+        desired visual size (in degrees visual angle) of img after padding
+    ppd : Sequence[Number] or Sequence[Number, Number]
+        pixels per degree
+    pad_value : Numeric, optional
+        value to pad with, by default 0.0
+
+    Returns
+    -------
+    numpy.ndarray
+        img padded by the specified amount(s)
+
+    See also
+    ---------
+    stimuli.utils.resolution
+    """
+
+    # visual_size to shape
+    shape = resolution.shape_from_visual_size_ppd(visual_size=visual_size, ppd=ppd)
+
+    # pad
+    return pad_to_shape(img=img, shape=shape, pad_value=pad_value)
+
 
 def pad_by_shape(img, padding, pad_value=0):
     """Pad image by specified amount(s) of pixels

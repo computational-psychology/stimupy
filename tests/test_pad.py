@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from stimuli.utils import pad
+from stimuli.utils import pad, resolution
 
 
 @pytest.mark.parametrize(
@@ -52,4 +52,20 @@ def test_pad_to_shape(img_shape, shape):
 def test_pad_by_visual_size(img_shape, padding, ppd, result_shape):
     img = np.ones(img_shape)
     padded = pad.pad_by_visual_size(img, padding, ppd)
+    assert padded.shape == result_shape
+
+
+@pytest.mark.parametrize(
+    "img_shape, visual_size, ppd",
+    [
+        ((256, 256), (32.0, 32.0), 32),
+        ((100, 100), (32.0, 32.0), 32),
+        ((256, 256), (32.0, 16.0), (16, 16)),
+        ((256, 256), (32.0, 16.0), (16, 32)),
+    ],
+)
+def test_pad_to_visual_size(img_shape, visual_size, ppd):
+    img = np.ones(img_shape)
+    padded = pad.pad_to_visual_size(img=img, visual_size=visual_size, ppd=ppd)
+    result_shape = resolution.shape_from_visual_size_ppd(visual_size=visual_size, ppd=ppd)
     assert padded.shape == result_shape
