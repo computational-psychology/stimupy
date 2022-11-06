@@ -1,7 +1,7 @@
 import numpy as np
 
 from stimuli.components import disc, rectangle
-from stimuli.utils import pad_by_visual_size, pixels_to_degrees
+from stimuli.utils import pad_by_visual_size, resolution
 
 
 def simultaneous_contrast_generalized(
@@ -148,27 +148,35 @@ def sbc_with_dots(
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
     """
 
-    if isinstance(n_dots, (float, int)):
-        n_dots = (n_dots, n_dots)
-    if isinstance(target_shape, (float, int)):
-        target_shape = (target_shape, target_shape)
+    # n_dots = number of dots vertical, horizontal, analogous to degrees
+    n_dots = resolution.validate_visual_size(n_dots)
 
+    # target shape = is in number of dots
+    target_shape = resolution.validate_visual_size(target_shape)
+
+    # Figure out pixels_per_dot
     padding = (distance / 2.0,)
     patch = disc(ppd, dot_radius, intensity_background=0.0, intensity_disc=intensity_dots)
-    patch = pad_by_visual_size(patch, padding, ppd, 0.0)
+    patch = pad_by_visual_size(img=patch, padding=padding, ppd=ppd, pad_value=0.0)
+    pixels_per_dot = patch.shape
 
-    img_height = pixels_to_degrees(n_dots[0] * patch.shape[0], ppd)
-    img_width = pixels_to_degrees(n_dots[1] * patch.shape[1], ppd)
-    rec_height = pixels_to_degrees(target_shape[0] * patch.shape[0], ppd)
-    rec_width = pixels_to_degrees(target_shape[1] * patch.shape[1], ppd)
+    # Img total shape = n_dots * pixels_per_dot
+    img_shape = resolution.shape_from_visual_size_ppd(visual_size=n_dots, ppd=pixels_per_dot)
+    img_visual_size = resolution.visual_size_from_shape_ppd(shape=img_shape, ppd=ppd)
+
+    # Target shape = target n_dots * pixels_per_dot
+    rect_shape = resolution.shape_from_visual_size_ppd(
+        visual_size=target_shape, ppd=pixels_per_dot
+    )
+    rect_visual_size = resolution.visual_size_from_shape_ppd(shape=rect_shape, ppd=ppd)
 
     # Create the sbc in the background:
-    tposy = (img_height - rec_height) / 2.0
-    tposx = (img_width - rec_width) / 2.0
+    tposy = (img_visual_size.height - rect_visual_size.height) / 2.0
+    tposx = (img_visual_size.width - rect_visual_size.width) / 2.0
     img = rectangle(
         ppd,
-        im_size=(img_height, img_width),
-        rect_size=(rec_height, rec_width),
+        im_size=img_visual_size,
+        rect_size=rect_visual_size,
         rect_pos=(tposy, tposx),
         intensity_background=intensity_background,
         intensity_rectangle=intensity_target,
@@ -176,7 +184,7 @@ def sbc_with_dots(
     mask = np.zeros(img.shape)
     mask[img == intensity_target] = 1
 
-    patch = np.tile(patch, (n_dots[0], n_dots[1]))
+    patch = np.tile(patch, (int(n_dots[0]), int(n_dots[1])))
     indices_dots = np.where((patch != 0))
     img[indices_dots] = intensity_dots
     mask[indices_dots] = 0
@@ -234,34 +242,42 @@ def dotted_sbc(
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
     """
 
-    if isinstance(n_dots, (float, int)):
-        n_dots = (n_dots, n_dots)
-    if isinstance(target_shape, (float, int)):
-        target_shape = (target_shape, target_shape)
+    # n_dots = number of dots vertical, horizontal, analogous to degrees
+    n_dots = resolution.validate_visual_size(n_dots)
 
+    # target shape = is in number of dots
+    target_shape = resolution.validate_visual_size(target_shape)
+
+    # Figure out pixels_per_dot
     padding = (distance / 2.0,)
     patch = disc(ppd, dot_radius, intensity_background=0.0, intensity_disc=intensity_dots)
-    patch = pad_by_visual_size(patch, padding, ppd, 0.0)
+    patch = pad_by_visual_size(img=patch, padding=padding, ppd=ppd, pad_value=0.0)
+    pixels_per_dot = patch.shape
 
-    img_height = pixels_to_degrees(n_dots[0] * patch.shape[0], ppd)
-    img_width = pixels_to_degrees(n_dots[1] * patch.shape[1], ppd)
-    rec_height = pixels_to_degrees(target_shape[0] * patch.shape[0], ppd)
-    rec_width = pixels_to_degrees(target_shape[1] * patch.shape[1], ppd)
+    # Img total shape = n_dots * pixels_per_dot
+    img_shape = resolution.shape_from_visual_size_ppd(visual_size=n_dots, ppd=pixels_per_dot)
+    img_visual_size = resolution.visual_size_from_shape_ppd(shape=img_shape, ppd=ppd)
+
+    # Target shape = target n_dots * pixels_per_dot
+    rect_shape = resolution.shape_from_visual_size_ppd(
+        visual_size=target_shape, ppd=pixels_per_dot
+    )
+    rect_visual_size = resolution.visual_size_from_shape_ppd(shape=rect_shape, ppd=ppd)
 
     # Create the sbc and img:
-    tposy = (img_height - rec_height) / 2.0
-    tposx = (img_width - rec_width) / 2.0
+    tposy = (img_visual_size.height - rect_visual_size.height) / 2.0
+    tposx = (img_visual_size.width - rect_visual_size.width) / 2.0
     sbc = rectangle(
         ppd,
-        im_size=(img_height, img_width),
-        rect_size=(rec_height, rec_width),
+        im_size=img_visual_size,
+        rect_size=rect_visual_size,
         rect_pos=(tposy, tposx),
         intensity_background=intensity_background,
         intensity_rectangle=intensity_target,
     )
     img = np.ones(sbc.shape) * intensity_background
 
-    patch = np.tile(patch, (n_dots[0], n_dots[1]))
+    patch = np.tile(patch, (int(n_dots[0]), int(n_dots[1])))
     indices_dots_back = np.where((patch != 0) & (sbc == intensity_background))
     indices_dots_target = np.where((patch != 0) & (sbc == intensity_target))
     img[indices_dots_back] = intensity_dots

@@ -106,28 +106,6 @@ def degrees_to_pixels(degrees, ppd):
     # return (np.tan(np.radians(degrees / 2.)) / np.tan(np.radians(.5)) * ppd).astype(int)
 
 
-def pixels_to_degrees(pixels, ppd):
-    """
-    convert pixels to degrees of visual angle, given the number of pixels in
-    1deg of visual angle.
-
-    Parameters
-    ----------
-    pixels : number, tuple, list or a ndarray
-              the pixel values to be converted.
-    ppd : number
-          the number of pixels in the central 1 degree of visual angle.
-
-    Returns
-    -------
-    degres : number or ndarray
-    """
-    pixels = np.array(pixels)
-    return pixels / ppd
-    # This is the 'super correct' conversion, but it makes very little difference in practice
-    # return 2 * np.degrees(np.arctan(pixels * np.tan(np.radians(.5)) / ppd))
-
-
 def compute_ppd(screen_size, resolution, distance):
     """
     Compute the pixels per degree, i.e. the number of pixels in the central
@@ -153,8 +131,6 @@ def compute_ppd(screen_size, resolution, distance):
     ppmm = resolution / screen_size
     mmpd = 2 * np.tan(np.radians(0.5)) * distance
     return ppmm * mmpd
-
-
 
 
 def smooth_window(shape, plateau, min_val, max_val, width):
