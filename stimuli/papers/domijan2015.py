@@ -37,8 +37,7 @@ facilitation in brightness perception. Frontiers in Human Neuroscience,
 import numpy as np
 
 from stimuli import illusions
-from stimuli.utils import pad_by_visual_size, pad_to_shape
-from stimuli.utils.resolution import resolve
+from stimuli.utils import pad_by_visual_size, pad_to_shape, resolution
 
 # TODO: Add warning when stimulus shape or visual_size is different from what requested!
 
@@ -82,21 +81,31 @@ SHAPES = {
 }
 
 VSIZES = {
-    "dungeon": np.array(SHAPES["dungeon"]) / PPD,
-    "cube": np.array(SHAPES["cube"]) / PPD,
-    "grating": np.array(SHAPES["grating"]) / PPD,
-    "rings": np.array(SHAPES["rings"]) / PPD,
-    "bullseye": np.array(SHAPES["bullseye"]) / PPD,
-    "simultaneous_brightness_contrast": np.array(SHAPES["simultaneous_brightness_contrast"]) / PPD,
-    "white": np.array(SHAPES["white"]) / PPD,
-    "benary": np.array(SHAPES["benary"]) / PPD,
-    "todorovic": np.array(SHAPES["todorovic"]) / PPD,
-    "checkerboard_contrast_contrast": np.array(SHAPES["checkerboard_contrast_contrast"]) / PPD,
-    "checkerboard": np.array(SHAPES["checkerboard"]) / PPD,
-    "checkerboard_extended": np.array(SHAPES["checkerboard_extended"]) / PPD,
-    "white_yazdanbakhsh": np.array(SHAPES["white_yazdanbakhsh"]) / PPD,
-    "white_anderson": np.array(SHAPES["white_anderson"]) / PPD,
-    "white_howe": np.array(SHAPES["white_howe"]) / PPD,
+    "dungeon": resolution.visual_size_from_shape_ppd(shape=SHAPES["dungeon"], ppd=PPD),
+    "cube": resolution.visual_size_from_shape_ppd(shape=SHAPES["cube"], ppd=PPD),
+    "grating": resolution.visual_size_from_shape_ppd(shape=SHAPES["grating"], ppd=PPD),
+    "rings": resolution.visual_size_from_shape_ppd(shape=SHAPES["rings"], ppd=PPD),
+    "bullseye": resolution.visual_size_from_shape_ppd(shape=SHAPES["bullseye"], ppd=PPD),
+    "simultaneous_brightness_contrast": resolution.visual_size_from_shape_ppd(
+        shape=SHAPES["simultaneous_brightness_contrast"], ppd=PPD
+    ),
+    "white": resolution.visual_size_from_shape_ppd(shape=SHAPES["white"], ppd=PPD),
+    "benary": resolution.visual_size_from_shape_ppd(shape=SHAPES["benary"], ppd=PPD),
+    "todorovic": resolution.visual_size_from_shape_ppd(shape=SHAPES["todorovic"], ppd=PPD),
+    "checkerboard_contrast_contrast": resolution.visual_size_from_shape_ppd(
+        shape=SHAPES["checkerboard_contrast_contrast"], ppd=PPD
+    ),
+    "checkerboard": resolution.visual_size_from_shape_ppd(shape=SHAPES["checkerboard"], ppd=PPD),
+    "checkerboard_extended": resolution.visual_size_from_shape_ppd(
+        shape=SHAPES["checkerboard_extended"], ppd=PPD
+    ),
+    "white_yazdanbakhsh": resolution.visual_size_from_shape_ppd(
+        shape=SHAPES["white_yazdanbakhsh"], ppd=PPD
+    ),
+    "white_anderson": resolution.visual_size_from_shape_ppd(
+        shape=SHAPES["white_anderson"], ppd=PPD
+    ),
+    "white_howe": resolution.visual_size_from_shape_ppd(shape=SHAPES["white_howe"], ppd=PPD),
 }
 
 v1, v2, v3 = 0.0, 0.5, 1.0
@@ -212,7 +221,7 @@ def dungeon(shape=SHAPES["dungeon"], ppd=PPD, visual_size=VSIZES["dungeon"]):
     shape = resolve_input(shape)
     visual_size = resolve_input(visual_size)
     c = get_conversion_2d(SHAPES["dungeon"], shape, visual_size, ppd)
-    shape, visual_size, ppd = resolve(None, np.array(SHAPES["dungeon"]) * c, ppd)
+    shape, visual_size, ppd = resolution.resolve(None, np.array(SHAPES["dungeon"]) * c, ppd)
     ppd = ppd[0]
 
     params = {
@@ -249,10 +258,10 @@ def dungeon(shape=SHAPES["dungeon"], ppd=PPD, visual_size=VSIZES["dungeon"]):
     params.update(
         original_shape=SHAPES["dungeon"],
         original_ppd=PPD,
-        original_visual_size=np.array(SHAPES["dungeon"]) / PPD,
+        original_visual_size=resolution.visual_size_from_shape_ppd(SHAPES["dungeon"], PPD),
         original_range=(1, 9),
         intensity_range=(v1, v3),
-        visual_size=np.array(img.shape) / ppd,
+        visual_size=resolution.visual_size_from_shape_ppd(img.shape, ppd),
         shape=img.shape,
     )
     return {"img": img, "mask": mask, **params}
@@ -292,7 +301,7 @@ def cube(shape=SHAPES["cube"], ppd=PPD, visual_size=VSIZES["cube"]):
     shape = resolve_input(shape)
     visual_size = resolve_input(visual_size)
     c = get_conversion_2d(SHAPES["cube"], shape, visual_size, ppd)
-    shape, visual_size, ppd = resolve(None, np.array(SHAPES["cube"]) * c, ppd)
+    shape, visual_size, ppd = resolution.resolve(None, np.array(SHAPES["cube"]) * c, ppd)
     ppd = ppd[0]
 
     params = {
@@ -338,10 +347,10 @@ def cube(shape=SHAPES["cube"], ppd=PPD, visual_size=VSIZES["cube"]):
     params.update(
         original_shape=SHAPES["cube"],
         original_ppd=PPD,
-        original_visual_size=np.array(SHAPES["cube"]) / PPD,
+        original_visual_size=resolution.visual_size_from_shape_ppd(SHAPES["cube"], PPD),
         original_range=(1, 9),
         intensity_range=(v1, v3),
-        visual_size=np.array(img.shape) / ppd,
+        visual_size=resolution.visual_size_from_shape_ppd(img.shape, ppd),
         shape=img.shape,
     )
     return {"img": img, "mask": mask, **params}
@@ -381,7 +390,7 @@ def grating(shape=SHAPES["grating"], ppd=PPD, visual_size=VSIZES["grating"]):
     shape = resolve_input(shape)
     visual_size = resolve_input(visual_size)
     c = get_conversion_2d(SHAPES["grating"], shape, visual_size, ppd)
-    shape, visual_size, ppd = resolve(None, np.array(SHAPES["grating"]) * c, ppd)
+    shape, visual_size, ppd = resolution.resolve(None, np.array(SHAPES["grating"]) * c, ppd)
     ppd = ppd[0]
 
     params = {
@@ -420,10 +429,10 @@ def grating(shape=SHAPES["grating"], ppd=PPD, visual_size=VSIZES["grating"]):
     params.update(
         original_shape=SHAPES["grating"],
         original_ppd=PPD,
-        original_visual_size=np.array(SHAPES["grating"]) / PPD,
+        original_visual_size=resolution.visual_size_from_shape_ppd(SHAPES["grating"], PPD),
         original_range=(1, 9),
         intensity_range=(v1, v3),
-        visual_size=np.array(img.shape) / ppd,
+        visual_size=resolution.visual_size_from_shape_ppd(img.shape, ppd),
         shape=img.shape,
     )
     return {"img": img, "mask": mask, **params}
@@ -463,7 +472,7 @@ def rings(shape=SHAPES["rings"], ppd=PPD, visual_size=VSIZES["rings"]):
     shape = resolve_input(shape)
     visual_size = resolve_input(visual_size)
     c = get_conversion_2d(SHAPES["rings"], shape, visual_size, ppd)
-    shape, visual_size, ppd = resolve(None, np.array(SHAPES["rings"]) * c, ppd)
+    shape, visual_size, ppd = resolution.resolve(None, np.array(SHAPES["rings"]) * c, ppd)
     ppd = ppd[0]
 
     params = {
@@ -501,10 +510,10 @@ def rings(shape=SHAPES["rings"], ppd=PPD, visual_size=VSIZES["rings"]):
     params.update(
         original_shape=SHAPES["rings"],
         original_ppd=PPD,
-        original_visual_size=np.array(SHAPES["rings"]) / PPD,
+        original_visual_size=resolution.visual_size_from_shape_ppd(SHAPES["rings"], PPD),
         original_range=(1, 9),
         intensity_range=(v1, v3),
-        visual_size=np.array(img.shape) / ppd,
+        visual_size=resolution.visual_size_from_shape_ppd(img.shape, ppd),
         shape=img.shape,
         target_idx_left=4,
         target_idx_right=3,
@@ -546,7 +555,7 @@ def bullseye(shape=SHAPES["bullseye"], ppd=PPD, visual_size=VSIZES["bullseye"]):
     shape = resolve_input(shape)
     visual_size = resolve_input(visual_size)
     c = get_conversion_2d(SHAPES["bullseye"], shape, visual_size, ppd)
-    shape, visual_size, ppd = resolve(None, np.array(SHAPES["bullseye"]) * c, ppd)
+    shape, visual_size, ppd = resolution.resolve(None, np.array(SHAPES["bullseye"]) * c, ppd)
     ppd = ppd[0]
 
     params = {
@@ -582,10 +591,10 @@ def bullseye(shape=SHAPES["bullseye"], ppd=PPD, visual_size=VSIZES["bullseye"]):
     params.update(
         original_shape=SHAPES["bullseye"],
         original_ppd=PPD,
-        original_visual_size=np.array(SHAPES["bullseye"]) / PPD,
+        original_visual_size=resolution.visual_size_from_shape_ppd(SHAPES["bullseye"], PPD),
         original_range=(1, 9),
         intensity_range=(v1, v3),
-        visual_size=np.array(img.shape) / ppd,
+        visual_size=resolution.visual_size_from_shape_ppd(img.shape, ppd),
         shape=img.shape,
     )
     return {"img": img, "mask": mask, **params}
@@ -629,7 +638,7 @@ def simultaneous_brightness_contrast(
     shape = resolve_input(shape)
     visual_size = resolve_input(visual_size)
     c = get_conversion_2d(SHAPES["simultaneous_brightness_contrast"], shape, visual_size, ppd)
-    shape, visual_size, ppd = resolve(
+    shape, visual_size, ppd = resolution.resolve(
         None, np.array(SHAPES["simultaneous_brightness_contrast"]) * c, ppd
     )
     ppd = ppd[0]
@@ -663,10 +672,12 @@ def simultaneous_brightness_contrast(
     params.update(
         original_shape=SHAPES["simultaneous_brightness_contrast"],
         original_ppd=PPD,
-        original_visual_size=np.array(SHAPES["simultaneous_brightness_contrast"]) / PPD,
+        original_visual_size=resolution.visual_size_from_shape_ppd(
+            SHAPES["simultaneous_brightness_contrast"], PPD
+        ),
         original_range=(1, 9),
         intensity_range=(v1, v3),
-        visual_size=np.array(img.shape) / ppd,
+        visual_size=resolution.visual_size_from_shape_ppd(img.shape, ppd),
         shape=img.shape,
     )
     return {"img": img, "mask": mask, **params}
@@ -708,7 +719,7 @@ def white(shape=SHAPES["white"], ppd=PPD, visual_size=VSIZES["white"], pad=PAD):
     shape = resolve_input(shape)
     visual_size = resolve_input(visual_size)
     c = get_conversion_2d(SHAPES["white"], shape, visual_size, ppd)
-    shape, visual_size, ppd = resolve(None, np.array(SHAPES["white"]) * c, ppd)
+    shape, visual_size, ppd = resolution.resolve(None, np.array(SHAPES["white"]) * c, ppd)
     ppd = ppd[0]
 
     params = {
@@ -732,10 +743,10 @@ def white(shape=SHAPES["white"], ppd=PPD, visual_size=VSIZES["white"], pad=PAD):
         stim["mask"] = pad_by_visual_size(stim["mask"], padding, ppd, pad_value=0)
         params["padding"] = padding
 
-    original_shape_np = np.array(SHAPES["white"])
-    original_visual_np = np.array(original_shape_np) / PPD
-    original_shape = original_shape_np + 20
-    original_visual_size = original_shape / PPD
+    original_shape_np = SHAPES["white"]
+    original_visual_np = resolution.visual_size_from_shape_ppd(original_shape_np, PPD)
+    original_shape = np.array(original_shape_np) + 20
+    original_visual_size = resolution.visual_size_from_shape_ppd(original_shape, PPD)
     params.update(
         original_shape=original_shape,
         original_ppd=PPD,
@@ -744,7 +755,7 @@ def white(shape=SHAPES["white"], ppd=PPD, visual_size=VSIZES["white"], pad=PAD):
         original_visual_size_no_padding=original_visual_np,
         original_range=(1, 9),
         intensity_range=(v1, v3),
-        visual_size=np.array(stim["img"].shape) / ppd,
+        visual_size=resolution.visual_size_from_shape_ppd(stim["img"].shape, ppd),
         shape=stim["img"].shape,
     )
     return {**stim, **params}
@@ -784,7 +795,7 @@ def benary(shape=SHAPES["benary"], ppd=PPD, visual_size=VSIZES["benary"]):
     shape = resolve_input(shape)
     visual_size = resolve_input(visual_size)
     c = get_conversion_2d(SHAPES["benary"], shape, visual_size, ppd)
-    shape, visual_size, ppd = resolve(None, np.array(SHAPES["benary"]) * c, ppd)
+    shape, visual_size, ppd = resolution.resolve(None, np.array(SHAPES["benary"]) * c, ppd)
     ppd = ppd[0]
 
     params = {
@@ -809,10 +820,10 @@ def benary(shape=SHAPES["benary"], ppd=PPD, visual_size=VSIZES["benary"]):
     params.update(
         original_shape=SHAPES["benary"],
         original_ppd=PPD,
-        original_visual_size=np.array(SHAPES["benary"]) / PPD,
+        original_visual_size=resolution.visual_size_from_shape_ppd(SHAPES["benary"], PPD),
         original_range=(1, 9),
         intensity_range=(v1, v3),
-        visual_size=np.array(stim["img"].shape) / ppd,
+        visual_size=resolution.visual_size_from_shape_ppd(stim["img"].shape, ppd),
         shape=stim["img"].shape,
     )
     return {**stim, **params}
@@ -853,7 +864,7 @@ def todorovic(shape=SHAPES["todorovic"], ppd=PPD, visual_size=VSIZES["todorovic"
     shape = resolve_input(shape)
     visual_size = resolve_input(visual_size)
     c = get_conversion_2d(SHAPES["todorovic"], shape, visual_size, ppd)
-    shape, visual_size, ppd = resolve(None, np.array(SHAPES["todorovic"]) * c, ppd)
+    shape, visual_size, ppd = resolution.resolve(None, np.array(SHAPES["todorovic"]) * c, ppd)
     ppd = ppd[0]
 
     params = {
@@ -888,10 +899,10 @@ def todorovic(shape=SHAPES["todorovic"], ppd=PPD, visual_size=VSIZES["todorovic"
     params.update(
         original_shape=SHAPES["todorovic"],
         original_ppd=PPD,
-        original_visual_size=np.array(SHAPES["todorovic"]) / PPD,
+        original_visual_size=resolution.visual_size_from_shape_ppd(SHAPES["todorovic"], PPD),
         original_range=(1, 9),
         intensity_range=(v1, v3),
-        visual_size=np.array(img.shape) / ppd,
+        visual_size=resolution.visual_size_from_shape_ppd(img.shape, ppd),
         shape=img.shape,
     )
     return {"img": img, "mask": mask, **params}
@@ -942,7 +953,7 @@ def checkerboard_contrast_contrast(
     conversion_fac = get_conversion_2d(
         SHAPES["checkerboard_contrast_contrast"], shape, visual_size, ppd
     )
-    shape, visual_size, ppd = resolve(None, original_shape_np * conversion_fac, ppd)
+    shape, visual_size, ppd = resolution.resolve(None, original_shape_np * conversion_fac, ppd)
     ppd = ppd[0]
 
     params = {
@@ -984,9 +995,9 @@ def checkerboard_contrast_contrast(
     img = np.hstack([stim1["img"], img2])
     mask = np.hstack([stim1["mask"], mask2])
 
-    original_visual_np = np.array(original_shape_np) / PPD
+    original_visual_np = resolution.visual_size_from_shape_ppd(original_shape_np, PPD)
     original_shape = original_shape_np + np.array((20, 40))
-    original_visual_size = original_shape / PPD
+    original_visual_size = resolution.visual_size_from_shape_ppd(original_shape, PPD)
     params.update(
         original_shape=original_shape,
         original_ppd=PPD,
@@ -995,7 +1006,7 @@ def checkerboard_contrast_contrast(
         original_visual_size_no_padding=original_visual_np,
         original_range=(1, 9),
         intensity_range=(v1, v3),
-        visual_size=np.array(img.shape) / ppd,
+        visual_size=resolution.visual_size_from_shape_ppd(img.shape, ppd),
         shape=img.shape,
         board_shape_left=(8, 8),
         board_shape_right=(4, 4),
@@ -1042,7 +1053,9 @@ def checkerboard(
     shape = resolve_input(shape)
     visual_size = resolve_input(visual_size)
     conversion_fac = get_conversion_2d(SHAPES["checkerboard"], shape, visual_size, ppd)
-    shape, visual_size, ppd = resolve(None, np.array(SHAPES["checkerboard"]) * conversion_fac, ppd)
+    shape, visual_size, ppd = resolution.resolve(
+        None, np.array(SHAPES["checkerboard"]) * conversion_fac, ppd
+    )
     ppd = ppd[0]
 
     params = {
@@ -1063,10 +1076,10 @@ def checkerboard(
         stim["mask"] = pad_by_visual_size(stim["mask"], padding, ppd=ppd, pad_value=0)
         params["padding"] = padding
 
-    original_shape_np = np.array(SHAPES["checkerboard"])
-    original_visual_np = np.array(original_shape_np) / PPD
-    original_shape = original_shape_np + 20
-    original_visual_size = original_shape / PPD
+    original_shape_np = SHAPES["checkerboard"]
+    original_visual_np = resolution.visual_size_from_shape_ppd(original_shape_np, PPD)
+    original_shape = np.array(original_shape_np) + 20
+    original_visual_size = resolution.visual_size_from_shape_ppd(original_shape, PPD)
     params.update(
         original_shape=original_shape,
         original_ppd=PPD,
@@ -1075,7 +1088,7 @@ def checkerboard(
         original_visual_size_no_padding=original_visual_np,
         original_range=(1, 9),
         intensity_range=(v1, v3),
-        visual_size=np.array(stim["img"].shape) / ppd,
+        visual_size=resolution.visual_size_from_shape_ppd(stim["img"].shape, ppd),
         shape=stim["img"].shape,
     )
 
@@ -1123,7 +1136,7 @@ def checkerboard_extended(
     shape = resolve_input(shape)
     visual_size = resolve_input(visual_size)
     conversion_fac = get_conversion_2d(SHAPES["checkerboard_extended"], shape, visual_size, ppd)
-    shape, visual_size, ppd = resolve(
+    shape, visual_size, ppd = resolution.resolve(
         None, np.array(SHAPES["checkerboard_extended"]) * conversion_fac, ppd
     )
     ppd = ppd[0]
@@ -1146,10 +1159,10 @@ def checkerboard_extended(
         stim["mask"] = pad_by_visual_size(stim["mask"], padding, ppd=ppd, pad_value=0)
         params["padding"] = padding
 
-    original_shape_np = np.array(SHAPES["checkerboard_extended"])
-    original_visual_np = np.array(original_shape_np) / PPD
-    original_shape = original_shape_np + 20
-    original_visual_size = original_shape / PPD
+    original_shape_np = SHAPES["checkerboard_extended"]
+    original_visual_np = resolution.visual_size_from_shape_ppd(original_shape_np, PPD)
+    original_shape = np.array(original_shape_np) + 20
+    original_visual_size = resolution.visual_size_from_shape_ppd(original_shape, PPD)
     params.update(
         original_shape=original_shape,
         original_ppd=PPD,
@@ -1158,7 +1171,7 @@ def checkerboard_extended(
         original_visual_size_no_padding=original_visual_np,
         original_range=(1, 9),
         intensity_range=(v1, v3),
-        visual_size=np.array(stim["img"].shape) / ppd,
+        visual_size=resolution.visual_size_from_shape_ppd(stim["img"].shape, ppd),
         shape=stim["img"].shape,
     )
 
@@ -1203,7 +1216,9 @@ def white_yazdanbakhsh(
     shape = resolve_input(shape)
     visual_size = resolve_input(visual_size)
     c = get_conversion_2d(SHAPES["white_yazdanbakhsh"], shape, visual_size, ppd)
-    shape, visual_size, ppd = resolve(None, np.array(SHAPES["white_yazdanbakhsh"]) * c, ppd)
+    shape, visual_size, ppd = resolution.resolve(
+        None, np.array(SHAPES["white_yazdanbakhsh"]) * c, ppd
+    )
     ppd = ppd[0]
 
     params = {
@@ -1231,10 +1246,10 @@ def white_yazdanbakhsh(
         stim["mask"] = pad_by_visual_size(stim["mask"], padding, ppd=ppd, pad_value=0)
         params["padding"] = padding
 
-    original_shape_np = np.array(SHAPES["white_yazdanbakhsh"])
-    original_visual_np = np.array(original_shape_np) / PPD
-    original_shape = original_shape_np + 20
-    original_visual_size = original_shape / PPD
+    original_shape_np = SHAPES["white_yazdanbakhsh"]
+    original_visual_np = resolution.visual_size_from_shape_ppd(original_shape_np, PPD)
+    original_shape = np.array(original_shape_np) + 20
+    original_visual_size = resolution.visual_size_from_shape_ppd(original_shape, PPD)
     params.update(
         original_shape=original_shape,
         original_ppd=PPD,
@@ -1243,7 +1258,7 @@ def white_yazdanbakhsh(
         original_visual_size_no_padding=original_visual_np,
         original_range=(1, 9),
         intensity_range=(v1, v3),
-        visual_size=np.array(stim["img"].shape) / ppd,
+        visual_size=resolution.visual_size_from_shape_ppd(stim["img"].shape, ppd),
         shape=stim["img"].shape,
     )
     return {**stim, **params}
@@ -1287,7 +1302,7 @@ def white_anderson(
     shape = resolve_input(shape)
     visual_size = resolve_input(visual_size)
     c = get_conversion_2d(SHAPES["white_anderson"], shape, visual_size, ppd)
-    shape, visual_size, ppd = resolve(None, np.array(SHAPES["white_anderson"]) * c, ppd)
+    shape, visual_size, ppd = resolution.resolve(None, np.array(SHAPES["white_anderson"]) * c, ppd)
     ppd = ppd[0]
 
     params = {
@@ -1316,10 +1331,10 @@ def white_anderson(
         stim["mask"] = pad_by_visual_size(stim["mask"], padding, ppd=ppd, pad_value=0)
         params["padding"] = padding
 
-    original_shape_np = np.array(SHAPES["white_anderson"])
-    original_visual_np = np.array(original_shape_np) / PPD
-    original_shape = original_shape_np + 20
-    original_visual_size = original_shape / PPD
+    original_shape_np = SHAPES["white_anderson"]
+    original_visual_np = resolution.visual_size_from_shape_ppd(original_shape_np, PPD)
+    original_shape = np.array(original_shape_np) + 20
+    original_visual_size = resolution.visual_size_from_shape_ppd(original_shape, PPD)
     params.update(
         original_shape=original_shape,
         original_ppd=PPD,
@@ -1328,7 +1343,7 @@ def white_anderson(
         original_visual_size_no_padding=original_visual_np,
         original_range=(1, 9),
         intensity_range=(v1, v3),
-        visual_size=np.array(stim["img"].shape) / ppd,
+        visual_size=resolution.visual_size_from_shape_ppd(stim["img"].shape, ppd),
         shape=stim["img"].shape,
     )
     return {**stim, **params}
@@ -1370,7 +1385,7 @@ def white_howe(shape=SHAPES["white_howe"], ppd=PPD, visual_size=VSIZES["white_ho
     shape = resolve_input(shape)
     visual_size = resolve_input(visual_size)
     c = get_conversion_2d(SHAPES["white_howe"], shape, visual_size, ppd)
-    shape, visual_size, ppd = resolve(None, np.array(SHAPES["white_howe"]) * c, ppd)
+    shape, visual_size, ppd = resolution.resolve(None, np.array(SHAPES["white_howe"]) * c, ppd)
     ppd = ppd[0]
 
     params = {
@@ -1397,10 +1412,10 @@ def white_howe(shape=SHAPES["white_howe"], ppd=PPD, visual_size=VSIZES["white_ho
         stim["mask"] = pad_by_visual_size(stim["mask"], padding, ppd=ppd, pad_value=0)
         params["padding"] = padding
 
-    original_shape_np = np.array(SHAPES["white_howe"])
-    original_visual_np = np.array(original_shape_np) / PPD
-    original_shape = original_shape_np + 20
-    original_visual_size = original_shape / PPD
+    original_shape_np = SHAPES["white_howe"]
+    original_visual_np = resolution.visual_size_from_shape_ppd(original_shape_np, PPD)
+    original_shape = np.array(original_shape_np) + 20
+    original_visual_size = resolution.visual_size_from_shape_ppd(original_shape, PPD)
     params.update(
         original_shape=original_shape,
         original_ppd=PPD,
@@ -1409,7 +1424,7 @@ def white_howe(shape=SHAPES["white_howe"], ppd=PPD, visual_size=VSIZES["white_ho
         original_visual_size_no_padding=original_visual_np,
         original_range=(1, 9),
         intensity_range=(v1, v3),
-        visual_size=np.array(stim["img"].shape) / ppd,
+        visual_size=resolution.visual_size_from_shape_ppd(stim["img"].shape, ppd),
         shape=stim["img"].shape,
     )
     return {**stim, **params}
