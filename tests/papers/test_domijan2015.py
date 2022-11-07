@@ -1,5 +1,6 @@
 import json
 import os.path
+from itertools import product
 
 import numpy as np
 import pytest
@@ -21,9 +22,9 @@ def test_stim(stim_name):
     assert stim["mask"] == loaded[stim_name]["mask"], "masks are different"
 
 
-@pytest.mark.parametrize("stim_name", stimlist)
-def test_ppd(stim_name):
+@pytest.mark.parametrize("stim_name, ppd", product(stimlist, (5, 10, 15, 20)))
+def test_ppd(stim_name, ppd):
     func = getattr(stimuli.papers.domijan2015, stim_name)
 
-    stim = func(ppd=20, shape=None)
-    assert np.all(stim["img"].shape == np.array(stim["original_shape"]) * 2)
+    stim = func(ppd=ppd, shape=None)
+    assert np.all(stim["img"].shape == np.array(stim["original_shape"]) * (ppd / 10))
