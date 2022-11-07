@@ -94,7 +94,7 @@ def circular_white(
         intensities=vdiscs_img,
         shape=(height_px, width_px),
         ppd=ppd,
-        background=intensity_background,
+        background_intensity=intensity_background,
         supersampling=ssf,
     )
     mask = disc_and_rings(
@@ -102,7 +102,7 @@ def circular_white(
         intensities=vdics_mask,
         shape=(height_px, width_px),
         ppd=ppd,
-        background=0,
+        background_intensity=0,
         supersampling=ssf,
     )
     stim["mask"] = mask["img"].astype(int)

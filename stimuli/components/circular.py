@@ -11,7 +11,7 @@ def disc_and_rings(
     shape=None,
     visual_size=None,
     ppd=None,
-    background=0.0,
+    background_intensity=0.0,
     supersampling=5,
 ):
     """
@@ -69,7 +69,7 @@ def disc_and_rings(
     super_shape = (shape[0] * supersampling, shape[1] * supersampling)
 
     # Create image array
-    img = np.ones(super_shape) * background
+    img = np.ones(super_shape) * background_intensity
 
     # Compute distance from center of array for every pixel, cap at 1.0
     x = np.linspace(-img.shape[1] / 2.0, img.shape[1] / 2.0, img.shape[1])
