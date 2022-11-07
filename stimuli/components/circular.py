@@ -32,9 +32,9 @@ def resolve_circular_params(
     Parameters
     ----------
     shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] in pixels
+        shape [height, width] of image, in pixels
     visual_size : Sequence[Number, Number], Number, or None (default)
-        visual size [height, width] in degrees
+        visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
     frequency : Number, or None (default)
@@ -119,9 +119,9 @@ def disc_and_rings(
         intensity value for each ring, from inside to out.
         If fewer intensities are passed than number of radii, cycles through intensities
     shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] in pixels
+        shape [height, width] of image, in pixels
     visual_size : Sequence[Number, Number], Number, or None (default)
-        visual size [height, width] in degrees
+        visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
     background_intensity : float (optional)
@@ -221,20 +221,20 @@ def disc(
 
     Parameters
     ----------
-    radii : Sequence[Number]
-        outer radii of rings (& disc) in degree visual angle
+    radius : Number
+        outer radius of disc in degree visual angle
     intensity : Number
         intensity value of disc, by default 1.0
     shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] in pixels
+        shape [height, width] of image, in pixels
     visual_size : Sequence[Number, Number], Number, or None (default)
-        visual size [height, width] in degrees
+        visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
     background : float (optional)
         value of background, by default 0.0
     supersampling : int (optional)
-        supersampling-factor used for anti-aliasing, by default 5.
+        supersampling-factor used for anti-aliasing, by default 5
 
     Returns
     -------
@@ -272,7 +272,38 @@ def ring(
     background_intensity=0.0,
     supersampling=5,
 ):
+    """Draw a ring (annulus)
 
+    Parameters
+    ----------
+    radii : Sequence[Number, Number]
+        inner and outer radius of ring in degree visual angle
+    intensity : Number
+        intensity value of ring, by default 1.0
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    background : float (optional)
+        value of background, by default 0.0
+    supersampling : int (optional)
+        supersampling-factor used for anti-aliasing, by default 5
+
+    Returns
+    -------
+    dict[str, Any]
+        dict with the stimulus (key: "img")
+        and additional keys containing stimulus parameters
+
+    Raises
+    ------
+    ValueError
+        if passed in less/more than 2 radii (inner, outer)
+    ValueError
+        if passed in less/more than 1 intensity
+    """
     intensity = [intensity]
 
     if len(radii) != 2:
