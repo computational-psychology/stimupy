@@ -1,5 +1,6 @@
 import numpy as np
-from stimuli.utils import degrees_to_pixels, resize_array
+
+from stimuli.utils import resize_array, resolution
 
 
 def disc_and_rings(
@@ -36,8 +37,23 @@ def disc_and_rings(
     A 2d-array with disc and rings
     """
 
+    # Check visual_size
+    if visual_size is not None:
+        if visual_size < np.max(radii):
+            raise ValueError(
+                f"Largest radius {np.max(radii)} does not fit in visual size {visual_size}"
+            )
+    else:
+        visual_size = 2 * np.max(radii)
+
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape, visual_size, ppd)
+
     # Convert radii to pixels
-    radii_px = degrees_to_pixels(radii, ppd)
+    radii_px = []
+    for radius in radii:
+        radius_px, _, _ = resolution.resolve_1D(length=None, visual_angle=radius, ppd=ppd[0])
+        radii_px.append(radius_px)
 
     # Create stimulus at 5 times size to allow for supersampling antialiasing
     if shape is None:
