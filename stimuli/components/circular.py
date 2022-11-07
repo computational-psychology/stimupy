@@ -14,15 +14,15 @@ def disc_and_rings(
     background_intensity=0.0,
     supersampling=5,
 ):
-    """
-    Draw a central solid disc with one or more solid rings (annuli)
+    """Draw a central solid disc with zero or more solid rings (annuli)
 
     Parameters
     ----------
     radii : Sequence[Number]
         outer radii of rings (& disc) in degree visual angle
-    intensities : Sequence[Number]
-        intensity values of (disc &) rings
+    intensities : Sequence[Number, ...]
+        intensity value for each ring, from inside to out.
+        If fewer intensities are passed than number of radii, cycles through intensities
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] in pixels
     visual_size : Sequence[Number, Number], Number, or None (default)
@@ -30,9 +30,9 @@ def disc_and_rings(
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
     background : float (optional)
-        value of background. Default is 0.0
+        value of background, by defaul 0.0
     supersampling : int (optional)
-        supersampling-factor used for anti-aliasing. Default is 5.
+        supersampling-factor used for anti-aliasing, by default 5
 
     Returns
     -------
@@ -42,16 +42,33 @@ def disc_and_rings(
     """
 
     # Check visual_size
-    if visual_size is not None:
-        if visual_size < np.max(radii):
-            raise ValueError(
-                f"Largest radius {np.max(radii)} does not fit in visual size {visual_size}"
-            )
+    visual_size = resolution.validate_visual_size(visual_size)
+    if visual_size.height is None:
+        if visual_size.width is not None:
+            visual_height = visual_size.width
+        else:
+            visual_height = np.max(radii) * 2
+    elif visual_size.height < np.max(radii) * 2:
+        raise ValueError(
+            f"Largest radius {np.max(radii)} does not fit in visual size {visual_size}"
+        )
     else:
-        visual_size = 2 * np.max(radii)
+        visual_height = visual_size.height
+
+    if visual_size.width is None:
+        if visual_size.height is not None:
+            visual_width = visual_size.height
+        else:
+            visual_width = np.max(radii) * 2
+    elif visual_size.width < np.max(radii) * 2:
+        raise ValueError(
+            f"Largest radius {np.max(radii)} does not fit in visual size {visual_size}"
+        )
+    else:
+        visual_width = visual_size.width
 
     # Resolve resolution
-    shape, visual_size, ppd = resolution.resolve(shape, visual_size, ppd)
+    shape, visual_size, ppd = resolution.resolve(shape, (visual_height, visual_width), ppd)
 
     # Convert radii to pixels
     radii = np.unique(radii)
@@ -97,41 +114,87 @@ def disc_and_rings(
 
 
 def disc(
-    ppd=20,
-    radius=3,
-    vback=0.0,
-    vdisc=1.0,
-    ssf=5,
+    radius,
+    intensity=1.0,
+    shape=None,
+    visual_size=None,
+    ppd=None,
+    background_intensity=0.0,
+    supersampling=5,
 ):
-    """
-    Create a central disc
+    """Draw a central disc
 
     Parameters
     ----------
-    ppd : int
-        pixels per degree (visual angle)
-    radius : float
-        radius of disc in degree visual angle
-    vback : float
-        value of background
-    vdisc : float
-        value of disc
-    ssf : int (optional)
-          the supersampling-factor used for anti-aliasing. Default is 5.
+    radii : Sequence[Number]
+        outer radii of rings (& disc) in degree visual angle
+    intensity : Number
+        intensity value of disc, by default 1.0
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] in pixels
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    background : float (optional)
+        value of background, by default 0.0
+    supersampling : int (optional)
+        supersampling-factor used for anti-aliasing, by default 5.
 
     Returns
     -------
-    A 2d-array with a disc
+    dict[str, Any]
+        dict with the stimulus (key: "img")
+        and additional keys containing stimulus parameters
     """
+
     radius = [radius]
-    vdisc = [vdisc]
+    intensity = [intensity]
 
-    if len(radius) > 1:
-        raise ValueError("Too many radii passed")
-    if len(vdisc) > 1:
-        raise ValueError("Too many values for discs passed")
+    if len(radius) != 1:
+        raise ValueError("Can only pass 1 radius")
+    if len(intensity) != 1:
+        raise ValueError("Can only pass 1 intensity")
 
-    img = disc_and_rings(
-        radii=radius, intensities=vdisc, ppd=ppd, background=vback, supersampling=ssf
+    stim = disc_and_rings(
+        radii=radius,
+        intensities=intensity,
+        shape=shape,
+        visual_size=visual_size,
+        ppd=ppd,
+        background_intensity=background_intensity,
+        supersampling=supersampling,
     )
-    return img
+    return stim
+
+
+def ring(
+    radii,
+    intensity=1.0,
+    shape=None,
+    visual_size=None,
+    ppd=None,
+    background_intensity=0.0,
+    supersampling=5,
+):
+
+    intensity = [intensity]
+
+    if len(radii) != 2:
+        raise ValueError("Can only pass exactly 2 radii")
+    if len(intensity) != 1:
+        raise ValueError("Can only pass 1 intensity")
+
+    stim = disc_and_rings(
+        radii=radii,
+        intensities=[background_intensity, intensity],
+        shape=shape,
+        visual_size=visual_size,
+        ppd=ppd,
+        background_intensity=background_intensity,
+        supersampling=supersampling,
+    )
+    return stim
+
+
+annulus = ring
