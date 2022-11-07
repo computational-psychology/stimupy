@@ -258,7 +258,7 @@ def dungeon(shape=SHAPES["dungeon"], ppd=PPD, visual_size=VSIZES["dungeon"]):
     params.update(
         original_shape=SHAPES["dungeon"],
         original_ppd=PPD,
-        original_visual_size=resolution.visual_size_from_shape_ppd(SHAPES["dungeon"], PPD),
+        original_visual_size=VSIZES["dungeon"],
         original_range=(1, 9),
         intensity_range=(v1, v3),
         visual_size=resolution.visual_size_from_shape_ppd(img.shape, ppd),
@@ -347,7 +347,7 @@ def cube(shape=SHAPES["cube"], ppd=PPD, visual_size=VSIZES["cube"]):
     params.update(
         original_shape=SHAPES["cube"],
         original_ppd=PPD,
-        original_visual_size=resolution.visual_size_from_shape_ppd(SHAPES["cube"], PPD),
+        original_visual_size=VSIZES["cube"],
         original_range=(1, 9),
         intensity_range=(v1, v3),
         visual_size=resolution.visual_size_from_shape_ppd(img.shape, ppd),
@@ -429,7 +429,7 @@ def grating(shape=SHAPES["grating"], ppd=PPD, visual_size=VSIZES["grating"]):
     params.update(
         original_shape=SHAPES["grating"],
         original_ppd=PPD,
-        original_visual_size=resolution.visual_size_from_shape_ppd(SHAPES["grating"], PPD),
+        original_visual_size=VSIZES["grating"],
         original_range=(1, 9),
         intensity_range=(v1, v3),
         visual_size=resolution.visual_size_from_shape_ppd(img.shape, ppd),
@@ -510,7 +510,7 @@ def rings(shape=SHAPES["rings"], ppd=PPD, visual_size=VSIZES["rings"]):
     params.update(
         original_shape=SHAPES["rings"],
         original_ppd=PPD,
-        original_visual_size=resolution.visual_size_from_shape_ppd(SHAPES["rings"], PPD),
+        original_visual_size=VSIZES["rings"],
         original_range=(1, 9),
         intensity_range=(v1, v3),
         visual_size=resolution.visual_size_from_shape_ppd(img.shape, ppd),
@@ -591,7 +591,7 @@ def bullseye(shape=SHAPES["bullseye"], ppd=PPD, visual_size=VSIZES["bullseye"]):
     params.update(
         original_shape=SHAPES["bullseye"],
         original_ppd=PPD,
-        original_visual_size=resolution.visual_size_from_shape_ppd(SHAPES["bullseye"], PPD),
+        original_visual_size=VSIZES["bullseye"],
         original_range=(1, 9),
         intensity_range=(v1, v3),
         visual_size=resolution.visual_size_from_shape_ppd(img.shape, ppd),
@@ -672,9 +672,7 @@ def simultaneous_brightness_contrast(
     params.update(
         original_shape=SHAPES["simultaneous_brightness_contrast"],
         original_ppd=PPD,
-        original_visual_size=resolution.visual_size_from_shape_ppd(
-            SHAPES["simultaneous_brightness_contrast"], PPD
-        ),
+        original_visual_size=VSIZES["simultaneous_brightness_contrast"],
         original_range=(1, 9),
         intensity_range=(v1, v3),
         visual_size=resolution.visual_size_from_shape_ppd(img.shape, ppd),
@@ -744,7 +742,6 @@ def white(shape=SHAPES["white"], ppd=PPD, visual_size=VSIZES["white"], pad=PAD):
         params["padding"] = padding
 
     original_shape_np = SHAPES["white"]
-    original_visual_np = resolution.visual_size_from_shape_ppd(original_shape_np, PPD)
     original_shape = np.array(original_shape_np) + 20
     original_visual_size = resolution.visual_size_from_shape_ppd(original_shape, PPD)
     params.update(
@@ -752,7 +749,7 @@ def white(shape=SHAPES["white"], ppd=PPD, visual_size=VSIZES["white"], pad=PAD):
         original_ppd=PPD,
         original_visual_size=original_visual_size,
         original_shape_no_padding=original_shape_np,
-        original_visual_size_no_padding=original_visual_np,
+        original_visual_size_no_padding=VSIZES["white"],
         original_range=(1, 9),
         intensity_range=(v1, v3),
         visual_size=resolution.visual_size_from_shape_ppd(stim["img"].shape, ppd),
@@ -820,7 +817,7 @@ def benary(shape=SHAPES["benary"], ppd=PPD, visual_size=VSIZES["benary"]):
     params.update(
         original_shape=SHAPES["benary"],
         original_ppd=PPD,
-        original_visual_size=resolution.visual_size_from_shape_ppd(SHAPES["benary"], PPD),
+        original_visual_size=VSIZES["benary"],
         original_range=(1, 9),
         intensity_range=(v1, v3),
         visual_size=resolution.visual_size_from_shape_ppd(stim["img"].shape, ppd),
@@ -899,7 +896,7 @@ def todorovic(shape=SHAPES["todorovic"], ppd=PPD, visual_size=VSIZES["todorovic"
     params.update(
         original_shape=SHAPES["todorovic"],
         original_ppd=PPD,
-        original_visual_size=resolution.visual_size_from_shape_ppd(SHAPES["todorovic"], PPD),
+        original_visual_size=VSIZES["todorovic"],
         original_range=(1, 9),
         intensity_range=(v1, v3),
         visual_size=resolution.visual_size_from_shape_ppd(img.shape, ppd),
@@ -995,7 +992,6 @@ def checkerboard_contrast_contrast(
     img = np.hstack([stim1["img"], img2])
     mask = np.hstack([stim1["mask"], mask2])
 
-    original_visual_np = resolution.visual_size_from_shape_ppd(original_shape_np, PPD)
     original_shape = original_shape_np + np.array((20, 40))
     original_visual_size = resolution.visual_size_from_shape_ppd(original_shape, PPD)
     params.update(
@@ -1003,7 +999,7 @@ def checkerboard_contrast_contrast(
         original_ppd=PPD,
         original_visual_size=original_visual_size,
         original_shape_no_padding=original_shape_np,
-        original_visual_size_no_padding=original_visual_np,
+        original_visual_size_no_padding=VSIZES["checkerboard_contrast_contrast"],
         original_range=(1, 9),
         intensity_range=(v1, v3),
         visual_size=resolution.visual_size_from_shape_ppd(img.shape, ppd),
@@ -1077,7 +1073,6 @@ def checkerboard(
         params["padding"] = padding
 
     original_shape_np = SHAPES["checkerboard"]
-    original_visual_np = resolution.visual_size_from_shape_ppd(original_shape_np, PPD)
     original_shape = np.array(original_shape_np) + 20
     original_visual_size = resolution.visual_size_from_shape_ppd(original_shape, PPD)
     params.update(
@@ -1085,7 +1080,7 @@ def checkerboard(
         original_ppd=PPD,
         original_visual_size=original_visual_size,
         original_shape_no_padding=original_shape_np,
-        original_visual_size_no_padding=original_visual_np,
+        original_visual_size_no_padding=VSIZES["checkerboard"],
         original_range=(1, 9),
         intensity_range=(v1, v3),
         visual_size=resolution.visual_size_from_shape_ppd(stim["img"].shape, ppd),
@@ -1160,7 +1155,6 @@ def checkerboard_extended(
         params["padding"] = padding
 
     original_shape_np = SHAPES["checkerboard_extended"]
-    original_visual_np = resolution.visual_size_from_shape_ppd(original_shape_np, PPD)
     original_shape = np.array(original_shape_np) + 20
     original_visual_size = resolution.visual_size_from_shape_ppd(original_shape, PPD)
     params.update(
@@ -1168,7 +1162,7 @@ def checkerboard_extended(
         original_ppd=PPD,
         original_visual_size=original_visual_size,
         original_shape_no_padding=original_shape_np,
-        original_visual_size_no_padding=original_visual_np,
+        original_visual_size_no_padding=VSIZES["checkerboard_extended"],
         original_range=(1, 9),
         intensity_range=(v1, v3),
         visual_size=resolution.visual_size_from_shape_ppd(stim["img"].shape, ppd),
@@ -1247,7 +1241,6 @@ def white_yazdanbakhsh(
         params["padding"] = padding
 
     original_shape_np = SHAPES["white_yazdanbakhsh"]
-    original_visual_np = resolution.visual_size_from_shape_ppd(original_shape_np, PPD)
     original_shape = np.array(original_shape_np) + 20
     original_visual_size = resolution.visual_size_from_shape_ppd(original_shape, PPD)
     params.update(
@@ -1255,7 +1248,7 @@ def white_yazdanbakhsh(
         original_ppd=PPD,
         original_visual_size=original_visual_size,
         original_shape_no_padding=original_shape_np,
-        original_visual_size_no_padding=original_visual_np,
+        original_visual_size_no_padding=VSIZES["white_yazdanbakhsh"],
         original_range=(1, 9),
         intensity_range=(v1, v3),
         visual_size=resolution.visual_size_from_shape_ppd(stim["img"].shape, ppd),
@@ -1332,7 +1325,6 @@ def white_anderson(
         params["padding"] = padding
 
     original_shape_np = SHAPES["white_anderson"]
-    original_visual_np = resolution.visual_size_from_shape_ppd(original_shape_np, PPD)
     original_shape = np.array(original_shape_np) + 20
     original_visual_size = resolution.visual_size_from_shape_ppd(original_shape, PPD)
     params.update(
@@ -1340,7 +1332,7 @@ def white_anderson(
         original_ppd=PPD,
         original_visual_size=original_visual_size,
         original_shape_no_padding=original_shape_np,
-        original_visual_size_no_padding=original_visual_np,
+        original_visual_size_no_padding=VSIZES["white_anderson"],
         original_range=(1, 9),
         intensity_range=(v1, v3),
         visual_size=resolution.visual_size_from_shape_ppd(stim["img"].shape, ppd),
@@ -1413,7 +1405,6 @@ def white_howe(shape=SHAPES["white_howe"], ppd=PPD, visual_size=VSIZES["white_ho
         params["padding"] = padding
 
     original_shape_np = SHAPES["white_howe"]
-    original_visual_np = resolution.visual_size_from_shape_ppd(original_shape_np, PPD)
     original_shape = np.array(original_shape_np) + 20
     original_visual_size = resolution.visual_size_from_shape_ppd(original_shape, PPD)
     params.update(
@@ -1421,7 +1412,7 @@ def white_howe(shape=SHAPES["white_howe"], ppd=PPD, visual_size=VSIZES["white_ho
         original_ppd=PPD,
         original_visual_size=original_visual_size,
         original_shape_no_padding=original_shape_np,
-        original_visual_size_no_padding=original_visual_np,
+        original_visual_size_no_padding=VSIZES["white_howe"],
         original_range=(1, 9),
         intensity_range=(v1, v3),
         visual_size=resolution.visual_size_from_shape_ppd(stim["img"].shape, ppd),
