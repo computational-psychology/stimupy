@@ -5,6 +5,101 @@ import numpy as np
 from stimuli.utils import resize_array, resolution
 
 
+def resolve_circular_params(
+    shape=None,
+    visual_size=None,
+    ppd=None,
+    frequency=None,
+    n_rings=None,
+    ring_width=None,
+):
+    """Resolve (if possible) spatial parameters for circular grating, i.e., set of rings
+
+    Circular grating / rings component takes the regular resolution parameters
+    (shape, ppd, visual_size). In addition, there has to be an additional specification
+    of the number of rings, and their width. This can be done in two ways:
+    a ring_width (in degrees) and n_rings, and/or by specifying the spatial frequency
+    of a circular grating (in cycles per degree)
+
+    The total shape (in pixels) and visual size (in degrees) has to match the
+    specification of the rings and their widths.
+    Thus, not all 6 parameters have to be specified, as long as the both the resolution
+    and the distribution of rings can be resolved.
+
+    Note: all rings in a grating have the same width -- if more control is required
+    see disc_and_rings
+
+    Parameters
+    ----------
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] in pixels
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    frequency : Number, or None (default)
+        spatial frequency of circular grating, in cycles per degree
+    n_rings : int, or None (default)
+        number of rings
+    ring_width : Number, or None (default)
+        width of a single ring, in degrees
+
+    Returns
+    -------
+    dict[str, Any]
+        dictionary with all six resolution & size parameters resolved.
+    """
+
+    # Try to resolve resolution
+    try:
+        shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
+    except ValueError:
+        ppd = resolution.validate_ppd(ppd)
+        shape = resolution.validate_shape(shape)
+        visual_size = resolution.validate_visual_size(visual_size)
+
+    # Try to resolve number and width(s) of rings
+    # Logic here is that ring_width expresses "degrees per ring",
+    # which we can invert to rings_per_degree, analogous to ppd:
+    # n_rings = rings_per_degree * n_degrees
+    # is analogous to
+    # pix = ppd * n_degrees
+    # Thus we can resolve the number and spacing of rings also as a resolution
+
+    # ring_width = 1 / rings_per_degree = 1 / (2*frequency)
+    if ring_width is None and frequency is not None:
+        ring_width = 1 / (2 * frequency)
+
+    rings_pd = 1 / ring_width if ring_width is not None else None
+    try:
+        min_vis_angle = np.min([i for i in visual_size if i is not None]) / 2
+    except ValueError:
+        min_vis_angle = None
+
+    n_rings, min_vis_angle, rings_pd = resolution.resolve_1D(
+        length=n_rings, visual_angle=min_vis_angle, ppd=rings_pd
+    )
+    min_vis_angle = min_vis_angle * 2
+    ring_width = 1 / rings_pd
+
+    # Now resolve resolution
+    shape, visual_size, ppd = resolution.resolve(
+        shape=shape, visual_size=(min_vis_angle, min_vis_angle), ppd=ppd
+    )
+
+    # Determine radii
+    radii = itertools.accumulate(itertools.repeat(ring_width, n_rings))
+
+    return {
+        "shape": shape,
+        "visual_size": visual_size,
+        "ppd": ppd,
+        "ring_width": ring_width,
+        "n_rings": n_rings,
+        "radii": radii,
+    }
+
+
 def disc_and_rings(
     radii,
     intensities,
@@ -29,8 +124,8 @@ def disc_and_rings(
         visual size [height, width] in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
-    background : float (optional)
-        value of background, by defaul 0.0
+    background_intensity : float (optional)
+        value of background, by default 0.0
     supersampling : int (optional)
         supersampling-factor used for anti-aliasing, by default 5
 
