@@ -37,7 +37,7 @@ facilitation in brightness perception. Frontiers in Human Neuroscience,
 import numpy as np
 
 from stimuli import illusions
-from stimuli.utils import pad_by_visual_size
+from stimuli.utils import pad_by_visual_size, pad_to_shape
 from stimuli.utils.resolution import resolve
 
 # TODO: Add warning when stimulus shape or visual_size is different from what requested!
@@ -486,19 +486,17 @@ def rings(shape=SHAPES["rings"], ppd=PPD, visual_size=VSIZES["rings"]):
     )
 
     # Padding
-    padding = np.array((9.0, 10.0)) * c
-    img1 = pad_by_visual_size(stim1["img"], padding, ppd, v1)
-    mask1 = pad_by_visual_size(stim1["mask"], padding, ppd, 0)
-    img2 = pad_by_visual_size(stim2["img"], padding, ppd, v1)
-    mask2 = pad_by_visual_size(stim2["mask"], padding, ppd, 0)
+    stim1["img"] = pad_to_shape(stim1["img"], shape=np.array(shape) / (1, 2), pad_value=v1)
+    stim1["mask"] = pad_to_shape(stim1["mask"], shape=np.array(shape) / (1, 2), pad_value=0)
+    stim2["img"] = pad_to_shape(stim2["img"], shape=np.array(shape) / (1, 2), pad_value=v1)
+    stim2["mask"] = pad_to_shape(stim2["mask"], shape=np.array(shape) / (1, 2), pad_value=0)
 
     # Increase target index of right stimulus half
-    mask2 = mask2 + 1
-    mask2[mask2 == 1] = 0
+    stim2["mask"] *= 2
 
     # Stacking
-    img = np.hstack([img1, img2])
-    mask = np.hstack([mask1, mask2])
+    img = np.hstack([stim1["img"], stim2["img"]])
+    mask = np.hstack([stim1["mask"], stim2["mask"]])
 
     params.update(
         original_shape=SHAPES["rings"],
@@ -569,19 +567,17 @@ def bullseye(shape=SHAPES["bullseye"], ppd=PPD, visual_size=VSIZES["bullseye"]):
     )
 
     # Padding
-    padding = np.array((9.0, 10.0)) * c
-    img1 = pad_by_visual_size(stim1["img"], padding, ppd, v1)
-    mask1 = pad_by_visual_size(stim1["mask"], padding, ppd, 0)
-    img2 = pad_by_visual_size(stim2["img"], padding, ppd, v1)
-    mask2 = pad_by_visual_size(stim2["mask"], padding, ppd, 0)
+    stim1["img"] = pad_to_shape(stim1["img"], shape=np.array(shape) / (1, 2), pad_value=v1)
+    stim1["mask"] = pad_to_shape(stim1["mask"], shape=np.array(shape) / (1, 2), pad_value=0)
+    stim2["img"] = pad_to_shape(stim2["img"], shape=np.array(shape) / (1, 2), pad_value=v1)
+    stim2["mask"] = pad_to_shape(stim2["mask"], shape=np.array(shape) / (1, 2), pad_value=0)
 
     # Increase target index of right stimulus half
-    mask2 = mask2 + 1
-    mask2[mask2 == 1] = 0
+    stim2["mask"] *= 2
 
     # Stacking
-    img = np.hstack([img1, img2])
-    mask = np.hstack([mask1, mask2])
+    img = np.hstack([stim1["img"], stim2["img"]])
+    mask = np.hstack([stim1["mask"], stim2["mask"]])
 
     params.update(
         original_shape=SHAPES["bullseye"],
@@ -939,14 +935,14 @@ def checkerboard_contrast_contrast(
         9, 93. https://doi.org/10.3389/fnhum.2015.00093
     """
 
+    original_shape_np = np.array(SHAPES["checkerboard_contrast_contrast"])
+
     shape = resolve_input(shape)
     visual_size = resolve_input(visual_size)
     conversion_fac = get_conversion_2d(
         SHAPES["checkerboard_contrast_contrast"], shape, visual_size, ppd
     )
-    shape, visual_size, ppd = resolve(
-        None, np.array(SHAPES["checkerboard_contrast_contrast"]) * conversion_fac, ppd
-    )
+    shape, visual_size, ppd = resolve(None, original_shape_np * conversion_fac, ppd)
     ppd = ppd[0]
 
     params = {
@@ -988,7 +984,6 @@ def checkerboard_contrast_contrast(
     img = np.hstack([stim1["img"], img2])
     mask = np.hstack([stim1["mask"], mask2])
 
-    original_shape_np = np.array(SHAPES["checkerboard_contrast_contrast"])
     original_visual_np = np.array(original_shape_np) / PPD
     original_shape = original_shape_np + np.array((20, 40))
     original_visual_size = original_shape / PPD
