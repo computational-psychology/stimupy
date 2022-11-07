@@ -1,3 +1,4 @@
+import copy
 import itertools
 
 import numpy as np
@@ -88,7 +89,7 @@ def resolve_circular_params(
     )
 
     # Determine radii
-    radii = itertools.accumulate(itertools.repeat(ring_width, n_rings))
+    radii = [*itertools.accumulate(itertools.repeat(ring_width, n_rings))]
 
     return {
         "shape": shape,
@@ -324,3 +325,66 @@ def ring(
 
 
 annulus = ring
+
+
+def circular_grating(
+    shape=None,
+    visual_size=None,
+    ppd=None,
+    frequency=None,
+    n_rings=None,
+    ring_width=None,
+    intensities=[1, 0],
+    background_intensity=0.0,
+    supersampling=5,
+):
+    """Draw a circular grating, i.e., set of rings
+
+    Parameters
+    ----------
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    frequency : Number, or None (default)
+        spatial frequency of circular grating, in cycles per degree
+    n_rings : int, or None (default)
+        number of rings
+    ring_width : Number, or None (default)
+        width of a single ring, in degrees
+    intensities : Sequence[Number, ...]
+        intensity value for each ring, from inside to out, by default [1,0]
+        If fewer intensities are passed than number of radii, cycles through intensities
+    background_intensity : float (optional)
+        intensity value of background, by default 0.0
+    supersampling : int (optional)
+        supersampling-factor used for anti-aliasing, by default 5
+
+    Returns
+    -------
+    dict[str, Any]
+        dict with the stimulus (key: "img")
+        and additional keys containing stimulus parameters
+    """
+
+    # Resolve grating
+    params = resolve_circular_params(shape, visual_size, ppd, frequency, n_rings, ring_width)
+
+    # Clean-up params for passing through
+    stim_params = copy.deepcopy(params)
+    stim_params.pop("n_rings", None)
+    stim_params.pop("ring_width", None)
+    stim_params.pop("frequency", None)
+
+    # Draw stim
+    stim = disc_and_rings(
+        **stim_params,
+        background_intensity=background_intensity,
+        intensities=intensities,
+        supersampling=supersampling,
+    )
+
+    # Assemble output
+    return {**stim, **params}
