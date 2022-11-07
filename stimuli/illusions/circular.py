@@ -89,30 +89,39 @@ def circular_white(
             vdiscs_img.append(intensity_discs[1])
             vdics_mask.append(0)
 
-    img = disc_and_rings(
+    stim = disc_and_rings(
         radii=radii,
         intensities=vdiscs_img,
-        background=intensity_background,
+        shape=(height_px, width_px),
         ppd=ppd,
+        background=intensity_background,
         supersampling=ssf,
     )
     mask = disc_and_rings(
-        radii=radii, intensities=vdics_mask, background=0, ppd=ppd, supersampling=ssf
+        radii=radii,
+        intensities=vdics_mask,
+        shape=(height_px, width_px),
+        ppd=ppd,
+        background=0,
+        supersampling=ssf,
     )
+    stim["mask"] = mask["img"].astype(int)
 
     # Pad to desired size
-    img = pad_to_visual_size(
-        img=img, visual_size=visual_size, ppd=ppd, pad_value=intensity_background
+    stim["img"] = pad_to_visual_size(
+        img=stim["img"], visual_size=visual_size, ppd=ppd, pad_value=intensity_background
     )
-    mask = pad_to_visual_size(img=mask, visual_size=visual_size, ppd=ppd, pad_value=0)
+    stim["mask"] = pad_to_visual_size(
+        img=stim["mask"], visual_size=visual_size, ppd=ppd, pad_value=0
+    )
 
     # Target masks should only cover areas where target intensity is exactly vtarget
-    cond = (img != intensity_target) & (mask != 0)
-    mask[cond] = 0
+    cond = (stim["img"] != intensity_target) & (stim["mask"] != 0)
+    stim["mask"][cond] = 0
 
     params = {
-        "shape": img.shape,
-        "visual_size": np.array(img.shape) / ppd,
+        "shape": stim["img"].shape,
+        "visual_size": np.array(stim["img"].shape) / ppd,
         "ppd": ppd,
         "frequency": frequency,
         "intensity_discs": intensity_discs,
@@ -121,8 +130,9 @@ def circular_white(
         "target_indices": target_indices,
         "ssf": ssf,
     }
+    stim.update(params)
 
-    return {"img": img, "mask": mask.astype(int), **params}
+    return stim
 
 
 def circular_bullseye(

@@ -34,7 +34,9 @@ def disc_and_rings(
 
     Returns
     -------
-    A 2d-array with disc and rings
+    dict[str, Any]
+        dict with the stimulus (key: "img")
+        and additional keys containing stimulus parameters
     """
 
     # Check visual_size
@@ -77,7 +79,16 @@ def disc_and_rings(
     # Downsample the stimulus by local averaging along rows and columns
     sampler = resize_array(np.eye(img.shape[0] // supersampling), (1, supersampling))
     img = np.dot(sampler, np.dot(img, sampler.T)) / supersampling**2
-    return img
+
+    # Assemble output
+    params = {
+        "visual_size": visual_size,
+        "ppd": ppd,
+        "radii": radii,
+        "intensities": intensities,
+        "supersampling": supersampling,
+    }
+    return {"img": img, **params}
 
 
 def disc(
