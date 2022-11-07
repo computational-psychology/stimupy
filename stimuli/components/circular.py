@@ -1,3 +1,5 @@
+import itertools
+
 import numpy as np
 
 from stimuli.utils import resize_array, resolution
@@ -52,10 +54,12 @@ def disc_and_rings(
     shape, visual_size, ppd = resolution.resolve(shape, visual_size, ppd)
 
     # Convert radii to pixels
+    radii = np.unique(radii)
     radii_px = []
     for radius in radii:
         radius_px, _, _ = resolution.resolve_1D(length=None, visual_angle=radius, ppd=ppd[0])
         radii_px.append(radius_px)
+    radii_px = np.sort(radii_px)
 
     # Create stimulus at 5 times size to allow for supersampling antialiasing
     if shape is None:
@@ -73,7 +77,8 @@ def disc_and_rings(
     distances = np.sqrt(x[np.newaxis, :] ** 2 + y[:, np.newaxis] ** 2)
 
     # Draw rings
-    for radius, intensity in zip(radii_px[::-1] * supersampling, intensities[::-1]):
+    ints = [*itertools.islice(itertools.cycle(intensities), len(radii_px))]
+    for radius, intensity in zip(reversed(radii_px * supersampling), reversed(ints)):
         img[distances < radius] = intensity
 
     # Downsample the stimulus by local averaging along rows and columns
