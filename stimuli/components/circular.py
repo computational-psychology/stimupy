@@ -62,10 +62,10 @@ def disc_and_rings(
         shape = [radii_px.max() * 2, radii_px.max() * 2]
 
     # Supersample shape (in pixels), to allow for antialiasing
-    shape = (shape[0] * supersampling, shape[1] * supersampling)
+    super_shape = (shape[0] * supersampling, shape[1] * supersampling)
 
     # Create image array
-    img = np.ones(shape) * background
+    img = np.ones(super_shape) * background
 
     # Compute distance from center of array for every pixel, cap at 1.0
     x = np.linspace(-img.shape[1] / 2.0, img.shape[1] / 2.0, img.shape[1])
