@@ -990,7 +990,7 @@ def checkerboard_contrast_contrast(
 
     original_shape_np = np.array(SHAPES["checkerboard_contrast_contrast"])
     original_visual_np = np.array(original_shape_np) / PPD
-    original_shape = original_shape_np + 20
+    original_shape = original_shape_np + np.array((20, 40))
     original_visual_size = original_shape / PPD
     params.update(
         original_shape=original_shape,
