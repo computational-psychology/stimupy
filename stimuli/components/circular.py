@@ -107,7 +107,7 @@ def disc_and_rings(
     shape=None,
     visual_size=None,
     ppd=None,
-    background_intensity=0.0,
+    intensity_background=0.0,
     supersampling=5,
 ):
     """Draw a central solid disc with zero or more solid rings (annuli)
@@ -125,7 +125,7 @@ def disc_and_rings(
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
-    background_intensity : float (optional)
+    intensity_background : float (optional)
         value of background, by default 0.0
     supersampling : int (optional)
         supersampling-factor used for anti-aliasing, by default 5
@@ -182,7 +182,7 @@ def disc_and_rings(
     super_shape = (shape[0] * supersampling, shape[1] * supersampling)
 
     # Create image array
-    img = np.ones(super_shape) * background_intensity
+    img = np.ones(super_shape) * intensity_background
 
     # Compute distance from center of array for every pixel, cap at 1.0
     x = np.linspace(-img.shape[1] / 2.0, img.shape[1] / 2.0, img.shape[1])
@@ -215,7 +215,7 @@ def disc(
     shape=None,
     visual_size=None,
     ppd=None,
-    background_intensity=0.0,
+    intensity_background=0.0,
     supersampling=5,
 ):
     """Draw a central disc
@@ -258,7 +258,7 @@ def disc(
         shape=shape,
         visual_size=visual_size,
         ppd=ppd,
-        background_intensity=background_intensity,
+        intensity_background=intensity_background,
         supersampling=supersampling,
     )
     return stim
@@ -270,7 +270,7 @@ def ring(
     shape=None,
     visual_size=None,
     ppd=None,
-    background_intensity=0.0,
+    intensity_background=0.0,
     supersampling=5,
 ):
     """Draw a ring (annulus)
@@ -287,8 +287,8 @@ def ring(
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
-    background : float (optional)
-        value of background, by default 0.0
+    intensity_background : float (optional)
+        intensity value of background, by default 0.0
     supersampling : int (optional)
         supersampling-factor used for anti-aliasing, by default 5
 
@@ -314,11 +314,11 @@ def ring(
 
     stim = disc_and_rings(
         radii=radii,
-        intensities=[background_intensity, intensity],
+        intensities=[intensity_background, intensity],
         shape=shape,
         visual_size=visual_size,
         ppd=ppd,
-        background_intensity=background_intensity,
+        intensity_background=intensity_background,
         supersampling=supersampling,
     )
     return stim
@@ -335,7 +335,7 @@ def circular_grating(
     n_rings=None,
     ring_width=None,
     intensities=[1, 0],
-    background_intensity=0.0,
+    intensity_background=0.0,
     supersampling=5,
 ):
     """Draw a circular grating, i.e., set of rings
@@ -357,7 +357,7 @@ def circular_grating(
     intensities : Sequence[Number, ...]
         intensity value for each ring, from inside to out, by default [1,0]
         If fewer intensities are passed than number of radii, cycles through intensities
-    background_intensity : float (optional)
+    intensity_background : float (optional)
         intensity value of background, by default 0.0
     supersampling : int (optional)
         supersampling-factor used for anti-aliasing, by default 5
@@ -381,7 +381,7 @@ def circular_grating(
     # Draw stim
     stim = disc_and_rings(
         **stim_params,
-        background_intensity=background_intensity,
+        intensity_background=intensity_background,
         intensities=intensities,
         supersampling=supersampling,
     )
