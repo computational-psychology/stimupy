@@ -119,7 +119,7 @@ def gen_all(ppd=PPD, skip=False):
         # Get a reference to the actual function
         func = globals()[stim_name]
         try:
-            stim = func()
+            stim = func(ppd=ppd)
 
             # Accumulate
             stims[stim_name] = stim
@@ -180,27 +180,21 @@ def resolve(shape, visual_size, ppd, original_visual_size):
     return shape, visual_size, ppd, visual_resize
 
 
-def dungeon(shape=SHAPES["dungeon"], ppd=PPD, visual_size=VSIZES["dungeon"]):
+def dungeon(shape=SHAPES["dungeon"], visual_size=VSIZES["dungeon"], ppd=PPD):
     """Dungeon illusion, Domijan (2015) Fig 6A
 
     Parameters
     ----------
-    shape : None, int or (int/None, int/None)
-        Stimulus shape in deg, (height, width), default: (110, 220)
-        If None, will infer shape from ppd and visual size.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
-    ppd : int
-        Resolution of stimulus in pixels per degree. (default: 10)
-    visual_size : None, int or (int/None, int/None)
-        Stimulus size in degree, (height, width), default: (11, 22)
-        If None, will infer size from shape and ppd.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
+    shape : Sequence[Number, Number], Number, or None
+        shape [height, width] in pixels, default: (110, 220)
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: 10
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: (11, 22)
 
     Returns
     -------
-    dict of str
+    dict[str, Any]
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
 
@@ -261,27 +255,21 @@ def dungeon(shape=SHAPES["dungeon"], ppd=PPD, visual_size=VSIZES["dungeon"]):
     return {"img": img, "mask": mask, **params}
 
 
-def cube(shape=SHAPES["cube"], ppd=PPD, visual_size=VSIZES["cube"]):
+def cube(shape=SHAPES["cube"], visual_size=VSIZES["cube"], ppd=PPD):
     """Cube illusion, Domijan (2015) Fig 6B
 
     Parameters
     ----------
-    shape : None, int or (int/None, int/None)
-        Stimulus shape in deg, (height, width), default: (100, 200)
-        If None, will infer shape from ppd and visual size.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
-    ppd : int
-        Resolution of stimulus in pixels per degree. (default: 10)
-    visual_size : None, int or (int/None, int/None)
-        Stimulus size in degree, (height, width), default: (10, 20)
-        If None, will infer size from shape and ppd.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
+    shape : Sequence[Number, Number], Number, or None
+        shape [height, width] in pixels, default: (100, 200)
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: 10
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: (10, 20)
 
     Returns
     -------
-    dict of str
+    dict[str, Any]
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
 
@@ -347,27 +335,21 @@ def cube(shape=SHAPES["cube"], ppd=PPD, visual_size=VSIZES["cube"]):
     return {"img": img, "mask": mask, **params}
 
 
-def grating(shape=SHAPES["grating"], ppd=PPD, visual_size=VSIZES["grating"]):
+def grating(shape=SHAPES["grating"], visual_size=VSIZES["grating"], ppd=PPD):
     """Grating illusion, Domijan (2015) Fig 6C
 
     Parameters
     ----------
-    shape : None, int or (int/None, int/None)
-        Stimulus shape in deg, (height, width), default: (100, 220)
-        If None, will infer shape from ppd and visual size.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
-    ppd : int
-        Resolution of stimulus in pixels per degree. (default: 10)
-    visual_size : None, int or (int/None, int/None)
-        Stimulus size in degree, (height, width), default: (10, 22)
-        If None, will infer size from shape and ppd.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
+    shape : Sequence[Number, Number], Number, or None
+        shape [height, width] in pixels, default: (100, 220)
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: 10
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: (10, 22)
 
     Returns
     -------
-    dict of str
+    dict[str, Any]
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
 
@@ -426,27 +408,21 @@ def grating(shape=SHAPES["grating"], ppd=PPD, visual_size=VSIZES["grating"]):
     return {"img": img, "mask": mask, **params}
 
 
-def rings(shape=SHAPES["rings"], ppd=PPD, visual_size=VSIZES["rings"]):
+def rings(shape=SHAPES["rings"], visual_size=VSIZES["rings"], ppd=PPD):
     """Ring patterns, Domijan (2015) Fig 7A
 
     Parameters
     ----------
-    shape : None, int or (int/None, int/None)
-        Stimulus shape in deg, (height, width), default: (100, 200)
-        If None, will infer shape from ppd and visual size.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
-    ppd : int
-        Resolution of stimulus in pixels per degree. (default: 10)
-    visual_size : None, int or (int/None, int/None)
-        Stimulus size in degree, (height, width), default: (10, 20)
-        If None, will infer size from shape and ppd.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
+    shape : Sequence[Number, Number], Number, or None
+        shape [height, width] in pixels, default: (100, 200)
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: 10
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: (10, 20)
 
     Returns
     -------
-    dict of str
+    dict[str, Any]
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
 
@@ -507,27 +483,21 @@ def rings(shape=SHAPES["rings"], ppd=PPD, visual_size=VSIZES["rings"]):
     return {"img": img, "mask": mask, **params}
 
 
-def bullseye(shape=SHAPES["bullseye"], ppd=PPD, visual_size=VSIZES["bullseye"]):
+def bullseye(shape=SHAPES["bullseye"], visual_size=VSIZES["bullseye"], ppd=PPD):
     """Bullseye illusion, Domijan (2015) Fig 7B
 
     Parameters
     ----------
-    shape : None, int or (int/None, int/None)
-        Stimulus shape in deg, (height, width), default: (100, 200)
-        If None, will infer shape from ppd and visual size.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
-    ppd : int
-        Resolution of stimulus in pixels per degree. (default: 10)
-    visual_size : None, int or (int/None, int/None)
-        Stimulus size in degree, (height, width), default: (10, 20)
-        If None, will infer size from shape and ppd.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
+    shape : Sequence[Number, Number], Number, or None
+        shape [height, width] in pixels, default: (100, 200)
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: 10
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: (10, 20)
 
     Returns
     -------
-    dict of str
+    dict[str, Any]
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
 
@@ -586,29 +556,23 @@ def bullseye(shape=SHAPES["bullseye"], ppd=PPD, visual_size=VSIZES["bullseye"]):
 
 def simultaneous_brightness_contrast(
     shape=SHAPES["simultaneous_brightness_contrast"],
-    ppd=PPD,
     visual_size=VSIZES["simultaneous_brightness_contrast"],
+    ppd=PPD,
 ):
     """Simultaneous brightness contrast, Domijan (2015) Fig 7C
 
     Parameters
     ----------
-    shape : None, int or (int/None, int/None)
-        Stimulus shape in deg, (height, width), default: (100, 200)
-        If None, will infer shape from ppd and visual size.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
-    ppd : int
-        Resolution of stimulus in pixels per degree. (default: 10)
-    visual_size : None, int or (int/None, int/None)
-        Stimulus size in degree, (height, width), default: (10, 20)
-        If None, will infer size from shape and ppd.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
+    shape : Sequence[Number, Number], Number, or None
+        shape [height, width] in pixels, default: (100, 200)
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: 10
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: (10, 20)
 
     Returns
     -------
-    dict of str
+    dict[str, Any]
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
 
@@ -662,29 +626,23 @@ def simultaneous_brightness_contrast(
     return {"img": img, "mask": mask, **params}
 
 
-def white(shape=SHAPES["white"], ppd=PPD, visual_size=VSIZES["white"], pad=PAD):
+def white(shape=SHAPES["white"], visual_size=VSIZES["white"], ppd=PPD, pad=PAD):
     """White stimulus, Domijan (2015) Fig 8A
 
     Parameters
     ----------
-    shape : None, int or (int/None, int/None)
-        Stimulus shape in deg, (height, width), default: (80, 80)
-        If None, will infer shape from ppd and visual size.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
-    ppd : int
-        Resolution of stimulus in pixels per degree. (default: 10)
-    visual_size : None, int or (int/None, int/None)
-        Stimulus size in degree, (height, width), default: (80, 80)
-        If None, will infer size from shape and ppd.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
+    shape : Sequence[Number, Number], Number, or None
+        shape [height, width] in pixels, default: (80, 80)
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: 10
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: (8, 8)
     pad : bool
         If True, include original padding (default: False)
 
     Returns
     -------
-    dict of str
+    dict[str, Any]
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
 
@@ -737,27 +695,21 @@ def white(shape=SHAPES["white"], ppd=PPD, visual_size=VSIZES["white"], pad=PAD):
     return {**stim, **params}
 
 
-def benary(shape=SHAPES["benary"], ppd=PPD, visual_size=VSIZES["benary"]):
+def benary(shape=SHAPES["benary"], visual_size=VSIZES["benary"], ppd=PPD):
     """Benarys cross, Domijan (2015) Fig 8B
 
     Parameters
     ----------
-    shape : None, int or (int/None, int/None)
-        Stimulus shape in deg, (height, width), default: (100, 100)
-        If None, will infer shape from ppd and visual size.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
-    ppd : int
-        Resolution of stimulus in pixels per degree. (default: 10)
-    visual_size : None, int or (int/None, int/None)
-        Stimulus size in degree, (height, width), default: (10, 10)
-        If None, will infer size from shape and ppd.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
+    shape : Sequence[Number, Number], Number, or None
+        shape [height, width] in pixels, default: (100, 100)
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: 10
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: (10, 10)
 
     Returns
     -------
-    dict of str
+    dict[str, Any]
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
 
@@ -803,27 +755,21 @@ def benary(shape=SHAPES["benary"], ppd=PPD, visual_size=VSIZES["benary"]):
     return {**stim, **params}
 
 
-def todorovic(shape=SHAPES["todorovic"], ppd=PPD, visual_size=VSIZES["todorovic"]):
+def todorovic(shape=SHAPES["todorovic"], visual_size=VSIZES["todorovic"], ppd=PPD):
     """Todorovic stimulus, Domijan (2015) Fig 9A
 
     Parameters
     ----------
-    shape : None, int or (int/None, int/None)
-        Stimulus shape in deg, (height, width), default: (100, 200)
-        If None, will infer shape from ppd and visual size.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
-    ppd : int
-        Resolution of stimulus in pixels per degree. (default: 10)
-    visual_size : None, int or (int/None, int/None)
-        Stimulus size in degree, (height, width), default: (10, 20)
-        If None, will infer size from shape and ppd.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
+    shape : Sequence[Number, Number], Number, or None
+        shape [height, width] in pixels, default: (100, 200)
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: 10
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: (10, 20)
 
     Returns
     -------
-    dict of str
+    dict[str, Any]
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
 
@@ -881,32 +827,26 @@ def todorovic(shape=SHAPES["todorovic"], ppd=PPD, visual_size=VSIZES["todorovic"
 
 def checkerboard_contrast_contrast(
     shape=SHAPES["checkerboard_contrast_contrast"],
-    ppd=PPD,
     visual_size=VSIZES["checkerboard_contrast_contrast"],
+    ppd=PPD,
     pad=PAD,
 ):
     """Checkerboard contrast-contrast effect, Domijan (2015) Fig 9B
 
     Parameters
     ----------
-    shape : None, int or (int/None, int/None)
-        Stimulus shape in deg, (height, width), default: (80, 160)
-        If None, will infer shape from ppd and visual size.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
-    ppd : int
-        Resolution of stimulus in pixels per degree. (default: 10)
-    visual_size : None, int or (int/None, int/None)
-        Stimulus size in degree, (height, width), default: (8, 16)
-        If None, will infer size from shape and ppd.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
+    shape : Sequence[Number, Number], Number, or None
+        shape [height, width] in pixels, default: (80, 160)
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: 10
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: (8, 16)
     pad : bool
         If True, include original padding (default: False)
 
     Returns
     -------
-    dict of str
+    dict[str, Any]
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
 
@@ -986,30 +926,24 @@ def checkerboard_contrast_contrast(
 
 
 def checkerboard(
-    shape=SHAPES["checkerboard"], ppd=PPD, visual_size=VSIZES["checkerboard"], pad=PAD
+    shape=SHAPES["checkerboard"], visual_size=VSIZES["checkerboard"], ppd=PPD, pad=PAD
 ):
     """Classic checkerboard contrast with single-check targets, Domijan (2015) Fig 10A
 
     Parameters
     ----------
-    shape : None, int or (int/None, int/None)
-        Stimulus shape in deg, (height, width), default: (80, 80)
-        If None, will infer shape from ppd and visual size.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
-    ppd : int
-        Resolution of stimulus in pixels per degree. (default: 10)
-    visual_size : None, int or (int/None, int/None)
-        Stimulus size in degree, (height, width), default: (8, 8)
-        If None, will infer size from shape and ppd.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
+    shape : Sequence[Number, Number], Number, or None
+        shape [height, width] in pixels, default: (80, 80)
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: 10
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: (8, 8)
     pad : bool
         If True, include original padding (default: False)
 
     Returns
     -------
-    dict of str
+    dict[str, Any]
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
 
@@ -1063,32 +997,26 @@ def checkerboard(
 
 def checkerboard_extended(
     shape=SHAPES["checkerboard_extended"],
-    ppd=PPD,
     visual_size=VSIZES["checkerboard_extended"],
+    ppd=PPD,
     pad=PAD,
 ):
     """Checkerboard contrast with cross-like targets, Domijan (2015) Fig 10B
 
     Parameters
     ----------
-    shape : None, int or (int/None, int/None)
-        Stimulus shape in deg, (height, width), default: (80, 80)
-        If None, will infer shape from ppd and visual size.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
-    ppd : int
-        Resolution of stimulus in pixels per degree. (default: 10)
-    visual_size : None, int or (int/None, int/None)
-        Stimulus size in degree, (height, width), default: (8, 8)
-        If None, will infer size from shape and ppd.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
+    shape : Sequence[Number, Number], Number, or None
+        shape [height, width] in pixels, default: (80, 80)
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: 10
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: (8, 8)
     pad : bool
         If True, include original padding (default: False)
 
     Returns
     -------
-    dict of str
+    dict[str, Any]
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
 
@@ -1141,30 +1069,24 @@ def checkerboard_extended(
 
 
 def white_yazdanbakhsh(
-    shape=SHAPES["white_yazdanbakhsh"], ppd=PPD, visual_size=VSIZES["white_yazdanbakhsh"], pad=PAD
+    shape=SHAPES["white_yazdanbakhsh"], visual_size=VSIZES["white_yazdanbakhsh"], ppd=PPD, pad=PAD
 ):
     """Yazdanbakhsh variation of White stimulus, Domijan (2015) Fig 11A
 
     Parameters
     ----------
-    shape : None, int or (int/None, int/None)
-        Stimulus shape in deg, (height, width), default: (80, 80)
-        If None, will infer shape from ppd and visual size.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
-    ppd : int
-        Resolution of stimulus in pixels per degree. (default: 10)
-    visual_size : None, int or (int/None, int/None)
-        Stimulus size in degree, (height, width), default: (8, 8)
-        If None, will infer size from shape and ppd.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
+    shape : Sequence[Number, Number], Number, or None
+        shape [height, width] in pixels, default: (80, 80)
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: 10
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: (8, 8)
     pad : bool
         If True, include original padding (default: False)
 
     Returns
     -------
-    dict of str
+    dict[str, Any]
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
 
@@ -1224,30 +1146,24 @@ def white_yazdanbakhsh(
 
 
 def white_anderson(
-    shape=SHAPES["white_anderson"], ppd=PPD, visual_size=VSIZES["white_anderson"], pad=PAD
+    shape=SHAPES["white_anderson"], visual_size=VSIZES["white_anderson"], ppd=PPD, pad=PAD
 ):
     """Anderson variation of White stimulus, Domijan (2015) Fig 11B
 
     Parameters
     ----------
-    shape : None, int or (int/None, int/None)
-        Stimulus shape in deg, (height, width), default: (100, 100)
-        If None, will infer shape from ppd and visual size.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
-    ppd : int
-        Resolution of stimulus in pixels per degree. (default: 10)
-    visual_size : None, int or (int/None, int/None)
-        Stimulus size in degree, (height, width), default: (10, 10)
-        If None, will infer size from shape and ppd.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
+    shape : Sequence[Number, Number], Number, or None
+        shape [height, width] in pixels, default: (100, 100)
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: 10
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: (10, 10)
     pad : bool
         If True, include original padding (default: False)
 
     Returns
     -------
-    dict of str
+    dict[str, Any]
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
 
@@ -1307,29 +1223,23 @@ def white_anderson(
     return {**stim, **params}
 
 
-def white_howe(shape=SHAPES["white_howe"], ppd=PPD, visual_size=VSIZES["white_howe"], pad=PAD):
+def white_howe(shape=SHAPES["white_howe"], visual_size=VSIZES["white_howe"], ppd=PPD, pad=PAD):
     """Howe variation of White stimulus, Domijan (2015) Fig 11C
 
     Parameters
     ----------
-    shape : None, int or (int/None, int/None)
-        Stimulus shape in deg, (height, width), default: (100, 100)
-        If None, will infer shape from ppd and visual size.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
-    ppd : int
-        Resolution of stimulus in pixels per degree. (default: 10)
-    visual_size : None, int or (int/None, int/None)
-        Stimulus size in degree, (height, width), default: (10, 10)
-        If None, will infer size from shape and ppd.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
+    shape : Sequence[Number, Number], Number, or None
+        shape [height, width] in pixels, default: (100, 100)
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: 10
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: (10, 10)
     pad : bool
         If True, include original padding (default: False)
 
     Returns
     -------
-    dict of str
+    dict[str, Any]
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
 
