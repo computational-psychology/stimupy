@@ -22,9 +22,11 @@ def test_stim(stim_name):
     assert stim["mask"] == loaded[stim_name]["mask"], "masks are different"
 
 
-@pytest.mark.parametrize("stim_name, ppd", product(stimlist, (5, 10, 15, 20)))
+@pytest.mark.parametrize("stim_name, ppd", product(stimlist, (8, 10, 12, 13, 15, 20)))
 def test_ppd(stim_name, ppd):
     func = getattr(stimuli.papers.domijan2015, stim_name)
 
     stim = func(ppd=ppd, shape=None)
-    assert np.all(stim["img"].shape == np.array(stim["original_shape"]) * (ppd / 10))
+    reshape = ppd / stimuli.papers.domijan2015.PPD
+    target_shape = np.array(stim["original_shape"]) * reshape
+    assert np.allclose(target_shape, stim["img"].shape, rtol=1, atol=(2 * (reshape % 1)))
