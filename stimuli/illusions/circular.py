@@ -11,6 +11,8 @@ def circular_white(
     visual_size=None,
     ppd=None,
     frequency=None,
+    n_rings=None,
+    ring_width=None,
     target_indices=None,
     intensity_target=0.5,
     intensity_rings=[1.0, 0.0],
@@ -20,6 +22,19 @@ def circular_white(
 ):
     """Circular grating, with one or more target rings
 
+    Specification of the number of rings, and their width can be done in two ways:
+    a ring_width (in degrees) and n_rings, and/or by specifying the spatial frequency
+    of a circular grating (in cycles per degree)
+
+    The total shape (in pixels) and visual size (in degrees) has to match the
+    specification of the rings and their widths.
+    Thus, not all 6 parameters (visual_size, ppd, shape, frequency, ring_width, n_rings)
+    have to be specified, as long as both the resolution, and the distribution of rings,
+    can be resolved.
+
+    Note: all rings in a grating have the same width -- if more control is required
+    see disc_and_rings
+
     Parameters
     ----------
     visual_size : Sequence[Number, Number], Number, or None (default)
@@ -28,6 +43,10 @@ def circular_white(
         pixels per degree [vertical, horizontal]
     frequency : Number, or None (default)
         spatial frequency of circular grating, in cycles per degree
+    n_rings : int, or None (default)
+        number of rings
+    ring_width : Number, or None (default)
+        width of a single ring, in degrees
     target_indices : int or Sequence[int, ] (optional)
         indices of target discs. If not specified, use middle ring (round down)
     intensity_target : float (optional)
@@ -55,6 +74,8 @@ def circular_white(
         visual_size=visual_size,
         ppd=ppd,
         frequency=frequency,
+        n_rings=n_rings,
+        ring_width=ring_width,
         intensity_background=intensity_background,
         intensities=intensity_rings,
         supersampling=supersampling,
@@ -77,6 +98,8 @@ def circular_white(
         visual_size=visual_size,
         ppd=ppd,
         frequency=frequency,
+        n_rings=n_rings,
+        ring_width=ring_width,
         intensities=intensities,
         intensity_background=intensity_background,
         supersampling=supersampling,
@@ -106,6 +129,8 @@ def circular_bullseye(
     visual_size=None,
     ppd=None,
     frequency=None,
+    n_rings=None,
+    ring_width=None,
     intensity_target=0.5,
     intensity_rings=[1.0, 0.0],
     intensity_background=0.5,
@@ -117,6 +142,19 @@ def circular_bullseye(
     Circular grating, where the target is the central disc.
     Alias for circular_white(target_indices=0,...)
 
+    Specification of the number of rings, and their width can be done in two ways:
+    a ring_width (in degrees) and n_rings, and/or by specifying the spatial frequency
+    of a circular grating (in cycles per degree)
+
+    The total shape (in pixels) and visual size (in degrees) has to match the
+    specification of the rings and their widths.
+    Thus, not all 6 parameters (visual_size, ppd, shape, frequency, ring_width, n_rings)
+    have to be specified, as long as both the resolution, and the distribution of rings,
+    can be resolved.
+
+    Note: all rings in a grating have the same width -- if more control is required
+    see disc_and_rings
+
     Parameters
     ----------
     visual_size : Sequence[Number, Number], Number, or None (default)
@@ -125,6 +163,10 @@ def circular_bullseye(
         pixels per degree [vertical, horizontal]
     frequency : Number, or None (default)
         spatial frequency of circular grating, in cycles per degree
+    n_rings : int, or None (default)
+        number of rings
+    ring_width : Number, or None (default)
+        width of a single ring, in degrees
     intensity_target : float (optional)
         intensity value of target ring(s), by default 0.5
     intensity_rings : Sequence[Number, ...]
@@ -148,6 +190,8 @@ def circular_bullseye(
         visual_size=visual_size,
         ppd=ppd,
         frequency=frequency,
+        n_rings=n_rings,
+        ring_width=ring_width,
         intensity_rings=intensity_rings,
         intensity_background=intensity_background,
         intensity_target=intensity_target,
