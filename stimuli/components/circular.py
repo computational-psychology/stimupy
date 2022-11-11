@@ -113,6 +113,65 @@ def resolve_circular_params(
     }
 
 
+def ring_masks(
+    radii,
+    shape=None,
+    visual_size=None,
+    ppd=None,
+):
+    """Generate mask with integer indices for rings
+
+    Parameters
+    ----------
+    radii : Sequence[Number]
+        outer radii of rings (& disc) in degree visual angle
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+
+    Returns
+    -------
+    dict[str, Any]
+        dict with the mask (key: "mask")
+        and additional keys containing stimulus parameters
+
+    Raises
+    ------
+    ValueError
+        if largest radius does not fit in visual size
+    """
+    # no axes are None; check if fits
+    if visual_size.height < np.max(radii) * 2 or visual_size.width < np.max(radii) * 2:
+        raise ValueError(
+            f"Largest radius {np.max(radii)} does not fit in visual size {visual_size}"
+        )
+
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape, visual_size, ppd)
+
+    # Create image-base: compute visual angle from center for every pixel
+    x = np.linspace(-visual_size.width / 2.0, visual_size.width / 2.0, shape.width)
+    y = np.linspace(-visual_size.height / 2.0, visual_size.height / 2.0, shape.height)
+    distances = np.sqrt(x[np.newaxis, :] ** 2 + y[:, np.newaxis] ** 2)
+    mask = np.zeros(shape, dtype=int)
+
+    # Draw rings with integer idx-value
+    for radius, idx in zip(reversed(radii), reversed(range(len(radii)))):
+        mask[distances < radius] = int(idx + 1)
+
+    # Assemble output
+    params = {
+        "shape": shape,
+        "visual_size": visual_size,
+        "ppd": ppd,
+        "radii": radii,
+    }
+    return {"mask": mask, **params}
+
+
 def disc_and_rings(
     radii,
     intensities,
@@ -164,41 +223,24 @@ def disc_and_rings(
         visual_size = [x for x in visual_size if x is not None]
         visual_size = resolution.validate_visual_size(visual_size)
 
-    # no axes are None; check if fits
-    if visual_size.height < np.max(radii) * 2 or visual_size.width < np.max(radii) * 2:
-        raise ValueError(
-            f"Largest radius {np.max(radii)} does not fit in visual size {visual_size}"
-        )
-
-    # Resolve resolution
-    shape, visual_size, ppd = resolution.resolve(shape, visual_size, ppd)
-
-    # Convert radii to pixels
-    radii = np.unique(radii)
-    radii_px = []
-    for radius in radii:
-        radius_px, _, _ = resolution.resolve_1D(length=None, visual_angle=radius, ppd=ppd[0])
-        radii_px.append(radius_px)
-    radii_px = np.sort(radii_px)
-
-    # Create stimulus at 5 times size to allow for supersampling antialiasing
-    if shape is None:
-        shape = [radii_px.max() * 2, radii_px.max() * 2]
+    # Get masks for rings
+    params = ring_masks(radii, shape, visual_size, ppd)
+    shape = params["shape"]
 
     # Supersample shape (in pixels), to allow for antialiasing
-    super_shape = (shape[0] * supersampling, shape[1] * supersampling)
+    super_shape = resolution.validate_shape((shape[0] * supersampling, shape[1] * supersampling))
 
     # Create image array
     img = np.ones(super_shape) * intensity_background
 
     # Compute distance from center of array for every pixel, cap at 1.0
-    x = np.linspace(-img.shape[1] / 2.0, img.shape[1] / 2.0, img.shape[1])
-    y = np.linspace(-img.shape[0] / 2.0, img.shape[0] / 2.0, img.shape[0])
+    x = np.linspace(-visual_size.width / 2.0, visual_size.width / 2.0, super_shape.width)
+    y = np.linspace(-visual_size.height / 2.0, visual_size.height / 2.0, super_shape.height)
     distances = np.sqrt(x[np.newaxis, :] ** 2 + y[:, np.newaxis] ** 2)
 
     # Draw rings
-    ints = [*itertools.islice(itertools.cycle(intensities), len(radii_px))]
-    for radius, intensity in zip(reversed(radii_px * supersampling), reversed(ints)):
+    ints = [*itertools.islice(itertools.cycle(intensities), len(radii))]
+    for radius, intensity in zip(reversed(radii), reversed(ints)):
         img[distances < radius] = intensity
 
     # Downsample the stimulus by local averaging along rows and columns
