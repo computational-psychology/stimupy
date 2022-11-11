@@ -1,6 +1,9 @@
+import itertools
+from copy import deepcopy
+
 import numpy as np
 
-from stimuli.components.circular import disc_and_rings
+from stimuli.components.circular import circular_grating
 from stimuli.utils import degrees_to_pixels, pad_to_visual_size, resize_array
 
 
@@ -16,6 +19,7 @@ def circular_white(
         6,
     ),
     ssf=1,
+    shape=None,
 ):
     """
     Circular White stimulus
@@ -39,96 +43,58 @@ def circular_white(
     ssf : int (optional)
           the supersampling-factor used for anti-aliasing if >1. Default is 1.
           Warning: produces smoother circles but might introduce gradients that affect vision!
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
 
     Returns
     ----------
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
     """
-    if isinstance(visual_size, (float, int)):
-        visual_size = (visual_size, visual_size)
 
-    height_px, width_px = degrees_to_pixels(visual_size, ppd)
-    cycle_width_px = degrees_to_pixels(1.0 / (frequency * 2), ppd) * 2
-    radius = (cycle_width_px / 2) / ppd
-    n_discs = np.minimum(height_px, width_px) // cycle_width_px
-
-    if target_indices is None:
-        target_indices = ()
-    if isinstance(target_indices, (float, int)):
-        target_indices = (target_indices,)
-    if len(intensity_discs) != 2:
-        raise ValueError("vdiscs needs to be a tuple of two floats")
-    if not isinstance(intensity_target, (float, int)):
-        raise ValueError("vtarget should be a single float / int")
-    if not isinstance(frequency, (float, int)):
-        raise ValueError("frequency should be a single float / int")
-    if degrees_to_pixels(1.0 / frequency, ppd) % 2 != 0:
-        frequency_used = 1.0 / cycle_width_px * ppd
-        freqs = (frequency, frequency_used)
-        print(
-            "Warning: Circular White frequency changed from %f to %f ensure an even-numbered cycle"
-            " width!" % freqs
-        )
-    if n_discs < 1:
-        raise ValueError("No circle fits in requested shape! Increase frequency or shape")
-
-    radii = []
-    vdiscs_img = []
-    vdics_mask = []
-    mask_counter = 1
-    for i in range(n_discs):
-        radii.append(radius * (i + 1))
-        if i in target_indices:
-            vdiscs_img.append(intensity_target)
-            vdics_mask.append(mask_counter)
-            mask_counter += 1
-        elif i not in target_indices and i % 2 == 0:
-            vdiscs_img.append(intensity_discs[0])
-            vdics_mask.append(0)
-        elif i not in target_indices and i % 2 == 1:
-            vdiscs_img.append(intensity_discs[1])
-            vdics_mask.append(0)
-
-    stim = disc_and_rings(
-        radii=radii,
-        intensities=vdiscs_img,
-        shape=(height_px, width_px),
+    # Get stim
+    stim = circular_grating(
+        shape=shape,
+        visual_size=visual_size,
         ppd=ppd,
+        frequency=frequency,
+        intensities=intensity_discs,
         intensity_background=intensity_background,
         supersampling=ssf,
     )
-    mask = disc_and_rings(
-        radii=radii,
-        intensities=vdics_mask,
-        shape=(height_px, width_px),
+
+    # Add target intensity
+    ints = [*itertools.islice(itertools.cycle(intensity_discs), len(stim["radii"]))]
+    try:
+        for ring_idx in target_indices:
+            ints[ring_idx] = intensity_target
+    except TypeError:
+        ints[target_indices] = intensity_target
+        target_indices = [target_indices]
+
+    # Redraw stim with target
+    stim = circular_grating(
+        shape=shape,
+        visual_size=visual_size,
         ppd=ppd,
-        intensity_background=0,
+        frequency=frequency,
+        intensities=ints,
+        intensity_background=intensity_background,
         supersampling=ssf,
     )
-    stim["mask"] = mask["img"].astype(int)
 
-    # Pad to desired size
-    stim["img"] = pad_to_visual_size(
-        img=stim["img"], visual_size=visual_size, ppd=ppd, pad_value=intensity_background
-    )
-    stim["mask"] = pad_to_visual_size(
-        img=stim["mask"], visual_size=visual_size, ppd=ppd, pad_value=0
-    )
+    # Update mask to only be targets
+    stim["rings"] = deepcopy(stim["mask"])
+    stim["mask"] = np.zeros_like(stim["rings"])
+    for i, ring_idx in enumerate(target_indices):
+        stim["mask"] = np.where(stim["rings"] == ring_idx + 1, i + 1, stim["mask"])
 
     # Target masks should only cover areas where target intensity is exactly vtarget
     cond = (stim["img"] != intensity_target) & (stim["mask"] != 0)
     stim["mask"][cond] = 0
 
     params = {
-        "shape": stim["img"].shape,
-        "visual_size": np.array(stim["img"].shape) / ppd,
-        "ppd": ppd,
-        "frequency": frequency,
-        "intensity_discs": intensity_discs,
-        "intensity_background": intensity_background,
-        "intensity_target": intensity_target,
         "target_indices": target_indices,
-        "ssf": ssf,
+        "intensity_target": intensity_target,
     }
     stim.update(params)
 
@@ -328,8 +294,8 @@ if __name__ == "__main__":
     from stimuli.utils import plot_stimuli
 
     stims = {
-        "Circular Whites": circular_white(),
-        "Circular Bullseye": circular_bullseye(),
+        "Circular Whites": circular_white(visual_size=(8, 8), ppd=32, frequency=1.0),
+        "Circular Bullseye": circular_bullseye(visual_size=(8, 8), ppd=32, frequency=1.0),
         "Radial white": radial_white(),
     }
 
