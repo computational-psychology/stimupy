@@ -60,6 +60,17 @@ def resolve_circular_params(
         visual_size = resolution.validate_visual_size(visual_size)
 
     # Try to resolve number and width(s) of rings
+
+    # ring_width = degrees_per_ring = 1 / rings_per_degree = 1 / (2*frequency)
+    if ring_width is not None:
+        rings_pd = 1 / ring_width
+        if frequency is not None and rings_pd != 2 * frequency:
+            raise ValueError(f"ring_width {ring_width} and frequency {frequency} don't match")
+    elif frequency is not None:
+        rings_pd = 2 * frequency
+    else:  # both are None:
+        rings_pd = None
+
     # Logic here is that ring_width expresses "degrees per ring",
     # which we can invert to rings_per_degree, analogous to ppd:
     # n_rings = rings_per_degree * n_degrees
@@ -67,21 +78,21 @@ def resolve_circular_params(
     # pix = ppd * n_degrees
     # Thus we can resolve the number and spacing of rings also as a resolution
 
-    # ring_width = 1 / rings_per_degree = 1 / (2*frequency)
-    if ring_width is None and frequency is not None:
-        ring_width = 1 / (2 * frequency)
-
-    rings_pd = 1 / ring_width if ring_width is not None else None
+    # What is the smaller axis of visual_size?
     try:
         min_vis_angle = np.min([i for i in visual_size if i is not None]) / 2
     except ValueError:
         min_vis_angle = None
 
-    n_rings, min_vis_angle, rings_pd = resolution.resolve_1D(
-        length=n_rings, visual_angle=min_vis_angle, ppd=rings_pd
-    )
-    min_vis_angle = min_vis_angle * 2
-    ring_width = 1 / rings_pd
+    try:
+        n_rings, min_vis_angle, rings_pd = resolution.resolve_1D(
+            length=n_rings, visual_angle=min_vis_angle, ppd=rings_pd
+        )
+        min_vis_angle = min_vis_angle * 2
+        ring_width = 1 / rings_pd
+        frequency = rings_pd / 2
+    except Exception as e:
+        raise Exception("Could not resolve grating frequency, ring_width, n_rings") from e
 
     # Now resolve resolution
     shape, visual_size, ppd = resolution.resolve(
@@ -95,6 +106,7 @@ def resolve_circular_params(
         "shape": shape,
         "visual_size": visual_size,
         "ppd": ppd,
+        "frequency": frequency,
         "ring_width": ring_width,
         "n_rings": n_rings,
         "radii": radii,
