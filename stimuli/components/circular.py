@@ -385,7 +385,7 @@ def circular_grating(
     frequency=None,
     n_rings=None,
     ring_width=None,
-    intensities=[1, 0],
+    intensities=[1.0, 0.0],
     intensity_background=0.5,
     supersampling=1,
 ):
@@ -406,7 +406,7 @@ def circular_grating(
     ring_width : Number, or None (default)
         width of a single ring, in degrees
     intensities : Sequence[Number, ...]
-        intensity value for each ring, from inside to out, by default [1,0]
+        intensity value for each ring, from inside to out, by default [1.0, 0.0]
         If fewer intensities are passed than number of radii, cycles through intensities
     intensity_background : float (optional)
         intensity value of background, by default 0.5
