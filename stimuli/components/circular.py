@@ -178,7 +178,7 @@ def disc_and_rings(
     shape=None,
     visual_size=None,
     ppd=None,
-    intensity_background=0.0,
+    intensity_background=0.5,
     supersampling=5,
 ):
     """Draw a central solid disc with zero or more solid rings (annuli)
@@ -197,7 +197,7 @@ def disc_and_rings(
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
     intensity_background : float (optional)
-        value of background, by default 0.0
+        value of background, by default 0.5
     supersampling : int (optional)
         supersampling-factor used for anti-aliasing, by default 5
 
@@ -248,13 +248,12 @@ def disc_and_rings(
     img = np.dot(sampler, np.dot(img, sampler.T)) / supersampling**2
 
     # Assemble output
-    params = {
-        "visual_size": visual_size,
-        "ppd": ppd,
-        "radii": radii,
-        "intensities": intensities,
-        "supersampling": supersampling,
-    }
+    params.update(
+        {
+            "intensities": intensities,
+            "supersampling": supersampling,
+        }
+    )
     return {"img": img, **params}
 
 
@@ -264,7 +263,7 @@ def disc(
     shape=None,
     visual_size=None,
     ppd=None,
-    intensity_background=0.0,
+    intensity_background=0.5,
     supersampling=5,
 ):
     """Draw a central disc
@@ -282,7 +281,7 @@ def disc(
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
     background : float (optional)
-        value of background, by default 0.0
+        value of background, by default 0.5
     supersampling : int (optional)
         supersampling-factor used for anti-aliasing, by default 5
 
@@ -319,7 +318,7 @@ def ring(
     shape=None,
     visual_size=None,
     ppd=None,
-    intensity_background=0.0,
+    intensity_background=0.5,
     supersampling=5,
 ):
     """Draw a ring (annulus)
@@ -337,7 +336,7 @@ def ring(
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
     intensity_background : float (optional)
-        intensity value of background, by default 0.0
+        intensity value of background, by default 0.5
     supersampling : int (optional)
         supersampling-factor used for anti-aliasing, by default 5
 
@@ -384,7 +383,7 @@ def circular_grating(
     n_rings=None,
     ring_width=None,
     intensities=[1, 0],
-    intensity_background=0.0,
+    intensity_background=0.5,
     supersampling=5,
 ):
     """Draw a circular grating, i.e., set of rings
@@ -407,7 +406,7 @@ def circular_grating(
         intensity value for each ring, from inside to out, by default [1,0]
         If fewer intensities are passed than number of radii, cycles through intensities
     intensity_background : float (optional)
-        intensity value of background, by default 0.0
+        intensity value of background, by default 0.5
     supersampling : int (optional)
         supersampling-factor used for anti-aliasing, by default 5
 
