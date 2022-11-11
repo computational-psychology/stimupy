@@ -688,13 +688,13 @@ def WE_circular1(ppd=PPD, pad=True):
 
     stim1 = illusions.circular.circular_white(
         visual_size=(height, width),
-        intensity_discs=(v3, v1),
+        intensity_rings=(v3, v1),
         **params,
     )
 
     stim2 = illusions.circular.circular_white(
         visual_size=(height, width),
-        intensity_discs=(v1, v3),
+        intensity_rings=(v1, v3),
         **params,
     )
     stim2["mask"] *= 2
@@ -752,13 +752,13 @@ def WE_circular05(ppd=PPD, pad=True):
 
     stim1 = illusions.circular.circular_white(
         visual_size=(height, width),
-        intensity_discs=(v3, v1),
+        intensity_rings=(v3, v1),
         **params,
     )
 
     stim2 = illusions.circular.circular_white(
         visual_size=(height, width),
-        intensity_discs=(v1, v3),
+        intensity_rings=(v1, v3),
         **params,
     )
     stim2["mask"] *= 2
@@ -816,13 +816,13 @@ def WE_circular025(ppd=PPD, pad=True):
 
     stim1 = illusions.circular.circular_white(
         visual_size=(height, width),
-        intensity_discs=(v3, v1),
+        intensity_rings=(v3, v1),
         **params,
     )
 
     stim2 = illusions.circular.circular_white(
         visual_size=(height, width),
-        intensity_discs=(v1, v3),
+        intensity_rings=(v1, v3),
         **params,
     )
     stim2["mask"] *= 2

@@ -8,78 +8,79 @@ from stimuli.utils import degrees_to_pixels, pad_to_visual_size, resize_array
 
 
 def circular_white(
-    visual_size=(10, 10),
-    ppd=30,
-    frequency=1,
-    intensity_discs=(0.0, 1.0),
-    intensity_background=0.2,
+    visual_size=None,
+    ppd=None,
+    frequency=None,
+    target_indices=None,
     intensity_target=0.5,
-    target_indices=(
-        3,
-        6,
-    ),
-    ssf=1,
+    intensity_rings=[1.0, 0.0],
+    intensity_background=0.5,
+    supersampling=1,
     shape=None,
 ):
-    """
-    Circular White stimulus
+    """Circular grating, with one or more target rings
 
     Parameters
     ----------
-    visual_size : (float, float)
-        The shape of the stimulus in degrees of visual angle. (y,x)
-    ppd : int
-        pixels per degree (visual angle)
-    frequency : float
-        the spatial frequency of the circular grating in cycles per degree
-    intensity_discs : (float, float)
-        intensity values of discs
-    intensity_background : float
-        intensity value of background
-    intensity_target : float
-        intensity value of target discs
-    target_indices : (int, )
-        indices of target discs
-    ssf : int (optional)
-          the supersampling-factor used for anti-aliasing if >1. Default is 1.
-          Warning: produces smoother circles but might introduce gradients that affect vision!
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    frequency : Number, or None (default)
+        spatial frequency of circular grating, in cycles per degree
+    target_indices : int or Sequence[int, ] (optional)
+        indices of target discs. If not specified, use middle ring (round down)
+    intensity_target : float (optional)
+        intensity value of target ring(s), by default 0.5
+    intensity_rings : Sequence[Number, ...]
+        intensity value for each ring, from inside to out, by default [1,0]
+        If fewer intensities are passed than number of radii, cycles through intensities
+    intensity_background : float (optional)
+        intensity value of background, by default 0.5
+    supersampling : int (optional)
+        supersampling-factor used for anti-aliasing, by default 1.
+        Warning: produces smoother circles but might introduce gradients that affect vision!
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
 
     Returns
     ----------
-    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    dict[str, Any]
+        dict with the stimulus (key: "img")
+        and additional keys containing stimulus parameters
     """
 
     # Get stim
     stim = circular_grating(
-        shape=shape,
         visual_size=visual_size,
         ppd=ppd,
         frequency=frequency,
-        intensities=intensity_discs,
         intensity_background=intensity_background,
-        supersampling=ssf,
+        intensities=intensity_rings,
+        supersampling=supersampling,
+        shape=shape,
     )
 
     # Add target intensity
-    ints = [*itertools.islice(itertools.cycle(intensity_discs), len(stim["radii"]))]
+    intensities = [*itertools.islice(itertools.cycle(intensity_rings), len(stim["radii"]))]
+    if target_indices is None:
+        target_indices = len(intensities) // 2
     try:
         for ring_idx in target_indices:
-            ints[ring_idx] = intensity_target
+            intensities[ring_idx] = intensity_target
     except TypeError:
-        ints[target_indices] = intensity_target
+        intensities[target_indices] = intensity_target
         target_indices = [target_indices]
 
     # Redraw stim with target
     stim = circular_grating(
-        shape=shape,
         visual_size=visual_size,
         ppd=ppd,
         frequency=frequency,
-        intensities=ints,
+        intensities=intensities,
         intensity_background=intensity_background,
-        supersampling=ssf,
+        supersampling=supersampling,
+        shape=shape,
     )
 
     # Update mask to only be targets
@@ -102,48 +103,57 @@ def circular_white(
 
 
 def circular_bullseye(
-    visual_size=(10, 10),
-    ppd=30,
-    frequency=1,
-    intensity_discs=(0.0, 1.0),
-    intensity_background=0.2,
+    visual_size=None,
+    ppd=None,
+    frequency=None,
     intensity_target=0.5,
-    ssf=1,
+    intensity_rings=[1.0, 0.0],
+    intensity_background=0.5,
+    supersampling=1,
+    shape=None,
 ):
-    """
-    Circular Bullsseye stimulus
+    """Circular Bullseye stimulus
+
+    Circular grating, where the target is the central disc.
+    Alias for circular_white(target_indices=0,...)
 
     Parameters
     ----------
-    visual_size : (float, float)
-        The shape of the stimulus in degrees of visual angle. (y,x)
-    ppd : int
-        pixels per degree (visual angle)
-    frequency : float
-        the spatial frequency of the circular grating in cycles per degree
-    intensity_discs : (float, float)
-        intensity values of discs
-    intensity_background : float
-        intensity value of background
-    intensity_target : float
-        intensity value of target discs
-    ssf : int (optional)
-          the supersampling-factor used for anti-aliasing if >1. Default is 1.
-          Warning: produces smoother circles but might introduce gradients that affect vision!
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    frequency : Number, or None (default)
+        spatial frequency of circular grating, in cycles per degree
+    intensity_target : float (optional)
+        intensity value of target ring(s), by default 0.5
+    intensity_rings : Sequence[Number, ...]
+        intensity value for each ring, from inside to out, by default [1,0]
+        If fewer intensities are passed than number of radii, cycles through intensities
+    intensity_background : float (optional)
+        intensity value of background, by default 0.5
+    supersampling : int (optional)
+        supersampling-factor used for anti-aliasing, by default 1.
+        Warning: produces smoother circles but might introduce gradients that affect vision!
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
 
     Returns
     ----------
-    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    dict[str, Any]
+        dict with the stimulus (key: "img")
+        and additional keys containing stimulus parameters
     """
     stim = circular_white(
         visual_size=visual_size,
         ppd=ppd,
         frequency=frequency,
-        intensity_discs=intensity_discs,
+        intensity_rings=intensity_rings,
         intensity_background=intensity_background,
         intensity_target=intensity_target,
         target_indices=0,
-        ssf=ssf,
+        supersampling=supersampling,
+        shape=shape,
     )
     return stim
 
