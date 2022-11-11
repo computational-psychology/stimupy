@@ -137,34 +137,29 @@ def disc_and_rings(
         and additional keys containing stimulus parameters
     """
 
-    # Check visual_size
-    visual_size = resolution.validate_visual_size(visual_size)
-    if visual_size.height is None:
-        if visual_size.width is not None:
-            visual_height = visual_size.width
-        else:
-            visual_height = np.max(radii) * 2
-    elif visual_size.height < np.max(radii) * 2:
-        raise ValueError(
-            f"Largest radius {np.max(radii)} does not fit in visual size {visual_size}"
-        )
-    else:
-        visual_height = visual_size.height
+    # Try to resolve resolution;
+    try:
+        shape, visual_size, ppd = resolution.resolve(shape, visual_size, ppd)
+    except ValueError:
+        # Check visual_size
+        visual_size = resolution.validate_visual_size(visual_size)
 
-    if visual_size.width is None:
-        if visual_size.height is not None:
-            visual_width = visual_size.height
-        else:
-            visual_width = np.max(radii) * 2
-    elif visual_size.width < np.max(radii) * 2:
+    if visual_size == (None, None):
+        # Two axes are None; make image large enought to fit
+        visual_size = resolution.validate_visual_size(np.max(radii) * 2)
+    elif None in visual_size:
+        # one axis is None; make square
+        visual_size = [x for x in visual_size if x is not None]
+        visual_size = resolution.validate_visual_size(visual_size)
+
+    # no axes are None; check if fits
+    if visual_size.height < np.max(radii) * 2 or visual_size.width < np.max(radii) * 2:
         raise ValueError(
             f"Largest radius {np.max(radii)} does not fit in visual size {visual_size}"
         )
-    else:
-        visual_width = visual_size.width
 
     # Resolve resolution
-    shape, visual_size, ppd = resolution.resolve(shape, (visual_height, visual_width), ppd)
+    shape, visual_size, ppd = resolution.resolve(shape, visual_size, ppd)
 
     # Convert radii to pixels
     radii = np.unique(radii)
