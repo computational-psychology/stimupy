@@ -179,7 +179,7 @@ def disc_and_rings(
     visual_size=None,
     ppd=None,
     intensity_background=0.5,
-    supersampling=5,
+    supersampling=1,
 ):
     """Draw a central solid disc with zero or more solid rings (annuli)
 
@@ -199,7 +199,8 @@ def disc_and_rings(
     intensity_background : float (optional)
         value of background, by default 0.5
     supersampling : int (optional)
-        supersampling-factor used for anti-aliasing, by default 5
+        supersampling-factor used for anti-aliasing, by default 5.
+        Warning: produces smoother circles but might introduce gradients that affect vision!
 
     Returns
     -------
@@ -264,7 +265,7 @@ def disc(
     visual_size=None,
     ppd=None,
     intensity_background=0.5,
-    supersampling=5,
+    supersampling=1,
 ):
     """Draw a central disc
 
@@ -283,7 +284,8 @@ def disc(
     background : float (optional)
         value of background, by default 0.5
     supersampling : int (optional)
-        supersampling-factor used for anti-aliasing, by default 5
+        supersampling-factor used for anti-aliasing, by default 1.
+        Warning: produces smoother circles but might introduce gradients that affect vision!
 
     Returns
     -------
@@ -319,7 +321,7 @@ def ring(
     visual_size=None,
     ppd=None,
     intensity_background=0.5,
-    supersampling=5,
+    supersampling=1,
 ):
     """Draw a ring (annulus)
 
@@ -338,7 +340,8 @@ def ring(
     intensity_background : float (optional)
         intensity value of background, by default 0.5
     supersampling : int (optional)
-        supersampling-factor used for anti-aliasing, by default 5
+        supersampling-factor used for anti-aliasing, by default 5.
+        Warning: produces smoother circles but might introduce gradients that affect vision!
 
     Returns
     -------
@@ -384,7 +387,7 @@ def circular_grating(
     ring_width=None,
     intensities=[1, 0],
     intensity_background=0.5,
-    supersampling=5,
+    supersampling=1,
 ):
     """Draw a circular grating, i.e., set of rings
 
@@ -408,7 +411,8 @@ def circular_grating(
     intensity_background : float (optional)
         intensity value of background, by default 0.5
     supersampling : int (optional)
-        supersampling-factor used for anti-aliasing, by default 5
+        supersampling-factor used for anti-aliasing, by default 1.
+        Warning: produces smoother circles but might introduce gradients that affect vision!
 
     Returns
     -------
