@@ -37,7 +37,7 @@ def img_angles(visual_size=None, ppd=None, shape=None):
     img_angles = -np.arctan2(xx, yy)
     img_angles %= 2 * np.pi
 
-    return img_angles
+    return {"img": img_angles, "visual_size": visual_size, "ppd": ppd}
 
 
 def mask_angle(
@@ -66,13 +66,14 @@ def mask_angle(
         and additional params
     """
 
-    image_angles = img_angles(visual_size=visual_size, ppd=ppd, shape=shape)
+    params = img_angles(visual_size=visual_size, ppd=ppd, shape=shape)
+    image_angles = params.pop("img")
 
     # Create mask
     inner_angle, outer_angle = np.deg2rad(angles)
     bool_mask = (image_angles > inner_angle) & (image_angles <= outer_angle)
 
-    return {"mask": bool_mask, "visual_size": visual_size, "ppd": ppd}
+    return {"mask": bool_mask, **params}
 
 
 def wedge(
