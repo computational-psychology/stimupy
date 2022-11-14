@@ -315,16 +315,12 @@ def grating(
     intensities : Sequence[Number, ...]
         intensity value for each segment, from inside to out, by default [1.0, 0.0]
         If fewer intensities are passed than number of radii, cycles through intensities
-    intensity_background : float (optional)
-        intensity value of background, by default 0.5
-    supersampling : int (optional)
-        supersampling-factor used for anti-aliasing, by default 1.
-        Warning: produces smoother circles but might introduce gradients that affect vision!
 
     Returns
     -------
     dict[str, Any]
-        dict with the stimulus (key: "img")
+        dict with the stimulus (key: "img"),
+        mask with integer index for each segment (key: "mask"),
         and additional keys containing stimulus parameters
     """
 
