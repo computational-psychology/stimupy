@@ -181,7 +181,7 @@ def angular_segments(
     shape, visual_size, ppd = resolution.resolve(shape, visual_size, ppd)
 
     # Convert to segment angles
-    angles = np.array(angles) % 360
+    angles = np.array(angles)
 
     # Figure out intensities
     if intensities is None:
@@ -198,7 +198,7 @@ def angular_segments(
         img += bool_mask["mask"] * intensity
         mask += bool_mask["mask"] * (idx + 1)
 
-    return {"img": img, "mask": mask, "visual_size": visual_size, "ppd": ppd}
+    return {"img": img, "mask": mask, "angles": angles, "visual_size": visual_size, "ppd": ppd}
 
 
 def resolve_angular_params(
@@ -276,10 +276,6 @@ def resolve_angular_params(
     except Exception as e:
         raise Exception("Could not resolve grating frequency, segment_width, n_segments") from e
 
-    # Determine angles
-    angular_widths = itertools.repeat(segment_width, n_segments)
-    angles = [0] + [*itertools.accumulate(angular_widths)]
-
     return {
         "shape": shape,
         "visual_size": visual_size,
@@ -287,5 +283,4 @@ def resolve_angular_params(
         "frequency": frequency,
         "segment_width": segment_width,
         "n_segments": n_segments,
-        "angles": angles,
     }
