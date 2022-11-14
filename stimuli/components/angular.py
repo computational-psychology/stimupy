@@ -84,7 +84,7 @@ def wedge(
     intensity_background=0.5,
     visual_size=None,
     ppd=None,
-    supersampling=1,
+    # supersampling=1,
     shape=None,
 ):
     """Draw a wedge, i.e., segment of a disc
@@ -132,7 +132,7 @@ def wedge(
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,
-        supersampling=supersampling,
+        # supersampling=supersampling,
     )
     visual_size = stim["visual_size"]
     shape = stim["shape"]
