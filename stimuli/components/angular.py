@@ -347,3 +347,84 @@ def grating(
 
     # Assemble output
     return {**stim, **params}
+
+
+def pinwheel(
+    radius=None,
+    frequency=None,
+    n_segments=None,
+    segment_width=None,
+    rotation=0,
+    inner_radius=0.0,
+    intensities=[1.0, 0.0],
+    intensity_background=0.5,
+    visual_size=None,
+    ppd=None,
+    shape=None,
+):
+    """Pinwheel- / wheel-of-fortune-like angular grating on disc/ring
+
+    Parameters
+    ----------
+    radius : float
+        radius of wheel, in degrees visual angle
+    frequency : Number, or None (default)
+        angular frequency of angular grating, in cycles per angular degree
+    n_segments : int, or None (default)
+        number of segments
+    segment_width : Number, or None (default)
+        angular width of a single segment, in degrees
+    rotation : int, optional
+        _description_, by default 0
+    inner_radius : float, optional
+        inner radius (in degrees visual angle), to turn disc into a ring, by default 0.0
+    intensities : Sequence[Number, ...]
+        intensity value for each segment, from inside to out, by default [1.0, 0.0]
+        If fewer intensities are passed than number of radii, cycles through intensities
+    intensity_background : float (optional)
+        intensity value of background, by default 0.5
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+
+    Returns
+    -------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each segment (key: "mask"),
+        and additional keys containing stimulus parameters
+    """
+
+    # Get disc
+    disc = ring(
+        radii=[inner_radius, radius],
+        intensity=1,
+        intensity_background=0,
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+    )
+    visual_size = disc["visual_size"]
+    shape = disc["shape"]
+    ppd = disc["ppd"]
+
+    # Draw segments
+    stim = grating(
+        frequency=frequency,
+        n_segments=n_segments,
+        segment_width=segment_width,
+        rotation=rotation,
+        intensities=intensities,
+        visual_size=visual_size,
+        shape=shape,
+        ppd=ppd,
+    )
+
+    # Mask out everywhere that the disc isn't
+    stim["img"] = np.where(disc["img"], stim["img"], intensity_background)
+    stim["mask"] = np.where(disc["img"], stim["mask"], 0)
+
+    return {**stim, "radii": disc["radii"], "intensity_background": intensity_background}
