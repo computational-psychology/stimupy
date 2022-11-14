@@ -1,3 +1,5 @@
+import itertools
+
 import numpy as np
 
 from stimuli.components.circular import ring
@@ -145,3 +147,46 @@ def wedge(
     stim.update(bool_mask)
 
     return stim
+
+
+def segment_masks(
+    angles,
+    visual_size=None,
+    ppd=None,
+    shape=None,
+):
+    """Generate mask with integer indices for angular segments
+
+    Parameters
+    ----------
+    angles : Sequence[Number]
+        lower- and upper-limit (in angular degrees 0-360) of each segment
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+
+    Returns
+    -------
+    dict[str, Any]
+        dict with the mask (key: "mask")
+        and additional keys containing stimulus parameters
+    """
+
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape, visual_size, ppd)
+
+    # Convert to segment angles
+    angles = np.array(angles) % 360
+
+    # Accumulate mask
+    mask = np.zeros(shape, dtype=int)
+    for idx, angle in enumerate(angles[:-1]):
+        bool_mask = mask_angle(
+            angles=[angle, angles[idx + 1]], visual_size=visual_size, shape=shape, ppd=ppd
+        )
+        mask += bool_mask["mask"] * (idx + 1)
+
+    return {"mask": mask, "visual_size": visual_size, "ppd": ppd}
