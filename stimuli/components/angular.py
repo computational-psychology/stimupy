@@ -1,5 +1,6 @@
 import numpy as np
 
+from stimuli.components.circular import ring
 from stimuli.utils import resolution
 
 
@@ -69,3 +70,78 @@ def mask_angle(
     bool_mask = (image_angles > inner_angle) & (image_angles <= outer_angle)
 
     return {"mask": bool_mask, "visual_size": visual_size, "ppd": ppd}
+
+
+def wedge(
+    angle,
+    radius,
+    rotation=0.0,
+    inner_radius=0.0,
+    intensity=1.0,
+    intensity_background=0.5,
+    visual_size=None,
+    ppd=None,
+    supersampling=1,
+    shape=None,
+):
+    """Draw a wedge, i.e., segment of a disc
+
+    Parameters
+    ----------
+    angle : float
+        angular-width (in degrees) of segment
+    radius : float
+        radius of disc, in degrees visual angle
+    rotation : float, optional
+        angle of rotation (in degrees) of segment,
+        counterclockwise from 3 o'clock, by default 0.0
+    inner_radius : float, optional
+        inner radius (in degrees visual angle), to turn disc into a ring, by default 0
+    intensity : float, optional
+        intensity value of ring, by default 1.0
+    intensity_background : float, optional
+        intensity value of background, by default 0.5
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    supersampling : int (optional)
+        supersampling-factor used for anti-aliasing, by default 5.
+        Warning: produces smoother circles but might introduce gradients that affect vision!
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+
+    Returns
+    -------
+    dict[str, Any]
+        dict with the stimulus (key: "img")
+        and additional keys containing stimulus parameters
+    """
+
+    # Convert to inner-, outer-angle
+    angles = (rotation, angle + rotation)
+
+    # Draw disc
+    stim = ring(
+        radii=[inner_radius, radius],
+        intensity=intensity,
+        intensity_background=intensity_background,
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        supersampling=supersampling,
+    )
+    visual_size = stim["visual_size"]
+    shape = stim["shape"]
+    ppd = stim["ppd"]
+
+    # Get mask for angles
+    bool_mask = mask_angle(angles=angles, visual_size=visual_size, ppd=ppd, shape=shape)
+
+    # Remove everything but wedge
+    stim["img"] = np.where(bool_mask["mask"], stim["img"], intensity_background)
+
+    # Output
+    stim.update(bool_mask)
+
+    return stim
