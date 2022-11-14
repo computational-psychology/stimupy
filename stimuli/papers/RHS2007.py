@@ -473,7 +473,7 @@ def WE_radial_thick_small(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim = illusions.circular.radial_white(
+    stim = illusions.angular.radial_white(
         visual_size=(16, 16),
         **params,
     )
@@ -527,7 +527,7 @@ def WE_radial_thick(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim = illusions.circular.radial_white(
+    stim = illusions.angular.radial_white(
         visual_size=(24, 24),
         **params,
     )
@@ -581,7 +581,7 @@ def WE_radial_thin_small(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim = illusions.circular.radial_white(
+    stim = illusions.angular.radial_white(
         visual_size=(16, 16),
         **params,
     )
@@ -635,7 +635,7 @@ def WE_radial_thin(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim = illusions.circular.radial_white(
+    stim = illusions.angular.radial_white(
         visual_size=(24, 24),
         **params,
     )
