@@ -284,3 +284,70 @@ def resolve_angular_params(
         "segment_width": segment_width,
         "n_segments": n_segments,
     }
+
+
+def grating(
+    shape=None,
+    visual_size=None,
+    ppd=None,
+    frequency=None,
+    n_segments=None,
+    segment_width=None,
+    rotation=0,
+    intensities=[1.0, 0.0],
+):
+    """Draw an angular grating, i.e., set of segments
+
+    Parameters
+    ----------
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    frequency : Number, or None (default)
+        angular frequency of angular grating, in cycles per angular degree
+    n_segments : int, or None (default)
+        number of segments
+    segment_width : Number, or None (default)
+        angular width of a single segment, in degrees
+    intensities : Sequence[Number, ...]
+        intensity value for each segment, from inside to out, by default [1.0, 0.0]
+        If fewer intensities are passed than number of radii, cycles through intensities
+    intensity_background : float (optional)
+        intensity value of background, by default 0.5
+    supersampling : int (optional)
+        supersampling-factor used for anti-aliasing, by default 1.
+        Warning: produces smoother circles but might introduce gradients that affect vision!
+
+    Returns
+    -------
+    dict[str, Any]
+        dict with the stimulus (key: "img")
+        and additional keys containing stimulus parameters
+    """
+
+    # Resolve grating
+    params = resolve_angular_params(shape, visual_size, ppd, frequency, n_segments, segment_width)
+
+    # Clean-up params for passing through
+    stim_params = copy.deepcopy(params)
+    n_segments = stim_params.pop("n_segments", None)
+    segment_width = stim_params.pop("segment_width", None)
+    stim_params.pop("frequency", None)
+
+    # Determine angles
+    angular_widths = itertools.repeat(segment_width, n_segments - 1)
+    angles = [rotation] + np.array([*itertools.accumulate(angular_widths)] + [360])
+    angles = sorted(np.unique(angles) % 360)
+
+    # Draw stim
+    stim = angular_segments(
+        angles,
+        **stim_params,
+        intensities=intensities,
+    )
+
+    # Assemble output
+    return {**stim, **params}
