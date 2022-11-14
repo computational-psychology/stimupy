@@ -153,7 +153,6 @@ def wedge(
 def angular_segments(
     angles,
     intensities=None,
-    intensity_background=0.0,
     visual_size=None,
     ppd=None,
     shape=None,
@@ -190,7 +189,7 @@ def angular_segments(
     ints = itertools.cycle(intensities)
 
     # Accumulate img, mask
-    img = np.ones(shape) * intensity_background
+    img = np.zeros(shape)
     mask = np.zeros(shape, dtype=int)
     for (idx, angle), intensity in zip(enumerate(angles[:-1]), ints):
         bool_mask = mask_angle(
