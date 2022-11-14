@@ -269,6 +269,8 @@ def disc(
 ):
     """Draw a central disc
 
+    Essentially, `dics(radius)` is an alias for `ring(radii=[0, radius])`
+
     Parameters
     ----------
     radius : Number
@@ -294,22 +296,22 @@ def disc(
         and additional keys containing stimulus parameters
     """
 
-    radius = [radius]
-    intensity = [intensity]
+    radius = np.array(radius)
+    intensity = np.array(intensity)
 
-    if len(radius) != 1:
+    if radius.size != 1:
         raise ValueError("Can only pass 1 radius")
-    if len(intensity) != 1:
+    if intensity.size != 1:
         raise ValueError("Can only pass 1 intensity")
 
-    stim = disc_and_rings(
-        radii=radius,
-        intensities=intensity,
-        shape=shape,
+    stim = ring(
+        radii=[0, radius],
+        intensity=intensity,
         visual_size=visual_size,
         ppd=ppd,
         intensity_background=intensity_background,
         supersampling=supersampling,
+        shape=shape,
     )
     return stim
 
