@@ -1,3 +1,4 @@
+import copy
 import itertools
 
 import numpy as np
@@ -149,8 +150,10 @@ def wedge(
     return stim
 
 
-def segment_masks(
+def angular_segments(
     angles,
+    intensities=None,
+    intensity_background=0.0,
     visual_size=None,
     ppd=None,
     shape=None,
@@ -171,7 +174,7 @@ def segment_masks(
     Returns
     -------
     dict[str, Any]
-        dict with the mask (key: "mask")
+        dict with the stimulus (key: "img"), mask (key: "mask")
         and additional keys containing stimulus parameters
     """
 
@@ -181,15 +184,22 @@ def segment_masks(
     # Convert to segment angles
     angles = np.array(angles) % 360
 
-    # Accumulate mask
+    # Figure out intensities
+    if intensities is None:
+        intensities = itertools.count(1)
+    ints = itertools.cycle(intensities)
+
+    # Accumulate img, mask
+    img = np.ones(shape) * intensity_background
     mask = np.zeros(shape, dtype=int)
-    for idx, angle in enumerate(angles[:-1]):
+    for (idx, angle), intensity in zip(enumerate(angles[:-1]), ints):
         bool_mask = mask_angle(
             angles=[angle, angles[idx + 1]], visual_size=visual_size, shape=shape, ppd=ppd
         )
+        img += bool_mask["mask"] * intensity
         mask += bool_mask["mask"] * (idx + 1)
 
-    return {"mask": mask, "visual_size": visual_size, "ppd": ppd}
+    return {"img": img, "mask": mask, "visual_size": visual_size, "ppd": ppd}
 
 
 def resolve_angular_params(
