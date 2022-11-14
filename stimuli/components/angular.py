@@ -98,7 +98,7 @@ def wedge(
     inner_radius : float, optional
         inner radius (in degrees visual angle), to turn disc into a ring, by default 0
     intensity : float, optional
-        intensity value of ring, by default 1.0
+        intensity value of wedge, by default 1.0
     intensity_background : float, optional
         intensity value of background, by default 0.5
     visual_size : Sequence[Number, Number], Number, or None (default)
