@@ -1,20 +1,25 @@
+import itertools
+
 import numpy as np
 
-from stimuli.utils import degrees_to_pixels, pad_to_visual_size, resize_array
+from stimuli.components.angular import pinwheel
+from stimuli.components.circular import ring
 
 
 def radial_white(
-    visual_size=(10, 12),
-    ppd=20,
-    n_segments=8,
-    rotate=3 * np.pi,
-    target_width=2.5,
-    target_center=2.5,
-    target_indices=(0, 1, 2, 3, 4),
-    intensity_slices=(1.0, 0.0),
+    visual_size=None,
+    ppd=None,
+    frequency=None,
+    n_segments=None,
+    segment_width=None,
+    rotation=0,
+    target_indices=[2, 5],
+    target_width=1.0,
+    target_center=1.0,
+    intensities_segments=[1.0, 0.0],
     intensity_background=0.3,
     intensity_target=0.5,
-    ssf=1,
+    shape=None,
 ):
     """
     Radial White stimulus
@@ -25,122 +30,103 @@ def radial_white(
         The shape of the stimulus in degrees of visual angle. (y,x)
     ppd : int
         pixels per degree (visual angle)
-    n_segments : int
-        number of cycles in stimulus (= half number of slices)
-    rotate : float
-        orientation of circle in radians
-    target_width : float
-        target width given the slice shape in deg
-    target_center : float
-        target center within slice in deg
-    target_indices : int or (int, )
-        indices of target slices
-    intensity_slices : (float, float)
-        intensity values of slices
-    intensity_background : float
-        intensity value of target discs
-    intensity_target : float
-        intensity value of target discs
-    ssf : int (optional)
-          the supersampling-factor used for anti-aliasing if >1. Default is 1.
-          Warning: produces smoother circles but might introduce gradients that affect vision!
+    frequency : Number, or None (default)
+        angular frequency of angular grating, in cycles per angular degree
+    n_segments : int, or None (default)
+        number of segments
+    segment_width : Number, or None (default)
+        angular width of a single segment, in degrees
+    rotation : float, optional
+        rotation (in degrees) of pinwheel segments away
+        counterclockwise from 3 o'clock, by default 0.0
+    target_indices : int, or Sequence[int, ...]
+        indices segments where targets will be placed
+    target_width : float, or Sequence[float, ...], optional
+        target width (outer - inner radius) in deg visual angle, by default 1.0
+        Can specify as many target_widths as target_indices;
+        if fewer widths are passed than indices, cycles through intensities
+    target_center : float, or Sequence[float, ...], optional
+        center (radius) in deg visual angle where each target will be placed
+        within its segment, by default 1.0.
+        Can specify as many centers as target_indices;
+        if fewer centers are passed than indices, cycles through intensities
+    intensities_segments : Sequence[float, ...]
+        intensity value for each segment, by default [1.0, 0.0]
+        Can specify as many intensities as n_segments;
+        If fewer intensities are passed than n_segments, cycles through intensities
+    intensity_background : float (optional)
+        intensity value of background, by default 0.5
+    intensity_target : float, or Sequence[float, ...], optional
+        intensity value for each target, by default 0.5.
+        Can specify as many intensities as number of target_indices;
+        If fewer intensities are passed than target_indices, cycles through intensities
+    shape : Sequence[int, int], int, or None (default)
+        shape [height, width] of image, in pixels
 
     Returns
     ----------
-    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "mask"),
+        and additional keys containing stimulus parameters
     """
-    if isinstance(visual_size, (float, int)):
-        visual_size = (visual_size, visual_size)
 
-    shape_px = degrees_to_pixels(np.minimum(visual_size[0], visual_size[1]), ppd) * ssf
-    x = np.arange(-int(shape_px / 2), int(shape_px / 2))
-    img = np.ones([shape_px, shape_px]) * intensity_background
-    mask = np.zeros([shape_px, shape_px])
-    rotate = rotate % (2 * np.pi)
-
-    if target_indices is None:
-        target_indices = ()
-    if isinstance(target_indices, (float, int)):
-        target_indices = (target_indices,)
-    if not isinstance(n_segments, (float, int)):
-        raise ValueError("n_segments should be a single float or int")
-    if not n_segments % 2 == 0:
-        raise ValueError("n_segments should be even-numbered")
-    if not isinstance(target_width, (float, int)):
-        raise ValueError("target_width should be a single float or int")
-    if not isinstance(target_center, (float, int)):
-        raise ValueError("target_center should be a single float or int")
-    if (target_center - target_width / 2) * ppd < 0 or (
-        target_center + target_width / 2
-    ) * ppd > shape_px / 2:
-        raise ValueError("Warning: targets do not fully fit into stimulus")
-    if not isinstance(rotate, (float, int)):
-        raise ValueError("rotate should be a single float or int")
-    if len(intensity_slices) != 2:
-        raise ValueError("vdiscs needs to be a tuple of two floats")
-
-    # Create circle (i.e. radial part)
-    yy, xx = np.meshgrid(x, x)
-    radial = np.sqrt(yy**2.0 + xx**2.0)
-    radial[radial > x.max()] = 0
-    radial[int(shape_px / 2), int(shape_px / 2)] = 1
-
-    tradial = np.copy(radial)
-    tradial[tradial < ppd * (target_center - target_width / 2)] = 0
-    tradial[tradial > ppd * (target_center + target_width / 2)] = 0
-
-    # Calculate angular part
-    angular = np.arctan2(yy, xx)
-    angular = angular - angular.min() + rotate
-    angular[angular > 2 * np.pi] -= 2 * np.pi
-    angular[angular == 0] = 0.0001
-
-    # Divide circle in nparts:
-    theta = np.linspace(0, 2 * np.pi, n_segments + 1)
-    theta[theta > 2 * np.pi] -= 2 * np.pi
-    for i in range(n_segments):
-        ang = np.copy(angular)
-        ang[angular <= theta[i]] = 0
-        ang[angular > theta[i + 1]] = 0
-        indices = ang * radial
-        tindices = ang * tradial
-        img[indices != 0] = intensity_slices[i % 2]
-
-        if i in target_indices:
-            img[tindices != 0] = intensity_target
-            mask[tindices != 0] = target_indices.index(i) + 1
-
-    # downsample the stimulus by local averaging along rows and columns
-    sampler = resize_array(np.eye(img.shape[0] // ssf), (1, ssf))
-    img = np.dot(sampler, np.dot(img, sampler.T)) / ssf**2
-    mask = np.dot(sampler, np.dot(mask, sampler.T)) / ssf**2
-
-    # Pad to desired size
-    img = pad_to_visual_size(
-        img=img, visual_size=visual_size, ppd=ppd, pad_value=intensity_background
+    # Radial grating
+    stim = pinwheel(
+        radius=np.max(visual_size) / 2,
+        frequency=frequency,
+        n_segments=n_segments,
+        segment_width=segment_width,
+        rotation=rotation,
+        intensities=intensities_segments,
+        intensity_background=intensity_background,
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
     )
-    mask = pad_to_visual_size(img=mask, visual_size=visual_size, ppd=ppd, pad_value=0)
 
-    # Target masks should only cover areas where target intensity is exactly vtarget
-    cond = (img != intensity_target) & (mask != 0)
-    mask[cond] = 0
+    # Place target(s)
+    if isinstance(target_indices, (int)):
+        target_indices = [
+            target_indices,
+        ]
+    if isinstance(target_center, (int, float)):
+        target_center = [
+            target_center,
+        ]
+    target_center = itertools.cycle(target_center)
+    if isinstance(target_width, (int, float)):
+        target_width = [
+            target_width,
+        ]
+    target_width = itertools.cycle(target_width)
+    if isinstance(intensity_target, (int, float)):
+        intensity_target = [
+            intensity_target,
+        ]
+    intensity_target = itertools.cycle(intensity_target)
 
-    params = {
-        "shape": img.shape,
-        "visual_size": np.array(img.shape) / ppd,
-        "ppd": ppd,
-        "n_segments": n_segments,
-        "rotate": rotate,
-        "target_width": target_width,
-        "target_center": target_center,
-        "intensity_slices": intensity_slices,
-        "intensity_background": intensity_background,
-        "intensity_target": intensity_target,
-        "target_indices": target_indices,
-        "ssf": ssf,
-    }
+    target_mask = np.zeros_like(stim["mask"])
+    for target_idx, (segment_idx, center, width, intensity) in enumerate(
+        zip(target_indices, target_center, target_width, intensity_target)
+    ):
+        # Draw ring
+        inner_radius = center - (width / 2)
+        outer_radius = center + (width / 2)
+        ring_stim = ring(
+            radii=[inner_radius, outer_radius],
+            intensity=intensity,
+            visual_size=stim["visual_size"],
+            ppd=stim["ppd"],
+            shape=stim["shape"],
+        )
+        target_mask = np.where(
+            (stim["mask"] == segment_idx) & (ring_stim["mask"] == 2), target_idx + 1, target_mask
+        )
+        stim["img"] = np.where(target_mask == (target_idx + 1), intensity, stim["img"])
+    stim["mask"] = target_mask
 
-    return {"img": img, "mask": mask, **params}
+    return stim
 
 
 if __name__ == "__main__":
@@ -149,7 +135,7 @@ if __name__ == "__main__":
     from stimuli.utils import plot_stimuli
 
     stims = {
-        "Radial white": radial_white(),
+        "Radial white": radial_white(visual_size=(8, 8), ppd=32, n_segments=8),
     }
 
     plot_stimuli(stims, mask=False)
