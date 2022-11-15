@@ -86,7 +86,7 @@ def mask_angle(
 
 
 def wedge(
-    angle,
+    width,
     radius,
     rotation=0.0,
     inner_radius=0.0,
@@ -94,14 +94,13 @@ def wedge(
     intensity_background=0.5,
     visual_size=None,
     ppd=None,
-    # supersampling=1,
     shape=None,
 ):
     """Draw a wedge, i.e., segment of a disc
 
     Parameters
     ----------
-    angle : float
+    width : float
         angular-width (in degrees) of segment
     radius : float
         radius of disc, in degrees visual angle
@@ -118,9 +117,6 @@ def wedge(
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
-    supersampling : int (optional)
-        supersampling-factor used for anti-aliasing, by default 5.
-        Warning: produces smoother circles but might introduce gradients that affect vision!
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
 
@@ -132,7 +128,7 @@ def wedge(
     """
 
     # Convert to inner-, outer-angle
-    angles = [0, angle]
+    angles = [0, width]
 
     # Draw disc
     stim = ring(
@@ -179,12 +175,15 @@ def angular_segments(
     rotation : float, optional
         angle of rotation (in degrees) of segments,
         counterclockwise away from 3 o'clock, by default 0.0
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
+    intensities : Sequence[Number, ...]
+        intensity value for each segment, from inside to out, by default [1.0, 0.0]
+        If fewer intensities are passed than number of radii, cycles through intensities
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
 
     Returns
     -------

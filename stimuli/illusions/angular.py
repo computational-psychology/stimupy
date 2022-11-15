@@ -12,7 +12,7 @@ def radial_white(
     frequency=None,
     n_segments=None,
     segment_width=None,
-    rotation=0,
+    rotation=0.0,
     target_indices=[2, 5],
     target_width=1.0,
     target_center=1.0,
