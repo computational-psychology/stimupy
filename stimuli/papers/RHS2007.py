@@ -464,11 +464,11 @@ def WE_radial_thick_small(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "n_segments": n_cycles * 2,
-        "rotate": np.pi / n_cycles / 2,
-        "target_indices": (0, n_cycles),
+        "rotation": 90 - (90 / n_cycles),
+        "target_indices": (1, n_cycles + 1),
         "target_width": 4.0,
         "target_center": 4.5,
-        "intensity_slices": (v3, v1),
+        "intensities_segments": (v3, v1),
         "intensity_background": v2,
         "intensity_target": v2,
     }
@@ -518,11 +518,11 @@ def WE_radial_thick(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "n_segments": n_cycles * 2,
-        "rotate": np.pi / n_cycles / 2,
-        "target_indices": (0, n_cycles),
+        "rotation": 90 - (90 / n_cycles),
+        "target_indices": (1, n_cycles + 1),
         "target_width": 4.0,
         "target_center": 6.0,
-        "intensity_slices": (v3, v1),
+        "intensities_segments": (v3, v1),
         "intensity_background": v2,
         "intensity_target": v2,
     }
@@ -572,11 +572,11 @@ def WE_radial_thin_small(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "n_segments": n_cycles * 2,
-        "rotate": np.pi / n_cycles / 2,
-        "target_indices": (0, n_cycles),
+        "rotation": 90 - (90 / n_cycles),
+        "target_indices": (1, n_cycles + 1),
         "target_width": 2.0,
         "target_center": 4.0,
-        "intensity_slices": (v3, v1),
+        "intensities_segments": (v3, v1),
         "intensity_background": v2,
         "intensity_target": v2,
     }
@@ -626,11 +626,11 @@ def WE_radial_thin(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "n_segments": n_cycles * 2,
-        "rotate": np.pi / n_cycles / 2,
-        "target_indices": (0, n_cycles),
+        "rotation": 90 - (90 / n_cycles),
+        "target_indices": (1, n_cycles + 1),
         "target_width": 2.0,
         "target_center": 6.0,
-        "intensity_slices": (v3, v1),
+        "intensities_segments": (v3, v1),
         "intensity_background": v2,
         "intensity_target": v2,
     }
