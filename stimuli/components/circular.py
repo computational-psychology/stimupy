@@ -380,7 +380,7 @@ def ring(
 annulus = ring
 
 
-def circular_grating(
+def grating(
     shape=None,
     visual_size=None,
     ppd=None,

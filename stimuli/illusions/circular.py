@@ -3,7 +3,7 @@ from copy import deepcopy
 
 import numpy as np
 
-from stimuli.components.circular import circular_grating
+from stimuli.components.circular import grating
 
 
 def circular_white(
@@ -69,7 +69,7 @@ def circular_white(
     """
 
     # Get stim
-    stim = circular_grating(
+    stim = grating(
         visual_size=visual_size,
         ppd=ppd,
         frequency=frequency,
@@ -93,7 +93,7 @@ def circular_white(
         target_indices = [target_indices]
 
     # Redraw stim with target
-    stim = circular_grating(
+    stim = grating(
         visual_size=visual_size,
         ppd=ppd,
         frequency=frequency,
