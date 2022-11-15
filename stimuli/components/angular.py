@@ -358,7 +358,7 @@ def grating(
 
     # Determine angles
     angular_widths = itertools.repeat(segment_width, n_segments - 1)
-    angles = np.array([*itertools.accumulate(angular_widths)] + [360])
+    angles = np.array([0] + [*itertools.accumulate(angular_widths)] + [360])
     angles = sorted(np.unique(angles))
 
     # Draw stim
