@@ -1,3 +1,4 @@
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -18,14 +19,28 @@ def plot_stim(stim, mask=False, stim_name="stim", ax=None):
     if not mask:
         ax.imshow(stim["img"], cmap="gray", vmin=0.0, vmax=1.0)
     else:
-        img, mask = stim["img"], stim["mask"]
+        img, mask = stim["img"], np.ndarray.astype(stim["mask"], int)
         img = np.dstack([img, img, img])
+        mask = np.dstack([mask, mask, mask])
 
-        mask = np.insert(np.expand_dims(mask, 2), 1, 0, axis=2)
-        mask = np.insert(mask, 2, 0, axis=2)
-        final = mask + img
-        final /= np.max(final)
-        ax.imshow(final)
+        if np.unique(mask).size > 10:
+            colormap = plt.cm.tab20
+        else:
+            colormap = plt.cm.tab10
+
+        for idx in np.unique(mask)[1:]:
+            color = colormap.colors[idx]
+            color = np.reshape(color, (1, 1, 3))
+            img = np.where(mask == idx, color, img)
+        ax.imshow(img)
+
+        # Colorbar for mask indices
+        bounds = list(np.unique(mask))
+        norm = mpl.colors.BoundaryNorm(bounds, len(bounds) + 1, extend="both")
+        plt.colorbar(
+            mpl.cm.ScalarMappable(norm=norm, cmap=colormap),
+            ax=ax,
+        )
 
     ax.set_title(label=stim_name)
     return ax
