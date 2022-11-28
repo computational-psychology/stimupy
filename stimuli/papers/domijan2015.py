@@ -37,8 +37,7 @@ facilitation in brightness perception. Frontiers in Human Neuroscience,
 import numpy as np
 
 from stimuli import illusions
-from stimuli.utils import pad_by_visual_size
-from stimuli.utils.resolution import resolve
+from stimuli.utils import pad_by_visual_size, pad_to_shape, resolution
 
 # TODO: Add warning when stimulus shape or visual_size is different from what requested!
 
@@ -82,21 +81,31 @@ SHAPES = {
 }
 
 VSIZES = {
-    "dungeon": np.array(SHAPES["dungeon"]) / PPD,
-    "cube": np.array(SHAPES["cube"]) / PPD,
-    "grating": np.array(SHAPES["grating"]) / PPD,
-    "rings": np.array(SHAPES["rings"]) / PPD,
-    "bullseye": np.array(SHAPES["bullseye"]) / PPD,
-    "simultaneous_brightness_contrast": np.array(SHAPES["simultaneous_brightness_contrast"]) / PPD,
-    "white": np.array(SHAPES["white"]) / PPD,
-    "benary": np.array(SHAPES["benary"]) / PPD,
-    "todorovic": np.array(SHAPES["todorovic"]) / PPD,
-    "checkerboard_contrast_contrast": np.array(SHAPES["checkerboard_contrast_contrast"]) / PPD,
-    "checkerboard": np.array(SHAPES["checkerboard"]) / PPD,
-    "checkerboard_extended": np.array(SHAPES["checkerboard_extended"]) / PPD,
-    "white_yazdanbakhsh": np.array(SHAPES["white_yazdanbakhsh"]) / PPD,
-    "white_anderson": np.array(SHAPES["white_anderson"]) / PPD,
-    "white_howe": np.array(SHAPES["white_howe"]) / PPD,
+    "dungeon": resolution.visual_size_from_shape_ppd(shape=SHAPES["dungeon"], ppd=PPD),
+    "cube": resolution.visual_size_from_shape_ppd(shape=SHAPES["cube"], ppd=PPD),
+    "grating": resolution.visual_size_from_shape_ppd(shape=SHAPES["grating"], ppd=PPD),
+    "rings": resolution.visual_size_from_shape_ppd(shape=SHAPES["rings"], ppd=PPD),
+    "bullseye": resolution.visual_size_from_shape_ppd(shape=SHAPES["bullseye"], ppd=PPD),
+    "simultaneous_brightness_contrast": resolution.visual_size_from_shape_ppd(
+        shape=SHAPES["simultaneous_brightness_contrast"], ppd=PPD
+    ),
+    "white": resolution.visual_size_from_shape_ppd(shape=SHAPES["white"], ppd=PPD),
+    "benary": resolution.visual_size_from_shape_ppd(shape=SHAPES["benary"], ppd=PPD),
+    "todorovic": resolution.visual_size_from_shape_ppd(shape=SHAPES["todorovic"], ppd=PPD),
+    "checkerboard_contrast_contrast": resolution.visual_size_from_shape_ppd(
+        shape=SHAPES["checkerboard_contrast_contrast"], ppd=PPD
+    ),
+    "checkerboard": resolution.visual_size_from_shape_ppd(shape=SHAPES["checkerboard"], ppd=PPD),
+    "checkerboard_extended": resolution.visual_size_from_shape_ppd(
+        shape=SHAPES["checkerboard_extended"], ppd=PPD
+    ),
+    "white_yazdanbakhsh": resolution.visual_size_from_shape_ppd(
+        shape=SHAPES["white_yazdanbakhsh"], ppd=PPD
+    ),
+    "white_anderson": resolution.visual_size_from_shape_ppd(
+        shape=SHAPES["white_anderson"], ppd=PPD
+    ),
+    "white_howe": resolution.visual_size_from_shape_ppd(shape=SHAPES["white_howe"], ppd=PPD),
 }
 
 v1, v2, v3 = 0.0, 0.5, 1.0
@@ -110,7 +119,7 @@ def gen_all(ppd=PPD, skip=False):
         # Get a reference to the actual function
         func = globals()[stim_name]
         try:
-            stim = func()
+            stim = func(ppd=ppd)
 
             # Accumulate
             stims[stim_name] = stim
@@ -124,81 +133,68 @@ def gen_all(ppd=PPD, skip=False):
     return stims
 
 
-def resolve_input(inpt):
-    if isinstance(inpt, (float, int)):
-        inpt = (inpt, None)
-    if inpt is None:
-        inpt = (None, None)
-    if len(inpt) > 2:
-        raise ValueError("argument has too many dimensions")
-    return inpt
+def resolve(shape, visual_size, ppd, original_visual_size):
 
+    # Put in canonical form
+    shape = resolution.validate_shape(shape)
+    visual_size = resolution.validate_visual_size(visual_size)
+    ppd = resolution.validate_ppd(ppd)
 
-def get_conversion_1d(original_shape, shape, visual_size, ppd):
-    if shape is None and (visual_size is None or ppd is None):
-        raise ValueError("You need to define two out of ppd, shape and visual_size")
-    if visual_size is None and (shape is None or ppd is None):
-        raise ValueError("You need to define two out of ppd, shape and visual_size")
-
-    if shape is not None and ppd is not None:
-        conversion_fac = shape / original_shape * PPD / ppd
-
-    if visual_size is not None and ppd is not None:
-        conversion_fac = visual_size / original_shape * PPD
-
-    if shape is not None and visual_size is not None and ppd is not None:
-        ppd_calc = int(np.round(shape / visual_size))
-        assert ppd_calc == ppd
-        conversion_fac = shape / original_shape * PPD / ppd
-
-    if shape is not None and visual_size is not None and ppd is None:
-        ppd = int(np.round(shape / visual_size))
-        conversion_fac = shape / original_shape * PPD / ppd
-    return conversion_fac / PPD
-
-
-def get_conversion_2d(original_shape, shape, visual_size, ppd):
+    # Try to resolve height; get resizing_factor from that
     try:
-        c1 = get_conversion_1d(original_shape[0], shape[0], visual_size[0], ppd)
+        _, visual_angle, ppd1 = resolution.resolve_1D(
+            length=shape.height, visual_angle=visual_size.height, ppd=ppd.vertical
+        )
+        v1 = visual_angle / original_visual_size[0]
     except Exception:
-        c1 = None
+        v1 = None
+        ppd1 = None
 
+    # Try to resolve width; get resizing_factor from that
     try:
-        c2 = get_conversion_1d(original_shape[1], shape[1], visual_size[1], ppd)
+        _, visual_angle, ppd2 = resolution.resolve_1D(
+            length=shape.width, visual_angle=visual_size.width, ppd=ppd.horizontal
+        )
+        v2 = visual_angle / original_visual_size[1]
     except Exception:
-        c2 = c1
+        v2 = None
+        ppd2 = None
 
-    if c1 is None:
-        c1 = c2
-    if c1 != c2:
+    # Same resizing factor?
+    visual_resize = [i for i in (v1, v2) if i is not None]
+    visual_resize = np.unique(visual_resize)
+    if len(visual_resize) != 1:
+        # Different resizing factors -> not allowed
         raise ValueError(
             "Requested shape/visual_size is impossible given the stimulus defaults. "
             "Consider setting either the height or width to None"
         )
-    return c1
+    else:
+        # Same factor, resolve resolution using that
+        visual_resize = visual_resize[0]
+        ppd = np.unique([i for i in (ppd1, ppd2) if i is not None])
+        shape, visual_size, ppd = resolution.resolve(
+            shape, np.array(original_visual_size) * visual_resize, ppd
+        )
+
+    return shape, visual_size, ppd, visual_resize
 
 
-def dungeon(shape=SHAPES["dungeon"], ppd=PPD, visual_size=VSIZES["dungeon"]):
+def dungeon(shape=SHAPES["dungeon"], visual_size=VSIZES["dungeon"], ppd=PPD):
     """Dungeon illusion, Domijan (2015) Fig 6A
 
     Parameters
     ----------
-    shape : None, int or (int/None, int/None)
-        Stimulus shape in deg, (height, width), default: (110, 220)
-        If None, will infer shape from ppd and visual size.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
-    ppd : int
-        Resolution of stimulus in pixels per degree. (default: 10)
-    visual_size : None, int or (int/None, int/None)
-        Stimulus size in degree, (height, width), default: (11, 22)
-        If None, will infer size from shape and ppd.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
+    shape : Sequence[Number, Number], Number, or None
+        shape [height, width] in pixels, default: (110, 220)
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: 10
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: (11, 22)
 
     Returns
     -------
-    dict of str
+    dict[str, Any]
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
 
@@ -209,34 +205,35 @@ def dungeon(shape=SHAPES["dungeon"], ppd=PPD, visual_size=VSIZES["dungeon"]):
         9, 93. https://doi.org/10.3389/fnhum.2015.00093
     """
 
-    shape = resolve_input(shape)
-    visual_size = resolve_input(visual_size)
-    c = get_conversion_2d(SHAPES["dungeon"], shape, visual_size, ppd)
-    shape, visual_size, ppd = resolve(None, np.array(SHAPES["dungeon"]) * c, ppd)
+    # Resolve resolution
+    shape, visual_size, ppd, visual_resize = resolve(shape, visual_size, ppd, VSIZES["dungeon"])
     ppd = ppd[0]
 
+    # Define parameters for each side
     params = {
         "ppd": ppd,
         "n_cells": 5,
         "target_radius": 1,
-        "cell_size": 10.0 * c,
+        "cell_size": 1.0 * visual_resize,
     }
 
+    # Generate each side
     stim1 = illusions.dungeon.dungeon_illusion(
         **params,
         intensity_background=v1,
         intensity_grid=v3,
         intensity_target=v2,
     )
-
     stim2 = illusions.dungeon.dungeon_illusion(
         **params,
         intensity_background=v3,
         intensity_grid=v1,
         intensity_target=v2,
     )
+    stim2["mask"] *= 2
 
-    padding = np.array((9.0, 11.0)) * c
+    # Pad
+    padding = np.array((0.9, 1.1)) * visual_resize
     stim1["img"] = pad_by_visual_size(stim1["img"], padding, ppd, v1)
     stim1["mask"] = pad_by_visual_size(stim1["mask"], padding, ppd, 0)
     stim2["img"] = pad_by_visual_size(stim2["img"], padding, ppd, v3)
@@ -244,41 +241,35 @@ def dungeon(shape=SHAPES["dungeon"], ppd=PPD, visual_size=VSIZES["dungeon"]):
 
     # Stacking
     img = np.hstack([stim1["img"], stim2["img"]])
-    mask = np.hstack([stim1["mask"], stim2["mask"] * 2])
+    mask = np.hstack([stim1["mask"], stim2["mask"]])
 
     params.update(
         original_shape=SHAPES["dungeon"],
         original_ppd=PPD,
-        original_visual_size=np.array(SHAPES["dungeon"]) / PPD,
+        original_visual_size=VSIZES["dungeon"],
         original_range=(1, 9),
         intensity_range=(v1, v3),
-        visual_size=np.array(img.shape) / ppd,
+        visual_size=resolution.visual_size_from_shape_ppd(img.shape, ppd),
         shape=img.shape,
     )
     return {"img": img, "mask": mask, **params}
 
 
-def cube(shape=SHAPES["cube"], ppd=PPD, visual_size=VSIZES["cube"]):
+def cube(shape=SHAPES["cube"], visual_size=VSIZES["cube"], ppd=PPD):
     """Cube illusion, Domijan (2015) Fig 6B
 
     Parameters
     ----------
-    shape : None, int or (int/None, int/None)
-        Stimulus shape in deg, (height, width), default: (100, 200)
-        If None, will infer shape from ppd and visual size.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
-    ppd : int
-        Resolution of stimulus in pixels per degree. (default: 10)
-    visual_size : None, int or (int/None, int/None)
-        Stimulus size in degree, (height, width), default: (10, 20)
-        If None, will infer size from shape and ppd.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
+    shape : Sequence[Number, Number], Number, or None
+        shape [height, width] in pixels, default: (100, 200)
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: 10
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: (10, 20)
 
     Returns
     -------
-    dict of str
+    dict[str, Any]
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
 
@@ -289,22 +280,20 @@ def cube(shape=SHAPES["cube"], ppd=PPD, visual_size=VSIZES["cube"]):
         9, 93. https://doi.org/10.3389/fnhum.2015.00093
     """
 
-    shape = resolve_input(shape)
-    visual_size = resolve_input(visual_size)
-    c = get_conversion_2d(SHAPES["cube"], shape, visual_size, ppd)
-    shape, visual_size, ppd = resolve(None, np.array(SHAPES["cube"]) * c, ppd)
+    # Resolve resolution
+    shape, visual_size, ppd, visual_resize = resolve(shape, visual_size, ppd, VSIZES["cube"])
     ppd = ppd[0]
 
     params = {
         "ppd": ppd,
         "n_cells": 4,
         "target_length": 2,
-        "cell_long": 15.0 * c,
-        "cell_short": 11.0 * c,
-        "corner_cell_width": 18.0 * c,
-        "corner_cell_height": 18.0 * c,
-        "cell_spacing": 5.0 * c,
-        "occlusion_overlap": np.array((7,) * 4) * c,
+        "cell_long": 1.5 * visual_resize,
+        "cell_short": 1.1 * visual_resize,
+        "corner_cell_width": 1.8 * visual_resize,
+        "corner_cell_height": 1.8 * visual_resize,
+        "cell_spacing": 0.5 * visual_resize,
+        "occlusion_overlap": np.array((0.7,) * 4) * visual_resize,
     }
 
     stim1 = illusions.cube.cube_illusion(
@@ -321,15 +310,14 @@ def cube(shape=SHAPES["cube"], ppd=PPD, visual_size=VSIZES["cube"]):
     )
 
     # Padding
-    padding = np.array((9.0, 10.0)) * c
+    padding = np.array((0.9, 1.0)) * visual_resize
     img1 = pad_by_visual_size(stim1["img"], padding, ppd, v1)
     mask1 = pad_by_visual_size(stim1["mask"], padding, ppd, 0)
     img2 = pad_by_visual_size(stim2["img"], padding, ppd, v3)
     mask2 = pad_by_visual_size(stim2["mask"], padding, ppd, 0)
 
     # Increase target index of right stimulus half
-    mask2 = mask2 + 1
-    mask2[mask2 == 1] = 0
+    mask2 *= 2
 
     # Stacking
     img = np.hstack([img1, img2])
@@ -338,36 +326,30 @@ def cube(shape=SHAPES["cube"], ppd=PPD, visual_size=VSIZES["cube"]):
     params.update(
         original_shape=SHAPES["cube"],
         original_ppd=PPD,
-        original_visual_size=np.array(SHAPES["cube"]) / PPD,
+        original_visual_size=VSIZES["cube"],
         original_range=(1, 9),
         intensity_range=(v1, v3),
-        visual_size=np.array(img.shape) / ppd,
+        visual_size=resolution.visual_size_from_shape_ppd(img.shape, ppd),
         shape=img.shape,
     )
     return {"img": img, "mask": mask, **params}
 
 
-def grating(shape=SHAPES["grating"], ppd=PPD, visual_size=VSIZES["grating"]):
+def grating(shape=SHAPES["grating"], visual_size=VSIZES["grating"], ppd=PPD):
     """Grating illusion, Domijan (2015) Fig 6C
 
     Parameters
     ----------
-    shape : None, int or (int/None, int/None)
-        Stimulus shape in deg, (height, width), default: (100, 220)
-        If None, will infer shape from ppd and visual size.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
-    ppd : int
-        Resolution of stimulus in pixels per degree. (default: 10)
-    visual_size : None, int or (int/None, int/None)
-        Stimulus size in degree, (height, width), default: (10, 22)
-        If None, will infer size from shape and ppd.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
+    shape : Sequence[Number, Number], Number, or None
+        shape [height, width] in pixels, default: (100, 220)
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: 10
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: (10, 22)
 
     Returns
     -------
-    dict of str
+    dict[str, Any]
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
 
@@ -378,17 +360,15 @@ def grating(shape=SHAPES["grating"], ppd=PPD, visual_size=VSIZES["grating"]):
         9, 93. https://doi.org/10.3389/fnhum.2015.00093
     """
 
-    shape = resolve_input(shape)
-    visual_size = resolve_input(visual_size)
-    c = get_conversion_2d(SHAPES["grating"], shape, visual_size, ppd)
-    shape, visual_size, ppd = resolve(None, np.array(SHAPES["grating"]) * c, ppd)
+    # Resolve resolution
+    shape, visual_size, ppd, visual_resize = resolve(shape, visual_size, ppd, VSIZES["grating"])
     ppd = ppd[0]
 
     params = {
         "ppd": ppd,
         "n_bars": 9,
         "target_indices": (4,),
-        "bar_shape": (81 * c, 10 * c),
+        "bar_shape": (8.1 * visual_resize, 1.0 * visual_resize),
     }
 
     stim1 = illusions.grating.grating_illusion(
@@ -403,15 +383,14 @@ def grating(shape=SHAPES["grating"], ppd=PPD, visual_size=VSIZES["grating"]):
     )
 
     # Padding
-    padding = np.array(((9.0, 10.0), (9.0, 11.0))) * c
+    padding = np.array(((0.9, 1.0), (0.9, 1.1))) * visual_resize
     img1 = pad_by_visual_size(stim1["img"], padding, ppd, v1)
     mask1 = pad_by_visual_size(stim1["mask"], padding, ppd, 0)
     img2 = pad_by_visual_size(stim2["img"], padding, ppd, v3)
     mask2 = pad_by_visual_size(stim2["mask"], padding, ppd, 0)
 
     # Increase target index of right stimulus half
-    mask2 = mask2 + 1
-    mask2[mask2 == 1] = 0
+    mask2 *= 2
 
     # Stacking
     img = np.hstack([img1, img2])
@@ -420,36 +399,30 @@ def grating(shape=SHAPES["grating"], ppd=PPD, visual_size=VSIZES["grating"]):
     params.update(
         original_shape=SHAPES["grating"],
         original_ppd=PPD,
-        original_visual_size=np.array(SHAPES["grating"]) / PPD,
+        original_visual_size=VSIZES["grating"],
         original_range=(1, 9),
         intensity_range=(v1, v3),
-        visual_size=np.array(img.shape) / ppd,
+        visual_size=resolution.visual_size_from_shape_ppd(img.shape, ppd),
         shape=img.shape,
     )
     return {"img": img, "mask": mask, **params}
 
 
-def rings(shape=SHAPES["rings"], ppd=PPD, visual_size=VSIZES["rings"]):
+def rings(shape=SHAPES["rings"], visual_size=VSIZES["rings"], ppd=PPD):
     """Ring patterns, Domijan (2015) Fig 7A
 
     Parameters
     ----------
-    shape : None, int or (int/None, int/None)
-        Stimulus shape in deg, (height, width), default: (100, 200)
-        If None, will infer shape from ppd and visual size.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
-    ppd : int
-        Resolution of stimulus in pixels per degree. (default: 10)
-    visual_size : None, int or (int/None, int/None)
-        Stimulus size in degree, (height, width), default: (10, 20)
-        If None, will infer size from shape and ppd.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
+    shape : Sequence[Number, Number], Number, or None
+        shape [height, width] in pixels, default: (100, 200)
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: 10
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: (10, 20)
 
     Returns
     -------
-    dict of str
+    dict[str, Any]
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
 
@@ -460,16 +433,14 @@ def rings(shape=SHAPES["rings"], ppd=PPD, visual_size=VSIZES["rings"]):
         9, 93. https://doi.org/10.3389/fnhum.2015.00093
     """
 
-    shape = resolve_input(shape)
-    visual_size = resolve_input(visual_size)
-    c = get_conversion_2d(SHAPES["rings"], shape, visual_size, ppd)
-    shape, visual_size, ppd = resolve(None, np.array(SHAPES["rings"]) * c, ppd)
+    # Resolve resolution
+    shape, visual_size, ppd, visual_resize = resolve(shape, visual_size, ppd, VSIZES["rings"])
     ppd = ppd[0]
 
     params = {
         "ppd": ppd,
         "n_rings": 8,
-        "ring_width": 5.0 * c,
+        "ring_width": 0.5 * visual_resize,
     }
 
     stim1 = illusions.rings.ring_stimulus(
@@ -486,27 +457,25 @@ def rings(shape=SHAPES["rings"], ppd=PPD, visual_size=VSIZES["rings"]):
     )
 
     # Padding
-    padding = np.array((9.0, 10.0)) * c
-    img1 = pad_by_visual_size(stim1["img"], padding, ppd, v1)
-    mask1 = pad_by_visual_size(stim1["mask"], padding, ppd, 0)
-    img2 = pad_by_visual_size(stim2["img"], padding, ppd, v1)
-    mask2 = pad_by_visual_size(stim2["mask"], padding, ppd, 0)
+    stim1["img"] = pad_to_shape(stim1["img"], shape=np.array(shape) / (1, 2), pad_value=v1)
+    stim1["mask"] = pad_to_shape(stim1["mask"], shape=np.array(shape) / (1, 2), pad_value=0)
+    stim2["img"] = pad_to_shape(stim2["img"], shape=np.array(shape) / (1, 2), pad_value=v1)
+    stim2["mask"] = pad_to_shape(stim2["mask"], shape=np.array(shape) / (1, 2), pad_value=0)
 
     # Increase target index of right stimulus half
-    mask2 = mask2 + 1
-    mask2[mask2 == 1] = 0
+    stim2["mask"] *= 2
 
     # Stacking
-    img = np.hstack([img1, img2])
-    mask = np.hstack([mask1, mask2])
+    img = np.hstack([stim1["img"], stim2["img"]])
+    mask = np.hstack([stim1["mask"], stim2["mask"]])
 
     params.update(
         original_shape=SHAPES["rings"],
         original_ppd=PPD,
-        original_visual_size=np.array(SHAPES["rings"]) / PPD,
+        original_visual_size=VSIZES["rings"],
         original_range=(1, 9),
         intensity_range=(v1, v3),
-        visual_size=np.array(img.shape) / ppd,
+        visual_size=resolution.visual_size_from_shape_ppd(img.shape, ppd),
         shape=img.shape,
         target_idx_left=4,
         target_idx_right=3,
@@ -514,27 +483,21 @@ def rings(shape=SHAPES["rings"], ppd=PPD, visual_size=VSIZES["rings"]):
     return {"img": img, "mask": mask, **params}
 
 
-def bullseye(shape=SHAPES["bullseye"], ppd=PPD, visual_size=VSIZES["bullseye"]):
+def bullseye(shape=SHAPES["bullseye"], visual_size=VSIZES["bullseye"], ppd=PPD):
     """Bullseye illusion, Domijan (2015) Fig 7B
 
     Parameters
     ----------
-    shape : None, int or (int/None, int/None)
-        Stimulus shape in deg, (height, width), default: (100, 200)
-        If None, will infer shape from ppd and visual size.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
-    ppd : int
-        Resolution of stimulus in pixels per degree. (default: 10)
-    visual_size : None, int or (int/None, int/None)
-        Stimulus size in degree, (height, width), default: (10, 20)
-        If None, will infer size from shape and ppd.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
+    shape : Sequence[Number, Number], Number, or None
+        shape [height, width] in pixels, default: (100, 200)
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: 10
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: (10, 20)
 
     Returns
     -------
-    dict of str
+    dict[str, Any]
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
 
@@ -545,16 +508,14 @@ def bullseye(shape=SHAPES["bullseye"], ppd=PPD, visual_size=VSIZES["bullseye"]):
         9, 93. https://doi.org/10.3389/fnhum.2015.00093
     """
 
-    shape = resolve_input(shape)
-    visual_size = resolve_input(visual_size)
-    c = get_conversion_2d(SHAPES["bullseye"], shape, visual_size, ppd)
-    shape, visual_size, ppd = resolve(None, np.array(SHAPES["bullseye"]) * c, ppd)
+    # Resolve resolution
+    shape, visual_size, ppd, visual_resize = resolve(shape, visual_size, ppd, VSIZES["bullseye"])
     ppd = ppd[0]
 
     params = {
         "ppd": ppd,
         "n_rings": 8,
-        "ring_width": 5.0 * c,
+        "ring_width": 0.5 * visual_resize,
     }
 
     stim1 = illusions.bullseye.bullseye_stimulus(
@@ -569,27 +530,25 @@ def bullseye(shape=SHAPES["bullseye"], ppd=PPD, visual_size=VSIZES["bullseye"]):
     )
 
     # Padding
-    padding = np.array((9.0, 10.0)) * c
-    img1 = pad_by_visual_size(stim1["img"], padding, ppd, v1)
-    mask1 = pad_by_visual_size(stim1["mask"], padding, ppd, 0)
-    img2 = pad_by_visual_size(stim2["img"], padding, ppd, v1)
-    mask2 = pad_by_visual_size(stim2["mask"], padding, ppd, 0)
+    stim1["img"] = pad_to_shape(stim1["img"], shape=np.array(shape) / (1, 2), pad_value=v1)
+    stim1["mask"] = pad_to_shape(stim1["mask"], shape=np.array(shape) / (1, 2), pad_value=0)
+    stim2["img"] = pad_to_shape(stim2["img"], shape=np.array(shape) / (1, 2), pad_value=v1)
+    stim2["mask"] = pad_to_shape(stim2["mask"], shape=np.array(shape) / (1, 2), pad_value=0)
 
     # Increase target index of right stimulus half
-    mask2 = mask2 + 1
-    mask2[mask2 == 1] = 0
+    stim2["mask"] *= 2
 
     # Stacking
-    img = np.hstack([img1, img2])
-    mask = np.hstack([mask1, mask2])
+    img = np.hstack([stim1["img"], stim2["img"]])
+    mask = np.hstack([stim1["mask"], stim2["mask"]])
 
     params.update(
         original_shape=SHAPES["bullseye"],
         original_ppd=PPD,
-        original_visual_size=np.array(SHAPES["bullseye"]) / PPD,
+        original_visual_size=VSIZES["bullseye"],
         original_range=(1, 9),
         intensity_range=(v1, v3),
-        visual_size=np.array(img.shape) / ppd,
+        visual_size=resolution.visual_size_from_shape_ppd(img.shape, ppd),
         shape=img.shape,
     )
     return {"img": img, "mask": mask, **params}
@@ -597,29 +556,23 @@ def bullseye(shape=SHAPES["bullseye"], ppd=PPD, visual_size=VSIZES["bullseye"]):
 
 def simultaneous_brightness_contrast(
     shape=SHAPES["simultaneous_brightness_contrast"],
-    ppd=PPD,
     visual_size=VSIZES["simultaneous_brightness_contrast"],
+    ppd=PPD,
 ):
     """Simultaneous brightness contrast, Domijan (2015) Fig 7C
 
     Parameters
     ----------
-    shape : None, int or (int/None, int/None)
-        Stimulus shape in deg, (height, width), default: (100, 200)
-        If None, will infer shape from ppd and visual size.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
-    ppd : int
-        Resolution of stimulus in pixels per degree. (default: 10)
-    visual_size : None, int or (int/None, int/None)
-        Stimulus size in degree, (height, width), default: (10, 20)
-        If None, will infer size from shape and ppd.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
+    shape : Sequence[Number, Number], Number, or None
+        shape [height, width] in pixels, default: (100, 200)
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: 10
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: (10, 20)
 
     Returns
     -------
-    dict of str
+    dict[str, Any]
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
 
@@ -630,19 +583,17 @@ def simultaneous_brightness_contrast(
         9, 93. https://doi.org/10.3389/fnhum.2015.00093
     """
 
-    shape = resolve_input(shape)
-    visual_size = resolve_input(visual_size)
-    c = get_conversion_2d(SHAPES["simultaneous_brightness_contrast"], shape, visual_size, ppd)
-    shape, visual_size, ppd = resolve(
-        None, np.array(SHAPES["simultaneous_brightness_contrast"]) * c, ppd
+    # Resolve resolution
+    shape, visual_size, ppd, visual_resize = resolve(
+        shape, visual_size, ppd, VSIZES["simultaneous_brightness_contrast"]
     )
     ppd = ppd[0]
 
     params = {
         "visual_size": visual_size[0],
         "ppd": ppd,
-        "target_size": (21 * c, 21 * c),
-        "target_pos": (39 * c, 39 * c),
+        "target_size": (2.1 * visual_resize, 2.1 * visual_resize),
+        "target_pos": (3.9 * visual_resize, 3.9 * visual_resize),
     }
 
     stim1 = illusions.sbc.simultaneous_contrast_generalized(
@@ -657,48 +608,41 @@ def simultaneous_brightness_contrast(
     )
 
     # Increase target index of right stimulus half
-    mask2 = stim2["mask"] + 1
-    mask2[mask2 == 1] = 0
+    stim2["mask"] *= 2
 
     # Stacking
     img = np.hstack([stim1["img"], stim2["img"]])
-    mask = np.hstack([stim1["mask"], mask2])
+    mask = np.hstack([stim1["mask"], stim2["mask"]])
 
     params.update(
         original_shape=SHAPES["simultaneous_brightness_contrast"],
         original_ppd=PPD,
-        original_visual_size=np.array(SHAPES["simultaneous_brightness_contrast"]) / PPD,
+        original_visual_size=VSIZES["simultaneous_brightness_contrast"],
         original_range=(1, 9),
         intensity_range=(v1, v3),
-        visual_size=np.array(img.shape) / ppd,
+        visual_size=resolution.visual_size_from_shape_ppd(img.shape, ppd),
         shape=img.shape,
     )
     return {"img": img, "mask": mask, **params}
 
 
-def white(shape=SHAPES["white"], ppd=PPD, visual_size=VSIZES["white"], pad=PAD):
+def white(shape=SHAPES["white"], visual_size=VSIZES["white"], ppd=PPD, pad=PAD):
     """White stimulus, Domijan (2015) Fig 8A
 
     Parameters
     ----------
-    shape : None, int or (int/None, int/None)
-        Stimulus shape in deg, (height, width), default: (80, 80)
-        If None, will infer shape from ppd and visual size.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
-    ppd : int
-        Resolution of stimulus in pixels per degree. (default: 10)
-    visual_size : None, int or (int/None, int/None)
-        Stimulus size in degree, (height, width), default: (80, 80)
-        If None, will infer size from shape and ppd.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
+    shape : Sequence[Number, Number], Number, or None
+        shape [height, width] in pixels, default: (80, 80)
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: 10
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: (8, 8)
     pad : bool
         If True, include original padding (default: False)
 
     Returns
     -------
-    dict of str
+    dict[str, Any]
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
 
@@ -709,10 +653,8 @@ def white(shape=SHAPES["white"], ppd=PPD, visual_size=VSIZES["white"], pad=PAD):
         9, 93. https://doi.org/10.3389/fnhum.2015.00093
     """
 
-    shape = resolve_input(shape)
-    visual_size = resolve_input(visual_size)
-    c = get_conversion_2d(SHAPES["white"], shape, visual_size, ppd)
-    shape, visual_size, ppd = resolve(None, np.array(SHAPES["white"]) * c, ppd)
+    # Resolve resolution
+    shape, visual_size, ppd, visual_resize = resolve(shape, visual_size, ppd, VSIZES["white"])
     ppd = ppd[0]
 
     params = {
@@ -720,7 +662,7 @@ def white(shape=SHAPES["white"], ppd=PPD, visual_size=VSIZES["white"], pad=PAD):
         "ppd": ppd,
         "grating_frequency": 4.0 / visual_size[1],
         "target_indices": (2, 5),
-        "target_size": 21 * c,
+        "target_size": 2.1 * visual_resize,
         "period": "full",
     }
 
@@ -731,50 +673,43 @@ def white(shape=SHAPES["white"], ppd=PPD, visual_size=VSIZES["white"], pad=PAD):
     )
 
     if pad:
-        padding = np.array((9.0, 11.0)) * c
+        padding = np.array((0.9, 1.1)) * visual_resize
         stim["img"] = pad_by_visual_size(stim["img"], padding, ppd, pad_value=v2)
         stim["mask"] = pad_by_visual_size(stim["mask"], padding, ppd, pad_value=0)
         params["padding"] = padding
 
-    original_shape_np = np.array(SHAPES["white"])
-    original_visual_np = np.array(original_shape_np) / PPD
-    original_shape = original_shape_np + 20
-    original_visual_size = original_shape / PPD
+    original_shape_np = SHAPES["white"]
+    original_shape = np.array(original_shape_np) + 20
+    original_visual_size = resolution.visual_size_from_shape_ppd(original_shape, PPD)
     params.update(
         original_shape=original_shape,
         original_ppd=PPD,
         original_visual_size=original_visual_size,
         original_shape_no_padding=original_shape_np,
-        original_visual_size_no_padding=original_visual_np,
+        original_visual_size_no_padding=VSIZES["white"],
         original_range=(1, 9),
         intensity_range=(v1, v3),
-        visual_size=np.array(stim["img"].shape) / ppd,
+        visual_size=resolution.visual_size_from_shape_ppd(stim["img"].shape, ppd),
         shape=stim["img"].shape,
     )
     return {**stim, **params}
 
 
-def benary(shape=SHAPES["benary"], ppd=PPD, visual_size=VSIZES["benary"]):
+def benary(shape=SHAPES["benary"], visual_size=VSIZES["benary"], ppd=PPD):
     """Benarys cross, Domijan (2015) Fig 8B
 
     Parameters
     ----------
-    shape : None, int or (int/None, int/None)
-        Stimulus shape in deg, (height, width), default: (100, 100)
-        If None, will infer shape from ppd and visual size.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
-    ppd : int
-        Resolution of stimulus in pixels per degree. (default: 10)
-    visual_size : None, int or (int/None, int/None)
-        Stimulus size in degree, (height, width), default: (10, 10)
-        If None, will infer size from shape and ppd.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
+    shape : Sequence[Number, Number], Number, or None
+        shape [height, width] in pixels, default: (100, 100)
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: 10
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: (10, 10)
 
     Returns
     -------
-    dict of str
+    dict[str, Any]
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
 
@@ -785,17 +720,15 @@ def benary(shape=SHAPES["benary"], ppd=PPD, visual_size=VSIZES["benary"]):
         9, 93. https://doi.org/10.3389/fnhum.2015.00093
     """
 
-    shape = resolve_input(shape)
-    visual_size = resolve_input(visual_size)
-    c = get_conversion_2d(SHAPES["benary"], shape, visual_size, ppd)
-    shape, visual_size, ppd = resolve(None, np.array(SHAPES["benary"]) * c, ppd)
+    # Resolve resolution
+    shape, visual_size, ppd, visual_resize = resolve(shape, visual_size, ppd, VSIZES["benary"])
     ppd = ppd[0]
 
     params = {
-        "visual_size": 81 * c,
+        "visual_size": 8.1 * visual_resize,
         "ppd": ppd,
-        "cross_thickness": 21 * c,
-        "target_size": 11 * c,
+        "cross_thickness": 2.1 * visual_resize,
+        "target_size": 1.1 * visual_resize,
     }
 
     stim = illusions.benary_cross.benarys_cross_rectangles(
@@ -806,43 +739,37 @@ def benary(shape=SHAPES["benary"], ppd=PPD, visual_size=VSIZES["benary"]):
     )
 
     # Padding
-    padding = np.array((9, 10.0)) * c
+    padding = np.array((0.9, 1.0)) * visual_resize
     stim["img"] = pad_by_visual_size(stim["img"], padding, ppd, pad_value=1.0)
     stim["mask"] = pad_by_visual_size(stim["mask"], padding, ppd, pad_value=0)
 
     params.update(
         original_shape=SHAPES["benary"],
         original_ppd=PPD,
-        original_visual_size=np.array(SHAPES["benary"]) / PPD,
+        original_visual_size=VSIZES["benary"],
         original_range=(1, 9),
         intensity_range=(v1, v3),
-        visual_size=np.array(stim["img"].shape) / ppd,
+        visual_size=resolution.visual_size_from_shape_ppd(stim["img"].shape, ppd),
         shape=stim["img"].shape,
     )
     return {**stim, **params}
 
 
-def todorovic(shape=SHAPES["todorovic"], ppd=PPD, visual_size=VSIZES["todorovic"]):
+def todorovic(shape=SHAPES["todorovic"], visual_size=VSIZES["todorovic"], ppd=PPD):
     """Todorovic stimulus, Domijan (2015) Fig 9A
 
     Parameters
     ----------
-    shape : None, int or (int/None, int/None)
-        Stimulus shape in deg, (height, width), default: (100, 200)
-        If None, will infer shape from ppd and visual size.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
-    ppd : int
-        Resolution of stimulus in pixels per degree. (default: 10)
-    visual_size : None, int or (int/None, int/None)
-        Stimulus size in degree, (height, width), default: (10, 20)
-        If None, will infer size from shape and ppd.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
+    shape : Sequence[Number, Number], Number, or None
+        shape [height, width] in pixels, default: (100, 200)
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: 10
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: (10, 20)
 
     Returns
     -------
-    dict of str
+    dict[str, Any]
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
 
@@ -854,18 +781,16 @@ def todorovic(shape=SHAPES["todorovic"], ppd=PPD, visual_size=VSIZES["todorovic"
     """
 
     # Note: Compared to original, targets are moved by one pixel
-    shape = resolve_input(shape)
-    visual_size = resolve_input(visual_size)
-    c = get_conversion_2d(SHAPES["todorovic"], shape, visual_size, ppd)
-    shape, visual_size, ppd = resolve(None, np.array(SHAPES["todorovic"]) * c, ppd)
+    # Resolve resolution
+    shape, visual_size, ppd, visual_resize = resolve(shape, visual_size, ppd, VSIZES["todorovic"])
     ppd = ppd[0]
 
     params = {
         "visual_size": visual_size[0],
         "ppd": ppd,
-        "target_size": 41 * c,
-        "covers_size": 31 * c,
-        "covers_offset": 20 * c,
+        "target_size": 4.1000000000000005 * visual_resize,
+        "covers_size": 3.1 * visual_resize,
+        "covers_offset": 2.0 * visual_resize,
     }
 
     stim1 = illusions.todorovic.todorovic_rectangle(
@@ -882,20 +807,19 @@ def todorovic(shape=SHAPES["todorovic"], ppd=PPD, visual_size=VSIZES["todorovic"
     )
 
     # Increase target index of right stimulus half
-    mask2 = stim2["mask"] + 1
-    mask2[mask2 == 1] = 0
+    stim2["mask"] *= 2
 
     # Stacking
     img = np.hstack([stim1["img"], stim2["img"]])
-    mask = np.hstack([stim1["mask"], mask2])
+    mask = np.hstack([stim1["mask"], stim2["mask"]])
 
     params.update(
         original_shape=SHAPES["todorovic"],
         original_ppd=PPD,
-        original_visual_size=np.array(SHAPES["todorovic"]) / PPD,
+        original_visual_size=VSIZES["todorovic"],
         original_range=(1, 9),
         intensity_range=(v1, v3),
-        visual_size=np.array(img.shape) / ppd,
+        visual_size=resolution.visual_size_from_shape_ppd(img.shape, ppd),
         shape=img.shape,
     )
     return {"img": img, "mask": mask, **params}
@@ -903,32 +827,26 @@ def todorovic(shape=SHAPES["todorovic"], ppd=PPD, visual_size=VSIZES["todorovic"
 
 def checkerboard_contrast_contrast(
     shape=SHAPES["checkerboard_contrast_contrast"],
-    ppd=PPD,
     visual_size=VSIZES["checkerboard_contrast_contrast"],
+    ppd=PPD,
     pad=PAD,
 ):
     """Checkerboard contrast-contrast effect, Domijan (2015) Fig 9B
 
     Parameters
     ----------
-    shape : None, int or (int/None, int/None)
-        Stimulus shape in deg, (height, width), default: (80, 160)
-        If None, will infer shape from ppd and visual size.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
-    ppd : int
-        Resolution of stimulus in pixels per degree. (default: 10)
-    visual_size : None, int or (int/None, int/None)
-        Stimulus size in degree, (height, width), default: (8, 16)
-        If None, will infer size from shape and ppd.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
+    shape : Sequence[Number, Number], Number, or None
+        shape [height, width] in pixels, default: (80, 160)
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: 10
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: (8, 16)
     pad : bool
         If True, include original padding (default: False)
 
     Returns
     -------
-    dict of str
+    dict[str, Any]
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
 
@@ -939,19 +857,14 @@ def checkerboard_contrast_contrast(
         9, 93. https://doi.org/10.3389/fnhum.2015.00093
     """
 
-    shape = resolve_input(shape)
-    visual_size = resolve_input(visual_size)
-    conversion_fac = get_conversion_2d(
-        SHAPES["checkerboard_contrast_contrast"], shape, visual_size, ppd
+    # Resolve resolution
+    shape, visual_size, ppd, visual_resize = resolve(
+        shape, visual_size, ppd, VSIZES["checkerboard_contrast_contrast"]
     )
-    shape, visual_size, ppd = resolve(
-        None, np.array(SHAPES["checkerboard_contrast_contrast"]) * conversion_fac, ppd
-    )
-    ppd = ppd[0]
 
     params = {
         "ppd": ppd,
-        "check_visual_size": 10 * conversion_fac,
+        "check_visual_size": 1.0 * visual_resize,
         "target_shape": (4, 4),
         "tau": 0.5,
         "alpha": 0.5,
@@ -959,48 +872,51 @@ def checkerboard_contrast_contrast(
         "intensity_high": v3,
     }
 
+    # Large checkerboard, embedded target region
     stim1 = illusions.checkerboards.contrast_contrast(
         **params,
         board_shape=(8, 8),
     )
 
+    # Isolated target region (smaller checkerboard)
     stim2 = illusions.checkerboards.contrast_contrast(
         **params,
         board_shape=(4, 4),
     )
 
-    # Increase target index of right stimulus half
-    img2, mask2 = stim2["img"], stim2["mask"] + 1
-    mask2[mask2 == 1] = 0
+    # Put smaller checkerboard on background (equally large as large checkerboard)
+    stim2["img"] = pad_to_shape(stim2["img"], stim1["img"].shape, pad_value=v2)
+    stim2["mask"] = pad_to_shape(stim2["mask"], stim1["mask"].shape, pad_value=0)
 
-    # Padding
-    padding = 20.0 * conversion_fac
+    # Increase target index of right stimulus half
+    stim2["mask"] *= 2
+
+    # Overall padding
     if pad:
-        padding1 = np.array((9.0, 11.0)) * conversion_fac
-        padding = np.array(padding1) + padding
-        stim1["img"] = pad_by_visual_size(stim1["img"], padding1, ppd=ppd, pad_value=v2)
-        stim1["mask"] = pad_by_visual_size(stim1["mask"], padding1, ppd=ppd, pad_value=0)
-        params["padding"] = padding1
-    img2 = pad_by_visual_size(img2, padding, ppd=ppd, pad_value=v2)
-    mask2 = pad_by_visual_size(mask2, padding, ppd=ppd, pad_value=0)
+        padding = np.array((0.9, 1.1)) * visual_resize
+        stim1["img"] = pad_by_visual_size(stim1["img"], padding, ppd=ppd, pad_value=v2)
+        stim1["mask"] = pad_by_visual_size(stim1["mask"], padding, ppd=ppd, pad_value=0)
+        stim2["img"] = pad_by_visual_size(stim2["img"], padding, ppd=ppd, pad_value=v2)
+        stim2["mask"] = pad_by_visual_size(stim2["mask"], padding, ppd=ppd, pad_value=0)
+        params["padding"] = padding
 
     # Stacking
-    img = np.hstack([stim1["img"], img2])
-    mask = np.hstack([stim1["mask"], mask2])
+    img = np.hstack([stim1["img"], stim2["img"]])
+    mask = np.hstack([stim1["mask"], stim2["mask"]])
 
+    # Output
     original_shape_np = np.array(SHAPES["checkerboard_contrast_contrast"])
-    original_visual_np = np.array(original_shape_np) / PPD
-    original_shape = original_shape_np + 20
-    original_visual_size = original_shape / PPD
+    original_shape = original_shape_np + np.array((20, 40))
+    original_visual_size = resolution.visual_size_from_shape_ppd(original_shape, PPD)
     params.update(
         original_shape=original_shape,
         original_ppd=PPD,
         original_visual_size=original_visual_size,
         original_shape_no_padding=original_shape_np,
-        original_visual_size_no_padding=original_visual_np,
+        original_visual_size_no_padding=VSIZES["checkerboard_contrast_contrast"],
         original_range=(1, 9),
         intensity_range=(v1, v3),
-        visual_size=np.array(img.shape) / ppd,
+        visual_size=resolution.visual_size_from_shape_ppd(img.shape, ppd),
         shape=img.shape,
         board_shape_left=(8, 8),
         board_shape_right=(4, 4),
@@ -1010,30 +926,24 @@ def checkerboard_contrast_contrast(
 
 
 def checkerboard(
-    shape=SHAPES["checkerboard"], ppd=PPD, visual_size=VSIZES["checkerboard"], pad=PAD
+    shape=SHAPES["checkerboard"], visual_size=VSIZES["checkerboard"], ppd=PPD, pad=PAD
 ):
     """Classic checkerboard contrast with single-check targets, Domijan (2015) Fig 10A
 
     Parameters
     ----------
-    shape : None, int or (int/None, int/None)
-        Stimulus shape in deg, (height, width), default: (80, 80)
-        If None, will infer shape from ppd and visual size.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
-    ppd : int
-        Resolution of stimulus in pixels per degree. (default: 10)
-    visual_size : None, int or (int/None, int/None)
-        Stimulus size in degree, (height, width), default: (8, 8)
-        If None, will infer size from shape and ppd.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
+    shape : Sequence[Number, Number], Number, or None
+        shape [height, width] in pixels, default: (80, 80)
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: 10
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: (8, 8)
     pad : bool
         If True, include original padding (default: False)
 
     Returns
     -------
-    dict of str
+    dict[str, Any]
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
 
@@ -1044,16 +954,15 @@ def checkerboard(
         9, 93. https://doi.org/10.3389/fnhum.2015.00093
     """
 
-    shape = resolve_input(shape)
-    visual_size = resolve_input(visual_size)
-    conversion_fac = get_conversion_2d(SHAPES["checkerboard"], shape, visual_size, ppd)
-    shape, visual_size, ppd = resolve(None, np.array(SHAPES["checkerboard"]) * conversion_fac, ppd)
-    ppd = ppd[0]
+    # Resolve resolution
+    shape, visual_size, ppd, visual_resize = resolve(
+        shape, visual_size, ppd, VSIZES["checkerboard"]
+    )
 
     params = {
         "ppd": ppd,
         "board_shape": (8, 8),
-        "check_visual_size": (10 * conversion_fac, 10 * conversion_fac),
+        "check_visual_size": (1.0 * visual_resize, 1.0 * visual_resize),
         "targets": [(3, 2), (5, 5)],
         "extend_targets": False,
         "intensity_low": 0,
@@ -1063,24 +972,23 @@ def checkerboard(
     stim = illusions.checkerboards.checkerboard(**params)
 
     if pad:
-        padding = np.array((9.0, 11.0)) * conversion_fac
+        padding = np.array((0.9, 1.1)) * visual_resize
         stim["img"] = pad_by_visual_size(stim["img"], padding, ppd=ppd, pad_value=v2)
         stim["mask"] = pad_by_visual_size(stim["mask"], padding, ppd=ppd, pad_value=0)
         params["padding"] = padding
 
-    original_shape_np = np.array(SHAPES["checkerboard"])
-    original_visual_np = np.array(original_shape_np) / PPD
-    original_shape = original_shape_np + 20
-    original_visual_size = original_shape / PPD
+    original_shape_np = SHAPES["checkerboard"]
+    original_shape = np.array(original_shape_np) + 20
+    original_visual_size = resolution.visual_size_from_shape_ppd(original_shape, PPD)
     params.update(
         original_shape=original_shape,
         original_ppd=PPD,
         original_visual_size=original_visual_size,
         original_shape_no_padding=original_shape_np,
-        original_visual_size_no_padding=original_visual_np,
+        original_visual_size_no_padding=VSIZES["checkerboard"],
         original_range=(1, 9),
         intensity_range=(v1, v3),
-        visual_size=np.array(stim["img"].shape) / ppd,
+        visual_size=resolution.visual_size_from_shape_ppd(stim["img"].shape, ppd),
         shape=stim["img"].shape,
     )
 
@@ -1089,32 +997,26 @@ def checkerboard(
 
 def checkerboard_extended(
     shape=SHAPES["checkerboard_extended"],
-    ppd=PPD,
     visual_size=VSIZES["checkerboard_extended"],
+    ppd=PPD,
     pad=PAD,
 ):
     """Checkerboard contrast with cross-like targets, Domijan (2015) Fig 10B
 
     Parameters
     ----------
-    shape : None, int or (int/None, int/None)
-        Stimulus shape in deg, (height, width), default: (80, 80)
-        If None, will infer shape from ppd and visual size.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
-    ppd : int
-        Resolution of stimulus in pixels per degree. (default: 10)
-    visual_size : None, int or (int/None, int/None)
-        Stimulus size in degree, (height, width), default: (8, 8)
-        If None, will infer size from shape and ppd.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
+    shape : Sequence[Number, Number], Number, or None
+        shape [height, width] in pixels, default: (80, 80)
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: 10
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: (8, 8)
     pad : bool
         If True, include original padding (default: False)
 
     Returns
     -------
-    dict of str
+    dict[str, Any]
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
 
@@ -1125,18 +1027,15 @@ def checkerboard_extended(
         9, 93. https://doi.org/10.3389/fnhum.2015.00093
     """
 
-    shape = resolve_input(shape)
-    visual_size = resolve_input(visual_size)
-    conversion_fac = get_conversion_2d(SHAPES["checkerboard_extended"], shape, visual_size, ppd)
-    shape, visual_size, ppd = resolve(
-        None, np.array(SHAPES["checkerboard_extended"]) * conversion_fac, ppd
+    # Resolve resolution
+    shape, visual_size, ppd, visual_resize = resolve(
+        shape, visual_size, ppd, VSIZES["checkerboard_extended"]
     )
-    ppd = ppd[0]
 
     params = {
         "ppd": ppd,
         "board_shape": (8, 8),
-        "check_visual_size": (10 * conversion_fac, 10 * conversion_fac),
+        "check_visual_size": (1.0 * visual_resize, 1.0 * visual_resize),
         "targets": [(3, 2), (5, 5)],
         "extend_targets": True,
         "intensity_low": 0,
@@ -1146,24 +1045,23 @@ def checkerboard_extended(
     stim = illusions.checkerboards.checkerboard(**params)
 
     if pad:
-        padding = np.array((9.0, 11.0)) * conversion_fac
+        padding = np.array((0.9, 1.1)) * visual_resize
         stim["img"] = pad_by_visual_size(stim["img"], padding, ppd=ppd, pad_value=v2)
         stim["mask"] = pad_by_visual_size(stim["mask"], padding, ppd=ppd, pad_value=0)
         params["padding"] = padding
 
-    original_shape_np = np.array(SHAPES["checkerboard_extended"])
-    original_visual_np = np.array(original_shape_np) / PPD
-    original_shape = original_shape_np + 20
-    original_visual_size = original_shape / PPD
+    original_shape_np = SHAPES["checkerboard_extended"]
+    original_shape = np.array(original_shape_np) + 20
+    original_visual_size = resolution.visual_size_from_shape_ppd(original_shape, PPD)
     params.update(
         original_shape=original_shape,
         original_ppd=PPD,
         original_visual_size=original_visual_size,
         original_shape_no_padding=original_shape_np,
-        original_visual_size_no_padding=original_visual_np,
+        original_visual_size_no_padding=VSIZES["checkerboard_extended"],
         original_range=(1, 9),
         intensity_range=(v1, v3),
-        visual_size=np.array(stim["img"].shape) / ppd,
+        visual_size=resolution.visual_size_from_shape_ppd(stim["img"].shape, ppd),
         shape=stim["img"].shape,
     )
 
@@ -1171,30 +1069,24 @@ def checkerboard_extended(
 
 
 def white_yazdanbakhsh(
-    shape=SHAPES["white_yazdanbakhsh"], ppd=PPD, visual_size=VSIZES["white_yazdanbakhsh"], pad=PAD
+    shape=SHAPES["white_yazdanbakhsh"], visual_size=VSIZES["white_yazdanbakhsh"], ppd=PPD, pad=PAD
 ):
     """Yazdanbakhsh variation of White stimulus, Domijan (2015) Fig 11A
 
     Parameters
     ----------
-    shape : None, int or (int/None, int/None)
-        Stimulus shape in deg, (height, width), default: (80, 80)
-        If None, will infer shape from ppd and visual size.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
-    ppd : int
-        Resolution of stimulus in pixels per degree. (default: 10)
-    visual_size : None, int or (int/None, int/None)
-        Stimulus size in degree, (height, width), default: (8, 8)
-        If None, will infer size from shape and ppd.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
+    shape : Sequence[Number, Number], Number, or None
+        shape [height, width] in pixels, default: (80, 80)
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: 10
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: (8, 8)
     pad : bool
         If True, include original padding (default: False)
 
     Returns
     -------
-    dict of str
+    dict[str, Any]
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
 
@@ -1205,10 +1097,10 @@ def white_yazdanbakhsh(
         9, 93. https://doi.org/10.3389/fnhum.2015.00093
     """
 
-    shape = resolve_input(shape)
-    visual_size = resolve_input(visual_size)
-    c = get_conversion_2d(SHAPES["white_yazdanbakhsh"], shape, visual_size, ppd)
-    shape, visual_size, ppd = resolve(None, np.array(SHAPES["white_yazdanbakhsh"]) * c, ppd)
+    # Resolve resolution
+    shape, visual_size, ppd, visual_resize = resolve(
+        shape, visual_size, ppd, VSIZES["white_yazdanbakhsh"]
+    )
     ppd = ppd[0]
 
     params = {
@@ -1231,54 +1123,47 @@ def white_yazdanbakhsh(
     )
 
     if pad:
-        padding = np.array((9.0, 11.0)) * c
+        padding = np.array((0.9, 1.1)) * visual_resize
         stim["img"] = pad_by_visual_size(stim["img"], padding, ppd=ppd, pad_value=v2)
         stim["mask"] = pad_by_visual_size(stim["mask"], padding, ppd=ppd, pad_value=0)
         params["padding"] = padding
 
-    original_shape_np = np.array(SHAPES["white_yazdanbakhsh"])
-    original_visual_np = np.array(original_shape_np) / PPD
-    original_shape = original_shape_np + 20
-    original_visual_size = original_shape / PPD
+    original_shape_np = SHAPES["white_yazdanbakhsh"]
+    original_shape = np.array(original_shape_np) + 20
+    original_visual_size = resolution.visual_size_from_shape_ppd(original_shape, PPD)
     params.update(
         original_shape=original_shape,
         original_ppd=PPD,
         original_visual_size=original_visual_size,
         original_shape_no_padding=original_shape_np,
-        original_visual_size_no_padding=original_visual_np,
+        original_visual_size_no_padding=VSIZES["white_yazdanbakhsh"],
         original_range=(1, 9),
         intensity_range=(v1, v3),
-        visual_size=np.array(stim["img"].shape) / ppd,
+        visual_size=resolution.visual_size_from_shape_ppd(stim["img"].shape, ppd),
         shape=stim["img"].shape,
     )
     return {**stim, **params}
 
 
 def white_anderson(
-    shape=SHAPES["white_anderson"], ppd=PPD, visual_size=VSIZES["white_anderson"], pad=PAD
+    shape=SHAPES["white_anderson"], visual_size=VSIZES["white_anderson"], ppd=PPD, pad=PAD
 ):
     """Anderson variation of White stimulus, Domijan (2015) Fig 11B
 
     Parameters
     ----------
-    shape : None, int or (int/None, int/None)
-        Stimulus shape in deg, (height, width), default: (100, 100)
-        If None, will infer shape from ppd and visual size.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
-    ppd : int
-        Resolution of stimulus in pixels per degree. (default: 10)
-    visual_size : None, int or (int/None, int/None)
-        Stimulus size in degree, (height, width), default: (10, 10)
-        If None, will infer size from shape and ppd.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
+    shape : Sequence[Number, Number], Number, or None
+        shape [height, width] in pixels, default: (100, 100)
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: 10
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: (10, 10)
     pad : bool
         If True, include original padding (default: False)
 
     Returns
     -------
-    dict of str
+    dict[str, Any]
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
 
@@ -1289,10 +1174,10 @@ def white_anderson(
         9, 93. https://doi.org/10.3389/fnhum.2015.00093
     """
 
-    shape = resolve_input(shape)
-    visual_size = resolve_input(visual_size)
-    c = get_conversion_2d(SHAPES["white_anderson"], shape, visual_size, ppd)
-    shape, visual_size, ppd = resolve(None, np.array(SHAPES["white_anderson"]) * c, ppd)
+    # Resolve resolution
+    shape, visual_size, ppd, visual_resize = resolve(
+        shape, visual_size, ppd, VSIZES["white_anderson"]
+    )
     ppd = ppd[0]
 
     params = {
@@ -1316,52 +1201,45 @@ def white_anderson(
     )
 
     if pad:
-        padding = np.array((9.0, 11.0)) * c
+        padding = np.array((0.9, 1.1)) * visual_resize
         stim["img"] = pad_by_visual_size(stim["img"], padding, ppd=ppd, pad_value=v2)
         stim["mask"] = pad_by_visual_size(stim["mask"], padding, ppd=ppd, pad_value=0)
         params["padding"] = padding
 
-    original_shape_np = np.array(SHAPES["white_anderson"])
-    original_visual_np = np.array(original_shape_np) / PPD
-    original_shape = original_shape_np + 20
-    original_visual_size = original_shape / PPD
+    original_shape_np = SHAPES["white_anderson"]
+    original_shape = np.array(original_shape_np) + 20
+    original_visual_size = resolution.visual_size_from_shape_ppd(original_shape, PPD)
     params.update(
         original_shape=original_shape,
         original_ppd=PPD,
         original_visual_size=original_visual_size,
         original_shape_no_padding=original_shape_np,
-        original_visual_size_no_padding=original_visual_np,
+        original_visual_size_no_padding=VSIZES["white_anderson"],
         original_range=(1, 9),
         intensity_range=(v1, v3),
-        visual_size=np.array(stim["img"].shape) / ppd,
+        visual_size=resolution.visual_size_from_shape_ppd(stim["img"].shape, ppd),
         shape=stim["img"].shape,
     )
     return {**stim, **params}
 
 
-def white_howe(shape=SHAPES["white_howe"], ppd=PPD, visual_size=VSIZES["white_howe"], pad=PAD):
+def white_howe(shape=SHAPES["white_howe"], visual_size=VSIZES["white_howe"], ppd=PPD, pad=PAD):
     """Howe variation of White stimulus, Domijan (2015) Fig 11C
 
     Parameters
     ----------
-    shape : None, int or (int/None, int/None)
-        Stimulus shape in deg, (height, width), default: (100, 100)
-        If None, will infer shape from ppd and visual size.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
-    ppd : int
-        Resolution of stimulus in pixels per degree. (default: 10)
-    visual_size : None, int or (int/None, int/None)
-        Stimulus size in degree, (height, width), default: (10, 10)
-        If None, will infer size from shape and ppd.
-        If int, it will be used as height.
-        If either height=None or width=None, the other will be inferred.
+    shape : Sequence[Number, Number], Number, or None
+        shape [height, width] in pixels, default: (100, 100)
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: 10
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: (10, 10)
     pad : bool
         If True, include original padding (default: False)
 
     Returns
     -------
-    dict of str
+    dict[str, Any]
         dict with the stimulus (key: "img") and target mask (key: "mask")
         and additional keys containing stimulus parameters
 
@@ -1372,10 +1250,8 @@ def white_howe(shape=SHAPES["white_howe"], ppd=PPD, visual_size=VSIZES["white_ho
         9, 93. https://doi.org/10.3389/fnhum.2015.00093
     """
 
-    shape = resolve_input(shape)
-    visual_size = resolve_input(visual_size)
-    c = get_conversion_2d(SHAPES["white_howe"], shape, visual_size, ppd)
-    shape, visual_size, ppd = resolve(None, np.array(SHAPES["white_howe"]) * c, ppd)
+    # Resolve resolution
+    shape, visual_size, ppd, visual_resize = resolve(shape, visual_size, ppd, VSIZES["white_howe"])
     ppd = ppd[0]
 
     params = {
@@ -1397,24 +1273,23 @@ def white_howe(shape=SHAPES["white_howe"], ppd=PPD, visual_size=VSIZES["white_ho
     )
 
     if pad:
-        padding = np.array((9.0, 11.0)) * c
+        padding = np.array((0.9, 1.1)) * visual_resize
         stim["img"] = pad_by_visual_size(stim["img"], padding, ppd=ppd, pad_value=v2)
         stim["mask"] = pad_by_visual_size(stim["mask"], padding, ppd=ppd, pad_value=0)
         params["padding"] = padding
 
-    original_shape_np = np.array(SHAPES["white_howe"])
-    original_visual_np = np.array(original_shape_np) / PPD
-    original_shape = original_shape_np + 20
-    original_visual_size = original_shape / PPD
+    original_shape_np = SHAPES["white_howe"]
+    original_shape = np.array(original_shape_np) + 20
+    original_visual_size = resolution.visual_size_from_shape_ppd(original_shape, PPD)
     params.update(
         original_shape=original_shape,
         original_ppd=PPD,
         original_visual_size=original_visual_size,
         original_shape_no_padding=original_shape_np,
-        original_visual_size_no_padding=original_visual_np,
+        original_visual_size_no_padding=VSIZES["white_howe"],
         original_range=(1, 9),
         intensity_range=(v1, v3),
-        visual_size=np.array(stim["img"].shape) / ppd,
+        visual_size=resolution.visual_size_from_shape_ppd(stim["img"].shape, ppd),
         shape=stim["img"].shape,
     )
     return {**stim, **params}
