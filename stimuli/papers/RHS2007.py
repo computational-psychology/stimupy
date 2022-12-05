@@ -416,23 +416,21 @@ def WE_zigzag(ppd=PPD, pad=True):
         assimilation in White’s eﬀect. Journal of Vision, 3, 294a.
     """
 
-    i1, i2 = -1, 0
+    i1, i2 = 1, 2
     stim = illusions.wedding_cake.wedding_cake_stimulus(
+        visual_size=(16., 17.),
         ppd=PPD,
-        L_size=(4.0, 5, 1.0),
-        L_repeats=(3.5, 3.4),
-        target_height=2.0,
-        target_idx_intensity1=((i1, -1), (i1, -0), (i1, 1), (i1, 2)),
-        target_idx_intensity2=((i2, -1), (i2, -0), (i2, 1), (i2, -2)),
-        intensity1=0.0,
-        intensity2=1.0,
+        L_size=(4., 4, 1.),
+        target_height=2.,
+        target_indices1=((i1, -1), (i1, 0), (i1, 1), (i1, 2)),
+        target_indices2=((i2, 0), (i2, 1), (i2, 2), (i2, 3)),
+        intensity_grating=(1., 0.),
         intensity_target=0.5,
     )
 
     if pad:
         stim["img"] = pad_to_visual_size(stim["img"], VISEXTENT, ppd, pad_value=0.5)
         stim["mask"] = pad_to_visual_size(stim["mask"], VISEXTENT, ppd, pad_value=0)
-
     return stim
 
 
