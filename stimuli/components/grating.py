@@ -1,3 +1,5 @@
+import itertools
+
 import numpy as np
 
 from stimuli.utils import degrees_to_pixels, resolution
@@ -10,6 +12,7 @@ def resolve_grating_params(
     frequency=None,
     n_phases=None,
     phase_width=None,
+    period="ignore",
 ):
     """Resolve (if possible) spatial parameters for a grating
 
@@ -48,6 +51,9 @@ def resolve_grating_params(
         dictionary with all six resolution & size parameters resolved.
     """
 
+    if period not in ["ignore", "full", "half"]:
+        raise TypeError(f"period not understood: {period}")
+
     # Try to resolve resolution
     try:
         shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
@@ -75,27 +81,48 @@ def resolve_grating_params(
     # is analogous to
     # pix = ppd * n_degrees
     # Thus we can resolve the number and spacing of phases also as a resolution
-
-    # What is the smaller axis of visual_size?
     try:
-        min_vis_angle = np.min([i for i in visual_size if i is not None]) / 2
-    except ValueError:
-        min_vis_angle = None
-
-    try:
-        n_phases, min_vis_angle, phases_pd = resolution.resolve_1D(
-            length=n_phases, visual_angle=min_vis_angle, ppd=phases_pd
+        n_phases, visual_angle, phases_pd = resolution.resolve_1D(
+            length=n_phases, visual_angle=visual_size.width, ppd=phases_pd
         )
-        min_vis_angle = min_vis_angle * 2
         phase_width = 1 / phases_pd
         frequency = phases_pd / 2
     except Exception as e:
         raise Exception("Could not resolve grating frequency, phase_width, n_phases") from e
 
     # Now resolve resolution
+    visual_width = visual_size.width if visual_size.width is not None else visual_angle
+    visual_height = visual_size.height if visual_size.height is not None else visual_angle
     shape, visual_size, ppd = resolution.resolve(
-        shape=shape, visual_size=(min_vis_angle, min_vis_angle), ppd=ppd
+        shape=shape, visual_size=(visual_height, visual_width), ppd=ppd
     )
+
+    # Check that frequency does not exceed Nyquist limit:
+    if frequency > ppd.horizontal / 2:
+        raise ValueError(
+            f"Grating frequency ({frequency}) should not exceed Nyquist limit"
+            f" {ppd.horizontal/2} (ppd/2)"
+        )
+
+    # Ensure full/half period:
+    # pixels_per_period = resolution.pix_from_visual_angle_ppd_1D(
+    #     visual_angle=phase_width * 2, ppd=ppd.horizontal
+    # )
+    # if pixels_per_period % 2:
+    #     frequency_old = frequency
+    #     frequency = 1.0 / pixels_per_period * ppd.horizontal
+    #     raise ValueError(
+    #         "Warning: Square-wave frequency changed"
+    #         f" from {frequency_old} to {frequency},"
+    #         " to ensure an even-numbered cycle width"
+    #     )
+
+    # length = shape.width
+    # if period == "full":
+    #     length = (length // pixels_per_period) * pixels_per_period
+    # elif period == "half":
+    #     length = (length // pixels_per_period) * pixels_per_period + pixels_per_period / 2
+    # length = int(length)
 
     return {
         "shape": shape,
@@ -108,9 +135,12 @@ def resolve_grating_params(
 
 
 def square_wave(
-    visual_size=(10, 10),
-    ppd=10,
-    frequency=1,
+    shape=None,
+    visual_size=None,
+    ppd=None,
+    frequency=None,
+    n_bars=None,
+    bar_width=None,
     intensity_bars=(0.0, 1.0),
     period="ignore",
 ):
@@ -119,10 +149,12 @@ def square_wave(
 
     Parameters
     ----------
-    visual_size : float or (float, float)
-        size of the image in degrees visual angle
-    ppd : int
-        pixels per degree (visual angle)
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
     frequency : float
         the spatial frequency of the wave in cycles per degree
     intensity_bars : (float, float)
@@ -139,35 +171,41 @@ def square_wave(
     A 2d-array with a square-wave grating
     """
 
-    if period not in ["ignore", "full", "half"]:
-        raise TypeError("period not understood: %s" % period)
-    if frequency > ppd / 2:
-        raise ValueError("The frequency is limited to ppd/2.")
+    params = resolve_grating_params(
+        shape=shape,
+        visual_size=visual_size,
+        n_phases=n_bars,
+        phase_width=bar_width,
+        ppd=ppd,
+        frequency=frequency,
+        period=period,
+    )
+    shape = params["shape"]
+    ppd = params["ppd"]
+    visual_size = params["visual_size"]
 
-    height, width = degrees_to_pixels(visual_size, ppd)
-    pixels_per_cycle = degrees_to_pixels(1.0 / (frequency * 2), ppd) * 2
-    frequency_used = 1.0 / pixels_per_cycle * ppd
-    if degrees_to_pixels(1.0 / frequency, ppd) % 2 != 0:
-        print(
-            "Warning: Square-wave frequency changed from %f to %f ensure an even-numbered cycle"
-            " width!" % (frequency, frequency_used)
-        )
-
-    if period == "full":
-        width = (width // pixels_per_cycle) * pixels_per_cycle
-    elif period == "half":
-        width = (width // pixels_per_cycle) * pixels_per_cycle + pixels_per_cycle / 2
-    width = int(width)
-
-    img = np.ones((height, width)) * intensity_bars[1]
-
-    index = [
-        i + j
-        for i in range(pixels_per_cycle // 2)
-        for j in range(0, width, pixels_per_cycle)
-        if i + j < width
+    # Determine bar edges
+    bar_edges = [
+        *itertools.accumulate(itertools.repeat(params["phase_width"], params["n_phases"]))
     ]
-    img[:, index] = intensity_bars[0]
+    bar_edges -= np.array(visual_size.width) / 2.0
+
+    # Create image-base:
+    x = np.linspace(-visual_size.width / 2.0, visual_size.width / 2.0, shape.width)
+    y = np.linspace(-visual_size.height / 2.0, visual_size.height / 2.0, shape.height)
+    xx, yy = np.meshgrid(x, y)
+    distances = xx
+    mask = np.zeros(shape, dtype=int)
+
+    # Mask bars
+    for idx, edge in zip(reversed(range(len(bar_edges))), reversed(bar_edges)):
+        mask[distances <= edge] = int(idx + 1)
+
+    # Draw bars
+    img = np.zeros(shape)
+    ints = [*itertools.islice(itertools.cycle(intensity_bars), len(bar_edges))]
+    for bar_idx, intensity in zip(np.unique(mask), ints):
+        img = np.where(mask == bar_idx, intensity, img)
 
     stim = {
         "img": img,

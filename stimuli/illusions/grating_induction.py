@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.ndimage import gaussian_filter
+
 from stimuli.components import square_wave
 from stimuli.utils import degrees_to_pixels
 
@@ -86,6 +87,7 @@ def grating_illusion(
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
+
     from stimuli.utils import plot_stim
 
     stim = grating_illusion()

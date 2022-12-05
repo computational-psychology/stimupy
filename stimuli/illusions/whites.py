@@ -1,4 +1,5 @@
 import numpy as np
+
 from stimuli.components import square_wave
 from stimuli.utils import degrees_to_pixels
 
@@ -587,6 +588,7 @@ def white_yazdanbakhsh(
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
+
     from stimuli.utils import plot_stimuli
 
     stims = {
