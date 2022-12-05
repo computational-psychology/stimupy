@@ -464,16 +464,16 @@ def WE_radial_thick_small(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "n_segments": n_cycles * 2,
-        "rotate": np.pi / n_cycles / 2,
-        "target_indices": (0, n_cycles),
+        "rotation": 90 - (90 / n_cycles),
+        "target_indices": (1, n_cycles + 1),
         "target_width": 4.0,
         "target_center": 4.5,
-        "intensity_slices": (v3, v1),
+        "intensities_segments": (v3, v1),
         "intensity_background": v2,
         "intensity_target": v2,
     }
 
-    stim = illusions.circular.radial_white(
+    stim = illusions.angular.radial_white(
         visual_size=(16, 16),
         **params,
     )
@@ -518,16 +518,16 @@ def WE_radial_thick(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "n_segments": n_cycles * 2,
-        "rotate": np.pi / n_cycles / 2,
-        "target_indices": (0, n_cycles),
+        "rotation": 90 - (90 / n_cycles),
+        "target_indices": (1, n_cycles + 1),
         "target_width": 4.0,
         "target_center": 6.0,
-        "intensity_slices": (v3, v1),
+        "intensities_segments": (v3, v1),
         "intensity_background": v2,
         "intensity_target": v2,
     }
 
-    stim = illusions.circular.radial_white(
+    stim = illusions.angular.radial_white(
         visual_size=(24, 24),
         **params,
     )
@@ -572,16 +572,16 @@ def WE_radial_thin_small(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "n_segments": n_cycles * 2,
-        "rotate": np.pi / n_cycles / 2,
-        "target_indices": (0, n_cycles),
+        "rotation": 90 - (90 / n_cycles),
+        "target_indices": (1, n_cycles + 1),
         "target_width": 2.0,
         "target_center": 4.0,
-        "intensity_slices": (v3, v1),
+        "intensities_segments": (v3, v1),
         "intensity_background": v2,
         "intensity_target": v2,
     }
 
-    stim = illusions.circular.radial_white(
+    stim = illusions.angular.radial_white(
         visual_size=(16, 16),
         **params,
     )
@@ -626,16 +626,16 @@ def WE_radial_thin(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "n_segments": n_cycles * 2,
-        "rotate": np.pi / n_cycles / 2,
-        "target_indices": (0, n_cycles),
+        "rotation": 90 - (90 / n_cycles),
+        "target_indices": (1, n_cycles + 1),
         "target_width": 2.0,
         "target_center": 6.0,
-        "intensity_slices": (v3, v1),
+        "intensities_segments": (v3, v1),
         "intensity_background": v2,
         "intensity_target": v2,
     }
 
-    stim = illusions.circular.radial_white(
+    stim = illusions.angular.radial_white(
         visual_size=(24, 24),
         **params,
     )
@@ -684,17 +684,18 @@ def WE_circular1(ppd=PPD, pad=True):
         "target_indices": 4,
         "intensity_background": v2,
         "intensity_target": v2,
+        "supersampling": 1,
     }
 
     stim1 = illusions.circular.circular_white(
         visual_size=(height, width),
-        intensity_discs=(v3, v1),
+        intensity_rings=(v3, v1),
         **params,
     )
 
     stim2 = illusions.circular.circular_white(
         visual_size=(height, width),
-        intensity_discs=(v1, v3),
+        intensity_rings=(v1, v3),
         **params,
     )
     stim2["mask"] *= 2
@@ -748,17 +749,18 @@ def WE_circular05(ppd=PPD, pad=True):
         "target_indices": 10,
         "intensity_background": v2,
         "intensity_target": v2,
+        "supersampling": 1,
     }
 
     stim1 = illusions.circular.circular_white(
         visual_size=(height, width),
-        intensity_discs=(v3, v1),
+        intensity_rings=(v3, v1),
         **params,
     )
 
     stim2 = illusions.circular.circular_white(
         visual_size=(height, width),
-        intensity_discs=(v1, v3),
+        intensity_rings=(v1, v3),
         **params,
     )
     stim2["mask"] *= 2
@@ -812,17 +814,18 @@ def WE_circular025(ppd=PPD, pad=True):
         "target_indices": 22,
         "intensity_background": v2,
         "intensity_target": v2,
+        "supersampling": 1,
     }
 
     stim1 = illusions.circular.circular_white(
         visual_size=(height, width),
-        intensity_discs=(v3, v1),
+        intensity_rings=(v3, v1),
         **params,
     )
 
     stim2 = illusions.circular.circular_white(
         visual_size=(height, width),
-        intensity_discs=(v1, v3),
+        intensity_rings=(v1, v3),
         **params,
     )
     stim2["mask"] *= 2

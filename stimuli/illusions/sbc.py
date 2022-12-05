@@ -1,6 +1,7 @@
 import numpy as np
 
-from stimuli.components import disc, rectangle
+from stimuli.components import rectangle
+from stimuli.components.circular import disc
 from stimuli.utils import pad_by_visual_size, resolution
 
 
