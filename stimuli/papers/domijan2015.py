@@ -788,7 +788,7 @@ def todorovic(shape=SHAPES["todorovic"], visual_size=VSIZES["todorovic"], ppd=PP
     params = {
         "visual_size": visual_size[0],
         "ppd": ppd,
-        "target_size": 4.1000000000000005 * visual_resize,
+        "target_size": 4.1 * visual_resize,
         "covers_size": 3.1 * visual_resize,
         "covers_offset": 2.0 * visual_resize,
     }

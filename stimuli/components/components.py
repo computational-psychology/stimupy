@@ -1,6 +1,6 @@
 import numpy as np
 
-from stimuli.utils import degrees_to_pixels, resize_array
+from stimuli.utils import degrees_to_pixels, pad_to_shape
 
 
 def rectangle(
@@ -47,9 +47,8 @@ def rectangle(
     rect_posy, rect_posx = degrees_to_pixels(rect_pos, ppd)
 
     # Create image and add square
-    img = np.ones((im_height, im_width)) * intensity_background
     target = np.ones((rect_height, rect_width)) * intensity_rectangle
-    img[rect_posy : rect_posy + rect_height, rect_posx : rect_posx + rect_width] = target
+    img = pad_to_shape(target, (im_height, im_width), intensity_background)
     return img
 
 
