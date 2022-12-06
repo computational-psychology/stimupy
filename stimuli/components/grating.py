@@ -33,18 +33,21 @@ def resolve_grating_params(
 
     Parameters
     ----------
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
-    visual_size : Sequence[Number, Number], Number, or None (default)
-        visual size [height, width] of image, in degrees
-    ppd : Sequence[Number, Number], Number, or None (default)
-        pixels per degree [vertical, horizontal]
+    length : Number, or None (default)
+        lenght of grating, in pixels
+    visual_angle :Number, or None (default)
+        visual angle of grating, in degrees
+    ppd : Number, or None (default)
+        pixels per degree along the axis of grating
     frequency : Number, or None (default)
-        spatial frequency of grating, in cycles per degree
+        frequency of grating, in cycles per degree
     n_phases : int, or None (default)
         number of phases (e.g., bars), i.e., half the number of full periods
     phase_width : Number, or None (default)
-        width of a single phase (e.g., bar), in degrees
+        extend of a single phase (e.g., bar), in degrees
+    period : "full", "half", "ignore" (default)
+        whether to ensure the grating only has "full" periods,
+        half "periods", or no guarantees ("ignore")
 
     Returns
     -------
@@ -161,6 +164,34 @@ def mask_bars(
     period="ignore",
     orientation="horizontal",
 ):
+    """Generate mask for square-wave grating, i.e., set of bars
+
+    Parameters
+    ----------
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    frequency : Number, or None (default)
+        spatial frequency of grating, in cycles per degree visual angle
+    n_bars : int, or None (default)
+        number of bars in the grating
+    bar_width : Number, or None (default)
+        width of a single bar, in degrees visual angle
+    period : "full", "half", "ignore" (default)
+        whether to ensure the grating only has "full" periods,
+        half "periods", or no guarantees ("ignore")
+    orientation : "vertical" or "horizontal" (default)
+        orientation of the grating
+
+    Returns
+    ----------
+    dict[str, Any]
+        mask with integer index for each bar (key: "mask"),
+        and additional keys containing stimulus parameters
+    """
 
     # Try to resolve resolution
     try:
@@ -249,12 +280,11 @@ def square_wave(
     frequency=None,
     n_bars=None,
     bar_width=None,
+    period="ignore",
     orientation="horizontal",
     intensity_bars=(0.0, 1.0),
-    period="ignore",
 ):
-    """
-    Create a horizontal square wave of given spatial frequency.
+    """Draw square-wave grating (set of bars) of given spatial frequency
 
     Parameters
     ----------
@@ -264,20 +294,28 @@ def square_wave(
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
-    frequency : float
-        the spatial frequency of the wave in cycles per degree
-    intensities : (float, float)
-        intensity values for phases (bars)
-    period : string in ['ignore', 'full', 'half']
-        specifies if the period of the wave is considered for stimulus dimensions.
-            'ignore' simply converts degrees to pixels
-            'full' rounds down to guarantee a full period
-            'half' adds a half period to the size 'full' would yield.
-        Default is 'ignore'.
+    frequency : Number, or None (default)
+        spatial frequency of grating, in cycles per degree visual angle
+    n_bars : int, or None (default)
+        number of bars in the grating
+    bar_width : Number, or None (default)
+        width of a single bar, in degrees visual angle
+    period : "full", "half", "ignore" (default)
+        whether to ensure the grating only has "full" periods,
+        half "periods", or no guarantees ("ignore")
+    orientation : "vertical" or "horizontal" (default)
+        orientation of the grating
+    intensity_bars : Sequence[float, ...]
+        intensity value for each bar, by default [1.0, 0.0].
+        Can specify as many intensities as n_bars;
+        If fewer intensities are passed than n_bars, cycles through intensities
 
     Returns
-    -------
-    A 2d-array with a square-wave grating
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "mask"),
+        and additional keys containing stimulus parameters
     """
 
     # Get bars mask
