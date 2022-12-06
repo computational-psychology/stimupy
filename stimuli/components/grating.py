@@ -157,8 +157,8 @@ def square_wave(
         pixels per degree [vertical, horizontal]
     frequency : float
         the spatial frequency of the wave in cycles per degree
-    intensity_bars : (float, float)
-        intensity values for bars
+    intensities : (float, float)
+        intensity values for phases (bars)
     period : string in ['ignore', 'full', 'half']
         specifies if the period of the wave is considered for stimulus dimensions.
             'ignore' simply converts degrees to pixels
