@@ -297,16 +297,7 @@ def square_wave(
     for bar_idx, intensity in zip(np.unique(mask), ints):
         img = np.where(mask == bar_idx, intensity, img)
 
-    stim = {
-        "img": img,
-        "ppd": ppd,
-        "visual_size": np.array(img.shape) / ppd,
-        "shape": img.shape,
-        "frequency": frequency,
-        "intensity_bars": intensity_bars,
-        "period": period,
-    }
-    return stim
+    return {"img": img, **stim}
 
 
 def square_wave_grating(
