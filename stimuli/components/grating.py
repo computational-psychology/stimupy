@@ -3,7 +3,7 @@ import warnings
 
 import numpy as np
 
-from stimuli.utils import degrees_to_pixels, resolution
+from stimuli.utils import resolution
 
 
 def resolve_grating_params(
@@ -338,45 +338,3 @@ def square_wave(
         img = np.where(mask == bar_idx, intensity, img)
 
     return {"img": img, **stim}
-
-
-def square_wave_grating(
-    ppd=10,
-    n_bars=8,
-    bar_shape=(8.0, 1.0),
-    intensity_bars=(0.0, 1.0),
-):
-    """
-    Square-wave grating
-
-    Parameters
-    ----------
-    ppd : int
-        pixels per degree (visual angle)
-    n_bars : int
-        the number of vertical bars
-    bar_shape : (float, float)
-        bar height and width in degrees visual angle
-    intensity_bars : (float, float)
-        intensity values for bars
-
-    Returns
-    -------
-    A 2d-array with a square-wave grating
-    """
-
-    bar_height_px, bar_width_px = degrees_to_pixels(bar_shape, ppd)
-    img = np.ones([1, n_bars]) * intensity_bars[1]
-    img[:, ::2] = intensity_bars[0]
-    img = img.repeat(bar_width_px, axis=1).repeat(bar_height_px, axis=0)
-
-    stim = {
-        "img": img,
-        "ppd": ppd,
-        "visual_size": np.array(img.shape) / ppd,
-        "shape": img.shape,
-        "n_bars": n_bars,
-        "bar_shape": bar_shape,
-        "intensity_bars": intensity_bars,
-    }
-    return stim
