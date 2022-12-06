@@ -17,7 +17,7 @@ def square_wave(
     orientation="horizontal",
     period="ignore",
     intensity_bars=(0.0, 1.0),
-    target_indices=(2, 4),
+    target_indices=(),
     intensity_target=0.5,
 ):
     """Spatial square-wave grating (set of bars), with some bar(s) as target(s)
@@ -107,7 +107,7 @@ def grating_uniform(
     orientation="horizontal",
     period="ignore",
     intensity_bars=(0.0, 1.0),
-    target_indices=(2, 4),
+    target_indices=(),
     intensity_target=0.5,
     image_size=None,
     intensity_background=0.5,
