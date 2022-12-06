@@ -1,56 +1,100 @@
+import itertools
+
 import numpy as np
 
+from stimuli.components import square_wave as square_wave_component
 from stimuli.components import square_wave_grating
 from stimuli.utils import degrees_to_pixels, pad_to_visual_size
 
 
-def grating_illusion(
-    ppd=10,
-    n_bars=8,
-    target_indices=(2, 4),
-    bar_shape=(8, 1.0),
+def square_wave(
+    shape=None,
+    visual_size=None,
+    ppd=None,
+    frequency=None,
+    n_bars=None,
+    bar_width=None,
+    orientation="horizontal",
+    period="ignore",
     intensity_bars=(0.0, 1.0),
+    target_indices=(2, 4),
     intensity_target=0.5,
 ):
-    """
-    Grating illusion
+    """Spatial square-wave grating (set of bars), with some bar(s) as target(s)
 
     Parameters
     ----------
-    ppd : int
-        pixels per degree (visual angle)
-    n_bars : int
-        the number of vertical bars
-    target_indices : tuple
-        tuple with bar target indices from left to right
-    bar_shape : (float, float)
-        bar height and width in degrees visual angle
-    intensity_bars : (float, float)
-        intensity values for bars
-    intensity_target : float
-        intensity value for target
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    frequency : Number, or None (default)
+        spatial frequency of grating, in cycles per degree visual angle
+    n_bars : int, or None (default)
+        number of bars in the grating
+    bar_width : Number, or None (default)
+        width of a single bar, in degrees visual angle
+    period : "full", "half", "ignore" (default)
+        whether to ensure the grating only has "full" periods,
+        half "periods", or no guarantees ("ignore")
+    orientation : "vertical" or "horizontal" (default)
+        orientation of the grating
+    intensity_bars : Sequence[float, ...]
+        intensity value for each bar, by default [1.0, 0.0].
+        Can specify as many intensities as n_bars;
+        If fewer intensities are passed than n_bars, cycles through intensities
+    target_indices : int, or Sequence[int, ...]
+        indices segments where targets will be placed
+    intensity_target : float, or Sequence[float, ...], optional
+        intensity value for each target, by default 0.5.
+        Can specify as many intensities as number of target_indices;
+        If fewer intensities are passed than target_indices, cycles through intensities
 
     Returns
-    -------
-    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "mask"),
+        and additional keys containing stimulus parameters
     """
 
-    bar_width_px = degrees_to_pixels(bar_shape[1], ppd)
-    img = square_wave_grating(
+    # Spatial square-wave grating
+    stim = square_wave_component(
+        shape=shape,
+        visual_size=visual_size,
         ppd=ppd,
+        frequency=frequency,
         n_bars=n_bars,
-        bar_shape=bar_shape,
+        bar_width=bar_width,
+        orientation=orientation,
+        period=period,
         intensity_bars=intensity_bars,
-        )["img"]
-    mask = np.zeros(img.shape)
+    )
 
-    if isinstance(target_indices, (float, int)):
-        target_indices = (target_indices,)
+    # Resolve target parameters
+    if isinstance(target_indices, (int)):
+        target_indices = [
+            target_indices,
+        ]
+    if isinstance(intensity_target, (int, float)):
+        intensity_target = [
+            intensity_target,
+        ]
+    intensity_target = itertools.cycle(intensity_target)
 
-    for i, idx in enumerate(target_indices):
-        img[:, idx * bar_width_px : (idx + 1) * bar_width_px] = intensity_target
-        mask[:, idx * bar_width_px : (idx + 1) * bar_width_px] = i + 1
-    return {"img": img, "mask": mask}
+    # Place target(s)
+    targets_mask = np.zeros_like(stim["mask"])
+    for target_idx, (bar_idx, intensity) in enumerate(zip(target_indices, intensity_target)):
+        targets_mask = np.where(stim["mask"] == bar_idx, target_idx + 1, targets_mask)
+        stim["img"] = np.where(targets_mask == target_idx + 1, intensity, stim["img"])
+
+    # Update and return stimulus
+    stim["bars_mask"] = stim["mask"]
+    stim["mask"] = targets_mask
+
+    return stim
 
 
 def grating_uniform(
@@ -271,11 +315,16 @@ if __name__ == "__main__":
     from stimuli.utils import plot_stimuli
 
     stims = {
-        "Grating illusion": grating_illusion(),
+        "Grating illusion": square_wave(
+            ppd=10,
+            n_bars=8,
+            bar_width=1.0,
+            target_indices=(2, 7),
+        ),
         "Grating - uniform": grating_uniform(),
         "Grating - grating": grating_grating(),
         "Grating - grating shifted": grating_grating_shifted(),
     }
 
-    plot_stimuli(stims, mask=True)
+    plot_stimuli(stims, mask=False)
     plt.show()
