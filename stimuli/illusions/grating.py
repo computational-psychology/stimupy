@@ -2,9 +2,10 @@ import itertools
 
 import numpy as np
 
+from stimuli.components import rectangle
 from stimuli.components import square_wave as square_wave_component
 from stimuli.components import square_wave_grating
-from stimuli.utils import degrees_to_pixels, pad_to_visual_size
+from stimuli.utils import degrees_to_pixels, pad_to_shape, pad_to_visual_size
 
 
 def square_wave(
@@ -188,15 +189,11 @@ def grating_uniform(
 
 
 def grating_grating(
-    visual_size=(10.3, 10.3),
-    ppd=10,
-    n_bars=8,
-    bar_shape=(0.5, 4.0),
-    intensity_bars=(0.0, 1.0),
-    intensity_target=0.5,
+    small_grating_params,
+    large_grating_params,
+    ppd=None,
 ):
-    """
-    Grating on a grating
+    """Grating on a grating
 
     Parameters
     ----------
@@ -218,53 +215,28 @@ def grating_grating(
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
     """
 
-    # Create and rotate square-wave grating
-    bar_shape = (bar_shape[1], bar_shape[0])
-    img_small = square_wave_grating(
+    # Create gratings
+    small_grating = square_wave(ppd=ppd, **small_grating_params)
+    large_grating = square_wave(ppd=ppd, **large_grating_params)
+
+    # Superimpose
+    small_grating_mask = rectangle(
+        rectangle_size=small_grating["visual_size"],
         ppd=ppd,
-        n_bars=n_bars,
-        bar_shape=bar_shape,
-        intensity_bars=(intensity_bars[0], intensity_target),
-        )["img"]
-    img_small = np.rot90(img_small)
-    mask_small = np.zeros(img_small.shape)
-    mask_small[img_small == intensity_target] = 1
+        visual_size=large_grating["visual_size"],
+        intensity_background=0,
+        intensity_rectangle=1,
+    )
+    small_grating["img"] = pad_to_shape(small_grating["img"], shape=large_grating["img"].shape)
+    small_grating["mask"] = pad_to_shape(small_grating["mask"], shape=large_grating["img"].shape)
+    img = np.where(small_grating_mask["mask"], small_grating["img"], large_grating["img"])
+    mask = np.where(small_grating_mask["mask"], small_grating["mask"], large_grating["img"])
 
-    nbars = int(np.ceil(visual_size[0] / bar_shape[1]))
-    barshape = (visual_size[1], bar_shape[1])
-    img_large = square_wave_grating(
-        ppd=ppd,
-        n_bars=nbars,
-        bar_shape=barshape,
-        intensity_bars=(intensity_bars[0], intensity_bars[1]),
-        )["img"]
-    img_large = np.rot90(img_large)
-
-    # Reduce size to desired size
-    im_size_px = degrees_to_pixels(visual_size, ppd)
-    img_large = img_large[0 : im_size_px[0], 0 : im_size_px[1]]
-
-    # Incorporate small grating in large grating
-    nbars = nbars + (nbars % 2)
-    bar_height_px = degrees_to_pixels(bar_shape[1], ppd)
-    ys = int((nbars * bar_height_px - img_small.shape[0]) / 2)
-    xs = (im_size_px[1] - img_small.shape[1]) // 2
-    img_large[ys : ys + img_small.shape[0], xs : xs + img_small.shape[1]] = img_small
-
-    mask_large = np.zeros(img_large.shape)
-    mask_large[ys : ys + img_small.shape[0], xs : xs + img_small.shape[1]] = mask_small
-    
     stim = {
-        "img": img_large,
-        "mask": mask_large.astype(int),
+        "img": img,
+        "mask": mask.astype(int),
         "ppd": ppd,
-        "visual_size": np.array(img_large.shape) / ppd,
-        "shape": img_large.shape,
-        "n_bars": n_bars,
-        "bar_shape": bar_shape,
-        "intensity_bars": intensity_bars,
-        "intensity_target": intensity_target,
-        }
+    }
     return stim
 
 
@@ -339,16 +311,30 @@ if __name__ == "__main__":
 
     from stimuli.utils import plot_stimuli
 
+    ppd = 10
+    bar_width = 1.0
+    small_grating_params = {
+        "n_bars": 8,
+        "bar_width": bar_width,
+    }
+    large_grating_params = {
+        "bar_width": bar_width,
+        "visual_size": (32, 32),
+    }
+
     stims = {
         "Grating illusion": square_wave(
-            ppd=10,
-            n_bars=8,
-            bar_width=1.0,
-            target_indices=(2, 7),
+            ppd=ppd, **small_grating_params, intensity_bars=(0.0, 1.0), target_indices=(2, 7)
         ),
-        "Grating - uniform": grating_uniform(),
-        "Grating - grating": grating_grating(),
-        "Grating - grating shifted": grating_grating_shifted(),
+        "Grating - uniform": grating_uniform(
+            ppd=ppd, **small_grating_params, intensity_bars=(0.0, 1.0), image_size=(32, 32)
+        ),
+        "Grating - grating": grating_grating(
+            ppd=ppd,
+            small_grating_params={**small_grating_params, "intensity_bars": (0.0, 0.5)},
+            large_grating_params=large_grating_params,
+        ),
+        # "Grating - grating shifted": grating_grating_shifted(),
     }
 
     plot_stimuli(stims, mask=False)
