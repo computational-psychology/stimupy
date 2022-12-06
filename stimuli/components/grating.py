@@ -249,6 +249,7 @@ def square_wave(
     frequency=None,
     n_bars=None,
     bar_width=None,
+    orientation="horizontal",
     intensity_bars=(0.0, 1.0),
     period="ignore",
 ):
@@ -287,6 +288,7 @@ def square_wave(
         frequency=frequency,
         n_bars=n_bars,
         bar_width=bar_width,
+        orientation=orientation,
         period=period,
     )
     mask = stim["mask"]
