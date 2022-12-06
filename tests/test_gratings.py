@@ -1,6 +1,6 @@
 import pytest
 
-from stimuli.components.grating import resolve_grating_params
+from stimuli.components.grating import resolve_grating_params, square_wave
 
 
 @pytest.mark.parametrize(
@@ -26,3 +26,10 @@ def test_valid_params(ppd, length, visual_angle, n_phases, phase_width, frequenc
         phase_width=phase_width,
         frequency=frequency,
     )
+
+
+def test_rounding():
+    ppd = 36
+    visual_size = (1.0, 1.0)
+    frequency = 2.80
+    stim = square_wave(ppd=ppd, visual_size=visual_size, frequency=frequency, period="half")

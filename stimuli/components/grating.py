@@ -1,4 +1,5 @@
 import itertools
+import warnings
 
 import numpy as np
 
@@ -93,9 +94,39 @@ def resolve_grating_params(
     except Exception as e:
         raise Exception("Could not resolve grating frequency, phase_width, n_phases") from e
 
+    # Ensure full/half period?
+    if period != "ignore":
+        # Round n_phases
+        if period == "full":  # n_phases has to be even
+            n_phases = np.round(n_phases / 2) * 2
+        elif period == "half":  # n_phases can be odd
+            n_phases = np.round(n_phases)
+
+        # Check if n_phases fit in length
+        if length is not None and n_phases > 0 and length % n_phases:
+            raise resolution.ResolutionError(f"Cannot fit {n_phases} phases in {length} pix")
+
+        # Recalculate phases_pd
+        n_phases, min_angle, phases_pd = resolution.resolve_1D(
+            length=n_phases,
+            visual_angle=visual_angle,
+            ppd=None,
+            round=False,
+        )
+
     # Convert to frequency
+    old_phase_width = phase_width
+    old_frequency = frequency
     phase_width = 1 / phases_pd
     frequency = phases_pd / 2
+
+    if (old_phase_width is not None and phase_width != old_phase_width) or (
+        old_frequency is not None and frequency != old_frequency
+    ):
+        warnings.warn(
+            f"Adjusted frequency and phase width to ensure {period} period: {old_frequency} ->"
+            f" {frequency}, {old_phase_width} -> {phase_width}"
+        )
 
     # Now resolve resolution
     visual_angle = min_angle if visual_angle is None else visual_angle
@@ -108,25 +139,6 @@ def resolve_grating_params(
         raise ValueError(
             f"Grating frequency ({frequency}) should not exceed Nyquist limit {ppd/2} (ppd/2)"
         )
-
-    # Ensure full/half period:
-    # pixels_per_period = resolution.pix_from_visual_angle_ppd_1D(
-    #     visual_angle=phase_width * 2, ppd=ppd.horizontal
-    # )
-    # if pixels_per_period % 2:
-    #     frequency_old = frequency
-    #     frequency = 1.0 / pixels_per_period * ppd.horizontal
-    #     raise ValueError(
-    #         "Warning: Square-wave frequency changed"
-    #         f" from {frequency_old} to {frequency},"
-    #         " to ensure an even-numbered cycle width"
-    #     )
-    # length = shape.width
-    # if period == "full":
-    #     length = (length // pixels_per_period) * pixels_per_period
-    # elif period == "half":
-    #     length = (length // pixels_per_period) * pixels_per_period + pixels_per_period / 2
-    # length = int(length)
 
     return {
         "length": length,
@@ -209,6 +221,8 @@ def mask_bars(
     bar_edges = [
         *itertools.accumulate(itertools.repeat(params["phase_width"], int(params["n_phases"])))
     ]
+    if params["period"] == "ignore":
+        bar_edges += [visual_angle]
 
     # Mask bars
     distances = xx if orientation == "horizontal" else yy
