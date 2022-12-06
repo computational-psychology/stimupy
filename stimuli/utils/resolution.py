@@ -75,7 +75,7 @@ def resolve(shape=None, visual_size=None, ppd=None):
     return shape, visual_size, ppd
 
 
-def resolve_1D(length=None, visual_angle=None, ppd=None):
+def resolve_1D(length=None, visual_angle=None, ppd=None, round=True):
     """Resolves the full resolution, for 2 givens and 1 unknown
 
     A resolution consists of a visual size in degrees, a shape in pixels,
@@ -109,7 +109,7 @@ def resolve_1D(length=None, visual_angle=None, ppd=None):
     else:  # 1 unknown, so need to resolve
         # Which unknown?
         if length is None:
-            length = pix_from_visual_angle_ppd_1D(visual_angle=visual_angle, ppd=ppd)
+            length = pix_from_visual_angle_ppd_1D(visual_angle=visual_angle, ppd=ppd, round=round)
         elif visual_angle is None:
             visual_angle = visual_angle_from_length_ppd_1D(length=length, ppd=ppd)
         elif ppd is None:
@@ -228,12 +228,16 @@ def visual_size_from_shape_ppd(shape, ppd):
     return visual_size
 
 
-def pix_from_visual_angle_ppd_1D(visual_angle, ppd):
+def pix_from_visual_angle_ppd_1D(visual_angle, ppd, round=True):
     if visual_angle is not None and ppd is not None:
         fpix = visual_angle * ppd
-        pix = int(fpix)
-        if fpix % pix:
-            warnings.warn(f"Rounding shape; {visual_angle} * {ppd} = {fpix} -> {pix}")
+
+        if round:
+            pix = int(fpix)
+            if fpix % pix:
+                warnings.warn(f"Rounding shape; {visual_angle} * {ppd} = {fpix} -> {pix}")
+        else:
+            pix = fpix
     else:
         pix = None
     return pix
