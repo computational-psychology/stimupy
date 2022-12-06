@@ -25,9 +25,9 @@ def square_wave(
     Parameters
     ----------
     shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
+        shape [height, width] of grating, in pixels
     visual_size : Sequence[Number, Number], Number, or None (default)
-        visual size [height, width] of image, in degrees
+        visual size [height, width] of grating, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
     frequency : Number, or None (default)
@@ -98,67 +98,92 @@ def square_wave(
 
 
 def grating_uniform(
-    visual_size=(10.0, 10.0),
-    ppd=10,
-    n_bars=8,
-    bar_shape=(0.5, 4.0),
-    intensity_background=0.0,
-    intensity_bar=1.0,
+    shape=None,
+    visual_size=None,
+    ppd=None,
+    frequency=None,
+    n_bars=None,
+    bar_width=None,
+    orientation="horizontal",
+    period="ignore",
+    intensity_bars=(0.0, 1.0),
+    target_indices=(2, 4),
     intensity_target=0.5,
+    image_size=None,
+    intensity_background=0.5,
 ):
-    """
-    Grating on a uniform background
+    """Spatial square-wave grating (set of bars), on a background
 
     Parameters
     ----------
-    visual_size : float or (float, float)
-        size of the image in degrees visual angle
-    ppd : int
-        pixels per degree (visual angle)
-    n_bars : int
-        the number of vertical bars
-    bar_shape : (float, float)
-        bar height and width in degrees visual angle
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of grating, in pixels
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of grating, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    frequency : Number, or None (default)
+        spatial frequency of grating, in cycles per degree visual angle
+    n_bars : int, or None (default)
+        number of bars in the grating
+    bar_width : Number, or None (default)
+        width of a single bar, in degrees visual angle
+    period : "full", "half", "ignore" (default)
+        whether to ensure the grating only has "full" periods,
+        half "periods", or no guarantees ("ignore")
+    orientation : "vertical" or "horizontal" (default)
+        orientation of the grating
+    intensity_bars : Sequence[float, ...]
+        intensity value for each bar, by default [1.0, 0.0].
+        Can specify as many intensities as n_bars;
+        If fewer intensities are passed than n_bars, cycles through intensities
+    target_indices : int, or Sequence[int, ...]
+        indices segments where targets will be placed
+    image_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of total image, in degrees
     intensity_background : float
-        intensity value for background
-    intensity_bar : float
-        intensity value for bar
-    intensity_target : float
-        intensity value for other bar which indicates target
+        intensity value of background, by default 0.5.
 
     Returns
-    -------
-    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each bar (key: "mask"),
+        and additional keys containing stimulus parameters
     """
 
-    # Create and rotate square-wave grating
-    bar_shape = (bar_shape[1], bar_shape[0])
-    img = square_wave_grating(
+    # Spatial square-wave grating
+    stim = square_wave(
+        shape=shape,
+        visual_size=visual_size,
         ppd=ppd,
+        frequency=frequency,
         n_bars=n_bars,
-        bar_shape=bar_shape,
-        intensity_bars=(intensity_bar, intensity_target),
-        )["img"]
-    img = np.rot90(img)
-    mask = np.zeros(img.shape)
-    mask[img == intensity_target] = 1
+        bar_width=bar_width,
+        orientation=orientation,
+        period=period,
+        intensity_bars=intensity_bars,
+        target_indices=target_indices,
+        intensity_target=intensity_target,
+    )
 
     # Padding
-    img = pad_to_visual_size(img=img, visual_size=visual_size, ppd=ppd, pad_value=intensity_background)
-    mask = pad_to_visual_size(img=mask, visual_size=visual_size, ppd=ppd, pad_value=0)
-    
-    stim = {
-        "img": img,
-        "mask": mask.astype(int),
-        "ppd": ppd,
-        "visual_size": np.array(img.shape) / ppd,
-        "shape": img.shape,
-        "n_bars": n_bars,
-        "bar_shape": bar_shape,
-        "intensity_background": intensity_background,
-        "intensity_bar": intensity_bar,
-        "intensity_target": intensity_target,
-        }
+    stim["img"] = pad_to_visual_size(
+        img=stim["img"], visual_size=image_size, ppd=ppd, pad_value=intensity_background
+    )
+    stim["mask"] = pad_to_visual_size(
+        img=stim["mask"], visual_size=image_size, ppd=ppd, pad_value=0
+    )
+
+    # Repack
+    stim.update(
+        intensity_background=intensity_background,
+        grating_size=stim["visual_size"],
+        grating_shape=stim["shape"],
+        shape=stim["img"].shape,
+        visual_size=image_size,
+    )
+
     return stim
 
 
