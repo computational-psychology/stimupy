@@ -342,81 +342,96 @@ def grating_grating_shifted(
 
 
 def grating_induction(
-    visual_size=(10, 10),
-    ppd=40,
-    grating_frequency=0.5,
-    target_height=0.5,
-    blur=5,
-    intensity_bars=(0.0, 1.0),
-    intensity_target=0.5,
+    shape=None,
+    visual_size=None,
+    ppd=None,
+    frequency=None,
+    n_bars=None,
+    bar_width=None,
     period="ignore",
+    orientation="horizontal",
+    intensity_bars=(0.0, 1.0),
+    target_width=0.5,
+    intensity_target=0.5,
+    blur=0,
 ):
     """
     Grating induction illusions
 
     Parameters
     ----------
-    visual_size : float or (float, float)
-        size of the image in degrees visual angle
-    ppd : int
-        pixels per degree (visual angle)
-    grating_frequency : float
-        frequency of the grid in cycles per degree visual angle
-    target_height : float
-        height of the target in degrees visual angle
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    frequency : Number, or None (default)
+        spatial frequency of grating, in cycles per degree visual angle
+    n_bars : int, or None (default)
+        number of bars in the grating
+    bar_width : Number, or None (default)
+        width of a single bar, in degrees visual angle
+    period : "full", "half", "ignore" (default)
+        whether to ensure the grating only has "full" periods,
+        half "periods", or no guarantees ("ignore")
+    orientation : "vertical" or "horizontal" (default)
+        orientation of the grating
+    target_width : float
+        width of the target (orthogonal to grating direction) in degrees visual angle
+    intensity_target : float, or Sequence[float, ...], optional
+        intensity value for each target, by default 0.5.
+        Can specify as many intensities as number of target_indices;
+        If fewer intensities are passed than target_indices, cycles through intensities
     blur : float
-        amount of blur to apply
-    intensity_bars : (float, float)
-        intensity values of bars
-    intensity_target : float
-        intensity value of targets
-    period : string in ['ignore', 'full', 'half']
-        specifies if the period of the wave is considered for stimulus dimensions.
-            'ignore' simply converts degrees to pixels
-            'full' rounds down to guarantee a full period
-            'half' adds a half period to the size 'full' would yield.
-        Default is 'ignore'.
+        amount of Gaussian blur to apply, default is 0.
 
     Returns
-    -------
-    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "mask"),
+        and additional keys containing stimulus parameters
     """
 
-    stim = square_wave(
+    # Draw grating
+    stim = square_wave_component(
+        shape=shape,
         visual_size=visual_size,
         ppd=ppd,
-        frequency=grating_frequency,
-        intensity_bars=intensity_bars,
+        frequency=frequency,
+        n_bars=n_bars,
+        bar_width=bar_width,
         period=period,
+        orientation=orientation,
+        intensity_bars=intensity_bars,
     )
-    img = stim["img"]
-    height, width = stim["shape"]
-    theight = int(target_height * stim["ppd"].vertical)
 
-    tstart = int(height) // 2 - theight // 2
-    tend = tstart + theight
+    targets_mask = stim["img"].astype(int) + 1
 
-    low = np.minimum(intensity_bars[0], intensity_bars[1])
-    high = np.maximum(intensity_bars[0], intensity_bars[1])
-    mask = np.zeros((height, width))
-    mask[tstart:tend, :] = (img[tstart:tend, :] - low) / (high - low) + 1
+    stim["img"] = gaussian_filter(stim["img"], blur)
 
-    img = gaussian_filter(img, blur)
-    img[tstart:tend, :] = intensity_target
+    # Identify target region
+    if orientation == "horizontal":
+        rectangle_size = (target_width, stim["visual_size"].width)
+    elif orientation == "vertical":
+        rectangle_size = (stim["visual_size"].height, target_width)
 
-    params = {
-        "shape": img.shape,
-        "visual_size": np.array(img.shape) / ppd,
-        "ppd": ppd,
-        "grating_frequency": grating_frequency,
-        "intensity_bars": intensity_bars,
-        "intensity_target": intensity_target,
-        "target_height": target_height,
-        "blur": blur,
-        "period": period,
-    }
+    target_mask = rectangle(
+        rectangle_size=rectangle_size,
+        ppd=stim["ppd"],
+        visual_size=stim["visual_size"],
+        intensity_background=0,
+        intensity_rectangle=1,
+        rectangle_position=(np.array(stim["visual_size"]) - np.array(rectangle_size)) / 2,
+    )
 
-    return {"img": img, "mask": mask.astype(int), **params}
+    # Superimpose
+    stim["img"] = np.where(target_mask["mask"], intensity_target, stim["img"])
+    stim["bars_mask"] = stim["mask"]
+    stim["mask"] = np.where(target_mask["mask"], targets_mask, 0)
+
+    return stim
 
 
 if __name__ == "__main__":
@@ -463,7 +478,9 @@ if __name__ == "__main__":
             target_indices=(13, 18),
             **large_grating_params,
         ),
-        "Grating induction": grating_induction(),
+        "Grating induction": grating_induction(
+            ppd=ppd, **large_grating_params, target_width=4.0, blur=3
+        ),
     }
 
     plot_stimuli(stims, mask=False)
