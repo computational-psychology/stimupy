@@ -19,7 +19,7 @@ Attributes
 ----------
 __all__ (list of str): list of all stimulus-functions
     that are exported by this module when executing
-        >>> from stimuli.papers.domijan2015 import *
+        >>> from stimuli.papers.RHS2007 import *
 
 References
 -----------
