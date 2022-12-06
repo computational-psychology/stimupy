@@ -131,6 +131,53 @@ def resolve_grating_params(
         "frequency": frequency,
         "phase_width": phase_width,
         "n_phases": n_phases,
+        "period": period,
+    }
+
+
+def mask_bars(
+    shape=None,
+    visual_size=None,
+    ppd=None,
+    frequency=None,
+    n_bars=None,
+    bar_width=None,
+    period="ignore",
+    orientation="horizontal",
+):
+    # Resolve params
+    params = resolve_grating_params(
+        shape=shape,
+        visual_size=visual_size,
+        n_phases=n_bars,
+        phase_width=bar_width,
+        ppd=ppd,
+        frequency=frequency,
+        period=period,
+    )
+    shape = params["shape"]
+    visual_size = params["visual_size"]
+    ppd = params["ppd"]
+
+    # Create image-base:
+    x = np.linspace(0, visual_size.width, shape.width)
+    y = np.linspace(0, visual_size.height, shape.height)
+    xx, yy = np.meshgrid(x, y)
+    mask = np.zeros(shape, dtype=int)
+
+    # Determine bar edges
+    bar_edges = [
+        *itertools.accumulate(itertools.repeat(params["phase_width"], int(params["n_phases"])))
+    ]
+
+    # Mask bars
+    distances = xx
+    for idx, edge in zip(reversed(range(len(bar_edges))), reversed(bar_edges)):
+        mask[distances <= edge] = int(idx + 1)
+
+    return {
+        "mask": mask,
+        **params,
     }
 
 
@@ -171,39 +218,21 @@ def square_wave(
     A 2d-array with a square-wave grating
     """
 
-    params = resolve_grating_params(
+    # Get bars mask
+    stim = mask_bars(
         shape=shape,
         visual_size=visual_size,
-        n_phases=n_bars,
-        phase_width=bar_width,
         ppd=ppd,
         frequency=frequency,
+        n_bars=n_bars,
+        bar_width=bar_width,
         period=period,
     )
-    shape = params["shape"]
-    ppd = params["ppd"]
-    visual_size = params["visual_size"]
-
-    # Determine bar edges
-    bar_edges = [
-        *itertools.accumulate(itertools.repeat(params["phase_width"], params["n_phases"]))
-    ]
-    bar_edges -= np.array(visual_size.width) / 2.0
-
-    # Create image-base:
-    x = np.linspace(-visual_size.width / 2.0, visual_size.width / 2.0, shape.width)
-    y = np.linspace(-visual_size.height / 2.0, visual_size.height / 2.0, shape.height)
-    xx, yy = np.meshgrid(x, y)
-    distances = xx
-    mask = np.zeros(shape, dtype=int)
-
-    # Mask bars
-    for idx, edge in zip(reversed(range(len(bar_edges))), reversed(bar_edges)):
-        mask[distances <= edge] = int(idx + 1)
+    mask = stim["mask"]
 
     # Draw bars
-    img = np.zeros(shape)
-    ints = [*itertools.islice(itertools.cycle(intensity_bars), len(bar_edges))]
+    img = np.zeros(mask.shape)
+    ints = [*itertools.islice(itertools.cycle(intensity_bars), len(np.unique(mask)))]
     for bar_idx, intensity in zip(np.unique(mask), ints):
         img = np.where(mask == bar_idx, intensity, img)
 
