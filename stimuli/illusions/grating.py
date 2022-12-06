@@ -4,8 +4,7 @@ import numpy as np
 
 from stimuli.components import rectangle
 from stimuli.components import square_wave as square_wave_component
-from stimuli.components import square_wave_grating
-from stimuli.utils import degrees_to_pixels, pad_to_shape, pad_to_visual_size
+from stimuli.utils import pad_to_shape, pad_to_visual_size
 
 
 def square_wave(
@@ -361,17 +360,17 @@ if __name__ == "__main__":
     }
 
     stims = {
-        "Grating illusion": square_wave(
+        "Grating with targets": square_wave(
             ppd=ppd, **small_grating_params, intensity_bars=(0.0, 1.0), target_indices=(3, 6)
         ),
-        "Grating - uniform": grating_uniform(
+        "Grating on uniform background": grating_uniform(
             ppd=ppd,
             **small_grating_params,
             intensity_bars=(0.0, 1.0),
             image_size=(32, 32),
             target_indices=(3, 6),
         ),
-        "Grating - grating": grating_grating(
+        "Grating on grating": grating_grating(
             ppd=ppd,
             small_grating_params={
                 **small_grating_params,
@@ -379,7 +378,7 @@ if __name__ == "__main__":
             },
             large_grating_params=large_grating_params,
         ),
-        "Grating - grating shifted": grating_grating_shifted(
+        "Grating on grating, shifted": grating_grating_shifted(
             shifted_width=8.0,
             ppd=ppd,
             target_indices=(13, 18),
