@@ -440,24 +440,23 @@ def rings(shape=SHAPES["rings"], visual_size=VSIZES["rings"], ppd=PPD):
 
     # Resolve resolution
     shape, visual_size, ppd, visual_resize = resolve(shape, visual_size, ppd, VSIZES["rings"])
-    ppd = ppd[0]
 
     params = {
         "ppd": ppd,
-        "n_rings": 8,
-        "ring_width": 0.5 * visual_resize,
+        "n_frames": 8,
+        "frame_width": 0.5 * visual_resize,
     }
 
-    stim1 = illusions.rings.ring_stimulus(
+    stim1 = illusions.frames(
         **params,
-        target_idx=4,
-        intensity_rings=(v1, v3),
+        target_indices=5,
+        intensity_frames=(v1, v3),
         intensity_target=v2,
     )
-    stim2 = illusions.rings.ring_stimulus(
+    stim2 = illusions.frames(
         **params,
-        target_idx=3,
-        intensity_rings=(v1, v3),
+        target_indices=4,
+        intensity_frames=(v1, v3),
         intensity_target=v2,
     )
 
@@ -515,22 +514,21 @@ def bullseye(shape=SHAPES["bullseye"], visual_size=VSIZES["bullseye"], ppd=PPD):
 
     # Resolve resolution
     shape, visual_size, ppd, visual_resize = resolve(shape, visual_size, ppd, VSIZES["bullseye"])
-    ppd = ppd[0]
 
     params = {
         "ppd": ppd,
-        "n_rings": 8,
-        "ring_width": 0.5 * visual_resize,
+        "n_frames": 8,
+        "frame_width": 0.5 * visual_resize,
     }
 
-    stim1 = illusions.bullseye.bullseye_stimulus(
+    stim1 = illusions.bullseye(
         **params,
-        intensity_rings=(v1, v3),
+        intensity_frames=(v1, v3),
         intensity_target=v2,
     )
-    stim2 = illusions.bullseye.bullseye_stimulus(
+    stim2 = illusions.bullseye(
         **params,
-        intensity_rings=(v3, v1),
+        intensity_frames=(v3, v1),
         intensity_target=v2,
     )
 

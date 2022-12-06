@@ -1,6 +1,5 @@
 from .angular import *
 from .benary_cross import *
-from .bullseye import bullseye_stimulus
 from .checkerboards import *
 from .circular import *
 from .cornsweet import cornsweet
