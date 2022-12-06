@@ -6,8 +6,8 @@ from stimuli.utils import degrees_to_pixels, resolution
 
 
 def resolve_grating_params(
-    shape=None,
-    visual_size=None,
+    length=None,
+    visual_angle=None,
     ppd=None,
     frequency=None,
     n_phases=None,
@@ -56,11 +56,13 @@ def resolve_grating_params(
 
     # Try to resolve resolution
     try:
-        shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
+        length, visual_angle, ppd = resolution.resolve_1D(
+            length=length, visual_angle=visual_angle, ppd=ppd
+        )
     except ValueError:
-        ppd = resolution.validate_ppd(ppd)
-        shape = resolution.validate_shape(shape)
-        visual_size = resolution.validate_visual_size(visual_size)
+        ppd = ppd
+        length = length
+        visual_angle = visual_angle
 
     # Try to resolve number and width(s) of phases:
     # Logic here is that phase_width expresses "degrees per phase",
@@ -82,26 +84,29 @@ def resolve_grating_params(
     # pix = ppd * n_degrees
     # Thus we can resolve the number and spacing of phases also as a resolution
     try:
-        n_phases, visual_angle, phases_pd = resolution.resolve_1D(
-            length=n_phases, visual_angle=visual_size.width, ppd=phases_pd
+        n_phases, min_angle, phases_pd = resolution.resolve_1D(
+            length=n_phases,
+            visual_angle=visual_angle,
+            ppd=phases_pd,
+            round=False,
         )
-        phase_width = 1 / phases_pd
-        frequency = phases_pd / 2
     except Exception as e:
         raise Exception("Could not resolve grating frequency, phase_width, n_phases") from e
 
+    # Convert to frequency
+    phase_width = 1 / phases_pd
+    frequency = phases_pd / 2
+
     # Now resolve resolution
-    visual_width = visual_size.width if visual_size.width is not None else visual_angle
-    visual_height = visual_size.height if visual_size.height is not None else visual_angle
-    shape, visual_size, ppd = resolution.resolve(
-        shape=shape, visual_size=(visual_height, visual_width), ppd=ppd
+    visual_angle = min_angle if visual_angle is None else visual_angle
+    length, visual_angle, ppd = resolution.resolve_1D(
+        length=length, visual_angle=visual_angle, ppd=ppd
     )
 
     # Check that frequency does not exceed Nyquist limit:
-    if frequency > ppd.horizontal / 2:
+    if frequency > (ppd / 2):
         raise ValueError(
-            f"Grating frequency ({frequency}) should not exceed Nyquist limit"
-            f" {ppd.horizontal/2} (ppd/2)"
+            f"Grating frequency ({frequency}) should not exceed Nyquist limit {ppd/2} (ppd/2)"
         )
 
     # Ensure full/half period:
@@ -116,7 +121,6 @@ def resolve_grating_params(
     #         f" from {frequency_old} to {frequency},"
     #         " to ensure an even-numbered cycle width"
     #     )
-
     # length = shape.width
     # if period == "full":
     #     length = (length // pixels_per_period) * pixels_per_period
@@ -125,8 +129,8 @@ def resolve_grating_params(
     # length = int(length)
 
     return {
-        "shape": shape,
-        "visual_size": visual_size,
+        "length": length,
+        "visual_angle": visual_angle,
         "ppd": ppd,
         "frequency": frequency,
         "phase_width": phase_width,
@@ -145,19 +149,55 @@ def mask_bars(
     period="ignore",
     orientation="horizontal",
 ):
+
+    # Try to resolve resolution
+    try:
+        shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
+    except ValueError:
+        ppd = resolution.validate_ppd(ppd)
+        shape = resolution.validate_shape(shape)
+        visual_size = resolution.validate_visual_size(visual_size)
+
+    # Orientation
+    if orientation == "horizontal":
+        length = shape.width
+        visual_angle = visual_size.width
+        ppd_1D = ppd.horizontal
+    elif orientation == "vertical":
+        length = shape.height
+        visual_angle = visual_size.height
+        ppd_1D = ppd.vertical
+
     # Resolve params
     params = resolve_grating_params(
-        shape=shape,
-        visual_size=visual_size,
+        length=length,
+        visual_angle=visual_angle,
         n_phases=n_bars,
         phase_width=bar_width,
-        ppd=ppd,
+        ppd=ppd_1D,
         frequency=frequency,
         period=period,
     )
-    shape = params["shape"]
-    visual_size = params["visual_size"]
-    ppd = params["ppd"]
+    length = params["length"]
+    ppd_1D = params["ppd"]
+    visual_angle = params["visual_angle"]
+
+    # Orientation switch
+    if orientation == "horizontal":
+        shape = (shape.height, length) if shape.height is not None else length
+        visual_size = (
+            (visual_size.height, visual_angle) if visual_size.height is not None else visual_angle
+        )
+        ppd = (ppd.vertical, ppd_1D) if ppd.vertical is not None else ppd_1D
+    elif orientation == "vertical":
+        shape = (length, shape.width) if shape.width is not None else length
+        visual_size = (
+            (visual_angle, visual_size.width) if visual_size.width is not None else visual_angle
+        )
+        ppd = (ppd_1D, ppd.horizontal) if ppd.horizontal is not None else ppd_1D
+    shape = resolution.validate_shape(shape)
+    visual_size = resolution.validate_visual_size(visual_size)
+    ppd = resolution.validate_ppd(ppd)
 
     # Create image-base:
     x = np.linspace(0, visual_size.width, shape.width)
@@ -171,13 +211,20 @@ def mask_bars(
     ]
 
     # Mask bars
-    distances = xx
+    distances = xx if orientation == "horizontal" else yy
     for idx, edge in zip(reversed(range(len(bar_edges))), reversed(bar_edges)):
         mask[distances <= edge] = int(idx + 1)
 
     return {
         "mask": mask,
-        **params,
+        "shape": shape,
+        "visual_size": visual_size,
+        "ppd": ppd,
+        "frequency": params["frequency"],
+        "bar_width": params["phase_width"],
+        "n_bars": params["n_phases"],
+        "period": params["period"],
+        "orientation": orientation,
     }
 
 
