@@ -884,7 +884,7 @@ def grating_induction(ppd=PPD, pad=True):
         "period": "ignore",
     }
 
-    stim = illusions.grating_induction.grating_illusion(
+    stim = illusions.grating.grating_induction(
         visual_size=(height, width),
         **params,
     )
