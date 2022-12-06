@@ -46,17 +46,22 @@ def mask_frames(
     try:
         shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
     except ValueError:
-        ppd = resolution.validate_ppd(ppd)
-        shape = resolution.validate_shape(shape)
-        visual_size = resolution.validate_visual_size(visual_size)
+        ppd = resolution.validate_ppd(ppd) if ppd is not None else None
+        shape = resolution.validate_shape(shape) if shape is not None else None
+        visual_size = (
+            resolution.validate_visual_size(visual_size) if visual_size is not None else None
+        )
 
     # Resolve params
+    length = np.array(shape).min() / 2 if shape is not None else None
+    ppd_1D = np.array(ppd).min() if ppd is not None else None
+    visual_angle = np.array(visual_size).min() / 2 if visual_size is not None else None
     params = resolve_grating_params(
-        length=np.array(shape).min() / 2,
-        visual_angle=np.array(visual_size).min() / 2,
+        length=length,
+        visual_angle=visual_angle,
         n_phases=n_frames,
         phase_width=frame_width,
-        ppd=np.array(ppd).min(),
+        ppd=ppd_1D,
         frequency=frequency,
         period=period,
     )
