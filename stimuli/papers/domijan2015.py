@@ -241,7 +241,7 @@ def dungeon(shape=SHAPES["dungeon"], visual_size=VSIZES["dungeon"], ppd=PPD):
 
     # Stacking
     img = np.hstack([stim1["img"], stim2["img"]])
-    mask = np.hstack([stim1["mask"], stim2["mask"]])
+    mask = np.hstack([stim1["mask"], stim2["mask"]]).astype(int)
 
     params.update(
         original_shape=SHAPES["dungeon"],
@@ -321,7 +321,7 @@ def cube(shape=SHAPES["cube"], visual_size=VSIZES["cube"], ppd=PPD):
 
     # Stacking
     img = np.hstack([img1, img2])
-    mask = np.hstack([mask1, mask2])
+    mask = np.hstack([mask1, mask2]).astype(int)
 
     params.update(
         original_shape=SHAPES["cube"],
@@ -394,7 +394,7 @@ def grating(shape=SHAPES["grating"], visual_size=VSIZES["grating"], ppd=PPD):
 
     # Stacking
     img = np.hstack([img1, img2])
-    mask = np.hstack([mask1, mask2])
+    mask = np.hstack([mask1, mask2]).astype(int)
 
     params.update(
         original_shape=SHAPES["grating"],
@@ -467,7 +467,7 @@ def rings(shape=SHAPES["rings"], visual_size=VSIZES["rings"], ppd=PPD):
 
     # Stacking
     img = np.hstack([stim1["img"], stim2["img"]])
-    mask = np.hstack([stim1["mask"], stim2["mask"]])
+    mask = np.hstack([stim1["mask"], stim2["mask"]]).astype(int)
 
     params.update(
         original_shape=SHAPES["rings"],
@@ -540,7 +540,7 @@ def bullseye(shape=SHAPES["bullseye"], visual_size=VSIZES["bullseye"], ppd=PPD):
 
     # Stacking
     img = np.hstack([stim1["img"], stim2["img"]])
-    mask = np.hstack([stim1["mask"], stim2["mask"]])
+    mask = np.hstack([stim1["mask"], stim2["mask"]]).astype(int)
 
     params.update(
         original_shape=SHAPES["bullseye"],
@@ -593,7 +593,7 @@ def simultaneous_brightness_contrast(
         "visual_size": visual_size[0],
         "ppd": ppd,
         "target_size": (2.1 * visual_resize, 2.1 * visual_resize),
-        "target_pos": (3.9 * visual_resize, 3.9 * visual_resize),
+        "target_position": (3.9 * visual_resize, 3.9 * visual_resize),
     }
 
     stim1 = illusions.sbc.simultaneous_contrast_generalized(
@@ -612,7 +612,7 @@ def simultaneous_brightness_contrast(
 
     # Stacking
     img = np.hstack([stim1["img"], stim2["img"]])
-    mask = np.hstack([stim1["mask"], stim2["mask"]])
+    mask = np.hstack([stim1["mask"], stim2["mask"]]).astype(int)
 
     params.update(
         original_shape=SHAPES["simultaneous_brightness_contrast"],
@@ -675,7 +675,7 @@ def white(shape=SHAPES["white"], visual_size=VSIZES["white"], ppd=PPD, pad=PAD):
     if pad:
         padding = np.array((0.9, 1.1)) * visual_resize
         stim["img"] = pad_by_visual_size(stim["img"], padding, ppd, pad_value=v2)
-        stim["mask"] = pad_by_visual_size(stim["mask"], padding, ppd, pad_value=0)
+        stim["mask"] = pad_by_visual_size(stim["mask"], padding, ppd, pad_value=0).astype(int)
         params["padding"] = padding
 
     original_shape_np = SHAPES["white"]
@@ -741,7 +741,7 @@ def benary(shape=SHAPES["benary"], visual_size=VSIZES["benary"], ppd=PPD):
     # Padding
     padding = np.array((0.9, 1.0)) * visual_resize
     stim["img"] = pad_by_visual_size(stim["img"], padding, ppd, pad_value=1.0)
-    stim["mask"] = pad_by_visual_size(stim["mask"], padding, ppd, pad_value=0)
+    stim["mask"] = pad_by_visual_size(stim["mask"], padding, ppd, pad_value=0).astype(int)
 
     params.update(
         original_shape=SHAPES["benary"],
@@ -811,7 +811,7 @@ def todorovic(shape=SHAPES["todorovic"], visual_size=VSIZES["todorovic"], ppd=PP
 
     # Stacking
     img = np.hstack([stim1["img"], stim2["img"]])
-    mask = np.hstack([stim1["mask"], stim2["mask"]])
+    mask = np.hstack([stim1["mask"], stim2["mask"]]).astype(int)
 
     params.update(
         original_shape=SHAPES["todorovic"],
@@ -902,7 +902,7 @@ def checkerboard_contrast_contrast(
 
     # Stacking
     img = np.hstack([stim1["img"], stim2["img"]])
-    mask = np.hstack([stim1["mask"], stim2["mask"]])
+    mask = np.hstack([stim1["mask"], stim2["mask"]]).astype(int)
 
     # Output
     original_shape_np = np.array(SHAPES["checkerboard_contrast_contrast"])
@@ -974,7 +974,7 @@ def checkerboard(
     if pad:
         padding = np.array((0.9, 1.1)) * visual_resize
         stim["img"] = pad_by_visual_size(stim["img"], padding, ppd=ppd, pad_value=v2)
-        stim["mask"] = pad_by_visual_size(stim["mask"], padding, ppd=ppd, pad_value=0)
+        stim["mask"] = pad_by_visual_size(stim["mask"], padding, ppd=ppd, pad_value=0).astype(int)
         params["padding"] = padding
 
     original_shape_np = SHAPES["checkerboard"]
@@ -1047,7 +1047,7 @@ def checkerboard_extended(
     if pad:
         padding = np.array((0.9, 1.1)) * visual_resize
         stim["img"] = pad_by_visual_size(stim["img"], padding, ppd=ppd, pad_value=v2)
-        stim["mask"] = pad_by_visual_size(stim["mask"], padding, ppd=ppd, pad_value=0)
+        stim["mask"] = pad_by_visual_size(stim["mask"], padding, ppd=ppd, pad_value=0).astype(int)
         params["padding"] = padding
 
     original_shape_np = SHAPES["checkerboard_extended"]
@@ -1125,7 +1125,7 @@ def white_yazdanbakhsh(
     if pad:
         padding = np.array((0.9, 1.1)) * visual_resize
         stim["img"] = pad_by_visual_size(stim["img"], padding, ppd=ppd, pad_value=v2)
-        stim["mask"] = pad_by_visual_size(stim["mask"], padding, ppd=ppd, pad_value=0)
+        stim["mask"] = pad_by_visual_size(stim["mask"], padding, ppd=ppd, pad_value=0).astype(int)
         params["padding"] = padding
 
     original_shape_np = SHAPES["white_yazdanbakhsh"]
@@ -1203,7 +1203,7 @@ def white_anderson(
     if pad:
         padding = np.array((0.9, 1.1)) * visual_resize
         stim["img"] = pad_by_visual_size(stim["img"], padding, ppd=ppd, pad_value=v2)
-        stim["mask"] = pad_by_visual_size(stim["mask"], padding, ppd=ppd, pad_value=0)
+        stim["mask"] = pad_by_visual_size(stim["mask"], padding, ppd=ppd, pad_value=0).astype(int)
         params["padding"] = padding
 
     original_shape_np = SHAPES["white_anderson"]
@@ -1275,7 +1275,7 @@ def white_howe(shape=SHAPES["white_howe"], visual_size=VSIZES["white_howe"], ppd
     if pad:
         padding = np.array((0.9, 1.1)) * visual_resize
         stim["img"] = pad_by_visual_size(stim["img"], padding, ppd=ppd, pad_value=v2)
-        stim["mask"] = pad_by_visual_size(stim["mask"], padding, ppd=ppd, pad_value=0)
+        stim["mask"] = pad_by_visual_size(stim["mask"], padding, ppd=ppd, pad_value=0).astype(int)
         params["padding"] = padding
 
     original_shape_np = SHAPES["white_howe"]

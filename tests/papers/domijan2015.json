@@ -1,62 +1,62 @@
 {
     "dungeon": {
         "img": "2fcc7108d4e60b783ec45d63ca0d0948",
-        "mask": "1954462ad5eeb864935b349630f918f9"
+        "mask": "6faa94abad896d92a569c9985463e730"
     },
     "cube": {
         "img": "ae4d6af3fdd4a2d8850ba0e35019313f",
-        "mask": "3a6543daa69e82047d0b84b76a446312"
+        "mask": "aa04195ca94daf92be7acce3ae849980"
     },
     "grating": {
         "img": "367e338b2995083a84e73727411e6fda",
-        "mask": "cb796a47e9ca6c8426a2585c9b604989"
+        "mask": "a2d0c145ce6b88fd7400ba1586020837"
     },
     "rings": {
         "img": "c18eb113ec23ce6ab336d6ea4007f5b7",
-        "mask": "3c5c395de3b4cae5b6956314624ea012"
+        "mask": "a344173c403734c7db670c36dcee8a01"
     },
     "bullseye": {
         "img": "c62daec28726ac4a3a80078a579732e8",
-        "mask": "721937af54e313931f38a22b7a6ce885"
+        "mask": "d7752f2c42d6821af074ef8dbba0b79d"
     },
     "simultaneous_brightness_contrast": {
         "img": "b38138c73e964a2cd1f8191b52782caa",
-        "mask": "c46a87aa52c48192ce96c90fbe10c062"
+        "mask": "a54258e03ef51f71b332fffc50159fc0"
     },
     "white": {
         "img": "6cea872dcf0c04350a02bd22a56208ac",
-        "mask": "306423f9e89e6d3bd21a946881ef684a"
+        "mask": "a31aefa547c240abe9a3913b58fefd32"
     },
     "benary": {
         "img": "6d80c64a4631498a45727f7af729b7cf",
-        "mask": "c790aa14edddb57f8054a4f330c7ddc6"
+        "mask": "77241f922bd7a4b027b21964e5e80c53"
     },
     "todorovic": {
         "img": "0892f38cdfa5207d469d79da419b733c",
-        "mask": "2eeeeb428daf6be031c64ef841e7c897"
+        "mask": "00c4d6c6ee1e4a71085d77707a796ac5"
     },
     "checkerboard_contrast_contrast": {
         "img": "feffa677eb2e788920524d1609c4bdc3",
-        "mask": "487c5cbe9dfd08719ead98ea9a7e901c"
+        "mask": "edfee1e45de25656ad1bf40dc28ab4aa"
     },
     "checkerboard": {
         "img": "78d696821728153333c497589f03a9d3",
-        "mask": "70844521cd62275df0cab9a7c1184d9d"
+        "mask": "79963e9044d6023c6de544110ee0e2b9"
     },
     "checkerboard_extended": {
         "img": "16196805dd15f399620ee763324c4c52",
-        "mask": "f6ee08aeab807602449271ee7367cc44"
-    },
-    "white_anderson": {
-        "img": "e88fe28810daf69833589464179f1f13",
-        "mask": "4f444ddd9e75de8357dbf61d25130416"
-    },
-    "white_howe": {
-        "img": "07f8a1a4840a6e1c38628d1041a04b17",
-        "mask": "dad7e6f46a83cfde26d224711e0afb0f"
+        "mask": "a798bc5635333750a17698f5a4f46dc9"
     },
     "white_yazdanbakhsh": {
         "img": "981075866bd20d1c3993a1df3f42ee47",
-        "mask": "3c2739936e5cd883520089605537e1d6"
+        "mask": "ffd88ad06b4311a98dd5f45247308dfa"
+    },
+    "white_anderson": {
+        "img": "e88fe28810daf69833589464179f1f13",
+        "mask": "28cc6318be7bc5da882a9e3cb5ae8b70"
+    },
+    "white_howe": {
+        "img": "07f8a1a4840a6e1c38628d1041a04b17",
+        "mask": "805acb3c8a5d11f21e90d7307561fd6f"
     }
 }

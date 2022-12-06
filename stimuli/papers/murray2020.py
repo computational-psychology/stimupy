@@ -182,14 +182,16 @@ def argyle_control(ppd=PPD):
     original_range = (img.min(), img.max())
     normed_img = (img - img.min()) / (img.max() - img.min())
 
-    params = {
+    stim = {
+        "img": normed_img,
+        "mask": mask.astype(int),
         "visual_size": np.array(normed_img.shape) / ppd,
         "shape": normed_img.shape,
         "ppd": ppd,
         "intensity_range": (0.0, 1.0),
         "original_range": original_range,
     }
-    return {"img": normed_img, "mask": mask, **params}
+    return stim
 
 
 def argyle_long(ppd=PPD):
@@ -226,14 +228,16 @@ def argyle_long(ppd=PPD):
     original_range = (img.min(), img.max())
     normed_img = (img - img.min()) / (img.max() - img.min())
 
-    params = {
+    stim = {
+        "img": normed_img,
+        "mask": mask.astype(int),
         "visual_size": np.array(normed_img.shape) / ppd,
         "shape": normed_img.shape,
         "ppd": ppd,
         "intensity_range": (0.0, 1.0),
         "original_range": original_range,
     }
-    return {"img": normed_img, "mask": mask, **params}
+    return stim
 
 
 def snake(ppd=PPD):
@@ -270,14 +274,16 @@ def snake(ppd=PPD):
     original_range = (img.min(), img.max())
     normed_img = (img - img.min()) / (img.max() - img.min())
 
-    params = {
+    stim = {
+        "img": normed_img,
+        "mask": mask.astype(int),
         "visual_size": np.array(normed_img.shape) / ppd,
         "shape": normed_img.shape,
         "ppd": ppd,
         "intensity_range": (0.0, 1.0),
         "original_range": original_range,
     }
-    return {"img": normed_img, "mask": mask, **params}
+    return stim
 
 
 def snake_control(ppd=PPD):
@@ -314,14 +320,16 @@ def snake_control(ppd=PPD):
     original_range = (img.min(), img.max())
     normed_img = (img - img.min()) / (img.max() - img.min())
 
-    params = {
+    stim = {
+        "img": normed_img,
+        "mask": mask.astype(int),
         "visual_size": np.array(normed_img.shape) / ppd,
         "shape": normed_img.shape,
         "ppd": ppd,
         "intensity_range": (0.0, 1.0),
         "original_range": original_range,
     }
-    return {"img": normed_img, "mask": mask, **params}
+    return stim
 
 
 def koffka_adelson(ppd=PPD):
@@ -358,14 +366,16 @@ def koffka_adelson(ppd=PPD):
     original_range = (img.min(), img.max())
     normed_img = (img - img.min()) / (img.max() - img.min())
 
-    params = {
+    stim = {
+        "img": normed_img,
+        "mask": mask.astype(int),
         "visual_size": np.array(normed_img.shape) / ppd,
         "shape": normed_img.shape,
         "ppd": ppd,
         "intensity_range": (0.0, 1.0),
         "original_range": original_range,
     }
-    return {"img": normed_img, "mask": mask, **params}
+    return stim
 
 
 def koffka_broken(ppd=PPD):
@@ -402,14 +412,16 @@ def koffka_broken(ppd=PPD):
     original_range = (img.min(), img.max())
     normed_img = (img - img.min()) / (img.max() - img.min())
 
-    params = {
+    stim = {
+        "img": normed_img,
+        "mask": mask.astype(int),
         "visual_size": np.array(normed_img.shape) / ppd,
         "shape": normed_img.shape,
         "ppd": ppd,
         "intensity_range": (0.0, 1.0),
         "original_range": original_range,
     }
-    return {"img": normed_img, "mask": mask, **params}
+    return stim
 
 
 def koffka_connected(ppd=PPD):
@@ -446,14 +458,16 @@ def koffka_connected(ppd=PPD):
     original_range = (img.min(), img.max())
     normed_img = (img - img.min()) / (img.max() - img.min())
 
-    params = {
+    stim = {
+        "img": normed_img,
+        "mask": mask.astype(int),
         "visual_size": np.array(normed_img.shape) / ppd,
         "shape": normed_img.shape,
         "ppd": ppd,
         "intensity_range": (0.0, 1.0),
         "original_range": original_range,
     }
-    return {"img": normed_img, "mask": mask, **params}
+    return stim
 
 
 def checkassim(ppd=PPD, pad=PAD):
@@ -544,14 +558,16 @@ def simcon(ppd=PPD):
     original_range = (img.min(), img.max())
     normed_img = (img - img.min()) / (img.max() - img.min())
 
-    params = {
+    stim = {
+        "img": normed_img,
+        "mask": mask.astype(int),
         "visual_size": np.array(normed_img.shape) / ppd,
         "shape": normed_img.shape,
         "ppd": ppd,
         "intensity_range": (0.0, 1.0),
         "original_range": original_range,
     }
-    return {"img": normed_img, "mask": mask, **params}
+    return stim
 
 
 def simcon_articulated(ppd=PPD):
@@ -588,14 +604,16 @@ def simcon_articulated(ppd=PPD):
     original_range = (img.min(), img.max())
     normed_img = (img - img.min()) / (img.max() - img.min())
 
-    params = {
+    stim = {
+        "img": normed_img,
+        "mask": mask.astype(int),
         "visual_size": np.array(normed_img.shape) / ppd,
         "shape": normed_img.shape,
         "ppd": ppd,
         "intensity_range": (0.0, 1.0),
         "original_range": original_range,
     }
-    return {"img": normed_img, "mask": mask, **params}
+    return stim
 
 
 def white(ppd=PPD):
@@ -637,7 +655,7 @@ def white(ppd=PPD):
     mask = np.rot90(stim["mask"])
 
     reduced_mask = np.where(mask == 2, 2, 0)
-    reduced_mask = np.where(mask == 5, 1, reduced_mask)
+    reduced_mask = np.where(mask == 5, 1, reduced_mask).astype(int)
 
     # Normalize intensity values to [0, 1]
     original_range = (img.min(), img.max())

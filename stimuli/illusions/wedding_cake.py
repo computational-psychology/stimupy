@@ -3,6 +3,8 @@ from scipy.signal import fftconvolve
 from stimuli.utils import degrees_to_pixels
 
 
+# TODO: constrain allowed stimulus sizes
+
 i1 = 1
 i2 = 2
 def wedding_cake_stimulus(
@@ -130,7 +132,9 @@ def wedding_cake_stimulus(
     img = img + t1
     img = img + t2
     
-    params = {
+    stim = {
+        "img": img,
+        "mask": mask.astype(int),
         "shape": img.shape,
         "visual_size": np.array(img.shape) / ppd,
         "ppd": ppd,
@@ -142,7 +146,7 @@ def wedding_cake_stimulus(
         "target_indices2": target_indices2,
     }
     
-    return {"img": img, "mask": mask, **params}
+    return stim
 
 
 

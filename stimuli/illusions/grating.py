@@ -36,7 +36,12 @@ def grating_illusion(
     """
 
     bar_width_px = degrees_to_pixels(bar_shape[1], ppd)
-    img = square_wave_grating(ppd, n_bars, bar_shape, intensity_bars[0], intensity_bars[1])
+    img = square_wave_grating(
+        ppd=ppd,
+        n_bars=n_bars,
+        bar_shape=bar_shape,
+        intensity_bars=intensity_bars,
+        )["img"]
     mask = np.zeros(img.shape)
 
     if isinstance(target_indices, (float, int)):
@@ -49,10 +54,10 @@ def grating_illusion(
 
 
 def grating_uniform(
+    visual_size=(10.0, 10.0),
     ppd=10,
     n_bars=8,
     bar_shape=(0.5, 4.0),
-    im_size=(10.0, 10.0),
     intensity_background=0.0,
     intensity_bar=1.0,
     intensity_target=0.5,
@@ -62,14 +67,14 @@ def grating_uniform(
 
     Parameters
     ----------
+    visual_size : float or (float, float)
+        size of the image in degrees visual angle
     ppd : int
         pixels per degree (visual angle)
     n_bars : int
         the number of vertical bars
     bar_shape : (float, float)
         bar height and width in degrees visual angle
-    im_size : (float, float)
-        height and width of stimulus in visual angle
     intensity_background : float
         intensity value for background
     intensity_bar : float
@@ -84,23 +89,40 @@ def grating_uniform(
 
     # Create and rotate square-wave grating
     bar_shape = (bar_shape[1], bar_shape[0])
-    img = square_wave_grating(ppd, n_bars, bar_shape, intensity_bar, intensity_target)
+    img = square_wave_grating(
+        ppd=ppd,
+        n_bars=n_bars,
+        bar_shape=bar_shape,
+        intensity_bars=(intensity_bar, intensity_target),
+        )["img"]
     img = np.rot90(img)
     mask = np.zeros(img.shape)
     mask[img == intensity_target] = 1
 
     # Padding
-    img = pad_to_visual_size(img=img, visual_size=im_size, ppd=ppd, pad_value=intensity_background)
-    img = pad_to_visual_size(img=mask, visual_size=im_size, ppd=ppd, pad_value=0)
-
-    return {"img": img, "mask": mask}
+    img = pad_to_visual_size(img=img, visual_size=visual_size, ppd=ppd, pad_value=intensity_background)
+    mask = pad_to_visual_size(img=mask, visual_size=visual_size, ppd=ppd, pad_value=0)
+    
+    stim = {
+        "img": img,
+        "mask": mask.astype(int),
+        "ppd": ppd,
+        "visual_size": np.array(img.shape) / ppd,
+        "shape": img.shape,
+        "n_bars": n_bars,
+        "bar_shape": bar_shape,
+        "intensity_background": intensity_background,
+        "intensity_bar": intensity_bar,
+        "intensity_target": intensity_target,
+        }
+    return stim
 
 
 def grating_grating(
+    visual_size=(10.3, 10.3),
     ppd=10,
     n_bars=8,
     bar_shape=(0.5, 4.0),
-    im_size=(10.3, 10.3),
     intensity_bars=(0.0, 1.0),
     intensity_target=0.5,
 ):
@@ -109,14 +131,14 @@ def grating_grating(
 
     Parameters
     ----------
+    visual_size : float or (float, float)
+        size of the image in degrees visual angle
     ppd : int
         pixels per degree (visual angle)
     n_bars : int
         the number of vertical bars
     bar_shape : (float, float)
         bar height and width in degrees visual angle
-    im_size : (float, float)
-        height and width of stimulus in visual angle
     intensity_bars : (float, float)
         intensity values for bars
     intensity_target : float
@@ -129,18 +151,28 @@ def grating_grating(
 
     # Create and rotate square-wave grating
     bar_shape = (bar_shape[1], bar_shape[0])
-    img_small = square_wave_grating(ppd, n_bars, bar_shape, intensity_bars[0], intensity_target)
+    img_small = square_wave_grating(
+        ppd=ppd,
+        n_bars=n_bars,
+        bar_shape=bar_shape,
+        intensity_bars=(intensity_bars[0], intensity_target),
+        )["img"]
     img_small = np.rot90(img_small)
     mask_small = np.zeros(img_small.shape)
     mask_small[img_small == intensity_target] = 1
 
-    nbars = int(np.ceil(im_size[0] / bar_shape[1]))
-    barshape = (im_size[1], bar_shape[1])
-    img_large = square_wave_grating(ppd, nbars, barshape, intensity_bars[0], intensity_bars[1])
+    nbars = int(np.ceil(visual_size[0] / bar_shape[1]))
+    barshape = (visual_size[1], bar_shape[1])
+    img_large = square_wave_grating(
+        ppd=ppd,
+        n_bars=nbars,
+        bar_shape=barshape,
+        intensity_bars=(intensity_bars[0], intensity_bars[1]),
+        )["img"]
     img_large = np.rot90(img_large)
 
     # Reduce size to desired size
-    im_size_px = degrees_to_pixels(im_size, ppd)
+    im_size_px = degrees_to_pixels(visual_size, ppd)
     img_large = img_large[0 : im_size_px[0], 0 : im_size_px[1]]
 
     # Incorporate small grating in large grating
@@ -152,14 +184,26 @@ def grating_grating(
 
     mask_large = np.zeros(img_large.shape)
     mask_large[ys : ys + img_small.shape[0], xs : xs + img_small.shape[1]] = mask_small
-    return {"img": img_large, "mask": mask_large}
+    
+    stim = {
+        "img": img_large,
+        "mask": mask_large.astype(int),
+        "ppd": ppd,
+        "visual_size": np.array(img_large.shape) / ppd,
+        "shape": img_large.shape,
+        "n_bars": n_bars,
+        "bar_shape": bar_shape,
+        "intensity_bars": intensity_bars,
+        "intensity_target": intensity_target,
+        }
+    return stim
 
 
 def grating_grating_shifted(
+    visual_size=(10., 10.),
     ppd=10,
     n_bars=8,
     bar_shape=(0.5, 4.0),
-    im_size=(10.0, 10.0),
     intensity_bars=(0.0, 1.0),
     intensity_target=0.5,
 ):
@@ -186,7 +230,14 @@ def grating_grating_shifted(
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
     """
 
-    stim = grating_grating(ppd, n_bars, bar_shape, im_size, intensity_bars, intensity_target)
+    stim = grating_grating(
+        visual_size=visual_size,
+        ppd=ppd,
+        n_bars=n_bars,
+        bar_shape=bar_shape,
+        intensity_bars=intensity_bars,
+        intensity_target=intensity_target,
+        )
     img = stim["img"]
     mask = stim["mask"]
 
@@ -199,7 +250,19 @@ def grating_grating_shifted(
     mask_col = np.zeros([mask.shape[0], bar_width])
     mask_col[bar_height::, :] = mask[0 : mask_col.shape[0] - bar_height, xs : xs + bar_width]
     mask[:, xs : xs + bar_width] = mask_col
-    return {"img": img, "mask": mask}
+    
+    stim = {
+        "img": img,
+        "mask": mask.astype(int),
+        "ppd": ppd,
+        "visual_size": np.array(img.shape) / ppd,
+        "shape": img.shape,
+        "n_bars": n_bars,
+        "bar_shape": bar_shape,
+        "intensity_bars": intensity_bars,
+        "intensity_target": intensity_target,
+        }
+    return stim
 
 
 if __name__ == "__main__":

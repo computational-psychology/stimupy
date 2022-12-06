@@ -77,14 +77,18 @@ def corrugated_mondrians(
         xen = xst + int(widths_px + np.abs(depths_px[r]))
 
         for c in range(ncols):
-            img[yst:yen, xst:xen] += parallelogram(
-                ppd, (heights[r], widths, depths[r]), 0.0, intensities[r][c] - intensity_background
-            )
+            stim = parallelogram(
+                visual_size=(heights[r], widths+abs(depths[r])),
+                ppd=ppd,
+                parallelogram_depth=depths[r],
+                intensity_background=0.,
+                intensity_parallelogram=intensities[r][c] - intensity_background,
+                )
+            
+            img[yst:yen, xst:xen] += stim["img"]
 
             if (r, c) in target_idx:
-                mask[yst:yen, xst:xen] += parallelogram(
-                    ppd, (heights[r], widths, depths[r]), 0, mval
-                )
+                mask[yst:yen, xst:xen] += stim["mask"] * mval
                 mval += 1
 
             xst += widths_px
@@ -99,7 +103,21 @@ def corrugated_mondrians(
 
     if len(np.unique(img[mask != 0])) > 1:
         raise Exception("targets are not equiluminant.")
-    return {"img": img, "mask": mask}
+    
+    stim = {
+        "img": img,
+        "mask": mask.astype(int),
+        "ppd": ppd,
+        "visual_size": np.array(img.shape) / ppd,
+        "shape": img.shape,
+        "widths": widths,
+        "heights": heights,
+        "depths": depths,
+        "intensity_background": intensity_background,
+        "intensities": intensities,
+        "target_idx": target_idx,
+        }
+    return stim
 
 
 if __name__ == "__main__":

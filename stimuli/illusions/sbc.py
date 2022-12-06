@@ -9,7 +9,7 @@ def simultaneous_contrast_generalized(
     visual_size=(2.0, 2.0),
     ppd=10,
     target_size=(2.0, 2.0),
-    target_pos=(1.0, 1.0),
+    target_position=(1.0, 1.0),
     intensity_background=0.0,
     intensity_target=0.5,
 ):
@@ -24,8 +24,8 @@ def simultaneous_contrast_generalized(
         pixels per degree (visual angle)
     target_size : float or (float, float)
         size of the target in degree visual angle (height, width)
-    target_pos : float or (float, float)
-        size of the target in degree visual angle (height, width)
+    target_position : float or (float, float)
+        position of the target in degree visual angle (height, width)
     intensity_background : float
         intensity value for background
     intensity_target : float
@@ -40,33 +40,39 @@ def simultaneous_contrast_generalized(
         visual_size = (visual_size, visual_size)
     if isinstance(target_size, (float, int)):
         target_size = (target_size, target_size)
-    if isinstance(target_pos, (float, int)):
-        target_pos = (target_pos, target_pos)
+    if isinstance(target_position, (float, int)):
+        target_position = (target_position, target_position)
 
     if target_size[0] > visual_size[0] or target_size[1] > visual_size[1]:
         raise ValueError("Requested target is larger than stimulus")
     if (
-        target_size[0] + target_pos[0] > visual_size[0]
-        or target_size[1] + target_pos[1] > visual_size[1]
+        target_size[0] + target_position[0] > visual_size[0]
+        or target_size[1] + target_position[1] > visual_size[1]
     ):
         raise ValueError("Target does not fully fit into the stimulus")
 
-    img = rectangle(
-        ppd, visual_size, target_size, target_pos, intensity_background, intensity_target
+    stim = rectangle(
+        visual_size=visual_size,
+        ppd=ppd,
+        rectangle_size=target_size,
+        rectangle_position=target_position,
+        intensity_background=intensity_background,
+        intensity_rectangle=intensity_target,
     )
-    mask = rectangle(ppd, visual_size, target_size, target_pos, 0, 1)
 
-    params = {
-        "shape": img.shape,
-        "visual_size": np.array(img.shape) / ppd,
+    stim = {
+        "img": stim["img"],
+        "mask": stim["mask"],
+        "shape": stim["img"].shape,
+        "visual_size": np.array(stim["img"].shape) / ppd,
         "ppd": ppd,
         "target_size": target_size,
-        "target_pos": target_pos,
+        "target_position": target_position,
         "intensity_background": intensity_background,
         "intensity_target": intensity_target,
     }
 
-    return {"img": img, "mask": mask, **params}
+    return stim
 
 
 def simultaneous_contrast(
@@ -107,7 +113,12 @@ def simultaneous_contrast(
         visual_size[1] / 2.0 - target_size[1] / 2.0,
     )
     stim = simultaneous_contrast_generalized(
-        visual_size, ppd, target_size, t_pos, intensity_background, intensity_target
+        visual_size=visual_size,
+        ppd=ppd,
+        target_size=target_size,
+        target_position=t_pos,
+        intensity_background=intensity_background,
+        intensity_target=intensity_target,
     )
     return stim
 
@@ -157,7 +168,12 @@ def sbc_with_dots(
 
     # Figure out pixels_per_dot
     padding = (distance / 2.0,)
-    patch = disc(ppd, dot_radius, intensity_background=0.0, intensity_disc=intensity_dots)
+    patch = disc(
+        radius=dot_radius,
+        ppd=ppd,
+        intensity_background=0.0,
+        intensity=intensity_dots,
+        )["img"]
     patch = pad_by_visual_size(img=patch, padding=padding, ppd=ppd, pad_value=0.0)
     pixels_per_dot = patch.shape
 
@@ -175,13 +191,13 @@ def sbc_with_dots(
     tposy = (img_visual_size.height - rect_visual_size.height) / 2.0
     tposx = (img_visual_size.width - rect_visual_size.width) / 2.0
     img = rectangle(
-        ppd,
-        im_size=img_visual_size,
-        rect_size=rect_visual_size,
-        rect_pos=(tposy, tposx),
+        visual_size=img_visual_size,
+        ppd=ppd,
+        rectangle_size=rect_visual_size,
+        rectangle_position=(tposy, tposx),
         intensity_background=intensity_background,
         intensity_rectangle=intensity_target,
-    )
+    )["img"]
     mask = np.zeros(img.shape)
     mask[img == intensity_target] = 1
 
@@ -190,7 +206,9 @@ def sbc_with_dots(
     img[indices_dots] = intensity_dots
     mask[indices_dots] = 0
 
-    params = {
+    stim = {
+        "img": img,
+        "mask": mask.astype(int),
         "shape": img.shape,
         "visual_size": np.array(img.shape) / ppd,
         "ppd": ppd,
@@ -203,7 +221,7 @@ def sbc_with_dots(
         "intensity_target": intensity_target,
     }
 
-    return {"img": img, "mask": mask, **params}
+    return stim
 
 
 def dotted_sbc(
@@ -251,7 +269,12 @@ def dotted_sbc(
 
     # Figure out pixels_per_dot
     padding = (distance / 2.0,)
-    patch = disc(ppd, dot_radius, intensity_background=0.0, intensity_disc=intensity_dots)
+    patch = disc(
+        radius=dot_radius,
+        ppd=ppd,
+        intensity_background=0.0,
+        intensity=intensity_dots,
+        )["img"]
     patch = pad_by_visual_size(img=patch, padding=padding, ppd=ppd, pad_value=0.0)
     pixels_per_dot = patch.shape
 
@@ -269,13 +292,13 @@ def dotted_sbc(
     tposy = (img_visual_size.height - rect_visual_size.height) / 2.0
     tposx = (img_visual_size.width - rect_visual_size.width) / 2.0
     sbc = rectangle(
-        ppd,
-        im_size=img_visual_size,
-        rect_size=rect_visual_size,
-        rect_pos=(tposy, tposx),
+        visual_size=img_visual_size,
+        ppd=ppd,
+        rectangle_size=rect_visual_size,
+        rectangle_position=(tposy, tposx),
         intensity_background=intensity_background,
         intensity_rectangle=intensity_target,
-    )
+    )["img"]
     img = np.ones(sbc.shape) * intensity_background
 
     patch = np.tile(patch, (int(n_dots[0]), int(n_dots[1])))
@@ -286,7 +309,9 @@ def dotted_sbc(
     mask = np.zeros(img.shape)
     mask[indices_dots_target] = 1
 
-    params = {
+    stim = {
+        "img": img,
+        "mask": mask.astype(int),
         "shape": img.shape,
         "visual_size": np.array(img.shape) / ppd,
         "ppd": ppd,
@@ -299,7 +324,7 @@ def dotted_sbc(
         "intensity_target": intensity_target,
     }
 
-    return {"img": img, "mask": mask, **params}
+    return stim
 
 
 if __name__ == "__main__":
