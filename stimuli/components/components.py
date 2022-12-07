@@ -27,8 +27,8 @@ def image_base(visual_size=None, shape=None, ppd=None):
     return {
         "x": x,
         "y": y,
-        "xx": xx,
-        "yy": yy,
+        "horizontal": xx,
+        "vertical": yy,
         "cityblock": cityblock,
         "radial": radial,
         "angular": angular,
