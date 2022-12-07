@@ -418,13 +418,13 @@ def WE_zigzag(ppd=PPD, pad=True):
 
     i1, i2 = 1, 2
     stim = illusions.wedding_cake.wedding_cake_stimulus(
-        visual_size=(16., 17.),
+        visual_size=(16.0, 17.0),
         ppd=PPD,
-        L_size=(4., 4, 1.),
-        target_height=2.,
+        L_size=(4.0, 4, 1.0),
+        target_height=2.0,
         target_indices1=((i1, -1), (i1, 0), (i1, 1), (i1, 2)),
         target_indices2=((i2, 0), (i2, 1), (i2, 2), (i2, 3)),
-        intensity_grating=(1., 0.),
+        intensity_grating=(1.0, 0.0),
         intensity_target=0.5,
     )
 
@@ -1054,7 +1054,7 @@ def todorovic_equal(ppd=PPD, pad=True):
     params = {
         "visual_size": (13.0, 15.5),
         "ppd": ppd,
-        "cross_size": 8.,
+        "cross_size": 8.0,
         "cross_thickness": 1.6,
         "covers_size": 3.2,
         "intensity_target": v2,
@@ -1185,7 +1185,7 @@ def todorovic_in_small(ppd=PPD, pad=True):
     params = {
         "visual_size": (13.0, 15.5),
         "ppd": ppd,
-        "cross_size": 3.,
+        "cross_size": 3.0,
         "cross_thickness": 1.6,
         "covers_size": 3.2,
         "intensity_target": v2,
@@ -1744,18 +1744,18 @@ def bullseye_thin(ppd=PPD, pad=True):
 
     params = {
         "ppd": ppd,
-        "n_rings": 8,
-        "ring_width": 0.1,
+        "n_frames": 8,
+        "frame_width": 0.1,
         "intensity_target": v2,
     }
 
-    stim1 = illusions.bullseye.bullseye_stimulus(
+    stim1 = illusions.bullseye(
         **params,
-        intensity_rings=(v3, v1),
+        intensity_frames=(v3, v1),
     )
-    stim2 = illusions.bullseye.bullseye_stimulus(
+    stim2 = illusions.bullseye(
         **params,
-        intensity_rings=(v1, v3),
+        intensity_frames=(v1, v3),
     )
 
     # Individual padding
@@ -1817,18 +1817,18 @@ def bullseye_thick(ppd=PPD, pad=True):
 
     params = {
         "ppd": ppd,
-        "n_rings": 6,
-        "ring_width": 0.2,
+        "n_frames": 6,
+        "frame_width": 0.2,
         "intensity_target": v2,
     }
 
-    stim1 = illusions.bullseye.bullseye_stimulus(
+    stim1 = illusions.bullseye(
         **params,
-        intensity_rings=(v3, v1),
+        intensity_frames=(v3, v1),
     )
-    stim2 = illusions.bullseye.bullseye_stimulus(
+    stim2 = illusions.bullseye(
         **params,
-        intensity_rings=(v1, v3),
+        intensity_frames=(v1, v3),
     )
 
     # Individual padding
