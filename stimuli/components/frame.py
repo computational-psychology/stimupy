@@ -2,13 +2,13 @@ import itertools
 
 import numpy as np
 
-from stimuli.components.grating import resolve_grating_params
+from stimuli.components.components import resolve_grating_params
 from stimuli.utils import resolution
-
 
 __all__ = [
     "frames",
 ]
+
 
 def mask_frames(
     shape=None,

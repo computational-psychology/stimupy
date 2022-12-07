@@ -4,9 +4,8 @@ import numpy as np
 from scipy.ndimage import gaussian_filter
 
 from stimuli.components import rectangle
-from stimuli.components import square_wave as square_wave_component
+from stimuli.components.grating import square_wave as square_wave_component
 from stimuli.utils import pad_to_shape, pad_to_visual_size
-
 
 __all__ = [
     "square_wave",
@@ -15,6 +14,7 @@ __all__ = [
     "grating_grating_shifted",
     "grating_induction",
 ]
+
 
 def square_wave(
     shape=None,
@@ -248,12 +248,14 @@ def grating_grating(
         )
         / 2,
     )["mask"]
-    small_grating_mask = small_grating_mask[large_grating["img"].shape[0] - small_grating_mask.shape[0]::,
-                                            large_grating["img"].shape[1] - small_grating_mask.shape[1]::]
+    small_grating_mask = small_grating_mask[
+        large_grating["img"].shape[0] - small_grating_mask.shape[0] : :,
+        large_grating["img"].shape[1] - small_grating_mask.shape[1] : :,
+    ]
 
     small_grating["img"] = pad_to_shape(small_grating["img"], shape=large_grating["img"].shape)
     small_grating["mask"] = pad_to_shape(small_grating["mask"], shape=large_grating["img"].shape)
-    
+
     img = np.where(small_grating_mask, small_grating["img"], large_grating["img"])
     mask = np.where(small_grating_mask, small_grating["mask"], large_grating["img"])
 
