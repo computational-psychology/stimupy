@@ -1,3 +1,4 @@
+import itertools
 import warnings
 
 import numpy as np
@@ -172,13 +173,17 @@ def resolve_grating_params(
             f"Grating frequency ({frequency}) should not exceed Nyquist limit {ppd/2} (ppd/2)"
         )
 
+    # Accumulate edges of phases
+    edges = [*itertools.accumulate(itertools.repeat(phase_width, int(n_phases)))]
+
     return {
         "length": length,
         "visual_angle": visual_angle,
         "ppd": ppd,
         "frequency": frequency,
         "phase_width": phase_width,
-        "n_phases": n_phases,
+        "n_phases": int(n_phases),
+        "edges": edges,
         "period": period,
     }
 
