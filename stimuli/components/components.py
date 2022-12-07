@@ -5,6 +5,36 @@ import numpy as np
 from stimuli.utils import degrees_to_pixels, pad_to_shape, resolution
 
 
+def image_base(visual_size=None, shape=None, ppd=None):
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
+
+    # Image axes
+    x = np.linspace(-visual_size.width / 2, visual_size.width / 2, shape.width)
+    y = np.linspace(-visual_size.height / 2, visual_size.height / 2, shape.height)
+
+    # Linear distance image bases
+    xx, yy = np.meshgrid(x, y)
+
+    # City-block distance (frames)
+    cityblock = np.maximum(np.abs(xx), np.abs(yy))
+
+    # Radial distance
+    radial = np.sqrt(xx**2 + yy**2)
+
+    # Angular distance
+    angular = -np.arctan2(xx, yy)
+
+    return {
+        "x": x,
+        "y": y,
+        "xx": xx,
+        "yy": yy,
+        "cityblock": cityblock,
+        "radial": radial,
+        "angular": angular,
+    }
+
+
 def resolve_grating_params(
     length=None,
     visual_angle=None,
