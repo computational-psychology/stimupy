@@ -9,7 +9,6 @@ from .frames import *
 from .grating import *
 from .hermann import hermann_grid
 from .mondrians import corrugated_mondrians
-from .rings import ring_stimulus
 from .sbc import *
 from .todorovic import *
 from .wedding_cake import *
