@@ -218,22 +218,24 @@ def grating_grating(
 
     # Superimpose
     small_grating_mask = rectangle(
-        rectangle_size=np.array(small_grating["shape"]) / ppd,
+        rectangle_size=small_grating["visual_size"],
         ppd=ppd,
-        visual_size=np.array(large_grating["shape"]) / ppd,
+        visual_size=large_grating["visual_size"],
         intensity_background=0,
         intensity_rectangle=1,
         rectangle_position=(
             np.array(large_grating["visual_size"]) - np.array(small_grating["visual_size"])
         )
         / 2,
-    )
+    )["mask"]
+    small_grating_mask = small_grating_mask[large_grating["img"].shape[0] - small_grating_mask.shape[0]::,
+                                            large_grating["img"].shape[1] - small_grating_mask.shape[1]::]
 
     small_grating["img"] = pad_to_shape(small_grating["img"], shape=large_grating["img"].shape)
     small_grating["mask"] = pad_to_shape(small_grating["mask"], shape=large_grating["img"].shape)
     
-    img = np.where(small_grating_mask["mask"], small_grating["img"], large_grating["img"])
-    mask = np.where(small_grating_mask["mask"], small_grating["mask"], large_grating["img"])
+    img = np.where(small_grating_mask, small_grating["img"], large_grating["img"])
+    mask = np.where(small_grating_mask, small_grating["mask"], large_grating["img"])
 
     stim = {
         "img": img,
