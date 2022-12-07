@@ -3,6 +3,10 @@ from scipy.signal import fftconvolve
 from stimuli.utils import degrees_to_pixels
 
 
+__all__ = [
+    "wedding_cake_stimulus",
+]
+
 # TODO: constrain allowed stimulus sizes
 
 i1 = 1

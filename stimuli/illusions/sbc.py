@@ -5,6 +5,13 @@ from stimuli.components.circular import disc
 from stimuli.utils import pad_by_visual_size, resolution
 
 
+__all__ = [
+    "simultaneous_contrast_generalized",
+    "simultaneous_contrast",
+    "sbc_with_dots",
+    "dotted_sbc",
+]
+
 def simultaneous_contrast_generalized(
     visual_size=(2.0, 2.0),
     ppd=10,

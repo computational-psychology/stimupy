@@ -4,6 +4,11 @@ from stimuli.components import transparency
 from stimuli.utils import resolution
 
 
+__all__ = [
+    "checkerboard",
+    "contrast_contrast",
+]
+
 def mask_from_idx(checkerboard_stim, check_idc):
     """Create binary mask for specified check indidces
 

@@ -7,7 +7,13 @@ from stimuli.utils import degrees_to_pixels
 from stimuli.noises.utils import pseudo_white_spectrum
 
 
-def pink(
+__all__ = [
+    "one_over_f",
+    "pink",
+    "brown",
+]
+
+def one_over_f(
     visual_size=(10, 10),
     ppd=40.0,
     rms_contrast=0.2,
@@ -58,25 +64,94 @@ def pink(
         white_noise_fft = np.fft.fftshift(np.fft.fft2(white_noise))
 
     # Create 1/f noise:
-    pink_noise_fft = white_noise_fft / f
+    noise_fft = white_noise_fft / f
 
     # ifft
-    pink_noise = np.fft.ifft2(np.fft.ifftshift(pink_noise_fft))
-    pink_noise = np.real(pink_noise)
+    noise = np.fft.ifft2(np.fft.ifftshift(noise_fft))
+    noise = np.real(noise)
 
     # Adjust noise rms contrast:
-    pink_noise = rms_contrast * pink_noise / pink_noise.std()
+    noise = rms_contrast * noise / noise.std()
 
-    params = {
+    stim = {
+        "img": noise,
         "visual_size": visual_size,
-        "shape": pink_noise.shape,
+        "shape": noise.shape,
         "ppd": ppd,
         "rms_contrast": rms_contrast,
         "exponent": exponent,
         "pseudo_noise": pseudo_noise,
-        "intensity_range": [pink_noise.min(), pink_noise.max()],
+        "intensity_range": [noise.min(), noise.max()],
     }
-    return {"img": pink_noise, **params}
+    return stim
+
+
+def pink(
+    visual_size=(10, 10),
+    ppd=40.0,
+    rms_contrast=0.2,
+    pseudo_noise=True,
+):
+    """
+    Function to create  1 / (f**exponent) noise.
+
+    Parameters
+    ----------
+    visual_size : float or (float, float)
+        size of the stimulus in degrees of visual angle (height, width)
+    ppd : int
+        pixels per degree (visual angle)
+    rms_contrast : float
+        rms contrast of noise.
+    pseudo_noise : bool
+        if True, generate pseudo-random noise with ideal power spectrum.
+
+    Returns
+    -------
+    A stimulus dictionary with the noise array ['img']
+    """
+    
+    stim = one_over_f(
+        visual_size=visual_size,
+        ppd=ppd,
+        rms_contrast=rms_contrast,
+        exponent=1.0,
+        pseudo_noise=pseudo_noise)
+    return stim
+
+
+def brown(
+    visual_size=(10, 10),
+    ppd=40.0,
+    rms_contrast=0.2,
+    pseudo_noise=True,
+):
+    """
+    Function to create  1 / (f**exponent) noise.
+
+    Parameters
+    ----------
+    visual_size : float or (float, float)
+        size of the stimulus in degrees of visual angle (height, width)
+    ppd : int
+        pixels per degree (visual angle)
+    rms_contrast : float
+        rms contrast of noise.
+    pseudo_noise : bool
+        if True, generate pseudo-random noise with ideal power spectrum.
+
+    Returns
+    -------
+    A stimulus dictionary with the noise array ['img']
+    """
+    
+    stim = one_over_f(
+        visual_size=visual_size,
+        ppd=ppd,
+        rms_contrast=rms_contrast,
+        exponent=2.0,
+        pseudo_noise=pseudo_noise)
+    return stim
 
 
 if __name__ == "__main__":
@@ -84,8 +159,8 @@ if __name__ == "__main__":
     from stimuli.utils import plot_stimuli
 
     stims = {
-        "Pink noise": pink(exponent=1.0),
-        "Brown noise": pink(exponent=2.0),
+        "Pink noise": pink(),
+        "Brown noise": brown(),
     }
     ax = plot_stimuli(stims)
     plt.show()

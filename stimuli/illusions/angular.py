@@ -6,6 +6,11 @@ from stimuli.components.angular import pinwheel
 from stimuli.components.circular import ring
 
 
+__all__ = [
+    "radial_white",
+]
+
+
 def radial_white(
     visual_size=None,
     ppd=None,

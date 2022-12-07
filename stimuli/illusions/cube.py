@@ -1,6 +1,10 @@
 import numpy as np
 from stimuli.utils import degrees_to_pixels
 
+__all__ = [
+    "cube_illusion",
+]
+
 
 def cube_illusion(
     ppd=10,

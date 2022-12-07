@@ -7,6 +7,13 @@ from stimuli.components.circular import ring
 from stimuli.utils import resolution
 
 
+__all__ = [
+    "wedge",
+    "grating",
+    "pinwheel",    
+]
+
+
 def img_angles(rotation=0.0, visual_size=None, ppd=None, shape=None):
     """Matrix of angle (relative to center) for each pixel
 

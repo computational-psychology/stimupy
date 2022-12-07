@@ -8,6 +8,14 @@ from stimuli.components import square_wave as square_wave_component
 from stimuli.utils import pad_to_shape, pad_to_visual_size
 
 
+__all__ = [
+    "square_wave",
+    "grating_uniform",
+    "grating_grating",
+    "grating_grating_shifted",
+    "grating_induction",
+]
+
 def square_wave(
     shape=None,
     visual_size=None,

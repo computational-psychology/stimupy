@@ -3,6 +3,16 @@ import numpy as np
 from stimuli.utils import degrees_to_pixels, pad_to_shape
 
 
+__all__ = [
+    "rectangle",
+    "triangle",
+    "cross",
+    "parallelogram",
+    "transparency",
+    "square_wave",
+    "square_wave_grating"
+]
+
 def rectangle(
     visual_size=(4.0, 4.0),
     ppd=10,

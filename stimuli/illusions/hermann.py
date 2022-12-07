@@ -2,6 +2,10 @@ import numpy as np
 from stimuli.utils import degrees_to_pixels
 
 
+__all__ = [
+    "hermann_grid",
+]
+
 def hermann_grid(
     visual_size=(10, 10),
     ppd=10,

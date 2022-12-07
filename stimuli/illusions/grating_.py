@@ -5,6 +5,15 @@ from stimuli.components.components_ import square_wave_grating, square_wave, par
 from stimuli.utils import degrees_to_pixels, pad_to_visual_size, pad_to_shape
 
 
+__all__ = [
+    "grating_illusion",
+    "grating_uniform",
+    "grating_grating",
+    "grating_grating_shifted",
+    "grating_grating_parallelogram",
+    "counterphase_induction",
+]
+
 # TODO: update docstrings
 
 def grating_illusion(

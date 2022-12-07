@@ -4,6 +4,15 @@ from stimuli.components import cross, triangle
 from stimuli.utils import degrees_to_pixels
 
 
+__all__ = [
+    "benarys_cross_generalized",
+    "benarys_cross_rectangles",
+    "benarys_cross_triangles",
+    "todorovic_benary_generalized",
+    "todorovic_benary_rectangles",
+    "todorovic_benary_triangles",
+]
+
 def benarys_cross_generalized(
     visual_size=(21.0, 21.0),
     ppd=18.0,

@@ -1,6 +1,10 @@
 import numpy as np
 
 
+__all__ = [
+    "cornsweet",
+]
+
 def cornsweet(
     visual_size=(10.0, 10.0),
     ppd=10.0,

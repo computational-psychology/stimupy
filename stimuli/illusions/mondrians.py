@@ -3,6 +3,10 @@ from stimuli.components import parallelogram
 from stimuli.utils import degrees_to_pixels
 
 
+__all__ = [
+    "corrugated_mondrians",
+]
+
 def corrugated_mondrians(
     ppd=10,
     widths=2.0,

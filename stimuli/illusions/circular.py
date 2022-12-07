@@ -6,6 +6,11 @@ import numpy as np
 from stimuli.components.circular import grating
 
 
+__all__ = [
+    "circular_white",
+    "circular_bullseye",
+]
+
 def circular_white(
     visual_size=None,
     ppd=None,

@@ -4,6 +4,15 @@ from stimuli.components import square_wave
 from stimuli.utils import degrees_to_pixels
 
 
+__all__ = [
+    "white_generalized",
+    "white",
+    "white_two_rows",
+    "white_anderson",
+    "white_howe",
+    "white_yazdanbakhsh",
+]
+
 def white_generalized(
     visual_size=(10, 10),
     ppd=10,

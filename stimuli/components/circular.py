@@ -6,6 +6,14 @@ import numpy as np
 from stimuli.utils import resize_array, resolution
 
 
+__all__ = [
+    "disc_and_rings",
+    "disc",
+    "ring",
+    "grating",
+]
+
+
 def resolve_circular_params(
     shape=None,
     visual_size=None,

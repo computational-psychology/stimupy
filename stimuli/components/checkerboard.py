@@ -2,6 +2,10 @@ import numpy as np
 from stimuli.utils import resolution
 
 
+__all__ = [
+    "checkerboard",
+]
+
 def resolve_params(
     ppd=None,
     shape=None,

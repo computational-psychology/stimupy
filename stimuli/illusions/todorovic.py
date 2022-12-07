@@ -4,6 +4,13 @@ from stimuli.components import cross, rectangle
 from stimuli.utils import degrees_to_pixels, pad_to_visual_size
 
 
+__all__ = [
+    "todorovic_rectangle_generalized",
+    "todorovic_rectangle",
+    "todorovic_cross_generalized",
+    "todorovic_cross",
+]
+
 def todorovic_rectangle_generalized(
     visual_size=10,
     ppd=10,
@@ -276,6 +283,7 @@ def todorovic_cross_generalized(
     return stim
 
 
+# TODO: Fix bug in todorovic cross that can be found in interactive JN
 def todorovic_cross(
     visual_size=(10, 10),
     ppd=32,

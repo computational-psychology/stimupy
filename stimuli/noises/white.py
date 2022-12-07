@@ -7,6 +7,10 @@ from stimuli.utils import degrees_to_pixels
 from stimuli.noises.utils import pseudo_white_spectrum
 
 
+__all__ = [
+    "white",
+]
+
 def white(
     visual_size=(10, 20),
     ppd=40.0,

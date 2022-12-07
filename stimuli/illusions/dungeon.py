@@ -2,6 +2,10 @@ import numpy as np
 from stimuli.utils import degrees_to_pixels
 
 
+__all__ = [
+    "dungeon_illusion",
+]
+
 def dungeon_illusion(
     ppd=10,
     n_cells=5,

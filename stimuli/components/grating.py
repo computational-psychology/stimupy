@@ -6,6 +6,10 @@ import numpy as np
 from stimuli.utils import resolution
 
 
+__all__ = [
+    "square_wave",
+]
+
 def resolve_grating_params(
     length=None,
     visual_angle=None,
