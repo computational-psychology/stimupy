@@ -7,7 +7,6 @@ from .cornsweet import cornsweet
 from .cube import cube_illusion
 from .dungeon import dungeon_illusion
 from .grating import *
-from .grating_induction import *
 from .hermann import hermann_grid
 from .mondrians import corrugated_mondrians
 from .rings import ring_stimulus

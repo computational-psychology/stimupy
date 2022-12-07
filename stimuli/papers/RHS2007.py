@@ -876,15 +876,15 @@ def grating_induction(ppd=PPD, pad=True):
     height, width = 12.0, 16.0
     params = {
         "ppd": ppd,
-        "grating_frequency": 4.0 / width,
-        "target_height": 1.,
+        "frequency": 4.0 / width,
+        "target_width": 1.0,
         "blur": 10,
-        "intensity_bars": (1., 0.),
+        "intensity_bars": (1.0, 0.0),
         "intensity_target": (0.5),
         "period": "ignore",
     }
 
-    stim = illusions.grating_induction.grating_illusion(
+    stim = illusions.grating.grating_induction(
         visual_size=(height, width),
         **params,
     )

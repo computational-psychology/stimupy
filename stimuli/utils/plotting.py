@@ -28,7 +28,7 @@ def plot_stim(stim, mask=False, stim_name="stim", ax=None):
         else:
             colormap = plt.cm.tab10
 
-        for idx in np.unique(mask)[1:]:
+        for idx in np.unique(mask)[np.unique(mask) > 0]:
             color = colormap.colors[idx]
             color = np.reshape(color, (1, 1, 3))
             img = np.where(mask == idx, color, img)

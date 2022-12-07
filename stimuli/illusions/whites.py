@@ -1,4 +1,5 @@
 import numpy as np
+
 from stimuli.components import square_wave
 from stimuli.utils import degrees_to_pixels
 
@@ -82,12 +83,14 @@ def white_generalized(
     if len(target_sizes) != len(target_indices):
         raise ValueError("# of target indices != # of target sizes")
 
-    img = square_wave(
+    stim = square_wave(
         visual_size=visual_size,
         ppd=ppd,
         frequency=grating_frequency,
         intensity_bars=intensity_bars,
-        period=period)["img"]
+        period=period,
+    )
+    img = stim["img"]
     mask = np.zeros((height_px, width_px))
     height, width = img.shape
 
@@ -587,6 +590,7 @@ def white_yazdanbakhsh(
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
+
     from stimuli.utils import plot_stimuli
 
     stims = {

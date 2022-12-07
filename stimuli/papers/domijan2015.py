@@ -362,21 +362,26 @@ def grating(shape=SHAPES["grating"], visual_size=VSIZES["grating"], ppd=PPD):
 
     # Resolve resolution
     shape, visual_size, ppd, visual_resize = resolve(shape, visual_size, ppd, VSIZES["grating"])
-    ppd = ppd[0]
+    visual_size_without_padding = (
+        visual_size.height - ((0.9 + 1.0) * visual_resize),
+        visual_size.width - (2 * (0.9 + 1.1) * visual_resize),
+    )
+    single_vissize = (visual_size_without_padding[0], visual_size_without_padding[1] / 2)
 
     params = {
+        "visual_size": single_vissize,
         "ppd": ppd,
         "n_bars": 9,
-        "target_indices": (4,),
-        "bar_shape": (8.1 * visual_resize, 1.0 * visual_resize),
+        "target_indices": (5,),
+        "bar_width": 1.0 * visual_resize,
     }
 
-    stim1 = illusions.grating.grating_illusion(
+    stim1 = illusions.grating.square_wave(
         **params,
         intensity_bars=(v3, v1),
         intensity_target=v2,
     )
-    stim2 = illusions.grating.grating_illusion(
+    stim2 = illusions.grating.square_wave(
         **params,
         intensity_bars=(v1, v3),
         intensity_target=v2,
