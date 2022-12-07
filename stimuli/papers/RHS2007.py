@@ -60,8 +60,8 @@ __all__ = [
     "todorovic_in_small",
     "todorovic_out",
     "checkerboard_016",
-    "checkerboard_0938",
-    "checkerboard209",
+    "checkerboard_094",
+    "checkerboard_21",
     "corrugated_mondrian",
     "benary_cross",
     "todorovic_benary1_2",
@@ -1341,7 +1341,7 @@ def checkerboard_016(ppd=PPD, pad=True):
     return {**stim, **params}
 
 
-def checkerboard_0938(ppd=PPD, pad=True):
+def checkerboard_094(ppd=PPD, pad=True):
     """Checkerboard stimulus as shown in Robinson, Hammon, & de Sa (2007) Fig 1v.
     Stimulus size: 6.5625x23.4375 deg
     Target size: 0.938x0.938 deg
@@ -1393,7 +1393,7 @@ def checkerboard_0938(ppd=PPD, pad=True):
     return {**stim, **params}
 
 
-def checkerboard209(ppd=PPD, pad=True):
+def checkerboard_21(ppd=PPD, pad=True):
     """Checkerboard stimulus as shown in Robinson, Hammon, & de Sa (2007) Fig 1w.
     Stimulus size: 6.28125x20.9375 deg
     Target size: 2.09x2.09 deg
