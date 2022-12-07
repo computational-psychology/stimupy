@@ -443,7 +443,7 @@ if __name__ == "__main__":
 
     from stimuli.utils import plot_stimuli
 
-    ppd = 10
+    ppd = 36
     bar_width = 1.0
     orientation = "vertical"
     small_grating_params = {
@@ -451,6 +451,7 @@ if __name__ == "__main__":
         "bar_width": bar_width,
         "orientation": orientation,
     }
+
     large_grating_params = {
         "bar_width": bar_width,
         "visual_size": (32, 32),
