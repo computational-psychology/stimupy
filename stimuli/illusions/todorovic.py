@@ -63,14 +63,16 @@ def todorovic_rectangle_generalized(
         raise ValueError("Need as many x- as y-coordinates")
 
     # Create image with square
-    img = rectangle(
+    stim = rectangle(
         visual_size=visual_size,
         ppd=ppd,
         rectangle_size=target_size,
         rectangle_position=target_position,
         intensity_background=intensity_background,
         intensity_rectangle=intensity_target,
-        )["img"]
+        )
+    img = stim["img"]
+    mask = stim["mask"]
 
     # Add covers
     cheight, cwidth = degrees_to_pixels(covers_size, ppd)
@@ -82,37 +84,26 @@ def todorovic_rectangle_generalized(
 
     for i in range(len(covers_x)):
         img[cy[i] : cy[i] + cheight, cx[i] : cx[i] + cwidth] = intensity_covers
+        mask[cy[i] : cy[i] + cheight, cx[i] : cx[i] + cwidth] = 0
         if cy[i] + cheight > visual_size[0] * ppd or cx[i] + cwidth > visual_size[1] * ppd:
             raise ValueError("Covers do not fully fit into stimulus")
 
-    mask = np.copy(img)
-    mask[mask == intensity_background] = 0
-    mask[mask == intensity_covers] = 0
-    mask[mask == intensity_target] = 1
-
-    stim = {
-        "img": img,
-        "mask": mask.astype(int),
-        "shape": img.shape,
-        "visual_size": np.array(img.shape) / ppd,
-        "ppd": ppd,
-        "target_size": target_size,
-        "target_position": target_position,
-        "covers_size": covers_size,
-        "covers_x": covers_x,
-        "covers_y": covers_y,
-        "intensity_background": intensity_background,
-        "intensity_target": intensity_target,
-        "intensity_covers": intensity_covers,
-    }
-
+    stim["img"] = img
+    stim["mask"] = mask.astype(int)
+    stim["target_size"] = stim["rectangle_size"]
+    stim["target_position"] = stim["rectangle_position"]
+    stim["intensity_target"] = stim["intensity_rectangle"]
+    stim["covers_size"] = covers_size
+    stim["covers_x"] = covers_x
+    stim["covers_y"] = covers_y
+    stim["intensity_covers"] = intensity_covers
     return stim
 
 
 def todorovic_rectangle(
     visual_size=(10, 10),
     ppd=10,
-    target_size=(4, 4),
+    target_size=(4.0, 4.0),
     covers_size=(3.0, 3.0),
     covers_offset=(2.0, 2.0),
     intensity_background=0.0,
@@ -148,25 +139,23 @@ def todorovic_rectangle(
     """
     if isinstance(visual_size, (float, int)):
         visual_size = (visual_size, visual_size)
-    if isinstance(target_size, (float, int)):
-        target_size = (target_size, target_size)
     if isinstance(covers_size, (float, int)):
         covers_size = (covers_size, covers_size)
     if isinstance(covers_offset, (float, int)):
         covers_offset = (covers_offset, covers_offset)
 
-    # Calculate placement of target and covers for generalized function:
-    tpos = np.array(visual_size) / 2 - np.array(target_size) / 2
-    y1 = tpos[0] + target_size[0] / 2 - covers_offset[0] - covers_size[0] / 2
-    x1 = tpos[1] + target_size[1] / 2 - covers_offset[1] - covers_size[1] / 2
-    y2 = tpos[0] + target_size[0] / 2 + covers_offset[0] - covers_size[0] / 2
-    x2 = tpos[1] + target_size[1] / 2 + covers_offset[1] - covers_size[1] / 2
+    # Calculate placement of covers for generalized function:
+    cy, cx = np.array(visual_size) / 2
+    y1 = cy - covers_offset[0] - covers_size[0] / 2
+    x1 = cx - covers_offset[1] - covers_size[1] / 2
+    y2 = cy + covers_offset[0] - covers_size[0] / 2
+    x2 = cx + covers_offset[1] - covers_size[1] / 2
 
     stim = todorovic_rectangle_generalized(
         visual_size=visual_size,
         ppd=ppd,
         target_size=target_size,
-        target_position=tpos,
+        target_position=None,
         covers_size=covers_size,
         covers_x=(x1, x2, x2, x1),
         covers_y=(y1, y2, y1, y2),
@@ -228,10 +217,9 @@ def todorovic_cross_generalized(
         visual_size = (visual_size, visual_size)
     if isinstance(cross_size, (float, int)):
         cross_size = (cross_size, cross_size)
-    if isinstance(cross_arm_ratios, (float, int)):
-        cross_arm_ratios = (cross_arm_ratios, cross_arm_ratios)
     if isinstance(covers_size, (float, int)):
         covers_size = (covers_size, covers_size)
+
     if len(covers_x) != len(covers_y):
         raise ValueError("Need as many x- as y-coordinates")
     if (cross_size[0] > visual_size[0]) or (cross_size[1] > visual_size[1]):
@@ -239,16 +227,18 @@ def todorovic_cross_generalized(
     if np.min(cross_size) <= cross_thickness:
         raise ValueError("cross_size needs to be larger than cross_thickness")
 
-    img = cross(
+    stim = cross(
         visual_size=cross_size,
         ppd=ppd,
         cross_arm_ratios=cross_arm_ratios,
         cross_thickness=cross_thickness,
         intensity_background=intensity_background,
         intensity_cross=intensity_target,
-        )["img"]
-
+        )
+    
+    img, mask = stim["img"], stim["mask"]
     img = pad_to_visual_size(img, visual_size=visual_size, ppd=ppd, pad_value=intensity_background)
+    mask = pad_to_visual_size(mask, visual_size=visual_size, ppd=ppd, pad_value=0)
 
     cheight, cwidth = degrees_to_pixels(covers_size, ppd)
     cx = degrees_to_pixels(covers_x, ppd)
@@ -256,37 +246,26 @@ def todorovic_cross_generalized(
 
     for i in range(len(covers_x)):
         img[cy[i] : cy[i] + cheight, cx[i] : cx[i] + cwidth] = intensity_covers
+        mask[cy[i] : cy[i] + cheight, cx[i] : cx[i] + cwidth] = 0
         if cy[i] + cheight > visual_size[0] * ppd or cx[i] + cwidth > visual_size[1] * ppd:
             raise ValueError("Covers do not fully fit into stimulus")
-
-    mask = np.copy(img)
-    mask[mask == intensity_background] = 0
-    mask[mask == intensity_covers] = 0
-    mask[mask == intensity_target] = 1
-
-    stim = {
-        "img": img,
-        "mask": mask.astype(int),
-        "shape": img.shape,
-        "visual_size": np.array(img.shape) / ppd,
-        "ppd": ppd,
-        "cross_arm_ratios": cross_arm_ratios,
-        "cross_thickness": cross_thickness,
-        "covers_size": covers_size,
-        "covers_x": covers_x,
-        "covers_y": covers_y,
-        "intensity_background": intensity_background,
-        "intensity_target": intensity_target,
-        "intensity_covers": intensity_covers,
-    }
-
+    
+    stim["img"] = img
+    stim["mask"] = mask.astype(int)
+    stim["target_size"] = stim["visual_size"]
+    stim["intensity_target"] = stim["intensity_cross"]
+    stim["covers_size"] = covers_size
+    stim["covers_x"] = covers_x
+    stim["covers_y"] = covers_y
+    stim["intensity_covers"] = intensity_covers
+    stim["visual_size"] = visual_size
+    stim["shape"] = img.shape
     return stim
 
 
-# TODO: Fix bug in todorovic cross that can be found in interactive JN
 def todorovic_cross(
     visual_size=(10, 10),
-    ppd=32,
+    ppd=4,
     cross_size=(6., 6.),
     cross_thickness=1.0,
     covers_size=3.2,
@@ -325,20 +304,23 @@ def todorovic_cross(
     if isinstance(covers_size, (float, int)):
         covers_size = (covers_size, covers_size)
 
-    # Calculate placement of target and covers for generalized function:
-    center = np.array(visual_size) / 2
-    t2 = np.ceil(cross_thickness * ppd / 2) / ppd * 2
-    y1 = center[0] - t2 / 2 - covers_size[0]
-    x1 = center[1] - t2 / 2 - covers_size[1]
-    y2 = center[0] + t2 / 2
-    x2 = center[1] + t2 / 2
+    # Calculate placement of covers for generalized function:
+    cy, cx = np.floor(np.array(visual_size) * ppd / 2) / ppd
+    ct = np.ceil(cross_thickness * ppd)
+    ct = (ct + (ct % 2)) / ppd
+    ct_half = ct / 2
+
+    y1 = cy - ct_half - covers_size[0]
+    x1 = cx - ct_half - covers_size[1]
+    y2 = cy + ct_half
+    x2 = cx + ct_half
 
     stim = todorovic_cross_generalized(
         visual_size=visual_size,
         ppd=ppd,
         cross_size=cross_size,
         cross_arm_ratios=1.,
-        cross_thickness=t2,
+        cross_thickness=ct,
         covers_size=covers_size,
         covers_x=(x1, x2, x2, x1),
         covers_y=(y1, y2, y1, y2),

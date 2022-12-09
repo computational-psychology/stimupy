@@ -16,7 +16,7 @@ def rectangle(
     visual_size=(4.0, 4.0),
     ppd=10,
     rectangle_size=(2.0, 2.0),
-    rectangle_position=(1.0, 1.0),
+    rectangle_position=None,
     intensity_background=0.0,
     intensity_rectangle=0.5,
 ):
@@ -42,31 +42,40 @@ def rectangle(
     -------
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
     """
+
     if isinstance(visual_size, (float, int)):
         visual_size = (visual_size, visual_size)
     if isinstance(rectangle_size, (float, int)):
         rectangle_size = (rectangle_size, rectangle_size)
+    
+    im_height, im_width = degrees_to_pixels(visual_size, ppd)
+    rect_height, rect_width = degrees_to_pixels(rectangle_size, ppd)
+    
+    if rectangle_position is None:
+        # If not position is given, place centrally
+        rect_posy = int(im_height/2 - np.ceil(rect_height/2))
+        rect_posx = int(im_width/2 - np.ceil(rect_width/2))
+        rectangle_position = (rect_posy/ppd, rect_posx/ppd)
+
     if isinstance(rectangle_position, (float, int)):
         rectangle_position = (rectangle_position, rectangle_position)
     if ((rectangle_position[0] + rectangle_size[0] > visual_size[0]) or
         (rectangle_position[1] + rectangle_size[1] > visual_size[1])):
         raise ValueError("rectangle does not fully fit into stimulus")
-
-    im_height, im_width = degrees_to_pixels(visual_size, ppd)
-    rect_height, rect_width = degrees_to_pixels(rectangle_size, ppd)
     rect_posy, rect_posx = degrees_to_pixels(rectangle_position, ppd)
 
-    # Create rectangle and add background
-    img = np.ones((rect_height, rect_width)) * intensity_rectangle
-    img = pad_to_shape(img, (im_height, im_width), intensity_background)
-    
+    # Create image and add rectangle
+    img = np.ones((im_height, im_width)) * intensity_background
+    img[rect_posy:rect_posy+rect_height,
+        rect_posx:rect_posx+rect_width] = intensity_rectangle
+
     # Create mask
-    mask = np.ones((rect_height, rect_width))
-    mask = pad_to_shape(mask, (im_height, im_width), 0).astype(int)
-    
+    mask = np.zeros(img.shape)
+    mask[img == intensity_rectangle] = 1
+
     stim = {
         "img": img,
-        "mask": mask,
+        "mask": mask.astype(int),
         "ppd": ppd,
         "visual_size": np.array(img.shape) / ppd,
         "shape": img.shape,
@@ -160,27 +169,26 @@ def cross(
         cross_arm_ratios = (cross_arm_ratios, cross_arm_ratios)
     if not isinstance(cross_thickness, (float, int)):
         raise ValueError("cross_thickness should be a single number")
-    
+
     # Calculate cross arm lengths
-    updown = visual_size[0] - cross_thickness
-    down = updown / (cross_arm_ratios[0] + 1)
+    height, width = degrees_to_pixels(visual_size, ppd)
+    thick = np.ceil(cross_thickness * ppd)
+    
+    updown = int(height - thick)
+    down = int(updown / (cross_arm_ratios[0] + 1))
     up = updown - down
-    leftright = visual_size[1] - cross_thickness
-    right = leftright / (cross_arm_ratios[1] + 1)
+    leftright = int(width - thick)
+    right = int(leftright / (cross_arm_ratios[1] + 1))
     left = leftright - right
     cross_size = (up, down, left, right)
-
-    if any(item*ppd < 1 for item in cross_size):
+    
+    if any(item < 1 for item in cross_size):
         raise ValueError("cross_arm_ratios too large or small")
-
-    height, width = degrees_to_pixels(visual_size, ppd)
-    (cross_top, cross_bottom, cross_left, cross_right) = degrees_to_pixels(cross_size, ppd)
-    cross_thickness = degrees_to_pixels(cross_thickness, ppd)
 
     # Create image and add cross
     img = np.ones((height, width)) * intensity_background
-    x_edge_left, x_edge_right = cross_left, -cross_right
-    y_edge_top, y_edge_bottom = cross_top, -cross_bottom
+    x_edge_left, x_edge_right = left, -right
+    y_edge_top, y_edge_bottom = up, -down
     img[:, x_edge_left:x_edge_right] = intensity_cross
     img[y_edge_top:y_edge_bottom, :] = intensity_cross
     

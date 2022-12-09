@@ -32,7 +32,8 @@ def simultaneous_contrast_generalized(
     target_size : float or (float, float)
         size of the target in degree visual angle (height, width)
     target_position : float or (float, float)
-        position of the target in degree visual angle (height, width)
+        position of the target in degree visual angle (height, width);
+        if None, place target centrally
     intensity_background : float
         intensity value for background
     intensity_target : float
@@ -43,21 +44,6 @@ def simultaneous_contrast_generalized(
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
     """
 
-    if isinstance(visual_size, (float, int)):
-        visual_size = (visual_size, visual_size)
-    if isinstance(target_size, (float, int)):
-        target_size = (target_size, target_size)
-    if isinstance(target_position, (float, int)):
-        target_position = (target_position, target_position)
-
-    if target_size[0] > visual_size[0] or target_size[1] > visual_size[1]:
-        raise ValueError("Requested target is larger than stimulus")
-    if (
-        target_size[0] + target_position[0] > visual_size[0]
-        or target_size[1] + target_position[1] > visual_size[1]
-    ):
-        raise ValueError("Target does not fully fit into the stimulus")
-
     stim = rectangle(
         visual_size=visual_size,
         ppd=ppd,
@@ -67,18 +53,9 @@ def simultaneous_contrast_generalized(
         intensity_rectangle=intensity_target,
     )
 
-    stim = {
-        "img": stim["img"],
-        "mask": stim["mask"],
-        "shape": stim["img"].shape,
-        "visual_size": np.array(stim["img"].shape) / ppd,
-        "ppd": ppd,
-        "target_size": target_size,
-        "target_position": target_position,
-        "intensity_background": intensity_background,
-        "intensity_target": intensity_target,
-    }
-
+    stim["target_size"] = stim["rectangle_size"]
+    stim["target_position"] = stim["rectangle_position"]
+    stim["intensity_target"] = stim["intensity_rectangle"]
     return stim
 
 
@@ -109,21 +86,12 @@ def simultaneous_contrast(
     -------
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
     """
-    if isinstance(visual_size, (float, int)):
-        visual_size = (visual_size, visual_size)
-    if isinstance(target_size, (float, int)):
-        target_size = (target_size, target_size)
 
-    # Rectangle should be placed centrally
-    t_pos = (
-        visual_size[0] / 2.0 - target_size[0] / 2.0,
-        visual_size[1] / 2.0 - target_size[1] / 2.0,
-    )
     stim = simultaneous_contrast_generalized(
         visual_size=visual_size,
         ppd=ppd,
         target_size=target_size,
-        target_position=t_pos,
+        target_position=None,
         intensity_background=intensity_background,
         intensity_target=intensity_target,
     )
