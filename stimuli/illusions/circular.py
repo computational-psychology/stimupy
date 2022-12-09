@@ -207,8 +207,6 @@ def circular_bullseye(
 
 
 if __name__ == "__main__":
-    import matplotlib.pyplot as plt
-
     from stimuli.utils import plot_stimuli
 
     stims = {
@@ -216,5 +214,4 @@ if __name__ == "__main__":
         "Circular Bullseye": circular_bullseye(visual_size=(8, 8), ppd=32, frequency=1.0),
     }
 
-    plot_stimuli(stims, mask=False)
-    plt.show()
+    plot_stimuli(stims, mask=True, save=None)

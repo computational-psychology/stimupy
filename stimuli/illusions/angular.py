@@ -135,13 +135,10 @@ def radial_white(
 
 
 if __name__ == "__main__":
-    import matplotlib.pyplot as plt
-
     from stimuli.utils import plot_stimuli
 
     stims = {
         "Radial white": radial_white(visual_size=(8, 8), ppd=32, n_segments=8),
     }
 
-    plot_stimuli(stims, mask=False)
-    plt.show()
+    plot_stimuli(stims, mask=True, save=None)

@@ -614,7 +614,6 @@ def todorovic_benary_triangles(
 
 
 if __name__ == "__main__":
-    import matplotlib.pyplot as plt
     from stimuli.utils import plot_stimuli
 
     stims = {
@@ -625,5 +624,4 @@ if __name__ == "__main__":
         "Todorovic' Benary - rectangles": todorovic_benary_rectangles(),
         "Todorovic' Benary - triangles": todorovic_benary_triangles(),
     }
-    ax = plot_stimuli(stims)
-    plt.show()
+    plot_stimuli(stims, mask=True, save=None)

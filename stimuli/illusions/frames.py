@@ -160,3 +160,13 @@ def bullseye(
     )
 
     return stim
+
+
+if __name__ == "__main__":
+    from stimuli.utils import plot_stimuli
+
+    stims = {
+        "Frames": frames(visual_size=10, ppd=10, frequency=0.5, target_indices=(1, 3)),
+        "Bullseye": bullseye(visual_size=10, ppd=10, frequency=0.5),
+    }
+    plot_stimuli(stims, mask=True, save=None)

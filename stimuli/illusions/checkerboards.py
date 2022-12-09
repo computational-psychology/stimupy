@@ -307,10 +307,7 @@ def contrast_contrast(
 
 
 if __name__ == "__main__":
-    import matplotlib.pyplot as plt
     from stimuli.utils import plot_stimuli
-
-    DEFAULT_PPD = 32
 
     stims = {
         "Checkerboard (brightness)": checkerboard(
@@ -323,5 +320,4 @@ if __name__ == "__main__":
             ppd=32, board_shape=(8, 8), check_visual_size=(2, 2), target_shape=(4, 4)
         ),
     }
-    ax = plot_stimuli(stims, mask=False)
-    plt.show()
+    plot_stimuli(stims, mask=True, save=None)

@@ -156,12 +156,10 @@ def wedding_cake_stimulus(
 
 
 if __name__ == "__main__":
-    import matplotlib.pyplot as plt
     from stimuli.utils import plot_stimuli
 
     stims = {
         "Wedding cake new": wedding_cake_stimulus(),
     }
 
-    plot_stimuli(stims, mask=False)
-    plt.show()
+    plot_stimuli(stims, mask=False, save=None)

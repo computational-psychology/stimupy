@@ -351,8 +351,6 @@ def todorovic_cross(
 
 
 if __name__ == "__main__":
-    import matplotlib.pyplot as plt
-
     from stimuli.utils import plot_stimuli
 
     stims = {
@@ -361,5 +359,4 @@ if __name__ == "__main__":
         "Todorovic cross": todorovic_cross(),
         "Todorovic cross, flex": todorovic_cross_generalized(),
     }
-    plot_stimuli(stims)
-    plt.show()
+    plot_stimuli(stims, mask=True, save=None)

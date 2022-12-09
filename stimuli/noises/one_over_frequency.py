@@ -75,6 +75,7 @@ def one_over_f(
 
     stim = {
         "img": noise,
+        "mask": None,
         "visual_size": visual_size,
         "shape": noise.shape,
         "ppd": ppd,
@@ -155,12 +156,10 @@ def brown(
 
 
 if __name__ == "__main__":
-    import matplotlib.pyplot as plt
     from stimuli.utils import plot_stimuli
 
     stims = {
         "Pink noise": pink(),
         "Brown noise": brown(),
     }
-    ax = plot_stimuli(stims)
-    plt.show()
+    plot_stimuli(stims, mask=True, save=None, vmin=-0.5, vmax=0.5)

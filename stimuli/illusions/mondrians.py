@@ -125,10 +125,7 @@ def corrugated_mondrians(
 
 
 if __name__ == "__main__":
-    import matplotlib.pyplot as plt
     from stimuli.utils import plot_stim
 
     stim = corrugated_mondrians()
-
-    plot_stim(stim)
-    plt.show()
+    plot_stim(stim, stim_name="Corrugated mondrians", mask=True, save=None)

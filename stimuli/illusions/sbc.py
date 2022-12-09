@@ -13,7 +13,7 @@ __all__ = [
 ]
 
 def simultaneous_contrast_generalized(
-    visual_size=(2.0, 2.0),
+    visual_size=(4.0, 6.0),
     ppd=10,
     target_size=(2.0, 2.0),
     target_position=(1.0, 1.0),
@@ -335,15 +335,12 @@ def dotted_sbc(
 
 
 if __name__ == "__main__":
-    import matplotlib.pyplot as plt
-
     from stimuli.utils import plot_stimuli
 
     stims = {
+        "SBC - generalized": simultaneous_contrast_generalized(),
         "SBC": simultaneous_contrast(),
         "SBC with dots": sbc_with_dots(),
         "Dotted SBC": dotted_sbc(),
     }
-
-    plot_stimuli(stims, mask=True)
-    plt.show()
+    plot_stimuli(stims, mask=True, save=None)

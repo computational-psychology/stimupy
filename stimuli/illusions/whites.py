@@ -22,7 +22,7 @@ def white_generalized(
     target_indices=(2, 5, 8, 11, 14),
     target_center_offsets=(3, 1.5, 0, -1.5, -3),
     target_sizes=(0.1, 0.2, 0.4, 0.8, 1),
-    period="full",
+    period="ignore",
 ):
     """
     White's stimulus
@@ -598,8 +598,6 @@ def white_yazdanbakhsh(
 
 
 if __name__ == "__main__":
-    import matplotlib.pyplot as plt
-
     from stimuli.utils import plot_stimuli
 
     stims = {
@@ -611,5 +609,4 @@ if __name__ == "__main__":
         "Howe's variation": white_howe(),
     }
 
-    plot_stimuli(stims, mask=False)
-    plt.show()
+    plot_stimuli(stims, mask=False, save=None)

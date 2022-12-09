@@ -170,9 +170,7 @@ def cube_illusion(
 
 
 if __name__ == "__main__":
-    import matplotlib.pyplot as plt
     from stimuli.utils import plot_stim
 
     stim = cube_illusion()
-    plot_stim(stim, stim_name="Cube illusion")
-    plt.show()
+    plot_stim(stim, stim_name="Cube illusion", mask=True, save=None)

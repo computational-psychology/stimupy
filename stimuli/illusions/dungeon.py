@@ -69,9 +69,7 @@ def dungeon_illusion(
 
 
 if __name__ == "__main__":
-    import matplotlib.pyplot as plt
     from stimuli.utils import plot_stim
 
     stim = dungeon_illusion()
-    plot_stim(stim, stim_name="Dungeon illusion")
-    plt.show()
+    plot_stim(stim, stim_name="Dungeon illusion", mask=True, save=None)

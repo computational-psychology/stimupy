@@ -62,15 +62,13 @@ def white(
         "pseudo_noise": pseudo_noise,
         "intensity_range": [white_noise.min(), white_noise.max()],
     }
-    return {"img": white_noise, **params}
+    return {"img": white_noise, "mask": None, **params}
 
 
 if __name__ == "__main__":
-    import matplotlib.pyplot as plt
     from stimuli.utils import plot_stimuli
 
     stims = {
-        "White noise - 3cpd": white(),
+        "White noise": white(),
     }
-    ax = plot_stimuli(stims)
-    plt.show()
+    plot_stimuli(stims, mask=True, save=None, vmin=-0.5, vmax=0.5)

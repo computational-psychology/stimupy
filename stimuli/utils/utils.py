@@ -4,6 +4,7 @@ represented as numpy arrays.
 """
 
 import numpy as np
+import warnings
 
 
 def shift_pixels(img, shift):
@@ -41,3 +42,21 @@ def round_to_vals(input_arr, vals):
     for i in range(n_val):
         out_arr[indices == i] = vals[i]
     return out_arr
+
+
+def to_img(array, save):
+    from PIL import Image
+
+    if array.min() < 0:
+        array = array - array.min()
+    if array.max() > 1:
+        array = array / array.max()
+    array = (array * 255).astype(np.uint8)
+
+    im = Image.fromarray(array)
+    
+    try:
+        im.save(save)
+    except ValueError:
+        warnings.warn("No file extension provided, saving as png")
+        im.save(save + ".png", "PNG")

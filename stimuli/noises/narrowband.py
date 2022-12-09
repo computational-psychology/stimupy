@@ -87,16 +87,14 @@ def narrowband(
         "pseudo_noise": pseudo_noise,
         "intensity_range": [narrow_noise.min(), narrow_noise.max()],
     }
-    return {"img": narrow_noise, **params}
+    return {"img": narrow_noise, "mask": None, **params}
 
 
 if __name__ == "__main__":
-    import matplotlib.pyplot as plt
     from stimuli.utils import plot_stimuli
 
     stims = {
         "Narrowband noise - 3cpd": narrowband(center_frequency=3.0),
         "Narrowband noise - 9cpd": narrowband(center_frequency=9.0),
     }
-    ax = plot_stimuli(stims)
-    plt.show()
+    plot_stimuli(stims, mask=True, save=None, vmin=-0.5, vmax=0.5)

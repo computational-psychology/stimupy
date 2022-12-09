@@ -447,8 +447,6 @@ def grating_induction(
 
 
 if __name__ == "__main__":
-    import matplotlib.pyplot as plt
-
     from stimuli.utils import plot_stimuli
 
     ppd = 36
@@ -496,5 +494,4 @@ if __name__ == "__main__":
         ),
     }
 
-    plot_stimuli(stims, mask=False)
-    plt.show()
+    plot_stimuli(stims, mask=True, save=None)

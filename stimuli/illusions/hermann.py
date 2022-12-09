@@ -64,9 +64,7 @@ def hermann_grid(
 
 
 if __name__ == "__main__":
-    import matplotlib.pyplot as plt
     from stimuli.utils import plot_stim
 
     stim = hermann_grid()
-    plot_stim(stim, stim_name="Hermann Grid")
-    plt.show()
+    plot_stim(stim, stim_name="Hermann Grid", mask=True, save=None)
