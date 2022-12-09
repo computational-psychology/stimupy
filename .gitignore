@@ -63,4 +63,5 @@ target/
 *.png
 .pytest_cache/
 
-demo/noises/.ipynb_checkpoints/
+**/.ipynb_checkpoints/
+**/.ipynb_checkpoints/
