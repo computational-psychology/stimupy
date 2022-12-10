@@ -23,6 +23,7 @@ If the function under testing raises this specified exception, the test passes.
 """
 
 import pytest
+
 from stimuli.utils import resolution
 
 
@@ -58,7 +59,7 @@ def test_valid_visual_size(visual_size, expected):
         ((32, 32, 32), TypeError),
         ({32, 32}, TypeError),
         ((-32, 16), ValueError),
-        ((16, 0), ValueError),
+        ((16, -1), ValueError),
     ],
 )
 def test_invalid_visual_size(visual_size, exception):
