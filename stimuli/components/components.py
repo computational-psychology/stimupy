@@ -7,6 +7,30 @@ from stimuli.utils import degrees_to_pixels, pad_to_shape, resolution
 
 
 def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0):
+    """Create coordinate-arrays to serve as image base for drawing
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    rotation : float, optional
+        rotation (in degrees) counterclockwise from 3 o'clock, by default 0.0
+
+    Returns
+    -------
+    dict[str, Any]
+        dict with keys:
+        "visual_size", "ppd" : resolved from input arguments,
+        "x", "y" : single axes
+        "xx", "yy": numpy.ndarray of shape,
+        "angular" : numpy.ndarray of shape, with angle (in rad) relative to center point
+                   at each pixel
+    """
+
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
 
     # Image axes
