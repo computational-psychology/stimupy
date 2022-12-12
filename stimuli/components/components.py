@@ -62,6 +62,7 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0):
     return {
         "visual_size": visual_size,
         "ppd": ppd,
+        "shape": shape,
         "rotation": rotation,
         "x": x,
         "y": y,
