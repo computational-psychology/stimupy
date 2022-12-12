@@ -371,6 +371,68 @@ def todorovic_cross(
     return stim
 
 
+def todorovic_equal(
+    visual_size=None,
+    ppd=None,
+    cross_size=None,
+    cross_thickness=None,
+    intensity_background=0.0,
+    intensity_target=0.5,
+    intensity_covers=1.0,
+):
+    """
+    Todorovic's illusion with cross target and four rectangular covers added at inner cross corners
+
+    Parameters
+    ----------
+    visual_size : float or (float, float)
+        size of the stimulus in degrees of visual angle (height, width)
+    ppd : int
+        pixels per degree (visual angle)
+    cross_size : float or (float, float)
+        size of target cross in visual angle
+    cross_thickness : float
+        thickness of target cross in visual angle
+    intensity_background : float
+        intensity value for background
+    intensity_target : float
+        intensity value for target
+    intensity_covers : float
+        intensity value for covers
+
+    Returns
+    -------
+    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+
+    References
+    -----------
+    Blakeslee, B., & McCourt, M. E. (1999). A multiscale spatial ﬁltering account of the
+        White eﬀect, simultaneous brightness contrast and grating induction. Vision
+        Research, 39, 4361–4377.
+    Pessoa, L., Baratoff, G., Neumann, H., & Todorovic, D. (1998). Lightness and junctions:
+        variations on White’s display. Investigative Ophthalmology and Visual Science
+        (Supplement), 39, S159.
+    Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
+    """
+    if isinstance(cross_size, (float, int)):
+        cross_size = (cross_size, cross_size)
+    
+    covers_size = ((cross_size[0] - cross_thickness) / 2,
+                   (cross_size[1] - cross_thickness) / 2)
+
+    stim = todorovic_cross(
+        visual_size=visual_size,
+        ppd=ppd,
+        cross_size=cross_size,
+        cross_thickness=cross_thickness,
+        covers_size=covers_size,
+        intensity_background=intensity_background,
+        intensity_target=intensity_target,
+        intensity_covers=intensity_covers,
+        )
+    return stim
+
+
 if __name__ == "__main__":
     from stimuli.utils import plot_stimuli
     
@@ -395,5 +457,6 @@ if __name__ == "__main__":
                                                              covers_size=2,
                                                              covers_x=(2, 6),
                                                              covers_y=(2, 6)),
+        "Todorovic equal": todorovic_equal(**params, cross_size=4, cross_thickness=2),
         }
     plot_stimuli(stims, mask=True, save=None)

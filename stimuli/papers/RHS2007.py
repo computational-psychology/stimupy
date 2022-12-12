@@ -1057,17 +1057,16 @@ def todorovic_equal(ppd=PPD, pad=True):
         "ppd": ppd,
         "cross_size": 8.0,
         "cross_thickness": 1.6,
-        "covers_size": 3.2,
         "intensity_target": v2,
     }
 
-    stim1 = illusions.todorovic.todorovic_cross(
+    stim1 = illusions.todorovic.todorovic_equal(
         intensity_background=1.0,
         intensity_covers=0.0,
         **params,
     )
 
-    stim2 = illusions.todorovic.todorovic_cross(
+    stim2 = illusions.todorovic.todorovic_equal(
         intensity_background=0.0,
         intensity_covers=1.0,
         **params,

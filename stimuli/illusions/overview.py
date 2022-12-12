@@ -60,7 +60,7 @@ stims = {
     # Dungeon
     "Dungeon": dungeon.dungeon_illusion(**p, n_cells=5),
     # Frames
-    "Frames": frames(**p, frequency=0.5, target_indices=(1, 3)),
+    "Frames": frames(**p, frequency=0.5, target_indices=3),
     "Bullseye": bullseye(**p, frequency=0.5),
     # Grating
     "Grating with targets": grating.square_wave(**p, frequency=0.5, target_indices=(3, 6)),
@@ -81,6 +81,7 @@ stims = {
     "Todorovic rectangle": todorovic.todorovic_rectangle(**p, target_size=4, covers_size=2, covers_offset=2),
     "Todorovic cross, general": todorovic.todorovic_cross_generalized(**p, cross_size=4, cross_arm_ratios=1., cross_thickness=2, covers_size=2, covers_x=(2, 6), covers_y=(2, 6)),
     "Todorovic cross": todorovic.todorovic_cross(**p, cross_size=4, cross_thickness=2, covers_size=2),
+    "Todorovic equal": todorovic.todorovic_equal(**p, cross_size=4, cross_thickness=2),
     # Wedding cake
     "Wedding cake": wedding_cake.wedding_cake_stimulus(**p, L_size=(3, 3, 1), target_height=1, target_indices1=((1, 1), (2, 1)),),
     # White
@@ -94,4 +95,4 @@ stims = {
 
 
 if __name__ == "__main__":
-    plot_stimuli(stims, mask=True, save=None)
+    plot_stimuli(stims, mask=False, save=None)
