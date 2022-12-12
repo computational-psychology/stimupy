@@ -227,6 +227,37 @@ def resolve_grating_params(
     }
 
 
+def draw_regions(mask, intensities, intensity_background=0.5):
+    """Draw image with intensities for components in mask
+
+    Parameters
+    ----------
+    mask : numpy.ndarray
+        image-array with integer-indices for each region to draw
+    intensities : Sequence[float, ...]
+        intensity value for each masked region, by default [1.0, 0.0].
+        Can specify as many intensities as number of masked regions;
+        If fewer intensities are passed than masked regions, cycles through intensities
+    intensity_background : float, optional
+        intensity value of background, by default 0.5
+
+    Returns
+    -------
+    numpy.ndarray
+        image-array, same shape as mask, with intensity assigned to each masked region
+    """
+
+    # Create background
+    img = np.ones(mask.shape) * intensity_background
+
+    # Assign intensities to masked regions
+    ints = [*itertools.islice(itertools.cycle(intensities), len(np.unique(mask)))]
+    for frame_idx, intensity in zip(np.unique(mask), ints):
+        img = np.where(mask == frame_idx, intensity, img)
+
+    return img
+
+
 def rectangle(
     visual_size=(4.0, 4.0),
     ppd=10,
