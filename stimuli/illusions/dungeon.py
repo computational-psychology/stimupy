@@ -45,6 +45,14 @@ def dungeon_illusion(
     Returns
     -------
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+
+    References
+    -----------
+    Bressan, P. (2001). Explaining lightness illusions. Perception, 30(9), 1031–1046.
+        https://doi.org/10.1068/p3109
+    Domijan, D. (2015). A neurocomputational account of the role of contour
+        facilitation in brightness perception. Frontiers in Human Neuroscience,
+        9, 93. https://doi.org/10.3389/fnhum.2015.00093
     """
     
     if isinstance(visual_size, (float, int)) or (visual_size is None):

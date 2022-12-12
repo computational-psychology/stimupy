@@ -58,6 +58,12 @@ def frames(
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "mask"),
         and additional keys containing stimulus parameters
+
+    References
+    ----------
+    Domijan, D. (2015). A neurocomputational account of the role of contour
+        facilitation in brightness perception. Frontiers in Human Neuroscience,
+        9, 93. https://doi.org/10.3389/fnhum.2015.00093
     """
 
     # Frames component
@@ -144,6 +150,11 @@ def bullseye(
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "mask"),
         and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Bindman, D., & Chubb, C. (2004). Brightness assimilation in Bullseye displays.
+        Vision Research, 44, 309–319. https://doi.org/10.1016/S0042-6989(03)00430-9
     """
 
     stim = frames(

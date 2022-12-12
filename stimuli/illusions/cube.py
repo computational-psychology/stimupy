@@ -1,6 +1,5 @@
 import numpy as np
 from stimuli.utils import degrees_to_pixels
-# from stimuli.illusions.checkerboards import checkerboard
 
 
 __all__ = [
@@ -19,6 +18,42 @@ def cube_varying_cells(
     intensity_grid=1.0,
     intensity_target=0.5,
 ):
+    """
+    Cube illusion (Agostini & Galmonte, 2002) with flexible cell sizes.
+
+    Parameters
+    ----------
+    ppd : int
+        pixels per degree (visual angle)
+    cell_heights : Sequence or float
+        Heights of individual cell elements in degrees. Will be used on each side.
+    cell_widths : Sequence or float
+        Widths of individual cell elements in degrees. Will be used on each side.
+    cell_spacing : Sequence or float
+        distance between individual cells iin degrees. Will be used on each side.
+    targets : Sequence
+        Target indices. Will be used on each side
+    intensity_background : float
+        intensity value for background
+    intensity_grid : float
+        intensity value for grid cells
+    intensity_target : float
+        intensity value for target
+
+    Returns
+    -------
+    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+
+    References
+    ----------
+    Agostini, T., and Galmonte, A. (2002). Perceptual organization overcomes the
+        effects of local surround in determining simultaneous lightness contrast.
+        Psychol. Sci. 13, 89–93. https://doi.org/10.1111/1467-9280.00417
+    Domijan, D. (2015). A neurocomputational account of the role of contour
+        facilitation in brightness perception. Frontiers in Human Neuroscience,
+        9, 93. https://doi.org/10.3389/fnhum.2015.00093
+    """
+
     if isinstance(cell_heights, (float, int)):
         cell_heights = (cell_heights,)
     if isinstance(cell_widths, (float, int)):
@@ -85,6 +120,16 @@ def cube_varying_cells(
     stim = {
         "img": img,
         "mask": mask.astype(int),
+        "shape": img.shape,
+        "visual_size": np.array(img.shape) / ppd,
+        "ppd": ppd,
+        "targets": targets,
+        "cell_heights": cell_heights,
+        "cell_widths": cell_widths,
+        "cell_spacing": cell_spacing,
+        "intensity_background": intensity_background,
+        "intensity_grid": intensity_grid,
+        "intensity_target": intensity_target,
         }
     return stim
 
@@ -106,14 +151,16 @@ def cube_illusion(
 
     Parameters
     ----------
-    visual_size :
-        blub
+    visual_size : (float, float)
+        The shape of the stimulus in degrees of visual angle. (y,x)
     ppd : int
         pixels per degree (visual angle)
     n_cells : int
         the number of square cells (not counting background) per dimension
-    cell_thickness : 
-        blub
+    targets : Sequence
+        Target indices. Will be used on each side
+    cell_thickness : float
+        Thickness of each cell in degree of visual angle
     cell_spacing : float or (float, float)
         distance between two cells in degrees visual angle
     intensity_background : float
@@ -126,6 +173,15 @@ def cube_illusion(
     Returns
     -------
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+
+    References
+    ----------
+    Agostini, T., and Galmonte, A. (2002). Perceptual organization overcomes the
+        effects of local surround in determining simultaneous lightness contrast.
+        Psychol. Sci. 13, 89–93. https://doi.org/10.1111/1467-9280.00417
+    Domijan, D. (2015). A neurocomputational account of the role of contour
+        facilitation in brightness perception. Frontiers in Human Neuroscience,
+        9, 93. https://doi.org/10.3389/fnhum.2015.00093
     """
     if isinstance(visual_size, (float, int)):
         visual_size = (visual_size, visual_size)
@@ -186,6 +242,16 @@ def cube_illusion(
     stim = {
         "img": img,
         "mask": mask.astype(int),
+        "shape": img.shape,
+        "visual_size": np.array(img.shape) / ppd,
+        "ppd": ppd,
+        "targets": targets,
+        "n_cells": n_cells,
+        "cell_thickness": cell_thickness,
+        "cell_spacing": cell_spacing,
+        "intensity_background": intensity_background,
+        "intensity_grid": intensity_grid,
+        "intensity_target": intensity_target,
         }
     return stim
 

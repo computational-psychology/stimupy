@@ -42,6 +42,10 @@ def simultaneous_contrast_generalized(
     Returns
     -------
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+
+    References
+    ----------
+    Chevreul, M. (1855). The principle of harmony and contrast of colors.
     """
 
     stim = rectangle(
@@ -85,6 +89,10 @@ def simultaneous_contrast(
     Returns
     -------
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+
+    References
+    ----------
+    Chevreul, M. (1855). The principle of harmony and contrast of colors.
     """
 
     stim = simultaneous_contrast_generalized(
@@ -133,6 +141,11 @@ def sbc_with_dots(
     Returns
     -------
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+
+    References
+    ----------
+    Bressan, P., & Kramer, P. (2008). Gating of remote effects on lightness. Journal
+        of Vision, 8(2), 16–16. https://doi.org/10.1167/8.2.16
     """
 
     # n_dots = number of dots vertical, horizontal, analogous to degrees
@@ -234,6 +247,11 @@ def dotted_sbc(
     Returns
     -------
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+
+    References
+    ----------
+    Bressan, P., & Kramer, P. (2008). Gating of remote effects on lightness. Journal
+        of Vision, 8(2), 16–16. https://doi.org/10.1167/8.2.16
     """
 
     # n_dots = number of dots vertical, horizontal, analogous to degrees

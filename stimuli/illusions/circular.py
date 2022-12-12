@@ -71,6 +71,13 @@ def circular_white(
     dict[str, Any]
         dict with the stimulus (key: "img")
         and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Hong, S. W., and Shevell, S. K. (2004). Brightness contrast and assimilation from patterned
+        inducing backgrounds. Vision Research, 44, 35–43. https://doi.org/10.1016/j.visres.2003.07.010
+    Howe, P. D. L. (2005). White's effect: removing the junctions but preserving the
+        strength of the illusion. Perception, 34, 557–564. https://doi.org/10.1068/p5414
     """
 
     # Get stim
@@ -189,6 +196,15 @@ def circular_bullseye(
     dict[str, Any]
         dict with the stimulus (key: "img")
         and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Bindman, D., & Chubb, C. (2004). Brightness assimilation in Bullseye displays.
+        Vision Research, 44, 309–319. https://doi.org/10.1016/S0042-6989(03)00430-9
+    Hong, S. W., and Shevell, S. K. (2004). Brightness contrast and assimilation from patterned
+        inducing backgrounds. Vision Research, 44, 35–43. https://doi.org/10.1016/j.visres.2003.07.010
+    Howe, P. D. L. (2005). White's effect: removing the junctions but preserving the
+        strength of the illusion. Perception, 34, 557–564. https://doi.org/10.1068/p5414
     """
     stim = circular_white(
         visual_size=visual_size,

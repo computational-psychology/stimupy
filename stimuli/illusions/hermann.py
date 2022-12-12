@@ -32,6 +32,11 @@ def hermann_grid(
     Returns
     -------
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    
+    References
+    ----------
+    Hermann L (1870). Eine Erscheinung simultanen Contrastes". Pflügers Archiv
+        fuer die gesamte Physiologie. 3: 13–15. https://doi.org/10.1007/BF01855743
     """
     if isinstance(visual_size, (float, int)):
         visual_size = (visual_size, visual_size)

@@ -412,8 +412,9 @@ def WE_zigzag(ppd=PPD, pad=True):
 
     References
     -----------
-    Cliﬀord, C. W. G., & Spehar, B. (2003). Using colour to disambiguate contrast and
-        assimilation in White’s eﬀect. Journal of Vision, 3, 294a.
+    Clifford, C. W. G., & Spehar, B. (2003). Using colour to disambiguate contrast and
+        assimilation in White’s effect. Journal of Vision, 3, 294a.
+        https://doi.org/10.1167/3.9.294
     """
 
     i1, i2 = 1, 2

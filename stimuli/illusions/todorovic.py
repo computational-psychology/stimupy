@@ -53,6 +53,16 @@ def todorovic_rectangle_generalized(
     Returns
     -------
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+
+    References
+    -----------
+    Blakeslee, B., & McCourt, M. E. (1999). A multiscale spatial ﬁltering account of the
+        White eﬀect, simultaneous brightness contrast and grating induction. Vision
+        Research, 39, 4361–4377.
+    Pessoa, L., Baratoff, G., Neumann, H., & Todorovic, D. (1998). Lightness and junctions:
+        variations on White’s display. Investigative Ophthalmology and Visual Science
+        (Supplement), 39, S159.
+    Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
     """
 
     if isinstance(visual_size, (float, int)):
@@ -136,6 +146,16 @@ def todorovic_rectangle(
     Returns
     -------
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+
+    References
+    -----------
+    Blakeslee, B., & McCourt, M. E. (1999). A multiscale spatial ﬁltering account of the
+        White eﬀect, simultaneous brightness contrast and grating induction. Vision
+        Research, 39, 4361–4377.
+    Pessoa, L., Baratoff, G., Neumann, H., & Todorovic, D. (1998). Lightness and junctions:
+        variations on White’s display. Investigative Ophthalmology and Visual Science
+        (Supplement), 39, S159.
+    Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
     """
     if isinstance(visual_size, (float, int)):
         visual_size = (visual_size, visual_size)
@@ -211,6 +231,16 @@ def todorovic_cross_generalized(
     Returns
     -------
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+
+    References
+    -----------
+    Blakeslee, B., & McCourt, M. E. (1999). A multiscale spatial ﬁltering account of the
+        White eﬀect, simultaneous brightness contrast and grating induction. Vision
+        Research, 39, 4361–4377.
+    Pessoa, L., Baratoff, G., Neumann, H., & Todorovic, D. (1998). Lightness and junctions:
+        variations on White’s display. Investigative Ophthalmology and Visual Science
+        (Supplement), 39, S159.
+    Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
     """
 
     if isinstance(visual_size, (float, int)):
@@ -298,6 +328,16 @@ def todorovic_cross(
     Returns
     -------
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+
+    References
+    -----------
+    Blakeslee, B., & McCourt, M. E. (1999). A multiscale spatial ﬁltering account of the
+        White eﬀect, simultaneous brightness contrast and grating induction. Vision
+        Research, 39, 4361–4377.
+    Pessoa, L., Baratoff, G., Neumann, H., & Todorovic, D. (1998). Lightness and junctions:
+        variations on White’s display. Investigative Ophthalmology and Visual Science
+        (Supplement), 39, S159.
+    Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
     """
     if isinstance(visual_size, (float, int)):
         visual_size = (visual_size, visual_size)
@@ -328,7 +368,6 @@ def todorovic_cross(
         intensity_target=intensity_target,
         intensity_covers=intensity_covers,
     )
-
     return stim
 
 

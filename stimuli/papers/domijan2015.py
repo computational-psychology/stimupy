@@ -1094,6 +1094,9 @@ def white_yazdanbakhsh(
     Domijan, D. (2015). A neurocomputational account of the role of contour
         facilitation in brightness perception. Frontiers in Human Neuroscience,
         9, 93. https://doi.org/10.3389/fnhum.2015.00093
+    Yazdanbakhsh, A., Arabzadeh, E., Babadi, B., and Fazl, A. (2002). Munker-White-
+        like illusions without T-junctions. Perception 31, 711–715.
+        https://doi.org/10.1068/p3348
     """
 
     # Resolve resolution
@@ -1168,6 +1171,11 @@ def white_anderson(
 
     References
     -----------
+    Anderson, B. L. (2001). Contrasting theories of White’s illusion. Perception, 30, 1499–1501
+    Blakeslee, B., Pasieka, W., & McCourt, M. E. (2005). Oriented multiscale spatial ﬁltering
+        and contrast normalization: a parsimonious model of brightness induction in a continuum
+        of stimuli including White, Howe and simultaneous brightness contrast. Vision Research,
+        45, 607–615.
     Domijan, D. (2015). A neurocomputational account of the role of contour
         facilitation in brightness perception. Frontiers in Human Neuroscience,
         9, 93. https://doi.org/10.3389/fnhum.2015.00093
@@ -1244,9 +1252,15 @@ def white_howe(shape=SHAPES["white_howe"], visual_size=VSIZES["white_howe"], ppd
 
     References
     -----------
+    Blakeslee, B., Pasieka, W., & McCourt, M. E. (2005). Oriented multiscale spatial ﬁltering
+        and contrast normalization: a parsimonious model of brightness induction in a continuum
+        of stimuli including White, Howe and simultaneous brightness contrast. Vision Research,
+        45, 607–615.
     Domijan, D. (2015). A neurocomputational account of the role of contour
         facilitation in brightness perception. Frontiers in Human Neuroscience,
         9, 93. https://doi.org/10.3389/fnhum.2015.00093
+    Howe, P. D. L. (2001). A comment on the Anderson (1997), the Todorovic (1997), and the Ross
+        and Pessoa (2000) explanations of White’s eﬀect. Perception, 30, 1023–1026
     """
 
     # Resolve resolution

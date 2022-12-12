@@ -74,6 +74,12 @@ def radial_white(
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "mask"),
         and additional keys containing stimulus parameters
+    
+    References
+    ----------
+    Robinson, A. E., Hammon, P. S., & de Sa, V. R. (2007). Explaining brightness
+        illusions using spatial filtering and local response normalization. Vision
+        research, 47(12), 1631-1644. https://doi.org/10.1016/j.visres.2007.02.017
     """
 
     # Radial grating

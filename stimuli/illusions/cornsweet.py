@@ -48,9 +48,11 @@ def cornsweet(
 
     References
     ----------
-    The formula and default values are adapted from Boyaci, H., Fang, F., Murray,
-    S.O., Kersten, D. (2007). Responses to Lightness Variations in Early Human
-    Visual Cortex. Current Biology 17, 989-993.
+    Boyaci, H., Fang, F., Murray, S.O., Kersten, D. (2007). Responses to lightness
+        variations in early human visual cortex. Current Biology 17, 989-993.
+        https://doi.org/10.1016/j.cub.2007.05.005
+    Cornsweet, T. (1970). Visual perception. Academic press.
+        https://doi.org/10.1016/B978-0-12-189750-5.X5001-5
     """
     if isinstance(visual_size, (float, int)):
         visual_size = (visual_size, visual_size)

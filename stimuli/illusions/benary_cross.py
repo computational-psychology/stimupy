@@ -59,6 +59,11 @@ def benarys_cross_generalized(
     Returns
     -------
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    
+    References
+    -----------
+    Benary, W. (1924). Beobachtungen zu einem Experiment ueber Helligkeitskontrast.
+        Psychologische Forschung, 5, 131–142. https://doi.org/10.1007/BF00402398
     """
     if isinstance(visual_size, (float, int)):
         visual_size = (visual_size, visual_size)
@@ -123,6 +128,11 @@ def benarys_cross_rectangles(
     Returns
     -------
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+
+    References
+    -----------
+    Benary, W. (1924). Beobachtungen zu einem Experiment ueber Helligkeitskontrast.
+        Psychologische Forschung, 5, 131–142. https://doi.org/10.1007/BF00402398
     """
 
     if isinstance(visual_size, (float, int)):
@@ -193,6 +203,11 @@ def benarys_cross_triangles(
     Returns
     -------
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+
+    References
+    -----------
+    Benary, W. (1924). Beobachtungen zu einem Experiment ueber Helligkeitskontrast.
+        Psychologische Forschung, 5, 131–142. https://doi.org/10.1007/BF00402398
     """
 
     if isinstance(visual_size, (float, int)):
@@ -275,6 +290,11 @@ def todorovic_benary_generalized(
     Returns
     -------
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+
+    References
+    -----------
+    Benary, W. (1924). Beobachtungen zu einem Experiment ueber Helligkeitskontrast.
+        Psychologische Forschung, 5, 131–142. https://doi.org/10.1007/BF00402398
     """
     if isinstance(visual_size, (float, int)):
         visual_size = (visual_size, visual_size)
@@ -339,6 +359,11 @@ def todorovic_benary_rectangles(
     Returns
     -------
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+
+    References
+    -----------
+    Benary, W. (1924). Beobachtungen zu einem Experiment ueber Helligkeitskontrast.
+        Psychologische Forschung, 5, 131–142. https://doi.org/10.1007/BF00402398
     """
 
     if isinstance(visual_size, (float, int)):
@@ -401,6 +426,11 @@ def todorovic_benary_triangles(
     Returns
     -------
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+
+    References
+    -----------
+    Benary, W. (1924). Beobachtungen zu einem Experiment ueber Helligkeitskontrast.
+        Psychologische Forschung, 5, 131–142. https://doi.org/10.1007/BF00402398
     """
 
     if isinstance(visual_size, (float, int)):

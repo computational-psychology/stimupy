@@ -154,11 +154,17 @@ def grating_uniform(
         intensity value of background, by default 0.5.
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each bar (key: "mask"),
         and additional keys containing stimulus parameters
+    
+    References
+    ----------
+    White, M. (1981). The effect of the nature of the surround on the perceived
+        lightness of grey bars within square-wave test gratings. Perception, 10(2),
+        215–230. https://doi.org/10.1068/p100215
     """
 
     # Spatial square-wave grating
@@ -213,11 +219,17 @@ def grating_grating(
         pixels per degree [vertical, horizontal]
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each bar (key: "mask"),
         and additional keys containing stimulus parameters
+
+    References
+    ----------
+    White, M. (1981). The effect of the nature of the surround on the perceived
+        lightness of grey bars within square-wave test gratings. Perception, 10(2),
+        215–230. https://doi.org/10.1068/p100215
     """
 
     # Create gratings
@@ -302,11 +314,17 @@ def grating_grating_shifted(
         If fewer intensities are passed than target_indices, cycles through intensities
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "mask"),
         and additional keys containing stimulus parameters
+
+    References
+    ----------
+    White, M. (1981). The effect of the nature of the surround on the perceived
+        lightness of grey bars within square-wave test gratings. Perception, 10(2),
+        215–230. https://doi.org/10.1068/p100215
     """
 
     # Resolve initial params
@@ -399,11 +417,16 @@ def grating_induction(
         amount of Gaussian blur to apply, default is 0.
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "mask"),
         and additional keys containing stimulus parameters
+
+    References
+    ----------
+    McCourt, M. E. (1982). A spatial frequency dependent grating-induction effect.
+        Vision Research, 22, 119–134. https://doi.org/10.1016/0042-6989(82)90173-0
     """
 
     # Draw grating

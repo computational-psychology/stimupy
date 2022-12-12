@@ -40,6 +40,11 @@ def corrugated_mondrians(
     Returns
     -------
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+
+    References
+    ----------
+    Adelson, E. H. (1993). Perceptual organization and the judgment of brightness.
+        Science, 262(5142), 2042–2044. https://doi.org/10.1126/science.8266102
     """
 
     if isinstance(heights, (float, int)):
