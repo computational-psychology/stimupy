@@ -2,13 +2,13 @@ import itertools
 
 import numpy as np
 
-from stimuli.components.frame import frames as frames_component
-
+from stimuli.components.frame import square_wave as frames_component
 
 __all__ = [
     "frames",
     "bullseye",
 ]
+
 
 def frames(
     shape=None,

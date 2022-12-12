@@ -2,15 +2,122 @@ import itertools
 
 import numpy as np
 
-from stimuli.components.components import image_base, resolve_grating_params
+from stimuli.components.components import (
+    draw_regions,
+    image_base,
+    resolve_grating_params,
+)
 from stimuli.utils import resolution
 
 __all__ = [
     "frames",
+    "square_wave",
 ]
 
 
 def mask_frames(
+    edges,
+    visual_size=None,
+    ppd=None,
+    shape=None,
+):
+    """Generate mask with integer indices for sequential square frames
+
+    Parameters
+    ----------
+    edges : Sequence[Number, ...]
+        upper-limit of each frame, in degrees visual angle
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+
+    Returns
+    ----------
+    dict[str, Any]
+        mask with integer index for each frame (key: "mask"),
+        and additional keys containing stimulus parameters
+    """
+
+    # Try to resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
+
+    # Set up coordinates
+    base = image_base(shape=shape, ppd=ppd, visual_size=visual_size)
+    distances = base["cityblock"]
+
+    # Mask elements
+    mask = np.zeros(shape, dtype=int)
+    for idx, edge in zip(reversed(range(len(edges))), reversed(edges)):
+        mask[distances <= edge] = int(idx + 1)
+
+    return {
+        "mask": mask,
+        "edges": edges,
+        "shape": shape,
+        "visual_size": visual_size,
+        "ppd": ppd,
+        "orientation": "cityblock",
+    }
+
+
+def frames(
+    shape=None,
+    visual_size=None,
+    ppd=None,
+    frame_widths=None,
+    intensity_frames=(0.0, 1.0),
+    intensity_background=0.5,
+):
+    """Draw sequential set of square frames with specified widths
+
+    Parameters
+    ----------
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    frame_widths : Sequence[Number]
+        width of each frame, in degrees visual angle
+    period : "full", "half", "ignore" (default)
+        whether to ensure the grating only has "full" periods,
+        half "periods", or no guarantees ("ignore")
+    intensity_frames : Sequence[float, ...]
+        intensity value for each frame, by default [1.0, 0.0].
+        Can specify as many intensities as number of frame_widths;
+        If fewer intensities are passed than frame_widhts, cycles through intensities
+    intensity_background : float, optional
+        intensity value of background, by default 0.5
+
+    Returns
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each frame (key: "mask"),
+        and additional keys containing stimulus parameters
+    """
+
+    # Get frames mask
+    stim = mask_frames(
+        edges=frame_widths,
+        shape=shape,
+        visual_size=visual_size,
+        ppd=ppd,
+    )
+
+    # Draw image
+    stim["img"] = draw_regions(
+        stim["mask"], intensities=intensity_frames, intensity_background=intensity_background
+    )
+
+    return stim
+
+
+def square_wave(
     shape=None,
     visual_size=None,
     ppd=None,
@@ -18,8 +125,10 @@ def mask_frames(
     n_frames=None,
     frame_width=None,
     period="ignore",
+    intensity_frames=(0.0, 1.0),
+    intensity_background=0.5,
 ):
-    """Generate mask for alternating set of frames, a square grating (?)
+    """Draw set of equal-width square frames, at given spatial frequency
 
     Parameters
     ----------
@@ -38,11 +147,18 @@ def mask_frames(
     period : "full", "half", "ignore" (default)
         whether to ensure the grating only has "full" periods,
         half "periods", or no guarantees ("ignore")
+    intensity_frames : Sequence[float, ...]
+        intensity value for each frame, by default [1.0, 0.0].
+        Can specify as many intensities as number of frame_widths;
+        If fewer intensities are passed than frame_widhts, cycles through intensities
+    intensity_background : float (optional)
+        intensity value of background, by default 0.5
 
     Returns
     ----------
     dict[str, Any]
-        mask with integer index for each bar (key: "mask"),
+        dict with the stimulus (key: "img"),
+        mask with integer index for each frame (key: "mask"),
         and additional keys containing stimulus parameters
     """
 
@@ -73,83 +189,21 @@ def mask_frames(
     visual_size = resolution.validate_visual_size(params["visual_angle"] * 2)
     ppd = resolution.validate_ppd(params["ppd"])
 
-    # Mask frames
-    base = image_base(shape=shape, ppd=ppd, visual_size=visual_size)
-    distances = base["cityblock"]
-
-    mask = np.zeros(shape, dtype=int)
-    for idx, edge in zip(reversed(range(len(params["edges"]))), reversed(params["edges"])):
-        mask[distances <= edge] = int(idx + 1)
-
-    return {
-        "mask": mask,
-        "shape": shape,
-        "visual_size": visual_size,
-        "ppd": ppd,
-        "frequency": params["frequency"],
-        "frame_width": params["phase_width"],
-        "n_frames": params["n_phases"],
-        "period": params["period"],
-    }
-
-
-def frames(
-    shape=None,
-    visual_size=None,
-    ppd=None,
-    frequency=None,
-    n_frames=None,
-    frame_width=None,
-    period="ignore",
-    intensity_frames=(0.0, 1.0),
-):
-    """Draw set of square frames, at given spatial frequency
-
-    Parameters
-    ----------
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
-    visual_size : Sequence[Number, Number], Number, or None (default)
-        visual size [height, width] of image, in degrees
-    ppd : Sequence[Number, Number], Number, or None (default)
-        pixels per degree [vertical, horizontal]
-    frequency : Number, or None (default)
-        spatial frequency of grating, in cycles per degree visual angle
-    n_frames : int, or None (default)
-        number of frames in the grating
-    frame_width : Number, or None (default)
-        width of a single frame, in degrees visual angle
-    period : "full", "half", "ignore" (default)
-        whether to ensure the grating only has "full" periods,
-        half "periods", or no guarantees ("ignore")
-    intensity_bars : Sequence[float, ...]
-        intensity value for each bar, by default [1.0, 0.0].
-        Can specify as many intensities as n_bars;
-        If fewer intensities are passed than n_bars, cycles through intensities
-
-    Returns
-    ----------
-    dict[str, Any]
-        dict with the stimulus (key: "img"),
-        mask with integer index for each target (key: "mask"),
-        and additional keys containing stimulus parameters
-    """
-    # Get frames mask
-    stim = mask_frames(
+    # Draw
+    stim = frames(
+        frame_widths=params["edges"],
         shape=shape,
         visual_size=visual_size,
         ppd=ppd,
-        frequency=frequency,
-        n_frames=n_frames,
-        frame_width=frame_width,
-        period=period,
+        intensity_frames=intensity_frames,
+        intensity_background=intensity_background,
     )
-    mask = stim["mask"]
 
-    # Draw frames
-    img = np.zeros(mask.shape)
-    ints = [*itertools.islice(itertools.cycle(intensity_frames), len(np.unique(mask)))]
-    for frame_idx, intensity in zip(np.unique(mask), ints):
-        img = np.where(mask == frame_idx, intensity, img)
-
-    return {"img": img, **stim}
+    return {
+        **stim,
+        "frequency": params["frequency"],
+        "n_frames": params["n_phases"],
+        "frame_width": params["phase_width"],
+        "period": params["period"],
+        "orientation": "cityblock",
+    }
