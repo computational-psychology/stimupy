@@ -331,12 +331,16 @@ def ring(
     ValueError
         if passed in less/more than 1 intensity
     """
-    intensity = [intensity]
+
+    # Try to resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
 
     if len(radii) != 2:
         raise ValueError("Can only pass exactly 2 radii")
-    if len(intensity) != 1:
+    if len([intensity]) != 1:
         raise ValueError("Can only pass 1 intensity")
+    if radii[1] is None:
+        radii[1] = np.max(visual_size) / 2
 
     stim = disc_and_rings(
         radii=radii,
