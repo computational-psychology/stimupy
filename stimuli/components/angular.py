@@ -4,53 +4,14 @@ import itertools
 import numpy as np
 
 from stimuli.components.circular import ring
+from stimuli.components.components import image_base
 from stimuli.utils import resolution
-
 
 __all__ = [
     "wedge",
     "grating",
-    "pinwheel",    
+    "pinwheel",
 ]
-
-
-def img_angles(rotation=0.0, visual_size=None, ppd=None, shape=None):
-    """Matrix of angle (relative to center) for each pixel
-
-    By default, 3 o'clock position == 0 degrees (0 radians);
-    this reference can be shifted using the `rotation` argument.
-
-    Parameters
-    ----------
-    rotation : float, optional
-        rotation (in degrees) counterclockwise from 3 o'clock, by default 0.0
-    visual_size : Sequence[Number, Number], Number, or None (default)
-        visual size [height, width] of image, in degrees
-    ppd : Sequence[Number, Number], Number, or None (default)
-        pixels per degree [vertical, horizontal]
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
-
-    Returns
-    -------
-    numpy.ndarray
-        array of shape, with the angle (in rad) relative to center point, for each pixel
-    """
-
-    # Resolve resolution
-    shape, visual_size, ppd = resolution.resolve(shape, visual_size, ppd)
-
-    # Image coordinates
-    x = np.linspace(-visual_size.width / 2.0, visual_size.width / 2.0, shape.width)
-    y = np.linspace(-visual_size.height / 2.0, visual_size.height / 2.0, shape.height)
-    yy, xx = np.meshgrid(y, x)
-
-    # Rotate image coordinates
-    img_angles = -np.arctan2(xx, yy)
-    img_angles -= np.deg2rad(rotation)
-    img_angles %= 2 * np.pi
-
-    return {"img": img_angles, "visual_size": visual_size, "ppd": ppd}
 
 
 def mask_angle(
@@ -82,14 +43,18 @@ def mask_angle(
         and additional params
     """
 
-    params = img_angles(rotation=rotation, visual_size=visual_size, ppd=ppd, shape=shape)
-    image_angles = params.pop("img")
+    base = image_base(rotation=rotation, visual_size=visual_size, ppd=ppd, shape=shape)
 
     # Create mask
     inner_angle, outer_angle = np.deg2rad(angles)
-    bool_mask = (image_angles > inner_angle) & (image_angles <= outer_angle)
+    bool_mask = (base["angular"] > inner_angle) & (base["angular"] <= outer_angle)
 
-    return {"mask": bool_mask, **params}
+    return {
+        "mask": bool_mask,
+        "visual_size": base["visual_size"],
+        "ppd": base["ppd"],
+        "rotation": base["rotation"],
+    }
 
 
 def wedge(
