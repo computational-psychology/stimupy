@@ -202,7 +202,8 @@ def checkerboard(
             extend_targets=extend_targets,
             intensity_target=intensity_target,
         )
-
+    else:
+        stim["mask"] = None
     return stim
 
 
@@ -299,7 +300,7 @@ def contrast_contrast(
 
     # Update stim dict
     stim["img"] = img
-    stim["mask"] = mask
+    stim["mask"] = mask.astype(int)
     stim["alpha"] = alpha
     stim["tau"] = tau
 
