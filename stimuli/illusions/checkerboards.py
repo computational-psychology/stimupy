@@ -115,7 +115,7 @@ def add_targets(checkerboard_stim, targets, extend_targets=False, intensity_targ
     img = np.where(mask, intensity_target, checkerboard_stim["img"])
 
     checkerboard_stim["img"] = img
-    checkerboard_stim["mask"] = mask
+    checkerboard_stim["mask"] = mask.astype(int)
     return checkerboard_stim
 
 
