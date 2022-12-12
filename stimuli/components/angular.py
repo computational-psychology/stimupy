@@ -1,4 +1,3 @@
-import copy
 import itertools
 
 import numpy as np
@@ -138,12 +137,12 @@ def angular_segments(
     ppd=None,
     shape=None,
 ):
-    """Generate mask with integer indices for angular segments
+    """Generate mask with integer indices for sequential angular segments
 
     Parameters
     ----------
     angles : Sequence[Number]
-        lower- and upper-limit (in angular degrees 0-360) of each segment
+        upper-limit, in angular degrees 0-360, of each segment
     rotation : float, optional
         angle of rotation (in degrees) of segments,
         counterclockwise away from 3 o'clock, by default 0.0
