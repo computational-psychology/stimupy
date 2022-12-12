@@ -14,11 +14,11 @@ __all__ = [
 ]
 
 def one_over_f(
-    visual_size=(10, 10),
-    ppd=40.0,
-    rms_contrast=0.2,
-    exponent=1.0,
-    pseudo_noise=True,
+    visual_size=None,
+    ppd=None,
+    rms_contrast=None,
+    exponent=None,
+    pseudo_noise=False,
 ):
     """
     Function to create  1 / (f**exponent) noise.
@@ -88,10 +88,10 @@ def one_over_f(
 
 
 def pink(
-    visual_size=(10, 10),
-    ppd=40.0,
-    rms_contrast=0.2,
-    pseudo_noise=True,
+    visual_size=None,
+    ppd=None,
+    rms_contrast=None,
+    pseudo_noise=False,
 ):
     """
     Function to create  1 / (f**exponent) noise.
@@ -122,10 +122,10 @@ def pink(
 
 
 def brown(
-    visual_size=(10, 10),
-    ppd=40.0,
-    rms_contrast=0.2,
-    pseudo_noise=True,
+    visual_size=None,
+    ppd=None,
+    rms_contrast=None,
+    pseudo_noise=False,
 ):
     """
     Function to create  1 / (f**exponent) noise.
@@ -157,9 +157,16 @@ def brown(
 
 if __name__ == "__main__":
     from stimuli.utils import plot_stimuli
+    params = {
+        "visual_size": 10,
+        "ppd": 20,
+        "rms_contrast": 0.2,
+        "pseudo_noise": True,
+        }
 
     stims = {
-        "Pink noise": pink(),
-        "Brown noise": brown(),
+        "One over f": one_over_f(**params, exponent=0.5),
+        "Pink noise": pink(**params),
+        "Brown noise": brown(**params),
     }
     plot_stimuli(stims, mask=True, save=None, vmin=-0.5, vmax=0.5)

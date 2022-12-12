@@ -9,15 +9,14 @@ __all__ = [
 
 # TODO: constrain allowed stimulus sizes
 
-i1 = 1
-i2 = 2
+
 def wedding_cake_stimulus(
-    visual_size=(20., 15.),
-    ppd=32.,
-    L_size=(4., 4, 1.),
-    target_height=2.,
-    target_indices1=((i1, -1), (i1, 0), (i1, 1), (i1, 2)),
-    target_indices2=((i2, 0), (i2, 1), (i2, 2), (i2, 3)),
+    visual_size=None,
+    ppd=None,
+    L_size=None,
+    target_height=None,
+    target_indices1=None,
+    target_indices2=None,
     intensity_grating=(1., 0.),
     intensity_target=0.5,
 ):
@@ -49,6 +48,9 @@ def wedding_cake_stimulus(
     -------
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
     """
+    
+    if isinstance(visual_size, (float, int)):
+        visual_size = (visual_size, visual_size)
 
     nY, nX = degrees_to_pixels(visual_size, ppd)
     Ly, Lx, Lw = degrees_to_pixels(L_size, ppd)
@@ -157,9 +159,18 @@ def wedding_cake_stimulus(
 
 if __name__ == "__main__":
     from stimuli.utils import plot_stimuli
+    
+    params = {
+        "visual_size": 10,
+        "ppd": 10,
+        "L_size": (3, 3, 1),
+        "target_height": 1,
+        "target_indices1": None,
+        "target_indices2": ((0, 1), (1, 1)),
+        }
 
     stims = {
-        "Wedding cake new": wedding_cake_stimulus(),
-    }
+        "Wedding cake": wedding_cake_stimulus(**params),
+        }
 
     plot_stimuli(stims, mask=False, save=None)

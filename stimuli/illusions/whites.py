@@ -14,14 +14,14 @@ __all__ = [
 ]
 
 def white_generalized(
-    visual_size=(10, 10),
-    ppd=10,
-    grating_frequency=0.8,
+    visual_size=None,
+    ppd=None,
+    grating_frequency=None,
     intensity_bars=(1.0, 0.0),
     intensity_target=0.5,
-    target_indices=(2, 5, 8, 11, 14),
-    target_center_offsets=(3, 1.5, 0, -1.5, -3),
-    target_sizes=(0.1, 0.2, 0.4, 0.8, 1),
+    target_indices=None,
+    target_center_offsets=None,
+    target_sizes=None,
     period="ignore",
 ):
     """
@@ -130,7 +130,9 @@ def white_generalized(
     if period != "ignore" and visual_size != new_size:
         print("Warning: White shape changed from %s to %s" % (visual_size, new_size))
 
-    params = {
+    stim = {
+        "img": img,
+        "mask": mask.astype(int),
         "shape": img.shape,
         "visual_size": np.array(img.shape) / ppd,
         "ppd": ppd,
@@ -143,17 +145,17 @@ def white_generalized(
         "period": period,
     }
 
-    return {"img": img, "mask": mask, **params}
+    return stim
 
 
 def white(
-    visual_size=(4.2, 4.2),
-    ppd=20,
-    grating_frequency=1.2,
+    visual_size=None,
+    ppd=None,
+    grating_frequency=None,
     intensity_bars=(1.0, 0.0),
     intensity_target=0.5,
     target_indices=(1, 3, -2, -4),
-    target_size=1.0,
+    target_size=None,
     period="ignore",
 ):
     """
@@ -203,15 +205,15 @@ def white(
 
 # TODO: Add another function in which you specify n_targets instead of target_indices
 def white_two_rows(
-    visual_size=(4, 4),
-    ppd=20,
-    grating_frequency=2,
+    visual_size=None,
+    ppd=None,
+    grating_frequency=None,
     intensity_bars=(1.0, 0.0),
     intensity_target=0.5,
-    target_indices_top=(1, 3, 5, 7, 9, 11),
-    target_indices_bottom=(-2, -4, -6),
-    target_center_offset=0.8,
-    target_size=0.8,
+    target_indices_top=None,
+    target_indices_bottom=None,
+    target_center_offset=None,
+    target_size=None,
     period="ignore",
 ):
     """
@@ -276,18 +278,18 @@ def white_two_rows(
 
 
 def white_anderson(
-    visual_size=(4, 4),
-    ppd=20,
-    grating_frequency=2,
+    visual_size=None,
+    ppd=None,
+    grating_frequency=None,
     intensity_bars=(1.0, 0.0),
     intensity_target=0.5,
-    target_indices_top=5,
-    target_indices_bottom=-6,
-    target_center_offset=0.6,
-    target_size=0.8,
+    target_indices_top=None,
+    target_indices_bottom=None,
+    target_center_offset=None,
+    target_size=None,
     intensity_stripes=(1.0, 0.0),
-    stripe_center_offset=0.8,
-    stripe_size=0.8,
+    stripe_center_offset=None,
+    stripe_size=None,
     period="ignore",
 ):
     """
@@ -406,15 +408,15 @@ def white_anderson(
 
 
 def white_howe(
-    visual_size=(4, 4),
-    ppd=20,
-    grating_frequency=2,
+    visual_size=None,
+    ppd=None,
+    grating_frequency=None,
     intensity_bars=(1.0, 0.0),
     intensity_target=0.5,
-    target_indices_top=5,
-    target_indices_bottom=-6,
-    target_center_offset=0.3,
-    target_size=0.5,
+    target_indices_top=None,
+    target_indices_bottom=None,
+    target_center_offset=None,
+    target_size=None,
     intensity_stripes=(1.0, 0.0),
     period="ignore",
 ):
@@ -472,17 +474,17 @@ def white_howe(
 
 
 def white_yazdanbakhsh(
-    visual_size=(4, 4),
-    ppd=20,
-    grating_frequency=2,
+    visual_size=None,
+    ppd=None,
+    grating_frequency=None,
     intensity_bars=(1.0, 0.0),
     intensity_target=0.5,
-    target_indices_top=5,
-    target_indices_bottom=-6,
-    target_center_offset=0.6,
-    target_size=1.0,
+    target_indices_top=None,
+    target_indices_bottom=None,
+    target_center_offset=None,
+    target_size=None,
     intensity_stripes=(1.0, 0.0),
-    gap_size=0.2,
+    gap_size=None,
     period="ignore",
 ):
     """
@@ -599,14 +601,20 @@ def white_yazdanbakhsh(
 
 if __name__ == "__main__":
     from stimuli.utils import plot_stimuli
+    
+    params = {
+        "visual_size": 10,
+        "ppd": 10,
+        "grating_frequency": 0.5,
+        }
 
     stims = {
-        "White flexible": white_generalized(),
-        "White single row": white(),
-        "White two rows": white_two_rows(),
-        "Anderson's variation": white_anderson(),
-        "Yazdanbakhsh variation": white_yazdanbakhsh(),
-        "Howe's variation": white_howe(),
+        "White flexible": white_generalized(**params, target_indices=(1, 3), target_center_offsets=(-1, -3), target_sizes=(2, 3)),
+        "White single row": white(**params, target_indices=(2, -3), target_size=2),
+        "White two rows": white_two_rows(**params, target_indices_top=(2,4), target_indices_bottom=(-2, -4), target_size=1, target_center_offset=2),
+        "Anderson's variation": white_anderson(**params, target_indices_top=3, target_indices_bottom=-2, target_center_offset=2, target_size=2, stripe_center_offset=1.5, stripe_size=2),
+        "Yazdanbakhsh variation": white_yazdanbakhsh(**params, target_indices_top=3, target_indices_bottom=-2, target_center_offset=2, target_size=2, gap_size=0.5),
+        "Howe's variation": white_howe(**params, target_indices_top=3, target_indices_bottom=-2, target_center_offset=2, target_size=2),
     }
 
     plot_stimuli(stims, mask=False, save=None)

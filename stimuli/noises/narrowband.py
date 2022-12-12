@@ -12,12 +12,12 @@ __all__ = [
 ]
 
 def narrowband(
-    visual_size=(10, 20),
-    ppd=40.0,
-    center_frequency=3,
-    bandwidth=1.0,
-    rms_contrast=0.2,
-    pseudo_noise=True,
+    visual_size=None,
+    ppd=None,
+    center_frequency=None,
+    bandwidth=None,
+    rms_contrast=None,
+    pseudo_noise=False,
 ):
     """
     Function to create narrowband noise.
@@ -92,9 +92,15 @@ def narrowband(
 
 if __name__ == "__main__":
     from stimuli.utils import plot_stimuli
+    params = {
+        "visual_size": 10,
+        "ppd": 20,
+        "rms_contrast": 0.2,
+        "pseudo_noise": True,
+        }
 
     stims = {
-        "Narrowband noise - 3cpd": narrowband(center_frequency=3.0),
-        "Narrowband noise - 9cpd": narrowband(center_frequency=9.0),
+        "Narrowband noise - 3cpd": narrowband(**params, bandwidth=1, center_frequency=3.0),
+        "Narrowband noise - 9cpd": narrowband(**params, bandwidth=1, center_frequency=9.0),
     }
     plot_stimuli(stims, mask=True, save=None, vmin=-0.5, vmax=0.5)

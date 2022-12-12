@@ -13,10 +13,10 @@ __all__ = [
 ]
 
 def simultaneous_contrast_generalized(
-    visual_size=(4.0, 6.0),
-    ppd=10,
-    target_size=(2.0, 2.0),
-    target_position=(1.0, 1.0),
+    visual_size=None,
+    ppd=None,
+    target_size=None,
+    target_position=None,
     intensity_background=0.0,
     intensity_target=0.5,
 ):
@@ -60,9 +60,9 @@ def simultaneous_contrast_generalized(
 
 
 def simultaneous_contrast(
-    visual_size=(2.0, 3.0),
-    ppd=10,
-    target_size=(1.0, 0.5),
+    visual_size=None,
+    ppd=None,
+    target_size=None,
     intensity_background=0.0,
     intensity_target=0.5,
 ):
@@ -99,11 +99,11 @@ def simultaneous_contrast(
 
 
 def sbc_with_dots(
-    ppd=10,
-    n_dots=(8, 9),
-    dot_radius=3.0,
-    distance=1.0,
-    target_shape=(4, 3),
+    ppd=None,
+    n_dots=None,
+    dot_radius=None,
+    distance=None,
+    target_shape=None,
     intensity_background=0.0,
     intensity_dots=1.0,
     intensity_target=0.5,
@@ -200,11 +200,11 @@ def sbc_with_dots(
 
 
 def dotted_sbc(
-    ppd=10,
-    n_dots=(8, 9),
-    dot_radius=3.0,
-    distance=1.0,
-    target_shape=(4, 3),
+    ppd=None,
+    n_dots=None,
+    dot_radius=None,
+    distance=None,
+    target_shape=None,
     intensity_background=0.0,
     intensity_dots=1.0,
     intensity_target=0.5,
@@ -306,9 +306,9 @@ if __name__ == "__main__":
     from stimuli.utils import plot_stimuli
 
     stims = {
-        "SBC - generalized": simultaneous_contrast_generalized(),
-        "SBC": simultaneous_contrast(),
-        "SBC with dots": sbc_with_dots(),
-        "Dotted SBC": dotted_sbc(),
+        "SBC - generalized": simultaneous_contrast_generalized(visual_size=10, ppd=10, target_size=5, target_position=(0, 2)),
+        "SBC": simultaneous_contrast(visual_size=10, ppd=10, target_size=5),
+        "SBC with dots": sbc_with_dots(ppd=20, n_dots=5, dot_radius=3, distance=0.5, target_shape=3),
+        "Dotted SBC": dotted_sbc(ppd=20, n_dots=5, dot_radius=3, distance=0.5, target_shape=3),
     }
     plot_stimuli(stims, mask=True, save=None)

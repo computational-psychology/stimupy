@@ -6,12 +6,12 @@ __all__ = [
 ]
 
 def cornsweet(
-    visual_size=(10.0, 10.0),
-    ppd=10.0,
+    visual_size=None,
+    ppd=None,
+    ramp_width=None,
     intensity_max=1.0,
     intensity_min=0.0,
     intensity_plateau=0.5,
-    ramp_width=2.0,
     exponent=2.75,
 ):
     """
@@ -31,14 +31,14 @@ def cornsweet(
         The shape of the stimulus in degrees of visual angle. (y,x)
     ppd : int
         pixels per degree (visual angle)
+    ramp_width : float
+        width of luminance ramp in degrees of visual angle
     intensity_max : float
         maximum intensity value
     intensity_min : float
         minimum intensity value
     intensity_plateau : float
         intensity value of plateau
-    ramp_width : float
-        width of luminance ramp in degrees of visual angle
     exponent : float
         determines steepness of ramp (default is 2.75. 1 would be linear)
 
@@ -54,6 +54,8 @@ def cornsweet(
     """
     if isinstance(visual_size, (float, int)):
         visual_size = (visual_size, visual_size)
+    if ramp_width > visual_size[1]/2:
+        raise ValueError("ramp_width is too large")
 
     size = [int(visual_size[0] * ppd), int(visual_size[1] * ppd)]
     ramp_width = int(ramp_width * ppd)
@@ -73,7 +75,9 @@ def cornsweet(
     mask[:, 0 : int(size[1] / 2.0 - ramp_width - 1)] = 1
     mask[:, int(size[1] / 2.0 + ramp_width + 1) : :] = 2
 
-    params = {
+    stim = {
+        "img": img,
+        "mask": mask.astype(int),
         "shape": img.shape,
         "visual_size": np.array(img.shape) / ppd,
         "ppd": ppd,
@@ -84,11 +88,11 @@ def cornsweet(
         "exponent": exponent,
     }
 
-    return {"img": img, "mask": mask, **params}
+    return stim
 
 
 if __name__ == "__main__":
     from stimuli.utils import plot_stim
 
-    stim = cornsweet()
+    stim = cornsweet(visual_size=10, ppd=10, ramp_width=3)
     plot_stim(stim, stim_name="Cornsweet illusion", mask=True, save=None)

@@ -12,13 +12,13 @@ __all__ = [
 ]
 
 def todorovic_rectangle_generalized(
-    visual_size=10,
-    ppd=10,
-    target_size=(4.0, 4.0),
-    target_position=(3.0, 3.0),
-    covers_size=(2.0, 2.0),
-    covers_x=(2.0, 6.0, 2.0, 6.0),
-    covers_y=(2.0, 6.0, 6.0, 2.0),
+    visual_size=None,
+    ppd=None,
+    target_size=None,
+    target_position=None,
+    covers_size=None,
+    covers_x=None,
+    covers_y=None,
     intensity_background=0.0,
     intensity_target=0.5,
     intensity_covers=1.0,
@@ -101,11 +101,11 @@ def todorovic_rectangle_generalized(
 
 
 def todorovic_rectangle(
-    visual_size=(10, 10),
-    ppd=10,
-    target_size=(4.0, 4.0),
-    covers_size=(3.0, 3.0),
-    covers_offset=(2.0, 2.0),
+    visual_size=None,
+    ppd=None,
+    target_size=None,
+    covers_size=None,
+    covers_offset=None,
     intensity_background=0.0,
     intensity_target=0.5,
     intensity_covers=1.0,
@@ -167,14 +167,14 @@ def todorovic_rectangle(
 
 
 def todorovic_cross_generalized(
-    visual_size=(12.0, 12.0),
-    ppd=10,
-    cross_size=(6., 6.),
-    cross_arm_ratios=(1., 1.),
-    cross_thickness=2.0,
-    covers_size=2.0,
-    covers_x=(3.0, 7.0, 3.0, 7.0),
-    covers_y=(3.0, 7.0, 7.0, 3.0),
+    visual_size=None,
+    ppd=None,
+    cross_size=None,
+    cross_arm_ratios=None,
+    cross_thickness=None,
+    covers_size=None,
+    covers_x=None,
+    covers_y=None,
     intensity_background=0.0,
     intensity_target=0.5,
     intensity_covers=1.0,
@@ -264,14 +264,14 @@ def todorovic_cross_generalized(
 
 
 def todorovic_cross(
-    visual_size=(10, 10),
-    ppd=4,
-    cross_size=(6., 6.),
-    cross_thickness=1.0,
-    covers_size=3.2,
-    intensity_background=1.0,
+    visual_size=None,
+    ppd=None,
+    cross_size=None,
+    cross_thickness=None,
+    covers_size=None,
+    intensity_background=0.0,
     intensity_target=0.5,
-    intensity_covers=0.0,
+    intensity_covers=1.0,
 ):
     """
     Todorovic's illusion with cross target and four rectangular covers added at inner cross corners
@@ -334,11 +334,27 @@ def todorovic_cross(
 
 if __name__ == "__main__":
     from stimuli.utils import plot_stimuli
+    
+    params = {
+        "visual_size": 10,
+        "ppd": 10,
+        }
 
     stims = {
-        "Todorovic rectangle": todorovic_rectangle(),
-        "Todorovic rectangle, flex": todorovic_rectangle_generalized(),
-        "Todorovic cross": todorovic_cross(),
-        "Todorovic cross, flex": todorovic_cross_generalized(),
-    }
+        "Todorovic rectangle": todorovic_rectangle(**params, target_size=4, covers_size=2, covers_offset=2),
+        "Todorovic rectangle, flex": todorovic_rectangle_generalized(**params,
+                                                                     target_size=4, 
+                                                                     target_position=3,
+                                                                     covers_size=2,
+                                                                     covers_x=(2, 6),
+                                                                     covers_y=(2, 6)),
+        "Todorovic cross": todorovic_cross(**params, cross_size=4, cross_thickness=2, covers_size=2),
+        "Todorovic cross, flex": todorovic_cross_generalized(**params,
+                                                             cross_size=4,
+                                                             cross_arm_ratios=1.,
+                                                             cross_thickness=2,
+                                                             covers_size=2,
+                                                             covers_x=(2, 6),
+                                                             covers_y=(2, 6)),
+        }
     plot_stimuli(stims, mask=True, save=None)

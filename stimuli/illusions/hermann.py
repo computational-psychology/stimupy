@@ -7,9 +7,9 @@ __all__ = [
 ]
 
 def hermann_grid(
-    visual_size=(10, 10),
-    ppd=10,
-    element_size=(1.5, 1.5, 0.2),
+    visual_size=None,
+    ppd=None,
+    element_size=None,
     intensity_background=0.0,
     intensity_grid=1.0,
 ):
@@ -66,5 +66,5 @@ def hermann_grid(
 if __name__ == "__main__":
     from stimuli.utils import plot_stim
 
-    stim = hermann_grid()
+    stim = hermann_grid(visual_size=10, ppd=10, element_size=(1.5, 1.5, 0.2))
     plot_stim(stim, stim_name="Hermann Grid", mask=True, save=None)

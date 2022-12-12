@@ -118,7 +118,7 @@ def grating_uniform(
     intensity_bars=(0.0, 1.0),
     target_indices=(),
     intensity_target=0.5,
-    image_size=None,
+    grating_size=None,
     intensity_background=0.5,
 ):
     """Spatial square-wave grating (set of bars), on a background
@@ -128,7 +128,7 @@ def grating_uniform(
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of grating, in pixels
     visual_size : Sequence[Number, Number], Number, or None (default)
-        visual size [height, width] of grating, in degrees
+        visual size [height, width] of total image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
     frequency : Number, or None (default)
@@ -148,8 +148,8 @@ def grating_uniform(
         If fewer intensities are passed than n_bars, cycles through intensities
     target_indices : int, or Sequence[int, ...]
         indices segments where targets will be placed
-    image_size : Sequence[Number, Number], Number, or None (default)
-        visual size [height, width] of total image, in degrees
+    grating_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of grating, in degrees
     intensity_background : float
         intensity value of background, by default 0.5.
 
@@ -164,7 +164,7 @@ def grating_uniform(
     # Spatial square-wave grating
     stim = square_wave(
         shape=shape,
-        visual_size=visual_size,
+        visual_size=grating_size,
         ppd=ppd,
         frequency=frequency,
         n_bars=n_bars,
@@ -178,10 +178,10 @@ def grating_uniform(
 
     # Padding
     stim["img"] = pad_to_visual_size(
-        img=stim["img"], visual_size=image_size, ppd=ppd, pad_value=intensity_background
+        img=stim["img"], visual_size=visual_size, ppd=ppd, pad_value=intensity_background
     )
     stim["mask"] = pad_to_visual_size(
-        img=stim["mask"], visual_size=image_size, ppd=ppd, pad_value=0
+        img=stim["mask"], visual_size=visual_size, ppd=ppd, pad_value=0
     ).astype(int)
 
     # Repack
@@ -190,7 +190,7 @@ def grating_uniform(
         grating_size=stim["visual_size"],
         grating_shape=stim["shape"],
         shape=stim["img"].shape,
-        visual_size=image_size,
+        visual_size=visual_size,
     )
 
     return stim
@@ -469,10 +469,11 @@ if __name__ == "__main__":
             ppd=ppd, **small_grating_params, intensity_bars=(0.0, 1.0), target_indices=(3, 6)
         ),
         "Grating on uniform background": grating_uniform(
+            visual_size=(32, 32),
             ppd=ppd,
             **small_grating_params,
             intensity_bars=(0.0, 1.0),
-            image_size=(32, 32),
+            grating_size=(10, 10),
             target_indices=(3, 6),
         ),
         "Grating on grating": grating_grating(
