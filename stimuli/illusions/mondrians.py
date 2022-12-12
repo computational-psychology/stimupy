@@ -8,17 +8,12 @@ __all__ = [
 ]
 
 def corrugated_mondrians(
-    ppd=10,
-    widths=2.0,
-    heights=2.0,
-    depths=(0.0, 1.0, 0.0, -1.0),
-    target_idx=((1, 1), (3, 1)),
-    intensities=(
-        (0.4, 0.75, 0.4, 0.75),
-        (0.75, 0.4, 0.75, 1.0),
-        (0.4, 0.75, 0.4, 0.75),
-        (0.0, 0.4, 0.0, 0.4),
-    ),
+    ppd=None,
+    widths=None,
+    heights=None,
+    depths=None,
+    target_indices=None,
+    intensities=None,
     intensity_background=0.5,
 ):
     """
@@ -34,8 +29,8 @@ def corrugated_mondrians(
         height of rectangles; if single float, all rectangles have the same height
     depths : float or tuple of floats
         depth of rectangles; as many depths as there are rows
-    target_idx : nested tuples
-        index of targets; as many tuples as there are targets each with (x, y) indices
+    target_indices : nested tuples
+        indices of targets; as many tuples as there are targets each with (x, y) indices
     intensities : nested tuples
         intensities of indiidual rectangles; as many tuples as there are rows and as many numbers in each
         tuple as there are columns
@@ -91,7 +86,7 @@ def corrugated_mondrians(
             
             img[yst:yen, xst:xen] += stim["img"]
 
-            if (r, c) in target_idx:
+            if (r, c) in target_indices:
                 mask[yst:yen, xst:xen] += stim["mask"] * mval
                 mval += 1
 
@@ -119,13 +114,26 @@ def corrugated_mondrians(
         "depths": depths,
         "intensity_background": intensity_background,
         "intensities": intensities,
-        "target_idx": target_idx,
+        "target_indices": target_indices,
         }
     return stim
 
 
 if __name__ == "__main__":
     from stimuli.utils import plot_stim
+    
+    params = {
+        "ppd": 10,
+        "widths": 2.0,
+        "heights": 2.0,
+        "depths": (0.0, 1.0, 0.0, -1.0),
+        "target_indices": ((1, 1), (3, 1)),
+        "intensities": (
+            (0.4, 0.75, 0.4, 0.75),
+            (0.75, 0.4, 0.75, 1.0),
+            (0.4, 0.75, 0.4, 0.75),
+            (0.0, 0.4, 0.0, 0.4),)
+        }
 
-    stim = corrugated_mondrians()
+    stim = corrugated_mondrians(**params)
     plot_stim(stim, stim_name="Corrugated mondrians", mask=True, save=None)

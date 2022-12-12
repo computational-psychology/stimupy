@@ -1482,7 +1482,7 @@ def corrugated_mondrian(ppd=PPD, pad=True):
         "widths": 2.0,
         "heights": 2.0,
         "depths": (0.0, -1.0, 0.0, 1.0, 0.0),
-        "target_idx": ((1, 2), (3, 2)),
+        "target_indices": ((1, 2), (3, 2)),
         "intensities": values,
         "intensity_background": 0.5,
     }
