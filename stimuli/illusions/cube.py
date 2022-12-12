@@ -1,21 +1,101 @@
 import numpy as np
 from stimuli.utils import degrees_to_pixels
+# from stimuli.illusions.checkerboards import checkerboard
+
 
 __all__ = [
+    "cube_varying_cells",
     "cube_illusion",
 ]
 
 
+def cube_varying_cells(
+    ppd=None,
+    cell_heights=None,
+    cell_widths=None,
+    cell_spacing=None,
+    targets=None,
+    intensity_background=0.0,
+    intensity_grid=1.0,
+    intensity_target=0.5,
+):
+    if isinstance(cell_heights, (float, int)):
+        cell_heights = (cell_heights,)
+    if isinstance(cell_widths, (float, int)):
+        cell_widths = (cell_widths,)
+    if isinstance(cell_spacing, (float, int)):
+        cell_spacing = (cell_spacing,)
+    if targets is None:
+        targets = ()
+    if isinstance(targets, (float, int)):
+        targets = (targets,)
+    
+    n_cells = np.maximum(len(cell_heights), len(cell_widths))
+    n_cells = np.maximum(n_cells, len(cell_spacing)+1)
+    
+    if len(cell_heights) == 1:
+        cell_heights = cell_heights * n_cells
+    if len(cell_widths) == 1:
+        cell_widths = cell_widths * n_cells
+    if len(cell_spacing) == 1:
+        cell_spacing = cell_spacing * n_cells
+    cell_spacing = list(cell_spacing)
+    cell_spacing[n_cells-1] = 0
+
+    cheights = degrees_to_pixels(cell_heights, ppd)
+    cwidths = degrees_to_pixels(cell_widths, ppd)
+    cspaces = degrees_to_pixels(cell_spacing, ppd)
+    height = sum(cwidths) + sum(cspaces)
+    width = height
+
+    # Initiate image
+    img = np.ones([height, width]) * intensity_background
+    mask = np.zeros([height, width])
+    
+    # Add cells: top and bottom
+    xs = 0
+    for i in range(n_cells):
+        if i in targets:
+            fill_img = intensity_target
+            fill_mask = 1
+        else:
+            fill_img = intensity_grid
+            fill_mask = 0
+        img[0:cheights[i], xs:xs+cwidths[i]] = fill_img
+        img[height-cheights[i]::, xs:xs+cwidths[i]] = fill_img
+        mask[0:cheights[i], xs:xs+cwidths[i]] = fill_mask
+        mask[height-cheights[i]::, xs:xs+cwidths[i]] = fill_mask
+        xs += cwidths[i] + cspaces[i]
+
+    # Add cells: left and right
+    xs = 0
+    for i in range(n_cells):
+        if i in targets:
+            fill_img = intensity_target
+            fill_mask = 1
+        else:
+            fill_img = intensity_grid
+            fill_mask = 0
+        img[xs:xs+cwidths[i], 0:cheights[i]] = fill_img
+        img[xs:xs+cwidths[i], width-cheights[i]::] = fill_img
+        mask[xs:xs+cwidths[i], 0:cheights[i]] = fill_mask
+        mask[xs:xs+cwidths[i], width-cheights[i]::] = fill_mask
+        xs += cwidths[i] + cspaces[i]
+
+    stim = {
+        "img": img,
+        "mask": mask.astype(int),
+        }
+    return stim
+
+
 def cube_illusion(
-    ppd=10,
-    n_cells=5,
-    target_length=2,
-    cell_long=1.5,
-    cell_short=1.0,
-    corner_cell_width=1.8,
-    corner_cell_height=1.8,
-    cell_spacing=0.5,
-    occlusion_overlap=(0.7, 0.7, 0.7, 0.7),
+    visual_size=None,
+    ppd=None,
+    n_cells=None,
+    targets=None,
+    cell_thickness=None,
+    cell_spacing=None,
     intensity_background=0.0,
     intensity_grid=1.0,
     intensity_target=0.5,
@@ -26,25 +106,16 @@ def cube_illusion(
 
     Parameters
     ----------
+    visual_size :
+        blub
     ppd : int
         pixels per degree (visual angle)
     n_cells : int
         the number of square cells (not counting background) per dimension
-    target_length : int
-        length in # cells per edge of the square
-    cell_long : float
-        long side of a cell in degrees visual angle
-    cell_short : float
-        short side of a cell in degrees visual angle
-    corner_cell_width : float
-        width of the corner cells in degrees visual angle
-    corner_cell_height: float
-        height of the corner cells in degrees visual angle
-    cell_spacing : float
+    cell_thickness : 
+        blub
+    cell_spacing : float or (float, float)
         distance between two cells in degrees visual angle
-    occlusion_overlap : (float, float, float, float)
-        4-valued tuple specifying how much the big central square overlaps the cells on
-        (top, bottom, left, right) in degrees visual angle
     intensity_background : float
         intensity value for background
     intensity_grid : float
@@ -56,121 +127,92 @@ def cube_illusion(
     -------
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
     """
-    cell_long_px, cell_short_px = degrees_to_pixels(cell_long, ppd), degrees_to_pixels(
-        cell_short, ppd
-    )
-    corner_cell_width_px, corner_cell_height_px = degrees_to_pixels(
-        corner_cell_width, ppd
-    ), degrees_to_pixels(corner_cell_height, ppd)
-    cell_spacing_px = degrees_to_pixels(cell_spacing, ppd)
-    # array representing grid cells
-    arr = np.ones((n_cells, n_cells)) * intensity_grid
+    if isinstance(visual_size, (float, int)):
+        visual_size = (visual_size, visual_size)
+    if isinstance(cell_spacing, (float, int)):
+        cell_spacing = (cell_spacing, cell_spacing)
+    if isinstance(n_cells, (float, int)):
+        n_cells = (n_cells, n_cells)
+    if targets is None:
+        targets = ()
 
-    # add target pattern (floor and ceil leads to asymmetry in case of odd target size)
-    target_offset = (n_cells - target_length) / 2
-    offs_c = int(np.ceil(target_offset))
-    offs_f = int(np.floor(target_offset))
-    arr[0, offs_c : offs_c + target_length] = intensity_target
-    arr[-1, offs_f : offs_f + target_length] = intensity_target
-    arr[offs_f : offs_f + target_length, 0] = intensity_target
-    arr[offs_c : offs_c + target_length, -1] = intensity_target
+    height, width = degrees_to_pixels(visual_size, ppd)
+    cell_space = degrees_to_pixels(cell_spacing, ppd)
+    cell_thick = degrees_to_pixels(cell_thickness, ppd)
 
-    # final image array
-    width_px = (
-        (n_cells - 2) * cell_long_px + 2 * corner_cell_width_px + (n_cells - 1) * cell_spacing_px
-    )
-    height_px = (
-        (n_cells - 2) * cell_long_px + 2 * corner_cell_height_px + (n_cells - 1) * cell_spacing_px
-    )
+    # Initiate image
+    img = np.ones([height, width]) * intensity_background
+    mask = np.zeros([height, width])
 
-    img = np.ones((height_px, width_px)) * intensity_background
-    mask = np.zeros((height_px, width_px))
-    mask_id = 0
+    # Calculate cell widths and heights
+    cell_height = int((height - cell_space[0]*(n_cells[0]-1)) / n_cells[0])
+    cell_width = int((width - cell_space[1]*(n_cells[1]-1)) / n_cells[1])
+    
+    if (cell_thick > cell_height) or (cell_thick > cell_width):
+        raise ValueError("cell_thickness is too large")
 
-    for i, val in np.ndenumerate(arr):
-        target_cell = val == intensity_target
-
-        if target_cell:
-            mask_id = 1
-
-        if i[0] in range(1, n_cells - 1) and i[1] in range(1, n_cells - 1):
-            continue  # skip centre cells for efficiency
-        elif i == (0, 0):  # top left corner cell
-            img[:corner_cell_height_px, :corner_cell_width_px] = val
-            if target_cell:
-                mask[:corner_cell_height_px, :corner_cell_width_px] = mask_id
-
-        elif i == (0, n_cells - 1):  # top right corner cell
-            img[:corner_cell_height_px, -corner_cell_width_px:] = val
-            if target_cell:
-                mask[:corner_cell_height_px, -corner_cell_width_px:] = mask_id
-
-        elif i == (n_cells - 1, 0):  # bottom left corner cell
-            img[-corner_cell_height_px:, :corner_cell_width_px] = val
-            if target_cell:
-                mask[-corner_cell_height_px:, :corner_cell_width_px] = mask_id
-
-        elif i == (n_cells - 1, n_cells - 1):  # bottom right corner cell
-            img[-corner_cell_height_px:, -corner_cell_width_px:] = val
-            if target_cell:
-                mask[-corner_cell_height_px:, -corner_cell_width_px:] = mask_id
-
+    # Calculate cell placements:
+    xs = np.arange(0, width-1, cell_width+cell_space[1])
+    rxs = xs[::-1]
+    ys = np.arange(0, height-1, cell_height+cell_space[0])
+    rys = ys[::-1]
+    
+    # Add cells: top and bottom
+    for i in range(n_cells[1]):
+        if i in targets:
+            fill_img = intensity_target
+            fill_mask = 1
         else:
-            if i[0] == 0 or i[0] == n_cells - 1:  # top/bottom side
-                x = (
-                    corner_cell_width_px
-                    + cell_spacing_px
-                    + (i[1] - 1) * (cell_long_px + cell_spacing_px)
-                )
-                if i[0] == 0:  # top side
-                    img[:cell_short_px, x : x + cell_long_px] = val
-                    if target_cell:
-                        mask[:cell_short_px, x : x + cell_long_px] = mask_id
-                else:  # bottom side
-                    img[-cell_short_px:, x : x + cell_long_px] = val
-                    if target_cell:
-                        mask[-cell_short_px:, x : x + cell_long_px] = mask_id
+            fill_img = intensity_grid
+            fill_mask = 0
+        img[0:cell_thick, xs[i]:xs[i]+cell_width] = fill_img
+        img[height-cell_thick::, rxs[i]:rxs[i]+cell_width] = fill_img
+        mask[0:cell_thick, xs[i]:xs[i]+cell_width] = fill_mask
+        mask[height-cell_thick::, rxs[i]:rxs[i]+cell_width] = fill_mask
 
-            else:  # left/right side
-                y = (
-                    corner_cell_width_px
-                    + cell_spacing_px
-                    + (i[0] - 1) * (cell_long_px + cell_spacing_px)
-                )
+    # Add cells: left and right
+    for i in range(n_cells[0]):
+        if i in targets:
+            fill_img = intensity_target
+            fill_mask = 1
+        else:
+            fill_img = intensity_grid
+            fill_mask = 0
+        img[rys[i]:rys[i]+cell_height, 0:cell_thick] = fill_img
+        img[ys[i]:ys[i]+cell_height, height-cell_thick::] = fill_img
+        mask[rys[i]:rys[i]+cell_height, 0:cell_thick] = fill_mask
+        mask[ys[i]:ys[i]+cell_height, height-cell_thick::] = fill_mask
 
-                if i[1] == 0:  # left side
-                    img[y : y + cell_long_px, :cell_short_px] = val
-                    if target_cell:
-                        mask[y : y + cell_long_px, :cell_short_px] = mask_id
+    stim = {
+        "img": img,
+        "mask": mask.astype(int),
+        }
+    return stim
 
-                else:  # right side
-                    img[y : y + cell_long_px, -cell_short_px:] = val
-                    if target_cell:
-                        mask[y : y + cell_long_px, -cell_short_px:] = mask_id
-
-    # add occlusion
-    occlusion_overlap_px = degrees_to_pixels(occlusion_overlap, ppd)
-    (
-        occlusion_top,
-        occlusion_bottom,
-        occlusion_left,
-        occlusion_right,
-    ) = occlusion_overlap_px
-
-    occ_x_left = corner_cell_width_px - occlusion_left
-    occ_x_right = width_px - corner_cell_width_px + occlusion_right
-
-    occ_y_top = corner_cell_height_px - occlusion_top
-    occ_y_bottom = height_px - corner_cell_height_px + occlusion_bottom
-
-    img[occ_y_top:occ_y_bottom, occ_x_left:occ_x_right] = intensity_background
-    mask[occ_y_top:occ_y_bottom, occ_x_left:occ_x_right] = False
-
-    return {"img": img, "mask": mask}
 
 
 if __name__ == "__main__":
-    from stimuli.utils import plot_stim
+    from stimuli.utils import plot_stimuli
+    
+    p1 = {
+        "ppd": 10,
+        "cell_heights": (1, 2, 1),
+        "cell_widths": (1.5, 2, 1.5),
+        "cell_spacing": 0.5,
+        "targets": 1,
+        }
+    
+    p2 = {
+        "visual_size": 10,
+        "ppd": 10,
+        "n_cells": 5,
+        "targets": (1, 2),
+        "cell_thickness": 1,
+        "cell_spacing": 0.5,
+        }
 
-    stim = cube_illusion()
-    plot_stim(stim, stim_name="Cube illusion", mask=True, save=None)
+    stims = {
+        "Cube - varying cells": cube_varying_cells(**p1),
+        "Cube": cube_illusion(**p2),
+        }
+    plot_stimuli(stims, mask=True, save=None)

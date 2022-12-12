@@ -286,23 +286,19 @@ def cube(shape=SHAPES["cube"], visual_size=VSIZES["cube"], ppd=PPD):
 
     params = {
         "ppd": ppd,
-        "n_cells": 4,
-        "target_length": 2,
-        "cell_long": 1.5 * visual_resize,
-        "cell_short": 1.1 * visual_resize,
-        "corner_cell_width": 1.8 * visual_resize,
-        "corner_cell_height": 1.8 * visual_resize,
+        "cell_heights": 1.1 * visual_resize,
+        "cell_widths": np.array([1.8, 1.5, 1.5, 1.8]) * visual_resize,
+        "targets": (1, 2),
         "cell_spacing": 0.5 * visual_resize,
-        "occlusion_overlap": np.array((0.7,) * 4) * visual_resize,
     }
 
-    stim1 = illusions.cube.cube_illusion(
+    stim1 = illusions.cube.cube_varying_cells(
         **params,
         intensity_background=v1,
         intensity_grid=v3,
         intensity_target=v2,
     )
-    stim2 = illusions.cube.cube_illusion(
+    stim2 = illusions.cube.cube_varying_cells(
         **params,
         intensity_background=v3,
         intensity_grid=v1,
