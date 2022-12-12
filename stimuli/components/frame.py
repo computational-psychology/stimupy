@@ -41,9 +41,6 @@ def mask_frames(
         and additional keys containing stimulus parameters
     """
 
-    # Try to resolve resolution
-    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
-
     # Set up coordinates
     base = image_base(shape=shape, ppd=ppd, visual_size=visual_size)
     distances = base["cityblock"]
@@ -56,10 +53,10 @@ def mask_frames(
     return {
         "mask": mask,
         "edges": edges,
-        "shape": shape,
-        "visual_size": visual_size,
-        "ppd": ppd,
-        "orientation": "cityblock",
+        "visual_size": base["visual_size"],
+        "ppd": base["ppd"],
+        "shape": base["shape"],
+        "rotation": base["rotation"],
     }
 
 
