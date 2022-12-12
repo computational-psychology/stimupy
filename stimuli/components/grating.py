@@ -98,20 +98,13 @@ def mask_bars(
     visual_size = resolution.validate_visual_size(visual_size)
     ppd = resolution.validate_ppd(ppd)
 
-    # Determine bar edges
-    bar_edges = [
-        *itertools.accumulate(itertools.repeat(params["phase_width"], int(params["n_phases"])))
-    ]
-    if params["period"] == "ignore":
-        bar_edges += [visual_angle]
-
     # Mask bars
     base = image_base(shape=shape, ppd=ppd, visual_size=visual_size)
     distances = base[orientation]
     distances -= distances.min()
 
     mask = np.zeros(shape, dtype=int)
-    for idx, edge in zip(reversed(range(len(bar_edges))), reversed(bar_edges)):
+    for idx, edge in zip(reversed(range(len(params["edges"]))), reversed(params["edges"])):
         mask[distances <= edge] = int(idx + 1)
 
     return {

@@ -73,19 +73,12 @@ def mask_frames(
     visual_size = resolution.validate_visual_size(params["visual_angle"] * 2)
     ppd = resolution.validate_ppd(params["ppd"])
 
-    # Determine frame edges
-    frame_edges = [
-        *itertools.accumulate(itertools.repeat(params["phase_width"], int(params["n_phases"])))
-    ]
-    if params["period"] == "ignore":
-        frame_edges += [params["visual_angle"]]
-
     # Mask frames
     base = image_base(shape=shape, ppd=ppd, visual_size=visual_size)
     distances = base["cityblock"]
 
     mask = np.zeros(shape, dtype=int)
-    for idx, edge in zip(reversed(range(len(frame_edges))), reversed(frame_edges)):
+    for idx, edge in zip(reversed(range(len(params["edges"]))), reversed(params["edges"])):
         mask[distances <= edge] = int(idx + 1)
 
     return {

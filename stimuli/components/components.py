@@ -175,6 +175,8 @@ def resolve_grating_params(
 
     # Accumulate edges of phases
     edges = [*itertools.accumulate(itertools.repeat(phase_width, int(n_phases)))]
+    if "period" == "ignore":
+        edges += [visual_angle]
 
     return {
         "length": length,
