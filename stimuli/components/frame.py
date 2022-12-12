@@ -2,7 +2,7 @@ import itertools
 
 import numpy as np
 
-from stimuli.components.components import resolve_grating_params
+from stimuli.components.components import image_base, resolve_grating_params
 from stimuli.utils import resolution
 
 __all__ = [
@@ -73,12 +73,6 @@ def mask_frames(
     visual_size = resolution.validate_visual_size(params["visual_angle"] * 2)
     ppd = resolution.validate_ppd(params["ppd"])
 
-    # Create image-base:
-    x = np.linspace(-visual_size.width / 2, visual_size.width / 2, shape.width)
-    y = np.linspace(-visual_size.height / 2, visual_size.height / 2, shape.height)
-    xx, yy = np.meshgrid(x, y)
-    mask = np.zeros(shape, dtype=int)
-
     # Determine frame edges
     frame_edges = [
         *itertools.accumulate(itertools.repeat(params["phase_width"], int(params["n_phases"])))
@@ -87,7 +81,10 @@ def mask_frames(
         frame_edges += [params["visual_angle"]]
 
     # Mask frames
-    distances = np.maximum(np.abs(xx), np.abs(yy))
+    base = image_base(shape=shape, ppd=ppd, visual_size=visual_size)
+    distances = base["cityblock"]
+
+    mask = np.zeros(shape, dtype=int)
     for idx, edge in zip(reversed(range(len(frame_edges))), reversed(frame_edges)):
         mask[distances <= edge] = int(idx + 1)
 

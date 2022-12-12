@@ -2,7 +2,7 @@ import itertools
 
 import numpy as np
 
-from stimuli.components.components import resolve_grating_params
+from stimuli.components.components import image_base, resolve_grating_params
 from stimuli.utils import resolution
 
 __all__ = [
@@ -98,12 +98,6 @@ def mask_bars(
     visual_size = resolution.validate_visual_size(visual_size)
     ppd = resolution.validate_ppd(ppd)
 
-    # Create image-base:
-    x = np.linspace(0, visual_size.width, shape.width)
-    y = np.linspace(0, visual_size.height, shape.height)
-    xx, yy = np.meshgrid(x, y)
-    mask = np.zeros(shape, dtype=int)
-
     # Determine bar edges
     bar_edges = [
         *itertools.accumulate(itertools.repeat(params["phase_width"], int(params["n_phases"])))
@@ -112,7 +106,11 @@ def mask_bars(
         bar_edges += [visual_angle]
 
     # Mask bars
-    distances = xx if orientation == "horizontal" else yy
+    base = image_base(shape=shape, ppd=ppd, visual_size=visual_size)
+    distances = base[orientation]
+    distances -= distances.min()
+
+    mask = np.zeros(shape, dtype=int)
     for idx, edge in zip(reversed(range(len(bar_edges))), reversed(bar_edges)):
         mask[distances <= edge] = int(idx + 1)
 
