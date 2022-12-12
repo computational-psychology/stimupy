@@ -159,7 +159,9 @@ def benarys_cross_generalized(
     img = img[0 : int(visual_size[0] * ppd), 0 : int(visual_size[1] * ppd)]
     mask = mask[0 : int(visual_size[0] * ppd), 0 : int(visual_size[1] * ppd)]
 
-    params = {
+    stim = {
+        "img": img,
+        "mask": mask.astype(int),
         "shape": img.shape,
         "visual_size": np.array(img.shape) / ppd,
         "ppd": ppd,
@@ -174,7 +176,7 @@ def benarys_cross_generalized(
         "intensity_target": intensity_target,
     }
 
-    return {"img": img, "mask": mask.astype(int), **params}
+    return stim
 
 
 def benarys_cross_rectangles(
@@ -468,7 +470,9 @@ def todorovic_benary_generalized(
             tx[i] : tx[i] + tpatch.shape[1],
         ] = mpatch
 
-    params = {
+    stim = {
+        "img": img,
+        "mask": mask.astype(int),
         "shape": img.shape,
         "visual_size": np.array(img.shape) / ppd,
         "ppd": ppd,
@@ -483,7 +487,7 @@ def todorovic_benary_generalized(
         "intensity_target": intensity_target,
     }
 
-    return {"img": img, "mask": mask, **params}
+    return stim
 
 
 def todorovic_benary_rectangles(
