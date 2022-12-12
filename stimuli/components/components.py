@@ -6,7 +6,7 @@ import numpy as np
 from stimuli.utils import degrees_to_pixels, pad_to_shape, resolution
 
 
-def image_base(visual_size=None, shape=None, ppd=None):
+def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0):
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
 
     # Image axes
@@ -23,9 +23,14 @@ def image_base(visual_size=None, shape=None, ppd=None):
     radial = np.sqrt(xx**2 + yy**2)
 
     # Angular distance
-    angular = -np.arctan2(xx, yy)
+    angular = np.arctan2(xx, yy)
+    angular -= np.deg2rad(rotation + 90)
+    angular %= 2 * np.pi
 
     return {
+        "visual_size": visual_size,
+        "ppd": ppd,
+        "rotation": rotation,
         "x": x,
         "y": y,
         "horizontal": xx,
