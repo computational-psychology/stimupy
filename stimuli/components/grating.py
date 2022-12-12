@@ -11,6 +11,58 @@ __all__ = [
 
 
 def mask_bars(
+    edges,
+    shape=None,
+    visual_size=None,
+    ppd=None,
+    orientation="horizontal",
+):
+    """Generate mask with integer indices for sequential bars
+
+    Parameters
+    ----------
+    edges : Sequence[Number, ...]
+        upper-limit, in degrees visual angle, of each bar
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    orientation : "vertical" or "horizontal" (default)
+        orientation of the grating
+
+    Returns
+    ----------
+    dict[str, Any]
+        mask with integer index for each bar (key: "mask"),
+        and additional keys containing stimulus parameters
+    """
+
+    # Try to resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
+
+    # Set up coordinates
+    base = image_base(shape=shape, ppd=ppd, visual_size=visual_size)
+    distances = base[orientation]
+    distances -= distances.min()
+
+    # Mask elements
+    mask = np.zeros(shape, dtype=int)
+    for idx, edge in zip(reversed(range(len(edges))), reversed(edges)):
+        mask[distances <= edge] = int(idx + 1)
+
+    return {
+        "mask": mask,
+        "edges": edges,
+        "shape": shape,
+        "visual_size": visual_size,
+        "ppd": ppd,
+        "orientation": orientation,
+    }
+
+
+def square_wave(
     shape=None,
     visual_size=None,
     ppd=None,
@@ -19,8 +71,9 @@ def mask_bars(
     bar_width=None,
     period="ignore",
     orientation="horizontal",
+    intensity_bars=(0.0, 1.0),
 ):
-    """Generate mask for square-wave grating, i.e., set of bars
+    """Draw square-wave grating (set of bars) of given spatial frequency
 
     Parameters
     ----------
@@ -41,11 +94,16 @@ def mask_bars(
         half "periods", or no guarantees ("ignore")
     orientation : "vertical" or "horizontal" (default)
         orientation of the grating
+    intensity_bars : Sequence[float, ...]
+        intensity value for each bar, by default [1.0, 0.0].
+        Can specify as many intensities as n_bars;
+        If fewer intensities are passed than n_bars, cycles through intensities
 
     Returns
     ----------
     dict[str, Any]
-        mask with integer index for each bar (key: "mask"),
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "mask"),
         and additional keys containing stimulus parameters
     """
 
@@ -98,83 +156,13 @@ def mask_bars(
     visual_size = resolution.validate_visual_size(visual_size)
     ppd = resolution.validate_ppd(ppd)
 
-    # Mask bars
-    base = image_base(shape=shape, ppd=ppd, visual_size=visual_size)
-    distances = base[orientation]
-    distances -= distances.min()
-
-    mask = np.zeros(shape, dtype=int)
-    for idx, edge in zip(reversed(range(len(params["edges"]))), reversed(params["edges"])):
-        mask[distances <= edge] = int(idx + 1)
-
-    return {
-        "mask": mask,
-        "shape": shape,
-        "visual_size": visual_size,
-        "ppd": ppd,
-        "frequency": params["frequency"],
-        "bar_width": params["phase_width"],
-        "n_bars": params["n_phases"],
-        "period": params["period"],
-        "orientation": orientation,
-    }
-
-
-def square_wave(
-    shape=None,
-    visual_size=None,
-    ppd=None,
-    frequency=None,
-    n_bars=None,
-    bar_width=None,
-    period="ignore",
-    orientation="horizontal",
-    intensity_bars=(0.0, 1.0),
-):
-    """Draw square-wave grating (set of bars) of given spatial frequency
-
-    Parameters
-    ----------
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
-    visual_size : Sequence[Number, Number], Number, or None (default)
-        visual size [height, width] of image, in degrees
-    ppd : Sequence[Number, Number], Number, or None (default)
-        pixels per degree [vertical, horizontal]
-    frequency : Number, or None (default)
-        spatial frequency of grating, in cycles per degree visual angle
-    n_bars : int, or None (default)
-        number of bars in the grating
-    bar_width : Number, or None (default)
-        width of a single bar, in degrees visual angle
-    period : "full", "half", "ignore" (default)
-        whether to ensure the grating only has "full" periods,
-        half "periods", or no guarantees ("ignore")
-    orientation : "vertical" or "horizontal" (default)
-        orientation of the grating
-    intensity_bars : Sequence[float, ...]
-        intensity value for each bar, by default [1.0, 0.0].
-        Can specify as many intensities as n_bars;
-        If fewer intensities are passed than n_bars, cycles through intensities
-
-    Returns
-    ----------
-    dict[str, Any]
-        dict with the stimulus (key: "img"),
-        mask with integer index for each target (key: "mask"),
-        and additional keys containing stimulus parameters
-    """
-
     # Get bars mask
     stim = mask_bars(
+        edges=params["edges"],
         shape=shape,
         visual_size=visual_size,
         ppd=ppd,
-        frequency=frequency,
-        n_bars=n_bars,
-        bar_width=bar_width,
         orientation=orientation,
-        period=period,
     )
     mask = stim["mask"]
 
@@ -184,4 +172,11 @@ def square_wave(
     for bar_idx, intensity in zip(np.unique(mask), ints):
         img = np.where(mask == bar_idx, intensity, img)
 
-    return {"img": img, **stim}
+    return {
+        "img": img,
+        **stim,
+        "frequency": params["frequency"],
+        "bar_width": params["phase_width"],
+        "n_bars": params["n_phases"],
+        "period": params["period"],
+    }
