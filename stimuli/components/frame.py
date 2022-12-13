@@ -182,9 +182,9 @@ def square_wave(
         frequency=frequency,
         period=period,
     )
-    shape = resolution.validate_shape(params["length"] * 2)
-    visual_size = resolution.validate_visual_size(params["visual_angle"] * 2)
-    ppd = resolution.validate_ppd(params["ppd"])
+    shape, visual_size, ppd = resolution.resolve(
+        visual_size=params["visual_angle"], ppd=params["ppd"]
+    )
 
     # Draw
     stim = frames(
