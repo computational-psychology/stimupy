@@ -1,6 +1,6 @@
 import numpy as np
 
-from stimuli.utils import degrees_to_pixels, resolution
+from stimuli.utils import resolution
 
 __all__ = [
     "rectangle",
