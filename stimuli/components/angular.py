@@ -3,7 +3,11 @@ import itertools
 import numpy as np
 
 from stimuli.components.circular import ring
-from stimuli.components.components import image_base, resolve_grating_params
+from stimuli.components.components import (
+    draw_regions,
+    image_base,
+    resolve_grating_params,
+)
 from stimuli.utils import resolution
 
 __all__ = [
@@ -132,6 +136,34 @@ def wedge(
     return stim
 
 
+def mask_segments(
+    angles,
+    rotation=0.0,
+    visual_size=None,
+    ppd=None,
+    shape=None,
+):
+    # Try to resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
+
+    # Convert to segment angles
+    angles = np.array(angles)
+
+    # Accumulate mask
+    mask = np.zeros(shape, dtype=int)
+    for (idx, angle) in enumerate(angles[:-1]):
+        bool_mask = mask_angle(
+            rotation=rotation,
+            angles=[angle, angles[idx + 1]],
+            visual_size=visual_size,
+            shape=shape,
+            ppd=ppd,
+        )
+        mask += bool_mask["mask"] * (idx + 1)
+
+    return mask
+
+
 def angular_segments(
     angles,
     rotation=0.0,
@@ -139,6 +171,7 @@ def angular_segments(
     visual_size=None,
     ppd=None,
     shape=None,
+    intensity_background=0.5,
 ):
     """Generate mask with integer indices for sequential angular segments
 
@@ -166,30 +199,15 @@ def angular_segments(
         and additional keys containing stimulus parameters
     """
 
-    # Try to resolve resolution
-    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
+    # Get mask
+    mask = mask_segments(
+        angles=angles, visual_size=visual_size, ppd=ppd, shape=shape, rotation=rotation
+    )
 
-    # Convert to segment angles
-    angles = np.array(angles)
-
-    # Figure out intensities
-    if intensity_segments is None:
-        intensity_segments = itertools.count(1)
-    ints = itertools.cycle(intensity_segments)
-
-    # Accumulate img, mask
-    img = np.zeros(shape)
-    mask = np.zeros(shape, dtype=int)
-    for (idx, angle), intensity in zip(enumerate(angles[:-1]), ints):
-        bool_mask = mask_angle(
-            rotation=rotation,
-            angles=[angle, angles[idx + 1]],
-            visual_size=visual_size,
-            shape=shape,
-            ppd=ppd,
-        )
-        img += bool_mask["mask"] * intensity
-        mask += bool_mask["mask"] * (idx + 1)
+    # Draw image
+    img = draw_regions(
+        mask, intensities=intensity_segments, intensity_background=intensity_background
+    )
 
     return {
         "img": img,
