@@ -189,13 +189,11 @@ def sbc_with_dots(
     rect_visual_size = resolution.visual_size_from_shape_ppd(shape=rect_shape, ppd=ppd)
 
     # Create the sbc in the background:
-    tposy = (img_visual_size.height - rect_visual_size.height) / 2.0
-    tposx = (img_visual_size.width - rect_visual_size.width) / 2.0
     img = rectangle(
         visual_size=img_visual_size,
         ppd=ppd,
         rectangle_size=rect_visual_size,
-        rectangle_position=(tposy, tposx),
+        rectangle_position=None,
         intensity_background=intensity_background,
         intensity_rectangle=intensity_target,
     )["img"]
@@ -295,13 +293,11 @@ def dotted_sbc(
     rect_visual_size = resolution.visual_size_from_shape_ppd(shape=rect_shape, ppd=ppd)
 
     # Create the sbc and img:
-    tposy = (img_visual_size.height - rect_visual_size.height) / 2.0
-    tposx = (img_visual_size.width - rect_visual_size.width) / 2.0
     sbc = rectangle(
         visual_size=img_visual_size,
         ppd=ppd,
         rectangle_size=rect_visual_size,
-        rectangle_position=(tposy, tposx),
+        rectangle_position=None,
         intensity_background=intensity_background,
         intensity_rectangle=intensity_target,
     )["img"]

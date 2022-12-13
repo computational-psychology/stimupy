@@ -1,6 +1,6 @@
 import numpy as np
 
-from stimuli.utils import degrees_to_pixels
+from stimuli.utils import degrees_to_pixels, resolution
 
 __all__ = [
     "rectangle",
@@ -12,80 +12,82 @@ __all__ = [
 
 
 def rectangle(
-    visual_size=(4.0, 4.0),
-    ppd=10,
-    rectangle_size=(2.0, 2.0),
+    shape=None,
+    visual_size=None,
+    ppd=None,
+    rectangle_size=None,
     rectangle_position=None,
-    intensity_background=0.0,
-    intensity_rectangle=0.5,
+    intensity_rectangle=1.0,
+    intensity_background=0.5,
 ):
-    """
-    Function to create a 2d rectangle
+    """Draw a rectangle
 
     Parameters
     ----------
-    visual_size : float or (float, float)
-        size of the image in degrees visual angle
-    ppd : int
-        pixels per degree (visual angle)
-    rectangle_size : float (float, float)
-        size of the rectangle / square in degrees visual angle
-    rectangle_position : float or (float, float)
-        coordinates of the rectangle / square in degrees visual angle
-    intensity_background : float
-        intensity value for background
-    intensity_rectangle : float
-        intensity value for rectangle
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    rectangle_size : Number, Sequence[Number, Number]
+        size of the rectangle, in degrees visual angle
+    rectangle_position : Number, Sequence[Number, Number], or None (default)
+        position of the rectangle, in degrees visual angle.
+        If None, rectangle will be placed in center of image.
+    intensity_rectangle : float, optional
+        intensity value for rectangle, by default 1.0
+    intensity_background : float, optional
+        intensity value of background, by default 0.5
 
     Returns
     -------
-    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    dict[str, Any]
+        dict with the stimulus (key: "img"), mask (key: "mask")
+        and additional keys containing stimulus parameters
     """
 
-    if isinstance(visual_size, (float, int)):
-        visual_size = (visual_size, visual_size)
-    if isinstance(rectangle_size, (float, int)):
-        rectangle_size = (rectangle_size, rectangle_size)
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
+    rectangle_size = resolution.validate_visual_size(visual_size=rectangle_size)
+    rect_shape = resolution.shape_from_visual_size_ppd(visual_size=rectangle_size, ppd=ppd)
 
-    im_height, im_width = degrees_to_pixels(visual_size, ppd)
-    rect_height, rect_width = degrees_to_pixels(rectangle_size, ppd)
-
+    # Determine position
     if rectangle_position is None:
         # If not position is given, place centrally
-        rect_posy = int(im_height / 2 - np.ceil(rect_height / 2))
-        rect_posx = int(im_width / 2 - np.ceil(rect_width / 2))
-        rectangle_position = (rect_posy / ppd, rect_posx / ppd)
+        rect_posy = (visual_size.height / 2) - (rectangle_size.height / 2)
+        rect_posx = (visual_size.width / 2) - (rectangle_size.width / 2)
+        rectangle_position = (rect_posy, rect_posx)
 
-    if isinstance(rectangle_position, (float, int)):
-        rectangle_position = (rectangle_position, rectangle_position)
-    if (rectangle_position[0] + rectangle_size[0] > visual_size[0]) or (
-        rectangle_position[1] + rectangle_size[1] > visual_size[1]
+    rectangle_position = resolution.validate_visual_size(rectangle_position)
+    if (rectangle_position.height + rectangle_size.height > visual_size.height) or (
+        rectangle_position.width + rectangle_size.width > visual_size.width
     ):
         raise ValueError("rectangle does not fully fit into stimulus")
-    rect_posy, rect_posx = degrees_to_pixels(rectangle_position, ppd)
 
-    # Create image and add rectangle
-    img = np.ones((im_height, im_width)) * intensity_background
-    img[
-        rect_posy : rect_posy + rect_height, rect_posx : rect_posx + rect_width
-    ] = intensity_rectangle
+    rect_pos = resolution.shape_from_visual_size_ppd(visual_size=rectangle_position, ppd=ppd)
 
     # Create mask
-    mask = np.zeros(img.shape)
-    mask[img == intensity_rectangle] = 1
+    mask = np.zeros(shape)
+    mask[
+        rect_pos.height : (rect_pos.height + rect_shape.height),
+        rect_pos.width : (rect_pos.width + rect_shape.width),
+    ] = True
 
-    stim = {
+    # Create image
+    img = np.where(mask, intensity_rectangle, intensity_background)
+
+    return {
         "img": img,
         "mask": mask.astype(int),
+        "shape": shape,
+        "visual_size": visual_size,
         "ppd": ppd,
-        "visual_size": np.array(img.shape) / ppd,
-        "shape": img.shape,
         "rectangle_size": rectangle_size,
         "rectangle_position": rectangle_position,
         "intensity_background": intensity_background,
         "intensity_rectangle": intensity_rectangle,
     }
-    return stim
 
 
 def triangle(visual_size=(2.0, 2.0), ppd=10, intensity_background=0.0, intensity_triangle=0.5):
