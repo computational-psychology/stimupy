@@ -42,16 +42,19 @@ def mask_angle(
         and additional params
     """
 
+    # Set up coordinates
     base = image_base(rotation=rotation, visual_size=visual_size, ppd=ppd, shape=shape)
+    distances = base["angular"]
 
     # Create mask
     inner_angle, outer_angle = np.deg2rad(angles)
-    bool_mask = (base["angular"] > inner_angle) & (base["angular"] <= outer_angle)
+    mask = (distances > inner_angle) & (distances <= outer_angle)
 
     return {
-        "mask": bool_mask,
+        "mask": mask,
         "visual_size": base["visual_size"],
         "ppd": base["ppd"],
+        "shape": base["shape"],
         "rotation": base["rotation"],
     }
 
@@ -132,7 +135,7 @@ def wedge(
 def angular_segments(
     angles,
     rotation=0.0,
-    intensities=None,
+    intensity_segments=None,
     visual_size=None,
     ppd=None,
     shape=None,
@@ -170,9 +173,9 @@ def angular_segments(
     angles = np.array(angles)
 
     # Figure out intensities
-    if intensities is None:
-        intensities = itertools.count(1)
-    ints = itertools.cycle(intensities)
+    if intensity_segments is None:
+        intensity_segments = itertools.count(1)
+    ints = itertools.cycle(intensity_segments)
 
     # Accumulate img, mask
     img = np.zeros(shape)
@@ -263,7 +266,7 @@ def grating(
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,
-        intensities=intensities,
+        intensity_segments=intensities,
     )
 
     # Assemble output
