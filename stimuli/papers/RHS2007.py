@@ -1075,7 +1075,7 @@ def todorovic_in_large(ppd=PPD, pad=True):
     params = {
         "visual_size": (13.0, 15.5),
         "ppd": ppd,
-        "target_size": 5.3,
+        "target_size": 5.3125,
         "covers_size": 3.2,
         "covers_offset": 2.4,
         "intensity_target": v2,
