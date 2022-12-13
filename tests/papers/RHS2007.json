@@ -112,11 +112,11 @@
         "mask": "763e018b2d95aa97394c4d19214ac9f6"
     },
     "bullseye_thin": {
-        "img": "4e14a7c79d4c8aa8bec6aa6455745ccc",
-        "mask": "f119d45b0b852e25c6b23a50d91b83b6"
+        "img": "599c481aa866113ad0512b593ceae8d9",
+        "mask": "e29258d4c0d70e818978a766d6e0d008"
     },
     "bullseye_thick": {
-        "img": "f699b7d47348cee2eaa0fd8c0a62953b",
-        "mask": "4b9a7821f32c39c52d43bd2ea996b8ae"
+        "img": "c74d91f7476887b2ab3d7ebd35f4dd52",
+        "mask": "0f6dbe6cf9e1fd42ad43217c8fa0a8e3"
     }
 }
