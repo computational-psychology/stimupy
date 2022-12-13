@@ -210,7 +210,7 @@ def grating(
     n_segments=None,
     segment_width=None,
     rotation=0.0,
-    intensities=[1.0, 0.0],
+    intensities_segments=[1.0, 0.0],
 ):
     """Draw an angular grating, i.e., set of segments
 
@@ -231,7 +231,7 @@ def grating(
     rotation : float, optional
         angle of rotation (in degrees) grating segments,
         counterclockwise away from 3 o'clock, by default 0.0
-    intensities : Sequence[Number, ...]
+    intensities_segments : Sequence[Number, ...]
         intensity value for each segment, from inside to out, by default [1.0, 0.0]
         If fewer intensities are passed than number of radii, cycles through intensities
 
@@ -267,7 +267,7 @@ def grating(
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,
-        intensity_segments=intensities,
+        intensity_segments=intensities_segments,
     )
 
     # Assemble output
@@ -286,7 +286,7 @@ def pinwheel(
     segment_width=None,
     rotation=0.0,
     inner_radius=0.0,
-    intensities=[1.0, 0.0],
+    intensities_segments=[1.0, 0.0],
     intensity_background=0.5,
     visual_size=None,
     ppd=None,
@@ -309,7 +309,7 @@ def pinwheel(
         counterclockwise from 3 o'clock, by default 0.0
     inner_radius : float, optional
         inner radius (in degrees visual angle), to turn disc into a ring, by default 0.0
-    intensities : Sequence[Number, ...]
+    intensities_segments : Sequence[Number, ...]
         intensity value for each segment, from inside to out, by default [1.0, 0.0]
         If fewer intensities are passed than number of radii, cycles through intensities
     intensity_background : float (optional)
@@ -348,7 +348,7 @@ def pinwheel(
         n_segments=n_segments,
         segment_width=segment_width,
         rotation=rotation,
-        intensities=intensities,
+        intensities_segments=intensities_segments,
         visual_size=visual_size,
         shape=shape,
         ppd=ppd,

@@ -5,7 +5,6 @@ import numpy as np
 from stimuli.components.angular import pinwheel
 from stimuli.components.circular import ring
 
-
 __all__ = [
     "radial_white",
 ]
@@ -74,7 +73,7 @@ def radial_white(
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "mask"),
         and additional keys containing stimulus parameters
-    
+
     References
     ----------
     Robinson, A. E., Hammon, P. S., & de Sa, V. R. (2007). Explaining brightness
@@ -89,7 +88,7 @@ def radial_white(
         n_segments=n_segments,
         segment_width=segment_width,
         rotation=rotation,
-        intensities=intensities_segments,
+        intensities_segments=intensities_segments,
         intensity_background=intensity_background,
         visual_size=visual_size,
         ppd=ppd,
