@@ -1,9 +1,8 @@
 import numpy as np
 
-from stimuli.components import rectangle
 from stimuli.components.circular import disc
+from stimuli.components.shapes import rectangle
 from stimuli.utils import pad_by_visual_size, resolution
-
 
 __all__ = [
     "simultaneous_contrast_generalized",
@@ -11,6 +10,7 @@ __all__ = [
     "sbc_with_dots",
     "dotted_sbc",
 ]
+
 
 def simultaneous_contrast_generalized(
     visual_size=None,
@@ -51,7 +51,7 @@ def simultaneous_contrast_generalized(
     Chevreul, M. (1855). The principle of harmony and contrast of colors.
     """
     # Resolve resolution
-    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)    
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
     if len(np.unique(ppd)) > 1:
         raise ValueError("ppd should be equal in x and y direction")
 
@@ -174,7 +174,7 @@ def sbc_with_dots(
         ppd=ppd,
         intensity_background=0.0,
         intensity=intensity_dots,
-        )["img"]
+    )["img"]
     patch = pad_by_visual_size(img=patch, padding=padding, ppd=ppd, pad_value=0.0)
     pixels_per_dot = patch.shape
 
@@ -280,7 +280,7 @@ def dotted_sbc(
         ppd=ppd,
         intensity_background=0.0,
         intensity=intensity_dots,
-        )["img"]
+    )["img"]
     patch = pad_by_visual_size(img=patch, padding=padding, ppd=ppd, pad_value=0.0)
     pixels_per_dot = patch.shape
 
@@ -337,9 +337,13 @@ if __name__ == "__main__":
     from stimuli.utils import plot_stimuli
 
     stims = {
-        "SBC - generalized": simultaneous_contrast_generalized(visual_size=10, ppd=10, target_size=5, target_position=(0, 2)),
+        "SBC - generalized": simultaneous_contrast_generalized(
+            visual_size=10, ppd=10, target_size=5, target_position=(0, 2)
+        ),
         "SBC": simultaneous_contrast(visual_size=10, ppd=10, target_size=5),
-        "SBC with dots": sbc_with_dots(ppd=20, n_dots=5, dot_radius=3, distance=0.5, target_shape=3),
+        "SBC with dots": sbc_with_dots(
+            ppd=20, n_dots=5, dot_radius=3, distance=0.5, target_shape=3
+        ),
         "Dotted SBC": dotted_sbc(ppd=20, n_dots=5, dot_radius=3, distance=0.5, target_shape=3),
     }
     plot_stimuli(stims, mask=True, save=None)

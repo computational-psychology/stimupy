@@ -1,8 +1,7 @@
 import numpy as np
 
-from stimuli.components import cross, rectangle
+from stimuli.components.shapes import cross, rectangle
 from stimuli.utils import degrees_to_pixels, pad_to_visual_size, resolution
-
 
 __all__ = [
     "todorovic_rectangle_generalized",
@@ -10,6 +9,7 @@ __all__ = [
     "todorovic_cross_generalized",
     "todorovic_cross",
 ]
+
 
 def todorovic_rectangle_generalized(
     visual_size=None,
@@ -68,7 +68,7 @@ def todorovic_rectangle_generalized(
     Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
     """
     # Resolve resolution
-    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)    
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
     if len(np.unique(ppd)) > 1:
         raise ValueError("ppd should be equal in x and y direction")
 
@@ -85,7 +85,7 @@ def todorovic_rectangle_generalized(
         rectangle_position=target_position,
         intensity_background=intensity_background,
         intensity_rectangle=intensity_target,
-        )
+    )
     img = stim["img"]
     mask = stim["mask"]
 
@@ -169,7 +169,7 @@ def todorovic_rectangle(
     Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
     """
     # Resolve resolution
-    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)    
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
     if len(np.unique(ppd)) > 1:
         raise ValueError("ppd should be equal in x and y direction")
 
@@ -260,7 +260,7 @@ def todorovic_cross_generalized(
     Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
     """
     # Resolve resolution
-    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)    
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
     if len(np.unique(ppd)) > 1:
         raise ValueError("ppd should be equal in x and y direction")
 
@@ -283,10 +283,12 @@ def todorovic_cross_generalized(
         cross_thickness=cross_thickness,
         intensity_background=intensity_background,
         intensity_cross=intensity_target,
-        )
-    
+    )
+
     img, mask = stim["img"], stim["mask"]
-    img = pad_to_visual_size(img, visual_size=visual_size, ppd=np.unique(ppd), pad_value=intensity_background)
+    img = pad_to_visual_size(
+        img, visual_size=visual_size, ppd=np.unique(ppd), pad_value=intensity_background
+    )
     mask = pad_to_visual_size(mask, visual_size=visual_size, ppd=np.unique(ppd), pad_value=0)
 
     cheight, cwidth = degrees_to_pixels(covers_size, np.unique(ppd))
@@ -298,7 +300,7 @@ def todorovic_cross_generalized(
         mask[cy[i] : cy[i] + cheight, cx[i] : cx[i] + cwidth] = 0
         if cy[i] + cheight > shape[0] or cx[i] + cwidth > shape[1]:
             raise ValueError("Covers do not fully fit into stimulus")
-    
+
     stim["img"] = img
     stim["mask"] = mask.astype(int)
     stim["target_size"] = stim["visual_size"]
@@ -363,7 +365,7 @@ def todorovic_cross(
     Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
     """
     # Resolve resolution
-    shape, visual_size, ppd_ = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)    
+    shape, visual_size, ppd_ = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
     if len(np.unique(ppd)) > 1:
         raise ValueError("ppd should be equal in x and y direction")
 
@@ -386,7 +388,7 @@ def todorovic_cross(
         visual_size=visual_size,
         ppd=ppd,
         cross_size=cross_size,
-        cross_arm_ratios=1.,
+        cross_arm_ratios=1.0,
         cross_thickness=ct,
         covers_size=covers_size,
         covers_x=(x1, x2, x2, x1),
@@ -446,9 +448,8 @@ def todorovic_equal(
     """
     if isinstance(cross_size, (float, int)):
         cross_size = (cross_size, cross_size)
-    
-    covers_size = ((cross_size[0] - cross_thickness) / 2,
-                   (cross_size[1] - cross_thickness) / 2)
+
+    covers_size = ((cross_size[0] - cross_thickness) / 2, (cross_size[1] - cross_thickness) / 2)
 
     stim = todorovic_cross(
         visual_size=visual_size,
@@ -460,34 +461,42 @@ def todorovic_equal(
         intensity_background=intensity_background,
         intensity_target=intensity_target,
         intensity_covers=intensity_covers,
-        )
+    )
     return stim
 
 
 if __name__ == "__main__":
     from stimuli.utils import plot_stimuli
-    
+
     params = {
         "visual_size": 10,
         "ppd": 10,
-        }
+    }
 
     stims = {
-        "Todorovic rectangle": todorovic_rectangle(**params, target_size=4, covers_size=2, covers_offset=2),
-        "Todorovic rectangle, flex": todorovic_rectangle_generalized(**params,
-                                                                     target_size=4, 
-                                                                     target_position=3,
-                                                                     covers_size=2,
-                                                                     covers_x=(2, 6),
-                                                                     covers_y=(2, 6)),
-        "Todorovic cross": todorovic_cross(**params, cross_size=4, cross_thickness=2, covers_size=2),
-        "Todorovic cross, flex": todorovic_cross_generalized(**params,
-                                                             cross_size=4,
-                                                             cross_arm_ratios=1.,
-                                                             cross_thickness=2,
-                                                             covers_size=2,
-                                                             covers_x=(2, 6),
-                                                             covers_y=(2, 6)),
+        "Todorovic rectangle": todorovic_rectangle(
+            **params, target_size=4, covers_size=2, covers_offset=2
+        ),
+        "Todorovic rectangle, flex": todorovic_rectangle_generalized(
+            **params,
+            target_size=4,
+            target_position=3,
+            covers_size=2,
+            covers_x=(2, 6),
+            covers_y=(2, 6)
+        ),
+        "Todorovic cross": todorovic_cross(
+            **params, cross_size=4, cross_thickness=2, covers_size=2
+        ),
+        "Todorovic cross, flex": todorovic_cross_generalized(
+            **params,
+            cross_size=4,
+            cross_arm_ratios=1.0,
+            cross_thickness=2,
+            covers_size=2,
+            covers_x=(2, 6),
+            covers_y=(2, 6)
+        ),
         "Todorovic equal": todorovic_equal(**params, cross_size=4, cross_thickness=2),
-        }
+    }
     plot_stimuli(stims, mask=True, save=None)

@@ -1,11 +1,12 @@
 import numpy as np
-from stimuli.components import parallelogram
-from stimuli.utils import degrees_to_pixels
 
+from stimuli.components.shapes import parallelogram
+from stimuli.utils import degrees_to_pixels
 
 __all__ = [
     "corrugated_mondrians",
 ]
+
 
 def corrugated_mondrians(
     ppd=None,
@@ -82,13 +83,13 @@ def corrugated_mondrians(
 
         for c in range(ncols):
             stim = parallelogram(
-                visual_size=(heights[r], width+abs(depths[r])),
+                visual_size=(heights[r], width + abs(depths[r])),
                 ppd=ppd,
                 parallelogram_depth=depths[r],
-                intensity_background=0.,
+                intensity_background=0.0,
                 intensity_parallelogram=intensities[r][c] - intensity_background,
-                )
-            
+            )
+
             img[yst:yen, xst:xen] += stim["img"]
 
             if (r, c) in target_indices:
@@ -107,7 +108,7 @@ def corrugated_mondrians(
 
     if len(np.unique(img[mask != 0])) > 1:
         raise Exception("targets are not equiluminant.")
-    
+
     stim = {
         "img": img,
         "mask": mask.astype(int),
@@ -120,13 +121,13 @@ def corrugated_mondrians(
         "intensity_background": intensity_background,
         "intensities": intensities,
         "target_indices": target_indices,
-        }
+    }
     return stim
 
 
 if __name__ == "__main__":
     from stimuli.utils import plot_stim
-    
+
     params = {
         "ppd": 10,
         "width": 2.0,
@@ -137,8 +138,9 @@ if __name__ == "__main__":
             (0.4, 0.75, 0.4, 0.75),
             (0.75, 0.4, 0.75, 1.0),
             (0.4, 0.75, 0.4, 0.75),
-            (0.0, 0.4, 0.0, 0.4),)
-        }
+            (0.0, 0.4, 0.0, 0.4),
+        ),
+    }
 
     stim = corrugated_mondrians(**params)
     plot_stim(stim, stim_name="Corrugated mondrians", mask=True, save=None)

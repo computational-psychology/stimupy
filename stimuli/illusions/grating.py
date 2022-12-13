@@ -3,8 +3,8 @@ import itertools
 import numpy as np
 from scipy.ndimage import gaussian_filter
 
-from stimuli.components import rectangle
 from stimuli.components.grating import square_wave as square_wave_component
+from stimuli.components.shapes import rectangle
 from stimuli.utils import pad_to_shape, pad_to_visual_size
 
 __all__ = [
