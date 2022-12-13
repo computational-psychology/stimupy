@@ -137,31 +137,59 @@ def wedge(
 
 
 def mask_segments(
-    angles,
+    edges,
     rotation=0.0,
     visual_size=None,
     ppd=None,
     shape=None,
 ):
+    """Generate mask with integer indices for consecutive angular segments
+
+    Parameters
+    ----------
+    edges : Sequence[Number]
+        upper-limit of each consecutive segment, in angular degrees 0-360
+    rotation : float, optional
+        angle of rotation (in degrees) of segments,
+        counterclockwise away from 3 o'clock, by default 0.0
+    intensities : Sequence[Number, ...]
+        intensity value for each segment, from inside to out, by default [1.0, 0.0]
+        If fewer intensities are passed than number of radii, cycles through intensities
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+
+    Returns
+    ----------
+    dict[str, Any]
+        mask with integer index for each angular segment (key: "mask"),
+        and additional keys containing stimulus parameters
+    """
+
     # Try to resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
 
-    # Convert to segment angles
-    angles = np.array(angles)
+    # Set up coordinates
+    base = image_base(shape=shape, ppd=ppd, visual_size=visual_size, rotation=rotation)
+    distances = base["angular"]
 
-    # Accumulate mask
+    # Mask elements
+    edges = np.deg2rad(edges)
     mask = np.zeros(shape, dtype=int)
-    for (idx, angle) in enumerate(angles[:-1]):
-        bool_mask = mask_angle(
-            rotation=rotation,
-            angles=[angle, angles[idx + 1]],
-            visual_size=visual_size,
-            shape=shape,
-            ppd=ppd,
-        )
-        mask += bool_mask["mask"] * (idx + 1)
+    for idx, edge in zip(reversed(range(len(edges))), reversed(edges)):
+        mask[distances <= edge] = int(idx + 1)
 
-    return mask
+    return {
+        "mask": mask,
+        "edges": edges,
+        "shape": shape,
+        "visual_size": visual_size,
+        "ppd": ppd,
+        "orientation": "angular",
+    }
 
 
 def angular_segments(
@@ -200,24 +228,16 @@ def angular_segments(
     """
 
     # Get mask
-    mask = mask_segments(
-        angles=angles, visual_size=visual_size, ppd=ppd, shape=shape, rotation=rotation
+    stim = mask_segments(
+        edges=angles, visual_size=visual_size, ppd=ppd, shape=shape, rotation=rotation
     )
 
     # Draw image
-    img = draw_regions(
-        mask, intensities=intensity_segments, intensity_background=intensity_background
+    stim["img"] = draw_regions(
+        stim["mask"], intensities=intensity_segments, intensity_background=intensity_background
     )
 
-    return {
-        "img": img,
-        "mask": mask,
-        "angles": angles,
-        "shape": shape,
-        "visual_size": visual_size,
-        "ppd": ppd,
-        "orientation": "angular",
-    }
+    return stim
 
 
 def grating(
@@ -275,7 +295,7 @@ def grating(
     )
 
     # Determine angles
-    angles = [0] + params["edges"]
+    angles = params["edges"]
     angles = sorted(np.unique(angles))
 
     # Draw stim
