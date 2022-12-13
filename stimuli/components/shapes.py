@@ -226,10 +226,10 @@ def cross(
 
 
 def parallelogram(
+    parallelogram_depth,
     shape=None,
-    visual_size=(3.0, 4.0),
-    ppd=10,
-    parallelogram_depth=1.0,
+    visual_size=None,
+    ppd=None,
     orientation="horizontal",
     intensity_background=1.0,
     intensity_parallelogram=0.5,
@@ -238,14 +238,14 @@ def parallelogram(
 
     Parameters
     ----------
+    parallelogram_depth : float
+        depth of parallelogram (if negative, skewed to the other side)
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
-    parallelogram_depth : float
-        depth of parallelogram (if negative, skewed to the other side)
     orientation : "vertical" or "horizontal" (default)
         along which dimension the parallelogram is skewed
     intensity_rectangle : float, optional
