@@ -224,77 +224,98 @@ def cross(
 
 
 def parallelogram(
+    shape=None,
     visual_size=(3.0, 4.0),
     ppd=10,
     parallelogram_depth=1.0,
-    intensity_background=0.0,
+    orientation="horizontal",
+    intensity_background=1.0,
     intensity_parallelogram=0.5,
 ):
-    """
-    Function to create a 2d array with a parallelogram
+    """Draw a parallelogram
 
     Parameters
     ----------
-    visual_size : float or (float, float)
-        size of the image in degrees visual angle
-    ppd : int
-        pixels per degree (visual angle)
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
     parallelogram_depth : float
         depth of parallelogram (if negative, skewed to the other side)
-    intensity_background : float
-        intensity value for background
-    intensity_parallelogram : float
-        intensity value for cross
+    orientation : "vertical" or "horizontal" (default)
+        along which dimension the parallelogram is skewed
+    intensity_rectangle : float, optional
+        intensity value for parallelogram, by default 1.0
+    intensity_background : float, optional
+        intensity value of background, by default 0.5
 
     Returns
     -------
-    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    dict[str, Any]
+        dict with the stimulus (key: "img"), mask (key: "mask")
+        and additional keys containing stimulus parameters
     """
-    if isinstance(visual_size, (float, int)):
-        visual_size = (visual_size, visual_size)
 
-    height, width = degrees_to_pixels(visual_size, ppd)
-    depth = degrees_to_pixels(abs(parallelogram_depth), ppd)
+    # Resolve resolutions
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
 
-    # Create triangle to create parallelogram
-    if depth == 0.0:
-        img = np.ones((height, width)) * intensity_parallelogram
-    else:
+    # Parallelogram is drawn as rectnagular field, with two triangles cut out
+    # if orientation == horizontal, triangles are cut out left and right
+    # if orientation == vertical, triangles are cut out top and bottom
+
+    # Rotate
+    if orientation == "horizontal":
+        triangle_size = (visual_size.height, abs(parallelogram_depth))
+    elif orientation == "vertical":
+        triangle_size = (abs(parallelogram_depth), visual_size.width)
+
+    # Create shapes to create parallelogram
+    mask = np.ones(shape)
+    if parallelogram_depth != 0.0:
         triangle1 = triangle(
-            visual_size=(visual_size[0], abs(parallelogram_depth)),
+            visual_size=triangle_size,
             ppd=ppd,
-            intensity_background=0.0,
-            intensity_triangle=-intensity_parallelogram + intensity_background,
+            intensity_background=1,
+            intensity_triangle=0,
         )["img"]
 
         triangle2 = triangle(
-            visual_size=(visual_size[0], abs(parallelogram_depth)),
+            visual_size=triangle_size,
             ppd=ppd,
-            intensity_background=-intensity_parallelogram + intensity_background,
-            intensity_triangle=0.0,
+            intensity_background=0,
+            intensity_triangle=1,
         )["img"]
 
-        # Create image, add rectangle and subtract triangles
-        img = np.ones((height, width)) * intensity_parallelogram
-        img[0:height, 0:depth] += triangle1
-        img[0:height, width - depth : :] += triangle2
+        if orientation == "horizontal":
+            mask[0 : triangle1.shape[0], 0 : triangle1.shape[1]] = np.logical_and(
+                mask[0 : triangle1.shape[0], 0 : triangle1.shape[1]], triangle1
+            )
+            mask[0 : triangle1.shape[0], (mask.shape[1] - triangle1.shape[1]) :] = np.logical_and(
+                mask[0 : triangle1.shape[0], (mask.shape[1] - triangle1.shape[1]) :], triangle2
+            )
+        elif orientation == "vertical":
+            mask[0 : triangle1.shape[0], 0 : triangle1.shape[1]] = np.logical_and(
+                mask[0 : triangle1.shape[0], 0 : triangle1.shape[1]], triangle2
+            )
+            mask[(mask.shape[0] - triangle1.shape[0]) :, 0 : triangle1.shape[1]] = np.logical_and(
+                mask[(mask.shape[0] - triangle1.shape[0]) :, 0 : triangle1.shape[1]], triangle1
+            )
 
-    if parallelogram_depth < 0.0:
-        img = np.fliplr(img)
+        if parallelogram_depth < 0.0:
+            mask = np.fliplr(mask)
 
-    # Create mask
-    mask = np.copy(img)
-    mask[img == intensity_background] = 0
-    mask[img == intensity_parallelogram] = 1
+    # Create image
+    img = np.where(mask, intensity_parallelogram, intensity_background)
 
-    stim = {
+    return {
         "img": img,
         "mask": mask.astype(int),
+        "shape": shape,
+        "visual_size": visual_size,
         "ppd": ppd,
-        "visual_size": np.array(img.shape) / ppd,
-        "shape": img.shape,
         "parallelogram_depth": parallelogram_depth,
         "intensity_background": intensity_background,
         "intensity_parallelogram": intensity_parallelogram,
     }
-    return stim
