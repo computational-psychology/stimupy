@@ -90,46 +90,59 @@ def rectangle(
     }
 
 
-def triangle(visual_size=(2.0, 2.0), ppd=10, intensity_background=0.0, intensity_triangle=0.5):
-    """
-    Function to create a 2d triangle in the lower left diagonal
+def triangle(
+    shape=None,
+    visual_size=None,
+    ppd=None,
+    intensity_triangle=0.5,
+    intensity_background=0.0,
+):
+    """Draw a triangle in the lower left corner
 
     Parameters
     ----------
-    visual_size : float or (float, float)
-        size of the image in degrees visual angle
-    ppd : int
-        pixels per degree (visual angle)
-    intensity_background : float
-        intensity value for background
-    intensity_triangle : float
-        intensity value for triangle
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    intensity_rectangle : float, optional
+        intensity value for triangle, by default 1.0
+    intensity_background : float, optional
+        intensity value of background, by default 0.5
 
     Returns
     -------
-    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    dict[str, Any]
+        dict with the stimulus (key: "img"), mask (key: "mask")
+        and additional keys containing stimulus parameters
     """
-    height, width = degrees_to_pixels(visual_size, ppd)
-    img = np.ones([height, width]) * intensity_background
+
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
+    height, width = shape.height, shape.width
+
+    # Mask triangle
+    mask = np.zeros(shape)
     line1 = np.linspace(0, height - 1, np.maximum(height, width) * 2).astype(int)
     line1 = np.linspace(line1, height - 1, np.maximum(height, width) * 2).astype(int)
     line2 = np.linspace(0, width - 1, np.maximum(height, width) * 2).astype(int)
     line2 = np.repeat(np.expand_dims(line2, -1), np.maximum(height, width) * 2, 1)
-    img[line1, line2] = intensity_triangle
-
-    mask = np.zeros(img.shape)
     mask[line1, line2] = 1
 
-    stim = {
+    # Draw
+    img = np.where(mask, intensity_triangle, intensity_background)
+
+    return {
         "img": img,
         "mask": mask.astype(int),
+        "shape": shape,
+        "visual_size": visual_size,
         "ppd": ppd,
-        "visual_size": np.array(img.shape) / ppd,
-        "shape": img.shape,
         "intensity_background": intensity_background,
         "intensity_triangle": intensity_triangle,
     }
-    return stim
 
 
 def cross(
