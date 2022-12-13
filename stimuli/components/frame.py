@@ -61,10 +61,10 @@ def mask_frames(
 
 
 def frames(
+    frame_widths,
     shape=None,
     visual_size=None,
     ppd=None,
-    frame_widths=None,
     intensity_frames=(0.0, 1.0),
     intensity_background=0.5,
 ):
@@ -72,14 +72,14 @@ def frames(
 
     Parameters
     ----------
+    frame_widths : Sequence[Number]
+        width of each frame, in degrees visual angle
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
-    frame_widths : Sequence[Number]
-        width of each frame, in degrees visual angle
     period : "full", "half", "ignore" (default)
         whether to ensure the grating only has "full" periods,
         half "periods", or no guarantees ("ignore")
