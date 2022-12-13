@@ -146,45 +146,50 @@ def triangle(
 
 
 def cross(
-    visual_size=(20.0, 20.0),
-    ppd=10,
-    cross_arm_ratios=(1.0, 1.0),
+    shape=None,
+    visual_size=None,
+    ppd=None,
     cross_thickness=4.0,
-    intensity_background=0.0,
+    cross_arm_ratios=(1.0, 1.0),
     intensity_cross=1.0,
+    intensity_background=0.5,
 ):
-    """
-    Function to create a 2d array with a cross
+    """Draw a cross
 
     Parameters
     ----------
-    visual_size : float or (float, float)
-        size of the image in degrees visual angle
-    ppd : int
-        pixels per degree (visual angle)
-    cross_arm_ratios : float or (float, float)
-        ratio used to create arms (up-down, left-right)
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
     cross_thickness : float
         thickness of the bars in degrees visual angle
-    intensity_background : float
-        intensity value for background
-    intensity_cross : float
-        intensity value for cross
+    cross_arm_ratios : float or (float, float)
+        ratio used to create arms (up-down, left-right)
+    intensity_cross: float, optional
+        intensity value for cross, by default 1.0
+    intensity_background : float, optional
+        intensity value of background, by default 0.5
 
     Returns
     -------
-    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    dict[str, Any]
+        dict with the stimulus (key: "img"), mask (key: "mask")
+        and additional keys containing stimulus parameters
     """
-    if isinstance(visual_size, (float, int)):
-        visual_size = (visual_size, visual_size)
-    if isinstance(cross_arm_ratios, (float, int)):
-        cross_arm_ratios = (cross_arm_ratios, cross_arm_ratios)
+
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
+    cross_arm_ratios = resolution.validate_visual_size(cross_arm_ratios)
+
     if not isinstance(cross_thickness, (float, int)):
         raise ValueError("cross_thickness should be a single number")
 
     # Calculate cross arm lengths
-    height, width = degrees_to_pixels(visual_size, ppd)
-    thick = np.ceil(cross_thickness * ppd)
+    height, width = shape.height, shape.width
+    thick = resolution.pix_from_visual_angle_ppd_1D(cross_thickness, ppd=ppd.horizontal)
 
     updown = int(height - thick)
     down = int(updown / (cross_arm_ratios[0] + 1))
@@ -197,30 +202,27 @@ def cross(
     if any(item < 1 for item in cross_size):
         raise ValueError("cross_arm_ratios too large or small")
 
-    # Create image and add cross
-    img = np.ones((height, width)) * intensity_background
+    # Mask cross
+    mask = np.zeros(shape).astype(int)
     x_edge_left, x_edge_right = left, -right
     y_edge_top, y_edge_bottom = up, -down
-    img[:, x_edge_left:x_edge_right] = intensity_cross
-    img[y_edge_top:y_edge_bottom, :] = intensity_cross
+    mask[:, x_edge_left:x_edge_right] = 1
+    mask[y_edge_top:y_edge_bottom, :] = 1
 
-    # Create mask
-    mask = np.copy(img)
-    mask[img == intensity_background] = 0
-    mask[img == intensity_cross] = 1
+    # Draw
+    img = np.where(mask, intensity_cross, intensity_background)
 
-    stim = {
+    return {
         "img": img,
         "mask": mask.astype(int),
+        "shape": shape,
+        "visual_size": visual_size,
         "ppd": ppd,
-        "visual_size": np.array(img.shape) / ppd,
-        "shape": img.shape,
         "cross_arm_ratios": cross_arm_ratios,
         "cross_thickness": cross_thickness,
         "intensity_background": intensity_background,
         "intensity_cross": intensity_cross,
     }
-    return stim
 
 
 def parallelogram(
