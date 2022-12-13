@@ -145,7 +145,7 @@ def angular_segments(
     Parameters
     ----------
     angles : Sequence[Number]
-        upper-limit, in angular degrees 0-360, of each segment
+        upper-limit of each segment, in angular degrees 0-360
     rotation : float, optional
         angle of rotation (in degrees) of segments,
         counterclockwise away from 3 o'clock, by default 0.0
@@ -166,8 +166,8 @@ def angular_segments(
         and additional keys containing stimulus parameters
     """
 
-    # Resolve resolution
-    shape, visual_size, ppd = resolution.resolve(shape, visual_size, ppd)
+    # Try to resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
 
     # Convert to segment angles
     angles = np.array(angles)
@@ -195,9 +195,10 @@ def angular_segments(
         "img": img,
         "mask": mask,
         "angles": angles,
+        "shape": shape,
         "visual_size": visual_size,
         "ppd": ppd,
-        "shape": shape,
+        "orientation": "angular",
     }
 
 
