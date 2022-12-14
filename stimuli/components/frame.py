@@ -1,7 +1,6 @@
 import numpy as np
 
-from stimuli.components import mask_elements
-from stimuli.components.components import draw_regions, resolve_grating_params
+from stimuli.components import draw_regions, mask_elements, resolve_grating_params
 from stimuli.utils import resolution
 
 __all__ = [

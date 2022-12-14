@@ -2,7 +2,7 @@ import itertools
 
 import numpy as np
 
-from stimuli.components.components import image_base, resolve_grating_params
+from stimuli.components import image_base, resolve_grating_params
 from stimuli.utils import resolution
 
 __all__ = [

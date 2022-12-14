@@ -3,8 +3,7 @@ import itertools
 
 import numpy as np
 
-from stimuli.components import mask_elements
-from stimuli.components.components import image_base, resolve_grating_params
+from stimuli.components import image_base, mask_elements, resolve_grating_params
 from stimuli.utils import resize_array, resolution
 
 __all__ = [
