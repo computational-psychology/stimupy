@@ -34,6 +34,7 @@ def mask_frames(
         mask with integer index for each frame (key: "mask"),
         and additional keys containing stimulus parameters
     """
+
     return mask_elements(
         orientation="cityblock",
         edges=edges,

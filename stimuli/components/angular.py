@@ -40,8 +40,7 @@ def mask_angle(
         and additional params
     """
 
-    # Create mask
-    stim = mask_elements(
+    return mask_elements(
         edges=np.deg2rad(angles),
         orientation="angular",
         rotation=rotation,
@@ -49,8 +48,6 @@ def mask_angle(
         visual_size=visual_size,
         ppd=ppd,
     )
-
-    return stim
 
 
 def wedge(
