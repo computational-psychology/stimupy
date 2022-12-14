@@ -21,6 +21,9 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin=None
         shape [height, width] of image, in pixels
     rotation : float, optional
         rotation (in degrees) counterclockwise from 3 o'clock, by default 0.0
+    origin : Sequence[Number, Number], Number, or None (default)
+        placement of origin [height,width from topleft] to calculate distances from.
+        If None, set to center of visual_size
 
     Returns
     -------
@@ -28,9 +31,14 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin=None
         dict with keys:
         "visual_size", "ppd" : resolved from input arguments,
         "x", "y" : single axes
-        "xx", "yy": numpy.ndarray of shape,
-        "angular" : numpy.ndarray of shape, with angle (in rad) relative to center point
-                   at each pixel
+        "horiztonal", "vertical" : numpy.ndarray of shape, with distance from origin,
+            in deg. visual angle, at each pixel
+        "radial" : numpyn.ndarray of shape, with radius from origin,
+            in deg. visual angle, at each pixel
+        "angular" : numpy.ndarray of shape, with angle relative to 3 o'clock,
+            in rad, at each pixel
+        "cityblock" : numpy.ndarray of shape, with cityblock distance from origin,
+            in deg. visual angle ,at each pixel
     """
 
     # Resolve resolution
