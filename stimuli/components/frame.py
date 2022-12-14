@@ -42,21 +42,23 @@ def mask_frames(
     """
 
     # Set up coordinates
-    base = image_base(shape=shape, ppd=ppd, visual_size=visual_size)
+    base = image_base(shape=shape, visual_size=visual_size, ppd=ppd)
     distances = base["cityblock"]
 
-    # Mask elements
+    # Mark elements with integer idx-value
     mask = np.zeros(shape, dtype=int)
     for idx, edge in zip(reversed(range(len(edges))), reversed(edges)):
         mask[distances <= edge] = int(idx + 1)
 
+    # Assemble output
     return {
         "mask": mask,
         "edges": edges,
+        "shape": base["shape"],
         "visual_size": base["visual_size"],
         "ppd": base["ppd"],
-        "shape": base["shape"],
         "rotation": base["rotation"],
+        "orientation": "cityblock",
     }
 
 

@@ -128,25 +128,25 @@ def ring_masks(
             f"Largest radius {np.max(radii)} does not fit in visual size {visual_size}"
         )
 
-    # Resolve resolution
-    shape, visual_size, ppd = resolution.resolve(shape, visual_size, ppd)
-
-    # Draw rings with integer idx-value
+    # Set up coordinates
     base = image_base(shape=shape, visual_size=visual_size, ppd=ppd)
     distances = base["radial"]
 
+    # Mark elements with integer idx-value
     mask = np.zeros(shape, dtype=int)
-    for radius, idx in zip(reversed(radii), reversed(range(len(radii)))):
-        mask[distances < radius] = int(idx + 1)
+    for idx, edge in zip(reversed(range(len(radii))), reversed(radii)):
+        mask[distances <= edge] = int(idx + 1)
 
     # Assemble output
-    params = {
-        "shape": shape,
-        "visual_size": visual_size,
-        "ppd": ppd,
+    return {
+        "mask": mask,
         "radii": radii,
+        "shape": base["shape"],
+        "visual_size": base["visual_size"],
+        "ppd": base["ppd"],
+        "rotation": base["rotation"],
+        "orientation": "radial",
     }
-    return {"mask": mask, **params}
 
 
 def disc_and_rings(

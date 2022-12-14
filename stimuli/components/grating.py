@@ -39,25 +39,24 @@ def mask_bars(
         and additional keys containing stimulus parameters
     """
 
-    # Try to resolve resolution
-    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
-
     # Set up coordinates
-    base = image_base(shape=shape, ppd=ppd, visual_size=visual_size)
+    base = image_base(shape=shape, visual_size=visual_size, ppd=ppd)
     distances = base[orientation]
     distances -= distances.min()
 
-    # Mask elements
+    # Mask elements with integer idx-value
     mask = np.zeros(shape, dtype=int)
     for idx, edge in zip(reversed(range(len(edges))), reversed(edges)):
         mask[distances <= edge] = int(idx + 1)
 
+    # Assemble output
     return {
         "mask": mask,
         "edges": edges,
-        "shape": shape,
-        "visual_size": visual_size,
-        "ppd": ppd,
+        "shape": base["shape"],
+        "visual_size": base["visual_size"],
+        "ppd": base["ppd"],
+        "rotation": base["rotation"],
         "orientation": orientation,
     }
 

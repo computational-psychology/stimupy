@@ -166,25 +166,24 @@ def mask_segments(
         and additional keys containing stimulus parameters
     """
 
-    # Try to resolve resolution
-    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
-
     # Set up coordinates
     base = image_base(shape=shape, ppd=ppd, visual_size=visual_size, rotation=rotation)
     distances = base["angular"]
 
-    # Mask elements
-    edges = np.deg2rad(edges)
+    # Mark elements with integer idx-value
     mask = np.zeros(shape, dtype=int)
+    edges = np.deg2rad(edges)
     for idx, edge in zip(reversed(range(len(edges))), reversed(edges)):
         mask[distances <= edge] = int(idx + 1)
 
+    # Assemble output
     return {
         "mask": mask,
         "edges": edges,
-        "shape": shape,
-        "visual_size": visual_size,
-        "ppd": ppd,
+        "shape": base["shape"],
+        "visual_size": base["visual_size"],
+        "ppd": base["ppd"],
+        "rotation": base["rotation"],
         "orientation": "angular",
     }
 
