@@ -1,7 +1,7 @@
 import numpy as np
 
 from stimuli.components import cross, rectangle
-from stimuli.utils import degrees_to_pixels, pad_to_visual_size
+from stimuli.utils import degrees_to_pixels, pad_to_visual_size, resolution
 
 
 __all__ = [
@@ -14,6 +14,7 @@ __all__ = [
 def todorovic_rectangle_generalized(
     visual_size=None,
     ppd=None,
+    shape=None,
     target_size=None,
     target_position=None,
     covers_size=None,
@@ -29,10 +30,12 @@ def todorovic_rectangle_generalized(
 
     Parameters
     ----------
-    visual_size : float or (float, float)
-        size of the stimulus in degrees of visual angle (height, width)
-    ppd : int
-        pixels per degree (visual angle)
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of grating, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of grating, in pixels
     target_size : float or (float, float)
         size of the target in degrees of visual angle (height, width)
     target_position : float or (float, float)
@@ -64,9 +67,11 @@ def todorovic_rectangle_generalized(
         (Supplement), 39, S159.
     Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
     """
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)    
+    if len(np.unique(ppd)) > 1:
+        raise ValueError("ppd should be equal in x and y direction")
 
-    if isinstance(visual_size, (float, int)):
-        visual_size = (visual_size, visual_size)
     if isinstance(covers_size, (float, int)):
         covers_size = (covers_size, covers_size)
     if len(covers_x) != len(covers_y):
@@ -75,7 +80,7 @@ def todorovic_rectangle_generalized(
     # Create image with square
     stim = rectangle(
         visual_size=visual_size,
-        ppd=ppd,
+        ppd=int(np.unique(ppd)),
         rectangle_size=target_size,
         rectangle_position=target_position,
         intensity_background=intensity_background,
@@ -86,8 +91,8 @@ def todorovic_rectangle_generalized(
 
     # Add covers
     cheight, cwidth = degrees_to_pixels(covers_size, ppd)
-    cx = degrees_to_pixels(covers_x, ppd)
-    cy = degrees_to_pixels(covers_y, ppd)
+    cx = degrees_to_pixels(covers_x, np.unique(ppd))
+    cy = degrees_to_pixels(covers_y, np.unique(ppd))
 
     if np.max(cx) < np.min(cx) + cwidth or np.max(cy) < np.min(cy) + cheight:
         raise ValueError("Covers overlap")
@@ -95,11 +100,14 @@ def todorovic_rectangle_generalized(
     for i in range(len(covers_x)):
         img[cy[i] : cy[i] + cheight, cx[i] : cx[i] + cwidth] = intensity_covers
         mask[cy[i] : cy[i] + cheight, cx[i] : cx[i] + cwidth] = 0
-        if cy[i] + cheight > visual_size[0] * ppd or cx[i] + cwidth > visual_size[1] * ppd:
+        if cy[i] + cheight > shape[0] or cx[i] + cwidth > shape[1]:
             raise ValueError("Covers do not fully fit into stimulus")
 
     stim["img"] = img
     stim["mask"] = mask.astype(int)
+    stim["visual_size"] = visual_size
+    stim["ppd"] = ppd
+    stim["shape"] = shape
     stim["target_size"] = stim["rectangle_size"]
     stim["target_position"] = stim["rectangle_position"]
     stim["intensity_target"] = stim["intensity_rectangle"]
@@ -113,6 +121,7 @@ def todorovic_rectangle_generalized(
 def todorovic_rectangle(
     visual_size=None,
     ppd=None,
+    shape=None,
     target_size=None,
     covers_size=None,
     covers_offset=None,
@@ -126,10 +135,12 @@ def todorovic_rectangle(
 
     Parameters
     ----------
-    visual_size : float or (float, float)
-        size of the stimulus in degrees of visual angle (height, width)
-    ppd : int
-        pixels per degree (visual angle)
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of grating, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of grating, in pixels
     target_size : float or (float, float)
         size of the target in degrees of visual angle (height, width)
     covers_size : float or (float, float)
@@ -157,8 +168,11 @@ def todorovic_rectangle(
         (Supplement), 39, S159.
     Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
     """
-    if isinstance(visual_size, (float, int)):
-        visual_size = (visual_size, visual_size)
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)    
+    if len(np.unique(ppd)) > 1:
+        raise ValueError("ppd should be equal in x and y direction")
+
     if isinstance(covers_size, (float, int)):
         covers_size = (covers_size, covers_size)
     if isinstance(covers_offset, (float, int)):
@@ -189,6 +203,7 @@ def todorovic_rectangle(
 def todorovic_cross_generalized(
     visual_size=None,
     ppd=None,
+    shape=None,
     cross_size=None,
     cross_arm_ratios=None,
     cross_thickness=None,
@@ -205,12 +220,14 @@ def todorovic_cross_generalized(
 
     Parameters
     ----------
-    visual_size : (float, float)
-        size of the stimulus in degrees of visual angle (height, width)
-    ppd : int
-        pixels per degree (visual angle)
-    cross_size : 
-        
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of grating, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of grating, in pixels
+    cross_size : float or (float, float)
+        size of target cross in visual angle
     cross_arm_ratios : float or (float, float)
         ratio used to create arms (up-down, left-right)
     cross_thickness : float
@@ -242,9 +259,11 @@ def todorovic_cross_generalized(
         (Supplement), 39, S159.
     Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
     """
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)    
+    if len(np.unique(ppd)) > 1:
+        raise ValueError("ppd should be equal in x and y direction")
 
-    if isinstance(visual_size, (float, int)):
-        visual_size = (visual_size, visual_size)
     if isinstance(cross_size, (float, int)):
         cross_size = (cross_size, cross_size)
     if isinstance(covers_size, (float, int)):
@@ -259,7 +278,7 @@ def todorovic_cross_generalized(
 
     stim = cross(
         visual_size=cross_size,
-        ppd=ppd,
+        ppd=np.unique(ppd),
         cross_arm_ratios=cross_arm_ratios,
         cross_thickness=cross_thickness,
         intensity_background=intensity_background,
@@ -267,17 +286,17 @@ def todorovic_cross_generalized(
         )
     
     img, mask = stim["img"], stim["mask"]
-    img = pad_to_visual_size(img, visual_size=visual_size, ppd=ppd, pad_value=intensity_background)
-    mask = pad_to_visual_size(mask, visual_size=visual_size, ppd=ppd, pad_value=0)
+    img = pad_to_visual_size(img, visual_size=visual_size, ppd=np.unique(ppd), pad_value=intensity_background)
+    mask = pad_to_visual_size(mask, visual_size=visual_size, ppd=np.unique(ppd), pad_value=0)
 
-    cheight, cwidth = degrees_to_pixels(covers_size, ppd)
-    cx = degrees_to_pixels(covers_x, ppd)
-    cy = degrees_to_pixels(covers_y, ppd)
+    cheight, cwidth = degrees_to_pixels(covers_size, np.unique(ppd))
+    cx = degrees_to_pixels(covers_x, np.unique(ppd))
+    cy = degrees_to_pixels(covers_y, np.unique(ppd))
 
     for i in range(len(covers_x)):
         img[cy[i] : cy[i] + cheight, cx[i] : cx[i] + cwidth] = intensity_covers
         mask[cy[i] : cy[i] + cheight, cx[i] : cx[i] + cwidth] = 0
-        if cy[i] + cheight > visual_size[0] * ppd or cx[i] + cwidth > visual_size[1] * ppd:
+        if cy[i] + cheight > shape[0] or cx[i] + cwidth > shape[1]:
             raise ValueError("Covers do not fully fit into stimulus")
     
     stim["img"] = img
@@ -289,13 +308,15 @@ def todorovic_cross_generalized(
     stim["covers_y"] = covers_y
     stim["intensity_covers"] = intensity_covers
     stim["visual_size"] = visual_size
-    stim["shape"] = img.shape
+    stim["ppd"] = ppd
+    stim["shape"] = shape
     return stim
 
 
 def todorovic_cross(
     visual_size=None,
     ppd=None,
+    shape=None,
     cross_size=None,
     cross_thickness=None,
     covers_size=None,
@@ -308,10 +329,12 @@ def todorovic_cross(
 
     Parameters
     ----------
-    visual_size : float or (float, float)
-        size of the stimulus in degrees of visual angle (height, width)
-    ppd : int
-        pixels per degree (visual angle)
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of grating, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of grating, in pixels
     cross_size : float or (float, float)
         size of target cross in visual angle
     cross_thickness : float
@@ -339,10 +362,14 @@ def todorovic_cross(
         (Supplement), 39, S159.
     Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
     """
-    if isinstance(visual_size, (float, int)):
-        visual_size = (visual_size, visual_size)
+    # Resolve resolution
+    shape, visual_size, ppd_ = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)    
+    if len(np.unique(ppd)) > 1:
+        raise ValueError("ppd should be equal in x and y direction")
+
     if isinstance(covers_size, (float, int)):
         covers_size = (covers_size, covers_size)
+    ppd = int(np.unique(ppd_))
 
     # Calculate placement of covers for generalized function:
     cy, cx = np.floor(np.array(visual_size) * ppd / 2) / ppd
@@ -374,6 +401,7 @@ def todorovic_cross(
 def todorovic_equal(
     visual_size=None,
     ppd=None,
+    shape=None,
     cross_size=None,
     cross_thickness=None,
     intensity_background=0.0,
@@ -385,10 +413,12 @@ def todorovic_equal(
 
     Parameters
     ----------
-    visual_size : float or (float, float)
-        size of the stimulus in degrees of visual angle (height, width)
-    ppd : int
-        pixels per degree (visual angle)
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of grating, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of grating, in pixels
     cross_size : float or (float, float)
         size of target cross in visual angle
     cross_thickness : float
@@ -423,6 +453,7 @@ def todorovic_equal(
     stim = todorovic_cross(
         visual_size=visual_size,
         ppd=ppd,
+        shape=shape,
         cross_size=cross_size,
         cross_thickness=cross_thickness,
         covers_size=covers_size,

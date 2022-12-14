@@ -15,6 +15,7 @@ __all__ = [
 def simultaneous_contrast_generalized(
     visual_size=None,
     ppd=None,
+    shape=None,
     target_size=None,
     target_position=None,
     intensity_background=0.0,
@@ -25,10 +26,12 @@ def simultaneous_contrast_generalized(
 
     Parameters
     ----------
-    visual_size : float or (float, float)
-        size of the stimulus in degrees of visual angle (height, width)
-    ppd : int
-        pixels per degree (visual angle)
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of grating, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of grating, in pixels
     target_size : float or (float, float)
         size of the target in degree visual angle (height, width)
     target_position : float or (float, float)
@@ -47,16 +50,23 @@ def simultaneous_contrast_generalized(
     ----------
     Chevreul, M. (1855). The principle of harmony and contrast of colors.
     """
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)    
+    if len(np.unique(ppd)) > 1:
+        raise ValueError("ppd should be equal in x and y direction")
 
     stim = rectangle(
         visual_size=visual_size,
-        ppd=ppd,
+        ppd=int(np.unique(ppd)),
         rectangle_size=target_size,
         rectangle_position=target_position,
         intensity_background=intensity_background,
         intensity_rectangle=intensity_target,
     )
 
+    stim["visual_size"] = visual_size
+    stim["ppd"] = ppd
+    stim["shape"] = shape
     stim["target_size"] = stim["rectangle_size"]
     stim["target_position"] = stim["rectangle_position"]
     stim["intensity_target"] = stim["intensity_rectangle"]
@@ -66,6 +76,7 @@ def simultaneous_contrast_generalized(
 def simultaneous_contrast(
     visual_size=None,
     ppd=None,
+    shape=None,
     target_size=None,
     intensity_background=0.0,
     intensity_target=0.5,
@@ -75,10 +86,12 @@ def simultaneous_contrast(
 
     Parameters
     ----------
-    visual_size : float or (float, float)
-        size of the stimulus in degrees of visual angle (height, width)
-    ppd : int
-        pixels per degree (visual angle)
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of grating, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of grating, in pixels
     target_size : float or (float, float)
         size of the target in degree visual angle (height, width)
     intensity_background : float

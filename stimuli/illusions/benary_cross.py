@@ -3,7 +3,7 @@ import warnings
 from scipy.ndimage import rotate
 
 from stimuli.components import cross, triangle
-from stimuli.utils import degrees_to_pixels
+from stimuli.utils import degrees_to_pixels, resolution
 
 
 __all__ = [
@@ -18,6 +18,7 @@ __all__ = [
 def benarys_cross_generalized(
     visual_size=None,
     ppd=None,
+    shape=None,
     cross_thickness=None,
     target_size=None,
     target_type="r",
@@ -33,10 +34,12 @@ def benarys_cross_generalized(
 
     Parameters
     ----------
-    visual_size : float or (float, float)
-        size of the stimulus in degrees of visual angle (height, width)
-    ppd : int
-        pixels per degree (visual angle)
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of grating, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of grating, in pixels
     cross_thickness : float
         width of the cross bars in degrees visual angle
     target_size : (float, float)
@@ -65,13 +68,16 @@ def benarys_cross_generalized(
     Benary, W. (1924). Beobachtungen zu einem Experiment ueber Helligkeitskontrast.
         Psychologische Forschung, 5, 131–142. https://doi.org/10.1007/BF00402398
     """
-    if isinstance(visual_size, (float, int)):
-        visual_size = (visual_size, visual_size)
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
+    
+    if len(np.unique(ppd)) > 1:
+        raise ValueError("ppd should be equal in x and y direction")
     
     # Create cross
     img = cross(
         visual_size=visual_size,
-        ppd=ppd,
+        ppd=np.unique(ppd),
         cross_arm_ratios=1.,
         cross_thickness=cross_thickness,
         intensity_background=intensity_background,
@@ -80,7 +86,7 @@ def benarys_cross_generalized(
 
     # Add targets
     stim = add_targets(img,
-                       ppd,
+                       np.unique(ppd),
                        target_size,
                        target_type,
                        target_orientation,
@@ -90,6 +96,9 @@ def benarys_cross_generalized(
                        )
 
     # Add missing parameter information
+    stim["visual_size"] = visual_size
+    stim["ppd"] = ppd
+    stim["shape"] = shape
     stim["cross_thickness"] = cross_thickness
     stim["intensity_background"] = intensity_background
     stim["intensity_cross"] = intensity_cross
@@ -99,6 +108,7 @@ def benarys_cross_generalized(
 def benarys_cross_rectangles(
     visual_size=None,
     ppd=None,
+    shape=None,
     cross_thickness=None,
     target_size=None,
     intensity_background=1.0,
@@ -110,10 +120,12 @@ def benarys_cross_rectangles(
 
     Parameters
     ----------
-    visual_size : float or (float, float)
-        size of the stimulus in degrees of visual angle (height, width)
-    ppd : int
-        pixels per degree (visual angle)
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of grating, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of grating, in pixels
     cross_thickness : float
         width of the cross bars in degrees visual angle
     target_size : (float, float)
@@ -134,9 +146,11 @@ def benarys_cross_rectangles(
     Benary, W. (1924). Beobachtungen zu einem Experiment ueber Helligkeitskontrast.
         Psychologische Forschung, 5, 131–142. https://doi.org/10.1007/BF00402398
     """
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)    
+    if len(np.unique(ppd)) > 1:
+        raise ValueError("ppd should be equal in x and y direction")
 
-    if isinstance(visual_size, (float, int)):
-        visual_size = (visual_size, visual_size)
     if target_size is None:
         raise ValueError("target_size cannot be None")
     if isinstance(target_size, (float, int)):
@@ -158,6 +172,7 @@ def benarys_cross_rectangles(
     stim = benarys_cross_generalized(
         visual_size=visual_size,
         ppd=ppd,
+        shape=shape,
         cross_thickness=cross_thickness,
         target_size=target_size,
         target_type=("r",) * 2,
@@ -174,6 +189,7 @@ def benarys_cross_rectangles(
 def benarys_cross_triangles(
     visual_size=None,
     ppd=None,
+    shape=None,
     cross_thickness=None,
     target_size=None,
     intensity_background=1.0,
@@ -185,10 +201,12 @@ def benarys_cross_triangles(
 
     Parameters
     ----------
-    visual_size : float or (float, float)
-        size of the stimulus in degrees of visual angle (height, width)
-    ppd : int
-        pixels per degree (visual angle)
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of grating, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of grating, in pixels
     cross_thickness : float
         width of the cross bars in degrees visual angle
     target_size : float
@@ -209,9 +227,11 @@ def benarys_cross_triangles(
     Benary, W. (1924). Beobachtungen zu einem Experiment ueber Helligkeitskontrast.
         Psychologische Forschung, 5, 131–142. https://doi.org/10.1007/BF00402398
     """
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)    
+    if len(np.unique(ppd)) > 1:
+        raise ValueError("ppd should be equal in x and y direction")
 
-    if isinstance(visual_size, (float, int)):
-        visual_size = (visual_size, visual_size)
     if target_size is None:
         raise ValueError("target_size cannot be None")
     if isinstance(target_size, (float, int)):
@@ -233,6 +253,7 @@ def benarys_cross_triangles(
     stim = benarys_cross_generalized(
         visual_size=visual_size,
         ppd=ppd,
+        shape=shape,
         cross_thickness=cross_thickness,
         target_size=target_size,
         target_type=("t",)*2,
@@ -249,6 +270,7 @@ def benarys_cross_triangles(
 def todorovic_benary_generalized(
     visual_size=None,
     ppd=None,
+    shape=None,
     L_width=None,
     target_size=None,
     target_type="r",
@@ -264,10 +286,12 @@ def todorovic_benary_generalized(
 
     Parameters
     ----------
-    visual_size : float or (float, float)
-        size of the stimulus in degrees of visual angle (height, width)
-    ppd : int
-        pixels per degree (visual angle)
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of grating, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of grating, in pixels
     L_width : float
         width of L in degree visual angle
     target_size : (float, float)
@@ -296,11 +320,13 @@ def todorovic_benary_generalized(
     Benary, W. (1924). Beobachtungen zu einem Experiment ueber Helligkeitskontrast.
         Psychologische Forschung, 5, 131–142. https://doi.org/10.1007/BF00402398
     """
-    if isinstance(visual_size, (float, int)):
-        visual_size = (visual_size, visual_size)
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)    
+    if len(np.unique(ppd)) > 1:
+        raise ValueError("ppd should be equal in x and y direction")
 
     L_size = (visual_size[0] / 2, visual_size[0] / 2, L_width, visual_size[1] - L_width)
-    top, bottom, left, right = degrees_to_pixels(L_size, ppd)
+    top, bottom, left, right = degrees_to_pixels(L_size, np.unique(ppd))
     width, height = left + right, top + bottom
     
     # Create stimulus without targets
@@ -310,7 +336,7 @@ def todorovic_benary_generalized(
 
     # Add targets
     stim = add_targets(img,
-                       ppd,
+                       np.unique(ppd),
                        target_size,
                        target_type,
                        target_orientation,
@@ -320,6 +346,9 @@ def todorovic_benary_generalized(
                        )
 
     # Add missing parameter information
+    stim["visual_size"] = visual_size
+    stim["ppd"] = ppd
+    stim["shape"] = shape
     stim["L_width"] = L_width
     stim["intensity_background"] = intensity_background
     stim["intensity_cross"] = intensity_cross
@@ -329,6 +358,7 @@ def todorovic_benary_generalized(
 def todorovic_benary_rectangles(
     visual_size=None,
     ppd=None,
+    shape=None,
     L_width=None,
     target_size=None,
     intensity_background=1.0,
@@ -341,10 +371,12 @@ def todorovic_benary_rectangles(
 
     Parameters
     ----------
-    visual_size : float or (float, float)
-        size of the stimulus in degrees of visual angle (height, width)
-    ppd : int
-        pixels per degree (visual angle)
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of grating, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of grating, in pixels
     L_width : float
         width of L in degree visual angle
     target_size : (float, float)
@@ -365,9 +397,11 @@ def todorovic_benary_rectangles(
     Benary, W. (1924). Beobachtungen zu einem Experiment ueber Helligkeitskontrast.
         Psychologische Forschung, 5, 131–142. https://doi.org/10.1007/BF00402398
     """
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)    
+    if len(np.unique(ppd)) > 1:
+        raise ValueError("ppd should be equal in x and y direction")
 
-    if isinstance(visual_size, (float, int)):
-        visual_size = (visual_size, visual_size)
     if target_size is None:
         raise ValueError("target_size cannot be None")
     if isinstance(target_size, (float, int)):
@@ -396,6 +430,7 @@ def todorovic_benary_rectangles(
 def todorovic_benary_triangles(
     visual_size=None,
     ppd=None,
+    shape=None,
     L_width=None,
     target_size=None,
     intensity_background=1.0,
@@ -408,10 +443,12 @@ def todorovic_benary_triangles(
 
     Parameters
     ----------
-    visual_size : float or (float, float)
-        size of the stimulus in degrees of visual angle (height, width)
-    ppd : int
-        pixels per degree (visual angle)
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of grating, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of grating, in pixels
     L_width : float
         width of L in degree visual angle
     target_size : float
@@ -432,9 +469,11 @@ def todorovic_benary_triangles(
     Benary, W. (1924). Beobachtungen zu einem Experiment ueber Helligkeitskontrast.
         Psychologische Forschung, 5, 131–142. https://doi.org/10.1007/BF00402398
     """
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)    
+    if len(np.unique(ppd)) > 1:
+        raise ValueError("ppd should be equal in x and y direction")
 
-    if isinstance(visual_size, (float, int)):
-        visual_size = (visual_size, visual_size)
     if target_size is None:
         raise ValueError("target_size cannot be None")
     if isinstance(target_size, (float, int)):
@@ -606,9 +645,6 @@ def add_targets(
     
     stim["img"] = img
     stim["mask"] = mask.astype(int)
-    stim["shape"] = stim["img"].shape
-    stim["visual_size"] =  np.array(img.shape) / ppd
-    stim["ppd"] = ppd
     return stim
 
 

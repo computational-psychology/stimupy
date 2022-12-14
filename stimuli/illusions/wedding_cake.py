@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.signal import fftconvolve
-from stimuli.utils import degrees_to_pixels
+from stimuli.utils import degrees_to_pixels, resolution
 
 
 __all__ = [
@@ -13,6 +13,7 @@ __all__ = [
 def wedding_cake_stimulus(
     visual_size=None,
     ppd=None,
+    shape=None,
     L_size=None,
     target_height=None,
     target_indices1=None,
@@ -25,10 +26,12 @@ def wedding_cake_stimulus(
 
     Parameters
     ----------
-    visual_size : (float, float)
-        The shape of the stimulus in degrees of visual angle. (y,x)
-    ppd : int
-        pixels per degree (visual angle)
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of grating, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of grating, in pixels
     L_size : (float, float, float)
         size of individual jags (height, width, thickness) in degree visual angle
     target_height : float
@@ -54,14 +57,15 @@ def wedding_cake_stimulus(
         assimilation in White’s effect. Journal of Vision, 3, 294a.
         https://doi.org/10.1167/3.9.294
     """
-    
-    if isinstance(visual_size, (float, int)):
-        visual_size = (visual_size, visual_size)
+    # Resolve resolution
+    shape, visual_size, ppd_ = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)    
+    if len(np.unique(ppd)) > 1:
+        raise ValueError("ppd should be equal in x and y direction")
 
-    nY, nX = degrees_to_pixels(visual_size, ppd)
-    Ly, Lx, Lw = degrees_to_pixels(L_size, ppd)
+    nY, nX = shape
+    Ly, Lx, Lw = degrees_to_pixels(L_size, np.unique(ppd))
     Lyh, Lxh = int(Ly / 2)+1, int(Lx / 2)+1
-    theight = degrees_to_pixels(target_height, ppd)
+    theight = degrees_to_pixels(target_height, np.unique(ppd))
     
     # Create L-shaped patch
     L_patch = np.zeros([Ly, Lx])
@@ -147,8 +151,8 @@ def wedding_cake_stimulus(
     stim = {
         "img": img,
         "mask": mask.astype(int),
-        "shape": img.shape,
-        "visual_size": np.array(img.shape) / ppd,
+        "shape": shape,
+        "visual_size": visual_size,
         "ppd": ppd,
         "L_size": L_size,
         "target_height": target_height,

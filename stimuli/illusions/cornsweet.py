@@ -1,4 +1,5 @@
 import numpy as np
+from stimuli.utils import resolution
 
 
 __all__ = [
@@ -8,9 +9,9 @@ __all__ = [
 def cornsweet(
     visual_size=None,
     ppd=None,
+    shape=None,
     ramp_width=None,
-    intensity_max=1.0,
-    intensity_min=0.0,
+    intensity_edges=(0.0, 1.0),
     intensity_plateau=0.5,
     exponent=2.75,
 ):
@@ -27,10 +28,12 @@ def cornsweet(
 
     Parameters
     ----------
-    visual_size : (float, float)
-        The shape of the stimulus in degrees of visual angle. (y,x)
-    ppd : int
-        pixels per degree (visual angle)
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of grating, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of grating, in pixels
     ramp_width : float
         width of luminance ramp in degrees of visual angle
     intensity_max : float
@@ -54,13 +57,15 @@ def cornsweet(
     Cornsweet, T. (1970). Visual perception. Academic press.
         https://doi.org/10.1016/B978-0-12-189750-5.X5001-5
     """
-    if isinstance(visual_size, (float, int)):
-        visual_size = (visual_size, visual_size)
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)    
+    if len(np.unique(ppd)) > 1:
+        raise ValueError("ppd should be equal in x and y direction")
     if ramp_width > visual_size[1]/2:
         raise ValueError("ramp_width is too large")
 
-    size = [int(visual_size[0] * ppd), int(visual_size[1] * ppd)]
-    ramp_width = int(ramp_width * ppd)
+    size = [int(visual_size[0] * ppd[0]), int(visual_size[1] * ppd[1])]
+    ramp_width = int(ramp_width * ppd[1])
     img = np.ones(size) * intensity_plateau
     mask = np.zeros(size)
 
@@ -68,8 +73,8 @@ def cornsweet(
     dist = np.arange(size[1] / 2.0)
     dist = dist / ramp_width
     dist[dist > 1.0] = 1.0
-    profile1 = (1.0 - dist) ** exponent * (intensity_max - intensity_plateau)
-    profile2 = (1.0 - dist) ** exponent * (intensity_min - intensity_plateau)
+    profile1 = (1.0 - dist) ** exponent * (intensity_edges[0] - intensity_plateau)
+    profile2 = (1.0 - dist) ** exponent * (intensity_edges[1] - intensity_plateau)
     img[:, : int(size[1] / 2.0)] += profile1[::-1]
     img[:, size[1] // 2 :] += profile2
 
@@ -80,11 +85,10 @@ def cornsweet(
     stim = {
         "img": img,
         "mask": mask.astype(int),
-        "shape": img.shape,
-        "visual_size": np.array(img.shape) / ppd,
+        "visual_size": visual_size,
         "ppd": ppd,
-        "intensity_max": intensity_max,
-        "intensity_min": intensity_min,
+        "shape": shape,
+        "intensity_edges": intensity_edges,
         "intensity_plateau": intensity_plateau,
         "ramp_width": ramp_width,
         "exponent": exponent,

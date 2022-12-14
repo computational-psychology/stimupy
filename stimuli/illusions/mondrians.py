@@ -9,7 +9,7 @@ __all__ = [
 
 def corrugated_mondrians(
     ppd=None,
-    widths=None,
+    width=None,
     heights=None,
     depths=None,
     target_indices=None,
@@ -23,7 +23,7 @@ def corrugated_mondrians(
     ----------
     ppd : int
         pixels per degree (visual angle)
-    widths : float
+    width : float
         width of rectangles in degree visual angle
     heights : float or tuple of floats
         height of rectangles; if single float, all rectangles have the same height
@@ -53,16 +53,16 @@ def corrugated_mondrians(
     if any(len(lst) != len(heights) for lst in [depths, intensities]):
         raise Exception("heights, depths, and intensities need the same length.")
 
-    widths_px = degrees_to_pixels(widths, ppd)
+    widths_px = degrees_to_pixels(width, ppd)
     heights_px = degrees_to_pixels(heights, ppd)
     depths_px = degrees_to_pixels(depths, ppd)
 
     nrows = len(depths)
     ncols = len(intensities[0])
     height = int(np.array(heights_px).sum())
-    width = int(widths_px * ncols + np.abs(np.array(depths_px)).sum())
-    img = np.ones([height, width]) * intensity_background
-    mask = np.zeros([height, width])
+    width_ = int(widths_px * ncols + np.abs(np.array(depths_px)).sum())
+    img = np.ones([height, width_]) * intensity_background
+    mask = np.zeros([height, width_])
     mval = 1
 
     # Initial y coordinates
@@ -82,7 +82,7 @@ def corrugated_mondrians(
 
         for c in range(ncols):
             stim = parallelogram(
-                visual_size=(heights[r], widths+abs(depths[r])),
+                visual_size=(heights[r], width+abs(depths[r])),
                 ppd=ppd,
                 parallelogram_depth=depths[r],
                 intensity_background=0.,
@@ -114,7 +114,7 @@ def corrugated_mondrians(
         "ppd": ppd,
         "visual_size": np.array(img.shape) / ppd,
         "shape": img.shape,
-        "widths": widths,
+        "width": width,
         "heights": heights,
         "depths": depths,
         "intensity_background": intensity_background,
@@ -129,7 +129,7 @@ if __name__ == "__main__":
     
     params = {
         "ppd": 10,
-        "widths": 2.0,
+        "width": 2.0,
         "heights": 2.0,
         "depths": (0.0, 1.0, 0.0, -1.0),
         "target_indices": ((1, 1), (3, 1)),

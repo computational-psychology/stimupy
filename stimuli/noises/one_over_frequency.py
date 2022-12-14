@@ -3,7 +3,7 @@
 """
 
 import numpy as np
-from stimuli.utils import degrees_to_pixels
+from stimuli.utils import resolution
 from stimuli.noises.utils import pseudo_white_spectrum
 
 
@@ -16,6 +16,7 @@ __all__ = [
 def one_over_f(
     visual_size=None,
     ppd=None,
+    shape=None,
     rms_contrast=None,
     exponent=None,
     pseudo_noise=False,
@@ -25,10 +26,12 @@ def one_over_f(
 
     Parameters
     ----------
-    visual_size : float or (float, float)
-        size of the stimulus in degrees of visual angle (height, width)
-    ppd : int
-        pixels per degree (visual angle)
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of grating, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of grating, in pixels
     rms_contrast : float
         rms contrast of noise.
     exponent
@@ -40,14 +43,15 @@ def one_over_f(
     -------
     A stimulus dictionary with the noise array ['img']
     """
-    if isinstance(visual_size, (float, int)):
-        visual_size = (visual_size, visual_size)
-
-    shape = degrees_to_pixels(visual_size, ppd)
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
+    
+    if len(np.unique(ppd)) > 1:
+        raise ValueError("ppd should be equal in x and y direction")
 
     # Prepare spatial frequency axes and create bandpass filter:
-    fy = np.fft.fftshift(np.fft.fftfreq(shape[0], d=1.0 / ppd))
-    fx = np.fft.fftshift(np.fft.fftfreq(shape[1], d=1.0 / ppd))
+    fy = np.fft.fftshift(np.fft.fftfreq(shape[0], d=1.0 / np.unique(ppd)))
+    fx = np.fft.fftshift(np.fft.fftfreq(shape[1], d=1.0 / np.unique(ppd)))
     Fx, Fy = np.meshgrid(fx, fy)
 
     # Create 2d array with 1 / (f**exponent)
@@ -77,8 +81,8 @@ def one_over_f(
         "img": noise,
         "mask": None,
         "visual_size": visual_size,
-        "shape": noise.shape,
         "ppd": ppd,
+        "shape": shape,
         "rms_contrast": rms_contrast,
         "exponent": exponent,
         "pseudo_noise": pseudo_noise,
@@ -90,6 +94,7 @@ def one_over_f(
 def pink(
     visual_size=None,
     ppd=None,
+    shape=None,
     rms_contrast=None,
     pseudo_noise=False,
 ):
@@ -98,10 +103,12 @@ def pink(
 
     Parameters
     ----------
-    visual_size : float or (float, float)
-        size of the stimulus in degrees of visual angle (height, width)
-    ppd : int
-        pixels per degree (visual angle)
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of grating, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of grating, in pixels
     rms_contrast : float
         rms contrast of noise.
     pseudo_noise : bool
@@ -124,6 +131,7 @@ def pink(
 def brown(
     visual_size=None,
     ppd=None,
+    shape=None,
     rms_contrast=None,
     pseudo_noise=False,
 ):
@@ -132,10 +140,12 @@ def brown(
 
     Parameters
     ----------
-    visual_size : float or (float, float)
-        size of the stimulus in degrees of visual angle (height, width)
-    ppd : int
-        pixels per degree (visual angle)
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of grating, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of grating, in pixels
     rms_contrast : float
         rms contrast of noise.
     pseudo_noise : bool

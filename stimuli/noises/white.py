@@ -3,7 +3,7 @@
 """
 
 import numpy as np
-from stimuli.utils import degrees_to_pixels
+from stimuli.utils import resolution
 from stimuli.noises.utils import pseudo_white_spectrum
 
 
@@ -14,6 +14,7 @@ __all__ = [
 def white(
     visual_size=None,
     ppd=None,
+    shape=None,
     rms_contrast=None,
     pseudo_noise=False,
 ):
@@ -22,10 +23,12 @@ def white(
 
     Parameters
     ----------
-    visual_size : float or (float, float)
-        size of the stimulus in degrees of visual angle (height, width)
-    ppd : int
-        pixels per degree (visual angle)
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of grating, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of grating, in pixels
     rms_contrast : float
         rms contrast of noise.
     pseudo_noise : bool
@@ -35,10 +38,11 @@ def white(
     -------
     A stimulus dictionary with the noise array ['img']
     """
-    if isinstance(visual_size, (float, int)):
-        visual_size = (visual_size, visual_size)
-
-    shape = degrees_to_pixels(visual_size, ppd)
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
+    
+    if len(np.unique(ppd)) > 1:
+        raise ValueError("ppd should be equal in x and y direction")
 
     if pseudo_noise:
         # Create white noise with frequency amplitude of 1 everywhere
@@ -56,8 +60,8 @@ def white(
 
     params = {
         "visual_size": visual_size,
-        "shape": white_noise.shape,
         "ppd": ppd,
+        "shape": shape,
         "rms_contrast": rms_contrast,
         "pseudo_noise": pseudo_noise,
         "intensity_range": [white_noise.min(), white_noise.max()],

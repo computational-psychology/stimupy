@@ -3,7 +3,7 @@
 """
 
 import numpy as np
-from stimuli.utils import bandpass_filter, degrees_to_pixels
+from stimuli.utils import bandpass_filter, resolution
 from stimuli.noises.utils import pseudo_white_spectrum
 
 
@@ -14,6 +14,7 @@ __all__ = [
 def narrowband(
     visual_size=None,
     ppd=None,
+    shape=None,
     center_frequency=None,
     bandwidth=None,
     rms_contrast=None,
@@ -24,10 +25,12 @@ def narrowband(
 
     Parameters
     ----------
-    visual_size : float or (float, float)
-        size of the stimulus in degrees of visual angle (height, width)
-    ppd : int
-        pixels per degree (visual angle)
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of grating, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of grating, in pixels
     center_frequency : float
         noise center frequency in cpd
     bandwidth : float
@@ -41,10 +44,11 @@ def narrowband(
     -------
     A stimulus dictionary with the noise array ['img']
     """
-    if isinstance(visual_size, (float, int)):
-        visual_size = (visual_size, visual_size)
-
-    shape = degrees_to_pixels(visual_size, ppd)
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
+    
+    if len(np.unique(ppd)) > 1:
+        raise ValueError("ppd should be equal in x and y direction")
 
     # We calculate sigma to eventuate given bandwidth (in octaves)
     sigma = (
@@ -54,8 +58,8 @@ def narrowband(
     )
 
     # Prepare spatial frequency axes and create bandpass filter:
-    fy = np.fft.fftshift(np.fft.fftfreq(shape[0], d=1.0 / ppd))
-    fx = np.fft.fftshift(np.fft.fftfreq(shape[1], d=1.0 / ppd))
+    fy = np.fft.fftshift(np.fft.fftfreq(shape[0], d=1.0 / np.unique(ppd)))
+    fx = np.fft.fftshift(np.fft.fftfreq(shape[1], d=1.0 / np.unique(ppd)))
     Fx, Fy = np.meshgrid(fx, fy)
     bp_filter = bandpass_filter(Fy, Fx, center_frequency, sigma)
 
@@ -79,8 +83,8 @@ def narrowband(
 
     params = {
         "visual_size": visual_size,
-        "shape": narrow_noise.shape,
         "ppd": ppd,
+        "shape": shape,
         "rms_contrast": rms_contrast,
         "center_frequency": center_frequency,
         "sigma": sigma,

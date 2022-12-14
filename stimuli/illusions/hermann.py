@@ -1,5 +1,5 @@
 import numpy as np
-from stimuli.utils import degrees_to_pixels
+from stimuli.utils import degrees_to_pixels, resolution
 
 
 __all__ = [
@@ -9,6 +9,7 @@ __all__ = [
 def hermann_grid(
     visual_size=None,
     ppd=None,
+    shape=None,
     element_size=None,
     intensity_background=0.0,
     intensity_grid=1.0,
@@ -18,10 +19,12 @@ def hermann_grid(
 
     Parameters
     ----------
-    visual_size : (float, float)
-        The shape of the stimulus in degrees of visual angle. (y,x)
-    ppd : int
-        pixels per degree (visual angle)
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of grating, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of grating, in pixels
     element_size : (float, float, float)
         height, width and thickness of individual elements in degree visual angle
     intensity_background : float
@@ -38,11 +41,13 @@ def hermann_grid(
     Hermann L (1870). Eine Erscheinung simultanen Contrastes". Pflügers Archiv
         fuer die gesamte Physiologie. 3: 13–15. https://doi.org/10.1007/BF01855743
     """
-    if isinstance(visual_size, (float, int)):
-        visual_size = (visual_size, visual_size)
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)    
+    if len(np.unique(ppd)) > 1:
+        raise ValueError("ppd should be equal in x and y direction")
 
-    grid_height, grid_width = degrees_to_pixels(visual_size, ppd)
-    element_height, element_width, element_thick = degrees_to_pixels(element_size, ppd)
+    height, width = shape
+    element_height, element_width, element_thick = degrees_to_pixels(element_size, np.unique(ppd))
 
     if element_height <= element_thick:
         raise ValueError("Element thickness larger than height")
@@ -51,15 +56,15 @@ def hermann_grid(
     if element_thick <= 0:
         raise ValueError("Increase element thickness")
 
-    img = np.ones([grid_height, grid_width], dtype=np.float32) * intensity_background
+    img = np.ones([height, width]) * intensity_background
     for i in range(element_thick):
         img[i::element_height, :] = intensity_grid
         img[:, i::element_width] = intensity_grid
 
     params = {
-        "shape": img.shape,
-        "visual_size": np.array(img.shape) / ppd,
+        "visual_size": visual_size,
         "ppd": ppd,
+        "shape": shape,
         "element_size": element_size,
         "intensity_background": intensity_background,
         "intensity_grid": intensity_grid,
