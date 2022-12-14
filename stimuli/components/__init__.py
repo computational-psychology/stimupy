@@ -126,7 +126,7 @@ def mask_elements(
     distances = base[orientation]
 
     # Mark elements with integer idx-value
-    mask = np.zeros(shape, dtype=int)
+    mask = np.zeros(base["shape"], dtype=int)
     for idx, edge in zip(reversed(range(len(edges))), reversed(edges)):
         mask[distances <= edge] = int(idx + 1)
 
