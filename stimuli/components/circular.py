@@ -184,7 +184,7 @@ def disc_and_rings(
         # Check visual_size
         visual_size = resolution.validate_visual_size(visual_size)
 
-    if visual_size == (None, None):
+    if visual_size is None or visual_size == (None, None):
         # Two axes are None; make image large enought to fit
         visual_size = resolution.validate_visual_size(np.max(radii) * 2)
     elif None in visual_size:
@@ -269,7 +269,7 @@ def disc(
         raise ValueError("Can only pass 1 intensity")
 
     stim = ring(
-        radii=[0, radius],
+        radii=np.insert(radius, 0, 0),
         intensity=intensity,
         visual_size=visual_size,
         ppd=ppd,
@@ -323,15 +323,13 @@ def ring(
         if passed in less/more than 1 intensity
     """
 
-    # Try to resolve resolution
-    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
-
     if len(radii) != 2:
         raise ValueError("Can only pass exactly 2 radii")
     if len([intensity]) != 1:
         raise ValueError("Can only pass 1 intensity")
 
     if radii[1] is None:
+        shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
         radii[1] = np.max(visual_size) / 2
 
     stim = disc_and_rings(
