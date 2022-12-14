@@ -152,9 +152,6 @@ def mask_segments(
     rotation : float, optional
         angle of rotation (in degrees) of segments,
         counterclockwise away from 3 o'clock, by default 0.0
-    intensities : Sequence[Number, ...]
-        intensity value for each segment, from inside to out, by default [1.0, 0.0]
-        If fewer intensities are passed than number of radii, cycles through intensities
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
@@ -194,8 +191,8 @@ def mask_segments(
 
 def angular_segments(
     angles,
+    intensity_segments,
     rotation=0.0,
-    intensity_segments=None,
     visual_size=None,
     ppd=None,
     shape=None,
@@ -207,12 +204,12 @@ def angular_segments(
     ----------
     angles : Sequence[Number]
         upper-limit of each segment, in angular degrees 0-360
+    intensities : Sequence[Number, ...]
+        intensity value for each segment, from inside to out.
+        If fewer intensities are passed than number of radii, cycles through intensities
     rotation : float, optional
         angle of rotation (in degrees) of segments,
         counterclockwise away from 3 o'clock, by default 0.0
-    intensities : Sequence[Number, ...]
-        intensity value for each segment, from inside to out, by default [1.0, 0.0]
-        If fewer intensities are passed than number of radii, cycles through intensities
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
@@ -248,7 +245,7 @@ def grating(
     n_segments=None,
     segment_width=None,
     rotation=0.0,
-    intensities_segments=[1.0, 0.0],
+    intensity_segments=(1.0, 0.0),
 ):
     """Draw an angular grating, i.e., set of segments
 
@@ -269,8 +266,8 @@ def grating(
     rotation : float, optional
         angle of rotation (in degrees) grating segments,
         counterclockwise away from 3 o'clock, by default 0.0
-    intensities_segments : Sequence[Number, ...]
-        intensity value for each segment, from inside to out, by default [1.0, 0.0]
+    intensity_segments : Sequence[Number, ...]
+        intensity value for each segment, from inside to out, by default (1.0, 0.0).
         If fewer intensities are passed than number of radii, cycles through intensities
 
     Returns
@@ -305,7 +302,7 @@ def grating(
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,
-        intensity_segments=intensities_segments,
+        intensity_segments=intensity_segments,
     )
 
     # Assemble output
@@ -324,7 +321,7 @@ def pinwheel(
     segment_width=None,
     rotation=0.0,
     inner_radius=0.0,
-    intensities_segments=[1.0, 0.0],
+    intensity_segments=(1.0, 0.0),
     intensity_background=0.5,
     visual_size=None,
     ppd=None,
@@ -347,8 +344,8 @@ def pinwheel(
         counterclockwise from 3 o'clock, by default 0.0
     inner_radius : float, optional
         inner radius (in degrees visual angle), to turn disc into a ring, by default 0.0
-    intensities_segments : Sequence[Number, ...]
-        intensity value for each segment, from inside to out, by default [1.0, 0.0]
+    intensity_segments : Sequence[Number, ...]
+        intensity value for each segment, from inside to out, by default (1.0, 0.0).
         If fewer intensities are passed than number of radii, cycles through intensities
     intensity_background : float (optional)
         intensity value of background, by default 0.5
@@ -370,8 +367,8 @@ def pinwheel(
     # Get disc
     disc = ring(
         radii=[inner_radius, radius],
-        intensity=1,
-        intensity_background=0,
+        intensity=1.0,
+        intensity_background=0.0,
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,
@@ -386,7 +383,7 @@ def pinwheel(
         n_segments=n_segments,
         segment_width=segment_width,
         rotation=rotation,
-        intensities_segments=intensities_segments,
+        intensity_segments=intensity_segments,
         visual_size=visual_size,
         shape=shape,
         ppd=ppd,

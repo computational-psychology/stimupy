@@ -65,7 +65,7 @@ def frames(
     shape=None,
     visual_size=None,
     ppd=None,
-    intensity_frames=(0.0, 1.0),
+    intensity_frames=(1.0, 0.0),
     intensity_background=0.5,
 ):
     """Draw sequential set of square frames with specified widths
@@ -84,7 +84,7 @@ def frames(
         whether to ensure the grating only has "full" periods,
         half "periods", or no guarantees ("ignore")
     intensity_frames : Sequence[float, ...]
-        intensity value for each frame, by default [1.0, 0.0].
+        intensity value for each frame, by default (1.0, 0.0).
         Can specify as many intensities as number of frame_widths;
         If fewer intensities are passed than frame_widhts, cycles through intensities
     intensity_background : float, optional
@@ -122,7 +122,7 @@ def square_wave(
     n_frames=None,
     frame_width=None,
     period="ignore",
-    intensity_frames=(0.0, 1.0),
+    intensity_frames=(1.0, 0.0),
     intensity_background=0.5,
 ):
     """Draw set of equal-width square frames, at given spatial frequency
@@ -145,7 +145,7 @@ def square_wave(
         whether to ensure the grating only has "full" periods,
         half "periods", or no guarantees ("ignore")
     intensity_frames : Sequence[float, ...]
-        intensity value for each frame, by default [1.0, 0.0].
+        intensity value for each frame, by default (1.0, 0.0).
         Can specify as many intensities as number of frame_widths;
         If fewer intensities are passed than frame_widhts, cycles through intensities
     intensity_background : float (optional)

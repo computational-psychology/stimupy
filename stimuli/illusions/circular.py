@@ -5,11 +5,11 @@ import numpy as np
 
 from stimuli.components.circular import grating
 
-
 __all__ = [
     "circular_white",
     "circular_bullseye",
 ]
+
 
 def circular_white(
     visual_size=None,
@@ -19,7 +19,7 @@ def circular_white(
     ring_width=None,
     target_indices=None,
     intensity_target=0.5,
-    intensity_rings=[1.0, 0.0],
+    intensity_rings=(1.0, 0.0),
     intensity_background=0.5,
     supersampling=1,
     shape=None,
@@ -88,7 +88,7 @@ def circular_white(
         n_rings=n_rings,
         ring_width=ring_width,
         intensity_background=intensity_background,
-        intensities=intensity_rings,
+        intensity_rings=intensity_rings,
         supersampling=supersampling,
         shape=shape,
     )
@@ -111,7 +111,7 @@ def circular_white(
         frequency=frequency,
         n_rings=n_rings,
         ring_width=ring_width,
-        intensities=intensities,
+        intensity_rings=intensities,
         intensity_background=intensity_background,
         supersampling=supersampling,
         shape=shape,
@@ -143,7 +143,7 @@ def circular_bullseye(
     n_rings=None,
     ring_width=None,
     intensity_target=0.5,
-    intensity_rings=[1.0, 0.0],
+    intensity_rings=(1.0, 0.0),
     intensity_background=0.5,
     supersampling=1,
     shape=None,

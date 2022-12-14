@@ -20,7 +20,7 @@ def radial_white(
     target_indices=[2, 5],
     target_width=1.0,
     target_center=1.0,
-    intensities_segments=[1.0, 0.0],
+    intensity_segments=(1.0, 0.0),
     intensity_background=0.3,
     intensity_target=0.5,
     shape=None,
@@ -54,8 +54,8 @@ def radial_white(
         within its segment, by default 1.0.
         Can specify as many centers as target_indices;
         if fewer centers are passed than indices, cycles through intensities
-    intensities_segments : Sequence[float, ...]
-        intensity value for each segment, by default [1.0, 0.0]
+    intensity_segments : Sequence[float, ...]
+        intensity value for each segment, by default (1.0, 0.0).
         Can specify as many intensities as n_segments;
         If fewer intensities are passed than n_segments, cycles through intensities
     intensity_background : float (optional)
@@ -88,7 +88,7 @@ def radial_white(
         n_segments=n_segments,
         segment_width=segment_width,
         rotation=rotation,
-        intensities_segments=intensities_segments,
+        intensity_segments=intensity_segments,
         intensity_background=intensity_background,
         visual_size=visual_size,
         ppd=ppd,

@@ -71,7 +71,7 @@ def square_wave(
     bar_width=None,
     period="ignore",
     orientation="horizontal",
-    intensity_bars=(0.0, 1.0),
+    intensity_bars=(1.0, 0.0),
 ):
     """Draw square-wave grating (set of bars) of given spatial frequency
 
@@ -95,7 +95,7 @@ def square_wave(
     orientation : "vertical" or "horizontal" (default)
         orientation of the grating
     intensity_bars : Sequence[float, ...]
-        intensity value for each bar, by default [1.0, 0.0].
+        intensity value for each bar, by default (1.0, 0.0).
         Can specify as many intensities as n_bars;
         If fewer intensities are passed than n_bars, cycles through intensities
 

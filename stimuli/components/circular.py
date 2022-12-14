@@ -151,7 +151,7 @@ def ring_masks(
 
 def disc_and_rings(
     radii,
-    intensities,
+    intensity_rings,
     shape=None,
     visual_size=None,
     ppd=None,
@@ -164,7 +164,7 @@ def disc_and_rings(
     ----------
     radii : Sequence[Number]
         outer radii of rings (& disc) in degree visual angle
-    intensities : Sequence[Number, ...]
+    intensity_rings : Sequence[Number, ...]
         intensity value for each ring, from inside to out.
         If fewer intensities are passed than number of radii, cycles through intensities
     shape : Sequence[Number, Number], Number, or None (default)
@@ -213,7 +213,7 @@ def disc_and_rings(
     distances = base["radial"]
 
     img = np.ones(super_shape) * intensity_background
-    ints = [*itertools.islice(itertools.cycle(intensities), len(radii))]
+    ints = [*itertools.islice(itertools.cycle(intensity_rings), len(radii))]
     for radius, intensity in zip(reversed(radii), reversed(ints)):
         img[distances < radius] = intensity
 
@@ -224,7 +224,7 @@ def disc_and_rings(
     # Assemble output
     params.update(
         {
-            "intensities": intensities,
+            "intensities": intensity_rings,
             "supersampling": supersampling,
         }
     )
@@ -344,7 +344,7 @@ def ring(
 
     stim = disc_and_rings(
         radii=radii,
-        intensities=[intensity_background, intensity],
+        intensity_rings=[intensity_background, intensity],
         shape=shape,
         visual_size=visual_size,
         ppd=ppd,
@@ -364,7 +364,7 @@ def grating(
     frequency=None,
     n_rings=None,
     ring_width=None,
-    intensities=[1.0, 0.0],
+    intensity_rings=(1.0, 0.0),
     intensity_background=0.5,
     supersampling=1,
 ):
@@ -385,7 +385,7 @@ def grating(
     ring_width : Number, or None (default)
         width of a single ring, in degrees
     intensities : Sequence[Number, ...]
-        intensity value for each ring, from inside to out, by default [1.0, 0.0]
+        intensity value for each ring, from inside to out, by default (1.0, 0.0).
         If fewer intensities are passed than number of radii, cycles through intensities
     intensity_background : float (optional)
         intensity value of background, by default 0.5
@@ -413,7 +413,7 @@ def grating(
     stim = disc_and_rings(
         **stim_params,
         intensity_background=intensity_background,
-        intensities=intensities,
+        intensity_rings=intensity_rings,
         supersampling=supersampling,
     )
 

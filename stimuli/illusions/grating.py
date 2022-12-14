@@ -25,7 +25,7 @@ def square_wave(
     bar_width=None,
     orientation="horizontal",
     period="ignore",
-    intensity_bars=(0.0, 1.0),
+    intensity_bars=(1.0, 0.0),
     target_indices=(),
     intensity_target=0.5,
 ):
@@ -51,7 +51,7 @@ def square_wave(
     orientation : "vertical" or "horizontal" (default)
         orientation of the grating
     intensity_bars : Sequence[float, ...]
-        intensity value for each bar, by default [1.0, 0.0].
+        intensity value for each bar, by default (1.0, 0.0).
         Can specify as many intensities as n_bars;
         If fewer intensities are passed than n_bars, cycles through intensities
     target_indices : int, or Sequence[int, ...]
@@ -115,7 +115,7 @@ def grating_uniform(
     bar_width=None,
     orientation="horizontal",
     period="ignore",
-    intensity_bars=(0.0, 1.0),
+    intensity_bars=(1.0, 0.0),
     target_indices=(),
     intensity_target=0.5,
     grating_size=None,
@@ -143,7 +143,7 @@ def grating_uniform(
     orientation : "vertical" or "horizontal" (default)
         orientation of the grating
     intensity_bars : Sequence[float, ...]
-        intensity value for each bar, by default [1.0, 0.0].
+        intensity value for each bar, by default (1.0, 0.0).
         Can specify as many intensities as n_bars;
         If fewer intensities are passed than n_bars, cycles through intensities
     target_indices : int, or Sequence[int, ...]
@@ -159,7 +159,7 @@ def grating_uniform(
         dict with the stimulus (key: "img"),
         mask with integer index for each bar (key: "mask"),
         and additional keys containing stimulus parameters
-    
+
     References
     ----------
     White, M. (1981). The effect of the nature of the surround on the perceived
@@ -277,7 +277,7 @@ def grating_grating_shifted(
     bar_width=None,
     orientation="horizontal",
     period="ignore",
-    intensity_bars=(0.0, 1.0),
+    intensity_bars=(1.0, 0.0),
     target_indices=(),
     intensity_target=0.5,
 ):
@@ -305,7 +305,7 @@ def grating_grating_shifted(
     orientation : "vertical" or "horizontal" (default)
         orientation of the grating
     intensity_bars : Sequence[float, ...]
-        intensity value for each bar, by default [1.0, 0.0].
+        intensity value for each bar, by default (1.0, 0.0).
         Can specify as many intensities as n_bars;
         If fewer intensities are passed than n_bars, cycles through intensities
     target_indices : int, or Sequence[int, ...]
@@ -382,7 +382,7 @@ def grating_induction(
     bar_width=None,
     period="ignore",
     orientation="horizontal",
-    intensity_bars=(0.0, 1.0),
+    intensity_bars=(1.0, 0.0),
     target_width=0.5,
     intensity_target=0.5,
     blur=0,
@@ -491,13 +491,13 @@ if __name__ == "__main__":
 
     stims = {
         "Grating with targets": square_wave(
-            ppd=ppd, **small_grating_params, intensity_bars=(0.0, 1.0), target_indices=(3, 6)
+            ppd=ppd, **small_grating_params, intensity_bars=(1.0, 0.0), target_indices=(3, 6)
         ),
         "Grating on uniform background": grating_uniform(
             visual_size=(32, 32),
             ppd=ppd,
             **small_grating_params,
-            intensity_bars=(0.0, 1.0),
+            intensity_bars=(1.0, 0.0),
             grating_size=(10, 10),
             target_indices=(3, 6),
         ),

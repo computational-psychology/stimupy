@@ -18,7 +18,7 @@ def frames(
     n_frames=None,
     frame_width=None,
     period="ignore",
-    intensity_frames=(0.0, 1.0),
+    intensity_frames=(1.0, 0.0),
     target_indices=(),
     intensity_target=0.5,
 ):
@@ -41,10 +41,10 @@ def frames(
     period : "full", "half", "ignore" (default)
         whether to ensure the grating only has "full" periods,
         half "periods", or no guarantees ("ignore")
-    intensity_bars : Sequence[float, ...]
-        intensity value for each bar, by default [1.0, 0.0].
-        Can specify as many intensities as n_bars;
-        If fewer intensities are passed than n_bars, cycles through intensities
+    intensity_frames : Sequence[float, ...]
+        intensity value for each bar, by default (1.0, 0.0).
+        Can specify as many intensities as n_frames;
+        If fewer intensities are passed than n_frames, cycles through intensities
     target_indices : int, or Sequence[int, ...]
         indices frames where targets will be placed
     intensity_target : float, or Sequence[float, ...], optional
@@ -110,7 +110,7 @@ def bullseye(
     n_frames=None,
     frame_width=None,
     period="ignore",
-    intensity_frames=(0.0, 1.0),
+    intensity_frames=(1.0, 0.0),
     target_indices=(),
     intensity_target=0.5,
 ):
@@ -135,10 +135,10 @@ def bullseye(
     period : "full", "half", "ignore" (default)
         whether to ensure the grating only has "full" periods,
         half "periods", or no guarantees ("ignore")
-    intensity_bars : Sequence[float, ...]
-        intensity value for each bar, by default [1.0, 0.0].
-        Can specify as many intensities as n_bars;
-        If fewer intensities are passed than n_bars, cycles through intensities
+    intensity_frames : Sequence[float, ...]
+        intensity value for each frame, by default (1.0, 0.0).
+        Can specify as many intensities as n_franes;
+        If fewer intensities are passed than n_frames, cycles through intensities
     intensity_target : float, or Sequence[float, ...], optional
         intensity value for each target, by default 0.5.
         Can specify as many intensities as number of target_indices;

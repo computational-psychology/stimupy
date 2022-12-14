@@ -236,7 +236,7 @@ def draw_regions(mask, intensities, intensity_background=0.5):
     mask : numpy.ndarray
         image-array with integer-indices for each region to draw
     intensities : Sequence[float, ...]
-        intensity value for each masked region, by default [1.0, 0.0].
+        intensity value for each masked region.
         Can specify as many intensities as number of masked regions;
         If fewer intensities are passed than masked regions, cycles through intensities
     intensity_background : float, optional
