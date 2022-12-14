@@ -389,7 +389,7 @@ def pinwheel(
     )
 
     # Mask out everywhere that the disc isn't
-    stim["img"] = np.where(disc["img"], stim["img"], intensity_background)
-    stim["mask"] = np.where(disc["img"], stim["mask"], 0)
+    stim["img"] = np.where(disc["mask"], stim["img"], intensity_background)
+    stim["mask"] = np.where(disc["mask"], stim["mask"], 0)
 
     return {**stim, "radii": disc["radii"], "intensity_background": intensity_background}
