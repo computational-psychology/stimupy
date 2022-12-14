@@ -168,7 +168,7 @@ def square_wave(
         period=period,
     )
     shape, visual_size, ppd = resolution.resolve(
-        visual_size=params["visual_angle"], ppd=params["ppd"]
+        shape=params["length"] * 2, visual_size=params["visual_angle"] * 2, ppd=params["ppd"]
     )
 
     # Draw
