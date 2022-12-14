@@ -85,10 +85,11 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin=None
 def mask_elements(
     orientation,
     edges,
-    rotation=0.0,
     shape=None,
     visual_size=None,
     ppd=None,
+    rotation=0.0,
+    origin=None,
 ):
     """Generate mask with integer indices for consecutive elements
 
@@ -98,15 +99,18 @@ def mask_elements(
         which dimension to mask over
     edges : Sequence[Number]
         upper-limit of each consecutive elements
-    rotation : float, optional
-        angle of rotation (in degrees) of segments,
-        counterclockwise away from 3 o'clock, by default 0.0
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
+    rotation : float, optional
+        angle of rotation (in degrees) of segments,
+        counterclockwise away from 3 o'clock, by default 0.0
+    origin : Sequence[Number, Number], Number, or None (default)
+        placement of origin [height,width from topleft] to calculate distances from.
+        If None, set to center of visual_size
 
     Returns
     ----------
@@ -116,7 +120,9 @@ def mask_elements(
     """
 
     # Set up coordinates
-    base = image_base(shape=shape, visual_size=visual_size, ppd=ppd, rotation=rotation)
+    base = image_base(
+        shape=shape, visual_size=visual_size, ppd=ppd, rotation=rotation, origin=origin
+    )
     distances = base[orientation]
 
     # Mark elements with integer idx-value
