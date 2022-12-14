@@ -3,6 +3,7 @@ import itertools
 
 import numpy as np
 
+from stimuli.components import mask_elements
 from stimuli.components.components import image_base, resolve_grating_params
 from stimuli.utils import resize_array, resolution
 
@@ -92,7 +93,7 @@ def resolve_circular_params(
     }
 
 
-def ring_masks(
+def mask_rings(
     radii,
     shape=None,
     visual_size=None,
@@ -122,31 +123,22 @@ def ring_masks(
     ValueError
         if largest radius does not fit in visual size
     """
+
     # no axes are None; check if fits
     if visual_size.height < np.max(radii) * 2 or visual_size.width < np.max(radii) * 2:
         raise ValueError(
             f"Largest radius {np.max(radii)} does not fit in visual size {visual_size}"
         )
 
-    # Set up coordinates
-    base = image_base(shape=shape, visual_size=visual_size, ppd=ppd)
-    distances = base["radial"]
-
     # Mark elements with integer idx-value
-    mask = np.zeros(shape, dtype=int)
-    for idx, edge in zip(reversed(range(len(radii))), reversed(radii)):
-        mask[distances <= edge] = int(idx + 1)
-
-    # Assemble output
-    return {
-        "mask": mask,
-        "radii": radii,
-        "shape": base["shape"],
-        "visual_size": base["visual_size"],
-        "ppd": base["ppd"],
-        "rotation": base["rotation"],
-        "orientation": "radial",
-    }
+    return mask_elements(
+        orientation="radial",
+        edges=radii,
+        rotation=0.0,
+        shape=shape,
+        visual_size=visual_size,
+        ppd=ppd,
+    )
 
 
 def disc_and_rings(
@@ -202,7 +194,7 @@ def disc_and_rings(
         visual_size = resolution.validate_visual_size(visual_size)
 
     # Get masks for rings
-    params = ring_masks(radii, shape, visual_size, ppd)
+    params = mask_rings(radii, shape, visual_size, ppd)
     shape = params["shape"]
 
     # Supersample shape (in pixels), to allow for antialiasing
@@ -339,6 +331,7 @@ def ring(
         raise ValueError("Can only pass exactly 2 radii")
     if len([intensity]) != 1:
         raise ValueError("Can only pass 1 intensity")
+
     if radii[1] is None:
         radii[1] = np.max(visual_size) / 2
 

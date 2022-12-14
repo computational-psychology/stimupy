@@ -1,13 +1,8 @@
-import itertools
-
 import numpy as np
 
+from stimuli.components import mask_elements
 from stimuli.components.circular import ring
-from stimuli.components.components import (
-    draw_regions,
-    image_base,
-    resolve_grating_params,
-)
+from stimuli.components.components import draw_regions, resolve_grating_params
 from stimuli.utils import resolution
 
 __all__ = [
@@ -46,21 +41,17 @@ def mask_angle(
         and additional params
     """
 
-    # Set up coordinates
-    base = image_base(rotation=rotation, visual_size=visual_size, ppd=ppd, shape=shape)
-    distances = base["angular"]
-
     # Create mask
-    inner_angle, outer_angle = np.deg2rad(angles)
-    mask = (distances > inner_angle) & (distances <= outer_angle)
+    stim = mask_elements(
+        edges=np.deg2rad(angles),
+        orientation="angular",
+        rotation=rotation,
+        shape=shape,
+        visual_size=visual_size,
+        ppd=ppd,
+    )
 
-    return {
-        "mask": mask,
-        "visual_size": base["visual_size"],
-        "ppd": base["ppd"],
-        "shape": base["shape"],
-        "rotation": base["rotation"],
-    }
+    return stim
 
 
 def wedge(
@@ -166,26 +157,14 @@ def mask_segments(
         and additional keys containing stimulus parameters
     """
 
-    # Set up coordinates
-    base = image_base(shape=shape, ppd=ppd, visual_size=visual_size, rotation=rotation)
-    distances = base["angular"]
-
-    # Mark elements with integer idx-value
-    mask = np.zeros(shape, dtype=int)
-    edges = np.deg2rad(edges)
-    for idx, edge in zip(reversed(range(len(edges))), reversed(edges)):
-        mask[distances <= edge] = int(idx + 1)
-
-    # Assemble output
-    return {
-        "mask": mask,
-        "edges": edges,
-        "shape": base["shape"],
-        "visual_size": base["visual_size"],
-        "ppd": base["ppd"],
-        "rotation": base["rotation"],
-        "orientation": "angular",
-    }
+    return mask_elements(
+        orientation="angular",
+        edges=np.deg2rad(edges),
+        rotation=rotation,
+        shape=shape,
+        visual_size=visual_size,
+        ppd=ppd,
+    )
 
 
 def angular_segments(
@@ -392,4 +371,4 @@ def pinwheel(
     stim["img"] = np.where(disc["mask"], stim["img"], intensity_background)
     stim["mask"] = np.where(disc["mask"], stim["mask"], 0)
 
-    return {**stim, "radii": disc["radii"], "intensity_background": intensity_background}
+    return {**stim, "radii": disc["edges"], "intensity_background": intensity_background}

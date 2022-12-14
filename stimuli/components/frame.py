@@ -1,12 +1,7 @@
-import itertools
-
 import numpy as np
 
-from stimuli.components.components import (
-    draw_regions,
-    image_base,
-    resolve_grating_params,
-)
+from stimuli.components import mask_elements
+from stimuli.components.components import draw_regions, resolve_grating_params
 from stimuli.utils import resolution
 
 __all__ = [
@@ -17,9 +12,9 @@ __all__ = [
 
 def mask_frames(
     edges,
+    shape=None,
     visual_size=None,
     ppd=None,
-    shape=None,
 ):
     """Generate mask with integer indices for sequential square frames
 
@@ -40,26 +35,14 @@ def mask_frames(
         mask with integer index for each frame (key: "mask"),
         and additional keys containing stimulus parameters
     """
-
-    # Set up coordinates
-    base = image_base(shape=shape, visual_size=visual_size, ppd=ppd)
-    distances = base["cityblock"]
-
-    # Mark elements with integer idx-value
-    mask = np.zeros(shape, dtype=int)
-    for idx, edge in zip(reversed(range(len(edges))), reversed(edges)):
-        mask[distances <= edge] = int(idx + 1)
-
-    # Assemble output
-    return {
-        "mask": mask,
-        "edges": edges,
-        "shape": base["shape"],
-        "visual_size": base["visual_size"],
-        "ppd": base["ppd"],
-        "rotation": base["rotation"],
-        "orientation": "cityblock",
-    }
+    return mask_elements(
+        orientation="cityblock",
+        edges=edges,
+        rotation=0.0,
+        shape=shape,
+        visual_size=visual_size,
+        ppd=ppd,
+    )
 
 
 def frames(
