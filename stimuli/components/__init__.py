@@ -8,7 +8,7 @@ from stimuli.utils import resolution
 from .components import *
 
 
-def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0):
+def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin=None):
     """Create coordinate-arrays to serve as image base for drawing
 
     Parameters
@@ -33,11 +33,17 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0):
                    at each pixel
     """
 
+    # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
 
+    # Set origin
+    if origin is None:
+        origin = (visual_size.height / 2, visual_size.width / 2)
+    origin = resolution.validate_visual_size(origin)
+
     # Image axes
-    x = np.linspace(-visual_size.width / 2, visual_size.width / 2, shape.width)
-    y = np.linspace(-visual_size.height / 2, visual_size.height / 2, shape.height)
+    x = np.linspace(-origin.width, visual_size.width - origin.width, shape.width)
+    y = np.linspace(-origin.height, visual_size.height - origin.width, shape.height)
 
     # Linear distance image bases
     xx, yy = np.meshgrid(x, y)
