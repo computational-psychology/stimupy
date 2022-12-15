@@ -319,9 +319,12 @@ def draw_regions(mask, intensities, intensity_background=0.5):
     # Create background
     img = np.ones(mask.shape) * intensity_background
 
+    # Get mask indices
+    mask_idcs = np.unique(mask[mask > 0])
+
     # Assign intensities to masked regions
-    ints = [*itertools.islice(itertools.cycle(intensities), len(np.unique(mask)))]
-    for frame_idx, intensity in zip(np.unique(mask), ints):
+    ints = [*itertools.islice(itertools.cycle(intensities), len(mask_idcs))]
+    for frame_idx, intensity in zip(mask_idcs, ints):
         img = np.where(mask == frame_idx, intensity, img)
 
     return img
