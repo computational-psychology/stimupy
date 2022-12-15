@@ -3,8 +3,8 @@ import itertools
 
 import numpy as np
 
+from stimuli.components import image_base, mask_elements, resolve_grating_params
 from stimuli.utils import resize_array, resolution
-
 
 __all__ = [
     "disc_and_rings",
@@ -59,69 +59,40 @@ def resolve_circular_params(
         dictionary with all six resolution & size parameters resolved.
     """
 
-    # Try to resolve resolution
-    try:
-        shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
-    except ValueError:
-        ppd = resolution.validate_ppd(ppd)
-        shape = resolution.validate_shape(shape)
-        visual_size = resolution.validate_visual_size(visual_size)
+    # Resolve params
+    shape = resolution.validate_shape(shape)
+    ppd = resolution.validate_ppd(ppd)
+    visual_size = resolution.validate_visual_size(visual_size)
 
-    # Try to resolve number and width(s) of rings
-
-    # ring_width = degrees_per_ring = 1 / rings_per_degree = 1 / (2*frequency)
-    if ring_width is not None:
-        rings_pd = 1 / ring_width
-        if frequency is not None and rings_pd != 2 * frequency:
-            raise ValueError(f"ring_width {ring_width} and frequency {frequency} don't match")
-    elif frequency is not None:
-        rings_pd = 2 * frequency
-    else:  # both are None:
-        rings_pd = None
-
-    # Logic here is that ring_width expresses "degrees per ring",
-    # which we can invert to rings_per_degree, analogous to ppd:
-    # n_rings = rings_per_degree * n_degrees
-    # is analogous to
-    # pix = ppd * n_degrees
-    # Thus we can resolve the number and spacing of rings also as a resolution
-
-    # What is the smaller axis of visual_size?
-    try:
-        min_vis_angle = np.min([i for i in visual_size if i is not None]) / 2
-    except ValueError:
-        min_vis_angle = None
-
-    try:
-        n_rings, min_vis_angle, rings_pd = resolution.resolve_1D(
-            length=n_rings, visual_angle=min_vis_angle, ppd=rings_pd
-        )
-        min_vis_angle = min_vis_angle * 2
-        ring_width = 1 / rings_pd
-        frequency = rings_pd / 2
-    except Exception as e:
-        raise Exception("Could not resolve grating frequency, ring_width, n_rings") from e
-
-    # Now resolve resolution
-    shape, visual_size, ppd = resolution.resolve(
-        shape=shape, visual_size=(min_vis_angle, min_vis_angle), ppd=ppd
+    length = np.array(shape).min() / 2 if None not in shape else None
+    ppd_1D = np.array(ppd).min() if None not in ppd else None
+    visual_angle = np.array(visual_size).min() / 2 if None not in visual_size else None
+    params = resolve_grating_params(
+        length=length,
+        visual_angle=visual_angle,
+        n_phases=n_rings,
+        phase_width=ring_width,
+        ppd=ppd_1D,
+        frequency=frequency,
+        # period=period,
     )
-
-    # Determine radii
-    radii = [*itertools.accumulate(itertools.repeat(ring_width, n_rings))]
+    shape = resolution.validate_shape(params["length"] * 2)
+    visual_size = resolution.validate_visual_size(params["visual_angle"] * 2)
+    ppd = resolution.validate_ppd(params["ppd"])
 
     return {
         "shape": shape,
         "visual_size": visual_size,
         "ppd": ppd,
-        "frequency": frequency,
-        "ring_width": ring_width,
+        "frequency": params["frequency"],
+        "ring_width": params["phase_width"],
         "n_rings": n_rings,
-        "radii": radii,
+        # "period": params["period"],
+        "radii": params["edges"],
     }
 
 
-def ring_masks(
+def mask_rings(
     radii,
     shape=None,
     visual_size=None,
@@ -151,38 +122,27 @@ def ring_masks(
     ValueError
         if largest radius does not fit in visual size
     """
+
     # no axes are None; check if fits
     if visual_size.height < np.max(radii) * 2 or visual_size.width < np.max(radii) * 2:
         raise ValueError(
             f"Largest radius {np.max(radii)} does not fit in visual size {visual_size}"
         )
 
-    # Resolve resolution
-    shape, visual_size, ppd = resolution.resolve(shape, visual_size, ppd)
-
-    # Create image-base: compute visual angle from center for every pixel
-    x = np.linspace(-visual_size.width / 2.0, visual_size.width / 2.0, shape.width)
-    y = np.linspace(-visual_size.height / 2.0, visual_size.height / 2.0, shape.height)
-    distances = np.sqrt(x[np.newaxis, :] ** 2 + y[:, np.newaxis] ** 2)
-    mask = np.zeros(shape, dtype=int)
-
-    # Draw rings with integer idx-value
-    for radius, idx in zip(reversed(radii), reversed(range(len(radii)))):
-        mask[distances < radius] = int(idx + 1)
-
-    # Assemble output
-    params = {
-        "shape": shape,
-        "visual_size": visual_size,
-        "ppd": ppd,
-        "radii": radii,
-    }
-    return {"mask": mask, **params}
+    # Mark elements with integer idx-value
+    return mask_elements(
+        orientation="radial",
+        edges=radii,
+        rotation=0.0,
+        shape=shape,
+        visual_size=visual_size,
+        ppd=ppd,
+    )
 
 
 def disc_and_rings(
     radii,
-    intensities,
+    intensity_rings,
     shape=None,
     visual_size=None,
     ppd=None,
@@ -195,7 +155,7 @@ def disc_and_rings(
     ----------
     radii : Sequence[Number]
         outer radii of rings (& disc) in degree visual angle
-    intensities : Sequence[Number, ...]
+    intensity_rings : Sequence[Number, ...]
         intensity value for each ring, from inside to out.
         If fewer intensities are passed than number of radii, cycles through intensities
     shape : Sequence[Number, Number], Number, or None (default)
@@ -224,7 +184,7 @@ def disc_and_rings(
         # Check visual_size
         visual_size = resolution.validate_visual_size(visual_size)
 
-    if visual_size == (None, None):
+    if visual_size is None or visual_size == (None, None):
         # Two axes are None; make image large enought to fit
         visual_size = resolution.validate_visual_size(np.max(radii) * 2)
     elif None in visual_size:
@@ -233,22 +193,18 @@ def disc_and_rings(
         visual_size = resolution.validate_visual_size(visual_size)
 
     # Get masks for rings
-    params = ring_masks(radii, shape, visual_size, ppd)
+    params = mask_rings(radii, shape, visual_size, ppd)
     shape = params["shape"]
 
     # Supersample shape (in pixels), to allow for antialiasing
     super_shape = resolution.validate_shape((shape[0] * supersampling, shape[1] * supersampling))
 
-    # Create image array
-    img = np.ones(super_shape) * intensity_background
-
-    # Compute distance from center of array for every pixel, cap at 1.0
-    x = np.linspace(-visual_size.width / 2.0, visual_size.width / 2.0, super_shape.width)
-    y = np.linspace(-visual_size.height / 2.0, visual_size.height / 2.0, super_shape.height)
-    distances = np.sqrt(x[np.newaxis, :] ** 2 + y[:, np.newaxis] ** 2)
-
     # Draw rings
-    ints = [*itertools.islice(itertools.cycle(intensities), len(radii))]
+    base = image_base(shape=super_shape, visual_size=visual_size)
+    distances = base["radial"]
+
+    img = np.ones(super_shape) * intensity_background
+    ints = [*itertools.islice(itertools.cycle(intensity_rings), len(radii))]
     for radius, intensity in zip(reversed(radii), reversed(ints)):
         img[distances < radius] = intensity
 
@@ -259,7 +215,7 @@ def disc_and_rings(
     # Assemble output
     params.update(
         {
-            "intensities": intensities,
+            "intensities": intensity_rings,
             "supersampling": supersampling,
         }
     )
@@ -313,7 +269,7 @@ def disc(
         raise ValueError("Can only pass 1 intensity")
 
     stim = ring(
-        radii=[0, radius],
+        radii=np.insert(radius, 0, 0),
         intensity=intensity,
         visual_size=visual_size,
         ppd=ppd,
@@ -366,16 +322,19 @@ def ring(
     ValueError
         if passed in less/more than 1 intensity
     """
-    intensity = [intensity]
 
     if len(radii) != 2:
         raise ValueError("Can only pass exactly 2 radii")
-    if len(intensity) != 1:
+    if len([intensity]) != 1:
         raise ValueError("Can only pass 1 intensity")
+
+    if radii[1] is None:
+        shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
+        radii[1] = np.max(visual_size) / 2
 
     stim = disc_and_rings(
         radii=radii,
-        intensities=[intensity_background, intensity],
+        intensity_rings=[intensity_background, intensity],
         shape=shape,
         visual_size=visual_size,
         ppd=ppd,
@@ -395,7 +354,7 @@ def grating(
     frequency=None,
     n_rings=None,
     ring_width=None,
-    intensities=[1.0, 0.0],
+    intensity_rings=(1.0, 0.0),
     intensity_background=0.5,
     supersampling=1,
 ):
@@ -416,7 +375,7 @@ def grating(
     ring_width : Number, or None (default)
         width of a single ring, in degrees
     intensities : Sequence[Number, ...]
-        intensity value for each ring, from inside to out, by default [1.0, 0.0]
+        intensity value for each ring, from inside to out, by default (1.0, 0.0).
         If fewer intensities are passed than number of radii, cycles through intensities
     intensity_background : float (optional)
         intensity value of background, by default 0.5
@@ -444,7 +403,7 @@ def grating(
     stim = disc_and_rings(
         **stim_params,
         intensity_background=intensity_background,
-        intensities=intensities,
+        intensity_rings=intensity_rings,
         supersampling=supersampling,
     )
 

@@ -1,8 +1,7 @@
 import numpy as np
 
-from stimuli.components import square_wave
+from stimuli.components.grating import square_wave
 from stimuli.utils import degrees_to_pixels
-
 
 __all__ = [
     "white_generalized",
@@ -12,6 +11,7 @@ __all__ = [
     "white_howe",
     "white_yazdanbakhsh",
 ]
+
 
 def white_generalized(
     visual_size=None,

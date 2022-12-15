@@ -1,56 +1,14 @@
-import copy
-import itertools
-
 import numpy as np
 
+from stimuli.components import draw_regions, mask_elements, resolve_grating_params
 from stimuli.components.circular import ring
 from stimuli.utils import resolution
-
 
 __all__ = [
     "wedge",
     "grating",
-    "pinwheel",    
+    "pinwheel",
 ]
-
-
-def img_angles(rotation=0.0, visual_size=None, ppd=None, shape=None):
-    """Matrix of angle (relative to center) for each pixel
-
-    By default, 3 o'clock position == 0 degrees (0 radians);
-    this reference can be shifted using the `rotation` argument.
-
-    Parameters
-    ----------
-    rotation : float, optional
-        rotation (in degrees) counterclockwise from 3 o'clock, by default 0.0
-    visual_size : Sequence[Number, Number], Number, or None (default)
-        visual size [height, width] of image, in degrees
-    ppd : Sequence[Number, Number], Number, or None (default)
-        pixels per degree [vertical, horizontal]
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
-
-    Returns
-    -------
-    numpy.ndarray
-        array of shape, with the angle (in rad) relative to center point, for each pixel
-    """
-
-    # Resolve resolution
-    shape, visual_size, ppd = resolution.resolve(shape, visual_size, ppd)
-
-    # Image coordinates
-    x = np.linspace(-visual_size.width / 2.0, visual_size.width / 2.0, shape.width)
-    y = np.linspace(-visual_size.height / 2.0, visual_size.height / 2.0, shape.height)
-    yy, xx = np.meshgrid(y, x)
-
-    # Rotate image coordinates
-    img_angles = -np.arctan2(xx, yy)
-    img_angles -= np.deg2rad(rotation)
-    img_angles %= 2 * np.pi
-
-    return {"img": img_angles, "visual_size": visual_size, "ppd": ppd}
 
 
 def mask_angle(
@@ -82,14 +40,14 @@ def mask_angle(
         and additional params
     """
 
-    params = img_angles(rotation=rotation, visual_size=visual_size, ppd=ppd, shape=shape)
-    image_angles = params.pop("img")
-
-    # Create mask
-    inner_angle, outer_angle = np.deg2rad(angles)
-    bool_mask = (image_angles > inner_angle) & (image_angles <= outer_angle)
-
-    return {"mask": bool_mask, **params}
+    return mask_elements(
+        edges=np.deg2rad(angles),
+        orientation="angular",
+        rotation=rotation,
+        shape=shape,
+        visual_size=visual_size,
+        ppd=ppd,
+    )
 
 
 def wedge(
@@ -165,26 +123,67 @@ def wedge(
     return stim
 
 
-def angular_segments(
-    angles,
+def mask_segments(
+    edges,
     rotation=0.0,
-    intensities=None,
     visual_size=None,
     ppd=None,
     shape=None,
 ):
-    """Generate mask with integer indices for angular segments
+    """Generate mask with integer indices for consecutive angular segments
+
+    Parameters
+    ----------
+    edges : Sequence[Number]
+        upper-limit of each consecutive segment, in angular degrees 0-360
+    rotation : float, optional
+        angle of rotation (in degrees) of segments,
+        counterclockwise away from 3 o'clock, by default 0.0
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+
+    Returns
+    ----------
+    dict[str, Any]
+        mask with integer index for each angular segment (key: "mask"),
+        and additional keys containing stimulus parameters
+    """
+
+    return mask_elements(
+        orientation="angular",
+        edges=np.deg2rad(edges),
+        rotation=rotation,
+        shape=shape,
+        visual_size=visual_size,
+        ppd=ppd,
+    )
+
+
+def angular_segments(
+    angles,
+    intensity_segments,
+    rotation=0.0,
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    intensity_background=0.5,
+):
+    """Generate mask with integer indices for sequential angular segments
 
     Parameters
     ----------
     angles : Sequence[Number]
-        lower- and upper-limit (in angular degrees 0-360) of each segment
+        upper-limit of each segment, in angular degrees 0-360
+    intensities : Sequence[Number, ...]
+        intensity value for each segment, from inside to out.
+        If fewer intensities are passed than number of radii, cycles through intensities
     rotation : float, optional
         angle of rotation (in degrees) of segments,
         counterclockwise away from 3 o'clock, by default 0.0
-    intensities : Sequence[Number, ...]
-        intensity value for each segment, from inside to out, by default [1.0, 0.0]
-        If fewer intensities are passed than number of radii, cycles through intensities
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
@@ -199,117 +198,17 @@ def angular_segments(
         and additional keys containing stimulus parameters
     """
 
-    # Resolve resolution
-    shape, visual_size, ppd = resolution.resolve(shape, visual_size, ppd)
+    # Get mask
+    stim = mask_segments(
+        edges=angles, visual_size=visual_size, ppd=ppd, shape=shape, rotation=rotation
+    )
 
-    # Convert to segment angles
-    angles = np.array(angles)
+    # Draw image
+    stim["img"] = draw_regions(
+        stim["mask"], intensities=intensity_segments, intensity_background=intensity_background
+    )
 
-    # Figure out intensities
-    if intensities is None:
-        intensities = itertools.count(1)
-    ints = itertools.cycle(intensities)
-
-    # Accumulate img, mask
-    img = np.zeros(shape)
-    mask = np.zeros(shape, dtype=int)
-    for (idx, angle), intensity in zip(enumerate(angles[:-1]), ints):
-        bool_mask = mask_angle(
-            rotation=rotation,
-            angles=[angle, angles[idx + 1]],
-            visual_size=visual_size,
-            shape=shape,
-            ppd=ppd,
-        )
-        img += bool_mask["mask"] * intensity
-        mask += bool_mask["mask"] * (idx + 1)
-
-    return {"img": img, "mask": mask, "angles": angles, "visual_size": visual_size, "ppd": ppd}
-
-
-def resolve_angular_params(
-    shape=None,
-    visual_size=None,
-    ppd=None,
-    frequency=None,
-    n_segments=None,
-    segment_width=None,
-):
-    """Resolve (if possible) spatial parameters for angular grating, i.e., set of segments
-
-    Angular grating (circle segments) component takes the regular resolution parameters
-    (shape, ppd, visual_size). In addition, there has to be an additional specification
-    of the number of segments, and their width. This can be done in two ways:
-    a segment_width (in degrees) and n_segments, and/or by specifying the spatial frequency
-    of a angular grating (in cycles per degree)
-
-    The total shape (in pixels) and visual size (in degrees) has to match the
-    specification of the segments and their widths.
-    Thus, not all 6 parameters have to be specified, as long as the both the resolution
-    and the distribution of segments can be resolved.
-
-    Note: all segments in a grating have the same width
-
-    Parameters
-    ----------
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
-    visual_size : Sequence[Number, Number], Number, or None (default)
-        visual size [height, width] of image, in degrees
-    ppd : Sequence[Number, Number], Number, or None (default)
-        pixels per degree [vertical, horizontal]
-    frequency : Number, or None (default)
-        spatial frequency of angular grating, in cycles per degree
-    n_segments : int, or None (default)
-        number of segments
-    segment_width : Number, or None (default)
-        width of a single segment, in degrees
-
-    Returns
-    -------
-    dict[str, Any]
-        dictionary with all six resolution & size parameters resolved.
-    """
-
-    # Resolve resolution
-    resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
-
-    # Try to resolve number and width(s) of segments
-    # segment_width = degrees_per_segment = 1 / segments_per_degree = 1 / (2*frequency)
-    if segment_width is not None:
-        segment_per_degree = 1 / segment_width
-        if frequency is not None and segment_per_degree != 2 * frequency:
-            raise ValueError(
-                f"segment_width {segment_width} and frequency {frequency} don't match"
-            )
-    elif frequency is not None:
-        segment_per_degree = 2 * frequency
-    else:  # both are None:
-        segment_per_degree = None
-
-    # Logic here is that segment_width expresses "degrees per segment",
-    # which we can invert to segments_per_degree, analogous to ppd:
-    # n_segments = segments_per_degree * n_degrees
-    # is analogous to
-    # pix = ppd * n_degrees
-    # Thus we can resolve the number and spacing of segments also as a resolution
-    try:
-        n_segments, _, segment_per_degree = resolution.resolve_1D(
-            length=n_segments, visual_angle=360, ppd=segment_per_degree
-        )
-        segment_width = 1 / segment_per_degree
-        frequency = segment_per_degree / 2
-    except Exception as e:
-        raise Exception("Could not resolve grating frequency, segment_width, n_segments") from e
-
-    return {
-        "shape": shape,
-        "visual_size": visual_size,
-        "ppd": ppd,
-        "frequency": frequency,
-        "segment_width": segment_width,
-        "n_segments": n_segments,
-    }
+    return stim
 
 
 def grating(
@@ -320,7 +219,7 @@ def grating(
     n_segments=None,
     segment_width=None,
     rotation=0.0,
-    intensities=[1.0, 0.0],
+    intensity_segments=(1.0, 0.0),
 ):
     """Draw an angular grating, i.e., set of segments
 
@@ -341,8 +240,8 @@ def grating(
     rotation : float, optional
         angle of rotation (in degrees) grating segments,
         counterclockwise away from 3 o'clock, by default 0.0
-    intensities : Sequence[Number, ...]
-        intensity value for each segment, from inside to out, by default [1.0, 0.0]
+    intensity_segments : Sequence[Number, ...]
+        intensity value for each segment, from inside to out, by default (1.0, 0.0).
         If fewer intensities are passed than number of radii, cycles through intensities
 
     Returns
@@ -353,30 +252,40 @@ def grating(
         and additional keys containing stimulus parameters
     """
 
-    # Resolve grating
-    params = resolve_angular_params(shape, visual_size, ppd, frequency, n_segments, segment_width)
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
 
-    # Clean-up params for passing through
-    stim_params = copy.deepcopy(params)
-    n_segments = stim_params.pop("n_segments", None)
-    segment_width = stim_params.pop("segment_width", None)
-    stim_params.pop("frequency", None)
+    # Resolve grating
+    params = resolve_grating_params(
+        visual_angle=360,
+        ppd=1,
+        frequency=frequency,
+        n_phases=n_segments,
+        phase_width=segment_width,
+        period="ignore",
+    )
 
     # Determine angles
-    angular_widths = itertools.repeat(segment_width, n_segments - 1)
-    angles = np.array([0] + [*itertools.accumulate(angular_widths)] + [360])
+    angles = params["edges"]
     angles = sorted(np.unique(angles))
 
     # Draw stim
     stim = angular_segments(
-        angles,
+        angles=angles,
         rotation=rotation,
-        **stim_params,
-        intensities=intensities,
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        intensity_segments=intensity_segments,
     )
 
     # Assemble output
-    return {**stim, **params}
+    return {
+        **stim,
+        "n_segments": params["n_phases"],
+        "frequency": params["frequency"],
+        "n_segments": params["n_phases"],
+    }
 
 
 def pinwheel(
@@ -386,7 +295,7 @@ def pinwheel(
     segment_width=None,
     rotation=0.0,
     inner_radius=0.0,
-    intensities=[1.0, 0.0],
+    intensity_segments=(1.0, 0.0),
     intensity_background=0.5,
     visual_size=None,
     ppd=None,
@@ -409,8 +318,8 @@ def pinwheel(
         counterclockwise from 3 o'clock, by default 0.0
     inner_radius : float, optional
         inner radius (in degrees visual angle), to turn disc into a ring, by default 0.0
-    intensities : Sequence[Number, ...]
-        intensity value for each segment, from inside to out, by default [1.0, 0.0]
+    intensity_segments : Sequence[Number, ...]
+        intensity value for each segment, from inside to out, by default (1.0, 0.0).
         If fewer intensities are passed than number of radii, cycles through intensities
     intensity_background : float (optional)
         intensity value of background, by default 0.5
@@ -432,8 +341,8 @@ def pinwheel(
     # Get disc
     disc = ring(
         radii=[inner_radius, radius],
-        intensity=1,
-        intensity_background=0,
+        intensity=1.0,
+        intensity_background=0.0,
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,
@@ -448,14 +357,14 @@ def pinwheel(
         n_segments=n_segments,
         segment_width=segment_width,
         rotation=rotation,
-        intensities=intensities,
+        intensity_segments=intensity_segments,
         visual_size=visual_size,
         shape=shape,
         ppd=ppd,
     )
 
     # Mask out everywhere that the disc isn't
-    stim["img"] = np.where(disc["img"], stim["img"], intensity_background)
-    stim["mask"] = np.where(disc["img"], stim["mask"], 0)
+    stim["img"] = np.where(disc["mask"], stim["img"], intensity_background)
+    stim["mask"] = np.where(disc["mask"], stim["mask"], 0)
 
-    return {**stim, "radii": disc["radii"], "intensity_background": intensity_background}
+    return {**stim, "radii": disc["edges"], "intensity_background": intensity_background}

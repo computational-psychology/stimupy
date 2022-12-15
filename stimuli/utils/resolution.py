@@ -234,7 +234,7 @@ def pix_from_visual_angle_ppd_1D(visual_angle, ppd, round=True):
 
         if round:
             pix = int(fpix)
-            if fpix % pix:
+            if fpix > 0 and fpix % pix:
                 warnings.warn(f"Rounding shape; {visual_angle} * {ppd} = {fpix} -> {pix}")
         else:
             pix = fpix
@@ -511,8 +511,8 @@ def validate_visual_size(visual_size):
         height = float(height)
 
     # Check non-negative
-    if (width is not None and width <= 0) or (height is not None and height <= 0):
-        raise ValueError(f"visual_size has to be positive; {width, height}")
+    if (width is not None and width < 0) or (height is not None and height < 0):
+        raise ValueError(f"visual_size has to be nonnegative; {width, height}")
 
     # Initiate namedtuple:
     return Visual_size(height=height, width=width)
