@@ -1,4 +1,3 @@
-from stimuli.utils import plot_stimuli
 import stimuli.illusions.angular as angular
 import stimuli.illusions.benary_cross as benarys
 import stimuli.illusions.checkerboards as checkerboards
@@ -6,8 +5,6 @@ import stimuli.illusions.circular as circular
 import stimuli.illusions.cornsweet as cornsweet
 import stimuli.illusions.cube as cube
 import stimuli.illusions.dungeon as dungeon
-from stimuli.illusions import frames as frames # TODO: rename?
-from stimuli.illusions import bullseye as bullseye
 import stimuli.illusions.grating as grating
 import stimuli.illusions.hermann as hermann
 import stimuli.illusions.mondrians as mondrians
@@ -15,16 +12,18 @@ import stimuli.illusions.sbc as sbc
 import stimuli.illusions.todorovic as todorovic
 import stimuli.illusions.wedding_cake as wedding_cake
 import stimuli.illusions.whites as whites
-
+from stimuli.illusions import bullseye as bullseye
+from stimuli.illusions import frames as frames  # TODO: rename?
+from stimuli.utils import plot_stimuli
 
 p = {
     "visual_size": (10, 10),
     "ppd": 20,
-    }
+}
 
 p_mondrians = {
     "ppd": 10,
-    "widths": 2.0,
+    "width": 2.0,
     "heights": 2.0,
     "depths": (0.0, 1.0, 0.0, -1.0),
     "target_indices": ((1, 1), (3, 1)),
@@ -32,8 +31,9 @@ p_mondrians = {
         (0.4, 0.75, 0.4, 0.75),
         (0.75, 0.4, 0.75, 1.0),
         (0.4, 0.75, 0.4, 0.75),
-        (0.0, 0.4, 0.0, 0.4),)
-    }
+        (0.0, 0.4, 0.0, 0.4),
+    ),
+}
 
 # fmt: off
 stims = {
