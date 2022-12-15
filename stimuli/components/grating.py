@@ -1,8 +1,4 @@
-import itertools
-
-import numpy as np
-
-from stimuli.components import mask_elements, resolve_grating_params
+from stimuli.components import draw_regions, mask_elements, resolve_grating_params
 from stimuli.utils import resolution
 
 __all__ = [
@@ -152,16 +148,11 @@ def square_wave(
         ppd=ppd,
         orientation=orientation,
     )
-    mask = stim["mask"]
 
-    # Draw bars
-    img = np.zeros(mask.shape)
-    ints = [*itertools.islice(itertools.cycle(intensity_bars), len(np.unique(mask)))]
-    for bar_idx, intensity in zip(np.unique(mask), ints):
-        img = np.where(mask == bar_idx, intensity, img)
+    # Draw image
+    stim["img"] = draw_regions(stim["mask"], intensities=intensity_bars)
 
     return {
-        "img": img,
         **stim,
         "frequency": params["frequency"],
         "bar_width": params["phase_width"],
