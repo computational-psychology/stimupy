@@ -129,7 +129,6 @@ def mask_elements(
     # Mark elements with integer idx-value
     mask = np.zeros(base["shape"], dtype=int)
     for idx, edge in zip(reversed(range(len(edges))), reversed(edges)):
-        edge = np.round(edge, 10)
         mask[distances <= edge] = int(idx + 1)
 
     # Assemble output
@@ -284,8 +283,8 @@ def resolve_grating_params(
         )
 
     # Accumulate edges of phases
-    edges = [*itertools.accumulate(itertools.repeat(phase_width, int(np.ceil(n_phases))))]
-    if "period" == "ignore":
+    edges = [*itertools.accumulate(itertools.repeat(phase_width, int(n_phases)))]
+    if period == "ignore":
         edges += [visual_angle]
 
     return {
