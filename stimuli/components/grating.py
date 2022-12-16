@@ -159,3 +159,48 @@ def square_wave(
         "n_bars": params["n_phases"],
         "period": params["period"],
     }
+
+
+if __name__ == "__main__":
+    from stimuli.utils.plotting import plot_stimuli
+
+    p1 = {
+          "visual_size": 5,
+          "ppd": 10,
+          "frequency": 2,
+          "period": "even",
+          }
+    
+    p2 = {
+          "visual_size": 5,
+          "ppd": 20,
+          "n_bars": 20,
+          "period": "even",
+          }
+    
+    p3 = {
+          "visual_size": 5,
+          "ppd": 10,
+          "frequency": 5,
+          "period": "even",
+          }
+    
+    p4 = {
+          "visual_size": 5,
+          "ppd": 40,
+          "frequency": 1.2,
+          "period": "ignore",
+          }
+    
+    sw1 = square_wave(**p1)
+    sw2 = square_wave(**p2)
+    sw3 = square_wave(**p3)
+    sw4 = square_wave(**p4)
+    
+    stims = {
+        "sw1": sw1,
+        "sw2": sw2,
+        "sw3": sw3,
+        "sw4": sw4,
+        }
+    plot_stimuli(stims)
