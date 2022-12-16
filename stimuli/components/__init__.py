@@ -1,9 +1,10 @@
 import itertools
 import warnings
 from copy import deepcopy
+
 import numpy as np
 
-from stimuli.utils import resolution
+from stimuli.utils import int_factorize, resolution
 
 from .components import *
 
@@ -370,3 +371,20 @@ def draw_regions(mask, intensities, intensity_background=0.5):
         img = np.where(mask == frame_idx, intensity, img)
 
     return img
+
+
+def round_n_phases(n_phases, length, period):
+    # n_phases has to integer-divide length
+    possible_phase_pix = np.array(list(int_factorize(length)))
+    possible_n_phases = length / possible_phase_pix
+
+    if period == "even":
+        # only look at possible_n_phases that are even
+        possible_n_phases = possible_n_phases[possible_n_phases % 2 == 0]
+    elif period == "odd":
+        # only look at possible_n_phases that are odd
+        possible_n_phases = possible_n_phases[possible_n_phases % 2 != 0]
+
+    closest = possible_n_phases[np.argmin(np.abs(possible_n_phases - n_phases))]
+
+    return int(closest)
