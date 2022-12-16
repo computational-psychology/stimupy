@@ -165,42 +165,36 @@ if __name__ == "__main__":
     from stimuli.utils.plotting import plot_stimuli
 
     p1 = {
-          "visual_size": 5,
-          "ppd": 10,
-          "frequency": 2,
-          "period": "even",
-          }
-    
+        "visual_size": 15,
+        "ppd": 10,
+        "n_bars": 5,
+    }
+
     p2 = {
-          "visual_size": 5,
-          "ppd": 20,
-          "n_bars": 20,
-          "period": "even",
-          }
-    
+        "visual_size": 15,
+        "ppd": 10,
+        "bar_width": 3.5,
+        "period": "even",
+    }
+
     p3 = {
-          "visual_size": 5,
-          "ppd": 10,
-          "frequency": 5,
-          "period": "even",
-          }
-    
+        "visual_size": 15,
+        "ppd": 10,
+        "bar_width": 3.5,
+        "period": "odd",
+    }
+
     p4 = {
-          "visual_size": 5,
-          "ppd": 40,
-          "frequency": 1.2,
-          "period": "ignore",
-          }
-    
-    sw1 = square_wave(**p1)
-    sw2 = square_wave(**p2)
-    sw3 = square_wave(**p3)
-    sw4 = square_wave(**p4)
-    
+        "visual_size": 15,
+        "ppd": 10,
+        "bar_width": 3.5,
+        "period": "ignore",
+    }
+
     stims = {
-        "sw1": sw1,
-        "sw2": sw2,
-        "sw3": sw3,
-        "sw4": sw4,
-        }
+        "n_bars": square_wave(**p1),
+        "even": square_wave(**p2),
+        "odd": square_wave(**p3),
+        "ignore": square_wave(**p4),
+    }
     plot_stimuli(stims)
