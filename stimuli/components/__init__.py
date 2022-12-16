@@ -216,17 +216,11 @@ def resolve_grating_params(
     # which we can convert to "phases_per_degree"
     # phase_width = degrees_per_phase = 1 / phases_per_degree = 1 / (2*frequency)
     if phase_width is not None:
-        # Make sure that phase width is realisable given ppd
-        phase_width = np.round(phase_width * ppd) / ppd
         phases_pd = 1 / phase_width
         if frequency is not None and phases_pd != 2 * frequency:
             raise ValueError(f"phase_width {phase_width} and frequency {frequency} don't match")
     elif frequency is not None:
-        # Make sure that frequency is realisable given ppd
         phases_pd = 2 * frequency
-        phase_width = np.round(1 / phases_pd * ppd) / ppd
-        phases_pd = 1 / phase_width
-        frequency = phases_pd / 2
     else:  # both are None:
         phases_pd = None
 
@@ -237,7 +231,7 @@ def resolve_grating_params(
     # pix = ppd * n_degrees
     # Thus we can resolve the number and spacing of phases also as a resolution
     try:
-        n_phases, min_angle, phases_pd_calc = resolution.resolve_1D(
+        n_phases, min_angle, phases_pd = resolution.resolve_1D(
             length=n_phases,
             visual_angle=visual_angle,
             ppd=phases_pd,
@@ -245,18 +239,6 @@ def resolve_grating_params(
         )
     except Exception as e:
         raise Exception("Could not resolve grating frequency, phase_width, n_phases") from e
-
-    phase_width = 1 / phases_pd_calc
-    phase_width = np.round(phase_width * ppd) / ppd
-    phases_pd = 1 / phase_width
-    frequency = phases_pd / 2
-    
-    n_phases, min_angle, phases_pd_calc = resolution.resolve_1D(
-        length=None,
-        visual_angle=visual_angle,
-        ppd=phases_pd,
-        round=False,
-    )
 
     # Now resolve resolution
     visual_angle = min_angle if visual_angle is None else visual_angle
@@ -266,55 +248,34 @@ def resolve_grating_params(
 
     # Ensure full/half period?
     if period != "ignore":
-        # Round n_phases
-        if period == "even":  # n_phases has to be even
-            n_phases = np.round(n_phases / 2) * 2
-            phase_candidates = [n_phases, n_phases-2, n_phases+2, n_phases-4, n_phases+4, n_phases-6, n_phases+6]
-            phase_candidates = [n_phases]
-        elif period == "either":  # n_phases can be odd
-            n_phases = np.round(n_phases)
-            phase_candidates = [n_phases, n_phases-1, n_phases+1, n_phases-2, n_phases+2, n_phases-3, n_phases+3]
-        elif period == "odd":  # n_phases can be odd
-            n_phases = np.round(n_phases / 2) * 2 + 1
-            phase_candidates = [n_phases, n_phases-2, n_phases+2, n_phases-4, n_phases+4, n_phases-6, n_phases+6]
+        n_phases = round_n_phases(n_phases=n_phases, length=length, period=period)
 
-        for pc in phase_candidates:
-            # Recalculate phases_pd
-            n_phases, min_angle, phases_pd = resolution.resolve_1D(
-                length=pc,
-                visual_angle=visual_angle,
-                ppd=None,
-                round=False,
-            )
-        
-            # Convert to frequency
-            phase_width = 1 / phases_pd
-            frequency = phases_pd / 2
-            
-            if not (phase_width*ppd) % 1:
-                break
+        # Calculate other params again:
+        n_phases, min_angle, phases_pd = resolution.resolve_1D(
+            length=n_phases,
+            visual_angle=visual_angle,
+            ppd=None,
+            round=False,
+        )
+    phase_width = 1 / phases_pd
+    frequency = phases_pd / 2
 
-        if (phase_width*ppd) % 1:
-            raise resolution.ResolutionError(f"Cannot fit an {period} number of phases in {length} pix while "
-                                              "considering other parameters. Change parameters or increase ppd.")
-    
-    if old_n_phases is not None:
-        if (n_phases < (old_n_phases-1)) or (n_phases > (old_n_phases+1)):
-            raise resolution.ResolutionError(f"Cannot fit {old_n_phases} phases in {length} pix."
-                                             " Change parameters or increase ppd. Best possible at "
-                                             f"given resolution: {n_phases} phases")
+    # Check & warn if we changed some params
+    if old_n_phases is not None and n_phases != old_n_phases:
+        warnings.warn(
+            f"Adjusted n_phases={old_n_phases}->{n_phases} because original"
+            f"phase_width {old_phase_width} -> {phase_width} did not fit"
+        )
 
-        if n_phases != old_n_phases:
-            warnings.warn(
-                f"Adjusted n_phases={old_n_phases}->{n_phases} because original"
-                f"phase_width {old_phase_width} -> {phase_width} did not fit"
-            )
+    if old_phase_width is not None and phase_width != old_phase_width:
+        warnings.warn(
+            f"Adjusted phase width because of poor resolution: {old_phase_width} -> {phase_width}"
+        )
 
-    if (old_phase_width is not None and phase_width != old_phase_width):
-        warnings.warn(f"Adjusted phase width because of poor resolution: {old_phase_width} -> {phase_width}")
-    
-    if (old_frequency is not None and frequency != old_frequency):
-        warnings.warn(f"Adjusted frequency because of poor resolution: {old_frequency} -> {frequency}")
+    if old_frequency is not None and frequency != old_frequency:
+        warnings.warn(
+            f"Adjusted frequency because of poor resolution: {old_frequency} -> {frequency}"
+        )
 
     # Check that frequency does not exceed Nyquist limit:
     if frequency > (ppd / 2):
