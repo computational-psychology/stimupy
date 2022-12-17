@@ -165,9 +165,9 @@ if __name__ == "__main__":
     from stimuli.utils.plotting import plot_stimuli
 
     p1 = {
-        "visual_size": 15,
+        "visual_size": 5,
         "ppd": 10,
-        "n_bars": 5,
+        "n_bars": 11,
     }
 
     p2 = {

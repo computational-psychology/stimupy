@@ -238,6 +238,12 @@ def resolve_grating_params(
         )
     except Exception as e:
         raise Exception("Could not resolve grating frequency, phase_width, n_phases") from e
+    
+    if period == "ignore":
+        phase_width = 1 / phases_pd
+        phase_width = np.round(phase_width * ppd) / ppd
+        phases_pd = 1 / phase_width
+
 
     # Now resolve resolution
     visual_angle = min_angle if visual_angle is None else visual_angle
@@ -260,21 +266,37 @@ def resolve_grating_params(
     frequency = phases_pd / 2
 
     # Check & warn if we changed some params
-    if old_n_phases is not None and n_phases != old_n_phases:
-        warnings.warn(
-            f"Adjusted n_phases={old_n_phases}->{n_phases} because original"
-            f"phase_width {old_phase_width} -> {phase_width} did not fit"
-        )
+    if period == "ignore":
+        n_phases = length / (phase_width*ppd)
+        if old_n_phases is not None and n_phases != old_n_phases:
+            warnings.warn(
+                f"Adjusted n_phases={old_n_phases}->{n_phases} because of poor resolution"
+            )
 
-    if old_phase_width is not None and phase_width != old_phase_width:
-        warnings.warn(
-            f"Adjusted phase width because of poor resolution: {old_phase_width} -> {phase_width}"
-        )
-
-    if old_frequency is not None and frequency != old_frequency:
-        warnings.warn(
-            f"Adjusted frequency because of poor resolution: {old_frequency} -> {frequency}"
-        )
+        if old_phase_width is not None and phase_width != old_phase_width:
+            warnings.warn(
+                f"Adjusted phase_width={old_phase_width}->{phase_width} because of poor resolution"
+            )
+    
+        if old_frequency is not None and frequency != old_frequency:
+            warnings.warn(
+                f"Adjusted frequency={old_frequency}->{frequency} because of poor resolution"
+            )
+    else:
+        if old_n_phases is not None and n_phases != old_n_phases:
+            warnings.warn(
+                f"Adjusted n_phases={old_n_phases}->{n_phases} because of period={period}"
+            )
+    
+        if old_phase_width is not None and phase_width != old_phase_width:
+            warnings.warn(
+                f"Adjusted phase_width={old_phase_width}->{phase_width} because of period={period}"
+            )
+    
+        if old_frequency is not None and frequency != old_frequency:
+            warnings.warn(
+                f"Adjusted frequency={old_frequency}->{frequency} because of period={period}"
+            )
 
     # Check that frequency does not exceed Nyquist limit:
     if frequency > (ppd / 2):
