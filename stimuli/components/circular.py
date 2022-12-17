@@ -10,6 +10,7 @@ __all__ = [
     "disc_and_rings",
     "disc",
     "ring",
+    "annulus",
     "grating",
 ]
 

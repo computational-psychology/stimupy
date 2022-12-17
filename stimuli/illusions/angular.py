@@ -3,7 +3,7 @@ import itertools
 import numpy as np
 
 from stimuli.components.angular import pinwheel
-from stimuli.components.circular import ring
+from stimuli.components.shapes import ring
 
 __all__ = [
     "radial_white",

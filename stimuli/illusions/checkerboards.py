@@ -1,7 +1,7 @@
 import numpy as np
 
-from stimuli.components import transparency
 from stimuli.components.checkerboard import checkerboard as board
+from stimuli.components.shapes import transparency
 from stimuli.utils import resolution
 
 __all__ = [

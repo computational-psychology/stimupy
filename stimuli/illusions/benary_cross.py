@@ -1,10 +1,10 @@
-import numpy as np
 import warnings
+
+import numpy as np
 from scipy.ndimage import rotate
 
-from stimuli.components import cross, triangle
+from stimuli.components.shapes import cross, triangle
 from stimuli.utils import degrees_to_pixels, resolution
-
 
 __all__ = [
     "benarys_cross_generalized",
@@ -14,6 +14,7 @@ __all__ = [
     "todorovic_benary_rectangles",
     "todorovic_benary_triangles",
 ]
+
 
 def benarys_cross_generalized(
     visual_size=None,
@@ -62,7 +63,7 @@ def benarys_cross_generalized(
     Returns
     -------
     A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
-    
+
     References
     -----------
     Benary, W. (1924). Beobachtungen zu einem Experiment ueber Helligkeitskontrast.
@@ -70,30 +71,31 @@ def benarys_cross_generalized(
     """
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
-    
+
     if len(np.unique(ppd)) > 1:
         raise ValueError("ppd should be equal in x and y direction")
-    
+
     # Create cross
     img = cross(
         visual_size=visual_size,
         ppd=np.unique(ppd),
-        cross_arm_ratios=1.,
+        cross_arm_ratios=1.0,
         cross_thickness=cross_thickness,
         intensity_background=intensity_background,
         intensity_cross=intensity_cross,
-        )["img"]
+    )["img"]
 
     # Add targets
-    stim = add_targets(img,
-                       np.unique(ppd),
-                       target_size,
-                       target_type,
-                       target_orientation,
-                       target_x,
-                       target_y,
-                       intensity_target,
-                       )
+    stim = add_targets(
+        img,
+        np.unique(ppd),
+        target_size,
+        target_type,
+        target_orientation,
+        target_x,
+        target_y,
+        intensity_target,
+    )
 
     # Add missing parameter information
     stim["visual_size"] = visual_size
@@ -147,7 +149,7 @@ def benarys_cross_rectangles(
         Psychologische Forschung, 5, 131–142. https://doi.org/10.1007/BF00402398
     """
     # Resolve resolution
-    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)    
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
     if len(np.unique(ppd)) > 1:
         raise ValueError("ppd should be equal in x and y direction")
 
@@ -176,7 +178,7 @@ def benarys_cross_rectangles(
         cross_thickness=cross_thickness,
         target_size=target_size,
         target_type=("r",) * 2,
-        target_orientation=0.,
+        target_orientation=0.0,
         target_x=np.round(np.array(target_x) * ppd) / ppd,
         target_y=np.round(np.array(target_y) * ppd) / ppd,
         intensity_background=intensity_background,
@@ -228,7 +230,7 @@ def benarys_cross_triangles(
         Psychologische Forschung, 5, 131–142. https://doi.org/10.1007/BF00402398
     """
     # Resolve resolution
-    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)    
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
     if len(np.unique(ppd)) > 1:
         raise ValueError("ppd should be equal in x and y direction")
 
@@ -256,7 +258,7 @@ def benarys_cross_triangles(
         shape=shape,
         cross_thickness=cross_thickness,
         target_size=target_size,
-        target_type=("t",)*2,
+        target_type=("t",) * 2,
         target_orientation=(90.0, 45.0),
         target_x=np.round(np.array(target_x) * ppd) / ppd,
         target_y=np.round(np.array(target_y) * ppd) / ppd,
@@ -321,29 +323,30 @@ def todorovic_benary_generalized(
         Psychologische Forschung, 5, 131–142. https://doi.org/10.1007/BF00402398
     """
     # Resolve resolution
-    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)    
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
     if len(np.unique(ppd)) > 1:
         raise ValueError("ppd should be equal in x and y direction")
 
     L_size = (visual_size[0] / 2, visual_size[0] / 2, L_width, visual_size[1] - L_width)
     top, bottom, left, right = degrees_to_pixels(L_size, np.unique(ppd))
     width, height = left + right, top + bottom
-    
+
     # Create stimulus without targets
     img = np.ones((height, width)) * intensity_background
     img[:, 0:left] = intensity_cross
     img[height - bottom : :, 0 : width - left] = intensity_cross
 
     # Add targets
-    stim = add_targets(img,
-                       np.unique(ppd),
-                       target_size,
-                       target_type,
-                       target_orientation,
-                       target_x,
-                       target_y,
-                       intensity_target,
-                       )
+    stim = add_targets(
+        img,
+        np.unique(ppd),
+        target_size,
+        target_type,
+        target_orientation,
+        target_x,
+        target_y,
+        intensity_target,
+    )
 
     # Add missing parameter information
     stim["visual_size"] = visual_size
@@ -398,7 +401,7 @@ def todorovic_benary_rectangles(
         Psychologische Forschung, 5, 131–142. https://doi.org/10.1007/BF00402398
     """
     # Resolve resolution
-    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)    
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
     if len(np.unique(ppd)) > 1:
         raise ValueError("ppd should be equal in x and y direction")
 
@@ -470,7 +473,7 @@ def todorovic_benary_triangles(
         Psychologische Forschung, 5, 131–142. https://doi.org/10.1007/BF00402398
     """
     # Resolve resolution
-    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)    
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
     if len(np.unique(ppd)) > 1:
         raise ValueError("ppd should be equal in x and y direction")
 
@@ -502,15 +505,15 @@ def todorovic_benary_triangles(
 
 
 def add_targets(
-        img,
-        ppd,
-        target_size,
-        target_type,
-        target_orientation,
-        target_x,
-        target_y,
-        intensity_target,
-        ):
+    img,
+    ppd,
+    target_size,
+    target_type,
+    target_orientation,
+    target_x,
+    target_y,
+    intensity_target,
+):
     """Add targets to Benary-like stimulus
 
     Parameters
@@ -538,22 +541,24 @@ def add_targets(
     """
 
     mask = np.zeros(img.shape)
-    
+
     # If any target information is missing, dont add targets
-    if ((target_size is None) or
-        (target_type is None) or
-        (target_orientation is None) or
-        (target_x is None) or
-        (target_y is None)):
-            warnings.warn("Target information is missing - no target added")
-            stim = {
-                "target_size": None,
-                "target_type": None,
-                "target_orientation": None,
-                "target_x": None,
-                "target_y": None,
-                "intensity_target": None,
-                }
+    if (
+        (target_size is None)
+        or (target_type is None)
+        or (target_orientation is None)
+        or (target_x is None)
+        or (target_y is None)
+    ):
+        warnings.warn("Target information is missing - no target added")
+        stim = {
+            "target_size": None,
+            "target_type": None,
+            "target_orientation": None,
+            "target_x": None,
+            "target_y": None,
+            "intensity_target": None,
+        }
 
     # Re-format all target information and add targets
     else:
@@ -571,11 +576,11 @@ def add_targets(
             raise ValueError("Leftmost target does not fit into image")
         if np.min(target_y) < 0:
             raise ValueError("Topmost target does not fit into image")
-    
+
         n_targets = np.max(
             np.array([len(target_type), len(target_orientation), len(target_x), len(target_y)])
         )
-    
+
         if len(target_type) == 1:
             target_type = target_type * n_targets
         if len(target_orientation) == 1:
@@ -584,37 +589,37 @@ def add_targets(
             target_x = target_x * n_targets
         if len(target_y) == 1:
             target_y = target_y * n_targets
-    
+
         if any(len(lst) != n_targets for lst in [target_orientation, target_x, target_y]):
             raise Exception(
                 "target_type, target_orientation, target_x and target_y need the same length."
             )
-    
+
         theight, twidth = degrees_to_pixels(target_size, ppd)
         ty = degrees_to_pixels(target_y, ppd)
         tx = degrees_to_pixels(target_x, ppd)
-    
+
         if (twidth + np.array(tx)).max() > img.shape[1]:
             raise ValueError("Rightmost target does not fit in image.")
         if (theight + np.array(ty)).max() > img.shape[0]:
             raise ValueError("Lowest target does not fit in image.")
-    
+
         # Add targets:
         for i in range(len(target_x)):
             if target_type[i] == "r":
                 tpatch = np.ones([theight, twidth]) * intensity_target
-    
+
             elif target_type[i] == "t":
                 tpatch = triangle(
                     visual_size=target_size,
                     ppd=ppd,
                     intensity_background=0.0,
                     intensity_triangle=intensity_target,
-                    )["img"]
-    
+                )["img"]
+
             else:
                 raise Exception("You can only use r or t as shapes")
-    
+
             # Rotate, resize to original shape and clean
             tpatch = rotate(tpatch, angle=target_orientation[i])
             thresh = 0.7
@@ -625,14 +630,14 @@ def add_targets(
             mpatch = np.copy(tpatch)
             mpatch[mpatch != 0] = i + 1
             theight_, twidth_ = tpatch.shape
-    
+
             # Only change the target parts of the image:
-            ipatch = img[ty[i]:ty[i]+theight_, tx[i]:tx[i]+twidth_]
-            ipatch[tpatch == intensity_target] = 0.
+            ipatch = img[ty[i] : ty[i] + theight_, tx[i] : tx[i] + twidth_]
+            ipatch[tpatch == intensity_target] = 0.0
             tpatch = tpatch + ipatch
-    
-            img[ty[i]:ty[i]+theight_, tx[i]:tx[i]+twidth_] = tpatch
-            mask[ty[i]:ty[i]+theight_, tx[i]:tx[i]+twidth_] = mpatch
+
+            img[ty[i] : ty[i] + theight_, tx[i] : tx[i] + twidth_] = tpatch
+            mask[ty[i] : ty[i] + theight_, tx[i] : tx[i] + twidth_] = mpatch
 
         stim = {
             "target_size": target_size,
@@ -641,8 +646,8 @@ def add_targets(
             "target_x": target_x,
             "target_y": target_y,
             "intensity_target": intensity_target,
-            }
-    
+        }
+
     stim["img"] = img
     stim["mask"] = mask.astype(int)
     return stim
@@ -650,25 +655,25 @@ def add_targets(
 
 if __name__ == "__main__":
     from stimuli.utils import plot_stimuli
-    
+
     params_benary = {
         "visual_size": 10,
         "ppd": 20,
         "cross_thickness": 2,
         "target_size": 1,
-        }
-    
+    }
+
     params_todo = {
         "visual_size": 10,
         "ppd": 20,
         "target_size": 1,
         "L_width": 2,
-        }
-    
+    }
+
     target_pos = {
         "target_x": (3, 6, 3, 6),
         "target_y": (4, 6, 6, 4),
-        }
+    }
 
     # fmt: off
     stims = {

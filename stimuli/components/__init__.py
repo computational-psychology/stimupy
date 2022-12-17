@@ -5,8 +5,6 @@ import numpy as np
 
 from stimuli.utils import resolution
 
-from .components import *
-
 
 def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin=None):
     """Create coordinate-arrays to serve as image base for drawing
