@@ -10,6 +10,10 @@ __all__ = [
     "cross",
     "parallelogram",
     "transparency",
+    "wedge",
+    "annulus",
+    "disc",
+    "ring",
 ]
 
 
