@@ -177,6 +177,7 @@ def sine_wave(
     bar_width=None,
     period="ignore",
     rotation=0,
+    phase_shift=180,
     intensity_range=(0., 1.),
 ):
     """Draw square-wave grating (set of bars) of given spatial frequency
@@ -277,7 +278,8 @@ def sine_wave(
     )
 
     # Draw image
-    stim["img"] = np.sin(params["frequency"] * 2 * np.pi * stim["distances"]) / 2 + 0.5
+    stim["img"] = np.sin(params["frequency"] * 2 * np.pi * stim["distances"] + np.deg2rad(phase_shift))
+    stim["img"] = stim["img"] / 2 + 0.5
     stim["img"] = stim["img"] * (intensity_range[1] - intensity_range[0]) + intensity_range[0]
 
     return {
