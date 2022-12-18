@@ -1,6 +1,7 @@
 import numpy as np
 from stimuli.components import draw_regions, mask_elements, resolve_grating_params
 from stimuli.utils import resolution
+from stimuli.components.gaussians import gaussian
 
 __all__ = [
     "square_wave",
@@ -75,9 +76,10 @@ def square_wave(
         number of bars in the grating
     bar_width : Number, or None (default)
         width of a single bar, in degrees visual angle
-    period : "full", "half", "ignore" (default)
-        whether to ensure the grating only has "full" periods,
-        half "periods", or no guarantees ("ignore")
+    period : "even", "odd", "either" or "ignore" (default)
+        ensure whether the grating has "even" number of phases, "odd"
+        number of phases, either or whether not to round the number of
+        phases ("ignore")
     rotation : float
         rotation of grating in degrees
     intensity_bars : Sequence[float, ...]
@@ -177,10 +179,10 @@ def sine_wave(
     bar_width=None,
     period="ignore",
     rotation=0,
-    phase_shift=180,
-    intensity_range=(0., 1.),
+    phase_shift=0,
+    intensity_bars=(0., 1.),
 ):
-    """Draw square-wave grating (set of bars) of given spatial frequency
+    """Draw sine-wave grating (set of bars) of given spatial frequency
 
     Parameters
     ----------
@@ -196,15 +198,16 @@ def sine_wave(
         number of bars in the grating
     bar_width : Number, or None (default)
         width of a single bar, in degrees visual angle
-    period : "full", "half", "ignore" (default)
-        whether to ensure the grating only has "full" periods,
-        half "periods", or no guarantees ("ignore")
+    period : "even", "odd", "either" or "ignore" (default)
+        ensure whether the grating has "even" number of phases, "odd"
+        number of phases, either or whether not to round the number of
+        phases ("ignore")
     rotation : float
         rotation of grating in degrees
+    phase_shift : float
+        phase shift of grating in degrees
     intensity_bars : Sequence[float, ...]
-        intensity value for each bar, by default (1.0, 0.0).
-        Can specify as many intensities as n_bars;
-        If fewer intensities are passed than n_bars, cycles through intensities
+        maximal intensity value for each bar, by default (0.0, 1.0).
 
     Returns
     ----------
@@ -280,7 +283,7 @@ def sine_wave(
     # Draw image
     stim["img"] = np.sin(params["frequency"] * 2 * np.pi * stim["distances"] + np.deg2rad(phase_shift))
     stim["img"] = stim["img"] / 2 + 0.5
-    stim["img"] = stim["img"] * (intensity_range[1] - intensity_range[0]) + intensity_range[0]
+    stim["img"] = stim["img"] * (intensity_bars[1] - intensity_bars[0]) + intensity_bars[0]
 
     return {
         **stim,
@@ -288,6 +291,77 @@ def sine_wave(
         "bar_width": params["phase_width"],
         "n_bars": params["n_phases"],
         "period": params["period"],
+    }
+
+
+def gabor(
+    shape=None,
+    visual_size=None,
+    ppd=None,
+    frequency=None,
+    bar_width=None,
+    sigma=None,
+    period="ignore",
+    rotation=0,
+    phase_shift=0,
+    intensity_bars=(0., 1.),
+):
+    """Draw sine-wave grating (set of bars) of given spatial frequency
+
+    Parameters
+    ----------
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    frequency : Number, or None (default)
+        spatial frequency of grating, in cycles per degree visual angle
+    bar_width : Number, or None (default)
+        width of a single bar, in degrees visual angle
+    sigma : float
+        sigma auf Gaussian in degree visual angle (y, x)
+    period : "even", "odd", "either" or "ignore" (default)
+        ensure whether the grating has "even" number of phases, "odd"
+        number of phases, either or whether not to round the number of
+        phases ("ignore")
+    rotation : float
+        rotation of grating in degrees
+    phase_shift : float
+        phase shift of grating in degrees
+    intensity_bars : Sequence[float, ...]
+        maximal intensity value for each bar, by default (0.0, 1.0).
+
+    Returns
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "mask"),
+        and additional keys containing stimulus parameters
+    """
+    stim = sine_wave(
+        shape=shape,
+        visual_size=visual_size,
+        ppd=ppd,
+        frequency=frequency,
+        bar_width=bar_width,
+        period=period,
+        rotation=rotation,
+        phase_shift=phase_shift,
+        intensity_bars=intensity_bars,
+        )
+
+    gaussian_window = gaussian(
+        visual_size=visual_size,
+        ppd=ppd,
+        sigma=sigma,
+        )
+    stim["img"] *= gaussian_window["img"]
+
+    return {
+        **stim,
+        "sigma": sigma,
     }
 
 
@@ -346,5 +420,9 @@ if __name__ == "__main__":
         "sine_odd": sine_wave(**p3),
         "sine_ignore": sine_wave(**p4),
         "sine_no_size": sine_wave(**p5),
+
+        "gabor_even": gabor(**p2, sigma=1),
+        "gabor_odd": gabor(**p3, sigma=1),
+        "gabor_ignore": gabor(**p4, sigma=3),
     }
     plot_stimuli(stims)
