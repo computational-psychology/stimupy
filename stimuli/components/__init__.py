@@ -68,6 +68,13 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin=None
     angular -= np.deg2rad(rotation + 90)
     angular %= 2 * np.pi
 
+    # Rotated
+    alpha = [np.cos(np.deg2rad(rotation)), np.sin(np.deg2rad(rotation))]
+    rotated = alpha[0]*xx + alpha[1]*yy
+    rotated = rotated - rotated.min()
+    # if 90 < rotation < 270:
+    #     rotated *= 1
+
     return {
         "visual_size": visual_size,
         "ppd": ppd,
@@ -77,6 +84,7 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin=None
         "y": y,
         "horizontal": xx,
         "vertical": yy,
+        "rotated": rotated,
         "cityblock": cityblock,
         "radial": radial,
         "angular": angular,
@@ -125,6 +133,7 @@ def mask_elements(
         shape=shape, visual_size=visual_size, ppd=ppd, rotation=rotation, origin=origin
     )
     distances = base[orientation]
+    distances = np.round(distances, 10)
 
     # Mark elements with integer idx-value
     mask = np.zeros(base["shape"], dtype=int)
@@ -192,6 +201,10 @@ def resolve_grating_params(
     dict[str, Any]
         dictionary with all six resolution & size parameters resolved.
     """
+    old_angle = deepcopy(visual_angle)
+    old_frequency = deepcopy(frequency)
+    old_n_phases = deepcopy(n_phases)
+    old_phase_width = deepcopy(phase_width)
 
     if period not in ["ignore", "even", "odd", "either"]:
         raise TypeError(f"period not understood: {period}")
@@ -205,10 +218,6 @@ def resolve_grating_params(
         ppd = ppd
         length = length
         visual_angle = visual_angle
-
-    old_frequency = deepcopy(frequency)
-    old_n_phases = deepcopy(n_phases)
-    old_phase_width = deepcopy(phase_width)
 
     # Try to resolve number and width(s) of phases:
     # Logic here is that phase_width expresses "degrees per phase",
@@ -305,9 +314,7 @@ def resolve_grating_params(
         )
 
     # Accumulate edges of phases
-    edges = [*itertools.accumulate(itertools.repeat(phase_width, int(n_phases)))]
-    if period == "ignore":
-        edges += [visual_angle]
+    edges = [*itertools.accumulate(itertools.repeat(phase_width, int(np.ceil(n_phases))))]
 
     return {
         "length": length,
@@ -366,6 +373,9 @@ def round_n_phases(n_phases, length, period):
     elif period == "odd":
         # only look at possible_n_phases that are odd
         possible_n_phases = possible_n_phases[possible_n_phases % 2 != 0]
+
+    if len(possible_n_phases) == 0:
+        raise ValueError(f"Cannot fit {period} number of phases into {length} px")
 
     closest = possible_n_phases[np.argmin(np.abs(possible_n_phases - n_phases))]
 
