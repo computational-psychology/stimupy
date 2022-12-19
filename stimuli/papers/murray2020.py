@@ -647,7 +647,7 @@ def white(ppd=PPD):
         "target_size": 2,
         "intensity_bars": (70, 17.5),
         "intensity_target": 35.0,
-        "period": "full",
+        "period": "even",
     }
 
     stim = illusions.whites.white_two_rows(**params)

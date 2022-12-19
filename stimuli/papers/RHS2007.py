@@ -67,8 +67,8 @@ __all__ = [
     "todorovic_benary1_2",
     "todorovic_benary3_4",
     "todorovic_benary1_2_3_4",
-    "bullseye_thin",
-    "bullseye_thick",
+    # "bullseye_thin",
+    # "bullseye_thick",
 ]
 
 VISEXTENT = (32.0, 32.0)
@@ -133,7 +133,7 @@ def WE_thick(ppd=PPD, pad=True):
         "intensity_target": v2,
         "target_indices": (2, 5),
         "target_size": 4.0,
-        "period": "full",
+        "period": "even",
     }
 
     stim = illusions.whites.white(
@@ -188,7 +188,7 @@ def WE_thin_wide(ppd=PPD, pad=True):
         "intensity_target": v2,
         "target_indices": (3, 12),
         "target_size": 2.0,
-        "period": "full",
+        "period": "even",
     }
 
     stim = illusions.whites.white(
@@ -236,7 +236,7 @@ def WE_dual(ppd=PPD, pad=True):
         "intensity_target": v2,
         "target_indices": (2, 5),
         "target_size": 2.0,
-        "period": "full",
+        "period": "even",
     }
 
     stim1 = illusions.whites.white(
@@ -314,7 +314,7 @@ def WE_anderson(ppd=PPD, pad=True):
         "intensity_stripes": (v1, v3),
         "stripe_center_offset": height / 5.0,
         "stripe_size": height / 5.0,
-        "period": "full",
+        "period": "even",
     }
 
     stim = illusions.whites.white_anderson(
@@ -374,7 +374,7 @@ def WE_howe(ppd=PPD, pad=True):
         "target_center_offset": height / 5.0,
         "target_size": height / 5.0,
         "intensity_stripes": (v1, v3),
-        "period": "full",
+        "period": "even",
     }
 
     stim = illusions.whites.white_howe(
@@ -459,12 +459,12 @@ def WE_radial_thick_small(ppd=PPD, pad=True):
     Anstis, S. (2003). White’s eﬀect in brightness & color. Online Demonstration
     """
 
-    n_cycles = 7
+    n_segments = 14
     params = {
         "ppd": ppd,
-        "n_segments": n_cycles * 2,
-        "rotation": 90 - (90 / n_cycles),
-        "target_indices": (1, n_cycles + 1),
+        "n_segments": n_segments,
+        "rotation": 90 - (90 / (n_segments / 2)),
+        "target_indices": (1, 8),
         "target_width": 4.0,
         "target_center": 4.5,
         "intensity_segments": (v3, v1),
@@ -513,12 +513,12 @@ def WE_radial_thick(ppd=PPD, pad=True):
     Anstis, S. (2003). White’s eﬀect in brightness & color. Online Demonstration
     """
 
-    n_cycles = 9
+    n_segments = 18
     params = {
         "ppd": ppd,
-        "n_segments": n_cycles * 2,
-        "rotation": 90 - (90 / n_cycles),
-        "target_indices": (1, n_cycles + 1),
+        "n_segments": n_segments,
+        "rotation": 90 - (90 / (n_segments / 2)),
+        "target_indices": (1, 10),
         "target_width": 4.0,
         "target_center": 6.0,
         "intensity_segments": (v3, v1),
@@ -567,12 +567,12 @@ def WE_radial_thin_small(ppd=PPD, pad=True):
     Anstis, S. (2003). White’s eﬀect in brightness & color. Online Demonstration
     """
 
-    n_cycles = 13
+    n_segments = 26
     params = {
         "ppd": ppd,
-        "n_segments": n_cycles * 2,
-        "rotation": 90 - (90 / n_cycles),
-        "target_indices": (1, n_cycles + 1),
+        "n_segments": n_segments,
+        "rotation": 90 - (90 / (n_segments / 2)),
+        "target_indices": (1, 14),
         "target_width": 2.0,
         "target_center": 4.0,
         "intensity_segments": (v3, v1),
@@ -621,12 +621,12 @@ def WE_radial_thin(ppd=PPD, pad=True):
     Anstis, S. (2003). White’s eﬀect in brightness & color. Online Demonstration
     """
 
-    n_cycles = 21
+    n_segments = 42
     params = {
         "ppd": ppd,
-        "n_segments": n_cycles * 2,
-        "rotation": 90 - (90 / n_cycles),
-        "target_indices": (1, n_cycles + 1),
+        "n_segments": n_segments,
+        "rotation": 90 - (90 / (n_segments / 2)),
+        "target_indices": (1, 22),
         "target_width": 2.0,
         "target_center": 6.0,
         "intensity_segments": (v3, v1),

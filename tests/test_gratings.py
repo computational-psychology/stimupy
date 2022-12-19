@@ -32,4 +32,4 @@ def test_rounding():
     ppd = 36
     visual_size = (1.0, 1.0)
     frequency = 2.80
-    stim = square_wave(ppd=ppd, visual_size=visual_size, frequency=frequency, period="half")
+    stim = square_wave(ppd=ppd, visual_size=visual_size, frequency=frequency, period="either")
