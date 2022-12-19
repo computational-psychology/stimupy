@@ -355,7 +355,30 @@ def draw_regions(mask, intensities, intensity_background=0.5):
     return img
 
 
-def round_n_phases(n_phases, length, period):
+def round_n_phases(n_phases, length, period="either"):
+    """Round n_phases of grating to integer, even, or odd -- taking into account pixels
+
+    Finds the nearest integer (optionally limited to even or odd) n_phases
+    that length (in pixels) can be divided into.
+    Note that this maybe be quite far away from the input.
+
+
+    Parameters
+    ----------
+    n_phases : int
+        number of phases (e.g., bars), i.e., half the number of full periods
+    length : Number
+        lenght of grating, in pixels
+    period : "even", "odd", "either" (default)
+        whether to ensure the grating has "even" number of phases,
+        "odd" number of phases, or "either" even/odd
+
+    Returns
+    -------
+    n_phases : int
+        rounded n_phases
+    """
+
     # n_phases has to integer-divide length
     possible_phase_pix = np.array(list(int_factorize(length)))
     possible_n_phases = length / possible_phase_pix
