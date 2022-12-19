@@ -64,11 +64,29 @@ def to_img(array, save):
 
 
 def int_factorize(n):
-    factors = {1}
+    """All integer factors of integer n
+
+    All integer factors, i.e., all integers that n is integer-divisible by.
+    Also not a very efficient algorithm (brute force trial division),
+    so should only be used as a helpter function.
+
+    Parameters
+    ----------
+    n : int
+        number to factorize
+
+    Returns
+    -------
+    set
+        set of all integer factors of n
+    """
+
+    factors = {1}  # set, guarantees unique factors
     for i in range(2, int(np.sqrt(n)) + 1):
         if n % i == 0:
             # N is divisible by i...
             factors.add(i)
             # ...thus also divisible by n/i
             factors.add(n // i)
+
     return factors
