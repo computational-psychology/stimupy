@@ -279,7 +279,7 @@ def sine_wave(
         # if 270 < rotation < 360, then width = opposite, height = adjacent (for rotation-270)
         theta = rotation % 360
         quadrant = theta // 90
-        theta = theta % 90
+        theta = np.deg2rad(theta % 90)
         if quadrant % 2 == 0:
             # Quadrant 0, or 2: width = adjacent, height = opposite
             shape = (np.sin(theta) * length, np.cos(theta) * length)
