@@ -272,20 +272,7 @@ def sine_wave(
 
     # Determine size/shape of whole image
     if None in shape:
-        # 1D length / visual_angle is hypothenuse of right triangle
-        # if 0 < rotation < 90, then width = adjacent, height = opposite
-        # if 90 < rotation < 180, then width = opposite, heigh = adjacent (for rotation-90)
-        # if 180 < rotation < 270, then width = adjacent, height = opposite (for rotation-180)
-        # if 270 < rotation < 360, then width = opposite, height = adjacent (for rotation-270)
-        theta = rotation % 360
-        quadrant = theta // 90
-        theta = np.deg2rad(theta % 90)
-        if quadrant % 2 == 0:
-            # Quadrant 0, or 2: width = adjacent, height = opposite
-            shape = (np.sin(theta) * length, np.cos(theta) * length)
-        elif quadrant % 2 != 0:
-            # Quadrant 1, or 3: width = opposite, height = adjacent
-            shape = (np.cos(theta) * length, np.sin(theta) * length)
+        shape = (length*alpha[0], length*alpha[1])
 
     if None in ppd:
         ppd = (ppd_1D, ppd_1D)
@@ -397,7 +384,7 @@ def gabor(
 if __name__ == "__main__":
     from stimuli.utils.plotting import plot_stimuli
 
-    rotation = 45
+    rotation = 20
 
     p1 = {
         "visual_size": (10, 5),
