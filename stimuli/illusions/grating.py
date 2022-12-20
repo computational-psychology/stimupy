@@ -23,7 +23,7 @@ def square_wave(
     frequency=None,
     n_bars=None,
     bar_width=None,
-    orientation="horizontal",
+    rotation=0,
     period="ignore",
     intensity_bars=(1.0, 0.0),
     target_indices=(),
@@ -77,7 +77,7 @@ def square_wave(
         frequency=frequency,
         n_bars=n_bars,
         bar_width=bar_width,
-        orientation=orientation,
+        rotation=rotation,
         period=period,
         intensity_bars=intensity_bars,
     )
@@ -113,7 +113,7 @@ def grating_uniform(
     frequency=None,
     n_bars=None,
     bar_width=None,
-    orientation="horizontal",
+    rotation=0,
     period="ignore",
     intensity_bars=(1.0, 0.0),
     target_indices=(),
@@ -175,7 +175,7 @@ def grating_uniform(
         frequency=frequency,
         n_bars=n_bars,
         bar_width=bar_width,
-        orientation=orientation,
+        rotation=rotation,
         period=period,
         intensity_bars=intensity_bars,
         target_indices=target_indices,
@@ -275,7 +275,7 @@ def grating_grating_shifted(
     frequency=None,
     n_bars=None,
     bar_width=None,
-    orientation="horizontal",
+    rotation=0,
     period="ignore",
     intensity_bars=(1.0, 0.0),
     target_indices=(),
@@ -336,7 +336,7 @@ def grating_grating_shifted(
         "frequency": frequency,
         "n_bars": n_bars,
         "bar_width": bar_width,
-        "orientation": orientation,
+        "rotation": rotation,
         "period": period,
         "intensity_bars": reversed(intensity_bars),
     }
@@ -347,16 +347,12 @@ def grating_grating_shifted(
         "frequency": large_grating["frequency"],
         "bar_width": large_grating["bar_width"],
         "n_bars": large_grating["n_bars"],
-        "orientation": orientation,
+        "rotation": rotation,
         "period": period,
         "intensity_bars": intensity_bars,
         "target_indices": target_indices,
         "intensity_target": intensity_target,
     }
-    if orientation == "horizontal":
-        small_params["visual_size"] = (shifted_width, large_grating["visual_size"].width)
-    elif orientation == "vertical":
-        small_params["visual_size"] = (large_grating["visual_size"].height, shifted_width)
 
     # Update larger grating params
     large_params.update(
@@ -381,7 +377,7 @@ def grating_induction(
     n_bars=None,
     bar_width=None,
     period="ignore",
-    orientation="horizontal",
+    rotation=0,
     intensity_bars=(1.0, 0.0),
     target_width=0.5,
     intensity_target=0.5,
@@ -440,7 +436,7 @@ def grating_induction(
         n_bars=n_bars,
         bar_width=bar_width,
         period=period,
-        orientation=orientation,
+        rotation=rotation,
         intensity_bars=intensity_bars,
     )
 
@@ -449,10 +445,7 @@ def grating_induction(
     stim["img"] = gaussian_filter(stim["img"], blur)
 
     # Identify target region
-    if orientation == "horizontal":
-        rectangle_size = (target_width, stim["visual_size"].width)
-    elif orientation == "vertical":
-        rectangle_size = (stim["visual_size"].height, target_width)
+    rectangle_size = (target_width, stim["visual_size"].width)
 
     target_mask = rectangle(
         rectangle_size=rectangle_size,
@@ -476,17 +469,17 @@ if __name__ == "__main__":
 
     ppd = 36
     bar_width = 1.0
-    orientation = "vertical"
+    rotation = 90
     small_grating_params = {
         "n_bars": 8,
         "bar_width": bar_width,
-        "orientation": orientation,
+        "rotation": rotation,
     }
 
     large_grating_params = {
         "bar_width": bar_width,
         "visual_size": (32, 32),
-        "orientation": orientation,
+        "rotation": rotation,
     }
 
     stims = {

@@ -138,9 +138,9 @@ def square_wave(
     # Determine size/shape of whole image
     if None in shape:
         shape = [length*alpha[1], length*alpha[0]]
-        if alpha[1] == 0:
+        if np.round(alpha[1], 5) == 0:
             shape[0] = shape[1]
-        if alpha[0] == 0:
+        if np.round(alpha[0], 5) == 0:
             shape[1] = shape[0]
 
     if None in ppd:
@@ -265,9 +265,9 @@ def sine_wave(
     # Determine size/shape of whole image
     if None in shape:
         shape = [length*alpha[1], length*alpha[0]]
-        if alpha[1] == 0:
+        if np.round(alpha[1], 5) == 0:
             shape[0] = shape[1]
-        if alpha[0] == 0:
+        if np.round(alpha[0], 5) == 0:
             shape[1] = shape[0]
 
     if None in ppd:
@@ -380,7 +380,7 @@ def gabor(
 if __name__ == "__main__":
     from stimuli.utils.plotting import plot_stimuli
 
-    rotation = 45
+    rotation = 90
 
     p1 = {
         "visual_size": (10, 5),
