@@ -152,6 +152,7 @@ def resolve_grating_params(
     n_phases=None,
     phase_width=None,
     period="ignore",
+    round_phase_width=True,
 ):
     """Resolve (if possible) spatial parameters for a grating
 
@@ -187,6 +188,9 @@ def resolve_grating_params(
         whether to ensure the grating has "even" number of phases,
         "odd" number of phases, or "either" even/odd,
         or no guarantees ("ignore")
+    round_phase_width : bool,
+        whether to round phase_width to an integer number of pixels, by default True
+
 
     Returns
     -------
@@ -246,7 +250,7 @@ def resolve_grating_params(
         length=length, visual_angle=visual_angle, ppd=ppd
     )
 
-    # Ensure phases fit in size
+    # Ensure n phases fit in length?
     if period != "ignore":
         n_phases = round_n_phases(n_phases=n_phases, length=length, period=period)
 
@@ -257,12 +261,14 @@ def resolve_grating_params(
             ppd=None,
             round=False,
         )
-        phase_width = 1 / phases_pd
-    elif period == "ignore":
-        # Round such that phases are integer number of pixels
-        phase_width = 1 / phases_pd
+
+    # Ensure each phase consists of integer number of pixels?
+    phase_width = 1 / phases_pd
+    if round_phase_width:
         phase_width = np.round(phase_width * ppd) / ppd
         n_phases = length / np.round(phase_width * ppd)
+
+    # Calculate frequency
     frequency = 1 / (2 * phase_width)
 
     # Check & warn if we changed some params
