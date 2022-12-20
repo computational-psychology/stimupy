@@ -1,9 +1,10 @@
 import itertools
 import warnings
+from copy import deepcopy
 
 import numpy as np
 
-from stimuli.utils import resolution
+from stimuli.utils import int_factorize, resolution
 
 
 def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin=None):
@@ -137,6 +138,7 @@ def mask_elements(
         "shape": base["shape"],
         "visual_size": base["visual_size"],
         "ppd": base["ppd"],
+        "distances": distances,
     }
 
 
@@ -148,6 +150,7 @@ def resolve_grating_params(
     n_phases=None,
     phase_width=None,
     period="ignore",
+    round_phase_width=True,
 ):
     """Resolve (if possible) spatial parameters for a grating
 
@@ -179,9 +182,13 @@ def resolve_grating_params(
         number of phases (e.g., bars), i.e., half the number of full periods
     phase_width : Number, or None (default)
         extend of a single phase (e.g., bar), in degrees
-    period : "full", "half", "ignore" (default)
-        whether to ensure the grating only has "full" periods,
-        half "periods", or no guarantees ("ignore")
+    period : "even", "odd", "either", "ignore" (default)
+        whether to ensure the grating has "even" number of phases,
+        "odd" number of phases, or "either" even/odd,
+        or no guarantees ("ignore")
+    round_phase_width : bool,
+        whether to round phase_width to an integer number of pixels, by default True
+
 
     Returns
     -------
@@ -189,7 +196,7 @@ def resolve_grating_params(
         dictionary with all six resolution & size parameters resolved.
     """
 
-    if period not in ["ignore", "full", "half"]:
+    if period not in ["ignore", "even", "odd", "either"]:
         raise TypeError(f"period not understood: {period}")
 
     # Try to resolve resolution
@@ -201,6 +208,10 @@ def resolve_grating_params(
         ppd = ppd
         length = length
         visual_angle = visual_angle
+
+    old_frequency = deepcopy(frequency)
+    old_n_phases = deepcopy(n_phases)
+    old_phase_width = deepcopy(phase_width)
 
     # Try to resolve number and width(s) of phases:
     # Logic here is that phase_width expresses "degrees per phase",
@@ -231,19 +242,17 @@ def resolve_grating_params(
     except Exception as e:
         raise Exception("Could not resolve grating frequency, phase_width, n_phases") from e
 
-    # Ensure full/half period?
+    # Now resolve resolution
+    visual_angle = min_angle if visual_angle is None else visual_angle
+    length, visual_angle, ppd = resolution.resolve_1D(
+        length=length, visual_angle=visual_angle, ppd=ppd
+    )
+
+    # Ensure n phases fit in length?
     if period != "ignore":
-        # Round n_phases
-        if period == "full":  # n_phases has to be even
-            n_phases = np.round(n_phases / 2) * 2
-        elif period == "half":  # n_phases can be odd
-            n_phases = np.round(n_phases)
+        n_phases = round_n_phases(n_phases=n_phases, length=length, period=period)
 
-        # Check if n_phases fit in length
-        if length is not None and n_phases > 0 and length % n_phases:
-            raise resolution.ResolutionError(f"Cannot fit {n_phases} phases in {length} pix")
-
-        # Recalculate phases_pd
+        # Calculate other params again:
         n_phases, min_angle, phases_pd = resolution.resolve_1D(
             length=n_phases,
             visual_angle=visual_angle,
@@ -251,25 +260,48 @@ def resolve_grating_params(
             round=False,
         )
 
-    # Convert to frequency
-    old_phase_width = phase_width
-    old_frequency = frequency
+    # Ensure each phase consists of integer number of pixels?
     phase_width = 1 / phases_pd
-    frequency = phases_pd / 2
+    if round_phase_width:
+        phase_width = np.round(phase_width * ppd) / ppd
+        n_phases = length / np.round(phase_width * ppd)
 
-    if (old_phase_width is not None and phase_width != old_phase_width) or (
-        old_frequency is not None and frequency != old_frequency
-    ):
-        warnings.warn(
-            f"Adjusted frequency and phase width to ensure {period} period: {old_frequency} ->"
-            f" {frequency}, {old_phase_width} -> {phase_width}"
-        )
+    # Calculate frequency
+    frequency = 1 / (2 * phase_width)
 
-    # Now resolve resolution
-    visual_angle = min_angle if visual_angle is None else visual_angle
-    length, visual_angle, ppd = resolution.resolve_1D(
-        length=length, visual_angle=visual_angle, ppd=ppd
-    )
+    # Check & warn if we changed some params
+    if period == "ignore":
+        if old_n_phases is not None and n_phases != old_n_phases:
+            warnings.warn(
+                f"Adjusted n_phases={old_n_phases} -> {n_phases} because of poor resolution"
+            )
+
+        if old_phase_width is not None and phase_width != old_phase_width:
+            warnings.warn(
+                f"Adjusted phase_width={old_phase_width} -> {phase_width} because of poor"
+                " resolution"
+            )
+
+        if old_frequency is not None and frequency != old_frequency:
+            warnings.warn(
+                f"Adjusted frequency={old_frequency} -> {frequency} because of poor resolution"
+            )
+    else:
+        if old_n_phases is not None and n_phases != old_n_phases:
+            warnings.warn(
+                f"Adjusted n_phases={old_n_phases} -> {n_phases} because of period={period}"
+            )
+
+        if old_phase_width is not None and phase_width != old_phase_width:
+            warnings.warn(
+                f"Adjusted phase_width={old_phase_width} -> {phase_width} because of"
+                f" period={period}"
+            )
+
+        if old_frequency is not None and frequency != old_frequency:
+            warnings.warn(
+                f"Adjusted frequency={old_frequency} -> {frequency} because of period={period}"
+            )
 
     # Check that frequency does not exceed Nyquist limit:
     if frequency > (ppd / 2):
@@ -279,7 +311,7 @@ def resolve_grating_params(
 
     # Accumulate edges of phases
     edges = [*itertools.accumulate(itertools.repeat(phase_width, int(n_phases)))]
-    if "period" == "ignore":
+    if period == "ignore":
         edges += [visual_angle]
 
     return {
@@ -288,7 +320,7 @@ def resolve_grating_params(
         "ppd": ppd,
         "frequency": frequency,
         "phase_width": phase_width,
-        "n_phases": int(n_phases),
+        "n_phases": n_phases,
         "edges": edges,
         "period": period,
     }
@@ -326,3 +358,43 @@ def draw_regions(mask, intensities, intensity_background=0.5):
         img = np.where(mask == frame_idx, intensity, img)
 
     return img
+
+
+def round_n_phases(n_phases, length, period="either"):
+    """Round n_phases of grating to integer, even, or odd -- taking into account pixels
+
+    Finds the nearest integer (optionally limited to even or odd) n_phases
+    that length (in pixels) can be divided into.
+    Note that this maybe be quite far away from the input.
+
+
+    Parameters
+    ----------
+    n_phases : int
+        number of phases (e.g., bars), i.e., half the number of full periods
+    length : Number
+        lenght of grating, in pixels
+    period : "even", "odd", "either" (default)
+        whether to ensure the grating has "even" number of phases,
+        "odd" number of phases, or "either" even/odd
+
+    Returns
+    -------
+    n_phases : int
+        rounded n_phases
+    """
+
+    # n_phases has to integer-divide length
+    possible_phase_pix = np.array(list(int_factorize(length)))
+    possible_n_phases = length / possible_phase_pix
+
+    if period == "even":
+        # only look at possible_n_phases that are even
+        possible_n_phases = possible_n_phases[possible_n_phases % 2 == 0]
+    elif period == "odd":
+        # only look at possible_n_phases that are odd
+        possible_n_phases = possible_n_phases[possible_n_phases % 2 != 0]
+
+    closest = possible_n_phases[np.argmin(np.abs(possible_n_phases - n_phases))]
+
+    return int(closest)

@@ -2,6 +2,7 @@ import json
 import os.path
 
 import pytest
+
 import stimuli.papers.RHS2007
 from stimuli.papers.RHS2007 import __all__ as stimlist
 from stimuli.utils import export

@@ -624,7 +624,7 @@ def white(shape=SHAPES["white"], visual_size=VSIZES["white"], ppd=PPD, pad=PAD):
         "grating_frequency": 4.0 / visual_size[1],
         "target_indices": (2, 5),
         "target_size": 2.1 * visual_resize,
-        "period": "full",
+        "period": "even",
     }
 
     stim = illusions.whites.white(
@@ -1062,7 +1062,7 @@ def white_yazdanbakhsh(
         "target_center_offset": 0.0,
         "target_size": visual_size[0] / 4.0,
         "gap_size": visual_size[0] / 10.0,
-        "period": "full",
+        "period": "even",
     }
 
     stim = illusions.whites.white_yazdanbakhsh(
@@ -1144,7 +1144,7 @@ def white_anderson(
         "target_size": visual_size[0] / 5.0,
         "stripe_center_offset": visual_size[0] / 5.0,
         "stripe_size": visual_size[0] / 5.0,
-        "period": "full",
+        "period": "even",
     }
 
     stim = illusions.whites.white_anderson(
@@ -1221,7 +1221,7 @@ def white_howe(shape=SHAPES["white_howe"], visual_size=VSIZES["white_howe"], ppd
         "target_indices_bottom": (7,),
         "target_center_offset": visual_size[0] / 5.0,
         "target_size": visual_size[0] / 5.0,
-        "period": "full",
+        "period": "even",
     }
 
     stim = illusions.whites.white_howe(

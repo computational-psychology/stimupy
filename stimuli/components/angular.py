@@ -263,6 +263,7 @@ def grating(
         n_phases=n_segments,
         phase_width=segment_width,
         period="ignore",
+        round_phase_width=False,
     )
 
     # Determine angles

@@ -3,8 +3,9 @@ Provides some functionality for creating and manipulating visual stimuli
 represented as numpy arrays.
 """
 
-import numpy as np
 import warnings
+
+import numpy as np
 
 
 def shift_pixels(img, shift):
@@ -54,9 +55,38 @@ def to_img(array, save):
     array = (array * 255).astype(np.uint8)
 
     im = Image.fromarray(array)
-    
+
     try:
         im.save(save)
     except ValueError:
         warnings.warn("No file extension provided, saving as png")
         im.save(save + ".png", "PNG")
+
+
+def int_factorize(n):
+    """All integer factors of integer n
+
+    All integer factors, i.e., all integers that n is integer-divisible by.
+    Also not a very efficient algorithm (brute force trial division),
+    so should only be used as a helpter function.
+
+    Parameters
+    ----------
+    n : int
+        number to factorize
+
+    Returns
+    -------
+    set
+        set of all integer factors of n
+    """
+
+    factors = {1}  # set, guarantees unique factors
+    for i in range(2, int(np.sqrt(n)) + 1):
+        if n % i == 0:
+            # N is divisible by i...
+            factors.add(i)
+            # ...thus also divisible by n/i
+            factors.add(n // i)
+
+    return factors
