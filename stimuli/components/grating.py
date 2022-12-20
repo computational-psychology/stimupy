@@ -137,20 +137,11 @@ def square_wave(
 
     # Determine size/shape of whole image
     if None in shape:
-        # 1D length / visual_angle is hypothenuse of right triangle
-        # if 0 < rotation < 90, then width = adjacent, height = opposite
-        # if 90 < rotation < 180, then width = opposite, heigh = adjacent (for rotation-90)
-        # if 180 < rotation < 270, then width = adjacent, height = opposite (for rotation-180)
-        # if 270 < rotation < 360, then width = opposite, height = adjacent (for rotation-270)
-        theta = rotation % 360
-        quadrant = theta // 90
-        theta = theta % 90
-        if quadrant % 2 == 0:
-            # Quadrant 0, or 2: width = adjacent, height = opposite
-            shape = (np.sin(theta) * length, np.cos(theta) * length)
-        elif quadrant % 2 != 0:
-            # Quadrant 1, or 3: width = opposite, height = adjacent
-            shape = (np.cos(theta) * length, np.sin(theta) * length)
+        shape = [length*alpha[1], length*alpha[0]]
+        if alpha[1] == 0:
+            shape[0] = shape[1]
+        if alpha[0] == 0:
+            shape[1] = shape[0]
 
     if None in ppd:
         ppd = (ppd_1D, ppd_1D)
@@ -265,6 +256,7 @@ def sine_wave(
         ppd=ppd_1D,
         frequency=frequency,
         period=period,
+        round_phase_width=False,
     )
     length = params["length"]
     ppd_1D = params["ppd"]
@@ -272,7 +264,11 @@ def sine_wave(
 
     # Determine size/shape of whole image
     if None in shape:
-        shape = (length*alpha[0], length*alpha[1])
+        shape = [length*alpha[1], length*alpha[0]]
+        if alpha[1] == 0:
+            shape[0] = shape[1]
+        if alpha[0] == 0:
+            shape[1] = shape[0]
 
     if None in ppd:
         ppd = (ppd_1D, ppd_1D)
@@ -384,7 +380,7 @@ def gabor(
 if __name__ == "__main__":
     from stimuli.utils.plotting import plot_stimuli
 
-    rotation = 20
+    rotation = 45
 
     p1 = {
         "visual_size": (10, 5),
@@ -437,7 +433,7 @@ if __name__ == "__main__":
         "sine_ignore": sine_wave(**p4),
         "sine_no_size": sine_wave(**p5),
         "gabor_even": gabor(**p2, sigma=1),
-        "gabor_odd": gabor(**p3, sigma=1),
+        "gabor_odd": gabor(**p3, sigma=5),
         "gabor_ignore": gabor(**p4, sigma=3),
     }
     plot_stimuli(stims)
