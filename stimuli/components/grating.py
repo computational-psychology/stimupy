@@ -1,7 +1,8 @@
 import numpy as np
+
 from stimuli.components import draw_regions, mask_elements, resolve_grating_params
-from stimuli.utils import resolution
 from stimuli.components.gaussians import gaussian
+from stimuli.utils import resolution
 
 __all__ = [
     "square_wave",
@@ -14,7 +15,7 @@ def mask_bars(
     visual_size=None,
     ppd=None,
     orientation="horizontal",
-    rotation=0.,
+    rotation=0.0,
 ):
     """Generate mask with integer indices for sequential bars
 
@@ -102,21 +103,20 @@ def square_wave(
         ppd = resolution.validate_ppd(ppd)
         shape = resolution.validate_shape(shape)
         visual_size = resolution.validate_visual_size(visual_size)
-    
-    alpha = [np.abs(np.cos(np.deg2rad(rotation))),
-             np.abs(np.sin(np.deg2rad(rotation)))]
-    
-    if shape.width is not None:
-        length = np.round(alpha[0]*shape.width + alpha[1]*shape.height)
+
+    alpha = [np.abs(np.cos(np.deg2rad(rotation))), np.abs(np.sin(np.deg2rad(rotation)))]
+
+    if None not in shape:
+        length = np.round(alpha[0] * shape.width + alpha[1] * shape.height)
     else:
         length = None
-    
-    if visual_size.width is not None:
-        visual_angle = alpha[0]*visual_size.width + alpha[1]*visual_size.height
+
+    if None not in visual_size:
+        visual_angle = alpha[0] * visual_size.width + alpha[1] * visual_size.height
     else:
         visual_angle = None
-    
-    if ppd.horizontal is not None:
+
+    if None not in ppd:
         ppd_1D = ppd.horizontal
     else:
         ppd_1D = None
@@ -134,15 +134,29 @@ def square_wave(
     length = params["length"]
     ppd_1D = params["ppd"]
     visual_angle = params["visual_angle"]
-    
-    if shape.width is None:
-        shape = (length, length)    # TODO: use trigonometry to calculate actual shape
-    
-    if visual_size.width is None:
-        visual_size = np.array(shape) / ppd_1D
-    
-    if ppd.horizontal is None:
+
+    # Determine size/shape of whole image
+    if None in shape:
+        # 1D length / visual_angle is hypothenuse of right triangle
+        # if 0 < rotation < 90, then width = adjacent, height = opposite
+        # if 90 < rotation < 180, then width = opposite, heigh = adjacent (for rotation-90)
+        # if 180 < rotation < 270, then width = adjacent, height = opposite (for rotation-180)
+        # if 270 < rotation < 360, then width = opposite, height = adjacent (for rotation-270)
+        theta = rotation % 360
+        quadrant = theta // 90
+        theta = theta % 90
+        if quadrant % 2 == 0:
+            # Quadrant 0, or 2: width = adjacent, height = opposite
+            shape = (np.sin(theta) * length, np.cos(theta) * length)
+        elif quadrant % 2 != 0:
+            # Quadrant 1, or 3: width = opposite, height = adjacent
+            shape = (np.cos(theta) * length, np.sin(theta) * length)
+
+    if None in ppd:
         ppd = (ppd_1D, ppd_1D)
+
+    if None in visual_size:
+        visual_size = resolution.visual_size_from_shape_ppd(shape=shape, ppd=ppd)
 
     shape = resolution.validate_shape(shape)
     visual_size = resolution.validate_visual_size(visual_size)
@@ -180,7 +194,7 @@ def sine_wave(
     period="ignore",
     rotation=0,
     phase_shift=0,
-    intensity_bars=(0., 1.),
+    intensity_bars=(0.0, 1.0),
 ):
     """Draw sine-wave grating (set of bars) of given spatial frequency
 
@@ -224,20 +238,19 @@ def sine_wave(
         ppd = resolution.validate_ppd(ppd)
         shape = resolution.validate_shape(shape)
         visual_size = resolution.validate_visual_size(visual_size)
-    
-    alpha = [np.abs(np.cos(np.deg2rad(rotation))),
-             np.abs(np.sin(np.deg2rad(rotation)))]
-    
+
+    alpha = [np.abs(np.cos(np.deg2rad(rotation))), np.abs(np.sin(np.deg2rad(rotation)))]
+
     if shape.width is not None:
-        length = np.round(alpha[0]*shape.width + alpha[1]*shape.height)
+        length = np.round(alpha[0] * shape.width + alpha[1] * shape.height)
     else:
         length = None
-    
+
     if visual_size.width is not None:
-        visual_angle = alpha[0]*visual_size.width + alpha[1]*visual_size.height
+        visual_angle = alpha[0] * visual_size.width + alpha[1] * visual_size.height
     else:
         visual_angle = None
-    
+
     if ppd.horizontal is not None:
         ppd_1D = ppd.horizontal
     else:
@@ -256,15 +269,29 @@ def sine_wave(
     length = params["length"]
     ppd_1D = params["ppd"]
     visual_angle = params["visual_angle"]
-    
-    if shape.width is None:
-        shape = (length, length)    # TODO: use trigonometry to calculate actual shape
-    
-    if visual_size.width is None:
-        visual_size = np.array(shape) / ppd_1D
-    
-    if ppd.horizontal is None:
+
+    # Determine size/shape of whole image
+    if None in shape:
+        # 1D length / visual_angle is hypothenuse of right triangle
+        # if 0 < rotation < 90, then width = adjacent, height = opposite
+        # if 90 < rotation < 180, then width = opposite, heigh = adjacent (for rotation-90)
+        # if 180 < rotation < 270, then width = adjacent, height = opposite (for rotation-180)
+        # if 270 < rotation < 360, then width = opposite, height = adjacent (for rotation-270)
+        theta = rotation % 360
+        quadrant = theta // 90
+        theta = theta % 90
+        if quadrant % 2 == 0:
+            # Quadrant 0, or 2: width = adjacent, height = opposite
+            shape = (np.sin(theta) * length, np.cos(theta) * length)
+        elif quadrant % 2 != 0:
+            # Quadrant 1, or 3: width = opposite, height = adjacent
+            shape = (np.cos(theta) * length, np.sin(theta) * length)
+
+    if None in ppd:
         ppd = (ppd_1D, ppd_1D)
+
+    if None in visual_size:
+        visual_size = resolution.visual_size_from_shape_ppd(shape=shape, ppd=ppd)
 
     shape = resolution.validate_shape(shape)
     visual_size = resolution.validate_visual_size(visual_size)
@@ -281,7 +308,9 @@ def sine_wave(
     )
 
     # Draw image
-    stim["img"] = np.sin(params["frequency"] * 2 * np.pi * stim["distances"] + np.deg2rad(phase_shift))
+    stim["img"] = np.sin(
+        params["frequency"] * 2 * np.pi * stim["distances"] + np.deg2rad(phase_shift)
+    )
     stim["img"] = stim["img"] / 2 + 0.5
     stim["img"] = stim["img"] * (intensity_bars[1] - intensity_bars[0]) + intensity_bars[0]
 
@@ -304,7 +333,7 @@ def gabor(
     period="ignore",
     rotation=0,
     phase_shift=0,
-    intensity_bars=(0., 1.),
+    intensity_bars=(0.0, 1.0),
 ):
     """Draw sine-wave grating (set of bars) of given spatial frequency
 
@@ -321,7 +350,7 @@ def gabor(
     bar_width : Number, or None (default)
         width of a single bar, in degrees visual angle
     sigma : float
-        sigma auf Gaussian in degree visual angle (y, x)
+        sigma of Gaussian in degree visual angle (y, x)
     period : "even", "odd", "either" or "ignore" (default)
         ensure whether the grating has "even" number of phases, "odd"
         number of phases, either or whether not to round the number of
@@ -350,13 +379,13 @@ def gabor(
         rotation=rotation,
         phase_shift=phase_shift,
         intensity_bars=intensity_bars,
-        )
+    )
 
     gaussian_window = gaussian(
         visual_size=visual_size,
         ppd=ppd,
         sigma=sigma,
-        )
+    )
     stim["img"] *= gaussian_window["img"]
 
     return {
@@ -367,6 +396,7 @@ def gabor(
 
 if __name__ == "__main__":
     from stimuli.utils.plotting import plot_stimuli
+
     rotation = 45
 
     p1 = {
@@ -399,11 +429,11 @@ if __name__ == "__main__":
         "period": "ignore",
         "rotation": rotation,
     }
-    
+
     p5 = {
         "ppd": 20,
         "n_bars": 6,
-        "frequency": 2.,
+        "frequency": 2.0,
         "period": "ignore",
         "rotation": rotation,
     }
@@ -414,13 +444,11 @@ if __name__ == "__main__":
         "odd": square_wave(**p3),
         "ignore": square_wave(**p4),
         "no_size": square_wave(**p5),
-        
         "sine_n_bars": sine_wave(**p1),
         "sine_even": sine_wave(**p2),
         "sine_odd": sine_wave(**p3),
         "sine_ignore": sine_wave(**p4),
         "sine_no_size": sine_wave(**p5),
-
         "gabor_even": gabor(**p2, sigma=1),
         "gabor_odd": gabor(**p3, sigma=1),
         "gabor_ignore": gabor(**p4, sigma=3),
