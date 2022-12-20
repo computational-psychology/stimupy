@@ -4,7 +4,6 @@ represented as numpy arrays.
 """
 
 import warnings
-
 import numpy as np
 
 
@@ -23,13 +22,6 @@ def shift_pixels(img, shift):
     img : shifted image
     """
     return np.roll(img, shift, (1, 0))
-
-
-def adapt_mc(stimulus, mc=1.0, mean_lum=0.5):
-    # Adapt Michelson contrast
-    stimulus = (stimulus - stimulus.min()) / (stimulus.max() - stimulus.min())
-    stimulus = (stimulus * mc * 2.0 * mean_lum) + (mean_lum - mc * mean_lum)
-    return stimulus
 
 
 def round_to_vals(input_arr, vals):

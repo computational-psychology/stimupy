@@ -1,7 +1,7 @@
 import numpy as np
 
 from stimuli.components.checkerboard import checkerboard as board
-from stimuli.components.shapes import transparency
+from stimuli.utils.contrast_conversions import transparency
 from stimuli.utils import resolution
 
 __all__ = [
@@ -297,14 +297,9 @@ def contrast_contrast(
     mask[target_idx] = 1
 
     # Apply transparency to target locations
-    img = transparency(img, mask, alpha, tau)
-
-    # Update stim dict
     stim["img"] = img
     stim["mask"] = mask.astype(int)
-    stim["alpha"] = alpha
-    stim["tau"] = tau
-
+    stim = transparency(stim, alpha, tau)
     return stim
 
 
