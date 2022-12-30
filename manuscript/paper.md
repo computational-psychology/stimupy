@@ -22,7 +22,7 @@ affiliations:
  - name: Computational Psychology, Technische Universitaet Berlin, Germany
    index: 2
 date: 25 December 2022
-bibliography: paper.bib
+bibliography: bibliography.bib
 ---
 
 
