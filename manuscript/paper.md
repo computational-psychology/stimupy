@@ -67,7 +67,7 @@ Hence, most vision research requires to implement stimuli from scratch.
 Depending on the complexity of these stimuli, this endeavor can be time-consuming, prone to error and can make comparison with other research harder.
 This is where [PyStim](change) comes into place.
 
-[PyStim](change) is an openly-available Python package for creating a multitude of visual stimuli in a parameterized way targeted towards the needs of vision science.
+[PyStim](change) is an openly-available Python package for creating a multitude of visual stimuli in a parameterized way and is targeted towards the needs of vision science.
 It can be easily downloaded and installed via github and pip.
 Using [PyStim](change) can improve the consistency and accessibility of visual stimuli in the field, while helping to avoid bugs.
 Given its modular and application-oriented nature, [PyStim](change) supports the use and design of visual stimuli for studying visual perception.
@@ -103,7 +103,7 @@ Key features of [PyStim](change):
 As stimulus creation is relevant for many vision science projects, stimulus functions which are part of [PyStim](change) or a pre-release version of the software have been used in almost all of the work of our laboratory within the last two years.
 Some of [PyStim](change)'s noise functions have been used to generate the narrowband noise masks of varying center frequency in [@schmittwilken2022b].
 A pre-release version was used in multiple conference contributions in which we ... (joris vss 2021) [@vincent2021], in which we compared existing models of human brightness perception on a large battery of brightness stimuli [@schmittwilken2022a], in which we (joris ecvp 2022) [@vincent2022], and in which we studied human edge processing with Cornsweet stimuli in various kinds of noise (white, pink, brown, several narrowband noises) [@schmittwilken2022c].
-All these stimuli were created with [PyStim](change) or functions that or now included in the software.
+All these stimuli were created with [PyStim](change) or functions that are included in the software.
 Moreover, we are using [PyStim](change) in ongoing work in our laboratory and in many student projects.
 
 
@@ -140,7 +140,7 @@ This is useful for comparing experimental findings and for developing and testin
 In theory, there is an infinite number of stimuli which are or could be interesting in the future of vision research.
 Hence, [PyStim](change) will by default remain under active development.
 In future versions, we want to add more visual stimuli and more stimulus sets - particularly dynamic stimuli which are currently not included.
-Finally, we want to foster the development of stimulus brenchmarks in vision science which will be added to [PyStim](change).
+Finally, we want to foster the development of stimulus benchmarks in vision science which will be added to [PyStim](change).
 
 
 # Acknowledgements
