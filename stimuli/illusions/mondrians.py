@@ -1,7 +1,7 @@
 import numpy as np
 
-from stimuli.components.shapes import parallelogram
-from stimuli.utils import degrees_to_pixels
+from stimuli.components.mondrians import mondrians
+from stimuli.utils import resolution, degrees_to_pixels
 
 __all__ = [
     "corrugated_mondrians",
@@ -9,12 +9,12 @@ __all__ = [
 
 
 def corrugated_mondrians(
+    visual_size=None,
     ppd=None,
-    width=None,
-    heights=None,
-    depths=None,
+    shape=None,
+    mondrian_depths=None,
+    mondrian_intensities=None,
     target_indices=None,
-    intensities=None,
     intensity_background=0.5,
 ):
     """
@@ -22,21 +22,21 @@ def corrugated_mondrians(
 
     Parameters
     ----------
-    ppd : int
-        pixels per degree (visual angle)
-    width : float
-        width of rectangles in degree visual angle
-    heights : float or tuple of floats
-        height of rectangles; if single float, all rectangles have the same height
-    depths : float or tuple of floats
-        depth of rectangles; as many depths as there are rows
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    mondrian_depths : float or tuple of floats
+        depth of parallelograms (ie mondrians) per row
+    mondrian_intensities : nested tuples
+        intensities of mondrians; as many tuples as there are rows and as many
+        numbers in each tuple as there are columns
     target_indices : nested tuples
-        indices of targets; as many tuples as there are targets each with (x, y) indices
-    intensities : nested tuples
-        intensities of indiidual rectangles; as many tuples as there are rows and as many numbers in each
-        tuple as there are columns
+        indices of targets; as many tuples as there are targets with (y, x) indices
     intensity_background : float
-        value for background
+        intensity value for background
 
     Returns
     -------
@@ -48,80 +48,81 @@ def corrugated_mondrians(
         Science, 262(5142), 2042–2044. https://doi.org/10.1126/science.8266102
     """
 
-    if isinstance(heights, (float, int)):
-        heights = [heights] * len(depths)
-
-    if any(len(lst) != len(heights) for lst in [depths, intensities]):
-        raise Exception("heights, depths, and intensities need the same length.")
-
-    widths_px = degrees_to_pixels(width, ppd)
-    heights_px = degrees_to_pixels(heights, ppd)
-    depths_px = degrees_to_pixels(depths, ppd)
-
-    nrows = len(depths)
-    ncols = len(intensities[0])
-    height = int(np.array(heights_px).sum())
-    width_ = int(widths_px * ncols + np.abs(np.array(depths_px)).sum())
-    img = np.ones([height, width_]) * intensity_background
-    mask = np.zeros([height, width_])
-    mval = 1
-
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
+    if len(np.unique(ppd)) > 1:
+        raise ValueError("ppd should be equal in x and y direction")
+    nrows = len(mondrian_intensities)
+    ncols = len(mondrian_intensities[0])
+    
+    if isinstance(mondrian_depths, (float, int)):
+        mondrian_depths = (mondrian_depths,) * nrows
+    
+    if len(mondrian_depths) != nrows:
+        raise ValueError("Unclear number of Mondrians in y-direction, check elements "
+                         "in mondrian_intensities and mondrian_depths")
+    
+    height, width = visual_size
+    mdepths_px = degrees_to_pixels(mondrian_depths, ppd[0])
+    max_depth = np.abs(np.array(mdepths_px)).max()
+    sum_depth = np.array(mdepths_px).sum()
+    red_depth = np.maximum(max_depth, sum_depth)
+    mheight_px, mwidth_px = int(shape[0] / nrows), int((shape[1]-red_depth) / ncols)
+    
     # Initial y coordinates
     yst = 0
-    yen = int(heights_px[0])
 
     # Calculate initial x coordinates
-    xstarts = np.cumsum(np.hstack([0, depths_px]))
-    temp = np.hstack([depths_px, 0])
+    xstarts = np.cumsum(np.hstack([0, mdepths_px]))
+    temp = np.hstack([mdepths_px, 0])
     temp[temp > 0] = 0.0
     xstarts += temp
     xstarts += np.abs(xstarts.min())
-
+    
+    sizes = []
+    poses = []
+    ints = []
+    tlist = []
+    target_counter = 1
+    
     for r in range(nrows):
         xst = xstarts[r]
-        xen = xst + int(widths_px + np.abs(depths_px[r]))
+        if mondrian_depths[r] < 0:
+            xst -= int(mondrian_depths[r]*ppd[0])
 
         for c in range(ncols):
-            stim = parallelogram(
-                visual_size=(heights[r], width + abs(depths[r])),
-                ppd=ppd,
-                parallelogram_depth=depths[r],
-                intensity_background=0.0,
-                intensity_parallelogram=intensities[r][c] - intensity_background,
-            )
+            msize = (mheight_px/ppd[0], mwidth_px/ppd[1], mondrian_depths[r])
+            mpos = (yst/ppd[0], xst/ppd[1])
+            mint = mondrian_intensities[r][c]
+            
+            sizes.append(msize)
+            poses.append(mpos)
+            ints.append(mint)
 
-            img[yst:yen, xst:xen] += stim["img"]
+            if (target_indices is not None) and (r, c) in target_indices:
+                tlist.append(target_counter)
 
-            if (r, c) in target_indices:
-                mask[yst:yen, xst:xen] += stim["mask"] * mval
-                mval += 1
+            xst += mwidth_px
+            target_counter += 1
+        yst += mheight_px
 
-            xst += widths_px
-            xen += widths_px
-        yst += heights_px[r]
-        yen += heights_px[r]
-
-    # Find and delete all irrelevant columns:
-    idx = np.argwhere(np.all(img == intensity_background, axis=0))
-    img = np.delete(img, idx, axis=1)
-    mask = np.delete(mask, idx, axis=1)
-
-    if len(np.unique(img[mask != 0])) > 1:
+    stim = mondrians(
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        mondrian_positions=poses,
+        mondrian_sizes=sizes,
+        mondrian_intensities=ints,
+        intensity_background=intensity_background,
+        )
+    target_mask = np.zeros(shape)
+    for t in range(len(tlist)):
+        target_mask[stim["mondrian_mask"] == tlist[t]] = t+1
+    stim["mask"] = target_mask.astype(int)
+    stim["target_indices"] = target_indices
+    
+    if len(np.unique(stim["img"][target_mask != 0])) > 1:
         raise Exception("targets are not equiluminant.")
-
-    stim = {
-        "img": img,
-        "mask": mask.astype(int),
-        "ppd": ppd,
-        "visual_size": np.array(img.shape) / ppd,
-        "shape": img.shape,
-        "width": width,
-        "heights": heights,
-        "depths": depths,
-        "intensity_background": intensity_background,
-        "intensities": intensities,
-        "target_indices": target_indices,
-    }
     return stim
 
 
@@ -129,7 +130,7 @@ if __name__ == "__main__":
     from stimuli.utils import plot_stim
 
     params = {
-        "ppd": 10,
+        "ppd": 20,
         "width": 2.0,
         "heights": 2.0,
         "depths": (0.0, 1.0, 0.0, -1.0),
@@ -141,6 +142,19 @@ if __name__ == "__main__":
             (0.0, 0.4, 0.0, 0.4),
         ),
     }
+    
+    p2 = {
+        "visual_size": 10,
+        "ppd": 20,
+        "mondrian_depths": (1, 0, -1, 0),
+        "mondrian_intensities": (
+            (0.4, 0.75, 0.4, 0.75),
+            (0.75, 0.4, 0.75, 1.0),
+            (0.4, 0.75, 0.4, 0.75),
+            (0.0, 0.4, 0.0, 0.4),
+        ),
+        "target_indices": ((1, 1), (3, 1)),
+        }
 
-    stim = corrugated_mondrians(**params)
-    plot_stim(stim, stim_name="Corrugated mondrians", mask=True, save=None)
+    stim = corrugated_mondrians(**p2)
+    plot_stim(stim, stim_name="Corrugated mondrians", mask=False, save=None)
