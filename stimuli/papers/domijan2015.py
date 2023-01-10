@@ -180,17 +180,17 @@ def resolve(shape, visual_size, ppd, original_visual_size):
     return shape, visual_size, ppd, visual_resize
 
 
-def dungeon(shape=SHAPES["dungeon"], visual_size=VSIZES["dungeon"], ppd=PPD):
+def dungeon(visual_size=VSIZES["dungeon"], ppd=PPD, shape=SHAPES["dungeon"]):
     """Dungeon illusion, Domijan (2015) Fig 6A
 
     Parameters
     ----------
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: (11, 22)
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: 10
     shape : Sequence[Number, Number], Number, or None
         shape [height, width] in pixels, default: (110, 220)
-    visual_size : Sequence[Number, Number], Number, or None
-        visual size [height, width] in degrees, default: 10
-    ppd : Sequence[Number, Number], Number, or None
-        pixels per degree [vertical, horizontal], default: (11, 22)
 
     Returns
     -------
@@ -250,17 +250,17 @@ def dungeon(shape=SHAPES["dungeon"], visual_size=VSIZES["dungeon"], ppd=PPD):
     return {**stim, **params}
 
 
-def cube(shape=SHAPES["cube"], visual_size=VSIZES["cube"], ppd=PPD):
+def cube(visual_size=VSIZES["cube"], ppd=PPD, shape=SHAPES["cube"]):
     """Cube illusion, Domijan (2015) Fig 6B
 
     Parameters
     ----------
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: (10, 20)
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: 10
     shape : Sequence[Number, Number], Number, or None
         shape [height, width] in pixels, default: (100, 200)
-    visual_size : Sequence[Number, Number], Number, or None
-        visual size [height, width] in degrees, default: 10
-    ppd : Sequence[Number, Number], Number, or None
-        pixels per degree [vertical, horizontal], default: (10, 20)
 
     Returns
     -------
@@ -319,17 +319,17 @@ def cube(shape=SHAPES["cube"], visual_size=VSIZES["cube"], ppd=PPD):
     return {**stim, **params}
 
 
-def grating(shape=SHAPES["grating"], visual_size=VSIZES["grating"], ppd=PPD):
+def grating(visual_size=VSIZES["grating"], ppd=PPD, shape=SHAPES["grating"]):
     """Grating illusion, Domijan (2015) Fig 6C
 
     Parameters
     ----------
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: (10, 22)
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: 10
     shape : Sequence[Number, Number], Number, or None
         shape [height, width] in pixels, default: (100, 220)
-    visual_size : Sequence[Number, Number], Number, or None
-        visual size [height, width] in degrees, default: 10
-    ppd : Sequence[Number, Number], Number, or None
-        pixels per degree [vertical, horizontal], default: (10, 22)
 
     Returns
     -------
@@ -390,17 +390,17 @@ def grating(shape=SHAPES["grating"], visual_size=VSIZES["grating"], ppd=PPD):
     return {**stim, **params}
 
 
-def rings(shape=SHAPES["rings"], visual_size=VSIZES["rings"], ppd=PPD):
+def rings(visual_size=VSIZES["rings"], ppd=PPD, shape=SHAPES["rings"]):
     """Ring patterns, Domijan (2015) Fig 7A
 
     Parameters
     ----------
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: (10, 20)
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: 10
     shape : Sequence[Number, Number], Number, or None
         shape [height, width] in pixels, default: (100, 200)
-    visual_size : Sequence[Number, Number], Number, or None
-        visual size [height, width] in degrees, default: 10
-    ppd : Sequence[Number, Number], Number, or None
-        pixels per degree [vertical, horizontal], default: (10, 20)
 
     Returns
     -------
@@ -455,17 +455,17 @@ def rings(shape=SHAPES["rings"], visual_size=VSIZES["rings"], ppd=PPD):
     return {**stim, **params}
 
 
-def bullseye(shape=SHAPES["bullseye"], visual_size=VSIZES["bullseye"], ppd=PPD):
+def bullseye(visual_size=VSIZES["bullseye"], ppd=PPD, shape=SHAPES["bullseye"]):
     """Bullseye illusion, Domijan (2015) Fig 7B
 
     Parameters
     ----------
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: (10, 20)
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: 10
     shape : Sequence[Number, Number], Number, or None
         shape [height, width] in pixels, default: (100, 200)
-    visual_size : Sequence[Number, Number], Number, or None
-        visual size [height, width] in degrees, default: 10
-    ppd : Sequence[Number, Number], Number, or None
-        pixels per degree [vertical, horizontal], default: (10, 20)
 
     Returns
     -------
@@ -519,20 +519,20 @@ def bullseye(shape=SHAPES["bullseye"], visual_size=VSIZES["bullseye"], ppd=PPD):
 
 
 def simultaneous_brightness_contrast(
-    shape=SHAPES["simultaneous_brightness_contrast"],
     visual_size=VSIZES["simultaneous_brightness_contrast"],
     ppd=PPD,
+    shape=SHAPES["simultaneous_brightness_contrast"],
 ):
     """Simultaneous brightness contrast, Domijan (2015) Fig 7C
 
     Parameters
     ----------
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: (10, 20)
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: 10
     shape : Sequence[Number, Number], Number, or None
         shape [height, width] in pixels, default: (100, 200)
-    visual_size : Sequence[Number, Number], Number, or None
-        visual size [height, width] in degrees, default: 10
-    ppd : Sequence[Number, Number], Number, or None
-        pixels per degree [vertical, horizontal], default: (10, 20)
 
     Returns
     -------
@@ -587,17 +587,17 @@ def simultaneous_brightness_contrast(
     return {**stim, **params}
 
 
-def white(shape=SHAPES["white"], visual_size=VSIZES["white"], ppd=PPD, pad=PAD):
+def white(visual_size=VSIZES["white"], ppd=PPD, pad=PAD, shape=SHAPES["white"]):
     """White stimulus, Domijan (2015) Fig 8A
 
     Parameters
     ----------
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: (8, 8)
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: 10
     shape : Sequence[Number, Number], Number, or None
         shape [height, width] in pixels, default: (80, 80)
-    visual_size : Sequence[Number, Number], Number, or None
-        visual size [height, width] in degrees, default: 10
-    ppd : Sequence[Number, Number], Number, or None
-        pixels per degree [vertical, horizontal], default: (8, 8)
     pad : bool
         If True, include original padding (default: False)
 
@@ -655,17 +655,17 @@ def white(shape=SHAPES["white"], visual_size=VSIZES["white"], ppd=PPD, pad=PAD):
     return {**stim, **params}
 
 
-def benary(shape=SHAPES["benary"], visual_size=VSIZES["benary"], ppd=PPD):
+def benary(visual_size=VSIZES["benary"], ppd=PPD, shape=SHAPES["benary"]):
     """Benarys cross, Domijan (2015) Fig 8B
 
     Parameters
     ----------
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: (10, 10)
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: 10
     shape : Sequence[Number, Number], Number, or None
         shape [height, width] in pixels, default: (100, 100)
-    visual_size : Sequence[Number, Number], Number, or None
-        visual size [height, width] in degrees, default: 10
-    ppd : Sequence[Number, Number], Number, or None
-        pixels per degree [vertical, horizontal], default: (10, 10)
 
     Returns
     -------
@@ -714,17 +714,17 @@ def benary(shape=SHAPES["benary"], visual_size=VSIZES["benary"], ppd=PPD):
     return {**stim, **params}
 
 
-def todorovic(shape=SHAPES["todorovic"], visual_size=VSIZES["todorovic"], ppd=PPD):
+def todorovic(visual_size=VSIZES["todorovic"], ppd=PPD, shape=SHAPES["todorovic"]):
     """Todorovic stimulus, Domijan (2015) Fig 9A
 
     Parameters
     ----------
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: (10, 20)
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: 10
     shape : Sequence[Number, Number], Number, or None
         shape [height, width] in pixels, default: (100, 200)
-    visual_size : Sequence[Number, Number], Number, or None
-        visual size [height, width] in degrees, default: 10
-    ppd : Sequence[Number, Number], Number, or None
-        pixels per degree [vertical, horizontal], default: (10, 20)
 
     Returns
     -------
@@ -782,21 +782,21 @@ def todorovic(shape=SHAPES["todorovic"], visual_size=VSIZES["todorovic"], ppd=PP
 
 
 def checkerboard_contrast_contrast(
-    shape=SHAPES["checkerboard_contrast_contrast"],
     visual_size=VSIZES["checkerboard_contrast_contrast"],
     ppd=PPD,
+    shape=SHAPES["checkerboard_contrast_contrast"],
     pad=PAD,
 ):
     """Checkerboard contrast-contrast effect, Domijan (2015) Fig 9B
 
     Parameters
     ----------
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: (8, 16)
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: 10
     shape : Sequence[Number, Number], Number, or None
         shape [height, width] in pixels, default: (80, 160)
-    visual_size : Sequence[Number, Number], Number, or None
-        visual size [height, width] in degrees, default: 10
-    ppd : Sequence[Number, Number], Number, or None
-        pixels per degree [vertical, horizontal], default: (8, 16)
     pad : bool
         If True, include original padding (default: False)
 
@@ -875,18 +875,18 @@ def checkerboard_contrast_contrast(
 
 
 def checkerboard(
-    shape=SHAPES["checkerboard"], visual_size=VSIZES["checkerboard"], ppd=PPD, pad=PAD
+    visual_size=VSIZES["checkerboard"], ppd=PPD, shape=SHAPES["checkerboard"], pad=PAD
 ):
     """Classic checkerboard contrast with single-check targets, Domijan (2015) Fig 10A
 
     Parameters
     ----------
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: (8, 8)
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: 10
     shape : Sequence[Number, Number], Number, or None
         shape [height, width] in pixels, default: (80, 80)
-    visual_size : Sequence[Number, Number], Number, or None
-        visual size [height, width] in degrees, default: 10
-    ppd : Sequence[Number, Number], Number, or None
-        pixels per degree [vertical, horizontal], default: (8, 8)
     pad : bool
         If True, include original padding (default: False)
 
@@ -944,21 +944,21 @@ def checkerboard(
 
 
 def checkerboard_extended(
-    shape=SHAPES["checkerboard_extended"],
     visual_size=VSIZES["checkerboard_extended"],
     ppd=PPD,
+    shape=SHAPES["checkerboard_extended"],
     pad=PAD,
 ):
     """Checkerboard contrast with cross-like targets, Domijan (2015) Fig 10B
 
     Parameters
     ----------
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: (8, 8)
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: 10
     shape : Sequence[Number, Number], Number, or None
         shape [height, width] in pixels, default: (80, 80)
-    visual_size : Sequence[Number, Number], Number, or None
-        visual size [height, width] in degrees, default: 10
-    ppd : Sequence[Number, Number], Number, or None
-        pixels per degree [vertical, horizontal], default: (8, 8)
     pad : bool
         If True, include original padding (default: False)
 
@@ -1016,18 +1016,18 @@ def checkerboard_extended(
 
 
 def white_yazdanbakhsh(
-    shape=SHAPES["white_yazdanbakhsh"], visual_size=VSIZES["white_yazdanbakhsh"], ppd=PPD, pad=PAD
+    visual_size=VSIZES["white_yazdanbakhsh"], ppd=PPD, shape=SHAPES["white_yazdanbakhsh"], pad=PAD
 ):
     """Yazdanbakhsh variation of White stimulus, Domijan (2015) Fig 11A
 
     Parameters
     ----------
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: (8, 8)
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: 10
     shape : Sequence[Number, Number], Number, or None
         shape [height, width] in pixels, default: (80, 80)
-    visual_size : Sequence[Number, Number], Number, or None
-        visual size [height, width] in degrees, default: 10
-    ppd : Sequence[Number, Number], Number, or None
-        pixels per degree [vertical, horizontal], default: (8, 8)
     pad : bool
         If True, include original padding (default: False)
 
@@ -1095,18 +1095,18 @@ def white_yazdanbakhsh(
 
 
 def white_anderson(
-    shape=SHAPES["white_anderson"], visual_size=VSIZES["white_anderson"], ppd=PPD, pad=PAD
+    visual_size=VSIZES["white_anderson"], ppd=PPD, shape=SHAPES["white_anderson"], pad=PAD
 ):
     """Anderson variation of White stimulus, Domijan (2015) Fig 11B
 
     Parameters
     ----------
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: (10, 10)
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: 10
     shape : Sequence[Number, Number], Number, or None
         shape [height, width] in pixels, default: (100, 100)
-    visual_size : Sequence[Number, Number], Number, or None
-        visual size [height, width] in degrees, default: 10
-    ppd : Sequence[Number, Number], Number, or None
-        pixels per degree [vertical, horizontal], default: (10, 10)
     pad : bool
         If True, include original padding (default: False)
 
@@ -1176,17 +1176,17 @@ def white_anderson(
     return {**stim, **params}
 
 
-def white_howe(shape=SHAPES["white_howe"], visual_size=VSIZES["white_howe"], ppd=PPD, pad=PAD):
+def white_howe(visual_size=VSIZES["white_howe"], ppd=PPD, shape=SHAPES["white_howe"], pad=PAD):
     """Howe variation of White stimulus, Domijan (2015) Fig 11C
 
     Parameters
     ----------
+    visual_size : Sequence[Number, Number], Number, or None
+        visual size [height, width] in degrees, default: (10, 10)
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal], default: 10
     shape : Sequence[Number, Number], Number, or None
         shape [height, width] in pixels, default: (100, 100)
-    visual_size : Sequence[Number, Number], Number, or None
-        visual size [height, width] in degrees, default: 10
-    ppd : Sequence[Number, Number], Number, or None
-        pixels per degree [vertical, horizontal], default: (10, 10)
     pad : bool
         If True, include original padding (default: False)
 
