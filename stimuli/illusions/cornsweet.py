@@ -1,5 +1,5 @@
 import numpy as np
-from stimuli.utils import resolution
+from stimuli.components.edges import cornsweet_edge
 
 
 __all__ = [
@@ -36,10 +36,8 @@ def cornsweet(
         shape [height, width] of grating, in pixels
     ramp_width : float
         width of luminance ramp in degrees of visual angle
-    intensity_max : float
-        maximum intensity value
-    intensity_min : float
-        minimum intensity value
+    intensity_edges : (float, float)
+        intensity of edges
     intensity_plateau : float
         intensity value of plateau
     exponent : float
@@ -57,43 +55,24 @@ def cornsweet(
     Cornsweet, T. (1970). Visual perception. Academic press.
         https://doi.org/10.1016/B978-0-12-189750-5.X5001-5
     """
-    # Resolve resolution
-    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)    
-    if len(np.unique(ppd)) > 1:
-        raise ValueError("ppd should be equal in x and y direction")
-    if ramp_width > visual_size[1]/2:
-        raise ValueError("ramp_width is too large")
 
-    size = [int(visual_size[0] * ppd[0]), int(visual_size[1] * ppd[1])]
-    ramp_width = int(ramp_width * ppd[1])
-    img = np.ones(size) * intensity_plateau
-    mask = np.zeros(size)
-
-    # Create ramp profiles individually for left and right side
-    dist = np.arange(size[1] / 2.0)
-    dist = dist / ramp_width
-    dist[dist > 1.0] = 1.0
-    profile1 = (1.0 - dist) ** exponent * (intensity_edges[0] - intensity_plateau)
-    profile2 = (1.0 - dist) ** exponent * (intensity_edges[1] - intensity_plateau)
-    img[:, : int(size[1] / 2.0)] += profile1[::-1]
-    img[:, size[1] // 2 :] += profile2
+    stim = cornsweet_edge(
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        ramp_width=ramp_width,
+        intensity_edges=intensity_edges,
+        intensity_plateau=intensity_plateau,
+        exponent=exponent,
+        )
+    shape = stim["shape"]
+    ramp_width_px = stim["ramp_width"] * stim["ppd"][0]
 
     # Generate the target mask
-    mask[:, 0 : int(size[1] / 2.0 - ramp_width - 1)] = 1
-    mask[:, int(size[1] / 2.0 + ramp_width + 1) : :] = 2
-
-    stim = {
-        "img": img,
-        "mask": mask.astype(int),
-        "visual_size": visual_size,
-        "ppd": ppd,
-        "shape": shape,
-        "intensity_edges": intensity_edges,
-        "intensity_plateau": intensity_plateau,
-        "ramp_width": ramp_width,
-        "exponent": exponent,
-    }
-
+    mask = np.zeros(shape)
+    mask[:, 0 : int(shape[1] / 2.0 - ramp_width_px - 1)] = 1
+    mask[:, int(shape[1] / 2.0 + ramp_width_px + 1) : :] = 2
+    stim["mask"] = mask.astype(int)
     return stim
 
 
