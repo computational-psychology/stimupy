@@ -188,6 +188,7 @@ def sine_wave(
     rotation=0,
     phase_shift=0,
     intensity_bars=(0.0, 1.0),
+    centralize=False,
 ):
     """Draw sine-wave grating (set of bars) of given spatial frequency
 
@@ -215,6 +216,10 @@ def sine_wave(
         phase shift of grating in degrees
     intensity_bars : Sequence[float, ...]
         maximal intensity value for each bar, by default (0.0, 1.0).
+    centralize : bool or str
+        if False (default): set origin to upper left corner,
+        if "mean": set origin to hypothetical center
+        if "center": set origin to real center (or closest value)
 
     Returns
     ----------
@@ -291,6 +296,12 @@ def sine_wave(
         orientation="rotated",
         rotation=rotation,
     )
+    
+    if centralize == "mean":
+        stim["distances"] -= stim["distances"].mean()
+    elif centralize == "center":
+        distance_vec = np.unique(stim["distances"])
+        stim["distances"] -= distance_vec[int(len(distance_vec) / 2)]
 
     # Draw image
     stim["img"] = np.sin(
@@ -319,6 +330,7 @@ def gabor(
     rotation=0,
     phase_shift=0,
     intensity_bars=(0.0, 1.0),
+    centralize="center"
 ):
     """Draw sine-wave grating (set of bars) of given spatial frequency
 
@@ -334,7 +346,7 @@ def gabor(
         spatial frequency of grating, in cycles per degree visual angle
     bar_width : Number, or None (default)
         width of a single bar, in degrees visual angle
-    sigma : float
+    sigma : float or (float, float)
         sigma of Gaussian in degree visual angle (y, x)
     period : "even", "odd", "either" or "ignore" (default)
         ensure whether the grating has "even" number of phases, "odd"
@@ -346,6 +358,10 @@ def gabor(
         phase shift of grating in degrees
     intensity_bars : Sequence[float, ...]
         maximal intensity value for each bar, by default (0.0, 1.0).
+    centralize : bool or str
+        if False: set origin to upper left corner,
+        if "mean": set origin to hypothetical center
+        if "center" (default): set origin to real center (or closest value)
 
     Returns
     ----------
@@ -364,6 +380,7 @@ def gabor(
         rotation=rotation,
         phase_shift=phase_shift,
         intensity_bars=intensity_bars,
+        centralize=centralize,
     )
 
     gaussian_window = gaussian(
@@ -371,7 +388,7 @@ def gabor(
         ppd=ppd,
         sigma=sigma,
     )
-    mean_int = stim["img"].mean()
+    mean_int = (intensity_bars[0] + intensity_bars[1]) / 2
     stim["img"] = (stim["img"]-mean_int) * gaussian_window["img"] + mean_int
 
     return {
