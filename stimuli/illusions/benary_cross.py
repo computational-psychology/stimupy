@@ -163,7 +163,7 @@ def benarys_cross_rectangles(
     # Calculate target placement for classical Benarys cross
     target_x = (
         (visual_size[1] - cross_thickness) / 2.0 - target_size[1],
-        visual_size[1] - target_size[1],
+        shape[1]/ppd[1] - np.round(target_size[1]*ppd[1])/ppd[1],
     )
 
     target_y = (
