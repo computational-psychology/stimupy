@@ -371,7 +371,8 @@ def gabor(
         ppd=ppd,
         sigma=sigma,
     )
-    stim["img"] *= gaussian_window["img"]
+    mean_int = stim["img"].mean()
+    stim["img"] = (stim["img"]-mean_int) * gaussian_window["img"] + mean_int
 
     return {
         **stim,
