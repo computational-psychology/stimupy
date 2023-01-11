@@ -316,6 +316,7 @@ def sine_wave(
         "bar_width": params["phase_width"],
         "n_bars": params["n_phases"],
         "period": params["period"],
+        "phase_shift": phase_shift,
     }
 
 
