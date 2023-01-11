@@ -18,7 +18,28 @@ def step_edge(
     rotation=0.,
     intensity_edges=(0.0, 1.0),
 ):
-    # Resolve resolutions
+    """Draw a central step edge
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    rotation : float
+        rotation of stimulus in degrees (default: 0)
+    intensity_edges : (float, float)
+        intensity values of edges (default: (0., 1.))
+
+    Returns
+    -------
+    dict[str, Any]
+        dict with the stimulus (key: "img")
+        and additional keys containing stimulus parameters
+    """
+    # Resolve resolutions and get distances
     base = image_base(
         visual_size=visual_size,
         ppd=ppd,
@@ -54,6 +75,31 @@ def gaussian_edge(
     intensity_edges=(0.0, 1.0),
     intensity_background=0.5,
 ):
+    """Draw a central step edge with a Gaussian envelop
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    sigma : float or (float, float)
+        sigma of Gaussian in degree visual angle (y, x)
+    rotation : float
+        rotation of stimulus in degrees (default: 0)
+    intensity_edges : (float, float)
+        intensity values of edges (default: (0., 1.))
+    intensity_background : float
+        intensity value of background, by default 0.5
+
+    Returns
+    -------
+    dict[str, Any]
+        dict with the stimulus (key: "img")
+        and additional keys containing stimulus parameters
+    """
     stim = step_edge(
         visual_size=visual_size,
         ppd=ppd,
