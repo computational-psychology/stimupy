@@ -53,9 +53,9 @@ def mask_bars(
 
 
 def square_wave(
-    shape=None,
     visual_size=None,
     ppd=None,
+    shape=None,
     frequency=None,
     n_bars=None,
     bar_width=None,
@@ -67,12 +67,12 @@ def square_wave(
 
     Parameters
     ----------
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
     frequency : Number, or None (default)
         spatial frequency of grating, in cycles per degree visual angle
     n_bars : int, or None (default)

@@ -497,8 +497,7 @@ def checkassim(ppd=PPD, pad=PAD):
         "check_visual_size": 1 / PPD,
         "targets": ((3, 6), (3, 3)),
         "extend_targets": False,
-        "intensity_low": 17.5,
-        "intensity_high": 70.0,
+        "intensity_checks": (17.5, 70.0),
         "intensity_target": 35.0,
     }
     stim = illusions.checkerboards.checkerboard(

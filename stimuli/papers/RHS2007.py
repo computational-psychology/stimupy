@@ -1260,8 +1260,7 @@ def checkerboard_016(ppd=PPD, pad=True):
         "check_visual_size": (5 / 32, 5 / 32),
         "targets": ((target_row, 16), (target_row, 85)),
         "extend_targets": False,
-        "intensity_low": v3,
-        "intensity_high": v1,
+        "intensity_checks": (v3, v1),
         "intensity_target": v2,
     }
     stim = illusions.checkerboards.checkerboard(**params)
@@ -1311,8 +1310,7 @@ def checkerboard_094(ppd=PPD, pad=True):
         "check_visual_size": (30 / 32, 30 / 32),
         "targets": ((target_row, 6), (target_row, 17)),
         "extend_targets": False,
-        "intensity_low": v1,
-        "intensity_high": v3,
+        "intensity_checks": (v1, v3),
         "intensity_target": v2,
     }
     stim = illusions.checkerboards.checkerboard(**params)
@@ -1362,8 +1360,7 @@ def checkerboard_21(ppd=PPD, pad=True):
         "check_visual_size": (67 / 32, 67 / 32),
         "targets": ((target_row, 2), (target_row, 7)),
         "extend_targets": False,
-        "intensity_low": v1,
-        "intensity_high": v3,
+        "intensity_checks": (v1, v3),
         "intensity_target": v2,
     }
     stim = illusions.checkerboards.checkerboard(**params)

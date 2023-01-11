@@ -824,8 +824,7 @@ def checkerboard_contrast_contrast(
         "target_shape": (4, 4),
         "tau": 0.5,
         "alpha": 0.5,
-        "intensity_low": v1,
-        "intensity_high": v3,
+        "intensity_checks": (v1, v3),
     }
 
     # Large checkerboard, embedded target region
@@ -914,9 +913,8 @@ def checkerboard(
         "check_visual_size": (1.0 * visual_resize, 1.0 * visual_resize),
         "targets": [(3, 2), (5, 5)],
         "extend_targets": False,
-        "intensity_low": 0,
-        "intensity_high": 1,
-        "intensity_target": 0.5,
+        "intensity_checks": (v1, v3),
+        "intensity_target": v2,
     }
     stim = illusions.checkerboards.checkerboard(**params)
 
@@ -986,9 +984,8 @@ def checkerboard_extended(
         "check_visual_size": (1.0 * visual_resize, 1.0 * visual_resize),
         "targets": [(3, 2), (5, 5)],
         "extend_targets": True,
-        "intensity_low": 0,
-        "intensity_high": 1,
-        "intensity_target": 0.5,
+        "intensity_checks": (v1, v3),
+        "intensity_target": v2,
     }
     stim = illusions.checkerboards.checkerboard(**params)
 
@@ -1257,4 +1254,4 @@ if __name__ == "__main__":
     from stimuli.utils import plot_stimuli
 
     stims = gen_all(skip=True)
-    plot_stimuli(stims, mask=False)
+    plot_stimuli(stims, mask=True)

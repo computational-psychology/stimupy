@@ -121,15 +121,17 @@ def add_targets(checkerboard_stim, targets, extend_targets=False, intensity_targ
 
 
 def checkerboard(
-    shape=None,
-    ppd=None,
     visual_size=None,
+    ppd=None,
+    shape=None,
+    frequency=None,
     board_shape=None,
     check_visual_size=None,
     targets=None,
     extend_targets=False,
-    intensity_low=0.0,
-    intensity_high=1.0,
+    period="ignore",
+    rotation=0,
+    intensity_checks=(0.0, 1.0),
     intensity_target=0.5,
 ):
     """Checkerboard assimilation effect
@@ -142,12 +144,14 @@ def checkerboard(
 
     Parameters
     ----------
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] in pixels
-    ppd : Sequence[Number, Number], Number, or None (default)
-        pixels per degree [vertical, horizontal]
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size of the total board [height, width] in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] in pixels
+    frequency : Sequence[Number, Number], Number, or None (default)
+        frequency of checkerboard in [y, x] in cpd
     board_shape : Sequence[Number, Number], Number, or None (default)
         number of checks in [height, width] of checkerboard
     check_visual_size : Sequence[Number, Number], Number, or None (default)
@@ -156,12 +160,14 @@ def checkerboard(
         target indices (row, column of checkerboard), by default None
     extend_targets : bool, optional
         if true, extends the targets by 1 check in all 4 directions, by default False
-    intensity_low : float, optional
-        intensity value of the dark checks (top left corner), by default 0.0
-    intensity_high : float, optional
-        intensity value of the light checks, by default 1.0
-    intensity_target : float, optional
-        intensity value of the target checks, by default 0.5
+    period : "even", "odd", "either" or "ignore" (default)
+        ensure whether the grating has "even" number of phases, "odd"
+        number of phases, either or whether not to round the number of
+        phases ("ignore")
+    rotation : float
+        rotation of grating in degrees (default: 0 = horizontal)
+    intensity_checks : Sequence[float, float]
+        intensity values of checks, by default (0.0, 1.0)
 
     Returns
     -------
@@ -186,13 +192,15 @@ def checkerboard(
 
     # Set up basic checkerboard
     stim = board(
+        visual_size=visual_size,
         ppd=ppd,
         shape=shape,
-        visual_size=visual_size,
+        frequency=frequency,
         board_shape=board_shape,
         check_visual_size=check_visual_size,
-        intensity_low=intensity_low,
-        intensity_high=intensity_high,
+        period=period,
+        rotation=rotation,
+        intensity_checks=intensity_checks,
     )
 
     # Add targets
@@ -209,14 +217,16 @@ def checkerboard(
 
 
 def contrast_contrast(
-    shape=None,
-    ppd=None,
     visual_size=None,
+    ppd=None,
+    shape=None,
+    frequency=None,
     board_shape=None,
     check_visual_size=None,
     target_shape=(2, 3),
-    intensity_low=0.0,
-    intensity_high=1.0,
+    period="ignore",
+    rotation=0,
+    intensity_checks=(0.0, 1.0),
     tau=0.5,
     alpha=0.2,
 ):
@@ -270,13 +280,15 @@ def contrast_contrast(
 
     # Set up basic checkerboard
     stim = board(
+        visual_size=visual_size,
         ppd=ppd,
         shape=shape,
-        visual_size=visual_size,
+        frequency=frequency,
         board_shape=board_shape,
         check_visual_size=check_visual_size,
-        intensity_low=intensity_low,
-        intensity_high=intensity_high,
+        period=period,
+        rotation=rotation,
+        intensity_checks=intensity_checks,
     )
     img = stim["img"]
 

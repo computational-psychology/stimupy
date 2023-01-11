@@ -318,8 +318,11 @@ def resolve_grating_params(
             f"Grating frequency ({frequency}) should not exceed Nyquist limit {ppd/2} (ppd/2)"
         )
 
-    # Accumulate edges of phases
+    # Accumulate edges of phases (rounding to avoid accumulation of
+    # floating point imprecisions)
     edges = [*itertools.accumulate(itertools.repeat(phase_width, int(np.ceil(n_phases))))]
+    edges = np.round(np.array(edges), 8)
+    edges = list(edges)
 
     return {
         "length": length,
