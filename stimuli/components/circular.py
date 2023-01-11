@@ -2,6 +2,7 @@ import copy
 import itertools
 
 import numpy as np
+import scipy.special as sp
 
 from stimuli.components import image_base, mask_elements, resolve_grating_params
 from stimuli.utils import resize_array, resolution
@@ -12,6 +13,7 @@ __all__ = [
     "ring",
     "annulus",
     "grating",
+    "bessel"
 ]
 
 
@@ -410,3 +412,63 @@ def grating(
 
     # Assemble output
     return {**stim, **params}
+
+
+def bessel(
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    frequency=None,
+    order=0,
+    intensity_rings=(1.0, 0.0),
+):
+    """Draw a Bessel stimulus, i.e. draw circular rings following an nth order
+    Bessel function of a given frequency.
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    frequency : Number, or None (default)
+        spatial frequency of circular grating, in cycles per degree
+    order : int
+        n-th order Bessel function
+    intensity_rings : (float, float)
+        intensity values of rings, first value indicating center intensity
+
+    Returns
+    -------
+    dict[str, Any]
+        dict with the stimulus (key: "img")
+        and additional keys containing stimulus parameters
+    """
+
+    base = image_base(
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        rotation=0,
+        origin=None,
+        )
+    
+    img = base["radial"] * frequency * 2 * np.pi
+    img = sp.jv(order, img)
+    img = (img - img.min()) / (img.max() - img.min())
+    img = img * (intensity_rings[0] - intensity_rings[1]) + intensity_rings[1]
+
+    stim = {
+        "img": img,
+        "mask": None,
+        "visual_size": base["visual_size"],
+        "ppd": base["ppd"],
+        "shape": base["shape"],
+        "order": order,
+        "frequency": frequency,
+        "intensity_rings": intensity_rings,
+        }
+    return stim
+    
