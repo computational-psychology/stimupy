@@ -16,6 +16,7 @@ def checkerboard(
     check_visual_size=None,
     period="ignore",
     rotation=0,
+    phase_shift=0,
     intensity_checks=(1.0, 0.0),
 ):
     """Draws a checkerboard with given specifications
@@ -38,8 +39,10 @@ def checkerboard(
         ensure whether the grating has "even" number of phases, "odd"
         number of phases, either or whether not to round the number of
         phases ("ignore")
-    rotation : float
+    rotation : Sequence[Number, Number] or Number
         rotation of grating in degrees (default: 0 = horizontal)
+    phase_shift : Sequence[Number, Number] or Number
+        phase shift of grating in degrees
     intensity_checks : Sequence[float, float]
         intensity values of checks, by default (1.0, 0.0)
 
@@ -56,6 +59,8 @@ def checkerboard(
         board_shape = (board_shape, board_shape)
     if isinstance(check_visual_size, (float, int)) or check_visual_size is None:
         check_visual_size = (check_visual_size, check_visual_size)
+    if isinstance(phase_shift, (float, int)) or phase_shift is None:
+        phase_shift = (phase_shift, phase_shift)
     
     create_twice = visual_size is None and shape is None
 
@@ -69,6 +74,7 @@ def checkerboard(
         bar_width=check_visual_size[0],
         period=period,
         rotation=rotation,
+        phase_shift=phase_shift[1],
         intensity_bars=intensity_checks,
         )
     
@@ -81,6 +87,7 @@ def checkerboard(
         bar_width=check_visual_size[1],
         period=period,
         rotation=rotation+90,
+        phase_shift=phase_shift[0],
         intensity_bars=intensity_checks,
         )
     

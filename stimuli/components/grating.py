@@ -61,6 +61,7 @@ def square_wave(
     bar_width=None,
     period="ignore",
     rotation=0,
+    phase_shift=0,
     intensity_bars=(1.0, 0.0),
 ):
     """Draw square-wave grating (set of bars) of given spatial frequency
@@ -85,6 +86,8 @@ def square_wave(
         phases ("ignore")
     rotation : float
         rotation of grating in degrees (default: 0 = horizontal)
+    phase_shift : float
+        phase shift of grating in degrees
     intensity_bars : Sequence[float, ...]
         intensity value for each bar, by default (1.0, 0.0).
         Can specify as many intensities as n_bars;
@@ -154,10 +157,23 @@ def square_wave(
     shape = resolution.validate_shape(shape)
     visual_size = resolution.validate_visual_size(visual_size)
     ppd = resolution.validate_ppd(ppd)
+    
+    # Phase shift:
+    phase_shift = phase_shift % 180
+    if phase_shift > 0 and phase_shift <= 90:
+        intensity_bars = (intensity_bars[1], intensity_bars[0])
+    
+    phase_shift_deg = phase_shift * params["phase_width"]/90
+    phase_shift_deg = np.round(phase_shift_deg * ppd[0]) / ppd[0]
+    edges = list(np.array(params["edges"]) + phase_shift_deg)
+    if phase_shift > 0 and phase_shift <= 90:
+        edges = [phase_shift_deg, ] + edges
+    elif phase_shift > 90:
+        edges = [phase_shift_deg-params["phase_width"], phase_shift_deg] + edges
 
     # Get bars mask
     stim = mask_bars(
-        edges=params["edges"],
+        edges=edges,
         shape=shape,
         visual_size=visual_size,
         ppd=ppd,
@@ -168,12 +184,16 @@ def square_wave(
     # Draw image
     stim["img"] = draw_regions(stim["mask"], intensities=intensity_bars)
 
+    if phase_shift > 0 and phase_shift <= 90:
+        intensity_bars = (intensity_bars[1], intensity_bars[0])
+
     return {
         **stim,
         "frequency": params["frequency"],
         "bar_width": params["phase_width"],
         "n_bars": params["n_phases"],
         "period": params["period"],
+        "intensity_bars": intensity_bars,
     }
 
 
@@ -552,6 +572,7 @@ if __name__ == "__main__":
         "bar_width": 3.5,
         "period": "odd",
         "rotation": rotation,
+        "phase_shift": 225,
     }
 
     p4 = {
