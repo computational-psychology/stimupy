@@ -607,7 +607,7 @@ if __name__ == "__main__":
 
     rotation = 45
     origin = "center"
-    phase_shift = 0
+    phase_shift = 45
 
     p1 = {
         "visual_size": (10, 5),

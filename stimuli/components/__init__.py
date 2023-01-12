@@ -47,16 +47,16 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin="mea
     if origin == "corner":
         x = np.linspace(0, visual_size.width, shape.width)
         y = np.linspace(0, visual_size.height, shape.height)
-    elif origin == "mean" or origin == "center":
+    elif origin == "mean":
         vrange = (visual_size.height / 2, visual_size.width / 2)
         x = np.linspace(-vrange[1], vrange[1], shape.width)
         y = np.linspace(-vrange[0], vrange[0], shape.height)
+    elif origin == "center":
+        vrange = (visual_size.height / 2, visual_size.width / 2)
+        x = np.linspace(-vrange[1], vrange[1], shape.width, endpoint=False)
+        y = np.linspace(-vrange[0], vrange[0], shape.height, endpoint=False)
     else:
         raise ValueError("origin can only be be corner, mean or center")
-
-    if origin == "center":
-        x -= x[int(len(x) / 2)]
-        y -= y[int(len(y) / 2)]
 
     # Linear distance image bases
     xx, yy = np.meshgrid(x, y)
@@ -138,12 +138,6 @@ def mask_elements(
     )
     distances = base[orientation]
     distances = np.round(distances, 8)
-    
-    if not rotation%90:
-        distances_temp = distances
-    else:
-        # distances_temp = np.round(distances, 1)
-        distances_temp = distances
 
     if origin != "corner":
         nedges = int(len(edges) / 2)
@@ -151,14 +145,14 @@ def mask_elements(
         phase_width = np.diff(edges).mean()
         edges_small = edges[0:nedges+1]
         edges_large = edges[nedges::] - edges[nedges] + phase_width - edges[0]
-        edges_large = -np.round(edges_large[::-1], 8)
+        edges_large = -np.round(edges_large[::-1], 1)
         edges_large = edges_large[edges_large <= 0]
-        edges = list(np.append(edges_large, edges_small + distances.mean()))
+        edges = list(np.append(edges_large, edges_small))
 
     # Mark elements with integer idx-value
     mask = np.zeros(base["shape"], dtype=int)
     for idx, edge in zip(reversed(range(len(edges))), reversed(edges)):
-        mask[distances_temp <= edge] = int(idx + 1)
+        mask[distances <= edge] = int(idx + 1)
 
     # Assemble output
     return {
