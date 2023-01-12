@@ -14,6 +14,7 @@ __all__ = [
 def circular_white(
     visual_size=None,
     ppd=None,
+    shape=None,
     frequency=None,
     n_rings=None,
     ring_width=None,
@@ -22,7 +23,7 @@ def circular_white(
     intensity_rings=(1.0, 0.0),
     intensity_background=0.5,
     supersampling=1,
-    shape=None,
+    origin="mean",
 ):
     """Circular grating, with one or more target rings
 
@@ -45,6 +46,8 @@ def circular_white(
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
     frequency : Number, or None (default)
         spatial frequency of circular grating, in cycles per degree
     n_rings : int, or None (default)
@@ -63,8 +66,10 @@ def circular_white(
     supersampling : int (optional)
         supersampling-factor used for anti-aliasing, by default 1.
         Warning: produces smoother circles but might introduce gradients that affect vision!
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
 
     Returns
     ----------
@@ -91,6 +96,7 @@ def circular_white(
         intensity_rings=intensity_rings,
         supersampling=supersampling,
         shape=shape,
+        origin=origin,
     )
 
     # Add target intensity
@@ -115,17 +121,15 @@ def circular_white(
         intensity_background=intensity_background,
         supersampling=supersampling,
         shape=shape,
+        origin=origin,
     )
 
     # Update mask to only be targets
     stim["rings"] = deepcopy(stim["mask"])
-    stim["mask"] = np.zeros_like(stim["rings"])
+    mask = np.zeros(stim["shape"])
     for i, ring_idx in enumerate(target_indices):
-        stim["mask"] = np.where(stim["rings"] == ring_idx + 1, i + 1, stim["mask"])
-
-    # Target masks should only cover areas where target intensity is exactly vtarget
-    cond = (stim["img"] != intensity_target) & (stim["mask"] != 0)
-    stim["mask"][cond] = 0
+        mask = np.where(stim["mask"] == ring_idx+1, i+1, 0)
+    stim["mask"] = mask.astype(int)
 
     params = {
         "target_indices": target_indices,
@@ -139,6 +143,7 @@ def circular_white(
 def circular_bullseye(
     visual_size=None,
     ppd=None,
+    shape=None,
     frequency=None,
     n_rings=None,
     ring_width=None,
@@ -146,7 +151,7 @@ def circular_bullseye(
     intensity_rings=(1.0, 0.0),
     intensity_background=0.5,
     supersampling=1,
-    shape=None,
+    origin="mean",
 ):
     """Circular Bullseye stimulus
 
@@ -172,6 +177,8 @@ def circular_bullseye(
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
     frequency : Number, or None (default)
         spatial frequency of circular grating, in cycles per degree
     n_rings : int, or None (default)
@@ -188,8 +195,10 @@ def circular_bullseye(
     supersampling : int (optional)
         supersampling-factor used for anti-aliasing, by default 1.
         Warning: produces smoother circles but might introduce gradients that affect vision!
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
 
     Returns
     ----------
@@ -209,6 +218,7 @@ def circular_bullseye(
     stim = circular_white(
         visual_size=visual_size,
         ppd=ppd,
+        shape=shape,
         frequency=frequency,
         n_rings=n_rings,
         ring_width=ring_width,
@@ -217,7 +227,7 @@ def circular_bullseye(
         intensity_target=intensity_target,
         target_indices=0,
         supersampling=supersampling,
-        shape=shape,
+        origin=origin,
     )
     return stim
 

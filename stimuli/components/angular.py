@@ -17,6 +17,7 @@ def mask_angle(
     visual_size=None,
     ppd=None,
     shape=None,
+    origin="mean",
 ):
     """Mask a contiguous set of angles in image
 
@@ -32,6 +33,10 @@ def mask_angle(
         pixels per degree [vertical, horizontal]
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
 
     Returns
     -------
@@ -47,6 +52,7 @@ def mask_angle(
         shape=shape,
         visual_size=visual_size,
         ppd=ppd,
+        origin=origin,
     )
 
 
@@ -60,6 +66,7 @@ def wedge(
     visual_size=None,
     ppd=None,
     shape=None,
+    origin="mean",
 ):
     """Draw a wedge, i.e., segment of a disc
 
@@ -84,6 +91,10 @@ def wedge(
         pixels per degree [vertical, horizontal]
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
 
     Returns
     -------
@@ -104,6 +115,7 @@ def wedge(
         ppd=ppd,
         shape=shape,
         # supersampling=supersampling,
+        origin=origin,
     )
     visual_size = stim["visual_size"]
     shape = stim["shape"]
@@ -111,7 +123,12 @@ def wedge(
 
     # Get mask for angles
     bool_mask = mask_angle(
-        rotation=rotation, angles=angles, visual_size=visual_size, ppd=ppd, shape=shape
+        rotation=rotation,
+        angles=angles,
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        origin=origin,
     )
 
     # Remove everything but wedge
@@ -129,6 +146,7 @@ def mask_segments(
     visual_size=None,
     ppd=None,
     shape=None,
+    origin="mean",
 ):
     """Generate mask with integer indices for consecutive angular segments
 
@@ -145,6 +163,10 @@ def mask_segments(
         pixels per degree [vertical, horizontal]
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
 
     Returns
     ----------
@@ -160,6 +182,7 @@ def mask_segments(
         shape=shape,
         visual_size=visual_size,
         ppd=ppd,
+        origin=origin,
     )
 
 
@@ -171,6 +194,7 @@ def angular_segments(
     ppd=None,
     shape=None,
     intensity_background=0.5,
+    origin="mean",
 ):
     """Generate mask with integer indices for sequential angular segments
 
@@ -190,6 +214,10 @@ def angular_segments(
         pixels per degree [vertical, horizontal]
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
 
     Returns
     -------
@@ -200,7 +228,12 @@ def angular_segments(
 
     # Get mask
     stim = mask_segments(
-        edges=angles, visual_size=visual_size, ppd=ppd, shape=shape, rotation=rotation
+        edges=angles,
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        rotation=rotation,
+        origin=origin,
     )
 
     # Draw image
@@ -220,6 +253,7 @@ def grating(
     segment_width=None,
     rotation=0.0,
     intensity_segments=(1.0, 0.0),
+    origin="mean",
 ):
     """Draw an angular grating, i.e., set of segments
 
@@ -243,6 +277,10 @@ def grating(
     intensity_segments : Sequence[Number, ...]
         intensity value for each segment, from inside to out, by default (1.0, 0.0).
         If fewer intensities are passed than number of radii, cycles through intensities
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
 
     Returns
     -------
@@ -278,6 +316,7 @@ def grating(
         ppd=ppd,
         shape=shape,
         intensity_segments=intensity_segments,
+        origin=origin,
     )
 
     # Assemble output
@@ -285,7 +324,6 @@ def grating(
         **stim,
         "n_segments": params["n_phases"],
         "frequency": params["frequency"],
-        "n_segments": params["n_phases"],
     }
 
 
@@ -301,6 +339,7 @@ def pinwheel(
     visual_size=None,
     ppd=None,
     shape=None,
+    origin="mean",
 ):
     """Pinwheel- / wheel-of-fortune-like angular grating on disc/ring
 
@@ -330,6 +369,10 @@ def pinwheel(
         pixels per degree [vertical, horizontal]
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
 
     Returns
     -------
@@ -342,11 +385,12 @@ def pinwheel(
     # Get disc
     disc = ring(
         radii=[inner_radius, radius],
-        intensity=1.0,
+        intensity_rings=1.0,
         intensity_background=0.0,
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,
+        origin=origin,
     )
     visual_size = disc["visual_size"]
     shape = disc["shape"]
@@ -362,6 +406,7 @@ def pinwheel(
         visual_size=visual_size,
         shape=shape,
         ppd=ppd,
+        origin=origin,
     )
 
     # Mask out everywhere that the disc isn't

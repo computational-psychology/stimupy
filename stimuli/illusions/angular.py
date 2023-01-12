@@ -13,6 +13,7 @@ __all__ = [
 def radial_white(
     visual_size=None,
     ppd=None,
+    shape=None,
     frequency=None,
     n_segments=None,
     segment_width=None,
@@ -23,7 +24,7 @@ def radial_white(
     intensity_segments=(1.0, 0.0),
     intensity_background=0.3,
     intensity_target=0.5,
-    shape=None,
+    origin="mean",
 ):
     """
     Radial White stimulus
@@ -34,6 +35,8 @@ def radial_white(
         The shape of the stimulus in degrees of visual angle. (y,x)
     ppd : int
         pixels per degree (visual angle)
+    shape : Sequence[int, int], int, or None (default)
+        shape [height, width] of image, in pixels
     frequency : Number, or None (default)
         angular frequency of angular grating, in cycles per angular degree
     n_segments : int, or None (default)
@@ -64,8 +67,10 @@ def radial_white(
         intensity value for each target, by default 0.5.
         Can specify as many intensities as number of target_indices;
         If fewer intensities are passed than target_indices, cycles through intensities
-    shape : Sequence[int, int], int, or None (default)
-        shape [height, width] of image, in pixels
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
 
     Returns
     ----------
@@ -93,6 +98,7 @@ def radial_white(
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,
+        origin=origin,
     )
 
     # Place target(s)
@@ -125,7 +131,7 @@ def radial_white(
         outer_radius = center + (width / 2)
         ring_stim = ring(
             radii=[inner_radius, outer_radius],
-            intensity=intensity,
+            intensity_rings=intensity,
             visual_size=stim["visual_size"],
             ppd=stim["ppd"],
             shape=stim["shape"],

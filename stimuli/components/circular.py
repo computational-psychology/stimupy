@@ -18,9 +18,9 @@ __all__ = [
 
 
 def resolve_circular_params(
-    shape=None,
     visual_size=None,
     ppd=None,
+    shape=None,
     frequency=None,
     n_rings=None,
     ring_width=None,
@@ -43,12 +43,12 @@ def resolve_circular_params(
 
     Parameters
     ----------
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
     frequency : Number, or None (default)
         spatial frequency of circular grating, in cycles per degree
     n_rings : int, or None (default)
@@ -97,9 +97,10 @@ def resolve_circular_params(
 
 def mask_rings(
     radii,
-    shape=None,
     visual_size=None,
     ppd=None,
+    shape=None,
+    origin="mean",
 ):
     """Generate mask with integer indices for rings
 
@@ -107,12 +108,16 @@ def mask_rings(
     ----------
     radii : Sequence[Number]
         outer radii of rings (& disc) in degree visual angle
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
 
     Returns
     -------
@@ -140,17 +145,19 @@ def mask_rings(
         shape=shape,
         visual_size=visual_size,
         ppd=ppd,
+        origin=origin,
     )
 
 
 def disc_and_rings(
     radii,
     intensity_rings,
-    shape=None,
     visual_size=None,
     ppd=None,
+    shape=None,
     intensity_background=0.5,
     supersampling=1,
+    origin="mean",
 ):
     """Draw a central solid disc with zero or more solid rings (annuli)
 
@@ -161,17 +168,21 @@ def disc_and_rings(
     intensity_rings : Sequence[Number, ...]
         intensity value for each ring, from inside to out.
         If fewer intensities are passed than number of radii, cycles through intensities
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
     intensity_background : float (optional)
         value of background, by default 0.5
     supersampling : int (optional)
         supersampling-factor used for anti-aliasing, by default 5.
         Warning: produces smoother circles but might introduce gradients that affect vision!
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
 
     Returns
     -------
@@ -182,7 +193,7 @@ def disc_and_rings(
 
     # Try to resolve resolution;
     try:
-        shape, visual_size, ppd = resolution.resolve(shape, visual_size, ppd)
+        shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
     except ValueError:
         # Check visual_size
         visual_size = resolution.validate_visual_size(visual_size)
@@ -196,14 +207,20 @@ def disc_and_rings(
         visual_size = resolution.validate_visual_size(visual_size)
 
     # Get masks for rings
-    params = mask_rings(radii, shape, visual_size, ppd)
+    params = mask_rings(
+        radii=radii,
+        shape=shape,
+        visual_size=visual_size,
+        ppd=ppd,
+        origin=origin
+        )
     shape = params["shape"]
 
     # Supersample shape (in pixels), to allow for antialiasing
     super_shape = resolution.validate_shape((shape[0] * supersampling, shape[1] * supersampling))
 
     # Draw rings
-    base = image_base(shape=super_shape, visual_size=visual_size)
+    base = image_base(shape=super_shape, visual_size=visual_size, origin=origin)
     distances = base["radial"]
 
     img = np.ones(super_shape) * intensity_background
@@ -227,12 +244,13 @@ def disc_and_rings(
 
 def disc(
     radius,
-    intensity=1.0,
-    shape=None,
+    intensity_discs=1.0,
     visual_size=None,
     ppd=None,
+    shape=None,
     intensity_background=0.5,
     supersampling=1,
+    origin="mean",
 ):
     """Draw a central disc
 
@@ -242,19 +260,23 @@ def disc(
     ----------
     radius : Number
         outer radius of disc in degree visual angle
-    intensity : Number
+    intensity_discs : Number
         intensity value of disc, by default 1.0
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
-    background : float (optional)
-        value of background, by default 0.5
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    intensity_background : float (optional)
+        intensity value of background, by default 0.5
     supersampling : int (optional)
         supersampling-factor used for anti-aliasing, by default 1.
         Warning: produces smoother circles but might introduce gradients that affect vision!
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
 
     Returns
     -------
@@ -264,7 +286,7 @@ def disc(
     """
 
     radius = np.array(radius)
-    intensity = np.array(intensity)
+    intensity = np.array(intensity_discs)
 
     if radius.size != 1:
         raise ValueError("Can only pass 1 radius")
@@ -279,18 +301,20 @@ def disc(
         intensity_background=intensity_background,
         supersampling=supersampling,
         shape=shape,
+        origin=origin,
     )
     return stim
 
 
 def ring(
     radii,
-    intensity=1.0,
-    shape=None,
+    intensity_rings=1.0,
     visual_size=None,
     ppd=None,
+    shape=None,
     intensity_background=0.5,
     supersampling=1,
+    origin="mean",
 ):
     """Draw a ring (annulus)
 
@@ -300,17 +324,21 @@ def ring(
         inner and outer radius of ring in degree visual angle
     intensity : Number
         intensity value of ring, by default 1.0
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
     intensity_background : float (optional)
         intensity value of background, by default 0.5
     supersampling : int (optional)
         supersampling-factor used for anti-aliasing, by default 5.
         Warning: produces smoother circles but might introduce gradients that affect vision!
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
 
     Returns
     -------
@@ -328,7 +356,7 @@ def ring(
 
     if len(radii) != 2:
         raise ValueError("Can only pass exactly 2 radii")
-    if len([intensity]) != 1:
+    if len([intensity_rings]) != 1:
         raise ValueError("Can only pass 1 intensity")
 
     if radii[1] is None:
@@ -337,12 +365,13 @@ def ring(
 
     stim = disc_and_rings(
         radii=radii,
-        intensity_rings=[intensity_background, intensity],
+        intensity_rings=[intensity_background, intensity_rings],
         shape=shape,
         visual_size=visual_size,
         ppd=ppd,
         intensity_background=intensity_background,
         supersampling=supersampling,
+        origin=origin,
     )
     return stim
 
@@ -351,26 +380,27 @@ annulus = ring
 
 
 def grating(
-    shape=None,
     visual_size=None,
     ppd=None,
+    shape=None,
     frequency=None,
     n_rings=None,
     ring_width=None,
     intensity_rings=(1.0, 0.0),
     intensity_background=0.5,
     supersampling=1,
+    origin="mean",
 ):
     """Draw a circular grating, i.e., set of rings
 
     Parameters
     ----------
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
     frequency : Number, or None (default)
         spatial frequency of circular grating, in cycles per degree
     n_rings : int, or None (default)
@@ -385,6 +415,10 @@ def grating(
     supersampling : int (optional)
         supersampling-factor used for anti-aliasing, by default 1.
         Warning: produces smoother circles but might introduce gradients that affect vision!
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
 
     Returns
     -------
@@ -394,7 +428,14 @@ def grating(
     """
 
     # Resolve grating
-    params = resolve_circular_params(shape, visual_size, ppd, frequency, n_rings, ring_width)
+    params = resolve_circular_params(
+        shape=shape,
+        visual_size=visual_size,
+        ppd=ppd,
+        frequency=frequency,
+        n_rings=n_rings,
+        ring_width=ring_width,
+        )
 
     # Clean-up params for passing through
     stim_params = copy.deepcopy(params)
@@ -408,6 +449,7 @@ def grating(
         intensity_background=intensity_background,
         intensity_rings=intensity_rings,
         supersampling=supersampling,
+        origin=origin,
     )
 
     # Assemble output
@@ -421,6 +463,7 @@ def bessel(
     frequency=None,
     order=0,
     intensity_rings=(1.0, 0.0),
+    origin="mean",
 ):
     """Draw a Bessel stimulus, i.e. draw circular rings following an nth order
     Bessel function of a given frequency.
@@ -439,6 +482,10 @@ def bessel(
         n-th order Bessel function
     intensity_rings : (float, float)
         intensity values of rings, first value indicating center intensity
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
 
     Returns
     -------
@@ -452,7 +499,7 @@ def bessel(
         ppd=ppd,
         shape=shape,
         rotation=0,
-        origin=None,
+        origin=origin,
         )
     
     img = base["radial"] * frequency * 2 * np.pi

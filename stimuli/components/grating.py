@@ -6,6 +6,9 @@ from stimuli.utils import resolution
 
 __all__ = [
     "square_wave",
+    "sine_wave",
+    "gabor",
+    "staircase",
 ]
 
 
@@ -16,6 +19,7 @@ def mask_bars(
     ppd=None,
     orientation="horizontal",
     rotation=0.0,
+    origin="corner",
 ):
     """Generate mask with integer indices for sequential bars
 
@@ -33,6 +37,10 @@ def mask_bars(
         orientation of the grating
     rotation : float
         rotation of grating in degrees (default: 0)
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner (default)
+        if "mean": set origin to hypothetical image center
+        if "center": set origin to real center (closest existing value to mean)
 
     Returns
     ----------
@@ -45,7 +53,7 @@ def mask_bars(
         edges=edges,
         orientation=orientation,
         rotation=rotation,
-        origin=(0.0, 0.0),
+        origin=origin,
         shape=shape,
         visual_size=visual_size,
         ppd=ppd,
@@ -179,6 +187,7 @@ def square_wave(
         ppd=ppd,
         orientation="rotated",
         rotation=rotation,
+        origin="corner",
     )
 
     # Draw image
@@ -208,7 +217,7 @@ def sine_wave(
     rotation=0,
     phase_shift=0,
     intensity_bars=(0.0, 1.0),
-    centralize=False,
+    origin="corner",
 ):
     """Draw sine-wave grating (set of bars) of given spatial frequency
 
@@ -236,10 +245,10 @@ def sine_wave(
         phase shift of grating in degrees
     intensity_bars : Sequence[float, ...]
         maximal intensity value for each bar, by default (0.0, 1.0).
-    centralize : bool or str
-        if False (default): set origin to upper left corner,
-        if "mean": set origin to hypothetical center
-        if "center": set origin to real center (or closest value)
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner (default)
+        if "mean": set origin to hypothetical image center
+        if "center": set origin to real center (closest existing value to mean)
 
     Returns
     ----------
@@ -315,13 +324,8 @@ def sine_wave(
         ppd=ppd,
         orientation="rotated",
         rotation=rotation,
+        origin=origin,
     )
-    
-    if centralize == "mean":
-        stim["distances"] -= stim["distances"].mean()
-    elif centralize == "center":
-        distance_vec = np.unique(stim["distances"])
-        stim["distances"] -= distance_vec[int(len(distance_vec) / 2)]
 
     # Draw image
     stim["img"] = np.sin(
@@ -351,7 +355,7 @@ def gabor(
     rotation=0,
     phase_shift=0,
     intensity_bars=(0.0, 1.0),
-    centralize="center"
+    origin="mean",
 ):
     """Draw sine-wave grating (set of bars) of given spatial frequency
 
@@ -379,10 +383,10 @@ def gabor(
         phase shift of grating in degrees
     intensity_bars : Sequence[float, ...]
         maximal intensity value for each bar, by default (0.0, 1.0).
-    centralize : bool or str
-        if False: set origin to upper left corner,
-        if "mean": set origin to hypothetical center
-        if "center" (default): set origin to real center (or closest value)
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
 
     Returns
     ----------
@@ -401,13 +405,14 @@ def gabor(
         rotation=rotation,
         phase_shift=phase_shift,
         intensity_bars=intensity_bars,
-        centralize=centralize,
+        origin=origin,
     )
 
     gaussian_window = gaussian(
         visual_size=visual_size,
         ppd=ppd,
         sigma=sigma,
+        origin=origin,
     )
     mean_int = (intensity_bars[0] + intensity_bars[1]) / 2
     stim["img"] = (stim["img"]-mean_int) * gaussian_window["img"] + mean_int
@@ -529,6 +534,7 @@ def staircase(
         ppd=ppd,
         orientation="rotated",
         rotation=rotation,
+        origin="corner",
     )
 
     # Draw image

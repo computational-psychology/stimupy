@@ -14,6 +14,7 @@ def mask_frames(
     shape=None,
     visual_size=None,
     ppd=None,
+    origin="mean",
 ):
     """Generate mask with integer indices for sequential square frames
 
@@ -27,6 +28,10 @@ def mask_frames(
         pixels per degree [vertical, horizontal]
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
 
     Returns
     ----------
@@ -42,6 +47,7 @@ def mask_frames(
         shape=shape,
         visual_size=visual_size,
         ppd=ppd,
+        origin=origin,
     )
 
 
@@ -52,6 +58,7 @@ def frames(
     ppd=None,
     intensity_frames=(1.0, 0.0),
     intensity_background=0.5,
+    origin="mean",
 ):
     """Draw sequential set of square frames with specified widths
 
@@ -74,6 +81,10 @@ def frames(
         If fewer intensities are passed than frame_widhts, cycles through intensities
     intensity_background : float, optional
         intensity value of background, by default 0.5
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
 
     Returns
     ----------
@@ -89,6 +100,7 @@ def frames(
         shape=shape,
         visual_size=visual_size,
         ppd=ppd,
+        origin=origin,
     )
 
     # Draw image
@@ -109,6 +121,7 @@ def square_wave(
     period="ignore",
     intensity_frames=(1.0, 0.0),
     intensity_background=0.5,
+    origin="mean",
 ):
     """Draw set of equal-width square frames, at given spatial frequency
 
@@ -135,6 +148,10 @@ def square_wave(
         If fewer intensities are passed than frame_widhts, cycles through intensities
     intensity_background : float (optional)
         intensity value of background, by default 0.5
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
 
     Returns
     ----------
@@ -179,6 +196,7 @@ def square_wave(
         ppd=ppd,
         intensity_frames=intensity_frames,
         intensity_background=intensity_background,
+        origin=origin,
     )
 
     return {

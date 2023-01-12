@@ -1,13 +1,12 @@
 import itertools
 import warnings
 from copy import deepcopy
-
 import numpy as np
 
 from stimuli.utils import int_factorize, resolution
 
 
-def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin=None):
+def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin="mean"):
     """Create coordinate-arrays to serve as image base for drawing
 
     Parameters
@@ -20,9 +19,10 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin=None
         shape [height, width] of image, in pixels
     rotation : float, optional
         rotation (in degrees) counterclockwise from 3 o'clock, by default 0.0
-    origin : Sequence[Number, Number], Number, or None (default)
-        placement of origin [height,width from topleft] to calculate distances from.
-        If None, set to center of visual_size
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
 
     Returns
     -------
@@ -44,13 +44,21 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin=None
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
 
     # Set origin
-    if origin is None:
-        origin = (visual_size.height / 2, visual_size.width / 2)
-    origin = resolution.validate_visual_size(origin)
+    if origin == "corner":
+        vorigin = (0, 0)
+    elif origin == "mean" or origin == "center":
+        vorigin = (visual_size.height / 2, visual_size.width / 2)
+    else:
+        raise ValueError("origin can only be be corner, mean or center")
+    vorigin = resolution.validate_visual_size(vorigin)
 
     # Image axes
-    x = np.linspace(-origin.width, visual_size.width - origin.width, shape.width)
-    y = np.linspace(-origin.height, visual_size.height - origin.width, shape.height)
+    x = np.linspace(-vorigin.width, visual_size.width - vorigin.width, shape.width)
+    y = np.linspace(-vorigin.height, visual_size.height - vorigin.width, shape.height)
+
+    if origin == "center":
+        x -= x[int(len(x) / 2 - 1)]
+        y -= y[int(len(y) / 2 - 1)]
 
     # Linear distance image bases
     xx, yy = np.meshgrid(x, y)
@@ -70,8 +78,6 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin=None
     alpha = [np.cos(np.deg2rad(rotation)), np.sin(np.deg2rad(rotation))]
     rotated = alpha[0]*xx + alpha[1]*yy
     rotated = rotated - rotated.min()
-    # if 90 < rotation < 270:
-    #     rotated *= 1
 
     return {
         "visual_size": visual_size,
@@ -204,7 +210,6 @@ def resolve_grating_params(
     dict[str, Any]
         dictionary with all six resolution & size parameters resolved.
     """
-    old_angle = deepcopy(visual_angle)
     old_frequency = deepcopy(frequency)
     old_n_phases = deepcopy(n_phases)
     old_phase_width = deepcopy(phase_width)

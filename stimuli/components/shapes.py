@@ -3,7 +3,6 @@ import numpy as np
 from stimuli.components.angular import wedge
 from stimuli.components.circular import annulus, disc, ring
 from stimuli.utils import resolution
-from stimuli.components import image_base
 
 __all__ = [
     "rectangle",
