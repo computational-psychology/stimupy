@@ -494,9 +494,9 @@ def gabor(
 
 
 def staircase(
-    shape=None,
     visual_size=None,
     ppd=None,
+    shape=None,
     frequency=None,
     n_bars=None,
     bar_width=None,
@@ -508,12 +508,12 @@ def staircase(
 
     Parameters
     ----------
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
     frequency : Number, or None (default)
         spatial frequency of grating, in cycles per degree visual angle
     n_bars : int, or None (default)
@@ -630,7 +630,30 @@ def staircase(
         "n_bars": params["n_phases"],
         "period": params["period"],
     }
-    return
+
+
+def plaid(
+        grating_parameters1,
+        grating_parameters2,
+        sigma=None,
+        ):
+    grating1 = sine_wave(**grating_parameters1)
+    grating2 = sine_wave(**grating_parameters2)
+    window = gaussian(
+        visual_size=grating1["visual_size"],
+        ppd=grating1["ppd"],
+        sigma=sigma,
+        origin=grating1["origin"],
+    )
+    
+    img = (grating1["img"] + grating2["img"]) * window["img"]
+    grating1["img"] = img
+    grating1["sigma"] = sigma
+    grating1["mask2"] = grating2["mask"]
+    grating1["frequency2"] = grating2["frequency"]
+    grating1["bar_width2"] = grating2["bar_width"]
+    grating1["n_bars2"] = grating2["n_bars"]
+    return grating1
 
 
 if __name__ == "__main__":
@@ -660,6 +683,8 @@ if __name__ == "__main__":
         "bar_width": 3.5,
         "period": "odd",
         "phase_shift": phase_shift,
+        "origin": origin,
+        "rotation": rotation,
     }
 
     p4 = {
@@ -667,6 +692,8 @@ if __name__ == "__main__":
         "ppd": 10,
         "bar_width": 3.5,
         "period": "ignore",
+        "origin": origin,
+        "rotation": rotation+90,
     }
 
     p5 = {
@@ -679,17 +706,18 @@ if __name__ == "__main__":
     stims = {
         "n_bars": square_wave(**p1, rotation=rotation, origin=origin),
         "even": square_wave(**p2, rotation=rotation, origin=origin),
-        "odd": square_wave(**p3, rotation=rotation, origin=origin),
-        "ignore": square_wave(**p4, rotation=rotation, origin=origin),
+        "odd": square_wave(**p3),
+        "ignore": square_wave(**p4),
         "no_size": square_wave(**p5, rotation=rotation, origin=origin),
         "sine_n_bars": sine_wave(**p1, rotation=rotation, origin=origin),
         "sine_even": sine_wave(**p2, rotation=rotation, origin=origin),
-        "sine_odd": sine_wave(**p3, rotation=rotation, origin=origin),
-        "sine_ignore": sine_wave(**p4, rotation=rotation, origin=origin),
+        "sine_odd": sine_wave(**p3),
+        "sine_ignore": sine_wave(**p4),
         "sine_no_size": sine_wave(**p5, rotation=rotation, origin=origin),
         "gabor_even": gabor(**p2, sigma=1, rotation=rotation, origin=origin),
-        "gabor_odd": gabor(**p3, sigma=5, rotation=rotation, origin=origin),
-        "gabor_ignore": gabor(**p4, sigma=3, rotation=rotation, origin=origin),
+        "gabor_odd": gabor(**p3, sigma=5),
+        "gabor_ignore": gabor(**p4, sigma=3),
         "staircase": staircase(**p5, rotation=rotation),
+        "plaid": plaid(p3, p4, sigma=4.)
     }
-    plot_stimuli(stims, mask=True)
+    plot_stimuli(stims, mask=False)

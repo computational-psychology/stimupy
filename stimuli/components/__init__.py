@@ -154,6 +154,7 @@ def mask_elements(
         "visual_size": base["visual_size"],
         "ppd": base["ppd"],
         "distances": distances,
+        "origin": origin,
     }
 
 
