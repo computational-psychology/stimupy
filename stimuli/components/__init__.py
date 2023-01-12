@@ -139,16 +139,6 @@ def mask_elements(
     distances = base[orientation]
     distances = np.round(distances, 8)
 
-    if origin != "corner":
-        nedges = int(len(edges) / 2)
-        edges = np.array(edges)
-        phase_width = np.diff(edges).mean()
-        edges_small = edges[0:nedges+1]
-        edges_large = edges[nedges::] - edges[nedges] + phase_width - edges[0]
-        edges_large = -np.round(edges_large[::-1], 1)
-        edges_large = edges_large[edges_large <= 0]
-        edges = list(np.append(edges_large, edges_small))
-
     # Mark elements with integer idx-value
     mask = np.zeros(base["shape"], dtype=int)
     for idx, edge in zip(reversed(range(len(edges))), reversed(edges)):

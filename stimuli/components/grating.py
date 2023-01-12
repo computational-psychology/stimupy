@@ -108,6 +108,15 @@ def shift_edges(
             edges = np.append(phase_shift_deg, edges)
         elif phase_shift > 180:
             edges = np.append([phase_shift_deg - phase_width, phase_shift_deg], edges)
+    
+    if origin != "corner":
+        nedges = int(len(edges) / 2)
+        phase_width = np.diff(edges).mean()
+        edges_small = edges[0:nedges+1]
+        edges_large = edges[nedges::] - edges[nedges] + phase_width - edges[0]
+        edges_large = -np.round(edges_large[::-1], 1)
+        edges_large = edges_large[edges_large <= 0]
+        edges = list(np.append(edges_large, edges_small))
 
     return list(edges), intensity_bars
 
@@ -365,10 +374,21 @@ def sine_wave(
     shape = resolution.validate_shape(shape)
     visual_size = resolution.validate_visual_size(visual_size)
     ppd = resolution.validate_ppd(ppd)
+    
+    # Phase shift:
+    edges = params["edges"]
+    edges, intensities = shift_edges(
+        edges=edges,
+        ppd=ppd[0],
+        phase_shift=phase_shift,
+        phase_width=params["phase_width"],
+        intensity_bars=intensity_bars,
+        origin=origin
+        )
 
     # Get bars mask
     stim = mask_bars(
-        edges=params["edges"],
+        edges=edges,
         shape=shape,
         visual_size=visual_size,
         ppd=ppd,
@@ -575,6 +595,17 @@ def staircase(
     shape = resolution.validate_shape(shape)
     visual_size = resolution.validate_visual_size(visual_size)
     ppd = resolution.validate_ppd(ppd)
+    
+    # Phase shift:
+    edges = params["edges"]
+    edges, intensities = shift_edges(
+        edges=edges,
+        ppd=ppd[0],
+        phase_shift=phase_shift,
+        phase_width=params["phase_width"],
+        intensity_bars=intensity_bars,
+        origin=origin
+        )
 
     # Get bars mask
     stim = mask_bars(
@@ -661,4 +692,4 @@ if __name__ == "__main__":
         "gabor_ignore": gabor(**p4, sigma=3, rotation=rotation, origin=origin),
         "staircase": staircase(**p5, rotation=rotation),
     }
-    plot_stimuli(stims, mask=False)
+    plot_stimuli(stims, mask=True)
