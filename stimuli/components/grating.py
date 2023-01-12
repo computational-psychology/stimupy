@@ -60,6 +60,58 @@ def mask_bars(
     )
 
 
+def shift_edges(
+        edges,
+        ppd=None,
+        phase_shift=None,
+        phase_width=None,
+        intensity_bars=None,
+        origin=None,
+        ):
+    """Function to shift edges
+
+    Parameters
+    ----------
+    edges : Sequence[Number, ...]
+        upper-limit, in degrees visual angle, of each bar
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    phase_shift : float
+        phase shift of grating in degrees
+    phase_width : float
+        width of individual phase in visual angle
+    intensity_bars : Sequence[float, float]
+        intensity value for the two bars
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner (default)
+        if "mean": set origin to hypothetical image center
+        if "center": set origin to real center (closest existing value to mean)
+
+    Returns
+    ----------
+    Updated edges and intensity_bars
+    """
+
+    phase_shift = phase_shift % 360
+    edges = np.array(edges)
+    
+    if phase_shift != 0:
+        if phase_shift > 0 and phase_shift <= 180:
+            intensity_bars = (intensity_bars[1], intensity_bars[0])
+    
+        phase_shift_deg = phase_shift * phase_width / 180
+        phase_shift_deg = np.round(phase_shift_deg * ppd) / ppd
+
+        edges = edges + phase_shift_deg
+        
+        if phase_shift > 0 and phase_shift <= 180:
+            edges = np.append(phase_shift_deg, edges)
+        elif phase_shift > 180:
+            edges = np.append([phase_shift_deg - phase_width, phase_shift_deg], edges)
+
+    return list(edges), intensity_bars
+
+
 def square_wave(
     visual_size=None,
     ppd=None,
@@ -71,6 +123,8 @@ def square_wave(
     rotation=0,
     phase_shift=0,
     intensity_bars=(1.0, 0.0),
+    origin="corner",
+    round_phase_width=True,
 ):
     """Draw square-wave grating (set of bars) of given spatial frequency
 
@@ -143,6 +197,7 @@ def square_wave(
         ppd=ppd_1D,
         frequency=frequency,
         period=period,
+        round_phase_width=round_phase_width,
     )
     length = params["length"]
     ppd_1D = params["ppd"]
@@ -167,17 +222,15 @@ def square_wave(
     ppd = resolution.validate_ppd(ppd)
     
     # Phase shift:
-    phase_shift = phase_shift % 180
-    if phase_shift > 0 and phase_shift <= 90:
-        intensity_bars = (intensity_bars[1], intensity_bars[0])
-    
-    phase_shift_deg = phase_shift * params["phase_width"]/90
-    phase_shift_deg = np.round(phase_shift_deg * ppd[0]) / ppd[0]
-    edges = list(np.array(params["edges"]) + phase_shift_deg)
-    if phase_shift > 0 and phase_shift <= 90:
-        edges = [phase_shift_deg, ] + edges
-    elif phase_shift > 90:
-        edges = [phase_shift_deg-params["phase_width"], phase_shift_deg] + edges
+    edges = params["edges"]
+    edges, intensities = shift_edges(
+        edges=edges,
+        ppd=ppd[0],
+        phase_shift=phase_shift,
+        phase_width=params["phase_width"],
+        intensity_bars=intensity_bars,
+        origin=origin
+        )
 
     # Get bars mask
     stim = mask_bars(
@@ -187,14 +240,11 @@ def square_wave(
         ppd=ppd,
         orientation="rotated",
         rotation=rotation,
-        origin="corner",
+        origin=origin,
     )
 
     # Draw image
-    stim["img"] = draw_regions(stim["mask"], intensities=intensity_bars)
-
-    if phase_shift > 0 and phase_shift <= 90:
-        intensity_bars = (intensity_bars[1], intensity_bars[0])
+    stim["img"] = draw_regions(stim["mask"], intensities=intensities)
 
     return {
         **stim,
@@ -555,21 +605,22 @@ def staircase(
 if __name__ == "__main__":
     from stimuli.utils.plotting import plot_stimuli
 
-    rotation = 90
+    rotation = 45
+    origin = "center"
+    phase_shift = 0
 
     p1 = {
         "visual_size": (10, 5),
         "ppd": 10,
         "n_bars": 11,
-        "rotation": rotation,
+        "phase_shift": phase_shift,
     }
 
     p2 = {
         "visual_size": 5,
         "ppd": 10,
         "frequency": 2,
-        # "period": "odd",
-        "rotation": rotation,
+        "phase_shift": phase_shift,
     }
 
     p3 = {
@@ -577,8 +628,7 @@ if __name__ == "__main__":
         "ppd": 10,
         "bar_width": 3.5,
         "period": "odd",
-        "rotation": rotation,
-        "phase_shift": 225,
+        "phase_shift": phase_shift,
     }
 
     p4 = {
@@ -586,7 +636,6 @@ if __name__ == "__main__":
         "ppd": 10,
         "bar_width": 3.5,
         "period": "ignore",
-        "rotation": rotation,
     }
 
     p5 = {
@@ -594,23 +643,22 @@ if __name__ == "__main__":
         "n_bars": 6,
         "frequency": 2.0,
         "period": "ignore",
-        "rotation": rotation,
     }
 
     stims = {
-        "n_bars": square_wave(**p1),
-        "even": square_wave(**p2),
-        "odd": square_wave(**p3),
-        "ignore": square_wave(**p4),
-        "no_size": square_wave(**p5),
-        "sine_n_bars": sine_wave(**p1),
-        "sine_even": sine_wave(**p2),
-        "sine_odd": sine_wave(**p3),
-        "sine_ignore": sine_wave(**p4),
-        "sine_no_size": sine_wave(**p5),
-        "gabor_even": gabor(**p2, sigma=1),
-        "gabor_odd": gabor(**p3, sigma=5),
-        "gabor_ignore": gabor(**p4, sigma=3),
-        "staircase": staircase(**p5),
+        "n_bars": square_wave(**p1, rotation=rotation, origin=origin),
+        "even": square_wave(**p2, rotation=rotation, origin=origin),
+        "odd": square_wave(**p3, rotation=rotation, origin=origin),
+        "ignore": square_wave(**p4, rotation=rotation, origin=origin),
+        "no_size": square_wave(**p5, rotation=rotation, origin=origin),
+        "sine_n_bars": sine_wave(**p1, rotation=rotation, origin=origin),
+        "sine_even": sine_wave(**p2, rotation=rotation, origin=origin),
+        "sine_odd": sine_wave(**p3, rotation=rotation, origin=origin),
+        "sine_ignore": sine_wave(**p4, rotation=rotation, origin=origin),
+        "sine_no_size": sine_wave(**p5, rotation=rotation, origin=origin),
+        "gabor_even": gabor(**p2, sigma=1, rotation=rotation, origin=origin),
+        "gabor_odd": gabor(**p3, sigma=5, rotation=rotation, origin=origin),
+        "gabor_ignore": gabor(**p4, sigma=3, rotation=rotation, origin=origin),
+        "staircase": staircase(**p5, rotation=rotation),
     }
-    plot_stimuli(stims)
+    plot_stimuli(stims, mask=False)

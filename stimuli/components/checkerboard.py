@@ -18,6 +18,8 @@ def checkerboard(
     rotation=0,
     phase_shift=0,
     intensity_checks=(1.0, 0.0),
+    origin="corner",
+    round_phase_width=True,
 ):
     """Draws a checkerboard with given specifications
 
@@ -74,8 +76,10 @@ def checkerboard(
         bar_width=check_visual_size[0],
         period=period,
         rotation=rotation,
-        phase_shift=phase_shift[1],
+        phase_shift=phase_shift[0],
         intensity_bars=intensity_checks,
+        origin=origin,
+        round_phase_width=round_phase_width,
         )
     
     sw2 = square_wave(
@@ -87,8 +91,10 @@ def checkerboard(
         bar_width=check_visual_size[1],
         period=period,
         rotation=rotation+90,
-        phase_shift=phase_shift[0],
+        phase_shift=phase_shift[1],
         intensity_bars=intensity_checks,
+        origin=origin,
+        round_phase_width=round_phase_width,
         )
     
     # If neither a visual_size nor a shape was given, each square wave
@@ -105,7 +111,10 @@ def checkerboard(
             bar_width=check_visual_size[0],
             period=period,
             rotation=rotation,
+            phase_shift=phase_shift[0],
             intensity_bars=intensity_checks,
+            origin=origin,
+            round_phase_width=round_phase_width,
             )
         
         sw2 = square_wave(
@@ -117,7 +126,10 @@ def checkerboard(
             bar_width=check_visual_size[1],
             period=period,
             rotation=rotation+90,
+            phase_shift=phase_shift[1],
             intensity_bars=intensity_checks,
+            origin=origin,
+            round_phase_width=round_phase_width,
             )
         warnings.filterwarnings("default")
     

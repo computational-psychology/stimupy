@@ -45,16 +45,14 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin="mea
 
     # Set origin
     if origin == "corner":
-        vorigin = (0, 0)
+        x = np.linspace(0, visual_size.width, shape.width)
+        y = np.linspace(0, visual_size.height, shape.height)
     elif origin == "mean" or origin == "center":
-        vorigin = (visual_size.height / 2, visual_size.width / 2)
+        vrange = (visual_size.height / 2, visual_size.width / 2)
+        x = np.linspace(-vrange[1], vrange[1], shape.width)
+        y = np.linspace(-vrange[0], vrange[0], shape.height)
     else:
         raise ValueError("origin can only be be corner, mean or center")
-    vorigin = resolution.validate_visual_size(vorigin)
-
-    # Image axes
-    x = np.linspace(-vorigin.width, visual_size.width - vorigin.width, shape.width)
-    y = np.linspace(-vorigin.height, visual_size.height - vorigin.width, shape.height)
 
     if origin == "center":
         x -= x[int(len(x) / 2)]
@@ -77,7 +75,9 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin="mea
     # Rotated
     alpha = [np.cos(np.deg2rad(rotation)), np.sin(np.deg2rad(rotation))]
     rotated = alpha[0]*xx + alpha[1]*yy
-    # rotated = rotated - rotated.min()
+    
+    if origin == "corner":
+        rotated = rotated - rotated.min()
 
     return {
         "visual_size": visual_size,
@@ -92,7 +92,6 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin="mea
         "cityblock": cityblock,
         "radial": radial,
         "angular": angular,
-        "origin": vorigin,
     }
 
 
@@ -138,12 +137,28 @@ def mask_elements(
         shape=shape, visual_size=visual_size, ppd=ppd, rotation=rotation, origin=origin
     )
     distances = base[orientation]
-    distances = np.round(distances, 10)
+    distances = np.round(distances, 8)
+    
+    if not rotation%90:
+        distances_temp = distances
+    else:
+        # distances_temp = np.round(distances, 1)
+        distances_temp = distances
+
+    if origin != "corner":
+        nedges = int(len(edges) / 2)
+        edges = np.array(edges)
+        phase_width = np.diff(edges).mean()
+        edges_small = edges[0:nedges+1]
+        edges_large = edges[nedges::] - edges[nedges] + phase_width - edges[0]
+        edges_large = -np.round(edges_large[::-1], 8)
+        edges_large = edges_large[edges_large <= 0]
+        edges = list(np.append(edges_large, edges_small + distances.mean()))
 
     # Mark elements with integer idx-value
     mask = np.zeros(base["shape"], dtype=int)
     for idx, edge in zip(reversed(range(len(edges))), reversed(edges)):
-        mask[distances <= edge] = int(idx + 1)
+        mask[distances_temp <= edge] = int(idx + 1)
 
     # Assemble output
     return {

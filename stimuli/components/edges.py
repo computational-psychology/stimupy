@@ -45,7 +45,7 @@ def step_edge(
         ppd=ppd,
         shape=shape,
         rotation=rotation,
-        origin=None,
+        origin="corner",
         )
     
     img = np.ones(shape) * intensity_edges[0]
