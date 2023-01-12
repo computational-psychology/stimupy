@@ -167,6 +167,10 @@ def resize_array(arr, factor):
     return np.repeat(np.repeat(arr, factor[0], axis=0), factor[1], axis=1)
 
 
+# %%
+#################################
+#         Dictionaries          #
+#################################
 def pad_dict_by_visual_size(dct, padding, ppd, pad_value=0.0, keys=("img", "*mask")):
     """Pad images in dictionary by specified degrees of visual angle
 
@@ -421,7 +425,7 @@ def stack_dicts(dct1, dct2, direction="horizontal", keys=("img", "*mask")):
     """
     
     # Create deepcopy to not override existing dict
-    new_dict = dict()
+    new_dict = copy.deepcopy(dct1)
     
     if isinstance(keys, str):
         keys = (keys,)
@@ -476,7 +480,7 @@ def rotate_dict(dct, nrots=1, keys=("img", "*mask")):
     """
     
     # Create deepcopy to not override existing dict
-    new_dict = dict()
+    new_dict = copy.deepcopy(dct)
 
     # Find relevant keys
     keys = [dkey for key in keys for dkey in dct.keys() if ((dkey == key) or
@@ -518,7 +522,7 @@ def flip_dict(dct, direction="lr", keys=("img", "*mask")):
     """
     
     # Create deepcopy to not override existing dict
-    new_dict = dict()
+    new_dict = copy.deepcopy(dct)
 
     # Find relevant keys
     keys = [dkey for key in keys for dkey in dct.keys() if ((dkey == key) or
@@ -536,6 +540,47 @@ def flip_dict(dct, direction="lr", keys=("img", "*mask")):
                         img = np.flipud(img)
                     else:
                         raise ValueError("direction must be lr or ud")
+
+                    if key.endswith("mask"):
+                        img = img.astype(int)
+                    new_dict[key] = img
+    return new_dict
+
+
+def roll_dict(dct, shift, axes, keys=("img", "*mask")):
+    """
+    Return a dict with key-arrays rolled by shift in axes.
+
+    Parameters
+    ----------
+    dct: dict
+        dict containing arrays to be stacked
+    shift : int
+        number of pixels by which to shift
+    axes : Number or Sequence[Number, ...]
+        axes in which to shift
+    keys : Sequence[String, String] or String
+        keys in dict for images to be padded
+
+    Returns
+    -------
+    dict with keys with rolled arrays
+    """
+    
+    # Create deepcopy to not override existing dict
+    new_dict = copy.deepcopy(dct)
+
+    # Find relevant keys
+    keys = [dkey for key in keys for dkey in dct.keys() if ((dkey == key) or
+                                                            ((dkey.endswith(key[1::])) and
+                                                              (key.startswith("*")))
+                                                             )]
+    
+    for key in dct.keys():
+            if key in keys:
+                img = dct[key]
+                if isinstance(img, np.ndarray):
+                    img = np.roll(img, shift=shift, axis=axes)
 
                     if key.endswith("mask"):
                         img = img.astype(int)
