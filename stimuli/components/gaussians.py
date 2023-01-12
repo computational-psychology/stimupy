@@ -1,5 +1,4 @@
 import numpy as np
-from stimuli.utils import resolution
 from stimuli.components import image_base
 
 
@@ -62,12 +61,9 @@ def gaussian(
     theta = np.deg2rad(rotation)
 
     # determine a, b, c coefficients
-    a = (np.cos(theta)**2 / (2*sigma[1]**2)) +\
-        (np.sin(theta)**2 / (2*sigma[0]**2))
-    b = -(np.sin(2*theta) / (4*sigma[1]**2)) +\
-        (np.sin(2*theta) / (4*sigma[0]**2))
-    c = (np.sin(theta)**2 / (2*sigma[1]**2)) +\
-        (np.cos(theta)**2 / (2*sigma[0]**2))
+    a = (np.cos(theta)**2 / (2*sigma[1]**2)) + (np.sin(theta)**2 / (2*sigma[0]**2))
+    b = -(np.sin(2*theta) / (4*sigma[1]**2)) + (np.sin(2*theta) / (4*sigma[0]**2))
+    c = (np.sin(theta)**2 / (2*sigma[1]**2)) + (np.cos(theta)**2 / (2*sigma[0]**2))
 
     # create Gaussian
     gaussian = np.exp(-(a*xx**2 + 2*b*xx*yy +  c*yy**2))

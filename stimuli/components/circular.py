@@ -295,7 +295,7 @@ def disc(
 
     stim = ring(
         radii=np.insert(radius, 0, 0),
-        intensity=intensity,
+        intensity_rings=intensity,
         visual_size=visual_size,
         ppd=ppd,
         intensity_background=intensity_background,

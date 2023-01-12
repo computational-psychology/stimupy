@@ -57,8 +57,8 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin="mea
     y = np.linspace(-vorigin.height, visual_size.height - vorigin.width, shape.height)
 
     if origin == "center":
-        x -= x[int(len(x) / 2 - 1)]
-        y -= y[int(len(y) / 2 - 1)]
+        x -= x[int(len(x) / 2)]
+        y -= y[int(len(y) / 2)]
 
     # Linear distance image bases
     xx, yy = np.meshgrid(x, y)
@@ -77,7 +77,7 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin="mea
     # Rotated
     alpha = [np.cos(np.deg2rad(rotation)), np.sin(np.deg2rad(rotation))]
     rotated = alpha[0]*xx + alpha[1]*yy
-    rotated = rotated - rotated.min()
+    # rotated = rotated - rotated.min()
 
     return {
         "visual_size": visual_size,
@@ -92,6 +92,7 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin="mea
         "cityblock": cityblock,
         "radial": radial,
         "angular": angular,
+        "origin": vorigin,
     }
 
 
