@@ -303,6 +303,7 @@ def disc(
         shape=shape,
         origin=origin,
     )
+    stim["mask"] = (stim["mask"]/2).astype(int)
     return stim
 
 
