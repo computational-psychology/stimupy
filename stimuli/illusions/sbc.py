@@ -172,7 +172,7 @@ def sbc_with_dots(
         radius=dot_radius,
         ppd=ppd,
         intensity_background=0.0,
-        intensity=intensity_dots,
+        intensity_discs=intensity_dots,
     )["img"]
     patch = pad_by_visual_size(img=patch, padding=padding, ppd=ppd, pad_value=0.0)
     pixels_per_dot = patch.shape
@@ -276,7 +276,7 @@ def dotted_sbc(
         radius=dot_radius,
         ppd=ppd,
         intensity_background=0.0,
-        intensity=intensity_dots,
+        intensity_discs=intensity_dots,
     )["img"]
     patch = pad_by_visual_size(img=patch, padding=padding, ppd=ppd, pad_value=0.0)
     pixels_per_dot = patch.shape
