@@ -31,6 +31,7 @@ Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D
 """
 
 import numpy as np
+import pandas as pd
 
 from stimuli.components import grating, gaussians, shapes, checkerboard, lines
 from stimuli.components.edges import gaussian_edge
@@ -90,6 +91,9 @@ PPD2 = 60  # pixel size of 1 arcmin (pixel replication)
 
 mean_lum = 0.5
 
+df = pd.read_csv("carney1999_data.csv", header=None)
+participants = df[0]
+
 
 def gen_all(ppd=PPD, skip=False):
     stims = {}  # save the stimulus-dicts in a larger dict, with name as key
@@ -148,7 +152,16 @@ def GaborPatch1(ppd=PPD):
     }
 
     stim = grating.gabor(**params)
-    return stim
+    
+    v = 1
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def GaborPatch2(ppd=PPD):
@@ -186,7 +199,16 @@ def GaborPatch2(ppd=PPD):
     }
 
     stim = grating.gabor(**params)
-    return stim
+
+    v = 5
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def GaborPatch3(ppd=PPD):
@@ -224,7 +246,16 @@ def GaborPatch3(ppd=PPD):
     }
 
     stim = grating.gabor(**params)
-    return stim
+
+    v = 9
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def GaborPatch4(ppd=PPD):
@@ -262,7 +293,16 @@ def GaborPatch4(ppd=PPD):
     }
 
     stim = grating.gabor(**params)
-    return stim
+
+    v = 13
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def GaborPatch5(ppd=PPD):
@@ -300,7 +340,16 @@ def GaborPatch5(ppd=PPD):
     }
 
     stim = grating.gabor(**params)
-    return stim
+
+    v = 17
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def GaborPatch6(ppd=PPD):
@@ -338,7 +387,16 @@ def GaborPatch6(ppd=PPD):
     }
 
     stim = grating.gabor(**params)
-    return stim
+
+    v = 21
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def GaborPatch7(ppd=PPD):
@@ -376,7 +434,16 @@ def GaborPatch7(ppd=PPD):
     }
 
     stim = grating.gabor(**params)
-    return stim
+
+    v = 25
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def GaborPatch8(ppd=PPD):
@@ -414,7 +481,16 @@ def GaborPatch8(ppd=PPD):
     }
 
     stim = grating.gabor(**params)
-    return stim
+
+    v = 29
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def GaborPatch9(ppd=PPD):
@@ -452,7 +528,16 @@ def GaborPatch9(ppd=PPD):
     }
 
     stim = grating.gabor(**params)
-    return stim
+
+    v = 33
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def GaborPatch10(ppd=PPD):
@@ -490,7 +575,16 @@ def GaborPatch10(ppd=PPD):
     }
 
     stim = grating.gabor(**params)
-    return stim
+
+    v = 37
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def GaborPatch11(ppd=PPD):
@@ -528,7 +622,16 @@ def GaborPatch11(ppd=PPD):
     }
 
     stim = grating.gabor(**params)
-    return stim
+
+    v = 41
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def GaborPatch12(ppd=PPD):
@@ -566,7 +669,16 @@ def GaborPatch12(ppd=PPD):
     }
 
     stim = grating.gabor(**params)
-    return stim
+
+    v = 45
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def GaborPatch13(ppd=PPD):
@@ -604,7 +716,16 @@ def GaborPatch13(ppd=PPD):
     }
 
     stim = grating.gabor(**params)
-    return stim
+
+    v = 49
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def GaborPatch14(ppd=PPD):
@@ -642,7 +763,16 @@ def GaborPatch14(ppd=PPD):
     }
 
     stim = grating.gabor(**params)
-    return stim
+
+    v = 53
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def ElongatedGabor15(ppd=PPD):
@@ -680,7 +810,16 @@ def ElongatedGabor15(ppd=PPD):
     }
 
     stim = grating.gabor(**params)
-    return stim
+
+    v = 57
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def ElongatedGabor16(ppd=PPD):
@@ -718,7 +857,16 @@ def ElongatedGabor16(ppd=PPD):
     }
 
     stim = grating.gabor(**params)
-    return stim
+
+    v = 61
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def ElongatedGabor17(ppd=PPD):
@@ -756,7 +904,16 @@ def ElongatedGabor17(ppd=PPD):
     }
 
     stim = grating.gabor(**params)
-    return stim
+
+    v = 65
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def Baguette18(ppd=PPD):
@@ -794,7 +951,16 @@ def Baguette18(ppd=PPD):
     }
 
     stim = grating.gabor(**params)
-    return stim
+
+    v = 69
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def Baguette19(ppd=PPD):
@@ -832,7 +998,16 @@ def Baguette19(ppd=PPD):
     }
 
     stim = grating.gabor(**params)
-    return stim
+
+    v = 73
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def Baguette20(ppd=PPD):
@@ -870,7 +1045,16 @@ def Baguette20(ppd=PPD):
     }
 
     stim = grating.gabor(**params)
-    return stim
+
+    v = 77
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def Baguette21(ppd=PPD):
@@ -908,7 +1092,16 @@ def Baguette21(ppd=PPD):
     }
 
     stim = grating.gabor(**params)
-    return stim
+
+    v = 81
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def Subthreshold22(ppd=PPD):
@@ -955,7 +1148,16 @@ def Subthreshold22(ppd=PPD):
         "bar_width2": stim2["bar_width"],
         "n_bars2": stim2["n_bars"],
         }
-    return stim1
+
+    v = 85
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim1, "experimental_data": experimental_data}
 
 
 def Subthreshold23(ppd=PPD):
@@ -1002,7 +1204,16 @@ def Subthreshold23(ppd=PPD):
         "bar_width2": stim2["bar_width"],
         "n_bars2": stim2["n_bars"],
         }
-    return stim1
+
+    v = 89
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim1, "experimental_data": experimental_data}
 
 
 def Subthreshold24(ppd=PPD):
@@ -1049,7 +1260,16 @@ def Subthreshold24(ppd=PPD):
         "bar_width2": stim2["bar_width"],
         "n_bars2": stim2["n_bars"],
         }
-    return stim1
+
+    v = 93
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim1, "experimental_data": experimental_data}
 
 
 def Subthreshold25(ppd=PPD):
@@ -1096,7 +1316,16 @@ def Subthreshold25(ppd=PPD):
         "bar_width2": stim2["bar_width"],
         "n_bars2": stim2["n_bars"],
         }
-    return stim1
+
+    v = 97
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim1, "experimental_data": experimental_data}
 
 
 def Gaussians26(ppd=PPD):
@@ -1131,7 +1360,16 @@ def Gaussians26(ppd=PPD):
 
     stim = gaussians.gaussian(**params)
     stim["img"] = stim["img"]/ 2 + 0.5 
-    return stim
+
+    v = 101
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def Gaussians27(ppd=PPD):
@@ -1166,7 +1404,16 @@ def Gaussians27(ppd=PPD):
 
     stim = gaussians.gaussian(**params)
     stim["img"] = stim["img"]/ 2 + 0.5 
-    return stim
+
+    v = 105
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def Gaussians28(ppd=PPD):
@@ -1201,7 +1448,16 @@ def Gaussians28(ppd=PPD):
 
     stim = gaussians.gaussian(**params)
     stim["img"] = stim["img"]/ 2 + 0.5 
-    return stim
+
+    v = 109
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def Gaussians29(ppd=PPD):
@@ -1236,7 +1492,16 @@ def Gaussians29(ppd=PPD):
 
     stim = gaussians.gaussian(**params)
     stim["img"] = stim["img"]/ 2 + 0.5 
-    return stim
+
+    v = 113
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def Edge30(ppd=PPD):
@@ -1263,7 +1528,16 @@ def Edge30(ppd=PPD):
     """
     
     stim = gaussian_edge(visual_size=256/PPD, ppd=ppd, rotation=90, sigma=0.5)
-    return stim
+
+    v = 117
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def Line31(ppd=PPD):
@@ -1303,7 +1577,16 @@ def Line31(ppd=PPD):
     img = (stim["img"] - 0.5) * window["img"] + 0.5
     stim["img"] = img
     stim["sigma"] = window["sigma"]
-    return stim
+
+    v = 121
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def Dipole32(ppd=PPD):
@@ -1345,7 +1628,16 @@ def Dipole32(ppd=PPD):
     img = (stim["img"] - 0.5) * window["img"] + 0.5
     stim["img"] = img
     stim["sigma"] = window["sigma"]
-    return stim
+
+    v = 125
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def GaborString33(ppd=PPD):
@@ -1394,7 +1686,16 @@ def GaborString33(ppd=PPD):
     stim["img"] = stimc["img"]
     stim["mask"] = stimc["mask"]
     stim = roll_dict(stim, (-1, -1), axes=(0, 1))
-    return stim
+
+    v = 129
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def GaborString34(ppd=PPD):
@@ -1446,7 +1747,16 @@ def GaborString34(ppd=PPD):
     stim1["phase_shift2"] = stim2["phase_shift"]
     stim1["edges2"] = stim2["edges"]
     stim1 = roll_dict(stim1, (-1, -1), axes=(0, 1))
-    return stim1
+
+    v = 133
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim1, "experimental_data": experimental_data}
 
 
 def Noise35(ppd=PPD):
@@ -1478,7 +1788,16 @@ def Noise35(ppd=PPD):
     
     img = stim["img"] * window["img"]
     stim["img"] = img/2 + 0.5
-    return stim
+
+    v = 137
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def Orientation36(ppd=PPD):
@@ -1517,7 +1836,16 @@ def Orientation36(ppd=PPD):
     }
 
     stim = grating.gabor(**params)
-    return stim
+
+    v = 141
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def Orientation37(ppd=PPD):
@@ -1556,7 +1884,16 @@ def Orientation37(ppd=PPD):
     }
 
     stim = grating.gabor(**params)
-    return stim
+
+    v = 145
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def Plaids38(ppd=PPD):
@@ -1600,7 +1937,16 @@ def Plaids38(ppd=PPD):
     stim["rotation"] = stim2["rotation"]
     stim["mask2"] = stim2["mask"]
     stim["distances2"] = stim2["distances"]
-    return stim
+
+    v = 149
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def Plaids39(ppd=PPD):
@@ -1644,7 +1990,16 @@ def Plaids39(ppd=PPD):
     stim["rotation"] = stim2["rotation"]
     stim["mask2"] = stim2["mask"]
     stim["distances2"] = stim2["distances"]
-    return stim
+
+    v = 153
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def Disk40(ppd=PPD):
@@ -1672,7 +2027,16 @@ def Disk40(ppd=PPD):
 
     stim = shapes.disc(visual_size=256/PPD, ppd=ppd, radius=0.125, origin="center")
     stim = roll_dict(stim, (-2, -2), axes=(0, 1))
-    return stim
+
+    v = 157
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def Bessel41(ppd=PPD):
@@ -1708,7 +2072,16 @@ def Bessel41(ppd=PPD):
     stim["img"] = stim["img"] + 0.41
     stim["img"] = stim["img"] / stim["img"].max()       # TODO: adjust range
     stim["sigma"] = window["sigma"]
-    return stim
+
+    v = 161
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def Checkerboard42(ppd=PPD):
@@ -1748,7 +2121,16 @@ def Checkerboard42(ppd=PPD):
     img = (stim["img"] - 0.5) * window["img"] + 0.5
     stim["img"] = img
     stim["sigma"] = window["sigma"]
-    return stim
+
+    v = 165
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def NaturalScene43(ppd=PPD):
@@ -1785,7 +2167,16 @@ def NaturalScene43(ppd=PPD):
         "ppd": PPD,
         "intensity_range": (img.min(), img.max()),
         }
-    return stim
+
+    v = 169
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
 
 
 def read_tif(filename):

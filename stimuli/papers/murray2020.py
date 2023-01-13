@@ -137,6 +137,11 @@ def argyle(ppd=PPD):
     # Normalize intensity values to [0, 1]
     original_range = (img.min(), img.max())
     normed_img = (img - img.min()) / (img.max() - img.min())
+    
+    experimental_data = {
+        "mean_proportion_expected": 0.4875,
+        "CI95_proportion_expected": (-0.154903, 0.154903),
+        }
 
     params = {
         "visual_size": np.array(normed_img.shape) / ppd,
@@ -144,6 +149,7 @@ def argyle(ppd=PPD):
         "ppd": ppd,
         "intensity_range": (0.0, 1.0),
         "original_range": original_range,
+        "experimental_data": experimental_data,
     }
     return {"img": normed_img, "mask": mask, **params}
 
@@ -181,6 +187,11 @@ def argyle_control(ppd=PPD):
     # Normalize intensity values to [0, 1]
     original_range = (img.min(), img.max())
     normed_img = (img - img.min()) / (img.max() - img.min())
+    
+    experimental_data = {
+        "mean_proportion_expected": 0.35,
+        "CI95_proportion_expected": (-0.147814, 0.147814),
+        }
 
     stim = {
         "img": normed_img,
@@ -190,6 +201,7 @@ def argyle_control(ppd=PPD):
         "ppd": ppd,
         "intensity_range": (0.0, 1.0),
         "original_range": original_range,
+        "experimental_data": experimental_data,
     }
     return stim
 
@@ -227,6 +239,11 @@ def argyle_long(ppd=PPD):
     # Normalize intensity values to [0, 1]
     original_range = (img.min(), img.max())
     normed_img = (img - img.min()) / (img.max() - img.min())
+    
+    experimental_data = {
+        "mean_proportion_expected": 0.6,
+        "CI95_proportion_expected": (-0.151821, 0.151821),
+        }
 
     stim = {
         "img": normed_img,
@@ -236,6 +253,7 @@ def argyle_long(ppd=PPD):
         "ppd": ppd,
         "intensity_range": (0.0, 1.0),
         "original_range": original_range,
+        "experimental_data": experimental_data,
     }
     return stim
 
@@ -273,6 +291,11 @@ def snake(ppd=PPD):
     # Normalize intensity values to [0, 1]
     original_range = (img.min(), img.max())
     normed_img = (img - img.min()) / (img.max() - img.min())
+    
+    experimental_data = {
+        "mean_proportion_expected": 0.9625,
+        "CI95_proportion_expected": (-0.0588765, 0.0588765),
+        }
 
     stim = {
         "img": normed_img,
@@ -282,6 +305,7 @@ def snake(ppd=PPD):
         "ppd": ppd,
         "intensity_range": (0.0, 1.0),
         "original_range": original_range,
+        "experimental_data": experimental_data,
     }
     return stim
 
@@ -319,6 +343,11 @@ def snake_control(ppd=PPD):
     # Normalize intensity values to [0, 1]
     original_range = (img.min(), img.max())
     normed_img = (img - img.min()) / (img.max() - img.min())
+    
+    experimental_data = {
+        "mean_proportion_expected": 0.8,
+        "CI95_proportion_expected": (-0.123961, 0.123961),
+        }
 
     stim = {
         "img": normed_img,
@@ -328,6 +357,7 @@ def snake_control(ppd=PPD):
         "ppd": ppd,
         "intensity_range": (0.0, 1.0),
         "original_range": original_range,
+        "experimental_data": experimental_data,
     }
     return stim
 
@@ -365,6 +395,11 @@ def koffka_adelson(ppd=PPD):
     # Normalize intensity values to [0, 1]
     original_range = (img.min(), img.max())
     normed_img = (img - img.min()) / (img.max() - img.min())
+    
+    experimental_data = {
+        "mean_proportion_expected": 0.8375,
+        "CI95_proportion_expected": (-0.114326, 0.114326),
+        }
 
     stim = {
         "img": normed_img,
@@ -374,6 +409,7 @@ def koffka_adelson(ppd=PPD):
         "ppd": ppd,
         "intensity_range": (0.0, 1.0),
         "original_range": original_range,
+        "experimental_data": experimental_data,
     }
     return stim
 
@@ -411,6 +447,11 @@ def koffka_broken(ppd=PPD):
     # Normalize intensity values to [0, 1]
     original_range = (img.min(), img.max())
     normed_img = (img - img.min()) / (img.max() - img.min())
+    
+    experimental_data = {
+        "mean_proportion_expected": 0.8,
+        "CI95_proportion_expected": (-0.123961, 0.123961),
+        }
 
     stim = {
         "img": normed_img,
@@ -420,6 +461,7 @@ def koffka_broken(ppd=PPD):
         "ppd": ppd,
         "intensity_range": (0.0, 1.0),
         "original_range": original_range,
+        "experimental_data": experimental_data,
     }
     return stim
 
@@ -457,6 +499,11 @@ def koffka_connected(ppd=PPD):
     # Normalize intensity values to [0, 1]
     original_range = (img.min(), img.max())
     normed_img = (img - img.min()) / (img.max() - img.min())
+    
+    experimental_data = {
+        "mean_proportion_expected": 0.6,
+        "CI95_proportion_expected": (-0.151821, 0.151821),
+        }
 
     stim = {
         "img": normed_img,
@@ -466,6 +513,7 @@ def koffka_connected(ppd=PPD):
         "ppd": ppd,
         "intensity_range": (0.0, 1.0),
         "original_range": original_range,
+        "experimental_data": experimental_data,
     }
     return stim
 
@@ -512,12 +560,18 @@ def checkassim(ppd=PPD, pad=PAD):
     # Normalize intensity values to [0, 1]
     original_range = (stim["img"].min(), stim["img"].max())
     stim["img"] = (stim["img"] - stim["img"].min()) / (stim["img"].max() - stim["img"].min())
+    
+    experimental_data = {
+        "mean_proportion_expected": 0.8625,
+        "CI95_proportion_expected": (-0.106723, 0.106723),
+        }
 
     params.update(
         visual_size=np.array(stim["img"].shape) / ppd,
         shape=stim["img"].shape,
         original_range=original_range,
         intensity_range=(0.0, 1.0),
+        experimental_data=experimental_data,
     )
     return {**stim, **params}
 
@@ -555,6 +609,11 @@ def simcon(ppd=PPD):
     # Normalize intensity values to [0, 1]
     original_range = (img.min(), img.max())
     normed_img = (img - img.min()) / (img.max() - img.min())
+    
+    experimental_data = {
+        "mean_proportion_expected": 0.925,
+        "CI95_proportion_expected": (-0.0816258, 0.0816258),
+        }
 
     stim = {
         "img": normed_img,
@@ -564,6 +623,7 @@ def simcon(ppd=PPD):
         "ppd": ppd,
         "intensity_range": (0.0, 1.0),
         "original_range": original_range,
+        "experimental_data": experimental_data,
     }
     return stim
 
@@ -601,6 +661,11 @@ def simcon_articulated(ppd=PPD):
     # Normalize intensity values to [0, 1]
     original_range = (img.min(), img.max())
     normed_img = (img - img.min()) / (img.max() - img.min())
+    
+    experimental_data = {
+        "mean_proportion_expected": 1.0,
+        "CI95_proportion_expected": (-0.0, 0.0),
+        }
 
     stim = {
         "img": normed_img,
@@ -610,6 +675,7 @@ def simcon_articulated(ppd=PPD):
         "ppd": ppd,
         "intensity_range": (0.0, 1.0),
         "original_range": original_range,
+        "experimental_data": experimental_data,
     }
     return stim
 
@@ -658,12 +724,18 @@ def white(ppd=PPD):
     # Normalize intensity values to [0, 1]
     original_range = (img.min(), img.max())
     normed_img = (img - img.min()) / (img.max() - img.min())
+    
+    experimental_data = {
+        "mean_proportion_expected": 0.95,
+        "CI95_proportion_expected": (-0.0675418, 0.0675418),
+        }
 
     params.update(
         visual_size=np.array(normed_img.shape) / ppd,
         shape=normed_img.shape,
         original_range=original_range,
         intensity_range=(0.0, 1.0),
+        experimental_data=experimental_data,
     )
     return {"img": normed_img, "mask": reduced_mask, **params}
 

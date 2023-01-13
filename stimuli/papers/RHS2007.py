@@ -146,11 +146,16 @@ def WE_thick(ppd=PPD, pad=True):
 
     if pad:
         stim = pad_dict_to_visual_size(stim, VISEXTENT, ppd, pad_value=v2)
+    
+    experimental_data = {
+        "effect_strength": 4.18,
+        }
 
     params.update(
         visual_size=np.array(stim["img"].shape) / ppd,
         shape=stim["img"].shape,
         intensity_range=(v1, v3),
+        experimental_data=experimental_data,
     )
     return {**stim, **params}
 
@@ -201,10 +206,15 @@ def WE_thin_wide(ppd=PPD, pad=True):
     if pad:
         stim = pad_dict_to_visual_size(stim, VISEXTENT, ppd, pad_value=v2)
 
+    experimental_data = {
+        "effect_strength": 4.6,
+        }
+
     params.update(
         visual_size=np.array(stim["img"].shape) / ppd,
         shape=stim["img"].shape,
         intensity_range=(v1, v3),
+        experimental_data=experimental_data,
     )
     return {**stim, **params}
 
@@ -321,10 +331,15 @@ def WE_anderson(ppd=PPD, pad=True):
     if pad:
         stim = pad_dict_to_visual_size(stim, VISEXTENT, ppd, pad_value=v2)
 
+    experimental_data = {
+        "effect_strength": 6.43,
+        }
+
     params.update(
         visual_size=np.array(stim["img"].shape) / ppd,
         shape=stim["img"].shape,
         intensity_range=(v1, v3),
+        experimental_data=experimental_data,
     )
     return {**stim, **params}
 
@@ -380,10 +395,15 @@ def WE_howe(ppd=PPD, pad=True):
     if pad:
         stim = pad_dict_to_visual_size(stim, VISEXTENT, ppd, pad_value=v2)
 
+    experimental_data = {
+        "effect_strength": 0.0,
+        }
+
     params.update(
         visual_size=np.array(stim["img"].shape) / ppd,
         shape=stim["img"].shape,
         intensity_range=(v1, v3),
+        experimental_data=experimental_data,
     )
     return {**stim, **params}
 
@@ -867,10 +887,15 @@ def grating_induction(ppd=PPD, pad=True):
     if pad:
         stim = pad_dict_to_visual_size(stim, VISEXTENT, ppd, pad_value=v2)
 
+    experimental_data = {
+        "effect_strength": 6.23,
+        }
+
     params.update(
         visual_size=np.array(stim["img"].shape) / ppd,
         shape=stim["img"].shape,
         intensity_range=(v1, v3),
+        experimental_data=experimental_data,
     )
     return {**stim, **params}
 
@@ -922,10 +947,15 @@ def sbc_large(ppd=PPD, pad=True):
     if pad:
         stim = pad_dict_to_visual_size(stim, VISEXTENT, ppd, pad_value=v2)
 
+    experimental_data = {
+        "effect_strength": 11.35,
+        }
+
     params.update(
         visual_size=np.array(stim["img"].shape) / ppd,
         shape=stim["img"].shape,
         intensity_range=(v1, v3),
+        experimental_data=experimental_data,
     )
     return {**stim, **params}
 
@@ -977,10 +1007,15 @@ def sbc_small(ppd=PPD, pad=True):
     if pad:
         stim = pad_dict_to_visual_size(stim, VISEXTENT, ppd, pad_value=v2)
 
+    experimental_data = {
+        "effect_strength": 19.78,
+        }
+
     params.update(
         visual_size=np.array(stim["img"].shape) / ppd,
         shape=stim["img"].shape,
         intensity_range=(v1, v3),
+        experimental_data=experimental_data,
     )
     return {**stim, **params}
 
@@ -1038,10 +1073,15 @@ def todorovic_equal(ppd=PPD, pad=True):
     if pad:
         stim = pad_dict_to_visual_size(stim, VISEXTENT, ppd, pad_value=v2)
 
+    experimental_data = {
+        "effect_strength": 2.2,
+        }
+
     params.update(
         visual_size=np.array(stim["img"].shape) / ppd,
         shape=stim["img"].shape,
         intensity_range=(v1, v3),
+        experimental_data=experimental_data,
     )
     return {**stim, **params}
 
@@ -1097,10 +1137,15 @@ def todorovic_in_large(ppd=PPD, pad=True):
     if pad:
         stim = pad_dict_to_visual_size(stim, VISEXTENT, ppd, pad_value=v2)
 
+    experimental_data = {
+        "effect_strength": 2.4,
+        }
+
     params.update(
         visual_size=np.array(stim["img"].shape) / ppd,
         shape=stim["img"].shape,
         intensity_range=(v1, v3),
+        experimental_data=experimental_data,
     )
     return {**stim, **params}
 
@@ -1156,10 +1201,15 @@ def todorovic_in_small(ppd=PPD, pad=True):
     if pad:
         stim = pad_dict_to_visual_size(stim, VISEXTENT, ppd, pad_value=v2)
 
+    experimental_data = {
+        "effect_strength": 4.4,
+        }
+
     params.update(
         visual_size=np.array(stim["img"].shape) / ppd,
         shape=stim["img"].shape,
         intensity_range=(v1, v3),
+        experimental_data=experimental_data,
     )
     return {**stim, **params}
 
@@ -1218,10 +1268,15 @@ def todorovic_out(ppd=PPD, pad=True):
     if pad:
         stim = pad_dict_to_visual_size(stim, VISEXTENT, ppd, pad_value=v2)
 
+    experimental_data = {
+        "effect_strength": 1.53,
+        }
+
     params.update(
         visual_size=np.array(stim["img"].shape) / ppd,
         shape=stim["img"].shape,
         intensity_range=(v1, v3),
+        experimental_data=experimental_data,
     )
     return {**stim, **params}
 
@@ -1268,10 +1323,15 @@ def checkerboard_016(ppd=PPD, pad=True):
     if pad:
         stim = pad_dict_to_visual_size(stim, VISEXTENT, ppd, pad_value=v2)
 
+    experimental_data = {
+        "effect_strength": 7.46,
+        }
+
     params.update(
         visual_size=np.array(stim["img"].shape) / ppd,
         shape=stim["img"].shape,
         intensity_range=(v1, v3),
+        experimental_data=experimental_data,
     )
     return {**stim, **params}
 
@@ -1318,10 +1378,15 @@ def checkerboard_094(ppd=PPD, pad=True):
     if pad:
         stim = pad_dict_to_visual_size(stim, VISEXTENT, ppd, pad_value=v2)
 
+    experimental_data = {
+        "effect_strength": 2.84,
+        }
+
     params.update(
         visual_size=np.array(stim["img"].shape) / ppd,
         shape=stim["img"].shape,
         intensity_range=(v1, v3),
+        experimental_data=experimental_data,
     )
     return {**stim, **params}
 
@@ -1368,10 +1433,15 @@ def checkerboard_21(ppd=PPD, pad=True):
     if pad:
         stim = pad_dict_to_visual_size(stim, VISEXTENT, ppd, pad_value=v2)
 
+    experimental_data = {
+        "effect_strength": 5.67,
+        }
+
     params.update(
         visual_size=np.array(stim["img"].shape) / ppd,
         shape=stim["img"].shape,
         intensity_range=(v1, v3),
+        experimental_data=experimental_data,
     )
     return {**stim, **params}
 
@@ -1422,10 +1492,15 @@ def corrugated_mondrian(ppd=PPD, pad=True):
     if pad:
         stim = pad_dict_to_visual_size(stim, VISEXTENT, ppd, pad_value=0.5)
 
+    experimental_data = {
+        "effect_strength": 10.85,
+        }
+
     params.update(
         visual_size=np.array(stim["img"].shape) / ppd,
         shape=stim["img"].shape,
         intensity_range=(v1, v4),
+        experimental_data=experimental_data,
     )
     return {**stim, **params}
 
@@ -1474,10 +1549,15 @@ def benary_cross(ppd=PPD, pad=True):
         stim = pad_dict_by_visual_size(stim, ((0.0, 0.0), (4.0, 4.0)), ppd, pad_value=v3)
         stim = pad_dict_to_visual_size(stim, VISEXTENT, ppd, pad_value=v2)
 
+    experimental_data = {
+        "effect_strength": 9.2,
+        }
+
     params.update(
         visual_size=np.array(stim["img"].shape) / ppd,
         shape=stim["img"].shape,
         intensity_range=(v1, v3),
+        experimental_data=experimental_data,
     )
     return {**stim, **params}
 
@@ -1527,10 +1607,15 @@ def todorovic_benary1_2(ppd=PPD, pad=True):
     if pad:
         stim = pad_dict_to_visual_size(stim, VISEXTENT, ppd, pad_value=v2)
 
+    experimental_data = {
+        "effect_strength": 11.96,
+        }
+
     params.update(
         visual_size=np.array(stim["img"].shape) / ppd,
         shape=stim["img"].shape,
         intensity_range=(v1, v3),
+        experimental_data=experimental_data,
     )
     return {**stim, **params}
 
@@ -1580,10 +1665,15 @@ def todorovic_benary3_4(ppd=PPD, pad=True):
     if pad:
         stim = pad_dict_to_visual_size(stim, VISEXTENT, ppd, pad_value=v2)
 
+    experimental_data = {
+        "effect_strength": 9.55,
+        }
+
     params.update(
         visual_size=np.array(stim["img"].shape) / ppd,
         shape=stim["img"].shape,
         intensity_range=(v1, v3),
+        experimental_data=experimental_data,
     )
     return {**stim, **params}
 
