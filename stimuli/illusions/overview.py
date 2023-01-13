@@ -14,8 +14,7 @@ import stimuli.illusions.sbc as sbc
 import stimuli.illusions.todorovic as todorovic
 import stimuli.illusions.wedding_cake as wedding_cake
 import stimuli.illusions.whites as whites
-from stimuli.illusions import bullseye as bullseye
-from stimuli.illusions import frames as frames
+import stimuli.illusions.frames as frames
 from stimuli.utils import plot_stimuli
 
 p = {
@@ -61,8 +60,10 @@ stims = {
     # Dungeon
     "Dungeon": dungeon.dungeon_illusion(**p, n_cells=5),
     # Frames
-    "Frames": frames(**p, frequency=0.5, target_indices=3),
-    "Bullseye": bullseye(**p, frequency=0.5),
+    "Frames": frames.frames_stimulus(**p, frequency=0.5, target_indices=3),
+    "Frames general": frames.frames_generalized(**p, frame_radii=(1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5), target_indices=3),
+    "Bullseye": frames.bullseye_stimulus(**p, frequency=0.5),
+    "Bullseye general": frames.bullseye_generalized(**p, frame_radii=(1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5)),
     # Grating
     "Grating with targets": grating.square_wave(**p, frequency=0.5, target_indices=(3, 6)),
     "Grating uniform": grating.grating_uniform(**p, frequency=1, grating_size=3, target_indices=(3, 5)),

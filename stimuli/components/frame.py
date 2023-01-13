@@ -52,7 +52,7 @@ def mask_frames(
 
 
 def frames(
-    frame_widths,
+    frame_radii,
     shape=None,
     visual_size=None,
     ppd=None,
@@ -60,21 +60,18 @@ def frames(
     intensity_background=0.5,
     origin="mean",
 ):
-    """Draw sequential set of square frames with specified widths
+    """Draw sequential set of square frames with specified radii
 
     Parameters
     ----------
-    frame_widths : Sequence[Number]
-        width of each frame, in degrees visual angle
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
+    frame_radii : Sequence[Number]
+        radii of each frame, in degrees visual angle
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
-    period : "full", "half", "ignore" (default)
-        whether to ensure the grating only has "full" periods,
-        half "periods", or no guarantees ("ignore")
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
     intensity_frames : Sequence[float, ...]
         intensity value for each frame, by default (1.0, 0.0).
         Can specify as many intensities as number of frame_widths;
@@ -96,7 +93,7 @@ def frames(
 
     # Get frames mask
     stim = mask_frames(
-        edges=frame_widths,
+        edges=frame_radii,
         shape=shape,
         visual_size=visual_size,
         ppd=ppd,
@@ -190,7 +187,7 @@ def square_wave(
 
     # Draw
     stim = frames(
-        frame_widths=params["edges"],
+        frame_radii=params["edges"],
         shape=shape,
         visual_size=visual_size,
         ppd=ppd,

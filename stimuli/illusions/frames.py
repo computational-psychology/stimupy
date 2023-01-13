@@ -2,15 +2,17 @@ import itertools
 
 import numpy as np
 
-from stimuli.components.frame import square_wave as frames_component
+from stimuli.components import frame as frames_component
 
 __all__ = [
-    "frames",
-    "bullseye",
+    "frames_stimulus",
+    "frames_generalized",
+    "bullseye_stimulus",
+    "bullseye_generalized",
 ]
 
 
-def frames(
+def frames_stimulus(
     shape=None,
     visual_size=None,
     ppd=None,
@@ -67,7 +69,7 @@ def frames(
     """
 
     # Frames component
-    stim = frames_component(
+    stim = frames_component.square_wave(
         shape=shape,
         visual_size=visual_size,
         ppd=ppd,
@@ -102,7 +104,92 @@ def frames(
     return stim
 
 
-def bullseye(
+def frames_generalized(
+    frame_radii,
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    intensity_frames=(1.0, 0.0),
+    intensity_background=0.5,
+    target_indices=(),
+    intensity_target=0.5,
+    origin="mean",
+):
+    """Draw sequential set of square frames with specified radii and targets
+
+    Parameters
+    ----------
+    frame_radii : Sequence[Number]
+        radii of each frame, in degrees visual angle
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    intensity_frames : Sequence[float, ...]
+        intensity value for each frame, by default (1.0, 0.0).
+        Can specify as many intensities as number of frame_widths;
+        If fewer intensities are passed than frame_widhts, cycles through intensities
+    intensity_background : float, optional
+        intensity value of background, by default 0.5
+    target_indices : int, or Sequence[int, ...]
+        indices frames where targets will be placed
+    intensity_target : float, or Sequence[float, ...], optional
+        intensity value for each target, by default 0.5.
+        Can specify as many intensities as number of target_indices;
+        If fewer intensities are passed than target_indices, cycles through intensities
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
+
+    Returns
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each frame (key: "mask"),
+        and additional keys containing stimulus parameters
+    """
+    # if visual_size is None and shape is None:
+    #     visual_size = sum(frame_radii)*2
+    
+    # Frames component
+    stim = frames_component.frames(
+        frame_radii=frame_radii,
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        intensity_frames=intensity_frames,
+        intensity_background=intensity_background,
+        origin=origin,
+    )
+
+    # Resolve target parameters
+    if isinstance(target_indices, (int)):
+        target_indices = [
+            target_indices,
+        ]
+    if isinstance(intensity_target, (int, float)):
+        intensity_target = [
+            intensity_target,
+        ]
+    intensity_target = itertools.cycle(intensity_target)
+
+    # Place target(s)
+    targets_mask = np.zeros_like(stim["mask"])
+    for target_idx, (bar_idx, intensity) in enumerate(zip(target_indices, intensity_target)):
+        targets_mask = np.where(stim["mask"] == bar_idx, target_idx + 1, targets_mask)
+        stim["img"] = np.where(targets_mask == target_idx + 1, intensity, stim["img"])
+
+    # Update and return stimulus
+    stim["bars_mask"] = stim["mask"]
+    stim["mask"] = targets_mask
+
+    return stim
+
+
+def bullseye_stimulus(
     shape=None,
     visual_size=None,
     ppd=None,
@@ -157,7 +244,7 @@ def bullseye(
         Vision Research, 44, 309–319. https://doi.org/10.1016/S0042-6989(03)00430-9
     """
 
-    stim = frames(
+    stim = frames_stimulus(
         shape=shape,
         visual_size=visual_size,
         ppd=ppd,
@@ -173,11 +260,77 @@ def bullseye(
     return stim
 
 
+def bullseye_generalized(
+    frame_radii,
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    intensity_frames=(1.0, 0.0),
+    intensity_background=0.5,
+    intensity_target=0.5,
+    origin="mean",
+):
+    """Draw sequential set of square frames with specified radii with central target
+
+    Parameters
+    ----------
+    frame_radii : Sequence[Number]
+        radii of each frame, in degrees visual angle
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    intensity_frames : Sequence[float, ...]
+        intensity value for each frame, by default (1.0, 0.0).
+        Can specify as many intensities as number of frame_widths;
+        If fewer intensities are passed than frame_widhts, cycles through intensities
+    intensity_background : float, optional
+        intensity value of background, by default 0.5
+    intensity_target : float, or Sequence[float, ...], optional
+        intensity value for each target, by default 0.5.
+        Can specify as many intensities as number of target_indices;
+        If fewer intensities are passed than target_indices, cycles through intensities
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
+
+    Returns
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each frame (key: "mask"),
+        and additional keys containing stimulus parameters
+    """
+    stim = frames_generalized(
+        frame_radii=frame_radii,
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        intensity_frames=intensity_frames,
+        intensity_background=intensity_background,
+        target_indices=1,
+        intensity_target=intensity_target,
+        origin=origin,
+        )
+    return stim
+
+
 if __name__ == "__main__":
     from stimuli.utils import plot_stimuli
+    
+    p1 = {
+        "frame_radii": (1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5),
+        "visual_size": 10,
+        "ppd": 10,
+        }
 
     stims = {
-        "Frames": frames(visual_size=10, ppd=10, frequency=0.5, target_indices=(1, 3)),
-        "Bullseye": bullseye(visual_size=10, ppd=10, frequency=0.5),
+        "Frames": frames_stimulus(visual_size=10, ppd=10, frequency=0.5, target_indices=(1, 3)),
+        "Frames generalized": frames_generalized(**p1, target_indices=(1, 3)),
+        "Bullseye": bullseye_stimulus(visual_size=10, ppd=10, frequency=0.5),
+        "Bullseye generalized": bullseye_generalized(**p1),
     }
     plot_stimuli(stims, mask=True, save=None)
