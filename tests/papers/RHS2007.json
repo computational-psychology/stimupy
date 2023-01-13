@@ -110,5 +110,13 @@
     "todorovic_benary1_2_3_4": {
         "img": "5796edd6dc6153a2a47f6b9a06ed698d",
         "mask": "763e018b2d95aa97394c4d19214ac9f6"
+    },
+    "bullseye_thin": {
+        "img": "e784faee64ccbf1f2b90fad8fb653bc4",
+        "mask": "e6b7638c7de948a3d4f1ad743f5d144a"
+    },
+    "bullseye_thick": {
+        "img": "8e9a74ed64b1189b8aa5ad99166f243e",
+        "mask": "fd836e38f48a08311ba4603c672d109d"
     }
 }

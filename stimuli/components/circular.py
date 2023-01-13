@@ -510,7 +510,7 @@ def bessel(
 
     stim = {
         "img": img,
-        "mask": None,
+        "mask": np.zeros(shape).astype(int),
         "visual_size": base["visual_size"],
         "ppd": base["ppd"],
         "shape": base["shape"],

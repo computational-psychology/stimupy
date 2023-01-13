@@ -52,7 +52,7 @@ def step_edge(
     img = np.where(base["rotated"] < base["rotated"].mean(), img, intensity_edges[1])
     mask = np.ones(shape)
     mask = np.where(base["rotated"] < base["rotated"].mean(), mask, 2)
-    
+
     stim = {
         "img": img,
         "mask": mask.astype(int),
@@ -117,9 +117,7 @@ def gaussian_edge(
     
     img = stim["img"] - intensity_background
     img = img * window["img"] + intensity_background
-    mask = stim["mask"] * window["img"]
     stim["img"] = img
-    stim["mask"] = mask.astype(int)
     stim["sigma"] = sigma
     stim["intensity_background"] = intensity_background
     return stim

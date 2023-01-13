@@ -32,6 +32,7 @@ Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D
 
 import numpy as np
 import pandas as pd
+from pathlib import Path
 
 from stimuli.components import grating, gaussians, shapes, checkerboard, lines
 from stimuli.components.edges import gaussian_edge
@@ -91,7 +92,7 @@ PPD2 = 60  # pixel size of 1 arcmin (pixel replication)
 
 mean_lum = 0.5
 
-df = pd.read_csv("carney1999_data.csv", header=None)
+df = pd.read_csv(Path(__file__).parents[0] / "carney1999_data.csv", header=None)
 participants = df[0]
 
 
@@ -1140,14 +1141,13 @@ def Subthreshold22(ppd=PPD):
     stim1 = grating.gabor(**params, frequency=2)
     stim2 = grating.gabor(**params, frequency=2*np.sqrt(2))
     
-    stim1 = {
-        "img": stim1["img"]/2 + stim2["img"]/2,
-        "mask2": stim2["mask"],
-        "edges2": stim2["edges"],
-        "frequency2": stim2["frequency"],
-        "bar_width2": stim2["bar_width"],
-        "n_bars2": stim2["n_bars"],
-        }
+    stim1["img"] = stim1["img"]/2 + stim2["img"]/2
+    stim1["mask"] = stim1["mask"].astype(int)
+    stim1["mask2"] = stim2["mask"].astype(int)
+    stim1["edges2"] = stim2["edges"]
+    stim1["frequency2"] = stim2["frequency"]
+    stim1["bar_width2"] = stim2["bar_width"]
+    stim1["n_bars2"] = stim2["n_bars"]
 
     v = 85
     experimental_data = {
@@ -1196,14 +1196,12 @@ def Subthreshold23(ppd=PPD):
     stim1 = grating.gabor(**params, frequency=2)
     stim2 = grating.gabor(**params, frequency=4)
     
-    stim1 = {
-        "img": stim1["img"]/2 + stim2["img"]/2,
-        "mask2": stim2["mask"],
-        "edges2": stim2["edges"],
-        "frequency2": stim2["frequency"],
-        "bar_width2": stim2["bar_width"],
-        "n_bars2": stim2["n_bars"],
-        }
+    stim1["img"] = stim1["img"]/2 + stim2["img"]/2
+    stim1["mask2"] = stim2["mask"].astype(int)
+    stim1["edges2"] = stim2["edges"]
+    stim1["frequency2"] = stim2["frequency"]
+    stim1["bar_width2"] = stim2["bar_width"]
+    stim1["n_bars2"] = stim2["n_bars"]
 
     v = 89
     experimental_data = {
@@ -1252,14 +1250,12 @@ def Subthreshold24(ppd=PPD):
     stim1 = grating.gabor(**params, frequency=4)
     stim2 = grating.gabor(**params, frequency=4*np.sqrt(2))
     
-    stim1 = {
-        "img": stim1["img"]/2 + stim2["img"]/2,
-        "mask2": stim2["mask"],
-        "edges2": stim2["edges"],
-        "frequency2": stim2["frequency"],
-        "bar_width2": stim2["bar_width"],
-        "n_bars2": stim2["n_bars"],
-        }
+    stim1["img"] = stim1["img"]/2 + stim2["img"]/2
+    stim1["mask2"] = stim2["mask"].astype(int)
+    stim1["edges2"] = stim2["edges"]
+    stim1["frequency2"] = stim2["frequency"]
+    stim1["bar_width2"] = stim2["bar_width"]
+    stim1["n_bars2"] = stim2["n_bars"]
 
     v = 93
     experimental_data = {
@@ -1308,14 +1304,12 @@ def Subthreshold25(ppd=PPD):
     stim1 = grating.gabor(**params, frequency=4)
     stim2 = grating.gabor(**params, frequency=8)
     
-    stim1 = {
-        "img": stim1["img"]/2 + stim2["img"]/2,
-        "mask2": stim2["mask"],
-        "edges2": stim2["edges"],
-        "frequency2": stim2["frequency"],
-        "bar_width2": stim2["bar_width"],
-        "n_bars2": stim2["n_bars"],
-        }
+    stim1["img"] = stim1["img"]/2 + stim2["img"]/2
+    stim1["mask2"] = stim2["mask"].astype(int)
+    stim1["edges2"] = stim2["edges"]
+    stim1["frequency2"] = stim2["frequency"]
+    stim1["bar_width2"] = stim2["bar_width"]
+    stim1["n_bars2"] = stim2["n_bars"]
 
     v = 97
     experimental_data = {
@@ -1759,7 +1753,7 @@ def GaborString34(ppd=PPD):
     return {**stim1, "experimental_data": experimental_data}
 
 
-def Noise35(ppd=PPD):
+def Noise35_random(ppd=PPD):
     """Noise35 - binary noise x Gaussian, Carney et al (1999)
     Gaussian window: sy=sx=0.5 deg
 
@@ -1790,6 +1784,52 @@ def Noise35(ppd=PPD):
     stim["img"] = img/2 + 0.5
 
     v = 137
+    experimental_data = {
+        "participants": participants,
+        "thresholds1": df[v],
+        "thresholds2": df[v+1],
+        "thresholds3": df[v+2],
+        "thresholds4": df[v+3],
+        }
+    return {**stim, "experimental_data": experimental_data}
+
+
+def Noise35(ppd=PPD):
+    """Noise35 - binary noise x Gaussian, Carney et al (1999)
+    Gaussian window: sy=sx=0.5 deg
+
+    Parameters
+    ----------
+    ppd : Sequence[Number, Number], Number, or None
+        pixels per degree [vertical, horizontal]
+
+    Returns
+    -------
+    dict[str, Any]
+        dict with the stimulus (key: "img") and additional keys containing
+        stimulus parameters
+
+    References
+    -----------
+    Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
+        ... & Eckstein, M. P. (1999). Development of an image/threshold database
+        for designing and testing human vision models. Proceedings of SPIE, 3644,
+        542-551. https://doi.org/10.1117/12.348473
+    """
+    # Read natural image from Modelfest
+    img = read_tif(Path(__file__).parents[0] / "carney1999_noise.tif")
+    img = img / img.max()
+    
+    stim = {
+        "img": img,
+        "mask": np.zeros(img.shape).astype(int),
+        "visual_size": (256/PPD, 256/PPD),
+        "shape": img.shape,
+        "ppd": PPD,
+        "intensity_range": (img.min(), img.max()),
+        }
+    
+    v = 169
     experimental_data = {
         "participants": participants,
         "thresholds1": df[v],
@@ -2157,11 +2197,12 @@ def NaturalScene43(ppd=PPD):
     """
     
     # Read natural image from Modelfest
-    img = read_tif("carney1999_natural_scene.tif")
+    img = read_tif(Path(__file__).parents[0] / "carney1999_natural_scene.tif")
     img = img / img.max()
 
     stim = {
         "img": img,
+        "mask": np.zeros(img.shape).astype(int),
         "visual_size": (256/PPD, 256/PPD),
         "shape": img.shape,
         "ppd": PPD,
@@ -2203,7 +2244,7 @@ def compare(o1, s1, filename):
 def compare_all():
     for stim_name in __all__:
         func = globals()[stim_name]
-        o1 = read_tif("./modelfest/" + stim_name + ".tif")
+        o1 = read_tif(str(Path(__file__).parents[0]) + "/modelfest/" + stim_name + ".tif")
         s1 = func()["img"]
         compare(o1, s1, stim_name + ".png")
 
@@ -2212,5 +2253,5 @@ if __name__ == "__main__":
     from stimuli.utils import plot_stimuli
 
     stims = gen_all(skip=True)
-    plot_stimuli(stims, mask=False)
+    plot_stimuli(stims, mask=True)
     # compare_all()

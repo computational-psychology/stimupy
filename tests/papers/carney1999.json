@@ -1,0 +1,174 @@
+{
+    "GaborPatch1": {
+        "img": "0d02dc37a45fdd024cb7633f8906c38f",
+        "mask": "b7bae4e2ad2ff2ed934c59c1ce02e448"
+    },
+    "GaborPatch2": {
+        "img": "4b399050ad720285f295830a20f6b6f4",
+        "mask": "8030340e91d8c0f74c3c1ffb506c9db5"
+    },
+    "GaborPatch3": {
+        "img": "bc3fdc1baf7112621566f2211411f1cc",
+        "mask": "4ec575da3bfa8274f3b74777cde12689"
+    },
+    "GaborPatch4": {
+        "img": "dfd196b58f3871092798c8bf9b7b8bf1",
+        "mask": "fd3ab2a466bfb3b4c77416c6120bb245"
+    },
+    "GaborPatch5": {
+        "img": "77af317adf9f4a338dc302315ef1b4a5",
+        "mask": "9f30fda16dfba1f9001c9804d78fa733"
+    },
+    "GaborPatch6": {
+        "img": "2e13200e31897b4fba4b5fa50d2a15e9",
+        "mask": "858891cb23d9ac018f95ba7b25121d64"
+    },
+    "GaborPatch7": {
+        "img": "3039e31ba0836cb60f67785c991daa71",
+        "mask": "32f94f022e8c8cadc50b5820240a9988"
+    },
+    "GaborPatch8": {
+        "img": "06d5a55d9a0fcc6692cd64113d4bf266",
+        "mask": "b849be44d496c3fc3b583bf0e2b1369b"
+    },
+    "GaborPatch9": {
+        "img": "6dd216e249d0591bc85734ea6f204f65",
+        "mask": "d23a567cf9ba5d0d9b1de98f2cbad443"
+    },
+    "GaborPatch10": {
+        "img": "8fa87569b8968811f08b21cc9b92a5d6",
+        "mask": "73aa8359e0549d67a7c14addec070383"
+    },
+    "GaborPatch11": {
+        "img": "fb9666997ecfaf86e25ce9996a79508f",
+        "mask": "8030340e91d8c0f74c3c1ffb506c9db5"
+    },
+    "GaborPatch12": {
+        "img": "c573bfb66d65e34240ea9570681ed724",
+        "mask": "fd3ab2a466bfb3b4c77416c6120bb245"
+    },
+    "GaborPatch13": {
+        "img": "d8ec9ed5a981c034832fcbf5eb579204",
+        "mask": "858891cb23d9ac018f95ba7b25121d64"
+    },
+    "GaborPatch14": {
+        "img": "8e86c18972a6defbe4ad747889c580f0",
+        "mask": "b849be44d496c3fc3b583bf0e2b1369b"
+    },
+    "ElongatedGabor15": {
+        "img": "59ee24110d6c724f99eec1e982f3ada5",
+        "mask": "fd3ab2a466bfb3b4c77416c6120bb245"
+    },
+    "ElongatedGabor16": {
+        "img": "f6c1427def123f777bddfc29e6c40514",
+        "mask": "858891cb23d9ac018f95ba7b25121d64"
+    },
+    "ElongatedGabor17": {
+        "img": "eb0be54016ee73284a4da087311761c6",
+        "mask": "b849be44d496c3fc3b583bf0e2b1369b"
+    },
+    "Baguette18": {
+        "img": "89d72391be70357389cac13e43df5d59",
+        "mask": "fd3ab2a466bfb3b4c77416c6120bb245"
+    },
+    "Baguette19": {
+        "img": "3b89c4d4f828e6508cd3fdd1760d7fb4",
+        "mask": "fd3ab2a466bfb3b4c77416c6120bb245"
+    },
+    "Baguette20": {
+        "img": "47c85f70d391e15376e8037b4a151b7d",
+        "mask": "fd3ab2a466bfb3b4c77416c6120bb245"
+    },
+    "Baguette21": {
+        "img": "e0f3844bd7841829d7982b20536dd3da",
+        "mask": "fd3ab2a466bfb3b4c77416c6120bb245"
+    },
+    "Subthreshold22": {
+        "img": "ee6d32647a448387877402e833ac7068",
+        "mask": "6b3459b999203075f8d8368ae390fdab"
+    },
+    "Subthreshold23": {
+        "img": "53f0b3e1510d8a1ea1d77c4093f42609",
+        "mask": "6b3459b999203075f8d8368ae390fdab"
+    },
+    "Subthreshold24": {
+        "img": "33e746225d2ffcf01f5a3b614f269293",
+        "mask": "aadc906bc69ee00286b82f5aead84293"
+    },
+    "Subthreshold25": {
+        "img": "72010520f2a4ea67ece2f2e062415ecf",
+        "mask": "aadc906bc69ee00286b82f5aead84293"
+    },
+    "Gaussians26": {
+        "img": "03bbb5a7261c8641b4f900b1d1b0923a",
+        "mask": "7dea362b3fac8e00956a4952a3d4f474"
+    },
+    "Gaussians27": {
+        "img": "d059e79823462c910dc12c9341e955ba",
+        "mask": "7dea362b3fac8e00956a4952a3d4f474"
+    },
+    "Gaussians28": {
+        "img": "4cf8102a654bef453c716ccff06df5ab",
+        "mask": "7dea362b3fac8e00956a4952a3d4f474"
+    },
+    "Gaussians29": {
+        "img": "72444c0e829d015a28af4b6c3c28bcfc",
+        "mask": "7dea362b3fac8e00956a4952a3d4f474"
+    },
+    "Edge30": {
+        "img": "8888f3dc43de6ff561501914a4bd6cf3",
+        "mask": "9eeb417981c12ec22d3466eca100f136"
+    },
+    "Line31": {
+        "img": "cd585c714f8587493913aa157ab08540",
+        "mask": "c5d29c96c5f29d534aa665474327bcf4"
+    },
+    "Dipole32": {
+        "img": "b869f421ff0bea683907c4e468d88242",
+        "mask": "9502dbb1d34c7057c670891ff362e6f8"
+    },
+    "GaborString33": {
+        "img": "da3e31877651f828968646f522fc1fad",
+        "mask": "8176335a8c174cf09b2d9f606aa49be9"
+    },
+    "GaborString34": {
+        "img": "4da1beb8d5e14624e07f272e32736612",
+        "mask": "e0344ef2ce8ffc74f914fffa12cfff0f"
+    },
+    "Noise35": {
+        "img": "ea1f4e0fcb7664891389b35f5540fe86",
+        "mask": "59071590099d21dd439896592338bf95"
+    },
+    "Orientation36": {
+        "img": "34e6f3b2637a7df1c4d6afb11d013afe",
+        "mask": "37063cdae1e282ffcd35568ef112a6dc"
+    },
+    "Orientation37": {
+        "img": "e11936fc6f86a8ab78bf8a7fbef6516a",
+        "mask": "6ae5fa1f188d315ec867d2d8807b1e1a"
+    },
+    "Plaids38": {
+        "img": "4379d50cbf9eeafdb72eb49ab478223b",
+        "mask": "24fc09771a05c926b580c21b5484647e"
+    },
+    "Plaids39": {
+        "img": "b67cf95d24bb5abafcb6362d2f205e79",
+        "mask": "76cf48db449229b3cfbb3efebe95279d"
+    },
+    "Disk40": {
+        "img": "fc5672879d59b22076ff1a79887df0c5",
+        "mask": "d774d1e22f9c1e5606e86cfad05391ed"
+    },
+    "Bessel41": {
+        "img": "908a1444191241ff50e2d7e19b2f704a",
+        "mask": "7dea362b3fac8e00956a4952a3d4f474"
+    },
+    "Checkerboard42": {
+        "img": "653795317b1afb5d5906a14a449a7b70",
+        "mask": "a53777f6dcc9e06833fd60492291f2b0"
+    },
+    "NaturalScene43": {
+        "img": "529d6172a7ca35d0c2a2508f3f133408",
+        "mask": "59071590099d21dd439896592338bf95"
+    }
+}

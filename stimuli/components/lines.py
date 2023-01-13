@@ -200,6 +200,7 @@ def dipole(
         )
     
     stim1["img"] = stim1["img"] + stim2["img"]
+    stim1["mask"] = (stim1["mask"] + stim2["mask"]*2).astype(int)
     
     return stim1
 
