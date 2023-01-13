@@ -415,9 +415,9 @@ def sine_wave(
 
 
 def gabor(
-    shape=None,
     visual_size=None,
     ppd=None,
+    shape=None,
     frequency=None,
     bar_width=None,
     sigma=None,
@@ -431,12 +431,12 @@ def gabor(
 
     Parameters
     ----------
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
     frequency : Number, or None (default)
         spatial frequency of grating, in cycles per degree visual angle
     bar_width : Number, or None (default)
@@ -635,10 +635,44 @@ def staircase(
 def plaid(
         grating_parameters1,
         grating_parameters2,
+        weight1=1,
+        weight2=1,
         sigma=None,
         ):
+    """Create plaid consisting of two sine-wave gratings
+
+    Parameters
+    ----------
+    grating_parameters1 : dict
+        kwargs to generate first sine-wave grating
+    grating_parameters2 : dict
+        kwargs to generate second sine-wave grating
+    weight1 : float
+        weight of first grating (default: 1)
+    weight2 : float
+        weight of second grating (default: 1)
+    sigma : float or (float, float)
+        sigma of Gaussian window in degree visual angle (y, x)
+
+    Returns
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "mask"),
+        and additional keys containing stimulus parameters
+    """
+
+    # Create sine-wave gratings
     grating1 = sine_wave(**grating_parameters1)
     grating2 = sine_wave(**grating_parameters2)
+    
+    if grating1["shape"] != grating2["shape"]:
+        raise ValueError("Gratings must have the same shape")
+    if grating1["ppd"] != grating2["ppd"]:
+        raise ValueError("Gratings must have same ppd")
+    if grating1["origin"] != grating2["origin"]:
+        raise ValueError("Grating origins must be the same")
+
     window = gaussian(
         visual_size=grating1["visual_size"],
         ppd=grating1["ppd"],
@@ -646,7 +680,10 @@ def plaid(
         origin=grating1["origin"],
     )
     
-    img = (grating1["img"] + grating2["img"]) * window["img"]
+    img = (weight1*grating1["img"] + weight2*grating2["img"]) * window["img"]
+    img = img / (weight1 + weight2)
+    
+    # Update parameters
     grating1["img"] = img
     grating1["sigma"] = sigma
     grating1["mask2"] = grating2["mask"]
