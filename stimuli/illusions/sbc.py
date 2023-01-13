@@ -1,7 +1,7 @@
 import numpy as np
 
 from stimuli.components.shapes import disc, rectangle
-from stimuli.utils import pad_by_visual_size, resolution
+from stimuli.utils import pad_by_visual_size, pad_to_shape, resolution
 
 __all__ = [
     "simultaneous_contrast_generalized",
@@ -119,7 +119,9 @@ def simultaneous_contrast(
 
 
 def sbc_with_dots(
+    visual_size=None,
     ppd=None,
+    shape=None,
     n_dots=None,
     dot_radius=None,
     distance=None,
@@ -133,8 +135,12 @@ def sbc_with_dots(
 
     Parameters
     ----------
-    ppd : int
-        pixels per degree (visual angle)
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of grating, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of grating, in pixels
     n_dots : int or (int, int)
         stimulus size defined as the number of dots in y and x-directions
     dot_radius : float
@@ -159,9 +165,17 @@ def sbc_with_dots(
     Bressan, P., & Kramer, P. (2008). Gating of remote effects on lightness. Journal
         of Vision, 8(2), 16–16. https://doi.org/10.1167/8.2.16
     """
-
     # n_dots = number of dots vertical, horizontal, analogous to degrees
     n_dots = resolution.validate_visual_size(n_dots)
+    
+    if shape is None and visual_size is None:
+        visual_size = (n_dots[0]*dot_radius*2 + n_dots[0]*distance,
+                       n_dots[1]*dot_radius*2 + n_dots[1]*distance)
+    
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
+    if len(np.unique(ppd)) > 1:
+        raise ValueError("ppd should be equal in x and y direction")
 
     # target shape = is in number of dots
     target_shape = resolution.validate_visual_size(target_shape)
@@ -204,6 +218,13 @@ def sbc_with_dots(
     img[indices_dots] = intensity_dots
     mask[indices_dots] = 0
 
+    try:
+        img = pad_to_shape(img, shape, intensity_background)
+        mask = pad_to_shape(mask, shape, 0)
+    except Exception:
+        raise ValueError("visual_size or shape_argument are too small. "
+                         "Advice: set to None")
+
     stim = {
         "img": img,
         "mask": mask.astype(int),
@@ -223,7 +244,9 @@ def sbc_with_dots(
 
 
 def dotted_sbc(
+    visual_size=None,
     ppd=None,
+    shape=None,
     n_dots=None,
     dot_radius=None,
     distance=None,
@@ -237,8 +260,12 @@ def dotted_sbc(
 
     Parameters
     ----------
-    ppd : int
-        pixels per degree (visual angle)
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of grating, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of grating, in pixels
     n_dots : int or (int, int)
         stimulus size defined as the number of dots in y and x-directions
     dot_radius : float
@@ -266,6 +293,15 @@ def dotted_sbc(
 
     # n_dots = number of dots vertical, horizontal, analogous to degrees
     n_dots = resolution.validate_visual_size(n_dots)
+    
+    if shape is None and visual_size is None:
+        visual_size = (n_dots[0]*dot_radius*2 + n_dots[0]*distance,
+                       n_dots[1]*dot_radius*2 + n_dots[1]*distance)
+    
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
+    if len(np.unique(ppd)) > 1:
+        raise ValueError("ppd should be equal in x and y direction")
 
     # target shape = is in number of dots
     target_shape = resolution.validate_visual_size(target_shape)
@@ -309,6 +345,13 @@ def dotted_sbc(
     img[indices_dots_target] = intensity_target
     mask = np.zeros(img.shape)
     mask[indices_dots_target] = 1
+    
+    try:
+        img = pad_to_shape(img, shape, intensity_background)
+        mask = pad_to_shape(mask, shape, 0)
+    except Exception:
+        raise ValueError("visual_size or shape_argument are too small. "
+                         "Advice: set to None")
 
     stim = {
         "img": img,
