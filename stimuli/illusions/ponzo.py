@@ -15,7 +15,7 @@ def ponzo_illusion(
     outer_lines_angle=15,
     target_lines_length=None,
     target_lines_width=0,
-    target_seperation=None,
+    target_distance=None,
     intensity_outer_lines=1.0,
     intensity_target_lines=0.5,
     intensity_background=0.0,
@@ -43,7 +43,7 @@ def ponzo_illusion(
     target_lines_width : 
         line width of target lines in degrees visual angle
         if 0 (default), set line width to 1 px
-    target_seperation : Number
+    target_distance : Number
         distance between target lines in degrees visual angle
     intensity_outer_lines : Number or (Number, Number)
         intensity value(s) of outer lines
@@ -97,8 +97,8 @@ def ponzo_illusion(
         )
     line2["mask"] *= 2
     
-    line_position1 = (-target_seperation/2, -target_lines_length/2)
-    line_position2 = (target_seperation/2, -target_lines_length/2)
+    line_position1 = (-target_distance/2, -target_lines_length/2)
+    line_position2 = (target_distance/2, -target_lines_length/2)
 
     line3 = lines.line(
         ppd=ppd,
@@ -140,7 +140,7 @@ if __name__ == "__main__":
         "outer_lines_length": 8,
         "outer_lines_angle" : 10,
         "target_lines_length": 3,
-        "target_seperation": 5,
+        "target_distance": 5,
         }
 
     stim = ponzo_illusion(**p1)
