@@ -4,6 +4,7 @@ import copy
 import warnings
 
 from stimuli.utils import resolution
+from stimuli.components.shapes import ring
 
 __all__ = [
     "line",
@@ -203,6 +204,60 @@ def dipole(
     return stim1
 
 
+def circle(
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    radius=None,
+    line_width=0,
+    intensity_line=1,
+    intensity_background=0,
+    ):
+    """Draw a circle given the input parameters
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    radius : Number
+        radius of circle in degrees visual angle
+    line_width : Number
+        width of the line, in degrees visual angle;
+        if line_width=0 (default), line will be one pixel wide
+    intensity_line : Number
+        intensity value of the line (default: 1)
+    intensity_background : Number
+        intensity value of the background (default: 0)
+
+    Returns
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "mask"),
+        and additional keys containing stimulus parameters
+    """
+    
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
+    if line_width*ppd[0] == 0:
+        line_width = 1/ppd[0]
+
+    stim = ring(
+        radii=(radius, radius+line_width),
+        intensity_rings=intensity_line,
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        intensity_background=intensity_background,
+        origin="mean",
+    )
+    return stim
+
+
 if __name__ == "__main__":
     from stimuli.utils.plotting import plot_stimuli
 
@@ -219,5 +274,6 @@ if __name__ == "__main__":
     stims = {
         "line": line(**p1),
         "dipole": dipole(**p1, line_seperation=1),
+        "circle": circle(visual_size=10, ppd=10, radius=3)
     }
     plot_stimuli(stims, mask=False)
