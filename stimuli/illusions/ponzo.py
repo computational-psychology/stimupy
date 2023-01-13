@@ -21,7 +21,7 @@ def ponzo_illusion(
     intensity_background=0.0,
 ):
     """
-    Hermann grid
+    Ponzo illusion
 
     Parameters
     ----------
