@@ -230,7 +230,6 @@ def dungeon(visual_size=VSIZES["dungeon"], ppd=PPD, shape=SHAPES["dungeon"]):
         intensity_grid=v1,
         intensity_target=v2,
     )
-    stim2["mask"] *= 2
 
     # Pad and stack
     padding = np.array((0.9, 1.1)) * visual_resize
@@ -299,7 +298,6 @@ def cube(visual_size=VSIZES["cube"], ppd=PPD, shape=SHAPES["cube"]):
         intensity_grid=v1,
         intensity_target=v2,
     )
-    stim2["mask"] *= 2
 
     # Pad and stack
     padding = np.array((0.9, 1.0)) * visual_resize
@@ -370,7 +368,6 @@ def grating(visual_size=VSIZES["grating"], ppd=PPD, shape=SHAPES["grating"]):
         intensity_bars=(v1, v3),
         intensity_target=v2,
     )
-    stim2["mask"] *= 2
 
     # Pad and stack
     padding = np.array(((0.9, 1.0), (0.9, 1.1))) * visual_resize
@@ -437,7 +434,6 @@ def rings(visual_size=VSIZES["rings"], ppd=PPD, shape=SHAPES["rings"]):
         intensity_frames=(v1, v3),
         intensity_target=v2,
     )
-    stim2["mask"] *= 2
 
     # Pad and stack
     stim1 = pad_dict_to_shape(stim1, shape=np.array(shape) / (1, 2), pad_value=v1)
@@ -501,7 +497,6 @@ def bullseye(visual_size=VSIZES["bullseye"], ppd=PPD, shape=SHAPES["bullseye"]):
         intensity_frames=(v3, v1),
         intensity_target=v2,
     )
-    stim2["mask"] *= 2
 
     # Pad and stack
     stim1 = pad_dict_to_shape(stim1, shape=np.array(shape) / (1, 2), pad_value=v1)
@@ -572,7 +567,6 @@ def simultaneous_brightness_contrast(
         intensity_background=v1,
         intensity_target=v2,
     )
-    stim2["mask"] *= 2
 
     # Stacking
     stim = stack_dicts(stim1, stim2)
@@ -766,7 +760,6 @@ def todorovic(visual_size=VSIZES["todorovic"], ppd=PPD, shape=SHAPES["todorovic"
         intensity_target=0.5,
         intensity_covers=0.0,
     )
-    stim2["mask"] *= 2
 
     # Stacking
     stim = stack_dicts(stim1, stim2)
@@ -843,7 +836,6 @@ def checkerboard_contrast_contrast(
 
     # Put smaller checkerboard on background (equally large as large checkerboard)
     stim2 = pad_dict_to_shape(stim2, stim1["img"].shape, pad_value=v2)
-    stim2["mask"] *= 2
 
     # Overall padding
     if pad:

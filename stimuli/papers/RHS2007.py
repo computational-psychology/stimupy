@@ -70,8 +70,8 @@ __all__ = [
     "todorovic_benary1_2",
     "todorovic_benary3_4",
     "todorovic_benary1_2_3_4",
-    # "bullseye_thin",
-    # "bullseye_thick",
+    "bullseye_thin",
+    "bullseye_thick",
 ]
 
 VISEXTENT = (32.0, 32.0)
@@ -269,7 +269,7 @@ def WE_dual(ppd=PPD, pad=True):
     # Pad and stack
     stim1 = pad_dict_to_shape(stim1, shape, pad_value=v2)
     stim2 = pad_dict_to_shape(stim2, shape, pad_value=v2)
-    stim = stack_dicts(stim1, stim2)
+    stim = stack_dicts(stim1, stim2, keep_mask_indices=True)
 
     params.update(
         visual_size=np.array(stim["img"].shape) / ppd,
@@ -706,7 +706,6 @@ def WE_circular1(ppd=PPD, pad=True):
         intensity_rings=(v1, v3),
         **params,
     )
-    stim2["mask"] *= 2
     stim = stack_dicts(stim1, stim2)
 
     if pad:
@@ -766,7 +765,6 @@ def WE_circular05(ppd=PPD, pad=True):
         intensity_rings=(v1, v3),
         **params,
     )
-    stim2["mask"] *= 2
     stim = stack_dicts(stim1, stim2)
 
     if pad:
@@ -826,7 +824,6 @@ def WE_circular025(ppd=PPD, pad=True):
         intensity_rings=(v1, v3),
         **params,
     )
-    stim2["mask"] *= 2
     stim = stack_dicts(stim1, stim2)
 
     if pad:
@@ -941,7 +938,6 @@ def sbc_large(ppd=PPD, pad=True):
         intensity_background=1.0,
         **params,
     )
-    stim2["mask"] *= 2
     stim = stack_dicts(stim1, stim2)
 
     if pad:
@@ -1001,7 +997,6 @@ def sbc_small(ppd=PPD, pad=True):
         intensity_background=1.0,
         **params,
     )
-    stim2["mask"] *= 2
     stim = stack_dicts(stim1, stim2)
 
     if pad:
@@ -1067,7 +1062,6 @@ def todorovic_equal(ppd=PPD, pad=True):
         intensity_covers=1.0,
         **params,
     )
-    stim2["mask"] *= 2
     stim = stack_dicts(stim1, stim2)
 
     if pad:
@@ -1131,7 +1125,6 @@ def todorovic_in_large(ppd=PPD, pad=True):
         intensity_covers=1.0,
         **params,
     )
-    stim2["mask"] *= 2
     stim = stack_dicts(stim1, stim2)
 
     if pad:
@@ -1195,7 +1188,6 @@ def todorovic_in_small(ppd=PPD, pad=True):
         intensity_covers=1.0,
         **params,
     )
-    stim2["mask"] *= 2
     stim = stack_dicts(stim1, stim2)
 
     if pad:
@@ -1262,7 +1254,6 @@ def todorovic_out(ppd=PPD, pad=True):
         intensity_covers=1.0,
         **params,
     )
-    stim2["mask"] *= 2
     stim = stack_dicts(stim1, stim2)
 
     if pad:
@@ -1733,8 +1724,8 @@ def todorovic_benary1_2_3_4(ppd=PPD, pad=True):
 
 def bullseye_thin(ppd=PPD, pad=True):
     """Bullseye stimulus as shown in Robinson, Hammon, & de Sa (2007) Fig 1aa.
-    Contains all four targets (1-2-3-4).
-    Ring width: 0.1 deg
+    Target size: 0.608x0.608 deg
+    Ring widths: 0.122 deg
 
     Parameters
     ----------
@@ -1755,30 +1746,28 @@ def bullseye_thin(ppd=PPD, pad=True):
         Research, 44, 309–319.
     """
 
+    frame_radii = np.array([0.304, 0.426, 0.548, 0.670, 0.792])
+
     params = {
+        "visual_size": 0.792*2,
         "ppd": ppd,
-        "n_frames": 8,
-        "frame_width": 0.1,
+        "frame_radii": frame_radii,
         "intensity_target": v2,
     }
 
-    stim1 = illusions.bullseye(
-        **params,
-        intensity_frames=(v3, v1),
-    )
-    stim2 = illusions.bullseye(
+    stim1 = illusions.frames.bullseye_generalized(
         **params,
         intensity_frames=(v1, v3),
+    )
+    stim2 = illusions.frames.bullseye_generalized(
+        **params,
+        intensity_frames=(v3, v1),
     )
 
     # Individual padding
     if pad:
         stim1 = pad_dict_to_visual_size(stim1, np.array(VISEXTENT) / 2, ppd, pad_value=v2)
         stim2 = pad_dict_to_visual_size(stim2, np.array(VISEXTENT) / 2, ppd, pad_value=v2)
-
-    # Increase target index of right stimulus half
-    stim2["mask"] = stim2["mask"] + 1
-    stim2["mask"][stim2["mask"] == 1] = 0
     stim = stack_dicts(stim1, stim2)
 
     if pad:
@@ -1794,8 +1783,8 @@ def bullseye_thin(ppd=PPD, pad=True):
 
 def bullseye_thick(ppd=PPD, pad=True):
     """Bullseye stimulus as shown in Robinson, Hammon, & de Sa (2007) Fig 1bb.
-    Contains all four targets (1-2-3-4).
-    Ring width: 0.2 deg
+    Target size: 0.608x0.608 deg
+    Ring widths: 0.243 deg
 
     Parameters
     ----------
@@ -1815,31 +1804,28 @@ def bullseye_thick(ppd=PPD, pad=True):
     Bindman, D., & Chubb, C. (2004). Brightness assimilation in bullseye displays. Vision
         Research, 44, 309–319.
     """
+    frame_radii = np.array([0.304, 0.547, 0.790, 1.033, 1.276])
 
     params = {
+        "visual_size": 1.276*2,
         "ppd": ppd,
-        "n_frames": 6,
-        "frame_width": 0.2,
+        "frame_radii": frame_radii,
         "intensity_target": v2,
     }
 
-    stim1 = illusions.bullseye(
-        **params,
-        intensity_frames=(v3, v1),
-    )
-    stim2 = illusions.bullseye(
+    stim1 = illusions.frames.bullseye_generalized(
         **params,
         intensity_frames=(v1, v3),
+    )
+    stim2 = illusions.frames.bullseye_generalized(
+        **params,
+        intensity_frames=(v3, v1),
     )
 
     # Individual padding
     if pad:
         stim1 = pad_dict_to_visual_size(stim1, np.array(VISEXTENT) / 2, ppd, pad_value=v2)
         stim2 = pad_dict_to_visual_size(stim2, np.array(VISEXTENT) / 2, ppd, pad_value=v2)
-
-    # Increase target index of right stimulus half
-    stim2["mask"] = stim2["mask"] + 1
-    stim2["mask"][stim2["mask"] == 1] = 0
     stim = stack_dicts(stim1, stim2)
 
     if pad:
@@ -1857,4 +1843,4 @@ if __name__ == "__main__":
     from stimuli.utils import plot_stimuli
 
     stims = gen_all(pad=True, skip=True)
-    plot_stimuli(stims, mask=False)
+    plot_stimuli(stims, mask=True)

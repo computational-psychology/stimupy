@@ -403,7 +403,7 @@ def resize_dict(dct, factor, keys=("img", "*mask")):
     return new_dict
 
 
-def stack_dicts(dct1, dct2, direction="horizontal", keys=("img", "*mask")):
+def stack_dicts(dct1, dct2, direction="horizontal", keys=("img", "*mask"), keep_mask_indices=False):
     """
     Return a dict with resized key-arrays by the given factor. Every value is
     repeated factor[d] times along dimension d.
@@ -448,6 +448,9 @@ def stack_dicts(dct1, dct2, direction="horizontal", keys=("img", "*mask")):
                 img1 = dct1[key]
                 img2 = dct2[key]
                 if isinstance(img1, np.ndarray) and isinstance(img2, np.ndarray):
+                    if key.endswith("mask") and not keep_mask_indices:
+                        img2 = np.where(img2 != 0, img2+img1.max(), 0)
+
                     if direction == "horizontal":
                         img = np.hstack([img1, img2])
                     elif direction == "vertical":
