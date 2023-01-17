@@ -110,8 +110,8 @@ def resolve_1D(length=None, visual_angle=None, ppd=None, round=True):
         # Which unknown?
         if length is None:
             if round:
-                visual_angle_old = np.round(copy.deepcopy(visual_angle), 8)
-                visual_angle = np.floor(np.round(visual_angle * ppd, 8)) / ppd
+                visual_angle_old = np.round(copy.deepcopy(visual_angle), 10)
+                visual_angle = np.floor(np.round(visual_angle * ppd, 10)) / ppd
                 if visual_angle_old != visual_angle:
                     warnings.warn(f"Rounding visual angle because of ppd; {visual_angle_old} -> {visual_angle}")
             length = pix_from_visual_angle_ppd_1D(visual_angle=visual_angle, ppd=ppd, round=round)
@@ -235,7 +235,7 @@ def visual_size_from_shape_ppd(shape, ppd):
 
 def pix_from_visual_angle_ppd_1D(visual_angle, ppd, round=True):
     if visual_angle is not None and ppd is not None:
-        fpix = visual_angle * ppd
+        fpix = np.round(visual_angle * ppd, 10)
 
         if round:
             pix = int(fpix)
