@@ -110,8 +110,8 @@ def resolve_1D(length=None, visual_angle=None, ppd=None, round=True):
         # Which unknown?
         if length is None:
             if round:
-                visual_angle_old = copy.deepcopy(visual_angle)
-                visual_angle = np.floor(visual_angle * ppd) / ppd
+                visual_angle_old = np.round(copy.deepcopy(visual_angle), 8)
+                visual_angle = np.floor(np.round(visual_angle * ppd, 8)) / ppd
                 if visual_angle_old != visual_angle:
                     warnings.warn(f"Rounding visual angle because of ppd; {visual_angle_old} -> {visual_angle}")
             length = pix_from_visual_angle_ppd_1D(visual_angle=visual_angle, ppd=ppd, round=round)

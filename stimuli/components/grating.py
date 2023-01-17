@@ -114,8 +114,9 @@ def shift_edges(
         phase_width = np.diff(edges).mean()
         edges_small = edges[0:nedges+1]
         edges_large = edges[nedges::] - edges[nedges] + phase_width - edges[0]
-        edges_large = -np.round(edges_large[::-1], 8)
-        edges_large = edges_large[edges_large <= 0]
+        # edges_large = -np.round(edges_large[::-1], 8)
+        edges_large = np.ceil(-edges_large[::-1] * 10e7) / 10e7
+        edges_large = edges_large[edges_large <= 1e-07]
         edges = list(np.append(edges_large, edges_small))
         if nedges % 2:
             edges = [edges[0]-phase_width,] + edges
@@ -703,7 +704,7 @@ def plaid(
 if __name__ == "__main__":
     from stimuli.utils.plotting import plot_stimuli
 
-    rotation = 90
+    rotation = 0
     origin = "center"
     phase_shift = 0
 
