@@ -1,6 +1,6 @@
 import warnings
 from collections import namedtuple
-
+import copy
 import numpy as np
 
 Visual_size = namedtuple("Visual_size", "height width")
@@ -109,6 +109,11 @@ def resolve_1D(length=None, visual_angle=None, ppd=None, round=True):
     else:  # 1 unknown, so need to resolve
         # Which unknown?
         if length is None:
+            if round:
+                visual_angle_old = copy.deepcopy(visual_angle)
+                visual_angle = np.floor(visual_angle * ppd) / ppd
+                if visual_angle_old != visual_angle:
+                    warnings.warn(f"Rounding visual angle because of ppd; {visual_angle_old} -> {visual_angle}")
             length = pix_from_visual_angle_ppd_1D(visual_angle=visual_angle, ppd=ppd, round=round)
         elif visual_angle is None:
             visual_angle = visual_angle_from_length_ppd_1D(length=length, ppd=ppd)
