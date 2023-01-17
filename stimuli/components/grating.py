@@ -114,10 +114,11 @@ def shift_edges(
         phase_width = np.diff(edges).mean()
         edges_small = edges[0:nedges+1]
         edges_large = edges[nedges::] - edges[nedges] + phase_width - edges[0]
-        edges_large = -np.round(edges_large[::-1], 1)
+        edges_large = -np.round(edges_large[::-1], 8)
         edges_large = edges_large[edges_large <= 0]
         edges = list(np.append(edges_large, edges_small))
-
+        if nedges % 2:
+            edges = [edges[0]-phase_width,] + edges
     return list(edges), intensity_bars
 
 
@@ -163,6 +164,12 @@ def square_wave(
         intensity value for each bar, by default (1.0, 0.0).
         Can specify as many intensities as n_bars;
         If fewer intensities are passed than n_bars, cycles through intensities
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner (default)
+        if "mean": set origin to hypothetical image center
+        if "center": set origin to real center (closest existing value to mean)
+    round_phase_width : Bool
+        if True, round width of bars
 
     Returns
     ----------
@@ -696,9 +703,9 @@ def plaid(
 if __name__ == "__main__":
     from stimuli.utils.plotting import plot_stimuli
 
-    rotation = 45
+    rotation = 90
     origin = "center"
-    phase_shift = 45
+    phase_shift = 0
 
     p1 = {
         "visual_size": (10, 5),
@@ -735,10 +742,16 @@ if __name__ == "__main__":
 
     p5 = {
         "ppd": 20,
-        "n_bars": 6,
-        "frequency": 2.0,
+        "n_bars": 5,
+        "bar_width": 4,
         "period": "ignore",
     }
+    
+    p6 = {
+        "visual_size": 4.0,
+        "ppd": 25,
+        "bar_width": 0.08,
+        }
 
     stims = {
         "n_bars": square_wave(**p1, rotation=rotation, origin=origin),
@@ -746,6 +759,7 @@ if __name__ == "__main__":
         "odd": square_wave(**p3),
         "ignore": square_wave(**p4),
         "no_size": square_wave(**p5, rotation=rotation, origin=origin),
+        "tough_params": square_wave(**p6, rotation=rotation, origin=origin),
         "sine_n_bars": sine_wave(**p1, rotation=rotation, origin=origin),
         "sine_even": sine_wave(**p2, rotation=rotation, origin=origin),
         "sine_odd": sine_wave(**p3),

@@ -1,103 +1,103 @@
 {
     "GaborPatch1": {
         "img": "0d02dc37a45fdd024cb7633f8906c38f",
-        "mask": "b7bae4e2ad2ff2ed934c59c1ce02e448"
+        "mask": "64bc7346182fcd9f75cef4a09f9aebe7"
     },
     "GaborPatch2": {
         "img": "4b399050ad720285f295830a20f6b6f4",
-        "mask": "8030340e91d8c0f74c3c1ffb506c9db5"
+        "mask": "41283017a06b01796d218cdf1a8501b9"
     },
     "GaborPatch3": {
         "img": "bc3fdc1baf7112621566f2211411f1cc",
-        "mask": "4ec575da3bfa8274f3b74777cde12689"
+        "mask": "c860539fcee4c5b1bc570a035a2925aa"
     },
     "GaborPatch4": {
         "img": "dfd196b58f3871092798c8bf9b7b8bf1",
-        "mask": "fd3ab2a466bfb3b4c77416c6120bb245"
+        "mask": "0495ff9cf0f6032f87e8babee49856a4"
     },
     "GaborPatch5": {
         "img": "77af317adf9f4a338dc302315ef1b4a5",
-        "mask": "9f30fda16dfba1f9001c9804d78fa733"
+        "mask": "855231e8920378bbef3ba0c086e7ab6d"
     },
     "GaborPatch6": {
         "img": "2e13200e31897b4fba4b5fa50d2a15e9",
-        "mask": "858891cb23d9ac018f95ba7b25121d64"
+        "mask": "ff2be655674ee1d2bc9c0484ad892214"
     },
     "GaborPatch7": {
         "img": "3039e31ba0836cb60f67785c991daa71",
-        "mask": "32f94f022e8c8cadc50b5820240a9988"
+        "mask": "1a98722b2191f05b395899dd03ed038f"
     },
     "GaborPatch8": {
         "img": "06d5a55d9a0fcc6692cd64113d4bf266",
-        "mask": "b849be44d496c3fc3b583bf0e2b1369b"
+        "mask": "36a49a767410db41c2ee07db0a2dbacc"
     },
     "GaborPatch9": {
         "img": "6dd216e249d0591bc85734ea6f204f65",
-        "mask": "d23a567cf9ba5d0d9b1de98f2cbad443"
+        "mask": "85dbba9df43729d3cf78d77baa26e555"
     },
     "GaborPatch10": {
         "img": "8fa87569b8968811f08b21cc9b92a5d6",
-        "mask": "73aa8359e0549d67a7c14addec070383"
+        "mask": "a50425620bd5f5112ce976234370b4a6"
     },
     "GaborPatch11": {
         "img": "fb9666997ecfaf86e25ce9996a79508f",
-        "mask": "8030340e91d8c0f74c3c1ffb506c9db5"
+        "mask": "41283017a06b01796d218cdf1a8501b9"
     },
     "GaborPatch12": {
         "img": "c573bfb66d65e34240ea9570681ed724",
-        "mask": "fd3ab2a466bfb3b4c77416c6120bb245"
+        "mask": "0495ff9cf0f6032f87e8babee49856a4"
     },
     "GaborPatch13": {
         "img": "d8ec9ed5a981c034832fcbf5eb579204",
-        "mask": "858891cb23d9ac018f95ba7b25121d64"
+        "mask": "ff2be655674ee1d2bc9c0484ad892214"
     },
     "GaborPatch14": {
         "img": "8e86c18972a6defbe4ad747889c580f0",
-        "mask": "b849be44d496c3fc3b583bf0e2b1369b"
+        "mask": "36a49a767410db41c2ee07db0a2dbacc"
     },
     "ElongatedGabor15": {
         "img": "59ee24110d6c724f99eec1e982f3ada5",
-        "mask": "fd3ab2a466bfb3b4c77416c6120bb245"
+        "mask": "0495ff9cf0f6032f87e8babee49856a4"
     },
     "ElongatedGabor16": {
         "img": "f6c1427def123f777bddfc29e6c40514",
-        "mask": "858891cb23d9ac018f95ba7b25121d64"
+        "mask": "ff2be655674ee1d2bc9c0484ad892214"
     },
     "ElongatedGabor17": {
         "img": "eb0be54016ee73284a4da087311761c6",
-        "mask": "b849be44d496c3fc3b583bf0e2b1369b"
+        "mask": "36a49a767410db41c2ee07db0a2dbacc"
     },
     "Baguette18": {
         "img": "89d72391be70357389cac13e43df5d59",
-        "mask": "fd3ab2a466bfb3b4c77416c6120bb245"
+        "mask": "0495ff9cf0f6032f87e8babee49856a4"
     },
     "Baguette19": {
         "img": "3b89c4d4f828e6508cd3fdd1760d7fb4",
-        "mask": "fd3ab2a466bfb3b4c77416c6120bb245"
+        "mask": "0495ff9cf0f6032f87e8babee49856a4"
     },
     "Baguette20": {
         "img": "47c85f70d391e15376e8037b4a151b7d",
-        "mask": "fd3ab2a466bfb3b4c77416c6120bb245"
+        "mask": "0495ff9cf0f6032f87e8babee49856a4"
     },
     "Baguette21": {
         "img": "e0f3844bd7841829d7982b20536dd3da",
-        "mask": "fd3ab2a466bfb3b4c77416c6120bb245"
+        "mask": "0495ff9cf0f6032f87e8babee49856a4"
     },
     "Subthreshold22": {
         "img": "ee6d32647a448387877402e833ac7068",
-        "mask": "6b3459b999203075f8d8368ae390fdab"
+        "mask": "36d961dfaddc838fbeed1a31400a383e"
     },
     "Subthreshold23": {
         "img": "53f0b3e1510d8a1ea1d77c4093f42609",
-        "mask": "6b3459b999203075f8d8368ae390fdab"
+        "mask": "36d961dfaddc838fbeed1a31400a383e"
     },
     "Subthreshold24": {
         "img": "33e746225d2ffcf01f5a3b614f269293",
-        "mask": "aadc906bc69ee00286b82f5aead84293"
+        "mask": "cd7c4d39feb5d78605eb20b20a2083ed"
     },
     "Subthreshold25": {
         "img": "72010520f2a4ea67ece2f2e062415ecf",
-        "mask": "aadc906bc69ee00286b82f5aead84293"
+        "mask": "cd7c4d39feb5d78605eb20b20a2083ed"
     },
     "Gaussians26": {
         "img": "03bbb5a7261c8641b4f900b1d1b0923a",
@@ -129,11 +129,11 @@
     },
     "GaborString33": {
         "img": "e247c105381eb0510db0a918351454b3",
-        "mask": "ec91f8f0bfec856cc31b25540d2f9a30"
+        "mask": "3d58a94c19e76fcf63bc8c4c607357b7"
     },
     "GaborString34": {
         "img": "6fb253c98150029d28db9653f1c35e57",
-        "mask": "fd55823a925a691ad32829d50379e32c"
+        "mask": "e7b22741228ec6ad3c45614205610888"
     },
     "Noise35": {
         "img": "ea1f4e0fcb7664891389b35f5540fe86",
@@ -141,19 +141,19 @@
     },
     "Orientation36": {
         "img": "34e6f3b2637a7df1c4d6afb11d013afe",
-        "mask": "37063cdae1e282ffcd35568ef112a6dc"
+        "mask": "c9c1bbb3a5315916b1ef3c594bcfe06e"
     },
     "Orientation37": {
         "img": "e11936fc6f86a8ab78bf8a7fbef6516a",
-        "mask": "6ae5fa1f188d315ec867d2d8807b1e1a"
+        "mask": "e848b99e20b6da7cfb8b531c1ea4c6b8"
     },
     "Plaids38": {
         "img": "4379d50cbf9eeafdb72eb49ab478223b",
-        "mask": "24fc09771a05c926b580c21b5484647e"
+        "mask": "b246f947d8ccd325bcbf241842a91f7a"
     },
     "Plaids39": {
         "img": "b67cf95d24bb5abafcb6362d2f205e79",
-        "mask": "76cf48db449229b3cfbb3efebe95279d"
+        "mask": "53afc31b5cb3ecfb7e57f1ccebb66e1a"
     },
     "Disk40": {
         "img": "fc5672879d59b22076ff1a79887df0c5",
