@@ -1,55 +1,60 @@
 import itertools
-
 import numpy as np
 from scipy.ndimage import gaussian_filter
+import warnings
 
 from stimuli.components.grating import square_wave as square_wave_component
-from stimuli.components.shapes import rectangle
-from stimuli.utils import pad_to_shape, pad_to_visual_size
+from stimuli.components.shapes import parallelogram, rectangle
+from stimuli.utils import pad_dict_to_visual_size, pad_dict_to_shape, resolution
 
 __all__ = [
     "square_wave",
     "grating_uniform",
     "grating_grating",
-    "grating_grating_shifted",
     "grating_induction",
 ]
 
 
 def square_wave(
-    shape=None,
     visual_size=None,
     ppd=None,
+    shape=None,
     frequency=None,
     n_bars=None,
     bar_width=None,
-    rotation=0,
     period="ignore",
+    rotation=0,
+    phase_shift=0,
     intensity_bars=(1.0, 0.0),
     target_indices=(),
     intensity_target=0.5,
+    origin="corner",
+    round_phase_width=True,
 ):
     """Spatial square-wave grating (set of bars), with some bar(s) as target(s)
 
     Parameters
     ----------
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of grating, in pixels
     visual_size : Sequence[Number, Number], Number, or None (default)
-        visual size [height, width] of grating, in degrees
+        visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
     frequency : Number, or None (default)
         spatial frequency of grating, in cycles per degree visual angle
     n_bars : int, or None (default)
         number of bars in the grating
     bar_width : Number, or None (default)
         width of a single bar, in degrees visual angle
-    period : "full", "half", "ignore" (default)
-        whether to ensure the grating only has "full" periods,
-        half "periods", or no guarantees ("ignore")
-    orientation : "vertical" or "horizontal" (default)
-        orientation of the grating
+    period : "even", "odd", "either" or "ignore" (default)
+        ensure whether the grating has "even" number of phases, "odd"
+        number of phases, either or whether not to round the number of
+        phases ("ignore")
+    rotation : float
+        rotation of grating in degrees (default: 0 = horizontal)
+    phase_shift : float
+        phase shift of grating in degrees
     intensity_bars : Sequence[float, ...]
         intensity value for each bar, by default (1.0, 0.0).
         Can specify as many intensities as n_bars;
@@ -60,6 +65,12 @@ def square_wave(
         intensity value for each target, by default 0.5.
         Can specify as many intensities as number of target_indices;
         If fewer intensities are passed than target_indices, cycles through intensities
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner (default)
+        if "mean": set origin to hypothetical image center
+        if "center": set origin to real center (closest existing value to mean)
+    round_phase_width : Bool
+        if True, round width of bars
 
     Returns
     ----------
@@ -71,15 +82,18 @@ def square_wave(
 
     # Spatial square-wave grating
     stim = square_wave_component(
-        shape=shape,
         visual_size=visual_size,
         ppd=ppd,
+        shape=shape,
         frequency=frequency,
         n_bars=n_bars,
         bar_width=bar_width,
         rotation=rotation,
+        phase_shift=phase_shift,
         period=period,
         intensity_bars=intensity_bars,
+        origin=origin,
+        round_phase_width=round_phase_width,
     )
 
     # Resolve target parameters
@@ -102,62 +116,77 @@ def square_wave(
     # Update and return stimulus
     stim["bars_mask"] = stim["mask"]
     stim["mask"] = targets_mask.astype(int)
-
     return stim
 
 
 def grating_uniform(
-    shape=None,
     visual_size=None,
     ppd=None,
+    shape=None,
+    grating_size=None,
     frequency=None,
     n_bars=None,
     bar_width=None,
-    rotation=0,
     period="ignore",
+    rotation=0,
+    phase_shift=0,
     intensity_bars=(1.0, 0.0),
     target_indices=(),
     intensity_target=0.5,
-    grating_size=None,
     intensity_background=0.5,
+    origin="corner",
+    round_phase_width=True,
 ):
     """Spatial square-wave grating (set of bars), on a background
 
     Parameters
     ----------
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of grating, in pixels
     visual_size : Sequence[Number, Number], Number, or None (default)
-        visual size [height, width] of total image, in degrees
+        visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    grating_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of grating, in degrees
     frequency : Number, or None (default)
         spatial frequency of grating, in cycles per degree visual angle
     n_bars : int, or None (default)
         number of bars in the grating
     bar_width : Number, or None (default)
         width of a single bar, in degrees visual angle
-    period : "full", "half", "ignore" (default)
-        whether to ensure the grating only has "full" periods,
-        half "periods", or no guarantees ("ignore")
-    orientation : "vertical" or "horizontal" (default)
-        orientation of the grating
+    period : "even", "odd", "either" or "ignore" (default)
+        ensure whether the grating has "even" number of phases, "odd"
+        number of phases, either or whether not to round the number of
+        phases ("ignore")
+    rotation : float
+        rotation of grating in degrees (default: 0 = horizontal)
+    phase_shift : float
+        phase shift of grating in degrees
     intensity_bars : Sequence[float, ...]
         intensity value for each bar, by default (1.0, 0.0).
         Can specify as many intensities as n_bars;
         If fewer intensities are passed than n_bars, cycles through intensities
     target_indices : int, or Sequence[int, ...]
         indices segments where targets will be placed
-    grating_size : Sequence[Number, Number], Number, or None (default)
-        visual size [height, width] of grating, in degrees
-    intensity_background : float
-        intensity value of background, by default 0.5.
+    intensity_target : float, or Sequence[float, ...], optional
+        intensity value for each target, by default 0.5.
+        Can specify as many intensities as number of target_indices;
+        If fewer intensities are passed than target_indices, cycles through intensities
+    intensity_background = float
+        intensity value of background
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner (default)
+        if "mean": set origin to hypothetical image center
+        if "center": set origin to real center (closest existing value to mean)
+    round_phase_width : Bool
+        if True, round width of bars
 
     Returns
-    -------
+    ----------
     dict[str, Any]
         dict with the stimulus (key: "img"),
-        mask with integer index for each bar (key: "mask"),
+        mask with integer index for each target (key: "mask"),
         and additional keys containing stimulus parameters
 
     References
@@ -167,28 +196,28 @@ def grating_uniform(
         215–230. https://doi.org/10.1068/p100215
     """
 
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
+
     # Spatial square-wave grating
     stim = square_wave(
-        shape=shape,
         visual_size=grating_size,
         ppd=ppd,
         frequency=frequency,
         n_bars=n_bars,
         bar_width=bar_width,
-        rotation=rotation,
         period=period,
+        rotation=rotation,
+        phase_shift=phase_shift,
         intensity_bars=intensity_bars,
         target_indices=target_indices,
         intensity_target=intensity_target,
+        origin=origin,
+        round_phase_width=round_phase_width,
     )
 
     # Padding
-    stim["img"] = pad_to_visual_size(
-        img=stim["img"], visual_size=visual_size, ppd=ppd, pad_value=intensity_background
-    )
-    stim["mask"] = pad_to_visual_size(
-        img=stim["mask"], visual_size=visual_size, ppd=ppd, pad_value=0
-    ).astype(int)
+    stim = pad_dict_to_visual_size(stim, visual_size=visual_size, ppd=ppd, pad_value=intensity_background)
 
     # Repack
     stim.update(
@@ -202,12 +231,13 @@ def grating_uniform(
     return stim
 
 
-def grating_grating(
+def grating_grating_masked(
     small_grating_params,
     large_grating_params,
-    ppd=None,
+    mask_depth=0,
+    mask_orientation="horizontal",
 ):
-    """Grating on a grating
+    """Grating with a parallelogram-like shape on a grating
 
     Parameters
     ----------
@@ -215,8 +245,10 @@ def grating_grating(
         kwargs to generate small grating
     large_grating_params : dict
         kwargs to generate larger grating
-    ppd : Sequence[Number, Number], Number, or None (default)
-        pixels per degree [vertical, horizontal]
+    mask_depth : float
+        depth of the parallelogram in degrees (default: 0)
+    mask_orientation: str
+        either "horizontal" or "vertical"
 
     Returns
     -------
@@ -233,93 +265,58 @@ def grating_grating(
     """
 
     # Create gratings
-    small_grating = square_wave(ppd=ppd, **small_grating_params)
-    large_grating = square_wave(ppd=ppd, **large_grating_params)
+    small_grating = square_wave(**small_grating_params)
+    large_grating = square_wave(**large_grating_params)
+    
+    if small_grating["ppd"] != large_grating["ppd"]:
+        raise ValueError("Gratings must have same ppd")
 
-    # Superimpose
-    small_grating_mask = rectangle(
-        rectangle_size=small_grating["visual_size"],
-        ppd=ppd,
-        visual_size=large_grating["visual_size"],
-        intensity_background=0,
-        intensity_rectangle=1,
-        rectangle_position=(
-            np.array(large_grating["visual_size"]) - np.array(small_grating["visual_size"])
+    # Get mask in the size of small grating
+    if mask_orientation == "horizontal":
+        mask_size = small_grating["visual_size"]
+    else:
+        mask_size = [small_grating["visual_size"][1], small_grating["visual_size"][0]]
+    window = parallelogram(
+        visual_size=mask_size,
+        ppd=small_grating["ppd"],
+        parallelogram_depth=mask_depth,
+        orientation=mask_orientation,
         )
-        / 2,
-    )["mask"]
-    small_grating_mask = small_grating_mask[
-        large_grating["img"].shape[0] - small_grating_mask.shape[0] : :,
-        large_grating["img"].shape[1] - small_grating_mask.shape[1] : :,
-    ]
 
-    small_grating["img"] = pad_to_shape(small_grating["img"], shape=large_grating["img"].shape)
-    small_grating["mask"] = pad_to_shape(small_grating["mask"], shape=large_grating["img"].shape)
-
-    img = np.where(small_grating_mask, small_grating["img"], large_grating["img"])
-    mask = np.where(small_grating_mask, small_grating["mask"], large_grating["img"])
+    if window["shape"] != large_grating["shape"]:
+        window = pad_dict_to_shape(window, large_grating["shape"])["mask"]
+    
+    small_grating = pad_dict_to_shape(small_grating, large_grating["shape"])
+    img = np.where(window, small_grating["img"], large_grating["img"])
+    mask = np.where(window, small_grating["mask"], 0)
 
     stim = {
         "img": img,
         "mask": mask.astype(int),
-        "ppd": ppd,
+        "bar_width_small": small_grating["bar_width"],
+        "bar_width_large": large_grating["bar_width"],
     }
     return stim
 
 
-def grating_grating_shifted(
-    shifted_width,
-    visual_size=None,
-    shape=None,
-    ppd=None,
-    frequency=None,
-    n_bars=None,
-    bar_width=None,
-    rotation=0,
-    period="ignore",
-    intensity_bars=(1.0, 0.0),
-    target_indices=(),
-    intensity_target=0.5,
+def grating_grating(
+    small_grating_params,
+    large_grating_params,
 ):
-    """Spatial square-wave grating, with a central strip "shifted" (phase-offset)
+    """Grating on a grating
 
     Parameters
     ----------
-    shifted_width : float
-        width of central strip to be shifted
-    visual_size : Sequence[Number, Number], Number, or None (default)
-        visual size [height, width] of the larger grating, in degrees
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of grating, in pixels
-    ppd : Sequence[Number, Number], Number, or None (default)
-        pixels per degree [vertical, horizontal]
-    frequency : Number, or None (default)
-        spatial frequency of grating, in cycles per degree visual angle
-    n_bars : int, or None (default)
-        number of bars in the grating
-    bar_width : Number, or None (default)
-        width of a single bar, in degrees visual angle
-    period : "full", "half", "ignore" (default)
-        whether to ensure the grating only has "full" periods,
-        half "periods", or no guarantees ("ignore")
-    orientation : "vertical" or "horizontal" (default)
-        orientation of the grating
-    intensity_bars : Sequence[float, ...]
-        intensity value for each bar, by default (1.0, 0.0).
-        Can specify as many intensities as n_bars;
-        If fewer intensities are passed than n_bars, cycles through intensities
-    target_indices : int, or Sequence[int, ...]
-        indices segments where targets will be placed
-    intensity_target : float, or Sequence[float, ...], optional
-        intensity value for each target, by default 0.5.
-        Can specify as many intensities as number of target_indices;
-        If fewer intensities are passed than target_indices, cycles through intensities
+    small_grating_params : dict
+        kwargs to generate small grating
+    large_grating_params : dict
+        kwargs to generate larger grating
 
     Returns
     -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
-        mask with integer index for each target (key: "mask"),
+        mask with integer index for each bar (key: "mask"),
         and additional keys containing stimulus parameters
 
     References
@@ -329,43 +326,102 @@ def grating_grating_shifted(
         215–230. https://doi.org/10.1068/p100215
     """
 
-    # Resolve initial params
-    large_params = {
-        "shape": shape,
-        "visual_size": visual_size,
-        "frequency": frequency,
-        "n_bars": n_bars,
-        "bar_width": bar_width,
-        "rotation": rotation,
-        "period": period,
-        "intensity_bars": reversed(intensity_bars),
-    }
-    large_grating = square_wave(ppd=ppd, **large_params)
+    stim = grating_grating_masked(
+        small_grating_params,
+        large_grating_params,
+        mask_depth=0)
+    return stim
 
-    # Specify shifted section
-    small_params = {
-        "frequency": large_grating["frequency"],
-        "bar_width": large_grating["bar_width"],
-        "n_bars": large_grating["n_bars"],
-        "rotation": rotation,
-        "period": period,
-        "intensity_bars": intensity_bars,
-        "target_indices": target_indices,
-        "intensity_target": intensity_target,
-    }
 
-    # Update larger grating params
-    large_params.update(
-        shape=large_grating["shape"],
-        visual_size=large_grating["visual_size"],
-        intensity_bars=reversed(intensity_bars),
+def counterphase_induction(
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    frequency=None,
+    n_bars=None,
+    bar_width=None,
+    period="ignore",
+    orientation="horizontal",
+    phase_shift=0,
+    intensity_bars=(1.0, 0.0),
+    target_size=None,
+    target_phase_shift=0,
+    intensity_target=0.5,
+    origin="corner",
+    round_phase_width=True,
+):
+    if orientation == "horizontal":
+        rotation = 0
+    elif orientation == "vertical":
+        rotation = 90
+    else:
+        raise ValueError("orientation must be horizontal or vertical")
+    
+    # Spatial square-wave grating
+    stim = square_wave_component(
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        frequency=frequency,
+        n_bars=n_bars,
+        bar_width=bar_width,
+        rotation=rotation,
+        phase_shift=phase_shift,
+        period=period,
+        intensity_bars=intensity_bars,
+        origin=origin,
+        round_phase_width=round_phase_width,
     )
-
-    # Generate
-    stim = grating_grating(
-        ppd=ppd, small_grating_params=small_params, large_grating_params=large_params
+    
+    stim_target = square_wave_component(
+        visual_size=target_size,
+        ppd=stim["ppd"],
+        bar_width=stim["bar_width"],
+        rotation=rotation,
+        phase_shift=0,
+        period=period,
+        intensity_bars=(intensity_target, 0),
+        origin=origin,
+        round_phase_width=round_phase_width,
     )
+    stim_target = pad_dict_to_shape(stim_target, stim["shape"], 0)
+    cycle_px = stim_target["bar_width"] * stim_target["ppd"][0] * 2
 
+    # Translate phase information into pixels
+    target_phasea = np.abs(target_phase_shift)
+    target_phasea = target_phasea % 360
+    target_amount = target_phasea / 360.
+    target_shift = target_amount * cycle_px
+    target_shifti = int(np.round(target_shift))
+    target_phasei = target_shifti / cycle_px * 360
+    
+    if target_shift != int(target_shift):
+        s = np.sign(target_phase_shift)
+        warnings.warn(f"Rounding phase; {target_phase_shift} -> {s*target_phasei}")
+
+    # Shift targets by specified phase
+    cy, cx = stim["shape"]
+    if target_phase_shift < 0:
+        if orientation == "horizontal":
+            stim_target["img"][:, 0:cx-target_shifti] = stim_target["img"][:, target_shifti::]
+        elif orientation == "vertical":
+            stim_target["img"][0:cx-target_shifti, :] = stim_target["img"][target_shifti::, :]
+    else:
+        if orientation == "horizontal":
+            stim_target["img"][:, target_shifti::] = stim_target["img"][:, 0:cx-target_shifti]
+        elif orientation == "vertical":
+            stim_target["img"][target_shifti::, :] = stim_target["img"][0:cx-target_shifti, :]
+
+    # Add targets on grating
+    mask_temp = np.ones(stim["shape"])
+    mask_temp[stim_target["img"] == intensity_target] = 0
+    img = stim["img"] * mask_temp + stim_target["img"]
+    mask = np.abs(mask_temp-1)
+
+    stim["img"] = img
+    stim["mask"] = mask.astype(int)
+    stim["target_phase_shift"] = target_phasei
+    stim["target_size"] = stim_target["visual_size"]
     return stim
 
 
@@ -466,51 +522,37 @@ def grating_induction(
 
 if __name__ == "__main__":
     from stimuli.utils import plot_stimuli
-
-    ppd = 36
-    bar_width = 1.0
-    rotation = 90
-    small_grating_params = {
+    
+    params = {
+        "ppd": 40,
         "n_bars": 8,
-        "bar_width": bar_width,
-        "rotation": rotation,
-    }
-
-    large_grating_params = {
-        "bar_width": bar_width,
-        "visual_size": (32, 32),
-        "rotation": rotation,
-    }
+        "bar_width": 1.0,
+        }
+    
+    small_grating = {
+        "ppd": 40,
+        "bar_width": 1.0,
+        "n_bars": 7,
+        "intensity_bars": (0.2, 0.8),
+        "target_indices": (0, 1, 3, 5, 7),
+        }
+    
+    large_grating = {
+        "ppd": 40,
+        "bar_width": 1.0,
+        "n_bars": 21,
+        }
 
     stims = {
-        "Grating with targets": square_wave(
-            ppd=ppd, **small_grating_params, intensity_bars=(1.0, 0.0), target_indices=(3, 6)
-        ),
-        "Grating on uniform background": grating_uniform(
-            visual_size=(32, 32),
-            ppd=ppd,
-            **small_grating_params,
-            intensity_bars=(1.0, 0.0),
-            grating_size=(10, 10),
-            target_indices=(3, 6),
-        ),
-        "Grating on grating": grating_grating(
-            ppd=ppd,
-            small_grating_params={
-                **small_grating_params,
-                "intensity_bars": (0.0, 0.5),
-            },
-            large_grating_params=large_grating_params,
-        ),
-        "Grating on grating, shifted": grating_grating_shifted(
-            shifted_width=8.0,
-            ppd=ppd,
-            target_indices=(13, 18),
-            **large_grating_params,
-        ),
-        "Grating induction": grating_induction(
-            ppd=ppd, **large_grating_params, target_width=4.0, blur=3
-        ),
+        "Grating with targets": square_wave(**params, target_indices=(4, 6)),
+        "Grating, uniform": grating_uniform(**params, visual_size=20, grating_size=5, target_indices=3),
+        "Grating, grating": grating_grating(large_grating_params=large_grating,
+                                            small_grating_params=small_grating),
+        "Grating, grating, masked": grating_grating_masked(large_grating_params=large_grating,
+                                                            small_grating_params={**small_grating,
+                                                                                  "rotation": 180},
+                                                            mask_depth=2),
+        "Counterphase induction": counterphase_induction(**params, target_size=4, target_phase_shift=360)
     }
 
-    plot_stimuli(stims, mask=True, save=None)
+    plot_stimuli(stims, mask=False, save=None)

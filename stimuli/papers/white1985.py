@@ -26,12 +26,10 @@ White, M. & White, T. (1985). Counterphase lightness induction. Vision
     research, 25 (9), 1331-1335. https://doi.org/10.1016/0042-6989(85)90049-5
 """
 
-# TODO: in the original paper, the 0-phase condition starts on different
-# bars when comparing wide + square. To me, this is confusing. Keep or correct?
-
 import numpy as np
-
-from stimuli.illusions import grating_ as lynn_grating
+import copy
+import warnings
+from stimuli.illusions import grating
 
 __all__ = [
     "wide_0phase",
@@ -48,13 +46,11 @@ __all__ = [
     "square_180phase",
 ]
 
-VISUAL_SIZE = 3.5
-PPD = 36
-WIDE_WIDTH = 0.75
-SQUARE_WIDTH = 0.15
-FREQUENCY = 3.5
-TARGET_REPETITIONS = 4
+PPD = 55
+BAR_WIDTH = 1 / 3.5 / 2
 v1, v2, v3 = 0.0, 0.5, 1.0
+START_PHASE1 = -180
+START_PHASE2 = 0
 
 
 def gen_all(ppd=PPD, skip=False):
@@ -77,6 +73,15 @@ def gen_all(ppd=PPD, skip=False):
             pass
 
     return stims
+
+
+def resolve_bar_width(bar_width=BAR_WIDTH, ppd=PPD):
+    bar_width_old = copy.deepcopy(bar_width)
+    bar_width = np.round(bar_width * ppd) / ppd
+    
+    if bar_width_old != bar_width:
+        warnings.warn(f"Rounding bar_width because of ppd; {bar_width_old} -> {bar_width}")
+    return bar_width
 
 
 def wide_0phase(ppd=PPD):
@@ -103,25 +108,20 @@ def wide_0phase(ppd=PPD):
         25 (9), 1331-1335. https://doi.org/10.1016/0042-6989(85)90049-5
     """
 
+    bar_width = resolve_bar_width(BAR_WIDTH, ppd)
+
     params = {
-        "visual_size": VISUAL_SIZE,
+        "visual_size": 24*bar_width,
         "ppd": ppd,
-        "frequency": FREQUENCY,
-        "target_height": WIDE_WIDTH,
-        "target_repetitions": TARGET_REPETITIONS,
-        "target_phase": 0.,
+        "bar_width": bar_width,
+        "target_size": (bar_width*8, 0.75),
+        "target_phase_shift": START_PHASE1 + 0,
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
-        "period": "half",
+        "orientation": "vertical",
     }
 
-    stim = lynn_grating.counterphase_induction(**params)
-
-    # Rotate
-    stim["img"] = np.rot90(stim["img"])
-    stim["mask"] = np.rot90(stim["mask"]).astype(int)
-    stim["target_width"] = stim["target_height"]
-    del stim["target_height"]
+    stim = grating.counterphase_induction(**params)
     return stim
 
 
@@ -148,26 +148,20 @@ def wide_36phase(ppd=PPD):
     White, M. & White, T. (1985). Counterphase lightness induction. Vision research,
         25 (9), 1331-1335. https://doi.org/10.1016/0042-6989(85)90049-5
     """
+    bar_width = resolve_bar_width(BAR_WIDTH, ppd)
 
     params = {
-        "visual_size": VISUAL_SIZE,
+        "visual_size": 24*bar_width,
         "ppd": ppd,
-        "frequency": FREQUENCY,
-        "target_height": WIDE_WIDTH,
-        "target_repetitions": TARGET_REPETITIONS,
-        "target_phase": -36.,
+        "bar_width": bar_width,
+        "target_size": (bar_width*8, 0.75),
+        "target_phase_shift": START_PHASE1 + 36,
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
-        "period": "half",
+        "orientation": "vertical",
     }
 
-    stim = lynn_grating.counterphase_induction(**params)
-
-    # Rotate
-    stim["img"] = np.rot90(stim["img"])
-    stim["mask"] = np.rot90(stim["mask"]).astype(int)
-    stim["target_width"] = stim["target_height"]
-    del stim["target_height"]
+    stim = grating.counterphase_induction(**params)
     return stim
 
 
@@ -195,25 +189,20 @@ def wide_72phase(ppd=PPD):
         25 (9), 1331-1335. https://doi.org/10.1016/0042-6989(85)90049-5
     """
 
+    bar_width = resolve_bar_width(BAR_WIDTH, ppd)
+
     params = {
-        "visual_size": VISUAL_SIZE,
+        "visual_size": 24*bar_width,
         "ppd": ppd,
-        "frequency": FREQUENCY,
-        "target_height": WIDE_WIDTH,
-        "target_repetitions": TARGET_REPETITIONS,
-        "target_phase": -72.,
+        "bar_width": bar_width,
+        "target_size": (bar_width*8, 0.75),
+        "target_phase_shift": START_PHASE1 + 72,
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
-        "period": "half",
+        "orientation": "vertical",
     }
 
-    stim = lynn_grating.counterphase_induction(**params)
-
-    # Rotate
-    stim["img"] = np.rot90(stim["img"])
-    stim["mask"] = np.rot90(stim["mask"]).astype(int)
-    stim["target_width"] = stim["target_height"]
-    del stim["target_height"]
+    stim = grating.counterphase_induction(**params)
     return stim
 
 
@@ -241,25 +230,20 @@ def wide_108phase(ppd=PPD):
         25 (9), 1331-1335. https://doi.org/10.1016/0042-6989(85)90049-5
     """
 
+    bar_width = resolve_bar_width(BAR_WIDTH, ppd)
+
     params = {
-        "visual_size": VISUAL_SIZE,
+        "visual_size": 24*bar_width,
         "ppd": ppd,
-        "frequency": FREQUENCY,
-        "target_height": WIDE_WIDTH,
-        "target_repetitions": TARGET_REPETITIONS,
-        "target_phase": -108.,
+        "bar_width": bar_width,
+        "target_size": (bar_width*8, 0.75),
+        "target_phase_shift": START_PHASE1 + 108,
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
-        "period": "half",
+        "orientation": "vertical",
     }
 
-    stim = lynn_grating.counterphase_induction(**params)
-
-    # Rotate
-    stim["img"] = np.rot90(stim["img"])
-    stim["mask"] = np.rot90(stim["mask"]).astype(int)
-    stim["target_width"] = stim["target_height"]
-    del stim["target_height"]
+    stim = grating.counterphase_induction(**params)
     return stim
 
 
@@ -287,25 +271,20 @@ def wide_144phase(ppd=PPD):
         25 (9), 1331-1335. https://doi.org/10.1016/0042-6989(85)90049-5
     """
 
+    bar_width = resolve_bar_width(BAR_WIDTH, ppd)
+
     params = {
-        "visual_size": VISUAL_SIZE,
+        "visual_size": 24*bar_width,
         "ppd": ppd,
-        "frequency": FREQUENCY,
-        "target_height": WIDE_WIDTH,
-        "target_repetitions": TARGET_REPETITIONS,
-        "target_phase": -144.,
+        "bar_width": bar_width,
+        "target_size": (bar_width*8, 0.75),
+        "target_phase_shift": START_PHASE1 + 144,
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
-        "period": "half",
+        "orientation": "vertical",
     }
 
-    stim = lynn_grating.counterphase_induction(**params)
-
-    # Rotate
-    stim["img"] = np.rot90(stim["img"])
-    stim["mask"] = np.rot90(stim["mask"]).astype(int)
-    stim["target_width"] = stim["target_height"]
-    del stim["target_height"]
+    stim = grating.counterphase_induction(**params)
     return stim
 
 
@@ -333,25 +312,20 @@ def wide_180phase(ppd=PPD):
         25 (9), 1331-1335. https://doi.org/10.1016/0042-6989(85)90049-5
     """
 
+    bar_width = resolve_bar_width(BAR_WIDTH, ppd)
+
     params = {
-        "visual_size": VISUAL_SIZE,
+        "visual_size": 24*bar_width,
         "ppd": ppd,
-        "frequency": FREQUENCY,
-        "target_height": WIDE_WIDTH,
-        "target_repetitions": TARGET_REPETITIONS,
-        "target_phase": -180.,
+        "bar_width": bar_width,
+        "target_size": (bar_width*8, 0.75),
+        "target_phase_shift": START_PHASE1 + 180,
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
-        "period": "half",
+        "orientation": "vertical",
     }
 
-    stim = lynn_grating.counterphase_induction(**params)
-
-    # Rotate
-    stim["img"] = np.rot90(stim["img"])
-    stim["mask"] = np.rot90(stim["mask"]).astype(int)
-    stim["target_width"] = stim["target_height"]
-    del stim["target_height"]
+    stim = grating.counterphase_induction(**params)
     return stim
 
 
@@ -379,25 +353,20 @@ def square_0phase(ppd=PPD):
         25 (9), 1331-1335. https://doi.org/10.1016/0042-6989(85)90049-5
     """
 
+    bar_width = resolve_bar_width(BAR_WIDTH, ppd)
+
     params = {
-        "visual_size": VISUAL_SIZE,
+        "visual_size": 24*bar_width,
         "ppd": ppd,
-        "frequency": FREQUENCY,
-        "target_height": SQUARE_WIDTH,
-        "target_repetitions": TARGET_REPETITIONS,
-        "target_phase": 0.,
+        "bar_width": bar_width,
+        "target_size": (bar_width*8, 0.15),
+        "target_phase_shift": START_PHASE2 + 0,
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
-        "period": "half",
+        "orientation": "vertical",
     }
 
-    stim = lynn_grating.counterphase_induction(**params)
-
-    # Rotate
-    stim["img"] = np.rot90(stim["img"])
-    stim["mask"] = np.rot90(stim["mask"]).astype(int)
-    stim["target_width"] = stim["target_height"]
-    del stim["target_height"]
+    stim = grating.counterphase_induction(**params)
     return stim
 
 
@@ -425,25 +394,20 @@ def square_36phase(ppd=PPD):
         25 (9), 1331-1335. https://doi.org/10.1016/0042-6989(85)90049-5
     """
 
+    bar_width = resolve_bar_width(BAR_WIDTH, ppd)
+
     params = {
-        "visual_size": VISUAL_SIZE,
+        "visual_size": 24*bar_width,
         "ppd": ppd,
-        "frequency": FREQUENCY,
-        "target_height": SQUARE_WIDTH,
-        "target_repetitions": TARGET_REPETITIONS,
-        "target_phase": -36.,
+        "bar_width": bar_width,
+        "target_size": (bar_width*8, 0.15),
+        "target_phase_shift": START_PHASE2 + 36,
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
-        "period": "half",
+        "orientation": "vertical",
     }
 
-    stim = lynn_grating.counterphase_induction(**params)
-
-    # Rotate
-    stim["img"] = np.rot90(stim["img"])
-    stim["mask"] = np.rot90(stim["mask"]).astype(int)
-    stim["target_width"] = stim["target_height"]
-    del stim["target_height"]
+    stim = grating.counterphase_induction(**params)
     return stim
 
 
@@ -471,25 +435,20 @@ def square_72phase(ppd=PPD):
         25 (9), 1331-1335. https://doi.org/10.1016/0042-6989(85)90049-5
     """
 
+    bar_width = resolve_bar_width(BAR_WIDTH, ppd)
+
     params = {
-        "visual_size": VISUAL_SIZE,
+        "visual_size": 24*bar_width,
         "ppd": ppd,
-        "frequency": FREQUENCY,
-        "target_height": SQUARE_WIDTH,
-        "target_repetitions": TARGET_REPETITIONS,
-        "target_phase": -72.,
+        "bar_width": bar_width,
+        "target_size": (bar_width*8, 0.15),
+        "target_phase_shift": START_PHASE2 + 72,
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
-        "period": "half",
+        "orientation": "vertical",
     }
 
-    stim = lynn_grating.counterphase_induction(**params)
-
-    # Rotate
-    stim["img"] = np.rot90(stim["img"])
-    stim["mask"] = np.rot90(stim["mask"]).astype(int)
-    stim["target_width"] = stim["target_height"]
-    del stim["target_height"]
+    stim = grating.counterphase_induction(**params)
     return stim
 
 
@@ -517,25 +476,20 @@ def square_108phase(ppd=PPD):
         25 (9), 1331-1335. https://doi.org/10.1016/0042-6989(85)90049-5
     """
 
+    bar_width = resolve_bar_width(BAR_WIDTH, ppd)
+
     params = {
-        "visual_size": VISUAL_SIZE,
+        "visual_size": 24*bar_width,
         "ppd": ppd,
-        "frequency": FREQUENCY,
-        "target_height": SQUARE_WIDTH,
-        "target_repetitions": TARGET_REPETITIONS,
-        "target_phase": -108.,
+        "bar_width": bar_width,
+        "target_size": (bar_width*8, 0.15),
+        "target_phase_shift": START_PHASE2 + 108,
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
-        "period": "half",
+        "orientation": "vertical",
     }
 
-    stim = lynn_grating.counterphase_induction(**params)
-
-    # Rotate
-    stim["img"] = np.rot90(stim["img"])
-    stim["mask"] = np.rot90(stim["mask"]).astype(int)
-    stim["target_width"] = stim["target_height"]
-    del stim["target_height"]
+    stim = grating.counterphase_induction(**params)
     return stim
 
 
@@ -563,25 +517,20 @@ def square_144phase(ppd=PPD):
         25 (9), 1331-1335. https://doi.org/10.1016/0042-6989(85)90049-5
     """
 
+    bar_width = resolve_bar_width(BAR_WIDTH, ppd)
+
     params = {
-        "visual_size": VISUAL_SIZE,
+        "visual_size": 24*bar_width,
         "ppd": ppd,
-        "frequency": FREQUENCY,
-        "target_height": SQUARE_WIDTH,
-        "target_repetitions": TARGET_REPETITIONS,
-        "target_phase": -144.,
+        "bar_width": bar_width,
+        "target_size": (bar_width*8, 0.15),
+        "target_phase_shift": START_PHASE2 + 144,
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
-        "period": "half",
+        "orientation": "vertical",
     }
 
-    stim = lynn_grating.counterphase_induction(**params)
-
-    # Rotate
-    stim["img"] = np.rot90(stim["img"])
-    stim["mask"] = np.rot90(stim["mask"]).astype(int)
-    stim["target_width"] = stim["target_height"]
-    del stim["target_height"]
+    stim = grating.counterphase_induction(**params)
     return stim
 
 
@@ -609,25 +558,20 @@ def square_180phase(ppd=PPD):
         25 (9), 1331-1335. https://doi.org/10.1016/0042-6989(85)90049-5
     """
 
+    bar_width = resolve_bar_width(BAR_WIDTH, ppd)
+
     params = {
-        "visual_size": VISUAL_SIZE,
+        "visual_size": 24*bar_width,
         "ppd": ppd,
-        "frequency": FREQUENCY,
-        "target_height": SQUARE_WIDTH,
-        "target_repetitions": TARGET_REPETITIONS,
-        "target_phase": -180.,
+        "bar_width": bar_width,
+        "target_size": (bar_width*8, 0.15),
+        "target_phase_shift": START_PHASE2 + 180,
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
-        "period": "half",
+        "orientation": "vertical",
     }
 
-    stim = lynn_grating.counterphase_induction(**params)
-
-    # Rotate
-    stim["img"] = np.rot90(stim["img"])
-    stim["mask"] = np.rot90(stim["mask"]).astype(int)
-    stim["target_width"] = stim["target_height"]
-    del stim["target_height"]
+    stim = grating.counterphase_induction(**params)
     return stim
 
 
