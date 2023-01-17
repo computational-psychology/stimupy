@@ -404,19 +404,28 @@ def counterphase_induction(
     if target_phase_shift < 0:
         if orientation == "horizontal":
             stim_target["img"][:, 0:cx-target_shifti] = stim_target["img"][:, target_shifti::]
+            stim_target["mask"][:, 0:cx-target_shifti] = stim_target["mask"][:, target_shifti::]
         elif orientation == "vertical":
             stim_target["img"][0:cx-target_shifti, :] = stim_target["img"][target_shifti::, :]
+            stim_target["mask"][0:cx-target_shifti, :] = stim_target["mask"][target_shifti::, :]
     else:
         if orientation == "horizontal":
             stim_target["img"][:, target_shifti::] = stim_target["img"][:, 0:cx-target_shifti]
+            stim_target["mask"][:, target_shifti::] = stim_target["mask"][:, 0:cx-target_shifti]
         elif orientation == "vertical":
             stim_target["img"][target_shifti::, :] = stim_target["img"][0:cx-target_shifti, :]
+            stim_target["mask"][target_shifti::, :] = stim_target["mask"][0:cx-target_shifti, :]
 
     # Add targets on grating
     mask_temp = np.ones(stim["shape"])
     mask_temp[stim_target["img"] == intensity_target] = 0
     img = stim["img"] * mask_temp + stim_target["img"]
-    mask = np.abs(mask_temp-1)
+    
+    # Create target mask
+    mask = np.where(stim_target["img"] == intensity_target, stim_target["mask"], 0)
+    unique_vals = np.unique(mask)
+    for v in range(len(unique_vals)):
+        mask[mask == unique_vals[v]] = v
 
     stim["img"] = img
     stim["mask"] = mask.astype(int)
