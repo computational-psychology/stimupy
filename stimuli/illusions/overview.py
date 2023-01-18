@@ -33,6 +33,13 @@ p_mondrians = {
     ),
 }
 
+
+p_small_grating = {
+    "ppd": 20,
+    "frequency": 1,
+    "intensity_bars": (1, 0),
+    }
+
 # fmt: off
 stims = {
     # Angular
@@ -65,16 +72,25 @@ stims = {
     "Bullseye": frames.bullseye_stimulus(**p, frequency=0.5),
     "Bullseye general": frames.bullseye_generalized(**p, frame_radii=(1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5)),
     # Grating
-    "Grating with targets": grating.square_wave(**p, frequency=0.5, target_indices=(3, 6)),
-    "Grating uniform": grating.grating_uniform(**p, frequency=1, grating_size=3, target_indices=(3, 5)),
-    "Grating grating": grating.grating_grating(ppd=20, large_grating_params={"visual_size": 10, "frequency": 1,}, small_grating_params={"visual_size": 3, "frequency": 1,}),
-    # TODO: add other grating stims
-    # Hermann
+    "Grating with targets": grating.square_wave(**p, frequency=0.5, target_indices=(3,)),
+    "Grating uniform": grating.grating_uniform(**p, frequency=1, grating_size=3, target_indices=(3,)),
+    "Grating grating 1": grating.grating_grating(large_grating_params={**p, "frequency": 2, "rotation": 45},
+                                                 small_grating_params={**p_small_grating, "visual_size": 4, "target_indices": (1, 3, 5, 7),}),
+    "Grating grating 2": grating.grating_grating(large_grating_params={**p, "frequency": 1},
+                                                 small_grating_params={**p_small_grating, "visual_size": 4,"target_indices": (1, 3, 5, 7),}),
+    "Grating grating 3": grating.grating_grating(large_grating_params={**p, "frequency": 1, "intensity_bars": (0, 1),},
+                                                 small_grating_params={**p_small_grating, "visual_size": (4, 10), "target_indices": (9, 11, 13),}),
+    "Grating grating masked": grating.grating_grating_masked(large_grating_params={**p, "frequency": 1, "rotation": 90,},
+                                                             small_grating_params={**p_small_grating, "visual_size": 4, "target_indices": (1, 3, 5, 7),},
+                                                             mask_depth=1),
+    "Counterphase induction": grating.counterphase_induction(**p, frequency=1, target_size=4, target_phase_shift=90,),
+    "Grating induction": grating.grating_induction(**p, frequency=1, blur=3),
+    # Hermann´
     "Hermann": hermann(**p, element_size=(1.5, 1.5, 0.2)),
     # Mondrians
     "Mondrians": mondrians.corrugated_mondrians(**p, **p_mondrians),
     # Ponzo
-    "Ponzo": ponzo(**p, outer_lines_length=8, target_lines_length=3, target_distance=3),
+    "Ponzo": ponzo(**p, outer_lines_length=8, outer_lines_width=0.1, target_lines_length=3, target_lines_width=0.1, target_distance=3),
     # SBC
     "SBC - generalized": sbc.simultaneous_contrast_generalized(**p, target_size=3, target_position=(0, 2)),
     "SBC": sbc.simultaneous_contrast(**p, target_size=3),
