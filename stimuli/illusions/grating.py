@@ -1,5 +1,6 @@
 import itertools
 import numpy as np
+from scipy.ndimage import gaussian_filter
 import warnings
 
 from stimuli.components.grating import square_wave as square_wave_component
@@ -14,6 +15,7 @@ __all__ = [
     "grating_grating",
     "counterphase_induction",
     "grating_induction",
+    "grating_induction_blur",
 ]
 
 
@@ -452,7 +454,7 @@ def grating_induction(
     origin="corner",
 ):
     """
-    Grating induction illusions
+    Grating induction illusion using a sine-wave grating
 
     Parameters
     ----------
@@ -468,24 +470,28 @@ def grating_induction(
         number of bars in the grating
     bar_width : Number, or None (default)
         width of a single bar, in degrees visual angle
-    period : "full", "half", "ignore" (default)
-        whether to ensure the grating only has "full" periods,
-        half "periods", or no guarantees ("ignore")
-    orientation : "vertical" or "horizontal" (default)
-        orientation of the grating
+    period : "even", "odd", "either" or "ignore" (default)
+        ensure whether the grating has "even" number of phases, "odd"
+        number of phases, either or whether not to round the number of
+        phases ("ignore")
+    rotation : float
+        rotation of grating in degrees (default: 0 = horizontal)
+    phase_shift : float
+        phase shift of grating in degrees
+    intensity_bars : Sequence[float, ...]
+        intensity value for each bar, by default (1.0, 0.0).
+        Can specify as many intensities as n_bars;
+        If fewer intensities are passed than n_bars, cycles through intensities
     target_width : float
-        width of the target (orthogonal to grating direction) in degrees visual angle
+        width of target stripe in degrees visual angle
     intensity_target : float, or Sequence[float, ...], optional
         intensity value for each target, by default 0.5.
         Can specify as many intensities as number of target_indices;
         If fewer intensities are passed than target_indices, cycles through intensities
-
-    Returns
-    -------
-    dict[str, Any]
-        dict with the stimulus (key: "img"),
-        mask with integer index for each target (key: "mask"),
-        and additional keys containing stimulus parameters
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner (default)
+        if "mean": set origin to hypothetical image center
+        if "center": set origin to real center (closest existing value to mean)
 
     References
     ----------
@@ -507,6 +513,107 @@ def grating_induction(
         intensity_bars=intensity_bars,
         origin=origin,
     )
+
+    # Identify target region
+    rectangle_size = (target_width, stim["visual_size"].width)
+
+    target_mask = rectangle(
+        rectangle_size=rectangle_size,
+        ppd=stim["ppd"],
+        visual_size=stim["visual_size"],
+        intensity_background=0,
+        intensity_rectangle=1,
+        rectangle_position=(np.array(stim["visual_size"]) - np.array(rectangle_size)) / 2,
+    )
+
+    # Superimpose
+    stim["img"] = np.where(target_mask["mask"], intensity_target, stim["img"])
+    stim["bars_mask"] = stim["mask"]
+    stim["mask"] = np.where(target_mask["mask"], stim["mask"], 0)
+
+    return stim
+
+
+def grating_induction_blur(
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    frequency=None,
+    n_bars=None,
+    bar_width=None,
+    period="ignore",
+    rotation=0,
+    phase_shift=0,
+    intensity_bars=(1.0, 0.0),
+    target_width=None,
+    target_blur=0,
+    intensity_target=0.5,
+    origin="corner",
+):
+    """
+    Grating induction illusion using a blurred square-wave grating
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    frequency : Number, or None (default)
+        spatial frequency of grating, in cycles per degree visual angle
+    n_bars : int, or None (default)
+        number of bars in the grating
+    bar_width : Number, or None (default)
+        width of a single bar, in degrees visual angle
+    period : "even", "odd", "either" or "ignore" (default)
+        ensure whether the grating has "even" number of phases, "odd"
+        number of phases, either or whether not to round the number of
+        phases ("ignore")
+    rotation : float
+        rotation of grating in degrees (default: 0 = horizontal)
+    phase_shift : float
+        phase shift of grating in degrees
+    intensity_bars : Sequence[float, ...]
+        intensity value for each bar, by default (1.0, 0.0).
+        Can specify as many intensities as n_bars;
+        If fewer intensities are passed than n_bars, cycles through intensities
+    target_width : float
+        width of target stripe in degrees visual angle
+    target_blur : float
+        amount of Gaussian blur to blur square-wave grating (default: 0)
+    intensity_target : float, or Sequence[float, ...], optional
+        intensity value for each target, by default 0.5.
+        Can specify as many intensities as number of target_indices;
+        If fewer intensities are passed than target_indices, cycles through intensities
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner (default)
+        if "mean": set origin to hypothetical image center
+        if "center": set origin to real center (closest existing value to mean)
+
+    References
+    ----------
+    McCourt, M. E. (1982). A spatial frequency dependent grating-induction effect.
+        Vision Research, 22, 119–134. https://doi.org/10.1016/0042-6989(82)90173-0
+    """
+
+    # Draw grating
+    stim = square_wave_component(
+        shape=shape,
+        visual_size=visual_size,
+        ppd=ppd,
+        frequency=frequency,
+        n_bars=n_bars,
+        bar_width=bar_width,
+        period=period,
+        rotation=rotation,
+        phase_shift=phase_shift,
+        intensity_bars=intensity_bars,
+        origin=origin,
+        round_phase_width=True,
+    )
+    stim["img"] = gaussian_filter(stim["img"], target_blur)
 
     # Identify target region
     rectangle_size = (target_width, stim["visual_size"].width)
@@ -561,7 +668,8 @@ if __name__ == "__main__":
                                                                                   "rotation": 90},
                                                             mask_depth=2),
         "Counterphase induction": counterphase_induction(**params, target_size=4, target_phase_shift=360),
-        "Grating induction": grating_induction(**params)
+        "Grating induction": grating_induction(**params, target_width=0.5),
+        "Grating induction blur": grating_induction_blur(**params, target_width=0.5, target_blur=5),
     }
 
     plot_stimuli(stims, mask=True, save=None)

@@ -84,7 +84,8 @@ stims = {
                                                              small_grating_params={**p_small_grating, "visual_size": 4, "target_indices": (1, 3, 5, 7),},
                                                              mask_depth=1),
     "Counterphase induction": grating.counterphase_induction(**p, frequency=1, target_size=4, target_phase_shift=90,),
-    "Grating induction": grating.grating_induction(**p, frequency=0.5),
+    "Grating induction": grating.grating_induction(**p, frequency=0.5, target_width=0.5),
+    "Grating induction blur": grating.grating_induction_blur(**p, frequency=0.5, target_width=0.5, target_blur=2),
     # Hermann´
     "Hermann": hermann(**p, element_size=(1.5, 1.5, 0.2)),
     # Mondrians
