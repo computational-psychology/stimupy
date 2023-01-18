@@ -1,0 +1,50 @@
+{
+    "wide_0phase": {
+        "img": "fecc7b9dc04948e5bb0a8a5d5689ecb4",
+        "mask": "38f7b32161804183e44a47caa366fdaf"
+    },
+    "wide_36phase": {
+        "img": "b25f1b0cabd6b578ed75df1a8f882ed9",
+        "mask": "ad48b16040f616c98afe1b2fb99569f3"
+    },
+    "wide_72phase": {
+        "img": "f73147f1652a2f020e73396018707628",
+        "mask": "6ac31eec7e78bfeec4888a2b83987207"
+    },
+    "wide_108phase": {
+        "img": "f7d3099380e7e5c9fa484ba6f82ea820",
+        "mask": "83202cf55c27d5981e14ea59bcc1815d"
+    },
+    "wide_144phase": {
+        "img": "9e07fc53dcdd5b8c7419334ee4d6e59f",
+        "mask": "811b8f1465cd328d9381cc50a29c2557"
+    },
+    "wide_180phase": {
+        "img": "8683c0306e45fdcb27ad5bb4505d3833",
+        "mask": "7431e17c8121f66f4623c362c93c33d6"
+    },
+    "square_0phase": {
+        "img": "a4541f7b333f1241bd409c6e59c7437f",
+        "mask": "6c64a6180a362e250137729a6a01533d"
+    },
+    "square_36phase": {
+        "img": "e4f328f63cd2854ec0f53368e4e3c246",
+        "mask": "541111e4c3d49b0a49301efb609b8b2f"
+    },
+    "square_72phase": {
+        "img": "e8072bf35faf6c33f62b673be425a159",
+        "mask": "4d03360fe733c966d0605f35da08cdff"
+    },
+    "square_108phase": {
+        "img": "bc3bca817f8c917d17c5497d55be764e",
+        "mask": "61a7b830a8fb9242a0542e6d1d24b228"
+    },
+    "square_144phase": {
+        "img": "a7a8b8472eeb8af26cdf18e49c7a7c7d",
+        "mask": "c9cb711a845656d452b22c68f20de5ae"
+    },
+    "square_180phase": {
+        "img": "ad71c941454e70d2b1cdee81bda11fde",
+        "mask": "8299f3583c1f6eef2e566569bb2bebb6"
+    }
+}

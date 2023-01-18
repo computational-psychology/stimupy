@@ -1,0 +1,50 @@
+{
+    "square_white": {
+        "img": "08380f35383229fc12be7928109d1efb",
+        "mask": "f86111b4f7fef8839517eb394585d903"
+    },
+    "square_black": {
+        "img": "70a2d2b159e6658254a1bd65171d8c22",
+        "mask": "f86111b4f7fef8839517eb394585d903"
+    },
+    "grating_white_white": {
+        "img": "77403954db1d9d8eb388ccf2b18c3f6c",
+        "mask": "c4d01108785d39f4c7448f228f7a6484"
+    },
+    "grating_white_black": {
+        "img": "3590eb7f7ec57dd493e777e3285d1fe8",
+        "mask": "c4d01108785d39f4c7448f228f7a6484"
+    },
+    "grating_black_white": {
+        "img": "02e8d130bc2a97a5bb1f4a7826b17fec",
+        "mask": "c4d01108785d39f4c7448f228f7a6484"
+    },
+    "grating_black_black": {
+        "img": "39880933d79ff4afcbbd4fbf872c3fa3",
+        "mask": "c4d01108785d39f4c7448f228f7a6484"
+    },
+    "grating_white_in": {
+        "img": "178cf78a9f68a5f5b08832a9d3e747ae",
+        "mask": "0a728ba84bc3be9fe759b0b6d4ea67db"
+    },
+    "grating_black_in": {
+        "img": "a1545753fb1038306b393ea6528f6833",
+        "mask": "0a728ba84bc3be9fe759b0b6d4ea67db"
+    },
+    "grating_white_out": {
+        "img": "7da414fcc2c981fc835c870a61a3a515",
+        "mask": "8aa15c33869af9de32e7b823d17cd225"
+    },
+    "grating_black_out": {
+        "img": "9a04cf4c5be42a5d634640e17250049a",
+        "mask": "8aa15c33869af9de32e7b823d17cd225"
+    },
+    "grating_white_orthogonal": {
+        "img": "23738fc9a5b1274022d60f3165881073",
+        "mask": "491db727830d4b21c4042f454a5b3033"
+    },
+    "grating_black_orthogonal": {
+        "img": "06f607879a718689807921ad326e3e45",
+        "mask": "491db727830d4b21c4042f454a5b3033"
+    }
+}
