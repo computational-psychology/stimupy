@@ -80,7 +80,8 @@ def resolve_bar_width(bar_width=BAR_WIDTH, ppd=PPD):
     bar_width = np.round(bar_width * ppd) / ppd
     
     if bar_width_old != bar_width:
-        warnings.warn(f"Rounding bar_width because of ppd; {bar_width_old} -> {bar_width}")
+        warnings.warn(f"Rounding bar_width because of ppd; {bar_width_old} -> {bar_width}. "
+                      "This will also effect the stimulus size.")
     return bar_width
 
 
@@ -88,8 +89,8 @@ def wide_0phase(ppd=PPD):
     """A square-wave grating with four bars that are in phase as shown in
     White & White (1985), Fig. 2
     Stimulus size: 3.5 x 3.5 deg
-    Target bars: 0.15 x 0.75 deg
-    Grating frequency: 3.5 cpd
+    Target bars: 0.14 x 0.75 deg (originally 0.15 x 0.75 deg)
+    Grating frequency: ~3.5 cpd
 
     Parameters
     ----------
@@ -109,12 +110,13 @@ def wide_0phase(ppd=PPD):
     """
 
     bar_width = resolve_bar_width(BAR_WIDTH, ppd)
+    print(bar_width)
 
     params = {
-        "visual_size": 24*bar_width,
+        "visual_size": 25*bar_width,
         "ppd": ppd,
         "bar_width": bar_width,
-        "target_size": (bar_width*8, 0.75),
+        "target_size": (bar_width*7, 0.75),
         "target_phase_shift": START_PHASE1 + 0,
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
@@ -130,7 +132,7 @@ def wide_36phase(ppd=PPD):
     """A square-wave grating with four bars that are 36 deg out-of-phase as
     shown in White & White (1985), Fig. 2
     Stimulus size: 3.5 x 3.5 deg
-    Target bars: 0.15 x 0.75 deg
+    Target bars: 0.14 x 0.75 deg (originally 0.15 x 0.75 deg)
     Grating frequency: 3.5 cpd
 
     Parameters
@@ -152,10 +154,10 @@ def wide_36phase(ppd=PPD):
     bar_width = resolve_bar_width(BAR_WIDTH, ppd)
 
     params = {
-        "visual_size": 24*bar_width,
+        "visual_size": 25*bar_width,
         "ppd": ppd,
         "bar_width": bar_width,
-        "target_size": (bar_width*8, 0.75),
+        "target_size": (bar_width*7, 0.75),
         "target_phase_shift": START_PHASE1 + 36,
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
@@ -171,7 +173,7 @@ def wide_72phase(ppd=PPD):
     """A square-wave grating with four bars that are 72 deg out-of-phase as
     shown in White & White (1985), Fig. 2
     Stimulus size: 3.5 x 3.5 deg
-    Target bars: 0.15 x 0.75 deg
+    Target bars: 0.14 x 0.75 deg (originally 0.15 x 0.75 deg)
     Grating frequency: 3.5 cpd
 
     Parameters
@@ -194,10 +196,10 @@ def wide_72phase(ppd=PPD):
     bar_width = resolve_bar_width(BAR_WIDTH, ppd)
 
     params = {
-        "visual_size": 24*bar_width,
+        "visual_size": 25*bar_width,
         "ppd": ppd,
         "bar_width": bar_width,
-        "target_size": (bar_width*8, 0.75),
+        "target_size": (bar_width*7, 0.75),
         "target_phase_shift": START_PHASE1 + 72,
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
@@ -213,7 +215,7 @@ def wide_108phase(ppd=PPD):
     """A square-wave grating with four bars that are 108 deg out-of-phase as
     shown in White & White (1985), Fig. 2
     Stimulus size: 3.5 x 3.5 deg
-    Target bars: 0.15 x 0.75 deg
+    Target bars: 0.14 x 0.75 deg (originally 0.15 x 0.75 deg)
     Grating frequency: 3.5 cpd
 
     Parameters
@@ -236,10 +238,10 @@ def wide_108phase(ppd=PPD):
     bar_width = resolve_bar_width(BAR_WIDTH, ppd)
 
     params = {
-        "visual_size": 24*bar_width,
+        "visual_size": 25*bar_width,
         "ppd": ppd,
         "bar_width": bar_width,
-        "target_size": (bar_width*8, 0.75),
+        "target_size": (bar_width*7, 0.75),
         "target_phase_shift": START_PHASE1 + 108,
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
@@ -255,7 +257,7 @@ def wide_144phase(ppd=PPD):
     """A square-wave grating with four bars that are 144 deg out-of-phase as
     shown in White & White (1985), Fig. 2
     Stimulus size: 3.5 x 3.5 deg
-    Target bars: 0.15 x 0.75 deg
+    Target bars: 0.14 x 0.75 deg (originally 0.15 x 0.75 deg)
     Grating frequency: 3.5 cpd
 
     Parameters
@@ -278,10 +280,10 @@ def wide_144phase(ppd=PPD):
     bar_width = resolve_bar_width(BAR_WIDTH, ppd)
 
     params = {
-        "visual_size": 24*bar_width,
+        "visual_size": 25*bar_width,
         "ppd": ppd,
         "bar_width": bar_width,
-        "target_size": (bar_width*8, 0.75),
+        "target_size": (bar_width*7, 0.75),
         "target_phase_shift": START_PHASE1 + 144,
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
@@ -297,7 +299,7 @@ def wide_180phase(ppd=PPD):
     """A square-wave grating with four bars that are 180 deg out-of-phase as
     shown in White & White (1985), Fig. 2
     Stimulus size: 3.5 x 3.5 deg
-    Target bars: 0.15 x 0.75 deg
+    Target bars: 0.14 x 0.75 deg (originally 0.15 x 0.75 deg)
     Grating frequency: 3.5 cpd
 
     Parameters
@@ -320,10 +322,10 @@ def wide_180phase(ppd=PPD):
     bar_width = resolve_bar_width(BAR_WIDTH, ppd)
 
     params = {
-        "visual_size": 24*bar_width,
+        "visual_size": 25*bar_width,
         "ppd": ppd,
         "bar_width": bar_width,
-        "target_size": (bar_width*8, 0.75),
+        "target_size": (bar_width*7, 0.75),
         "target_phase_shift": START_PHASE1 + 180,
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
@@ -339,7 +341,7 @@ def square_0phase(ppd=PPD):
     """A square-wave grating with four squares that are in phase as shown in
     White & White (1985), Fig. 3
     Stimulus size: 3.5 x 3.5 deg
-    Target squares: 0.15 x 0.15 deg
+    Target bars: 0.14 x 0.14 deg (originally 0.15 x 0.15 deg)
     Grating frequency: 3.5 cpd
 
     Parameters
@@ -362,10 +364,10 @@ def square_0phase(ppd=PPD):
     bar_width = resolve_bar_width(BAR_WIDTH, ppd)
 
     params = {
-        "visual_size": 24*bar_width,
+        "visual_size": 25*bar_width,
         "ppd": ppd,
         "bar_width": bar_width,
-        "target_size": (bar_width*8, 0.15),
+        "target_size": (bar_width*7, bar_width),
         "target_phase_shift": START_PHASE2 + 0,
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
@@ -381,7 +383,7 @@ def square_36phase(ppd=PPD):
     """A square-wave grating with four squares that are 36 deg out-of-phase as
     shown in White & White (1985), Fig. 3
     Stimulus size: 3.5 x 3.5 deg
-    Target squares: 0.15 x 0.15 deg
+    Target bars: 0.14 x 0.14 deg (originally 0.15 x 0.15 deg)
     Grating frequency: 3.5 cpd
 
     Parameters
@@ -404,10 +406,10 @@ def square_36phase(ppd=PPD):
     bar_width = resolve_bar_width(BAR_WIDTH, ppd)
 
     params = {
-        "visual_size": 24*bar_width,
+        "visual_size": 25*bar_width,
         "ppd": ppd,
         "bar_width": bar_width,
-        "target_size": (bar_width*8, 0.15),
+        "target_size": (bar_width*7, bar_width),
         "target_phase_shift": START_PHASE2 + 36,
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
@@ -423,7 +425,7 @@ def square_72phase(ppd=PPD):
     """A square-wave grating with four squares that are 72 deg out-of-phase as
     shown in White & White (1985), Fig. 3
     Stimulus size: 3.5 x 3.5 deg
-    Target squares: 0.15 x 0.15 deg
+    Target bars: 0.14 x 0.14 deg (originally 0.15 x 0.15 deg)
     Grating frequency: 3.5 cpd
 
     Parameters
@@ -446,10 +448,10 @@ def square_72phase(ppd=PPD):
     bar_width = resolve_bar_width(BAR_WIDTH, ppd)
 
     params = {
-        "visual_size": 24*bar_width,
+        "visual_size": 25*bar_width,
         "ppd": ppd,
         "bar_width": bar_width,
-        "target_size": (bar_width*8, 0.15),
+        "target_size": (bar_width*7, bar_width),
         "target_phase_shift": START_PHASE2 + 72,
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
@@ -465,7 +467,7 @@ def square_108phase(ppd=PPD):
     """A square-wave grating with four squares that are 108 deg out-of-phase as
     shown in White & White (1985), Fig. 3
     Stimulus size: 3.5 x 3.5 deg
-    Target squares: 0.15 x 0.15 deg
+    Target bars: 0.14 x 0.14 deg (originally 0.15 x 0.15 deg)
     Grating frequency: 3.5 cpd
 
     Parameters
@@ -488,10 +490,10 @@ def square_108phase(ppd=PPD):
     bar_width = resolve_bar_width(BAR_WIDTH, ppd)
 
     params = {
-        "visual_size": 24*bar_width,
+        "visual_size": 25*bar_width,
         "ppd": ppd,
         "bar_width": bar_width,
-        "target_size": (bar_width*8, 0.15),
+        "target_size": (bar_width*7, bar_width),
         "target_phase_shift": START_PHASE2 + 108,
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
@@ -507,7 +509,7 @@ def square_144phase(ppd=PPD):
     """A square-wave grating with four squares that are 144 deg out-of-phase as
     shown in White & White (1985), Fig. 3
     Stimulus size: 3.5 x 3.5 deg
-    Target squares: 0.15 x 0.15 deg
+    Target bars: 0.14 x 0.14 deg (originally 0.15 x 0.15 deg)
     Grating frequency: 3.5 cpd
 
     Parameters
@@ -530,10 +532,10 @@ def square_144phase(ppd=PPD):
     bar_width = resolve_bar_width(BAR_WIDTH, ppd)
 
     params = {
-        "visual_size": 24*bar_width,
+        "visual_size": 25*bar_width,
         "ppd": ppd,
         "bar_width": bar_width,
-        "target_size": (bar_width*8, 0.15),
+        "target_size": (bar_width*7, bar_width),
         "target_phase_shift": START_PHASE2 + 144,
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
@@ -549,7 +551,7 @@ def square_180phase(ppd=PPD):
     """A square-wave grating with four squares that are 180 deg out-of-phase as
     shown in White & White (1985), Fig. 3
     Stimulus size: 3.5 x 3.5 deg
-    Target squares: 0.15 x 0.15 deg
+    Target bars: 0.14 x 0.14 deg (originally 0.15 x 0.15 deg)
     Grating frequency: 3.5 cpd
 
     Parameters
@@ -572,10 +574,10 @@ def square_180phase(ppd=PPD):
     bar_width = resolve_bar_width(BAR_WIDTH, ppd)
 
     params = {
-        "visual_size": 24*bar_width,
+        "visual_size": 25*bar_width,
         "ppd": ppd,
         "bar_width": bar_width,
-        "target_size": (bar_width*8, 0.15),
+        "target_size": (bar_width*7, bar_width),
         "target_phase_shift": START_PHASE2 + 180,
         "intensity_bars": (v1, v3),
         "intensity_target": v2,

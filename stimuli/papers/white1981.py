@@ -84,7 +84,8 @@ def resolve_bar_width(bar_width=BAR_WIDTH, ppd=PPD):
     bar_width = np.round(bar_width * ppd) / ppd
     
     if bar_width_old != bar_width:
-        warnings.warn(f"Rounding bar_width because of ppd; {bar_width_old} -> {bar_width}")
+        warnings.warn(f"Rounding bar_width because of ppd; {bar_width_old} -> {bar_width}. "
+                      "This will also effect the stimulus size.")
     return bar_width
 
 
