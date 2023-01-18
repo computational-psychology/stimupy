@@ -2253,5 +2253,5 @@ if __name__ == "__main__":
     from stimuli.utils import plot_stimuli
 
     stims = gen_all(skip=True)
-    plot_stimuli(stims, mask=True)
+    plot_stimuli(stims, mask=False)
     # compare_all()
