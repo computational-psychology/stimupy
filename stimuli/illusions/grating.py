@@ -10,7 +10,9 @@ from stimuli.utils import pad_dict_to_visual_size, pad_dict_to_shape, resolution
 __all__ = [
     "square_wave",
     "grating_uniform",
+    "grating_grating_masked",
     "grating_grating",
+    "counterphase_induction",
     "grating_induction",
 ]
 
@@ -263,7 +265,7 @@ def grating_grating_masked(
         lightness of grey bars within square-wave test gratings. Perception, 10(2),
         215–230. https://doi.org/10.1068/p100215
     """
-
+        
     # Create gratings
     small_grating = square_wave(**small_grating_params)
     large_grating = square_wave(**large_grating_params)
@@ -559,9 +561,10 @@ if __name__ == "__main__":
                                             small_grating_params=small_grating),
         "Grating, grating, masked": grating_grating_masked(large_grating_params=large_grating,
                                                             small_grating_params={**small_grating,
-                                                                                  "rotation": 180},
+                                                                                  "rotation": 90},
                                                             mask_depth=2),
-        "Counterphase induction": counterphase_induction(**params, target_size=4, target_phase_shift=360)
+        "Counterphase induction": counterphase_induction(**params, target_size=4, target_phase_shift=360),
+        "Grating induction": grating_induction(**params, blur=10)
     }
 
     plot_stimuli(stims, mask=False, save=None)
