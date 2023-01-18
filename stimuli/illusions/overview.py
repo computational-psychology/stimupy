@@ -63,7 +63,7 @@ stims = {
     "Cube - variable cells": cube.cube_varying_cells(ppd=20, cell_heights=(1, 1.5, 1), cell_widths=(1.5, 2, 1.5), cell_spacing=0.5, targets=1),
     "Cube": cube.cube_illusion(**p, n_cells=5, targets=(1, 2), cell_thickness=1, cell_spacing=0.5),
     # Delbouef
-    "Deöbouef": delbouef(**p, outer_radius=4, target_radius=3),
+    "Delbouef": delbouef(**p, outer_radius=4, target_radius=3),
     # Dungeon
     "Dungeon": dungeon.dungeon_illusion(**p, n_cells=5),
     # Frames
@@ -84,7 +84,7 @@ stims = {
                                                              small_grating_params={**p_small_grating, "visual_size": 4, "target_indices": (1, 3, 5, 7),},
                                                              mask_depth=1),
     "Counterphase induction": grating.counterphase_induction(**p, frequency=1, target_size=4, target_phase_shift=90,),
-    "Grating induction": grating.grating_induction(**p, frequency=1, blur=3),
+    "Grating induction": grating.grating_induction(**p, frequency=0.5),
     # Hermann´
     "Hermann": hermann(**p, element_size=(1.5, 1.5, 0.2)),
     # Mondrians

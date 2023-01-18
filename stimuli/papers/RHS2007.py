@@ -870,8 +870,7 @@ def grating_induction(ppd=PPD, pad=True):
         "ppd": ppd,
         "frequency": 4.0 / width,
         "target_width": 1.0,
-        "blur": 10,
-        "intensity_bars": (1.0, 0.0),
+        "intensity_bars": (0.0, 1.0),
         "intensity_target": (0.5),
         "period": "ignore",
     }
@@ -880,6 +879,9 @@ def grating_induction(ppd=PPD, pad=True):
         visual_size=(height, width),
         **params,
     )
+    mask1 = np.where(stim["mask"] % 2, 1, 2)
+    mask2 = np.where(stim["mask"]==0, 0, 1)
+    stim["mask"] = (mask1 * mask2).astype(int)
 
     if pad:
         stim = pad_dict_to_visual_size(stim, VISEXTENT, ppd, pad_value=v2)

@@ -1,9 +1,9 @@
 import itertools
 import numpy as np
-from scipy.ndimage import gaussian_filter
 import warnings
 
 from stimuli.components.grating import square_wave as square_wave_component
+from stimuli.components.grating import sine_wave
 from stimuli.components.shapes import parallelogram, rectangle
 from stimuli.utils import pad_dict_to_visual_size, pad_dict_to_shape, resolution
 
@@ -437,30 +437,31 @@ def counterphase_induction(
 
 
 def grating_induction(
-    shape=None,
     visual_size=None,
     ppd=None,
+    shape=None,
     frequency=None,
     n_bars=None,
     bar_width=None,
     period="ignore",
     rotation=0,
+    phase_shift=0,
     intensity_bars=(1.0, 0.0),
     target_width=0.5,
     intensity_target=0.5,
-    blur=0,
+    origin="corner",
 ):
     """
     Grating induction illusions
 
     Parameters
     ----------
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
     frequency : Number, or None (default)
         spatial frequency of grating, in cycles per degree visual angle
     n_bars : int, or None (default)
@@ -478,8 +479,6 @@ def grating_induction(
         intensity value for each target, by default 0.5.
         Can specify as many intensities as number of target_indices;
         If fewer intensities are passed than target_indices, cycles through intensities
-    blur : float
-        amount of Gaussian blur to apply, default is 0.
 
     Returns
     -------
@@ -495,7 +494,7 @@ def grating_induction(
     """
 
     # Draw grating
-    stim = square_wave_component(
+    stim = sine_wave(
         shape=shape,
         visual_size=visual_size,
         ppd=ppd,
@@ -504,12 +503,10 @@ def grating_induction(
         bar_width=bar_width,
         period=period,
         rotation=rotation,
+        phase_shift=phase_shift,
         intensity_bars=intensity_bars,
+        origin=origin,
     )
-
-    targets_mask = stim["img"].astype(int) + 1
-
-    stim["img"] = gaussian_filter(stim["img"], blur)
 
     # Identify target region
     rectangle_size = (target_width, stim["visual_size"].width)
@@ -526,7 +523,7 @@ def grating_induction(
     # Superimpose
     stim["img"] = np.where(target_mask["mask"], intensity_target, stim["img"])
     stim["bars_mask"] = stim["mask"]
-    stim["mask"] = np.where(target_mask["mask"], targets_mask, 0)
+    stim["mask"] = np.where(target_mask["mask"], stim["mask"], 0)
 
     return stim
 
@@ -564,7 +561,7 @@ if __name__ == "__main__":
                                                                                   "rotation": 90},
                                                             mask_depth=2),
         "Counterphase induction": counterphase_induction(**params, target_size=4, target_phase_shift=360),
-        "Grating induction": grating_induction(**params, blur=10)
+        "Grating induction": grating_induction(**params)
     }
 
-    plot_stimuli(stims, mask=False, save=None)
+    plot_stimuli(stims, mask=True, save=None)
