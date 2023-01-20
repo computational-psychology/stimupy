@@ -572,6 +572,7 @@ def roll_dict(dct, shift, axes, keys=("img", "*mask")):
     
     # Create deepcopy to not override existing dict
     new_dict = copy.deepcopy(dct)
+    shift = np.array(shift).astype(int)
 
     # Find relevant keys
     keys = [dkey for key in keys for dkey in dct.keys() if ((dkey == key) or

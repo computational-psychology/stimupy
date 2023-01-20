@@ -238,8 +238,8 @@ def grating_uniform(
 def grating_grating_masked(
     small_grating_params,
     large_grating_params,
-    mask_depth=0,
-    mask_orientation="horizontal",
+    mask_size=None,
+    mask_rotation=None,
 ):
     """Grating with a parallelogram-like shape on a grating
 
@@ -274,21 +274,18 @@ def grating_grating_masked(
     
     if small_grating["ppd"] != large_grating["ppd"]:
         raise ValueError("Gratings must have same ppd")
-
-    # Get mask in the size of small grating
-    if mask_orientation == "horizontal":
+    
+    if mask_size is None:
         mask_size = small_grating["visual_size"]
-    else:
-        mask_size = [small_grating["visual_size"][1], small_grating["visual_size"][0]]
-    window = parallelogram(
-        visual_size=mask_size,
-        ppd=small_grating["ppd"],
-        parallelogram_depth=mask_depth,
-        orientation=mask_orientation,
-        )
+    if mask_rotation is None:
+        mask_rotation = 0
 
-    if window["shape"] != large_grating["shape"]:
-        window = pad_dict_to_shape(window, large_grating["shape"])["mask"]
+    window = parallelogram(
+        ppd=small_grating["ppd"],
+        shape=large_grating["shape"],
+        parallelogram_size=mask_size,
+        rotation=mask_rotation,
+        )["img"]
     
     small_grating = pad_dict_to_shape(small_grating, large_grating["shape"])
     img = np.where(window, small_grating["img"], large_grating["img"])
@@ -333,7 +330,7 @@ def grating_grating(
     stim = grating_grating_masked(
         small_grating_params,
         large_grating_params,
-        mask_depth=0)
+        )
     return stim
 
 
@@ -523,7 +520,6 @@ def grating_induction(
         visual_size=stim["visual_size"],
         intensity_background=0,
         intensity_rectangle=1,
-        rectangle_position=(np.array(stim["visual_size"]) - np.array(rectangle_size)) / 2,
     )
 
     # Superimpose
@@ -624,7 +620,6 @@ def grating_induction_blur(
         visual_size=stim["visual_size"],
         intensity_background=0,
         intensity_rectangle=1,
-        rectangle_position=(np.array(stim["visual_size"]) - np.array(rectangle_size)) / 2,
     )
 
     # Superimpose
@@ -666,10 +661,10 @@ if __name__ == "__main__":
         "Grating, grating, masked": grating_grating_masked(large_grating_params=large_grating,
                                                             small_grating_params={**small_grating,
                                                                                   "rotation": 90},
-                                                            mask_depth=2),
+                                                            mask_size=(5, 5, 2)),
         "Counterphase induction": counterphase_induction(**params, target_size=4, target_phase_shift=360),
         "Grating induction": grating_induction(**params, target_width=0.5),
         "Grating induction blur": grating_induction_blur(**params, target_width=0.5, target_blur=5),
     }
 
-    plot_stimuli(stims, mask=True, save=None)
+    plot_stimuli(stims, mask=False, save=None)

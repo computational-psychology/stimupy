@@ -1,5 +1,6 @@
 import numpy as np
 
+from stimuli.components import image_base
 from stimuli.components.angular import wedge
 from stimuli.components.circular import annulus, disc, ring
 from stimuli.utils import resolution
@@ -17,33 +18,36 @@ __all__ = [
 
 
 def rectangle(
-    shape=None,
     visual_size=None,
     ppd=None,
+    shape=None,
     rectangle_size=None,
     rectangle_position=None,
     intensity_rectangle=1.0,
-    intensity_background=0.5,
+    intensity_background=0.0,
+    rotation=0,
 ):
     """Draw a rectangle
 
     Parameters
     ----------
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
     visual_size : Sequence[Number, Number], Number, or None (default)
-        visual size [height, width] of image, in degrees
+        visual size [height, width] of image, in degrees visual angle
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
     rectangle_size : Number, Sequence[Number, Number]
-        size of the rectangle, in degrees visual angle
+        rectangle size [height, width], in degrees visual angle
     rectangle_position : Number, Sequence[Number, Number], or None (default)
         position of the rectangle, in degrees visual angle.
         If None, rectangle will be placed in center of image.
     intensity_rectangle : float, optional
         intensity value for rectangle, by default 1.0
     intensity_background : float, optional
-        intensity value of background, by default 0.5
+        intensity value of background, by default 0.0
+    rotation : float
+        orientation of rectangle in degrees visual angle (default 0)
 
     Returns
     -------
@@ -51,74 +55,109 @@ def rectangle(
         dict with the stimulus (key: "img"), mask (key: "mask")
         and additional keys containing stimulus parameters
     """
-
-    # Resolve resolution
-    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
+    
+    # Resolve resolutions and get distances
+    base = image_base(
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        rotation=rotation,
+        origin="center",
+        )
+    xx = base["horizontal"]
+    yy = base["vertical"]
+    theta = np.deg2rad(rotation)
     rectangle_size = resolution.validate_visual_size(visual_size=rectangle_size)
-    rect_shape = resolution.shape_from_visual_size_ppd(visual_size=rectangle_size, ppd=ppd)
-
-    # Determine position
+    
+    # Determine center position
+    rect_posy = (base["visual_size"].height / 2) - (rectangle_size.height / 2)
+    rect_posx = (base["visual_size"].width / 2) - (rectangle_size.width / 2)
+    center_pos = (rect_posy, rect_posx)
+    
     if rectangle_position is None:
-        # If not position is given, place centrally
-        rect_posy = (visual_size.height / 2) - (rectangle_size.height / 2)
-        rect_posx = (visual_size.width / 2) - (rectangle_size.width / 2)
-        rectangle_position = (rect_posy, rect_posx)
+        # If no position is given, place rectangle centrally
+        rectangle_position = center_pos
+    if isinstance(rectangle_position, (float, int)):
+        rectangle_position = (rectangle_position, rectangle_position)
+    
+    # Determine shift
+    rect_pos = (np.array(rectangle_position) * base["ppd"]).astype(int)
+    center_pos = np.round(np.array(center_pos) * base["ppd"])
+    rect_shift = (rect_pos - center_pos).astype(int)
+    
+    # Rotate coordinate systems
+    x = np.round(np.cos(theta) * xx - np.sin(theta) * yy, 8)
+    y = np.round(np.sin(theta) * xx + np.cos(theta) * yy, 8)
+    
+    # Rounding for more robust behavior:
+    x = np.round(x * (base["ppd"][0]*2)) / (base["ppd"][0]*2)
+    y = np.round(y * (base["ppd"][0]*2)) / (base["ppd"][0]*2)
+    
+    # Draw rectangle
+    img1 = np.where(x < rectangle_size.width/2, 1, 0)
+    img2 = np.where(x >= -rectangle_size.width/2, 1, 0)
+    img3 = np.where(y < rectangle_size.height/2, 1, 0)
+    img4 = np.where(y >= -rectangle_size.height/2, 1, 0)
+    img = img1 * img2 * img3 * img4
+    
+    # Shift rectangle
+    img = np.roll(img, (rect_shift[0], rect_shift[1]), axis=(0, 1))
 
-    rectangle_position = resolution.validate_visual_size(rectangle_position)
-    if (rectangle_position.height + rectangle_size.height > visual_size.height) or (
-        rectangle_position.width + rectangle_size.width > visual_size.width
-    ):
-        raise ValueError("rectangle does not fully fit into stimulus")
+    # Does the rectangle fit?
+    x1 = rectangle_size[1]/2 * np.cos(theta)
+    x2 = rectangle_size[1]/2 * np.sin(theta)
+    y1 = rectangle_size[0]/2 * np.cos(theta)
+    y2 = rectangle_size[0]/2 * np.sin(theta)
+    cy = x2+y1 + np.abs(rect_shift[0] / base["ppd"][0])
+    cy = np.floor(cy * base["ppd"][0]) / base["ppd"][0]
+    cx = x1+y2 + np.abs(rect_shift[1] / base["ppd"][1])
+    cx = np.floor(cx * base["ppd"][1]) / base["ppd"][1]
 
-    rect_pos = resolution.shape_from_visual_size_ppd(visual_size=rectangle_position, ppd=ppd)
-
-    # Create mask
-    mask = np.zeros(shape)
-    mask[
-        rect_pos.height : (rect_pos.height + rect_shape.height),
-        rect_pos.width : (rect_pos.width + rect_shape.width),
-    ] = True
-
-    # Create image
-    img = np.where(mask, intensity_rectangle, intensity_background)
+    if (cy > base["visual_size"][0]/2) or (cx > base["visual_size"][1]/2):
+        raise ValueError("stimulus does not fully fit into requested size")
 
     return {
-        "img": img,
-        "mask": mask.astype(int),
-        "shape": shape,
-        "visual_size": visual_size,
-        "ppd": ppd,
+        "img": img*(intensity_rectangle-intensity_background) + intensity_background,
+        "mask": img.astype(int),
+        "visual_size": base["visual_size"],
+        "ppd": base["ppd"],
+        "shape": base["shape"],
         "rectangle_size": rectangle_size,
         "rectangle_position": rectangle_position,
         "intensity_background": intensity_background,
         "intensity_rectangle": intensity_rectangle,
-    }
+        "rotation": rotation,
+        }
 
 
 def triangle(
     visual_size=None,
     ppd=None,
     shape=None,
-    intensity_triangle=0.5,
+    triangle_size=None,
+    intensity_triangle=1.0,
     intensity_background=0.0,
     include_corners=True,
+    rotation=0,
 ):
-    """Draw a triangle in the lower left corner
+    """Draw a triangle
 
     Parameters
     ----------
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
     visual_size : Sequence[Number, Number], Number, or None (default)
-        visual size [height, width] of image, in degrees
+        visual size [height, width] of image, in degrees visual angle
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
-    intensity_rectangle : float, optional
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    triangle_size : Number, Sequence[Number, Number]
+        triangle size [height width], in degrees visual angle
+    intensity_triangle : float, optional
         intensity value for triangle, by default 1.0
     intensity_background : float, optional
-        intensity value of background, by default 0.5
-    include_corners : bool
-        if True, image corners are part of the triangle (default)
+        intensity value of background, by default 0.0
+    rotation : float
+        orientation of triangle in degrees visual angle (default 0)
 
     Returns
     -------
@@ -126,63 +165,88 @@ def triangle(
         dict with the stimulus (key: "img"), mask (key: "mask")
         and additional keys containing stimulus parameters
     """
-
-    # Resolve resolution
-    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
-    height, width = shape.height, shape.width
-
-    # Mask triangle
-    mask = np.zeros(shape)
-    line1 = np.linspace(0, height - 1, np.maximum(height, width) * 2).astype(int)
-    line1 = np.linspace(line1, height - 1, np.maximum(height, width) * 2).astype(int)
-    line2 = np.linspace(0, width - 1, np.maximum(height, width) * 2).astype(int)
-    line2 = np.repeat(np.expand_dims(line2, -1), np.maximum(height, width) * 2, 1)
-    mask[line1, line2] = 1
     
-    if not include_corners:
-        mask = np.abs(np.rot90(mask, 2) - 1)
-
-    # Draw
-    img = np.where(mask, intensity_triangle, intensity_background)
+    # Resolve resolutions and get distances
+    base = image_base(
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        rotation=rotation,
+        origin="center",
+        )
+    xx = base["horizontal"]
+    yy = base["vertical"]
+    triangle_size = resolution.validate_visual_size(visual_size=triangle_size)
+    
+    angle_diagonal = np.arctan(triangle_size[1]/triangle_size[0])
+    angle_diagonal = np.rad2deg(angle_diagonal)
+    theta = np.deg2rad(rotation+angle_diagonal)
+    x = np.round(np.cos(theta) * xx - np.sin(theta) * yy, 8)
+    
+    # Split image in two parts following the diagonal
+    if include_corners:
+        img = np.where(x <= 0, 1, 0)
+    else:
+        fac =  base["ppd"][0] / 2
+        x = np.round(x * fac) / fac
+        img = np.where(x < 0, 1, 0)
+    
+    # Create rectangular mask
+    rect = rectangle(
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        rectangle_size=triangle_size,
+        rotation=rotation,
+        )
+    img = img * rect["mask"]
 
     return {
-        "img": img,
-        "mask": mask.astype(int),
-        "shape": shape,
-        "visual_size": visual_size,
-        "ppd": ppd,
+        "img": img*(intensity_triangle-intensity_background) + intensity_background,
+        "mask": img.astype(int),
+        "visual_size": base["visual_size"],
+        "ppd": base["ppd"],
+        "shape": base["shape"],
         "intensity_background": intensity_background,
         "intensity_triangle": intensity_triangle,
-    }
+        "rotation": rotation,
+        "include_corners": include_corners,
+        }
 
 
 def cross(
-    shape=None,
     visual_size=None,
     ppd=None,
-    cross_thickness=4.0,
+    shape=None,
+    cross_size=None,
+    cross_thickness=None,
     cross_arm_ratios=(1.0, 1.0),
     intensity_cross=1.0,
-    intensity_background=0.5,
+    intensity_background=0.0,
+    rotation=0,
 ):
     """Draw a cross
 
     Parameters
     ----------
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
     visual_size : Sequence[Number, Number], Number, or None (default)
-        visual size [height, width] of image, in degrees
+        visual size [height, width] of image, in degrees visual angle
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
-    cross_thickness : float
-        thickness of the bars in degrees visual angle
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    cross_size : Number, Sequence[Number, Number]
+        cross size [height, width], in degrees visual angle
+    cross_thickness : Number, Sequence[Number, Number]
+        thickness of cross in degrees visual angle
     cross_arm_ratios : float or (float, float)
         ratio used to create arms (up-down, left-right)
     intensity_cross: float, optional
         intensity value for cross, by default 1.0
     intensity_background : float, optional
-        intensity value of background, by default 0.5
+        intensity value of background, by default 0.0
+    rotation : float
+        orientation of triangle in degrees visual angle (default 0)
 
     Returns
     -------
@@ -190,49 +254,66 @@ def cross(
         dict with the stimulus (key: "img"), mask (key: "mask")
         and additional keys containing stimulus parameters
     """
-
+    
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
-    cross_arm_ratios = resolution.validate_visual_size(cross_arm_ratios)
+    cross_size = resolution.validate_visual_size(cross_size)
+    cross_thickness = resolution.validate_visual_size(cross_thickness)
 
-    if not isinstance(cross_thickness, (float, int)):
-        raise ValueError("cross_thickness should be a single number")
-
-    # Calculate cross arm lengths
-    height, width = shape.height, shape.width
-    thick = resolution.pix_from_visual_angle_ppd_1D(cross_thickness, ppd=ppd.horizontal)
-
-    updown = int(height - thick)
-    down = int(updown / (cross_arm_ratios[0] + 1))
+    if isinstance(cross_arm_ratios, (float, int)):
+        cross_arm_ratios = (cross_arm_ratios, cross_arm_ratios)
+    
+    # Determine coordinate center
+    cy = (visual_size.height / 2)
+    cx = (visual_size.width / 2)
+    theta = np.deg2rad(rotation)
+    
+    # Calculate cross placement based on ratios of cross legs
+    updown = cross_size.height - cross_thickness[0]
+    down = updown / (cross_arm_ratios[0] + 1)
     up = updown - down
-    leftright = int(width - thick)
-    right = int(leftright / (cross_arm_ratios[1] + 1))
+    leftright = cross_size.width - cross_thickness[1]
+    right = leftright / (cross_arm_ratios[1] + 1)
     left = leftright - right
-    cross_size = (up, down, left, right)
 
-    if any(item < 1 for item in cross_size):
-        raise ValueError("cross_arm_ratios too large or small")
+    posy1 = cy - cross_size[0]/2 + (down-up) * np.cos(theta) / 2
+    posx1 = cx - cross_thickness[0]/2 + (down-up) * np.sin(theta) / 2
 
-    # Mask cross
-    mask = np.zeros(shape).astype(int)
-    x_edge_left, x_edge_right = left, -right
-    y_edge_top, y_edge_bottom = up, -down
-    mask[:, x_edge_left:x_edge_right] = 1
-    mask[y_edge_top:y_edge_bottom, :] = 1
+    posy2 = cy - cross_thickness[1]/2 + (right-left) * np.sin(-theta) / 2
+    posx2 = cx - cross_size[1]/2 + (right-left) * np.cos(-theta) / 2
 
-    # Draw
-    img = np.where(mask, intensity_cross, intensity_background)
+    # Create cross as two rectangles
+    rect1 = rectangle(
+        visual_size=visual_size,
+        ppd=ppd,
+        rectangle_size=(cross_size[0], cross_thickness[0]),
+        rectangle_position=(posy1, posx1),
+        rotation=rotation,
+        )
+
+    rect2 = rectangle(
+        visual_size=visual_size,
+        ppd=ppd,
+        rectangle_size=(cross_thickness[1], cross_size[1]),
+        rectangle_position=(posy2, posx2),
+        rotation=rotation,
+        )
+    
+    img = rect1["img"] + rect2["img"]
+    img[img > 1] = 1
 
     return {
-        "img": img,
-        "mask": mask.astype(int),
+        "img": img*(intensity_cross-intensity_background) + intensity_background,
+        "mask": img.astype(int),
         "shape": shape,
         "visual_size": visual_size,
         "ppd": ppd,
+        "cross_size": cross_size,
         "cross_arm_ratios": cross_arm_ratios,
         "cross_thickness": cross_thickness,
         "intensity_background": intensity_background,
         "intensity_cross": intensity_cross,
+        "rotation": rotation,
     }
 
 
@@ -240,29 +321,29 @@ def parallelogram(
     visual_size=None,
     ppd=None,
     shape=None,
-    parallelogram_depth=None,
-    orientation="horizontal",
-    intensity_background=1.0,
-    intensity_parallelogram=0.5,
+    parallelogram_size=None,
+    intensity_parallelogram=1.0,
+    intensity_background=0.0,
+    rotation=0,
 ):
     """Draw a parallelogram
 
     Parameters
     ----------
     visual_size : Sequence[Number, Number], Number, or None (default)
-        visual size [height, width] of image, in degrees
+        visual size [height, width] of image, in degrees visual angle
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
-    parallelogram_depth : float
-        depth of parallelogram (if negative, skewed to the other side)
-    orientation : "vertical" or "horizontal" (default)
-        along which dimension the parallelogram is skewed
-    intensity_background : float, optional
-        intensity value of background, by default 1.0
+    parallelogram_size : [Number, Number, Number], [Number, Number], Number or None (default)
+        parallelogram size [height, width, depth], in degrees visual angle
     intensity_parallelogram : float, optional
-        intensity value for parallelogram, by default 0.5
+        intensity value for parallelogram, by default 1.0
+    intensity_background : float, optional
+        intensity value of background, by default 0.0
+    rotation : float
+        orientation of triangle in degrees visual angle (default 0)
 
     Returns
     -------
@@ -270,55 +351,89 @@ def parallelogram(
         dict with the stimulus (key: "img"), mask (key: "mask")
         and additional keys containing stimulus parameters
     """
+    if isinstance(parallelogram_size, (float, int)):
+        parallelogram_size = (parallelogram_size, parallelogram_size, 0)
+    if len(parallelogram_size) == 2:
+        parallelogram_size = tuple(list(parallelogram_size) + [0,])
 
-    # Resolve resolutions
-    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
-
-    # Parallelogram is drawn as rectnagular field, with two triangles cut out
-    # if orientation == horizontal, triangles are cut out left and right
-    # if orientation == vertical, triangles are cut out top and bottom
-
-    triangle_size = (visual_size.height, abs(parallelogram_depth))
-
-    # Create shapes to create parallelogram
-    mask = np.ones(shape)
-    if parallelogram_depth != 0.0:
-        triangle1 = triangle(
-            visual_size=triangle_size,
-            ppd=ppd,
-            intensity_background=1,
-            intensity_triangle=0,
-            include_corners=False
-        )["img"]
-        triangle1[-1, -1] = 0
-        triangle2 = np.abs(triangle1-1)
-
-        mask[0 : shape[0], 0 : triangle1.shape[1]] = np.logical_and(
-            mask[0 : shape[0], 0 : triangle1.shape[1]], triangle1
+    # Resolve resolutions and get distances
+    base = image_base(
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        rotation=rotation,
+        origin="center",
         )
-        mask[0 : shape[0], (mask.shape[1] - triangle2.shape[1]) :] = np.logical_and(
-            mask[0 : shape[0], (mask.shape[1] - triangle2.shape[1]) :], triangle2
+    xx = base["horizontal"]
+    yy = base["vertical"]
+    
+    # Create rectangule
+    rectangle_size = (parallelogram_size[0], parallelogram_size[1]+np.abs(parallelogram_size[2]))
+    rect = rectangle(
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        rectangle_size=rectangle_size,
+        rotation=rotation,
         )
+    img = rect["img"]
+
+    if parallelogram_size[2] != 0:
+        if parallelogram_size[2] > 0:
+            triangle_size = (parallelogram_size[0], np.abs(parallelogram_size[2]))
+            rot1 = rotation
+        else:
+            triangle_size = (np.abs(parallelogram_size[2]), parallelogram_size[0])
+            rot1 = rotation - 90
+
+        angle_diagonal = np.arctan(triangle_size[1]/triangle_size[0])
+        angle_diagonal = np.rad2deg(angle_diagonal)
+        theta = np.deg2rad(rot1+angle_diagonal)
+        x = np.round(np.cos(theta) * xx - np.sin(theta) * yy, 8)
         
-        # Rotate
-        if orientation == "vertical":
-            mask = np.rot90(mask)
-            mask = np.fliplr(mask)
-
-        if parallelogram_depth < 0.0:
-            mask = np.fliplr(mask)
-
-    # Create image
-    img = np.where(mask, intensity_parallelogram, intensity_background)
+        # Shift diagonals so that resulting triangles cover corners of rectangle
+        theta = np.deg2rad(rotation)
+        pwidth = parallelogram_size[1]/2 * base["ppd"][0]
+        shift1 = int(np.round(pwidth) * np.sin(theta))
+        shift2 = int(np.floor(pwidth) * np.cos(theta))
+    
+        # Split image in two parts following the diagonal
+        tri1 = np.where(np.roll(x, (shift1, -shift2), axis=(0,1)) < 0, 0, 1)
+        tri1 = np.where(x < 0, tri1, 0)
+        tri2 = np.where(np.roll(x, (-shift1, shift2), axis=(0,1)) > 0, 0, 1)
+        tri2 = np.where(x >= 0, tri2, 0)
+    
+        # Combine everything
+        img = tri1 * img + tri2 * img
 
     return {
         "img": img,
-        "mask": mask.astype(int),
+        "mask": img.astype(int),
         "shape": shape,
         "visual_size": visual_size,
         "ppd": ppd,
-        "parallelogram_depth": parallelogram_depth,
-        "orientation": orientation,
+        "parallelogram_size": parallelogram_size,
         "intensity_background": intensity_background,
         "intensity_parallelogram": intensity_parallelogram,
+        "rotation": rotation,
     }
+
+
+if __name__ == "__main__":
+    from stimuli.utils.plotting import plot_stimuli
+    
+    p = {
+        "visual_size": (10, 8),
+        "ppd": 50,
+        "rotation": 90,
+        }
+    
+    stims = {
+        "rectangle": rectangle(**p, rectangle_size=(4, 2.5)),
+        "triangle": triangle(**p, triangle_size=(4, 2.5)),
+        "cross": cross(**p, cross_size=(4, 2.5), cross_thickness=1, cross_arm_ratios=(1, 1)),
+        "parallelogram": parallelogram(**p, parallelogram_size=(5.2, 3.1, 0.9)),
+        "parallelogram2": parallelogram(shape=(100, 100), ppd=10, parallelogram_size=(10, 9, -1)),
+        }
+    
+    plot_stimuli(stims)

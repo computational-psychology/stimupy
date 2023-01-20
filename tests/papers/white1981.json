@@ -40,11 +40,11 @@
         "mask": "8aa15c33869af9de32e7b823d17cd225"
     },
     "grating_white_orthogonal": {
-        "img": "23738fc9a5b1274022d60f3165881073",
-        "mask": "491db727830d4b21c4042f454a5b3033"
+        "img": "2840ee323e0a5440dc2669f2c2a56d1f",
+        "mask": "b91c4128c20d5974fd885378d37afcd5"
     },
     "grating_black_orthogonal": {
-        "img": "06f607879a718689807921ad326e3e45",
-        "mask": "491db727830d4b21c4042f454a5b3033"
+        "img": "88bf38138f80c06534ee3b23015a4425",
+        "mask": "b91c4128c20d5974fd885378d37afcd5"
     }
 }

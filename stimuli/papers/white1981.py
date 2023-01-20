@@ -567,8 +567,8 @@ def grating_white_orthogonal(ppd=PPD):
     stim = illusions.grating.grating_grating_masked(
         small_grating_params=small_params,
         large_grating_params=large_params,
-        mask_depth=-9*bar_width,
-        mask_orientation="vertical",
+        mask_size=(9*bar_width, 9*bar_width, 8*bar_width),
+        mask_rotation=ORIENTATION,
         )
     
     stim["mask"] = np.where(stim["mask"] != 0, 1, 0)
@@ -619,8 +619,8 @@ def grating_black_orthogonal(ppd=PPD):
     stim = illusions.grating.grating_grating_masked(
         small_grating_params=small_params,
         large_grating_params=large_params,
-        mask_depth=-9*bar_width,
-        mask_orientation="vertical",
+        mask_size=(9*bar_width, 9*bar_width, 8*bar_width),
+        mask_rotation=ORIENTATION,
         )
     
     stim["mask"] = np.where(stim["mask"] != 0, 1, 0)

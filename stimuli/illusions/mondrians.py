@@ -130,7 +130,7 @@ if __name__ == "__main__":
     from stimuli.utils import plot_stim
 
     params = {
-        "ppd": 20,
+        "ppd": 30,
         "width": 2.0,
         "heights": 2.0,
         "depths": (0.0, 1.0, 0.0, -1.0),
@@ -145,7 +145,7 @@ if __name__ == "__main__":
     
     p2 = {
         "visual_size": 10,
-        "ppd": 20,
+        "ppd": 30,
         "mondrian_depths": (1, 0, -1, 0),
         "mondrian_intensities": (
             (0.4, 0.75, 0.4, 0.75),

@@ -79,6 +79,7 @@ def benarys_cross_generalized(
     img = cross(
         visual_size=visual_size,
         ppd=np.unique(ppd),
+        cross_size=visual_size,
         cross_arm_ratios=1.0,
         cross_thickness=cross_thickness,
         intensity_background=intensity_background,
@@ -613,6 +614,7 @@ def add_targets(
                 tpatch = triangle(
                     visual_size=target_size,
                     ppd=ppd,
+                    triangle_size=target_size,
                     intensity_background=0.0,
                     intensity_triangle=intensity_target,
                 )["img"]

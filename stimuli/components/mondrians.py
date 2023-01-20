@@ -73,7 +73,7 @@ def mondrians(
         patch = parallelogram(
             visual_size=(mondrian_sizes[m][0], mondrian_sizes[m][1]+np.abs(depth)),
             ppd=ppd,
-            parallelogram_depth=depth,
+            parallelogram_size=(mondrian_sizes[m][0], mondrian_sizes[m][1], depth),
             intensity_background=intensity_background,
             intensity_parallelogram=mondrian_intensities[m],
         )

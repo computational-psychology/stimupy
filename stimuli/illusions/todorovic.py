@@ -279,6 +279,7 @@ def todorovic_cross_generalized(
     stim = cross(
         visual_size=cross_size,
         ppd=np.unique(ppd),
+        cross_size=cross_size,
         cross_arm_ratios=cross_arm_ratios,
         cross_thickness=cross_thickness,
         intensity_background=intensity_background,

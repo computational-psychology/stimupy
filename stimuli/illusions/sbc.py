@@ -206,7 +206,6 @@ def sbc_with_dots(
         visual_size=img_visual_size,
         ppd=ppd,
         rectangle_size=rect_visual_size,
-        rectangle_position=None,
         intensity_background=intensity_background,
         intensity_rectangle=intensity_target,
     )["img"]
@@ -332,7 +331,6 @@ def dotted_sbc(
         visual_size=img_visual_size,
         ppd=ppd,
         rectangle_size=rect_visual_size,
-        rectangle_position=None,
         intensity_background=intensity_background,
         intensity_rectangle=intensity_target,
     )["img"]
