@@ -106,12 +106,12 @@ stims = {
     # Wedding cake
     "Wedding cake": wedding_cake.wedding_cake_stimulus(**p, L_size=(3, 3, 1), target_height=1, target_indices1=((1, 1), (2, 1)),),
     # White
-    "White flexible": whites.white_generalized(**p, grating_frequency=0.5, target_indices=(1, 3, 5), target_center_offsets=(-1, -3, -1), target_sizes=(2, 3, 2)),
-    "White single row": whites.white(**p, grating_frequency=0.5, target_indices=(2, -3), target_size=2),
-    "White two rows": whites.white_two_rows(**p, grating_frequency=0.5, target_indices_top=(2,4), target_indices_bottom=(-2, -4), target_size=1, target_center_offset=2),
-    "Anderson White": whites.white_anderson(**p, grating_frequency=0.5, target_indices_top=3, target_indices_bottom=-2, target_center_offset=2, target_size=2, stripe_center_offset=1.5, stripe_size=2),
-    "Yazdanbakhsh White": whites.white_yazdanbakhsh(**p, grating_frequency=0.5, target_indices_top=3, target_indices_bottom=-2, target_center_offset=2, target_size=2, gap_size=0.5),
-    "Howe White": whites.white_howe(**p, grating_frequency=0.5, target_indices_top=3, target_indices_bottom=-2, target_center_offset=2, target_size=2),
+    "White flexible": whites.white_generalized(**p, frequency=0.5, target_indices=(1, 3, 5), target_center_offsets=(-1, -3, -1), target_heights=(2, 3, 2)),
+    "White single row": whites.white(**p, frequency=0.5, target_indices=(2, -3), target_height=2),
+    "White two rows": whites.white_two_rows(**p, frequency=0.5, target_indices_top=(2,4), target_indices_bottom=(-2, -4), target_height=1, target_center_offset=2),
+    "Anderson White": whites.white_anderson(**p, frequency=0.5, target_indices_top=3, target_indices_bottom=-2, target_center_offset=2, target_height=2, stripe_center_offset=1.5, stripe_height=2),
+    "Yazdanbakhsh White": whites.white_yazdanbakhsh(**p, frequency=0.5, target_indices_top=3, target_indices_bottom=-2, target_center_offset=2, target_height=2, gap_size=0.5),
+    "Howe White": whites.white_howe(**p, frequency=0.5, target_indices_top=3, target_indices_bottom=-2, target_center_offset=2, target_height=2),
 }
 
 
