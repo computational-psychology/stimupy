@@ -33,7 +33,6 @@ def square_wave(
     target_indices=(),
     intensity_target=0.5,
     origin="corner",
-    round_phase_width=True,
 ):
     """Spatial square-wave grating (set of bars), with some bar(s) as target(s)
 
@@ -73,8 +72,6 @@ def square_wave(
         if "corner": set origin to upper left corner (default)
         if "mean": set origin to hypothetical image center
         if "center": set origin to real center (closest existing value to mean)
-    round_phase_width : Bool
-        if True, round width of bars
 
     Returns
     ----------
@@ -97,7 +94,7 @@ def square_wave(
         period=period,
         intensity_bars=intensity_bars,
         origin=origin,
-        round_phase_width=round_phase_width,
+        round_phase_width=True,
     )
 
     # Resolve target parameters
@@ -139,7 +136,6 @@ def grating_uniform(
     intensity_target=0.5,
     intensity_background=0.5,
     origin="corner",
-    round_phase_width=True,
 ):
     """Spatial square-wave grating (set of bars), on a background
 
@@ -183,8 +179,6 @@ def grating_uniform(
         if "corner": set origin to upper left corner (default)
         if "mean": set origin to hypothetical image center
         if "center": set origin to real center (closest existing value to mean)
-    round_phase_width : Bool
-        if True, round width of bars
 
     Returns
     ----------
@@ -217,7 +211,6 @@ def grating_uniform(
         target_indices=target_indices,
         intensity_target=intensity_target,
         origin=origin,
-        round_phase_width=round_phase_width,
     )
 
     # Padding
@@ -349,7 +342,6 @@ def counterphase_induction(
     target_phase_shift=0,
     intensity_target=0.5,
     origin="corner",
-    round_phase_width=True,
 ):
     if orientation == "horizontal":
         rotation = 0
@@ -371,7 +363,7 @@ def counterphase_induction(
         period=period,
         intensity_bars=intensity_bars,
         origin=origin,
-        round_phase_width=round_phase_width,
+        round_phase_width=True,
     )
     
     stim_target = square_wave_component(
@@ -383,7 +375,7 @@ def counterphase_induction(
         period=period,
         intensity_bars=(intensity_target, 0),
         origin=origin,
-        round_phase_width=round_phase_width,
+        round_phase_width=True,
     )
     stim_target = pad_dict_to_shape(stim_target, stim["shape"], 0)
     cycle_px = stim_target["bar_width"] * stim_target["ppd"][0] * 2
@@ -662,7 +654,7 @@ if __name__ == "__main__":
                                                             small_grating_params={**small_grating,
                                                                                   "rotation": 90},
                                                             mask_size=(5, 5, 2)),
-        "Counterphase induction": counterphase_induction(**params, target_size=4, target_phase_shift=360),
+        "Counterphase induction": counterphase_induction(**params, target_size=4, target_phase_shift=90),
         "Grating induction": grating_induction(**params, target_width=0.5),
         "Grating induction blur": grating_induction_blur(**params, target_width=0.5, target_blur=5),
     }

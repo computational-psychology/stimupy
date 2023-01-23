@@ -131,11 +131,11 @@ def WE_thick(ppd=PPD, pad=True):
     height, width = 12.0, 16.0
     params = {
         "ppd": ppd,
-        "grating_frequency": 4.0 / width,
+        "frequency": 4.0 / width,
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
         "target_indices": (2, 5),
-        "target_size": 4.0,
+        "target_height": 4.0,
         "period": "even",
     }
 
@@ -190,11 +190,11 @@ def WE_thin_wide(ppd=PPD, pad=True):
     height, width = 12.0, 16.0
     params = {
         "ppd": ppd,
-        "grating_frequency": 8.0 / width,
+        "frequency": 8.0 / width,
         "intensity_bars": (v3, v1),
         "intensity_target": v2,
         "target_indices": (3, 12),
-        "target_size": 2.0,
+        "target_height": 2.0,
         "period": "even",
     }
 
@@ -242,11 +242,11 @@ def WE_dual(ppd=PPD, pad=True):
     height, width = 6.0, 8.0
     params = {
         "ppd": ppd,
-        "grating_frequency": 4.0 / width,
+        "frequency": 4.0 / width,
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
         "target_indices": (2, 5),
-        "target_size": 2.0,
+        "target_height": 2.0,
         "period": "even",
     }
 
@@ -310,16 +310,16 @@ def WE_anderson(ppd=PPD, pad=True):
     height, width = 16.0, 16.0
     params = {
         "ppd": ppd,
-        "grating_frequency": 8.0 / width,
+        "frequency": 8.0 / width,
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
         "target_indices_top": (5,),
         "target_indices_bottom": (10,),
         "target_center_offset": height / 10.0,
-        "target_size": height / 5.0,
+        "target_height": height / 5.0,
         "intensity_stripes": (v1, v3),
         "stripe_center_offset": height / 5.0,
-        "stripe_size": height / 5.0,
+        "stripe_height": height / 5.0,
         "period": "even",
     }
 
@@ -376,13 +376,13 @@ def WE_howe(ppd=PPD, pad=True):
     height, width = 16.0, 16.0
     params = {
         "ppd": ppd,
-        "grating_frequency": 8.0 / width,
+        "frequency": 8.0 / width,
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
         "target_indices_top": (5,),
         "target_indices_bottom": (10,),
         "target_center_offset": height / 5.0,
-        "target_size": height / 5.0,
+        "target_height": height / 5.0,
         "intensity_stripes": (v1, v3),
         "period": "even",
     }

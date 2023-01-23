@@ -617,9 +617,9 @@ def white(visual_size=VSIZES["white"], ppd=PPD, pad=PAD, shape=SHAPES["white"]):
     params = {
         "visual_size": visual_size,
         "ppd": ppd,
-        "grating_frequency": 4.0 / visual_size[1],
+        "frequency": 4.0 / visual_size[1],
         "target_indices": (2, 5),
-        "target_size": 2.1 * visual_resize,
+        "target_height": 2.1 * visual_resize,
         "period": "even",
     }
 
@@ -1047,11 +1047,11 @@ def white_yazdanbakhsh(
     params = {
         "visual_size": visual_size,
         "ppd": ppd,
-        "grating_frequency": 4.0 / visual_size[1],
+        "frequency": 4.0 / visual_size[1],
         "target_indices_top": (2,),
         "target_indices_bottom": (5,),
         "target_center_offset": 0.0,
-        "target_size": visual_size[0] / 4.0,
+        "target_height": visual_size[0] / 4.0,
         "gap_size": visual_size[0] / 10.0,
         "period": "even",
     }
@@ -1128,13 +1128,13 @@ def white_anderson(
     params = {
         "visual_size": visual_size,
         "ppd": ppd,
-        "grating_frequency": 5.0 / visual_size[1],
+        "frequency": 5.0 / visual_size[1],
         "target_indices_top": (2,),
         "target_indices_bottom": (7,),
         "target_center_offset": visual_size[0] / 10.0,
-        "target_size": visual_size[0] / 5.0,
+        "target_height": visual_size[0] / 5.0,
         "stripe_center_offset": visual_size[0] / 5.0,
-        "stripe_size": visual_size[0] / 5.0,
+        "stripe_height": visual_size[0] / 5.0,
         "period": "even",
     }
 
@@ -1207,11 +1207,11 @@ def white_howe(visual_size=VSIZES["white_howe"], ppd=PPD, shape=SHAPES["white_ho
     params = {
         "visual_size": visual_size,
         "ppd": ppd,
-        "grating_frequency": 5.0 / visual_size[1],
+        "frequency": 5.0 / visual_size[1],
         "target_indices_top": (2,),
         "target_indices_bottom": (7,),
         "target_center_offset": visual_size[0] / 5.0,
-        "target_size": visual_size[0] / 5.0,
+        "target_height": visual_size[0] / 5.0,
         "period": "even",
     }
 

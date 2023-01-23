@@ -704,11 +704,11 @@ def white(ppd=PPD):
     params = {
         "ppd": ppd,
         "visual_size": (8.0, 8.0),
-        "grating_frequency": 4.0 / 8.0,
+        "frequency": 4.0 / 8.0,
         "target_indices_top": (1, 3, 5),
         "target_indices_bottom": (2, 4, 6),
         "target_center_offset": 2,
-        "target_size": 2,
+        "target_height": 2,
         "intensity_bars": (70, 17.5),
         "intensity_target": 35.0,
         "period": "even",
