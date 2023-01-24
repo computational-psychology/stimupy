@@ -114,7 +114,6 @@ def wedge(
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,
-        # supersampling=supersampling,
         origin=origin,
     )
     visual_size = stim["visual_size"]

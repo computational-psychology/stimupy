@@ -22,7 +22,6 @@ def circular_white(
     intensity_target=0.5,
     intensity_rings=(1.0, 0.0),
     intensity_background=0.5,
-    supersampling=1,
     origin="mean",
 ):
     """Circular grating, with one or more target rings
@@ -63,9 +62,6 @@ def circular_white(
         If fewer intensities are passed than number of radii, cycles through intensities
     intensity_background : float (optional)
         intensity value of background, by default 0.5
-    supersampling : int (optional)
-        supersampling-factor used for anti-aliasing, by default 1.
-        Warning: produces smoother circles but might introduce gradients that affect vision!
     origin : "corner", "mean" or "center"
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)
@@ -94,7 +90,6 @@ def circular_white(
         ring_width=ring_width,
         intensity_background=intensity_background,
         intensity_rings=intensity_rings,
-        supersampling=supersampling,
         shape=shape,
         origin=origin,
     )
@@ -119,7 +114,6 @@ def circular_white(
         ring_width=ring_width,
         intensity_rings=intensities,
         intensity_background=intensity_background,
-        supersampling=supersampling,
         shape=shape,
         origin=origin,
     )
@@ -130,12 +124,8 @@ def circular_white(
     for i, ring_idx in enumerate(target_indices):
         mask = np.where(stim["mask"] == ring_idx+1, i+1, 0)
     stim["mask"] = mask.astype(int)
-
-    params = {
-        "target_indices": target_indices,
-        "intensity_target": intensity_target,
-    }
-    stim.update(params)
+    stim["target_indices"] = target_indices
+    stim["intensity_target"] = intensity_target
 
     return stim
 
@@ -150,7 +140,6 @@ def circular_bullseye(
     intensity_target=0.5,
     intensity_rings=(1.0, 0.0),
     intensity_background=0.5,
-    supersampling=1,
     origin="mean",
 ):
     """Circular Bullseye stimulus
@@ -192,9 +181,6 @@ def circular_bullseye(
         If fewer intensities are passed than number of radii, cycles through intensities
     intensity_background : float (optional)
         intensity value of background, by default 0.5
-    supersampling : int (optional)
-        supersampling-factor used for anti-aliasing, by default 1.
-        Warning: produces smoother circles but might introduce gradients that affect vision!
     origin : "corner", "mean" or "center"
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)
@@ -226,7 +212,6 @@ def circular_bullseye(
         intensity_background=intensity_background,
         intensity_target=intensity_target,
         target_indices=0,
-        supersampling=supersampling,
         origin=origin,
     )
     return stim

@@ -156,7 +156,6 @@ def disc_and_rings(
     ppd=None,
     shape=None,
     intensity_background=0.5,
-    supersampling=1,
     origin="mean",
 ):
     """Draw a central solid disc with zero or more solid rings (annuli)
@@ -176,9 +175,6 @@ def disc_and_rings(
         shape [height, width] of image, in pixels
     intensity_background : float (optional)
         value of background, by default 0.5
-    supersampling : int (optional)
-        supersampling-factor used for anti-aliasing, by default 5.
-        Warning: produces smoother circles but might introduce gradients that affect vision!
     origin : "corner", "mean" or "center"
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)
@@ -216,29 +212,18 @@ def disc_and_rings(
         )
     shape = params["shape"]
 
-    # Supersample shape (in pixels), to allow for antialiasing
-    super_shape = resolution.validate_shape((shape[0] * supersampling, shape[1] * supersampling))
-
     # Draw rings
-    base = image_base(shape=super_shape, visual_size=visual_size, origin=origin)
+    base = image_base(shape=shape, visual_size=visual_size, origin=origin)
     distances = base["radial"]
 
-    img = np.ones(super_shape) * intensity_background
+    img = np.ones(shape) * intensity_background
     ints = [*itertools.islice(itertools.cycle(intensity_rings), len(radii))]
     for radius, intensity in zip(reversed(radii), reversed(ints)):
         img[distances < radius] = intensity
 
-    # Downsample the stimulus by local averaging along rows and columns
-    sampler = resize_array(np.eye(img.shape[0] // supersampling), (1, supersampling))
-    img = np.dot(sampler, np.dot(img, sampler.T)) / supersampling**2
-
     # Assemble output
-    params.update(
-        {
-            "intensities": intensity_rings,
-            "supersampling": supersampling,
-        }
-    )
+    params["intensity_rings"] = intensity_rings
+
     return {"img": img, **params}
 
 
@@ -249,7 +234,6 @@ def disc(
     ppd=None,
     shape=None,
     intensity_background=0.5,
-    supersampling=1,
     origin="mean",
 ):
     """Draw a central disc
@@ -270,9 +254,6 @@ def disc(
         shape [height, width] of image, in pixels
     intensity_background : float (optional)
         intensity value of background, by default 0.5
-    supersampling : int (optional)
-        supersampling-factor used for anti-aliasing, by default 1.
-        Warning: produces smoother circles but might introduce gradients that affect vision!
     origin : "corner", "mean" or "center"
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)
@@ -299,7 +280,6 @@ def disc(
         visual_size=visual_size,
         ppd=ppd,
         intensity_background=intensity_background,
-        supersampling=supersampling,
         shape=shape,
         origin=origin,
     )
@@ -314,7 +294,6 @@ def ring(
     ppd=None,
     shape=None,
     intensity_background=0.5,
-    supersampling=1,
     origin="mean",
 ):
     """Draw a ring (annulus)
@@ -333,9 +312,6 @@ def ring(
         shape [height, width] of image, in pixels
     intensity_background : float (optional)
         intensity value of background, by default 0.5
-    supersampling : int (optional)
-        supersampling-factor used for anti-aliasing, by default 5.
-        Warning: produces smoother circles but might introduce gradients that affect vision!
     origin : "corner", "mean" or "center"
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)
@@ -371,7 +347,6 @@ def ring(
         visual_size=visual_size,
         ppd=ppd,
         intensity_background=intensity_background,
-        supersampling=supersampling,
         origin=origin,
     )
     return stim
@@ -389,7 +364,6 @@ def grating(
     ring_width=None,
     intensity_rings=(1.0, 0.0),
     intensity_background=0.5,
-    supersampling=1,
     origin="mean",
 ):
     """Draw a circular grating, i.e., set of rings
@@ -413,9 +387,6 @@ def grating(
         If fewer intensities are passed than number of radii, cycles through intensities
     intensity_background : float (optional)
         intensity value of background, by default 0.5
-    supersampling : int (optional)
-        supersampling-factor used for anti-aliasing, by default 1.
-        Warning: produces smoother circles but might introduce gradients that affect vision!
     origin : "corner", "mean" or "center"
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)
@@ -449,7 +420,6 @@ def grating(
         **stim_params,
         intensity_background=intensity_background,
         intensity_rings=intensity_rings,
-        supersampling=supersampling,
         origin=origin,
     )
 

@@ -692,7 +692,6 @@ def WE_circular1(ppd=PPD, pad=True):
         "target_indices": 4,
         "intensity_background": v2,
         "intensity_target": v2,
-        "supersampling": 1,
     }
 
     stim1 = illusions.circular.circular_white(
@@ -751,7 +750,6 @@ def WE_circular05(ppd=PPD, pad=True):
         "target_indices": 10,
         "intensity_background": v2,
         "intensity_target": v2,
-        "supersampling": 1,
     }
 
     stim1 = illusions.circular.circular_white(
@@ -810,7 +808,6 @@ def WE_circular025(ppd=PPD, pad=True):
         "target_indices": 22,
         "intensity_background": v2,
         "intensity_target": v2,
-        "supersampling": 1,
     }
 
     stim1 = illusions.circular.circular_white(
