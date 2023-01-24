@@ -196,7 +196,7 @@ def grating_white_white(ppd=PPD):
         "target_indices": (2, 4, 6, 8),
     }
     stim = illusions.grating.grating_uniform(**params)
-    stim["mask"] = np.where(stim["mask"] != 0, 1, 0)
+    stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
 
@@ -237,7 +237,7 @@ def grating_white_black(ppd=PPD):
         "target_indices": (2, 4, 6, 8),
     }
     stim = illusions.grating.grating_uniform(**params)
-    stim["mask"] = np.where(stim["mask"] != 0, 1, 0)
+    stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
 
@@ -278,7 +278,7 @@ def grating_black_white(ppd=PPD):
         "target_indices": (2, 4, 6, 8),
     }
     stim = illusions.grating.grating_uniform(**params)
-    stim["mask"] = np.where(stim["mask"] != 0, 1, 0)
+    stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
 
@@ -319,7 +319,7 @@ def grating_black_black(ppd=PPD):
         "target_indices": (2, 4, 6, 8),
     }
     stim = illusions.grating.grating_uniform(**params)
-    stim["mask"] = np.where(stim["mask"] != 0, 1, 0)
+    stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
 
@@ -369,7 +369,7 @@ def grating_white_in(ppd=PPD):
         large_grating_params=large_params,
         )
     
-    stim["mask"] = np.where(stim["mask"] != 0, 1, 0)
+    stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
 
@@ -419,7 +419,7 @@ def grating_black_in(ppd=PPD):
         large_grating_params=large_params,
         )
     
-    stim["mask"] = np.where(stim["mask"] != 0, 1, 0)
+    stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
 
@@ -469,7 +469,7 @@ def grating_white_out(ppd=PPD):
         large_grating_params=large_params,
         )
     
-    stim["mask"] = np.where(stim["mask"] != 0, 1, 0)
+    stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
 
@@ -519,7 +519,7 @@ def grating_black_out(ppd=PPD):
         large_grating_params=large_params,
         )
     
-    stim["mask"] = np.where(stim["mask"] != 0, 1, 0)
+    stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
 
@@ -571,7 +571,7 @@ def grating_white_orthogonal(ppd=PPD):
         mask_rotation=ORIENTATION,
         )
     
-    stim["mask"] = np.where(stim["mask"] != 0, 1, 0)
+    stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
 
@@ -623,7 +623,7 @@ def grating_black_orthogonal(ppd=PPD):
         mask_rotation=ORIENTATION,
         )
     
-    stim["mask"] = np.where(stim["mask"] != 0, 1, 0)
+    stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
 

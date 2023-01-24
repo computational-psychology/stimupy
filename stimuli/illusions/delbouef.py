@@ -43,8 +43,11 @@ def delboeuf_illusion(
         intensity value of background (default: 1)
 
     Returns
-    -------
-    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for the target (key: "target_mask"),
+        and additional keys containing stimulus parameters
     
     References
     ----------
@@ -74,6 +77,7 @@ def delboeuf_illusion(
         )
 
     inner["img"] = outer["img"] + inner["img"] + intensity_background
+    inner["line_mask"] = outer["line_mask"]
     return inner
         
 
@@ -88,4 +92,4 @@ if __name__ == "__main__":
         }
 
     stim = delboeuf_illusion(**p1)
-    plot_stim(stim, stim_name="Delboeuf", mask=False, save=None)
+    plot_stim(stim, stim_name="Delboeuf", mask=True, save=None)

@@ -44,8 +44,7 @@ def mask_angle(
         dict with boolean mask (key: bool_mask) for pixels falling in given angle,
         and additional params
     """
-
-    return mask_elements(
+    stim = mask_elements(
         edges=np.deg2rad(angles),
         orientation="angular",
         rotation=rotation,
@@ -53,7 +52,10 @@ def mask_angle(
         visual_size=visual_size,
         ppd=ppd,
         origin=origin,
-    )
+        )
+    stim["wedge_mask"] = stim["mask"]
+    del stim["mask"]
+    return stim
 
 
 def wedge(
@@ -99,7 +101,8 @@ def wedge(
     Returns
     -------
     dict[str, Any]
-        dict with the stimulus (key: "img")
+        dict with the stimulus (key: "img"),
+        mask with integer index for each segment (key: "wedge_mask"),
         and additional keys containing stimulus parameters
     """
 
@@ -121,7 +124,7 @@ def wedge(
     ppd = stim["ppd"]
 
     # Get mask for angles
-    bool_mask = mask_angle(
+    mask = mask_angle(
         rotation=rotation,
         angles=angles,
         visual_size=visual_size,
@@ -131,12 +134,8 @@ def wedge(
     )
 
     # Remove everything but wedge
-    stim["img"] = np.where(bool_mask["mask"], stim["img"], intensity_background)
-
-    # Output
-    stim.update(bool_mask)
-
-    return stim
+    stim["img"] = np.where(mask["wedge_mask"], stim["img"], intensity_background)
+    return stim.update(mask)
 
 
 def mask_segments(
@@ -168,13 +167,13 @@ def mask_segments(
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
-        mask with integer index for each angular segment (key: "mask"),
+        dict with the stimulus (key: "img"),
+        mask with integer index for each segment (key: "wedge_mask"),
         and additional keys containing stimulus parameters
     """
-
-    return mask_elements(
+    stim = mask_elements(
         orientation="angular",
         edges=np.deg2rad(edges),
         rotation=rotation,
@@ -182,7 +181,10 @@ def mask_segments(
         visual_size=visual_size,
         ppd=ppd,
         origin=origin,
-    )
+        )
+    stim["wedge_mask"] = stim["mask"]
+    del stim["mask"]
+    return stim
 
 
 def angular_segments(
@@ -221,7 +223,8 @@ def angular_segments(
     Returns
     -------
     dict[str, Any]
-        dict with the stimulus (key: "img"), mask (key: "mask")
+        dict with the stimulus (key: "img"),
+        mask with integer index for each segment (key: "wedge_mask"),
         and additional keys containing stimulus parameters
     """
 
@@ -237,9 +240,8 @@ def angular_segments(
 
     # Draw image
     stim["img"] = draw_regions(
-        stim["mask"], intensities=intensity_segments, intensity_background=intensity_background
+        stim["wedge_mask"], intensities=intensity_segments, intensity_background=intensity_background
     )
-
     return stim
 
 
@@ -285,7 +287,7 @@ def grating(
     -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
-        mask with integer index for each segment (key: "mask"),
+        mask with integer index for each segment (key: "wedge_mask"),
         and additional keys containing stimulus parameters
     """
 
@@ -377,7 +379,7 @@ def pinwheel(
     -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
-        mask with integer index for each segment (key: "mask"),
+        mask with integer index for each segment (key: "wedge_mask"),
         and additional keys containing stimulus parameters
     """
 
@@ -408,8 +410,8 @@ def pinwheel(
         origin=origin,
     )
 
-    # Mask out everywhere that the disc isn't
-    stim["img"] = np.where(disc["mask"], stim["img"], intensity_background)
-    stim["mask"] = np.where(disc["mask"], stim["mask"], 0)
-
-    return {**stim, "radii": disc["edges"], "intensity_background": intensity_background}
+    # Mask out everything but the disc
+    stim["img"] = np.where(disc["ring_mask"], stim["img"], intensity_background)
+    stim["radii"] = disc["edges"]
+    stim["intensity_background"] = intensity_background
+    return stim

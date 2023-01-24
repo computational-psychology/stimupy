@@ -35,7 +35,7 @@ import numpy as np
 import scipy.io
 
 from stimuli import illusions
-from stimuli.utils import pad_dict_by_visual_size
+from stimuli.utils import pad_dict_by_visual_size, rotate_dict
 
 __all__ = [
     "argyle",
@@ -151,7 +151,7 @@ def argyle(ppd=PPD):
         "original_range": original_range,
         "experimental_data": experimental_data,
     }
-    return {"img": normed_img, "mask": mask, **params}
+    return {"img": normed_img, "target_mask": mask, **params}
 
 
 def argyle_control(ppd=PPD):
@@ -195,7 +195,7 @@ def argyle_control(ppd=PPD):
 
     stim = {
         "img": normed_img,
-        "mask": mask.astype(int),
+        "target_mask": mask.astype(int),
         "visual_size": np.array(normed_img.shape) / ppd,
         "shape": normed_img.shape,
         "ppd": ppd,
@@ -247,7 +247,7 @@ def argyle_long(ppd=PPD):
 
     stim = {
         "img": normed_img,
-        "mask": mask.astype(int),
+        "target_mask": mask.astype(int),
         "visual_size": np.array(normed_img.shape) / ppd,
         "shape": normed_img.shape,
         "ppd": ppd,
@@ -299,7 +299,7 @@ def snake(ppd=PPD):
 
     stim = {
         "img": normed_img,
-        "mask": mask.astype(int),
+        "target_mask": mask.astype(int),
         "visual_size": np.array(normed_img.shape) / ppd,
         "shape": normed_img.shape,
         "ppd": ppd,
@@ -351,7 +351,7 @@ def snake_control(ppd=PPD):
 
     stim = {
         "img": normed_img,
-        "mask": mask.astype(int),
+        "target_mask": mask.astype(int),
         "visual_size": np.array(normed_img.shape) / ppd,
         "shape": normed_img.shape,
         "ppd": ppd,
@@ -403,7 +403,7 @@ def koffka_adelson(ppd=PPD):
 
     stim = {
         "img": normed_img,
-        "mask": mask.astype(int),
+        "target_mask": mask.astype(int),
         "visual_size": np.array(normed_img.shape) / ppd,
         "shape": normed_img.shape,
         "ppd": ppd,
@@ -455,7 +455,7 @@ def koffka_broken(ppd=PPD):
 
     stim = {
         "img": normed_img,
-        "mask": mask.astype(int),
+        "target_mask": mask.astype(int),
         "visual_size": np.array(normed_img.shape) / ppd,
         "shape": normed_img.shape,
         "ppd": ppd,
@@ -507,7 +507,7 @@ def koffka_connected(ppd=PPD):
 
     stim = {
         "img": normed_img,
-        "mask": mask.astype(int),
+        "target_mask": mask.astype(int),
         "visual_size": np.array(normed_img.shape) / ppd,
         "shape": normed_img.shape,
         "ppd": ppd,
@@ -617,7 +617,7 @@ def simcon(ppd=PPD):
 
     stim = {
         "img": normed_img,
-        "mask": mask.astype(int),
+        "target_mask": mask.astype(int),
         "visual_size": np.array(normed_img.shape) / ppd,
         "shape": normed_img.shape,
         "ppd": ppd,
@@ -669,7 +669,7 @@ def simcon_articulated(ppd=PPD):
 
     stim = {
         "img": normed_img,
-        "mask": mask.astype(int),
+        "target_mask": mask.astype(int),
         "visual_size": np.array(normed_img.shape) / ppd,
         "shape": normed_img.shape,
         "ppd": ppd,
@@ -715,13 +715,12 @@ def white(ppd=PPD):
     }
 
     stim = illusions.whites.white_two_rows(**params)
-    img = np.rot90(stim["img"])
-    mask = np.rot90(stim["mask"])
-
-    reduced_mask = np.where(mask == 2, 2, 0)
-    reduced_mask = np.where(mask == 5, 1, reduced_mask).astype(int)
+    stim = rotate_dict(stim)
+    reduced_mask = np.where(stim["target_mask"] == 2, 2, 0)
+    reduced_mask = np.where(stim["target_mask"] == 5, 1, reduced_mask).astype(int)
 
     # Normalize intensity values to [0, 1]
+    img = stim["img"]
     original_range = (img.min(), img.max())
     normed_img = (img - img.min()) / (img.max() - img.min())
     
@@ -737,7 +736,7 @@ def white(ppd=PPD):
         intensity_range=(0.0, 1.0),
         experimental_data=experimental_data,
     )
-    return {"img": normed_img, "mask": reduced_mask, **params}
+    return {"img": normed_img, "target_mask": reduced_mask, **params}
 
 
 if __name__ == "__main__":

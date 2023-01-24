@@ -53,8 +53,11 @@ def ponzo_illusion(
         intensity value of background
 
     Returns
-    -------
-    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "target_mask"),
+        and additional keys containing stimulus parameters
     
     References
     ----------
@@ -95,7 +98,6 @@ def ponzo_illusion(
         intensity_background=0,
         origin="center",
         )
-    line2["mask"] *= 2
     
     line_position1 = (-target_distance/2, -target_lines_length/2)
     line_position2 = (target_distance/2, -target_lines_length/2)
@@ -125,9 +127,9 @@ def ponzo_illusion(
         )
     
     line1 = stack_dicts(line1, line2)
-    line1["img"] = line1["img"] + line3["img"] + line4["img"] + intensity_background
-    line1["lines_mask"] = line1["mask"] + line3["mask"]*3 + line4["mask"]*4
-    line1["mask"] = line3["mask"] + line4["mask"]*2
+    line1["img"] += line3["img"] + line4["img"] + intensity_background
+    line1["line_mask"] += line3["line_mask"]*3 + line4["line_mask"]*4
+    line1["target_mask"] = line3["line_mask"] + line4["line_mask"]*2
     return line1
         
 
@@ -144,4 +146,4 @@ if __name__ == "__main__":
         }
 
     stim = ponzo_illusion(**p1)
-    plot_stim(stim, stim_name="Ponzo", mask=False, save=None)
+    plot_stim(stim, stim_name="Ponzo", mask=True, save=None)

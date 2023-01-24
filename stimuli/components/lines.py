@@ -55,7 +55,7 @@ def line(
     ----------
     dict[str, Any]
         dict with the stimulus (key: "img"),
-        mask with integer index for each target (key: "mask"),
+        mask with integer index for each line (key: "line_mask"),
         and additional keys containing stimulus parameters
     """
     
@@ -103,7 +103,7 @@ def line(
     
     stim = {
         "img": img,
-        "mask": mask.astype(int),
+        "line_mask": mask.astype(int),
         "visual_size": visual_size,
         "ppd": ppd,
         "shape": shape,
@@ -155,7 +155,7 @@ def dipole(
     ----------
     dict[str, Any]
         dict with the stimulus (key: "img"),
-        mask with integer index for each target (key: "mask"),
+        mask with integer index for each line (key: "line_mask"),
         and additional keys containing stimulus parameters
     """
     if line_seperation == 0:
@@ -200,7 +200,7 @@ def dipole(
         )
     
     stim1["img"] = stim1["img"] + stim2["img"]
-    stim1["mask"] = (stim1["mask"] + stim2["mask"]*2).astype(int)
+    stim1["line_mask"] = (stim1["line_mask"] + stim2["line_mask"]*2).astype(int)
     
     return stim1
 
@@ -238,7 +238,7 @@ def circle(
     ----------
     dict[str, Any]
         dict with the stimulus (key: "img"),
-        mask with integer index for each target (key: "mask"),
+        mask with integer index for each line (key: "line_mask"),
         and additional keys containing stimulus parameters
     """
     
@@ -256,6 +256,9 @@ def circle(
         intensity_background=intensity_background,
         origin="mean",
     )
+    stim["ring_mask"] = np.where(stim["ring_mask"] == 2, 1, 0)
+    stim["line_mask"] = stim["ring_mask"]
+    del stim["ring_mask"]
     return stim
 
 

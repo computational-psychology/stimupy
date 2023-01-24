@@ -16,12 +16,19 @@ for paper in papers:
 
     # Convert "img", "mask" to checksums
     for stim in stims.values():
-        export.arrs_to_checksum(stim, ["img", "mask"])
         img = stim["img"]
-        mask = stim["mask"]
+
+        # If target_mask exists, use it.
+        mask_keys = [key for key in stim.keys() if key.endswith("mask")]
+        if "target_mask" in mask_keys:
+            mask = stim["target_mask"]
+        else:
+            mask = stim[mask_keys[0]]
+
         stim.clear()
         stim["img"] = img
         stim["mask"] = mask
+        export.arrs_to_checksum(stim, ["img", "mask"])
 
     # Save all as .JSON
     export.to_json(stims, f"{d}/{paper}.json")

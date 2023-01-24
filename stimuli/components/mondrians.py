@@ -17,6 +17,35 @@ def mondrians(
     mondrian_intensities=None,
     intensity_background=0.5,
     ):
+    """
+    Draw Mondrians of given size and intensity at given position
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    mondrian_positions : Sequence[tuple, ... ] or None (default)
+        position (y, x) of each Mondrian in degrees visual angle
+    mondrian_sizes : Sequence[tuple, ... ] or None (default)
+        size (height, width, depth) of Mondrian parallelograms in degrees visual angle;
+        if only one number is given, squares will be drawn
+    mondrian_intensities : Sequence[Number, ... ] or None (default)
+        intensity values of each Mondrian, if only one number is given
+        all will have the same intensity
+    intensity_background : float
+        intensity value of background
+
+    Returns
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each Mondrian (key: "mondrian_mask"),
+        and additional keys containing stimulus parameters
+    """
 
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
@@ -85,7 +114,7 @@ def mondrians(
         if (ypos+yshape > shape[0]) or (xpos+xshape > shape[1]):
             raise ValueError("Not all Mondrians fit into the stimulus")
         mask_large = np.zeros(shape)
-        mask_large[ypos:ypos+yshape, xpos:xpos+xshape] = patch["mask"]
+        mask_large[ypos:ypos+yshape, xpos:xpos+xshape] = patch["shape_mask"]
 
         img[mask_large == 1] = mondrian_intensities[m]
         mask[mask_large == 1] = m+1
@@ -140,4 +169,4 @@ if __name__ == "__main__":
         "mondrians4": mondrians(visual_size=(2, 6), ppd=10, **p4),
         }
     
-    plot_stimuli(stims)
+    plot_stimuli(stims, mask=False)

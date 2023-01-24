@@ -116,4 +116,4 @@ stims = {
 
 
 if __name__ == "__main__":
-    plot_stimuli(stims, mask=False, save=None)
+    plot_stimuli(stims, mask=True, save=None)

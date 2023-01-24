@@ -30,7 +30,14 @@ def plot_stim(stim,
     if not mask:
         ax.imshow(stim["img"], cmap="gray", vmin=vmin, vmax=vmax)
     else:
-        img, mask = stim["img"], stim["mask"]
+        img = stim["img"]
+        mask_keys = [key for key in stim.keys() if key.endswith("mask")]
+        
+        # If target_mask exists, use it.
+        if "target_mask" in mask_keys:
+            mask = stim["target_mask"]
+        else:
+            mask = stim[mask_keys[0]]
         
         if (mask is None) or (len(np.unique(mask)) == 1):
             warnings.warn("mask is None or empty- cannot plot")

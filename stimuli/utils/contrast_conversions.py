@@ -1,29 +1,29 @@
 import numpy as np
 
 
-def transparency(stim, alpha=0.5, tau=0.2):
-    """Applies a transparency layer to given image at specified (mask) location
+def transparency(img, mask=None, alpha=0.5, tau=0.2):
+    """Applies a transparency to image at specified (mask) location if provided
 
     Parameters
     ----------
-    stim : dict
-        stimulus dictionary containing at least keys "img" and "mask"
-    tau : Number
-        tau of transparency (i.e. value of transparent medium), default 0.5
+    img : np.array
+        image to which transparancy will be applied
+    mask : np.array or None (default)
+        if not None, transparancy will be provided at non-zero locations
+        provided in this mask
     alpha : Number
         alpha of transparency (i.e. how transparant the medium is), default 0.2
+    tau : Number
+        tau of transparency (i.e. value of transparent medium), default 0.5
 
     Returns
     -------
-    Updated stimulus dict with keys "img", "tau" and "alpha";
-    img, with the transparency applied to the masked region
+    img with the applied transparency
     """
-    img = np.where(stim["mask"], alpha * stim["img"] + (1 - alpha) * tau, stim["img"])
-
-    stim["img"] = img
-    stim["tau"] = tau
-    stim["alpha"] = alpha
-    return stim
+    if mask is None:
+        mask = np.ones(img.shape)
+    img = np.where(mask, alpha * img + (1 - alpha) * tau, img)
+    return img
 
 
 def adapt_michelson_contrast(stim, michelson_contrast, mean_luminance=None):

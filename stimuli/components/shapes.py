@@ -50,9 +50,10 @@ def rectangle(
         orientation of rectangle in degrees visual angle (default 0)
 
     Returns
-    -------
+    ----------
     dict[str, Any]
-        dict with the stimulus (key: "img"), mask (key: "mask")
+        dict with the stimulus (key: "img"),
+        mask with integer index for the shape (key: "shape_mask"),
         and additional keys containing stimulus parameters
     """
     
@@ -118,7 +119,7 @@ def rectangle(
 
     return {
         "img": img*(intensity_rectangle-intensity_background) + intensity_background,
-        "mask": img.astype(int),
+        "shape_mask": img.astype(int),
         "visual_size": base["visual_size"],
         "ppd": base["ppd"],
         "shape": base["shape"],
@@ -160,9 +161,10 @@ def triangle(
         orientation of triangle in degrees visual angle (default 0)
 
     Returns
-    -------
+    ----------
     dict[str, Any]
-        dict with the stimulus (key: "img"), mask (key: "mask")
+        dict with the stimulus (key: "img"),
+        mask with integer index for the shape (key: "shape_mask"),
         and additional keys containing stimulus parameters
     """
     
@@ -199,11 +201,11 @@ def triangle(
         rectangle_size=triangle_size,
         rotation=rotation,
         )
-    img = img * rect["mask"]
+    img = img * rect["shape_mask"]
 
     return {
         "img": img*(intensity_triangle-intensity_background) + intensity_background,
-        "mask": img.astype(int),
+        "shape_mask": img.astype(int),
         "visual_size": base["visual_size"],
         "ppd": base["ppd"],
         "shape": base["shape"],
@@ -249,9 +251,10 @@ def cross(
         orientation of triangle in degrees visual angle (default 0)
 
     Returns
-    -------
+    ----------
     dict[str, Any]
-        dict with the stimulus (key: "img"), mask (key: "mask")
+        dict with the stimulus (key: "img"),
+        mask with integer index for the shape (key: "shape_mask"),
         and additional keys containing stimulus parameters
     """
     
@@ -304,7 +307,7 @@ def cross(
 
     return {
         "img": img*(intensity_cross-intensity_background) + intensity_background,
-        "mask": img.astype(int),
+        "shape_mask": img.astype(int),
         "shape": shape,
         "visual_size": visual_size,
         "ppd": ppd,
@@ -346,9 +349,10 @@ def parallelogram(
         orientation of triangle in degrees visual angle (default 0)
 
     Returns
-    -------
+    ----------
     dict[str, Any]
-        dict with the stimulus (key: "img"), mask (key: "mask")
+        dict with the stimulus (key: "img"),
+        mask with integer index for the shape (key: "shape_mask"),
         and additional keys containing stimulus parameters
     """
     if isinstance(parallelogram_size, (float, int)):
@@ -407,8 +411,8 @@ def parallelogram(
         img = tri1 * img + tri2 * img
 
     return {
-        "img": img,
-        "mask": img.astype(int),
+        "img": img*(intensity_parallelogram-intensity_background) + intensity_background,
+        "shape_mask": img.astype(int),
         "shape": shape,
         "visual_size": visual_size,
         "ppd": ppd,
@@ -436,4 +440,4 @@ if __name__ == "__main__":
         "parallelogram2": parallelogram(shape=(100, 100), ppd=10, parallelogram_size=(10, 9, -1)),
         }
     
-    plot_stimuli(stims)
+    plot_stimuli(stims, mask=False)

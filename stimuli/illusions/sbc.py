@@ -42,33 +42,32 @@ def simultaneous_contrast_generalized(
         intensity value for target
 
     Returns
-    -------
-    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for the target (key: "target_mask"),
+        and additional keys containing stimulus parameters
 
     References
     ----------
     Chevreul, M. (1855). The principle of harmony and contrast of colors.
     """
-    # Resolve resolution
-    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
-    if len(np.unique(ppd)) > 1:
-        raise ValueError("ppd should be equal in x and y direction")
 
     stim = rectangle(
         visual_size=visual_size,
-        ppd=int(np.unique(ppd)),
+        ppd=ppd,
+        shape=shape,
         rectangle_size=target_size,
         rectangle_position=target_position,
         intensity_background=intensity_background,
         intensity_rectangle=intensity_target,
     )
-
-    stim["visual_size"] = visual_size
-    stim["ppd"] = ppd
-    stim["shape"] = shape
+    
+    stim["target_mask"] = stim["shape_mask"]
     stim["target_size"] = stim["rectangle_size"]
     stim["target_position"] = stim["rectangle_position"]
     stim["intensity_target"] = stim["intensity_rectangle"]
+    del (stim["shape_mask"], stim["rectangle_size"], stim["rectangle_position"], stim["intensity_rectangle"])
     return stim
 
 
@@ -99,8 +98,11 @@ def simultaneous_contrast(
         intensity value for target
 
     Returns
-    -------
-    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for the target (key: "target_mask"),
+        and additional keys containing stimulus parameters
 
     References
     ----------
@@ -157,8 +159,11 @@ def sbc_with_dots(
         intensity value for target
 
     Returns
-    -------
-    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for the target (key: "target_mask"),
+        and additional keys containing stimulus parameters
 
     References
     ----------
@@ -226,7 +231,7 @@ def sbc_with_dots(
 
     stim = {
         "img": img,
-        "mask": mask.astype(int),
+        "target_mask": mask.astype(int),
         "shape": img.shape,
         "visual_size": np.array(img.shape) / ppd,
         "ppd": ppd,
@@ -281,8 +286,11 @@ def dotted_sbc(
         intensity value for target
 
     Returns
-    -------
-    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for the targets (key: "target_mask"),
+        and additional keys containing stimulus parameters
 
     References
     ----------
@@ -353,7 +361,7 @@ def dotted_sbc(
 
     stim = {
         "img": img,
-        "mask": mask.astype(int),
+        "target_mask": mask.astype(int),
         "shape": img.shape,
         "visual_size": np.array(img.shape) / ppd,
         "ppd": ppd,

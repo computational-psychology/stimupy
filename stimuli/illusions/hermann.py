@@ -34,7 +34,10 @@ def hermann_grid(
 
     Returns
     -------
-    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        empty mask (key: "target_mask"),
+        and additional keys containing stimulus parameters
     
     References
     ----------
@@ -46,7 +49,6 @@ def hermann_grid(
     if len(np.unique(ppd)) > 1:
         raise ValueError("ppd should be equal in x and y direction")
 
-    height, width = shape
     element_height, element_width, element_thick = degrees_to_pixels(element_size, np.unique(ppd))
 
     if element_height <= element_thick:
@@ -56,12 +58,14 @@ def hermann_grid(
     if element_thick <= 0:
         raise ValueError("Increase element thickness")
 
-    img = np.ones([height, width]) * intensity_background
+    img = np.ones(shape) * intensity_background
     for i in range(element_thick):
         img[i::element_height, :] = intensity_grid
         img[:, i::element_width] = intensity_grid
 
-    params = {
+    stim = {
+        "img": img,
+        "target_mask": np.zeros(shape).astype(int),  # TODO: add mask
         "visual_size": visual_size,
         "ppd": ppd,
         "shape": shape,
@@ -69,8 +73,7 @@ def hermann_grid(
         "intensity_background": intensity_background,
         "intensity_grid": intensity_grid,
     }
-
-    return {"img": img, "mask": None, **params}  # TODO: add mask
+    return stim
 
 
 if __name__ == "__main__":

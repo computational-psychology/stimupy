@@ -70,7 +70,8 @@ def circular_white(
     Returns
     ----------
     dict[str, Any]
-        dict with the stimulus (key: "img")
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
@@ -119,11 +120,11 @@ def circular_white(
     )
 
     # Update mask to only be targets
-    stim["rings"] = deepcopy(stim["mask"])
+    stim["rings"] = deepcopy(stim["ring_mask"])
     mask = np.zeros(stim["shape"])
     for i, ring_idx in enumerate(target_indices):
-        mask = np.where(stim["mask"] == ring_idx+1, i+1, 0)
-    stim["mask"] = mask.astype(int)
+        mask = np.where(stim["ring_mask"] == ring_idx+1, i+1, 0)
+    stim["target_mask"] = mask.astype(int)
     stim["target_indices"] = target_indices
     stim["intensity_target"] = intensity_target
 
@@ -189,7 +190,8 @@ def circular_bullseye(
     Returns
     ----------
     dict[str, Any]
-        dict with the stimulus (key: "img")
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References

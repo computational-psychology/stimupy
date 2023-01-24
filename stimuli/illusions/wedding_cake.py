@@ -48,8 +48,11 @@ def wedding_cake_stimulus(
         intensity value of targets
 
     Returns
-    -------
-    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for the target (key: "target_mask"),
+        and additional keys containing stimulus parameters
 
     References
     -----------
@@ -150,7 +153,7 @@ def wedding_cake_stimulus(
     
     stim = {
         "img": img,
-        "mask": mask.astype(int),
+        "target_mask": mask.astype(int),
         "shape": shape,
         "visual_size": visual_size,
         "ppd": ppd,

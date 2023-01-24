@@ -95,11 +95,11 @@ def add_targets(checkerboard_stim, targets, extend_targets=False, intensity_targ
         intensity value of the target checks, by default 0.5
 
     Returns
-    -------
-    dict
-        Stimulus dictionary that was passed in, with an updated "img",
-        and "mask" : target region(s) mask, as 2D numpy.ndarray with integer values
-        indicating target region
+    ----------
+    dict[str, Any]
+        dict with the updated stimulus (key: "img"),
+        mask with integer index for each target (key: "target_mask"),
+        and additional keys containing stimulus parameters
 
     See also
     --------
@@ -116,7 +116,7 @@ def add_targets(checkerboard_stim, targets, extend_targets=False, intensity_targ
     img = np.where(mask, intensity_target, checkerboard_stim["img"])
 
     checkerboard_stim["img"] = img
-    checkerboard_stim["mask"] = mask.astype(int)
+    checkerboard_stim["target_mask"] = mask.astype(int)
     return checkerboard_stim
 
 
@@ -170,12 +170,11 @@ def checkerboard(
         intensity values of checks, by default (0.0, 1.0)
 
     Returns
-    -------
-    dict
-        Stimulus dictionary, with all the (resolved) params and:
-            'img' : stimulus image as 2D numpy.ndarray
-            'mask' : target region(s) mask,
-                     as 2D numpy.ndarray with integer values indicating target region
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "target_mask"),
+        and additional keys containing stimulus parameters
 
     See also
     --------
@@ -212,7 +211,7 @@ def checkerboard(
             intensity_target=intensity_target,
         )
     else:
-        stim["mask"] = None
+        stim["target_mask"] = np.zeros(stim["shape"])
     return stim
 
 
@@ -259,13 +258,11 @@ def contrast_contrast(
         alpha of transparency (i.e. how transparant the medium is), default 0.2
 
     Returns
-    -------
-    dict
-        Stimulus dictionary, with all  of the (resolved) params, and:
-            "img" : stimulus image as 2D numpy.ndarray
-            "mask" : target region(s) mask,
-                     as 2D numpy.ndarray with integer values indicating target region
-
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "target_mask"),
+        and additional keys containing stimulus parameters
 
     References:
     -----------
@@ -309,9 +306,10 @@ def contrast_contrast(
     mask[target_idx] = 1
 
     # Apply transparency to target locations
+    img = transparency(img=img, mask=mask, alpha=alpha, tau=tau)
+
     stim["img"] = img
-    stim["mask"] = mask.astype(int)
-    stim = transparency(stim, alpha, tau)
+    stim["target_mask"] = mask.astype(int)
     return stim
 
 

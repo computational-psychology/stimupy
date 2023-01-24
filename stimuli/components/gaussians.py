@@ -1,6 +1,6 @@
 import numpy as np
 from stimuli.components import image_base
-from stimuli.components.shapes import disc
+# from stimuli.components.shapes import disc
 
 
 __all__ = [
@@ -42,6 +42,7 @@ def gaussian(
     -------
     dict[str, Any]
         dict with the stimulus (key: "img")
+        empty mask (key: "gaussian_mask")
         and additional keys containing stimulus parameters
     """
     if isinstance(sigma, (float, int)):
@@ -72,7 +73,7 @@ def gaussian(
     
     stim = {
         "img": gaussian,
-        "mask": np.zeros(shape).astype(int),
+        "gaussian_mask": np.zeros(base["shape"]).astype(int),
         "sigma": sigma,
         "rotation": rotation,
         "visual_size": base["visual_size"],

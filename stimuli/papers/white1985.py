@@ -110,7 +110,6 @@ def wide_0phase(ppd=PPD):
     """
 
     bar_width = resolve_bar_width(BAR_WIDTH, ppd)
-    print(bar_width)
 
     params = {
         "visual_size": 25*bar_width,
@@ -124,7 +123,7 @@ def wide_0phase(ppd=PPD):
     }
 
     stim = grating.counterphase_induction(**params)
-    stim["mask"] = np.where(stim["mask"] != 0, 1, 0)
+    stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
 
@@ -165,7 +164,7 @@ def wide_36phase(ppd=PPD):
     }
 
     stim = grating.counterphase_induction(**params)
-    stim["mask"] = np.where(stim["mask"] != 0, 1, 0)
+    stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
 
@@ -207,7 +206,7 @@ def wide_72phase(ppd=PPD):
     }
 
     stim = grating.counterphase_induction(**params)
-    stim["mask"] = np.where(stim["mask"] != 0, 1, 0)
+    stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
 
@@ -249,7 +248,7 @@ def wide_108phase(ppd=PPD):
     }
 
     stim = grating.counterphase_induction(**params)
-    stim["mask"] = np.where(stim["mask"] != 0, 1, 0)
+    stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
 
@@ -291,7 +290,7 @@ def wide_144phase(ppd=PPD):
     }
 
     stim = grating.counterphase_induction(**params)
-    stim["mask"] = np.where(stim["mask"] != 0, 1, 0)
+    stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
 
@@ -333,7 +332,7 @@ def wide_180phase(ppd=PPD):
     }
 
     stim = grating.counterphase_induction(**params)
-    stim["mask"] = np.where(stim["mask"] != 0, 1, 0)
+    stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
 
@@ -375,7 +374,7 @@ def square_0phase(ppd=PPD):
     }
 
     stim = grating.counterphase_induction(**params)
-    stim["mask"] = np.where(stim["mask"] != 0, 1, 0)
+    stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
 
@@ -417,7 +416,7 @@ def square_36phase(ppd=PPD):
     }
 
     stim = grating.counterphase_induction(**params)
-    stim["mask"] = np.where(stim["mask"] != 0, 1, 0)
+    stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
 
@@ -459,7 +458,7 @@ def square_72phase(ppd=PPD):
     }
 
     stim = grating.counterphase_induction(**params)
-    stim["mask"] = np.where(stim["mask"] != 0, 1, 0)
+    stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
 
@@ -501,7 +500,7 @@ def square_108phase(ppd=PPD):
     }
 
     stim = grating.counterphase_induction(**params)
-    stim["mask"] = np.where(stim["mask"] != 0, 1, 0)
+    stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
 
@@ -543,7 +542,7 @@ def square_144phase(ppd=PPD):
     }
 
     stim = grating.counterphase_induction(**params)
-    stim["mask"] = np.where(stim["mask"] != 0, 1, 0)
+    stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
 
@@ -585,7 +584,7 @@ def square_180phase(ppd=PPD):
     }
 
     stim = grating.counterphase_induction(**params)
-    stim["mask"] = np.where(stim["mask"] != 0, 1, 0)
+    stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
 

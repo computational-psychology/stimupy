@@ -48,7 +48,7 @@ def checkerboard(
     ----------
     dict[str, Any]
         dict with the stimulus (key: "img"),
-        mask with integer index for each target (key: "mask"),
+        mask with integer index for each check (key: "checker_mask"),
         and additional keys containing stimulus parameters
     """
     if isinstance(frequency, (float, int)) or frequency is None:
@@ -132,14 +132,14 @@ def checkerboard(
     img = np.where(img == intensity_checks[0]+intensity_checks[1], intensity_checks[1], intensity_checks[0])
     
     # Create a mask with target indices for each check
-    mask = sw1["mask"] + sw2["mask"]*sw1["mask"].max()*10
+    mask = sw1["grating_mask"] + sw2["grating_mask"]*sw1["grating_mask"].max()*10
     unique_vals = np.unique(mask)
     for v in range(len(unique_vals)):
         mask[mask == unique_vals[v]] = v+1
 
     stim = {
         "img": img,
-        "mask": mask.astype(int),
+        "checker_mask": mask.astype(int),
         "visual_size": sw1["visual_size"],
         "ppd": sw1["ppd"],
         "shape": sw1["shape"],

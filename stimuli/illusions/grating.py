@@ -77,7 +77,7 @@ def square_wave(
     ----------
     dict[str, Any]
         dict with the stimulus (key: "img"),
-        mask with integer index for each target (key: "mask"),
+        mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
     """
 
@@ -109,14 +109,13 @@ def square_wave(
     intensity_target = itertools.cycle(intensity_target)
 
     # Place target(s)
-    targets_mask = np.zeros_like(stim["mask"])
+    targets_mask = np.zeros_like(stim["grating_mask"])
     for target_idx, (bar_idx, intensity) in enumerate(zip(target_indices, intensity_target)):
-        targets_mask = np.where(stim["mask"] == bar_idx, target_idx + 1, targets_mask)
+        targets_mask = np.where(stim["grating_mask"] == bar_idx, target_idx + 1, targets_mask)
         stim["img"] = np.where(targets_mask == target_idx + 1, intensity, stim["img"])
 
     # Update and return stimulus
-    stim["bars_mask"] = stim["mask"]
-    stim["mask"] = targets_mask.astype(int)
+    stim["target_mask"] = targets_mask.astype(int)
     return stim
 
 
@@ -184,7 +183,7 @@ def grating_uniform(
     ----------
     dict[str, Any]
         dict with the stimulus (key: "img"),
-        mask with integer index for each target (key: "mask"),
+        mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
@@ -242,16 +241,16 @@ def grating_grating_masked(
         kwargs to generate small grating
     large_grating_params : dict
         kwargs to generate larger grating
-    mask_depth : float
-        depth of the parallelogram in degrees (default: 0)
-    mask_orientation: str
-        either "horizontal" or "vertical"
+    mask_size : Sequence[Number, Number, Number], Sequence[Number, Number], Number or None (default)
+        size (height, width, depth) of parallelogram-like mask in degrees visual angle
+    mask_rotation: float
+        rotation of the mask in degree
 
     Returns
     -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
-        mask with integer index for each bar (key: "mask"),
+        mask with integer index for each bar (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
@@ -282,11 +281,11 @@ def grating_grating_masked(
     
     small_grating = pad_dict_to_shape(small_grating, large_grating["shape"])
     img = np.where(window, small_grating["img"], large_grating["img"])
-    mask = np.where(window, small_grating["mask"], 0)
+    mask = np.where(window, small_grating["target_mask"], 0)
 
     stim = {
         "img": img,
-        "mask": mask.astype(int),
+        "target_mask": mask.astype(int),
         "bar_width_small": small_grating["bar_width"],
         "bar_width_large": large_grating["bar_width"],
     }
@@ -310,7 +309,7 @@ def grating_grating(
     -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
-        mask with integer index for each bar (key: "mask"),
+        mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
@@ -397,17 +396,17 @@ def counterphase_induction(
     if target_phase_shift < 0:
         if orientation == "horizontal":
             stim_target["img"][:, 0:cx-target_shifti] = stim_target["img"][:, target_shifti::]
-            stim_target["mask"][:, 0:cx-target_shifti] = stim_target["mask"][:, target_shifti::]
+            stim_target["grating_mask"][:, 0:cx-target_shifti] = stim_target["grating_mask"][:, target_shifti::]
         elif orientation == "vertical":
             stim_target["img"][0:cx-target_shifti, :] = stim_target["img"][target_shifti::, :]
-            stim_target["mask"][0:cx-target_shifti, :] = stim_target["mask"][target_shifti::, :]
+            stim_target["grating_mask"][0:cx-target_shifti, :] = stim_target["grating_mask"][target_shifti::, :]
     else:
         if orientation == "horizontal":
             stim_target["img"][:, target_shifti::] = stim_target["img"][:, 0:cx-target_shifti]
-            stim_target["mask"][:, target_shifti::] = stim_target["mask"][:, 0:cx-target_shifti]
+            stim_target["grating_mask"][:, target_shifti::] = stim_target["grating_mask"][:, 0:cx-target_shifti]
         elif orientation == "vertical":
             stim_target["img"][target_shifti::, :] = stim_target["img"][0:cx-target_shifti, :]
-            stim_target["mask"][target_shifti::, :] = stim_target["mask"][0:cx-target_shifti, :]
+            stim_target["grating_mask"][target_shifti::, :] = stim_target["grating_mask"][0:cx-target_shifti, :]
 
     # Add targets on grating
     mask_temp = np.ones(stim["shape"])
@@ -415,13 +414,13 @@ def counterphase_induction(
     img = stim["img"] * mask_temp + stim_target["img"]
     
     # Create target mask
-    mask = np.where(stim_target["img"] == intensity_target, stim_target["mask"], 0)
+    mask = np.where(stim_target["img"] == intensity_target, stim_target["grating_mask"], 0)
     unique_vals = np.unique(mask)
     for v in range(len(unique_vals)):
         mask[mask == unique_vals[v]] = v
 
     stim["img"] = img
-    stim["mask"] = mask.astype(int)
+    stim["target_mask"] = mask.astype(int)
     stim["target_phase_shift"] = target_phasei
     stim["target_size"] = stim_target["visual_size"]
     return stim
@@ -482,6 +481,13 @@ def grating_induction(
         if "mean": set origin to hypothetical image center
         if "center": set origin to real center (closest existing value to mean)
 
+    Returns
+    -------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "target_mask"),
+        and additional keys containing stimulus parameters
+
     References
     ----------
     McCourt, M. E. (1982). A spatial frequency dependent grating-induction effect.
@@ -515,10 +521,8 @@ def grating_induction(
     )
 
     # Superimpose
-    stim["img"] = np.where(target_mask["mask"], intensity_target, stim["img"])
-    stim["bars_mask"] = stim["mask"]
-    stim["mask"] = np.where(target_mask["mask"], stim["mask"], 0)
-
+    stim["img"] = np.where(target_mask["shape_mask"], intensity_target, stim["img"])
+    stim["target_mask"] = np.where(target_mask["shape_mask"], stim["grating_mask"], 0)
     return stim
 
 
@@ -580,6 +584,13 @@ def grating_induction_blur(
         if "mean": set origin to hypothetical image center
         if "center": set origin to real center (closest existing value to mean)
 
+    Returns
+    -------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "target_mask"),
+        and additional keys containing stimulus parameters
+
     References
     ----------
     McCourt, M. E. (1982). A spatial frequency dependent grating-induction effect.
@@ -615,10 +626,8 @@ def grating_induction_blur(
     )
 
     # Superimpose
-    stim["img"] = np.where(target_mask["mask"], intensity_target, stim["img"])
-    stim["bars_mask"] = stim["mask"]
-    stim["mask"] = np.where(target_mask["mask"], stim["mask"], 0)
-
+    stim["img"] = np.where(target_mask["shape_mask"], intensity_target, stim["img"])
+    stim["target_mask"] = np.where(target_mask["shape_mask"], stim["grating_mask"], 0)
     return stim
 
 
@@ -659,4 +668,4 @@ if __name__ == "__main__":
         "Grating induction blur": grating_induction_blur(**params, target_width=0.5, target_blur=5),
     }
 
-    plot_stimuli(stims, mask=False, save=None)
+    plot_stimuli(stims, mask=True, save=None)

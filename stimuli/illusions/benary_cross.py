@@ -61,34 +61,33 @@ def benarys_cross_generalized(
         intensity value for target
 
     Returns
-    -------
-    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "target_mask"),
+        and additional keys containing stimulus parameters
 
     References
     -----------
     Benary, W. (1924). Beobachtungen zu einem Experiment ueber Helligkeitskontrast.
         Psychologische Forschung, 5, 131–142. https://doi.org/10.1007/BF00402398
     """
-    # Resolve resolution
-    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
-
-    if len(np.unique(ppd)) > 1:
-        raise ValueError("ppd should be equal in x and y direction")
 
     # Create cross
-    img = cross(
+    cross_stim = cross(
         visual_size=visual_size,
-        ppd=np.unique(ppd),
+        ppd=ppd,
+        shape=shape,
         cross_size=visual_size,
         cross_arm_ratios=1.0,
         cross_thickness=cross_thickness,
         intensity_background=intensity_background,
         intensity_cross=intensity_cross,
-    )["img"]
+    )
 
     # Add targets
     stim = add_targets(
-        img,
+        cross_stim["img"],
         np.unique(ppd),
         target_size,
         target_type,
@@ -98,14 +97,8 @@ def benarys_cross_generalized(
         intensity_target,
     )
 
-    # Add missing parameter information
-    stim["visual_size"] = visual_size
-    stim["ppd"] = ppd
-    stim["shape"] = shape
-    stim["cross_thickness"] = cross_thickness
-    stim["intensity_background"] = intensity_background
-    stim["intensity_cross"] = intensity_cross
-    return stim
+    del cross_stim["img"]
+    return {**stim, **cross_stim}
 
 
 def benarys_cross_rectangles(
@@ -141,8 +134,11 @@ def benarys_cross_rectangles(
         intensity value for target
 
     Returns
-    -------
-    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "target_mask"),
+        and additional keys containing stimulus parameters
 
     References
     -----------
@@ -222,8 +218,11 @@ def benarys_cross_triangles(
         intensity value for target
 
     Returns
-    -------
-    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "target_mask"),
+        and additional keys containing stimulus parameters
 
     References
     -----------
@@ -315,8 +314,11 @@ def todorovic_benary_generalized(
         intensity value for target
 
     Returns
-    -------
-    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "target_mask"),
+        and additional keys containing stimulus parameters
 
     References
     -----------
@@ -333,9 +335,10 @@ def todorovic_benary_generalized(
     width, height = left + right, top + bottom
 
     # Create stimulus without targets
-    img = np.ones((height, width)) * intensity_background
-    img[:, 0:left] = intensity_cross
-    img[height - bottom : :, 0 : width - left] = intensity_cross
+    mask = np.zeros(shape).astype(int)
+    mask[:, 0:left] = 1
+    mask[height - bottom : :, 0 : width - left] = 1
+    img = np.where(mask, intensity_cross, intensity_background)
 
     # Add targets
     stim = add_targets(
@@ -356,6 +359,7 @@ def todorovic_benary_generalized(
     stim["L_width"] = L_width
     stim["intensity_background"] = intensity_background
     stim["intensity_cross"] = intensity_cross
+    stim["shape_mask"] = mask
     return stim
 
 
@@ -393,8 +397,11 @@ def todorovic_benary_rectangles(
         intensity value for target
 
     Returns
-    -------
-    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "target_mask"),
+        and additional keys containing stimulus parameters
 
     References
     -----------
@@ -465,8 +472,11 @@ def todorovic_benary_triangles(
         intensity value for target
 
     Returns
-    -------
-    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "target_mask"),
+        and additional keys containing stimulus parameters
 
     References
     -----------
@@ -537,8 +547,11 @@ def add_targets(
         intensity value for target
 
     Returns
-    -------
-    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    ----------
+    dict[str, Any]
+        dict with the updated stimulus (key: "img"),
+        mask with integer index for each target (key: "target_mask"),
+        and additional keys containing stimulus parameters
     """
 
     mask = np.zeros(img.shape)
@@ -651,7 +664,7 @@ def add_targets(
         }
 
     stim["img"] = img
-    stim["mask"] = mask.astype(int)
+    stim["target_mask"] = mask.astype(int)
     return stim
 
 

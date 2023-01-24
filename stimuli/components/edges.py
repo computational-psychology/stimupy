@@ -34,9 +34,10 @@ def step_edge(
         intensity values of edges (default: (0., 1.))
 
     Returns
-    -------
+    ----------
     dict[str, Any]
-        dict with the stimulus (key: "img")
+        dict with the stimulus (key: "img"),
+        mask with integer index for the each lobes (key: "edge_mask"),
         and additional keys containing stimulus parameters
     """
     # Resolve resolutions and get distances
@@ -55,7 +56,7 @@ def step_edge(
 
     stim = {
         "img": img,
-        "mask": mask.astype(int),
+        "edge_mask": mask.astype(int),
         "visual_size": base["visual_size"],
         "ppd": base["ppd"],
         "shape": base["shape"],
@@ -95,9 +96,10 @@ def gaussian_edge(
         intensity value of background, by default 0.5
 
     Returns
-    -------
+    ----------
     dict[str, Any]
-        dict with the stimulus (key: "img")
+        dict with the stimulus (key: "img"),
+        mask with integer index for the each lobes (key: "edge_mask"),
         and additional keys containing stimulus parameters
     """
     stim = step_edge(
@@ -161,8 +163,11 @@ def cornsweet_edge(
         determines steepness of ramp (default is 2.75. 1 would be linear)
 
     Returns
-    -------
-    Dictionary with img: ndarray (2D) and mask
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for the each lobes (key: "edge_mask"),
+        and additional keys containing stimulus parameters
 
     References
     ----------

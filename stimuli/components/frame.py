@@ -36,11 +36,10 @@ def mask_frames(
     Returns
     ----------
     dict[str, Any]
-        mask with integer index for each frame (key: "mask"),
+        mask with integer index for each frame (key: "frame_mask"),
         and additional keys containing stimulus parameters
     """
-
-    return mask_elements(
+    stim = mask_elements(
         orientation="cityblock",
         edges=edges,
         rotation=0.0,
@@ -48,7 +47,10 @@ def mask_frames(
         visual_size=visual_size,
         ppd=ppd,
         origin=origin,
-    )
+        )
+    stim["frame_mask"] = stim["mask"]
+    del stim["mask"]
+    return stim
 
 
 def frames(
@@ -87,7 +89,7 @@ def frames(
     ----------
     dict[str, Any]
         dict with the stimulus (key: "img"),
-        mask with integer index for each frame (key: "mask"),
+        mask with integer index for each frame (key: "frame_mask"),
         and additional keys containing stimulus parameters
     """
 
@@ -102,9 +104,8 @@ def frames(
 
     # Draw image
     stim["img"] = draw_regions(
-        stim["mask"], intensities=intensity_frames, intensity_background=intensity_background
+        stim["frame_mask"], intensities=intensity_frames, intensity_background=intensity_background
     )
-
     return stim
 
 
@@ -154,7 +155,7 @@ def square_wave(
     ----------
     dict[str, Any]
         dict with the stimulus (key: "img"),
-        mask with integer index for each frame (key: "mask"),
+        mask with integer index for each frame (key: "frame_mask"),
         and additional keys containing stimulus parameters
     """
 

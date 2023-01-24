@@ -5,7 +5,7 @@ import numpy as np
 import scipy.special as sp
 
 from stimuli.components import image_base, mask_elements, resolve_grating_params
-from stimuli.utils import resize_array, resolution
+from stimuli.utils import resolution
 
 __all__ = [
     "disc_and_rings",
@@ -77,20 +77,18 @@ def resolve_circular_params(
         phase_width=ring_width,
         ppd=ppd_1D,
         frequency=frequency,
-        # period=period,
     )
     shape = resolution.validate_shape(params["length"] * 2)
     visual_size = resolution.validate_visual_size(params["visual_angle"] * 2)
     ppd = resolution.validate_ppd(params["ppd"])
 
     return {
-        "shape": shape,
         "visual_size": visual_size,
         "ppd": ppd,
+        "shape": shape,
         "frequency": params["frequency"],
         "ring_width": params["phase_width"],
         "n_rings": n_rings,
-        # "period": params["period"],
         "radii": params["edges"],
     }
 
@@ -120,9 +118,10 @@ def mask_rings(
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
-    -------
+    ----------
     dict[str, Any]
-        dict with the mask (key: "mask")
+        dict with the stimulus (key: "img"),
+        mask with integer index for each ring (key: "ring_mask"),
         and additional keys containing stimulus parameters
 
     Raises
@@ -138,7 +137,7 @@ def mask_rings(
         )
 
     # Mark elements with integer idx-value
-    return mask_elements(
+    stim = mask_elements(
         orientation="radial",
         edges=radii,
         rotation=0.0,
@@ -147,6 +146,9 @@ def mask_rings(
         ppd=ppd,
         origin=origin,
     )
+    stim["ring_mask"] = stim["mask"]
+    del stim["mask"]
+    return stim
 
 
 def disc_and_rings(
@@ -181,9 +183,10 @@ def disc_and_rings(
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
-    -------
+    ----------
     dict[str, Any]
-        dict with the stimulus (key: "img")
+        dict with the stimulus (key: "img"),
+        mask with integer index for each ring (key: "ring_mask"),
         and additional keys containing stimulus parameters
     """
 
@@ -223,7 +226,6 @@ def disc_and_rings(
 
     # Assemble output
     params["intensity_rings"] = intensity_rings
-
     return {"img": img, **params}
 
 
@@ -260,9 +262,10 @@ def disc(
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
-    -------
+    ----------
     dict[str, Any]
-        dict with the stimulus (key: "img")
+        dict with the stimulus (key: "img"),
+        mask with integer index for each ring (key: "ring_mask"),
         and additional keys containing stimulus parameters
     """
 
@@ -283,7 +286,7 @@ def disc(
         shape=shape,
         origin=origin,
     )
-    stim["mask"] = (stim["mask"]/2).astype(int)
+    stim["ring_mask"] = (stim["ring_mask"]/2).astype(int)
     return stim
 
 
@@ -318,9 +321,10 @@ def ring(
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
-    -------
+    ----------
     dict[str, Any]
-        dict with the stimulus (key: "img")
+        dict with the stimulus (key: "img"),
+        mask with integer index for each ring (key: "ring_mask"),
         and additional keys containing stimulus parameters
 
     Raises
@@ -393,9 +397,10 @@ def grating(
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
-    -------
+    ----------
     dict[str, Any]
-        dict with the stimulus (key: "img")
+        dict with the stimulus (key: "img"),
+        mask with integer index for each ring (key: "ring_mask"),
         and additional keys containing stimulus parameters
     """
 
@@ -459,9 +464,10 @@ def bessel(
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
-    -------
+    ----------
     dict[str, Any]
-        dict with the stimulus (key: "img")
+        dict with the stimulus (key: "img"),
+        empty mask (key: "ring_mask"),
         and additional keys containing stimulus parameters
     """
 
@@ -480,7 +486,7 @@ def bessel(
 
     stim = {
         "img": img,
-        "mask": np.zeros(shape).astype(int),
+        "ring_mask": np.zeros(shape).astype(int),
         "visual_size": base["visual_size"],
         "ppd": base["ppd"],
         "shape": base["shape"],

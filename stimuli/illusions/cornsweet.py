@@ -44,8 +44,11 @@ def cornsweet(
         determines steepness of ramp (default is 2.75. 1 would be linear)
 
     Returns
-    -------
-    Dictionary with img: ndarray (2D) and mask
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "target_mask"),
+        and additional keys containing stimulus parameters
 
     References
     ----------
@@ -72,7 +75,7 @@ def cornsweet(
     mask = np.zeros(shape)
     mask[:, 0 : int(shape[1] / 2.0 - ramp_width_px - 1)] = 1
     mask[:, int(shape[1] / 2.0 + ramp_width_px + 1) : :] = 2
-    stim["mask"] = mask.astype(int)
+    stim["target_mask"] = mask.astype(int)
     return stim
 
 

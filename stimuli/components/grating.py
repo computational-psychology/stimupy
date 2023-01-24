@@ -45,11 +45,11 @@ def mask_bars(
     Returns
     ----------
     dict[str, Any]
-        mask with integer index for each bar (key: "mask"),
+        mask with integer index for each bar (key: "grating_mask"),
         and additional keys containing stimulus parameters
     """
-
-    return mask_elements(
+    
+    stim = mask_elements(
         edges=edges,
         orientation=orientation,
         rotation=rotation,
@@ -57,7 +57,10 @@ def mask_bars(
         shape=shape,
         visual_size=visual_size,
         ppd=ppd,
-    )
+        )
+    stim["grating_mask"] = stim["mask"]
+    del stim["mask"]
+    return stim
 
 
 def shift_edges(
@@ -176,7 +179,7 @@ def square_wave(
     ----------
     dict[str, Any]
         dict with the stimulus (key: "img"),
-        mask with integer index for each target (key: "mask"),
+        mask with integer index for each bar (key: "grating_mask"),
         and additional keys containing stimulus parameters
     """
 
@@ -261,7 +264,7 @@ def square_wave(
     )
 
     # Draw image
-    stim["img"] = draw_regions(stim["mask"], intensities=intensities)
+    stim["img"] = draw_regions(stim["grating_mask"], intensities=intensities)
 
     return {
         **stim,
@@ -321,7 +324,7 @@ def sine_wave(
     ----------
     dict[str, Any]
         dict with the stimulus (key: "img"),
-        mask with integer index for each target (key: "mask"),
+        mask with integer index for each bar (key: "grating_mask"),
         and additional keys containing stimulus parameters
     """
 
@@ -470,7 +473,7 @@ def gabor(
     ----------
     dict[str, Any]
         dict with the stimulus (key: "img"),
-        mask with integer index for each target (key: "mask"),
+        mask with integer index for each bar (key: "grating_mask"),
         and additional keys containing stimulus parameters
     """
     stim = sine_wave(
@@ -543,7 +546,7 @@ def staircase(
     ----------
     dict[str, Any]
         dict with the stimulus (key: "img"),
-        mask with integer index for each target (key: "mask"),
+        mask with integer index for each bar (key: "grating_mask"),
         and additional keys containing stimulus parameters
     """
 
@@ -629,7 +632,7 @@ def staircase(
     # Draw image
     if len(intensity_bars) == 2:
         intensity_bars = np.linspace(intensity_bars[0], intensity_bars[1], int(params["n_phases"]))
-    stim["img"] = draw_regions(stim["mask"], intensities=intensity_bars)
+    stim["img"] = draw_regions(stim["grating_mask"], intensities=intensity_bars)
 
     return {
         **stim,
@@ -666,7 +669,7 @@ def plaid(
     ----------
     dict[str, Any]
         dict with the stimulus (key: "img"),
-        mask with integer index for each target (key: "mask"),
+        mask with integer index for each bar (key: "grating_mask"),
         and additional keys containing stimulus parameters
     """
 
@@ -694,7 +697,7 @@ def plaid(
     # Update parameters
     grating1["img"] = img
     grating1["sigma"] = sigma
-    grating1["mask2"] = grating2["mask"]
+    grating1["grating_mask2"] = grating2["grating_mask"]
     grating1["frequency2"] = grating2["frequency"]
     grating1["bar_width2"] = grating2["bar_width"]
     grating1["n_bars2"] = grating2["n_bars"]

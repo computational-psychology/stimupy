@@ -76,7 +76,7 @@ def radial_white(
     ----------
     dict[str, Any]
         dict with the stimulus (key: "img"),
-        mask with integer index for each target (key: "mask"),
+        mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
@@ -122,7 +122,7 @@ def radial_white(
         ]
     intensity_target = itertools.cycle(intensity_target)
 
-    target_mask = np.zeros_like(stim["mask"])
+    target_mask = np.zeros_like(stim["wedge_mask"])
     for target_idx, (segment_idx, center, width, intensity) in enumerate(
         zip(target_indices, target_center, target_width, intensity_target)
     ):
@@ -136,11 +136,11 @@ def radial_white(
             ppd=stim["ppd"],
             shape=stim["shape"],
         )
-        target_mask = np.where(
-            (stim["mask"] == segment_idx) & (ring_stim["mask"] == 2), target_idx + 1, target_mask
-        )
+        condition1 = (stim["wedge_mask"] == segment_idx)
+        condition2 = (ring_stim["ring_mask"] == 2)
+        target_mask = np.where(condition1 & condition2, target_idx + 1, target_mask)
         stim["img"] = np.where(target_mask == (target_idx + 1), intensity, stim["img"])
-    stim["mask"] = target_mask
+    stim["target_mask"] = target_mask
 
     return stim
 

@@ -13,9 +13,9 @@ __all__ = [
 
 
 def frames_stimulus(
-    shape=None,
     visual_size=None,
     ppd=None,
+    shape=None,
     frequency=None,
     n_frames=None,
     frame_width=None,
@@ -28,12 +28,12 @@ def frames_stimulus(
 
     Parameters
     ----------
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
     frequency : Number, or None (default)
         spatial frequency of grating, in cycles per degree visual angle
     n_frames : int, or None (default)
@@ -58,7 +58,7 @@ def frames_stimulus(
     ----------
     dict[str, Any]
         dict with the stimulus (key: "img"),
-        mask with integer index for each target (key: "mask"),
+        mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
@@ -92,15 +92,13 @@ def frames_stimulus(
     intensity_target = itertools.cycle(intensity_target)
 
     # Place target(s)
-    targets_mask = np.zeros_like(stim["mask"])
+    targets_mask = np.zeros_like(stim["frame_mask"])
     for target_idx, (bar_idx, intensity) in enumerate(zip(target_indices, intensity_target)):
-        targets_mask = np.where(stim["mask"] == bar_idx, target_idx + 1, targets_mask)
+        targets_mask = np.where(stim["frame_mask"] == bar_idx, target_idx + 1, targets_mask)
         stim["img"] = np.where(targets_mask == target_idx + 1, intensity, stim["img"])
 
     # Update and return stimulus
-    stim["bars_mask"] = stim["mask"]
-    stim["mask"] = targets_mask
-
+    stim["target_mask"] = targets_mask.astype(int)
     return stim
 
 
@@ -148,12 +146,10 @@ def frames_generalized(
     ----------
     dict[str, Any]
         dict with the stimulus (key: "img"),
-        mask with integer index for each frame (key: "mask"),
+        mask with integer index for each frame (key: "target_mask"),
         and additional keys containing stimulus parameters
     """
-    # if visual_size is None and shape is None:
-    #     visual_size = sum(frame_radii)*2
-    
+
     # Frames component
     stim = frames_component.frames(
         frame_radii=frame_radii,
@@ -177,22 +173,20 @@ def frames_generalized(
     intensity_target = itertools.cycle(intensity_target)
 
     # Place target(s)
-    targets_mask = np.zeros_like(stim["mask"])
+    targets_mask = np.zeros_like(stim["frame_mask"])
     for target_idx, (bar_idx, intensity) in enumerate(zip(target_indices, intensity_target)):
-        targets_mask = np.where(stim["mask"] == bar_idx, target_idx + 1, targets_mask)
+        targets_mask = np.where(stim["frame_mask"] == bar_idx, target_idx + 1, targets_mask)
         stim["img"] = np.where(targets_mask == target_idx + 1, intensity, stim["img"])
 
     # Update and return stimulus
-    stim["bars_mask"] = stim["mask"]
-    stim["mask"] = targets_mask
-
+    stim["target_mask"] = targets_mask
     return stim
 
 
 def bullseye_stimulus(
-    shape=None,
     visual_size=None,
     ppd=None,
+    shape=None,
     frequency=None,
     n_frames=None,
     frame_width=None,
@@ -207,12 +201,12 @@ def bullseye_stimulus(
 
     Parameters
     ----------
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
     frequency : Number, or None (default)
         spatial frequency of grating, in cycles per degree visual angle
     n_frames : int, or None (default)
@@ -235,7 +229,7 @@ def bullseye_stimulus(
     ----------
     dict[str, Any]
         dict with the stimulus (key: "img"),
-        mask with integer index for each target (key: "mask"),
+        mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
@@ -256,7 +250,6 @@ def bullseye_stimulus(
         target_indices=1,
         intensity_target=intensity_target,
     )
-
     return stim
 
 
@@ -301,7 +294,7 @@ def bullseye_generalized(
     ----------
     dict[str, Any]
         dict with the stimulus (key: "img"),
-        mask with integer index for each frame (key: "mask"),
+        mask with integer index for each frame (key: "target_mask"),
         and additional keys containing stimulus parameters
     """
     stim = frames_generalized(

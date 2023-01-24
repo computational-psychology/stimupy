@@ -8,9 +8,9 @@ __all__ = [
 
 
 def dungeon_illusion(
+        visual_size=None,
+        ppd=None,
     shape=None,
-    visual_size=None,
-    ppd=None,
     cell_size=None,
     n_cells=None,
     target_radius=1,
@@ -23,12 +23,12 @@ def dungeon_illusion(
 
     Parameters
     ----------
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of grating, in pixels
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size [height, width] of grating, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of grating, in pixels
     cell_size : Sequence[Number, Number], Number, or None (default)
         size of individual cell (height, width)
     n_cells : Sequence[Number, Number], Number, or None (default)
@@ -43,8 +43,11 @@ def dungeon_illusion(
         intensity value for target
 
     Returns
-    -------
-    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "target_mask"),
+        and additional keys containing stimulus parameters
 
     References
     -----------
@@ -102,7 +105,7 @@ def dungeon_illusion(
     
     stim = {
         "img": img,
-        "mask": mask.astype(int),
+        "target_mask": mask.astype(int),
         "target_radius": target_radius,
         "intensity_background": intensity_background,
         "intensity_grid": intensity_grid,
@@ -142,9 +145,9 @@ def resolve_dungeon_params(
     )
 
     return {
-        "shape": shape,
         "visual_size": visual_size,
         "ppd": ppd,
+        "shape": shape,
         "n_cells": (n_cells1+1, n_cells2+1),
         "cell_size": (cell_size1/2, cell_size2/2),
     }

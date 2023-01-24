@@ -41,8 +41,11 @@ def cube_varying_cells(
         intensity value for target
 
     Returns
-    -------
-    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "target_mask"),
+        and additional keys containing stimulus parameters
 
     References
     ----------
@@ -119,7 +122,7 @@ def cube_varying_cells(
 
     stim = {
         "img": img,
-        "mask": mask.astype(int),
+        "target_mask": mask.astype(int),
         "shape": img.shape,
         "visual_size": np.array(img.shape) / ppd,
         "ppd": ppd,
@@ -171,8 +174,11 @@ def cube_illusion(
         intensity value for target
 
     Returns
-    -------
-    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "target_mask"),
+        and additional keys containing stimulus parameters
 
     References
     ----------
@@ -241,7 +247,7 @@ def cube_illusion(
 
     stim = {
         "img": img,
-        "mask": mask.astype(int),
+        "target_mask": mask.astype(int),
         "shape": img.shape,
         "visual_size": np.array(img.shape) / ppd,
         "ppd": ppd,

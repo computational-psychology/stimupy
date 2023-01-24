@@ -1142,8 +1142,7 @@ def Subthreshold22(ppd=PPD):
     stim2 = grating.gabor(**params, frequency=2*np.sqrt(2))
     
     stim1["img"] = stim1["img"]/2 + stim2["img"]/2
-    stim1["mask"] = stim1["mask"].astype(int)
-    stim1["mask2"] = stim2["mask"].astype(int)
+    stim1["grating_mask2"] = stim2["grating_mask"]
     stim1["edges2"] = stim2["edges"]
     stim1["frequency2"] = stim2["frequency"]
     stim1["bar_width2"] = stim2["bar_width"]
@@ -1197,7 +1196,7 @@ def Subthreshold23(ppd=PPD):
     stim2 = grating.gabor(**params, frequency=4)
     
     stim1["img"] = stim1["img"]/2 + stim2["img"]/2
-    stim1["mask2"] = stim2["mask"].astype(int)
+    stim1["grating_mask2"] = stim2["grating_mask"]
     stim1["edges2"] = stim2["edges"]
     stim1["frequency2"] = stim2["frequency"]
     stim1["bar_width2"] = stim2["bar_width"]
@@ -1251,7 +1250,7 @@ def Subthreshold24(ppd=PPD):
     stim2 = grating.gabor(**params, frequency=4*np.sqrt(2))
     
     stim1["img"] = stim1["img"]/2 + stim2["img"]/2
-    stim1["mask2"] = stim2["mask"].astype(int)
+    stim1["grating_mask2"] = stim2["grating_mask"]
     stim1["edges2"] = stim2["edges"]
     stim1["frequency2"] = stim2["frequency"]
     stim1["bar_width2"] = stim2["bar_width"]
@@ -1305,7 +1304,7 @@ def Subthreshold25(ppd=PPD):
     stim2 = grating.gabor(**params, frequency=8)
     
     stim1["img"] = stim1["img"]/2 + stim2["img"]/2
-    stim1["mask2"] = stim2["mask"].astype(int)
+    stim1["grating_mask2"] = stim2["grating_mask"]
     stim1["edges2"] = stim2["edges"]
     stim1["frequency2"] = stim2["frequency"]
     stim1["bar_width2"] = stim2["bar_width"]
@@ -1678,7 +1677,7 @@ def GaborString33(ppd=PPD):
     stimc = pad_dict_to_shape(stimc, (256, 256), pad_value=0.5)
     
     stim["img"] = stimc["img"]
-    stim["mask"] = stimc["mask"]
+    stim["grating_mask"] = stimc["grating_mask"]
     stim = roll_dict(stim, (-1, -1), axes=(0, 1))
 
     v = 129
@@ -1737,7 +1736,7 @@ def GaborString34(ppd=PPD):
     stimc = pad_dict_to_shape(stimc, (256, 256), pad_value=0.5)
     
     stim1["img"] = stimc["img"]
-    stim1["mask"] = stimc["mask"]
+    stim1["grating_mask"] = stimc["grating_mask"]
     stim1["phase_shift2"] = stim2["phase_shift"]
     stim1["edges2"] = stim2["edges"]
     stim1 = roll_dict(stim1, (-1, -1), axes=(0, 1))
@@ -1782,16 +1781,8 @@ def Noise35_random(ppd=PPD):
     
     img = stim["img"] * window["img"]
     stim["img"] = img/2 + 0.5
-
-    v = 137
-    experimental_data = {
-        "participants": participants,
-        "thresholds1": df[v],
-        "thresholds2": df[v+1],
-        "thresholds3": df[v+2],
-        "thresholds4": df[v+3],
-        }
-    return {**stim, "experimental_data": experimental_data}
+    stim["mask"] = np.zeros(img.shape).astype(int)
+    return stim
 
 
 def Noise35(ppd=PPD):
@@ -1822,7 +1813,6 @@ def Noise35(ppd=PPD):
     
     stim = {
         "img": img,
-        "mask": np.zeros(img.shape).astype(int),
         "visual_size": (256/PPD, 256/PPD),
         "shape": img.shape,
         "ppd": PPD,
@@ -1837,7 +1827,8 @@ def Noise35(ppd=PPD):
         "thresholds3": df[v+2],
         "thresholds4": df[v+3],
         }
-    return {**stim, "experimental_data": experimental_data}
+    mask = np.zeros(img.shape).astype(int)
+    return {**stim, "mask": mask, "experimental_data": experimental_data}
 
 
 def Orientation36(ppd=PPD):
@@ -1975,7 +1966,7 @@ def Plaids38(ppd=PPD):
     
     stim["img"] = stim["img"]/2 + stim2["img"]/2
     stim["rotation"] = stim2["rotation"]
-    stim["mask2"] = stim2["mask"]
+    stim["grating_mask2"] = stim2["grating_mask"]
     stim["distances2"] = stim2["distances"]
 
     v = 149
@@ -2028,7 +2019,7 @@ def Plaids39(ppd=PPD):
     
     stim["img"] = stim["img"]/2 + stim2["img"]/2
     stim["rotation"] = stim2["rotation"]
-    stim["mask2"] = stim2["mask"]
+    stim["grating_mask2"] = stim2["grating_mask"]
     stim["distances2"] = stim2["distances"]
 
     v = 153
@@ -2202,7 +2193,6 @@ def NaturalScene43(ppd=PPD):
 
     stim = {
         "img": img,
-        "mask": np.zeros(img.shape).astype(int),
         "visual_size": (256/PPD, 256/PPD),
         "shape": img.shape,
         "ppd": PPD,
@@ -2217,7 +2207,8 @@ def NaturalScene43(ppd=PPD):
         "thresholds3": df[v+2],
         "thresholds4": df[v+3],
         }
-    return {**stim, "experimental_data": experimental_data}
+    mask = np.zeros(img.shape).astype(int)
+    return {**stim, "mask": mask, "experimental_data": experimental_data}
 
 
 def read_tif(filename):
@@ -2253,5 +2244,5 @@ if __name__ == "__main__":
     from stimuli.utils import plot_stimuli
 
     stims = gen_all(skip=True)
-    plot_stimuli(stims, mask=False)
+    plot_stimuli(stims, mask=True)
     # compare_all()

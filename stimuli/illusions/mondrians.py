@@ -28,8 +28,8 @@ def corrugated_mondrians(
         pixels per degree [vertical, horizontal]
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
-    mondrian_depths : float or tuple of floats
-        depth of parallelograms (ie mondrians) per row
+    mondrian_depths : Sequence[Number, ... ], NUmber, or None (default)
+        depth of Mondrian parallelograms per row
     mondrian_intensities : nested tuples
         intensities of mondrians; as many tuples as there are rows and as many
         numbers in each tuple as there are columns
@@ -39,8 +39,11 @@ def corrugated_mondrians(
         intensity value for background
 
     Returns
-    -------
-    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "target_mask"),
+        and additional keys containing stimulus parameters
 
     References
     ----------
@@ -118,7 +121,7 @@ def corrugated_mondrians(
     target_mask = np.zeros(shape)
     for t in range(len(tlist)):
         target_mask[stim["mondrian_mask"] == tlist[t]] = t+1
-    stim["mask"] = target_mask.astype(int)
+    stim["target_mask"] = target_mask.astype(int)
     stim["target_indices"] = target_indices
     
     if len(np.unique(stim["img"][target_mask != 0])) > 1:
@@ -128,22 +131,8 @@ def corrugated_mondrians(
 
 if __name__ == "__main__":
     from stimuli.utils import plot_stim
-
-    params = {
-        "ppd": 30,
-        "width": 2.0,
-        "heights": 2.0,
-        "depths": (0.0, 1.0, 0.0, -1.0),
-        "target_indices": ((1, 1), (3, 1)),
-        "intensities": (
-            (0.4, 0.75, 0.4, 0.75),
-            (0.75, 0.4, 0.75, 1.0),
-            (0.4, 0.75, 0.4, 0.75),
-            (0.0, 0.4, 0.0, 0.4),
-        ),
-    }
     
-    p2 = {
+    p = {
         "visual_size": 10,
         "ppd": 30,
         "mondrian_depths": (1, 0, -1, 0),
@@ -156,5 +145,5 @@ if __name__ == "__main__":
         "target_indices": ((1, 1), (3, 1)),
         }
 
-    stim = corrugated_mondrians(**p2)
-    plot_stim(stim, stim_name="Corrugated mondrians", mask=False, save=None)
+    stim = corrugated_mondrians(**p)
+    plot_stim(stim, stim_name="Corrugated mondrians", mask=True, save=None)

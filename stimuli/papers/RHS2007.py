@@ -876,9 +876,9 @@ def grating_induction(ppd=PPD, pad=True):
         visual_size=(height, width),
         **params,
     )
-    mask1 = np.where(stim["mask"] % 2, 1, 2)
-    mask2 = np.where(stim["mask"]==0, 0, 1)
-    stim["mask"] = (mask1 * mask2).astype(int)
+    mask1 = np.where(stim["target_mask"] % 2, 1, 2)
+    mask2 = np.where(stim["target_mask"]==0, 0, 1)
+    stim["target_mask"] = (mask1 * mask2).astype(int)
 
     if pad:
         stim = pad_dict_to_visual_size(stim, VISEXTENT, ppd, pad_value=v2)
@@ -1533,7 +1533,11 @@ def benary_cross(ppd=PPD, pad=True):
         **params,
     )
     stim = flip_dict(stim)
-    stim["mask"][stim["mask"] != 0] = np.abs(stim["mask"][stim["mask"] != 0] - 3).astype(int)
+
+    # Switch target indices
+    mask1 = np.where(stim["target_mask"] == 1, 1, 0)
+    mask2 = np.where(stim["target_mask"] == 2, 1, 0)
+    stim["target_mask"] = (mask1*2 + mask2).astype(int)
 
     if pad:
         stim = pad_dict_by_visual_size(stim, ((0.0, 0.0), (4.0, 4.0)), ppd, pad_value=v3)

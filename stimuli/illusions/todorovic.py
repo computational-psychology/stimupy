@@ -1,7 +1,7 @@
 import numpy as np
 
 from stimuli.components.shapes import cross, rectangle
-from stimuli.utils import degrees_to_pixels, pad_to_visual_size, resolution
+from stimuli.utils import degrees_to_pixels, pad_dict_to_shape, resolution
 
 __all__ = [
     "todorovic_rectangle_generalized",
@@ -54,8 +54,11 @@ def todorovic_rectangle_generalized(
         intensity value for covers
 
     Returns
-    -------
-    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for the target (key: "target_mask"),
+        and additional keys containing stimulus parameters
 
     References
     -----------
@@ -87,7 +90,7 @@ def todorovic_rectangle_generalized(
         intensity_rectangle=intensity_target,
     )
     img = stim["img"]
-    mask = stim["mask"]
+    mask = stim["shape_mask"]
 
     # Add covers
     cheight, cwidth = degrees_to_pixels(covers_size, ppd)
@@ -104,7 +107,7 @@ def todorovic_rectangle_generalized(
             raise ValueError("Covers do not fully fit into stimulus")
 
     stim["img"] = img
-    stim["mask"] = mask.astype(int)
+    stim["target_mask"] = mask.astype(int)
     stim["visual_size"] = visual_size
     stim["ppd"] = ppd
     stim["shape"] = shape
@@ -155,8 +158,11 @@ def todorovic_rectangle(
         intensity value for covers
 
     Returns
-    -------
-    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for the target (key: "target_mask"),
+        and additional keys containing stimulus parameters
 
     References
     -----------
@@ -205,7 +211,7 @@ def todorovic_cross_generalized(
     ppd=None,
     shape=None,
     cross_size=None,
-    cross_arm_ratios=None,
+    cross_arm_ratios=1,
     cross_thickness=None,
     covers_size=None,
     covers_x=None,
@@ -246,8 +252,11 @@ def todorovic_cross_generalized(
         intensity value for covers
 
     Returns
-    -------
-    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for the target (key: "target_mask"),
+        and additional keys containing stimulus parameters
 
     References
     -----------
@@ -261,24 +270,22 @@ def todorovic_cross_generalized(
     """
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
-    if len(np.unique(ppd)) > 1:
-        raise ValueError("ppd should be equal in x and y direction")
+    ppd = np.unique(ppd)[0]
 
-    if isinstance(cross_size, (float, int)):
-        cross_size = (cross_size, cross_size)
+    if not isinstance(ppd, (float, int)):
+        raise ValueError("ppd should be equal in x and y direction")
+    if isinstance(covers_x, (float, int)):
+        covers_x = (covers_x,)
+    if isinstance(covers_y, (float, int)):
+        covers_y = (covers_y,)
+    if len(covers_x) != len(covers_y):
+        raise ValueError("Need as many x- as y-coordinates")
     if isinstance(covers_size, (float, int)):
         covers_size = (covers_size, covers_size)
 
-    if len(covers_x) != len(covers_y):
-        raise ValueError("Need as many x- as y-coordinates")
-    if (cross_size[0] > visual_size[0]) or (cross_size[1] > visual_size[1]):
-        raise ValueError("Cross larger than image")
-    if np.min(cross_size) <= cross_thickness:
-        raise ValueError("cross_size needs to be larger than cross_thickness")
-
     stim = cross(
         visual_size=cross_size,
-        ppd=np.unique(ppd),
+        ppd=ppd,
         cross_size=cross_size,
         cross_arm_ratios=cross_arm_ratios,
         cross_thickness=cross_thickness,
@@ -286,15 +293,13 @@ def todorovic_cross_generalized(
         intensity_cross=intensity_target,
     )
 
-    img, mask = stim["img"], stim["mask"]
-    img = pad_to_visual_size(
-        img, visual_size=visual_size, ppd=np.unique(ppd), pad_value=intensity_background
-    )
-    mask = pad_to_visual_size(mask, visual_size=visual_size, ppd=np.unique(ppd), pad_value=0)
+    stim = pad_dict_to_shape(stim, shape=shape, pad_value=intensity_background)
+    img = stim["img"]
+    mask = stim["shape_mask"]
 
-    cheight, cwidth = degrees_to_pixels(covers_size, np.unique(ppd))
-    cx = degrees_to_pixels(covers_x, np.unique(ppd))
-    cy = degrees_to_pixels(covers_y, np.unique(ppd))
+    cheight, cwidth = degrees_to_pixels(covers_size, ppd)
+    cx = degrees_to_pixels(covers_x, ppd)
+    cy = degrees_to_pixels(covers_y, ppd)
 
     for i in range(len(covers_x)):
         img[cy[i] : cy[i] + cheight, cx[i] : cx[i] + cwidth] = intensity_covers
@@ -303,9 +308,9 @@ def todorovic_cross_generalized(
             raise ValueError("Covers do not fully fit into stimulus")
 
     stim["img"] = img
-    stim["mask"] = mask.astype(int)
-    stim["target_size"] = stim["visual_size"]
-    stim["intensity_target"] = stim["intensity_cross"]
+    stim["target_mask"] = mask.astype(int)
+    stim["target_size"] = stim["cross_size"]
+    stim["intensity_target"] = intensity_target
     stim["covers_size"] = covers_size
     stim["covers_x"] = covers_x
     stim["covers_y"] = covers_y
@@ -313,6 +318,7 @@ def todorovic_cross_generalized(
     stim["visual_size"] = visual_size
     stim["ppd"] = ppd
     stim["shape"] = shape
+    del (stim["cross_size"], stim["intensity_cross"], stim["shape_mask"])
     return stim
 
 
@@ -352,8 +358,11 @@ def todorovic_cross(
         intensity value for covers
 
     Returns
-    -------
-    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for the target (key: "target_mask"),
+        and additional keys containing stimulus parameters
 
     References
     -----------
@@ -366,15 +375,14 @@ def todorovic_cross(
     Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
     """
     # Resolve resolution
-    shape, visual_size, ppd_ = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
     if len(np.unique(ppd)) > 1:
         raise ValueError("ppd should be equal in x and y direction")
-
     if isinstance(covers_size, (float, int)):
         covers_size = (covers_size, covers_size)
-    ppd = int(np.unique(ppd_))
 
     # Calculate placement of covers for generalized function:
+    ppd = np.unique(ppd)[0]
     cy, cx = np.floor(np.array(visual_size) * ppd / 2) / ppd
     ct = np.ceil(cross_thickness * ppd)
     ct = (ct + (ct % 2)) / ppd
@@ -434,8 +442,11 @@ def todorovic_equal(
         intensity value for covers
 
     Returns
-    -------
-    A stimulus dictionary with the stimulus ['img'] and target mask ['mask']
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for the target (key: "target_mask"),
+        and additional keys containing stimulus parameters
 
     References
     -----------
@@ -469,35 +480,31 @@ def todorovic_equal(
 if __name__ == "__main__":
     from stimuli.utils import plot_stimuli
 
-    params = {
+    p1 = {
         "visual_size": 10,
         "ppd": 10,
+        "target_size": 4,
+        "covers_size": 2,
+    }
+    
+    p2 = {
+        "visual_size": 10,
+        "ppd": 10,
+        "cross_size": 4,
+        "cross_thickness": 2,
     }
 
     stims = {
-        "Todorovic rectangle": todorovic_rectangle(
-            **params, target_size=4, covers_size=2, covers_offset=2
-        ),
-        "Todorovic rectangle, flex": todorovic_rectangle_generalized(
-            **params,
-            target_size=4,
-            target_position=3,
-            covers_size=2,
-            covers_x=(2, 6),
-            covers_y=(2, 6)
-        ),
-        "Todorovic cross": todorovic_cross(
-            **params, cross_size=4, cross_thickness=2, covers_size=2
-        ),
-        "Todorovic cross, flex": todorovic_cross_generalized(
-            **params,
-            cross_size=4,
-            cross_arm_ratios=1.0,
-            cross_thickness=2,
-            covers_size=2,
-            covers_x=(2, 6),
-            covers_y=(2, 6)
-        ),
-        "Todorovic equal": todorovic_equal(**params, cross_size=4, cross_thickness=2),
+        "Todorovic rectangle": todorovic_rectangle(**p1, covers_offset=2),
+        "Todorovic rectangle, flex": todorovic_rectangle_generalized(**p1,
+                                                                     target_position=3,
+                                                                     covers_x=(2, 6),
+                                                                     covers_y=(2, 6)),
+        "Todorovic cross": todorovic_cross(**p2, covers_size=2),
+        "Todorovic cross, flex": todorovic_cross_generalized(**p2,
+                                                             covers_size=2,
+                                                             covers_x=(2, 6),
+                                                             covers_y=(2, 6)),
+        "Todorovic equal": todorovic_equal(**p2),
     }
     plot_stimuli(stims, mask=True, save=None)

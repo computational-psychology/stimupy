@@ -142,19 +142,18 @@ def white_generalized(
     target_zip = zip(target_indices, intensity_target, target_heights, target_center_offsets)
 
     # Place target(s)
-    targets_mask = np.zeros_like(stim["mask"])
+    targets_mask = np.zeros_like(stim["grating_mask"])
     for target_idx, (bar_idx, intensity, height, offset) in enumerate(target_zip):
         mask1 = np.where(x >= offset + height/2, 0, 1)
         mask2 = np.where(x < offset - height/2, 0, 1)
         if bar_idx < 0:
             bar_idx = int(stim["n_bars"]) + bar_idx
-        mask3 = np.where(stim["mask"] == bar_idx+1, target_idx + 1, 0)
+        mask3 = np.where(stim["grating_mask"] == bar_idx+1, target_idx + 1, 0)
         targets_mask += mask1 * mask2 * mask3
         stim["img"] = np.where(targets_mask == target_idx + 1, intensity, stim["img"])
 
     # Update and return stimulus
-    stim["bars_mask"] = stim["mask"]
-    stim["mask"] = targets_mask.astype(int)
+    stim["target_mask"] = targets_mask.astype(int)
     stim["target_indices"] = target_indices
     stim["intensity_target"] = intensity_target
     stim["target_heights"] = target_heights
@@ -454,7 +453,7 @@ def white_anderson(
     )
 
     img = stim["img"]
-    mask = stim["mask"]
+    mask = stim["target_mask"]
     stripe_center_offset_px = degrees_to_pixels(stripe_center_offset, ppd)
     stripe_size_px = degrees_to_pixels(stripe_height, ppd)
     cycle_width_px = degrees_to_pixels(1.0 / (frequency * 2), ppd) * 2
@@ -495,7 +494,7 @@ def white_anderson(
         raise ValueError("Anderson stripes do not fully fit into stimulus")
 
     stim["img"] = img
-    stim["mask"] = mask
+    stim["target_mask"] = mask
     stim["intensity_stripes"] = intensity_stripes
     stim["stripe_center_offset"] = stripe_center_offset
     stim["stripe_height"] = stripe_height
@@ -679,7 +678,7 @@ def white_yazdanbakhsh(
     )
 
     img = stim["img"]
-    mask = stim["mask"]
+    mask = stim["target_mask"]
     gap_size_px = degrees_to_pixels(gap_size, ppd)
     target_offset_px = degrees_to_pixels(target_center_offset, ppd)
     tsize_px = degrees_to_pixels(target_height, ppd)
@@ -722,7 +721,7 @@ def white_yazdanbakhsh(
         ] = intensity_stripes[1]
 
     stim["img"] = img
-    stim["mask"] = mask.astype(int)
+    stim["target_mask"] = mask.astype(int)
     stim["intensity_stripes"] = intensity_stripes
     stim["gap_size"] = gap_size
     return stim
@@ -746,4 +745,4 @@ if __name__ == "__main__":
         "Yazdanbakhsh variation": white_yazdanbakhsh(**params, target_indices_top=3, target_indices_bottom=-2, target_center_offset=2, target_height=2, gap_size=0.5),
     }
 
-    plot_stimuli(stims, mask=False, save=None)
+    plot_stimuli(stims, mask=True, save=None)
