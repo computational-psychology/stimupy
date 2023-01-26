@@ -1,6 +1,6 @@
 import numpy as np
 from stimuli.components import image_base
-# from stimuli.components.shapes import disc
+from stimuli.components.shapes import ellipse
 
 
 __all__ = [
@@ -71,9 +71,18 @@ def gaussian(
     gaussian = np.exp(-(a*xx**2 + 2*b*xx*yy +  c*yy**2))
     gaussian = gaussian / gaussian.max() * intensity_max
     
+    # create mask as ellipse with sigma radius
+    mask = ellipse(
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        radius=sigma,
+        rotation=rotation,
+        )["shape_mask"]
+    
     stim = {
         "img": gaussian,
-        "gaussian_mask": np.zeros(base["shape"]).astype(int),
+        "gaussian_mask": mask.astype(int),
         "sigma": sigma,
         "rotation": rotation,
         "visual_size": base["visual_size"],
@@ -81,3 +90,20 @@ def gaussian(
         "ppd": base["ppd"],
         }
     return stim
+
+
+if __name__ == "__main__":
+    from stimuli.utils.plotting import plot_stimuli
+    
+    p = {
+        "visual_size": (10, 8),
+        "ppd": 50,
+        "rotation": 90,
+        }
+    
+    stims = {
+        "gaussian1": gaussian(**p, sigma=2),
+        "gaussian2": gaussian(**p, sigma=(3, 2)),
+        }
+    
+    plot_stimuli(stims, mask=True)

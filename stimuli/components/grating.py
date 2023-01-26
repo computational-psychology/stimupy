@@ -9,6 +9,7 @@ __all__ = [
     "sine_wave",
     "gabor",
     "staircase",
+    "plaid",
 ]
 
 
@@ -501,6 +502,7 @@ def gabor(
     return {
         **stim,
         "sigma": sigma,
+        "gaussian_mask": gaussian_window["gaussian_mask"],
     }
 
 
@@ -701,6 +703,7 @@ def plaid(
     grating1["frequency2"] = grating2["frequency"]
     grating1["bar_width2"] = grating2["bar_width"]
     grating1["n_bars2"] = grating2["n_bars"]
+    grating1["gaussian_mask"] = window["gaussian_mask"]
     return grating1
 
 
