@@ -3,10 +3,10 @@ from stimuli.components import lines
 
 
 __all__ = [
-    "ponzo_illusion",
+    "ponzo",
 ]
 
-def ponzo_illusion(
+def ponzo(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -145,5 +145,5 @@ if __name__ == "__main__":
         "target_distance": 5,
         }
 
-    stim = ponzo_illusion(**p1)
+    stim = ponzo(**p1)
     plot_stim(stim, stim_name="Ponzo", mask=True, save=None)

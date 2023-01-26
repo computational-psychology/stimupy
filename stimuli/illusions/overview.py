@@ -9,6 +9,7 @@ import stimuli.illusions.dungeon as dungeon
 import stimuli.illusions.grating as grating
 import stimuli.illusions.hermann as hermann
 import stimuli.illusions.mondrians as mondrians
+import stimuli.illusions.mueller_lyer as mueller
 import stimuli.illusions.ponzo as ponzo
 import stimuli.illusions.sbc as sbc
 import stimuli.illusions.todorovic as todorovic
@@ -90,6 +91,8 @@ stims = {
     "Hermann": hermann(**p, element_size=(1.5, 1.5, 0.2)),
     # Mondrians
     "Mondrians": mondrians.corrugated_mondrians(**p, **p_mondrians),
+    # Mueller-Lyer
+    "Mueller-Lyer": mueller(**p, outer_lines_length=1.5, outer_lines_angle=45, target_length=6, line_width=0.1),
     # Ponzo
     "Ponzo": ponzo(**p, outer_lines_length=8, outer_lines_width=0.1, target_lines_length=3, target_lines_width=0.1, target_distance=3),
     # SBC

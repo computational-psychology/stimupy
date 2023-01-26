@@ -10,7 +10,8 @@ from .frames import *
 from .grating import *
 from .hermann import hermann_grid as hermann
 from .mondrians import corrugated_mondrians
-from .ponzo import ponzo_illusion as ponzo
+from .mueller_lyer import mueller_lyer as mueller_lyer
+from .ponzo import ponzo as ponzo
 from .sbc import *
 from .todorovic import *
 from .wedding_cake import *
