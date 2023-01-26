@@ -480,8 +480,8 @@ def ellipse(
 
     # Rotate coordinate systems
     theta = np.deg2rad(rotation)
-    x = np.round(np.cos(theta) * xx - np.sin(theta) * yy, 8)
-    y = np.round(np.sin(theta) * xx + np.cos(theta) * yy, 8)
+    x = np.round(np.cos(theta) * yy - np.sin(theta) * xx, 8)
+    y = np.round(np.sin(theta) * yy + np.cos(theta) * xx, 8)
 
     # Draw ellipse
     arr = np.sqrt(x**2 + (y*radius[0]/radius[1])**2)
