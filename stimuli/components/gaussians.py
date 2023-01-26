@@ -42,7 +42,7 @@ def gaussian(
     -------
     dict[str, Any]
         dict with the stimulus (key: "img")
-        empty mask (key: "gaussian_mask")
+        ellipse-like mask with sigma radius and integer index (key: "gaussian_mask"),
         and additional keys containing stimulus parameters
     """
     if isinstance(sigma, (float, int)):
