@@ -10,6 +10,7 @@ __all__ = [
     "triangle",
     "cross",
     "parallelogram",
+    "ellipse",
     "wedge",
     "annulus",
     "disc",
@@ -423,6 +424,93 @@ def parallelogram(
     }
 
 
+def ellipse(
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    radius=None,
+    intensity_ellipse=1.0,
+    intensity_background=0.0,
+    rotation=0,
+    origin="mean"
+):
+    """Draw an ellipse
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees visual angle
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    radius : Sequence[Number, Number], Number or None (default)
+        ellipse radius [ry, rx] in degrees visual angle
+    intensity_ellipse : float, optional
+        intensity value for ellipse, by default 1.0
+    intensity_background : float, optional
+        intensity value of background, by default 0.0
+    rotation : float
+        orientation of triangle in degrees visual angle (default 0)
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
+
+    Returns
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for the shape (key: "shape_mask"),
+        and additional keys containing stimulus parameters
+    """
+
+    # Resolve resolutions and get distances
+    radius = resolution.validate_visual_size(visual_size=radius)
+    base = image_base(
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        rotation=rotation,
+        origin=origin,
+        )
+
+    xx = base["horizontal"]
+    yy = base["vertical"]
+
+    # Rotate coordinate systems
+    theta = np.deg2rad(rotation)
+    x = np.round(np.cos(theta) * xx - np.sin(theta) * yy, 8)
+    y = np.round(np.sin(theta) * xx + np.cos(theta) * yy, 8)
+
+    # Draw ellipse
+    arr = np.sqrt(x**2 + (y*radius[0]/radius[1])**2)
+    img = np.where(arr <= radius[0], 1, 0)
+    
+    # Does ellipse fit?
+    x1 = radius[1] * np.cos(theta)
+    x2 = radius[1] * np.sin(theta)
+    y1 = radius[0] * np.cos(theta)
+    y2 = radius[0] * np.sin(theta)
+    cy = np.floor((x2+y1) * base["ppd"][0]) / base["ppd"][0]
+    cx = np.floor((x1+y2) * base["ppd"][1]) / base["ppd"][1]
+
+    if (cy > base["visual_size"][0]/2) or (cx > base["visual_size"][1]/2):
+        raise ValueError("stimulus does not fully fit into requested size")
+    
+    return {
+        "img": img*(intensity_ellipse-intensity_background) + intensity_background,
+        "shape_mask": img.astype(int),
+        "shape": shape,
+        "visual_size": visual_size,
+        "ppd": ppd,
+        "radius": radius,
+        "intensity_background": intensity_background,
+        "intensity_ellipse": intensity_ellipse,
+        "rotation": rotation,
+    }
+
+
 if __name__ == "__main__":
     from stimuli.utils.plotting import plot_stimuli
     
@@ -438,6 +526,7 @@ if __name__ == "__main__":
         "cross": cross(**p, cross_size=(4, 2.5), cross_thickness=1, cross_arm_ratios=(1, 1)),
         "parallelogram": parallelogram(**p, parallelogram_size=(5.2, 3.1, 0.9)),
         "parallelogram2": parallelogram(shape=(100, 100), ppd=10, parallelogram_size=(10, 9, -1)),
+        "ellipse": ellipse(**p, radius=(4, 3))
         }
     
     plot_stimuli(stims, mask=False)
