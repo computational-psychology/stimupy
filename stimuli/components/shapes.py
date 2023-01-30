@@ -1,8 +1,8 @@
 import numpy as np
 
 from stimuli.components import image_base
-from stimuli.components.angular import wedge
-from stimuli.components.circular import annulus, disc, ring
+from stimuli.components.angulars import wedge
+from stimuli.components.circulars import annulus, disc, ring
 from stimuli.utils import resolution
 
 __all__ = [

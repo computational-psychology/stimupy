@@ -1,17 +1,16 @@
 import itertools
 from copy import deepcopy
-
 import numpy as np
 
-from stimuli.components.circular import grating
+from stimuli.components.circulars import grating
 
 __all__ = [
-    "circular_white",
-    "circular_bullseye",
+    "rings",
+    "bullseye",
 ]
 
 
-def circular_white(
+def rings(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -131,7 +130,7 @@ def circular_white(
     return stim
 
 
-def circular_bullseye(
+def bullseye(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -203,7 +202,7 @@ def circular_bullseye(
     Howe, P. D. L. (2005). White's effect: removing the junctions but preserving the
         strength of the illusion. Perception, 34, 557–564. https://doi.org/10.1068/p5414
     """
-    stim = circular_white(
+    stim = rings(
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,
@@ -223,8 +222,8 @@ if __name__ == "__main__":
     from stimuli.utils import plot_stimuli
 
     stims = {
-        "Circular Whites": circular_white(visual_size=(8, 8), ppd=32, frequency=1.0),
-        "Circular Bullseye": circular_bullseye(visual_size=(8, 8), ppd=32, frequency=1.0),
+        "Circular Whites": rings(visual_size=(8, 8), ppd=32, frequency=1.0),
+        "Circular Bullseye": bullseye(visual_size=(8, 8), ppd=32, frequency=1.0),
     }
 
     plot_stimuli(stims, mask=True, save=None)

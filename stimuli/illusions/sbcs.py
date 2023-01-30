@@ -4,14 +4,14 @@ from stimuli.components.shapes import disc, rectangle
 from stimuli.utils import pad_by_visual_size, pad_to_shape, resolution
 
 __all__ = [
-    "simultaneous_contrast_generalized",
-    "simultaneous_contrast",
-    "sbc_with_dots",
-    "dotted_sbc",
+    "generalized",
+    "basic",
+    "with_dots",
+    "dotted",
 ]
 
 
-def simultaneous_contrast_generalized(
+def generalized(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -71,7 +71,7 @@ def simultaneous_contrast_generalized(
     return stim
 
 
-def simultaneous_contrast(
+def basic(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -109,7 +109,7 @@ def simultaneous_contrast(
     Chevreul, M. (1855). The principle of harmony and contrast of colors.
     """
 
-    stim = simultaneous_contrast_generalized(
+    stim = generalized(
         visual_size=visual_size,
         ppd=ppd,
         target_size=target_size,
@@ -120,7 +120,7 @@ def simultaneous_contrast(
     return stim
 
 
-def sbc_with_dots(
+def with_dots(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -247,7 +247,7 @@ def sbc_with_dots(
     return stim
 
 
-def dotted_sbc(
+def dotted(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -379,15 +379,16 @@ def dotted_sbc(
 
 if __name__ == "__main__":
     from stimuli.utils import plot_stimuli
+    
+    p = {
+        "visual_size": 30,
+        "ppd": 20,
+        }
 
     stims = {
-        "SBC - generalized": simultaneous_contrast_generalized(
-            visual_size=10, ppd=10, target_size=5, target_position=(0, 2)
-        ),
-        "SBC": simultaneous_contrast(visual_size=10, ppd=10, target_size=5),
-        "SBC with dots": sbc_with_dots(
-            ppd=20, n_dots=5, dot_radius=3, distance=0.5, target_shape=3
-        ),
-        "Dotted SBC": dotted_sbc(ppd=20, n_dots=5, dot_radius=3, distance=0.5, target_shape=3),
+        "generalized": generalized(**p, target_size=5, target_position=(0, 2)),
+        "basic": basic(**p, target_size=5),
+        "with_dots": with_dots(**p, n_dots=5, dot_radius=2, distance=0.5, target_shape=3),
+        "dotted": dotted(**p, n_dots=5, dot_radius=2, distance=0.5, target_shape=3),
     }
     plot_stimuli(stims, mask=True, save=None)

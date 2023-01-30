@@ -3,12 +3,12 @@ from stimuli.utils import degrees_to_pixels
 
 
 __all__ = [
-    "cube_varying_cells",
-    "cube_illusion",
+    "varying_cells",
+    "cube",
 ]
 
 
-def cube_varying_cells(
+def varying_cells(
     ppd=None,
     cell_heights=None,
     cell_widths=None,
@@ -19,7 +19,7 @@ def cube_varying_cells(
     intensity_target=0.5,
 ):
     """
-    Cube illusion (Agostini & Galmonte, 2002) with flexible cell sizes.
+    Cube stimulus (Agostini & Galmonte, 2002) with flexible cell sizes.
 
     Parameters
     ----------
@@ -137,7 +137,7 @@ def cube_varying_cells(
     return stim
 
 
-def cube_illusion(
+def cube(
     visual_size=None,
     ppd=None,
     n_cells=None,
@@ -284,7 +284,7 @@ if __name__ == "__main__":
         }
 
     stims = {
-        "Cube - varying cells": cube_varying_cells(**p1),
-        "Cube": cube_illusion(**p2),
+        "varying cells": varying_cells(**p1),
+        "cube": cube(**p2),
         }
     plot_stimuli(stims, mask=True, save=None)

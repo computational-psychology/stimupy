@@ -120,7 +120,7 @@ def square_white(ppd=PPD):
         "intensity_target": v2,
     }
 
-    stim = illusions.sbc.simultaneous_contrast(**params)
+    stim = illusions.sbcs.basic(**params)
     return stim
 
 
@@ -155,7 +155,7 @@ def square_black(ppd=PPD):
         "intensity_target": v2,
     }
 
-    stim = illusions.sbc.simultaneous_contrast(**params)
+    stim = illusions.sbcs.basic(**params)
     return stim
 
 
@@ -195,7 +195,7 @@ def grating_white_white(ppd=PPD):
         "intensity_target": v2,
         "target_indices": (2, 4, 6, 8),
     }
-    stim = illusions.grating.grating_uniform(**params)
+    stim = illusions.gratings.uniform(**params)
     stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
@@ -236,7 +236,7 @@ def grating_white_black(ppd=PPD):
         "intensity_target": v2,
         "target_indices": (2, 4, 6, 8),
     }
-    stim = illusions.grating.grating_uniform(**params)
+    stim = illusions.gratings.uniform(**params)
     stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
@@ -277,7 +277,7 @@ def grating_black_white(ppd=PPD):
         "intensity_target": v2,
         "target_indices": (2, 4, 6, 8),
     }
-    stim = illusions.grating.grating_uniform(**params)
+    stim = illusions.gratings.uniform(**params)
     stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
@@ -318,7 +318,7 @@ def grating_black_black(ppd=PPD):
         "intensity_target": v2,
         "target_indices": (2, 4, 6, 8),
     }
-    stim = illusions.grating.grating_uniform(**params)
+    stim = illusions.gratings.uniform(**params)
     stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
@@ -364,7 +364,7 @@ def grating_white_in(ppd=PPD):
         "rotation": ORIENTATION,
         "intensity_bars": (v1, v3),
     }
-    stim = illusions.grating.grating_grating(
+    stim = illusions.gratings.grating(
         small_grating_params=small_params,
         large_grating_params=large_params,
         )
@@ -414,7 +414,7 @@ def grating_black_in(ppd=PPD):
         "rotation": ORIENTATION,
         "intensity_bars": (v3, v1),
     }
-    stim = illusions.grating.grating_grating(
+    stim = illusions.gratings.grating(
         small_grating_params=small_params,
         large_grating_params=large_params,
         )
@@ -464,7 +464,7 @@ def grating_white_out(ppd=PPD):
         "rotation": ORIENTATION,
         "intensity_bars": (v1, v3),
     }
-    stim = illusions.grating.grating_grating(
+    stim = illusions.gratings.grating(
         small_grating_params=small_params,
         large_grating_params=large_params,
         )
@@ -514,7 +514,7 @@ def grating_black_out(ppd=PPD):
         "rotation": ORIENTATION,
         "intensity_bars": (v3, v1),
     }
-    stim = illusions.grating.grating_grating(
+    stim = illusions.gratings.grating(
         small_grating_params=small_params,
         large_grating_params=large_params,
         )
@@ -564,7 +564,7 @@ def grating_white_orthogonal(ppd=PPD):
         "rotation": ORIENTATION,
         "intensity_bars": (v1, v3),
     }
-    stim = illusions.grating.grating_grating_masked(
+    stim = illusions.gratings.grating_masked(
         small_grating_params=small_params,
         large_grating_params=large_params,
         mask_size=(9*bar_width, 9*bar_width, 8*bar_width),
@@ -616,7 +616,7 @@ def grating_black_orthogonal(ppd=PPD):
         "rotation": ORIENTATION,
         "intensity_bars": (v3, v1),
     }
-    stim = illusions.grating.grating_grating_masked(
+    stim = illusions.gratings.grating_masked(
         small_grating_params=small_params,
         large_grating_params=large_params,
         mask_size=(9*bar_width, 9*bar_width, 8*bar_width),

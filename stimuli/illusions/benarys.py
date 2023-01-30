@@ -1,5 +1,4 @@
 import warnings
-
 import numpy as np
 from scipy.ndimage import rotate
 
@@ -7,16 +6,16 @@ from stimuli.components.shapes import cross, triangle
 from stimuli.utils import degrees_to_pixels, resolution
 
 __all__ = [
-    "benarys_cross_generalized",
-    "benarys_cross_rectangles",
-    "benarys_cross_triangles",
-    "todorovic_benary_generalized",
-    "todorovic_benary_rectangles",
-    "todorovic_benary_triangles",
+    "cross_generalized",
+    "cross_rectangles",
+    "cross_triangles",
+    "todorovic_generalized",
+    "todorovic_rectangles",
+    "todorovic_triangles",
 ]
 
 
-def benarys_cross_generalized(
+def cross_generalized(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -101,7 +100,7 @@ def benarys_cross_generalized(
     return {**stim, **cross_stim}
 
 
-def benarys_cross_rectangles(
+def cross_rectangles(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -168,7 +167,7 @@ def benarys_cross_rectangles(
         (visual_size[0] - cross_thickness) / 2.0,
     )
 
-    stim = benarys_cross_generalized(
+    stim = cross_generalized(
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,
@@ -185,7 +184,7 @@ def benarys_cross_rectangles(
     return stim
 
 
-def benarys_cross_triangles(
+def cross_triangles(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -252,7 +251,7 @@ def benarys_cross_triangles(
         (visual_size[0] - cross_thickness) / 2.0,
     )
 
-    stim = benarys_cross_generalized(
+    stim = cross_generalized(
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,
@@ -269,7 +268,7 @@ def benarys_cross_triangles(
     return stim
 
 
-def todorovic_benary_generalized(
+def todorovic_generalized(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -363,7 +362,7 @@ def todorovic_benary_generalized(
     return stim
 
 
-def todorovic_benary_rectangles(
+def todorovic_rectangles(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -422,7 +421,7 @@ def todorovic_benary_rectangles(
     target_x = (L_width, visual_size[1] - L_width - target_size[1])
     target_y = (visual_size[0] / 2.0 - target_size[0], visual_size[0] / 2.0)
 
-    stim = todorovic_benary_generalized(
+    stim = todorovic_generalized(
         visual_size=visual_size,
         ppd=ppd,
         L_width=L_width,
@@ -438,7 +437,7 @@ def todorovic_benary_rectangles(
     return stim
 
 
-def todorovic_benary_triangles(
+def todorovic_triangles(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -499,7 +498,7 @@ def todorovic_benary_triangles(
     target_x = (L_width, visual_size[1] - L_width - target_size[1])
     target_y = (visual_size[0] / 2.0 - target_size[0], visual_size[0] / 2.0)
 
-    stim = todorovic_benary_generalized(
+    stim = todorovic_generalized(
         visual_size=visual_size,
         ppd=ppd,
         L_width=L_width,
@@ -692,11 +691,11 @@ if __name__ == "__main__":
 
     # fmt: off
     stims = {
-        "Benary-general": benarys_cross_generalized(**params_benary, **target_pos),
-        "Benary-rectangles": benarys_cross_rectangles(**params_benary),
-        "Benary-triangles": benarys_cross_triangles(**params_benary),
-        "Todorovic-benary-general": todorovic_benary_generalized(**params_todo, **target_pos),
-        "Todorovic-benary-rectangles": todorovic_benary_rectangles(**params_todo),
-        "Todorovic-benary-triangles": todorovic_benary_triangles(**params_todo),
+        "cross": cross_generalized(**params_benary, **target_pos),
+        "rectangles": cross_rectangles(**params_benary),
+        "triangles": cross_triangles(**params_benary),
+        "todorovic_general": todorovic_generalized(**params_todo, **target_pos),
+        "todorovic_rectangles": todorovic_rectangles(**params_todo),
+        "todorovic_triangles": todorovic_triangles(**params_todo),
     }
     plot_stimuli(stims, mask=True, save=None)

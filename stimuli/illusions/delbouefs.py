@@ -3,10 +3,10 @@ from stimuli.components.shapes import disc
 
 
 __all__ = [
-    "delboeuf_illusion",
+    "delboeuf",
 ]
 
-def delboeuf_illusion(
+def delboeuf(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -18,7 +18,7 @@ def delboeuf_illusion(
     intensity_background=1.0,
 ):
     """
-    Delboeuf illusion
+    Delboeuf stimulus
 
     Parameters
     ----------
@@ -91,5 +91,5 @@ if __name__ == "__main__":
         "target_radius": 3,
         }
 
-    stim = delboeuf_illusion(**p1)
-    plot_stim(stim, stim_name="Delboeuf", mask=True, save=None)
+    stim = delboeuf(**p1)
+    plot_stim(stim, stim_name="delboeuf", mask=True, save=None)

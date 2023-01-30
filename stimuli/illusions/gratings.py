@@ -3,19 +3,19 @@ import numpy as np
 from scipy.ndimage import gaussian_filter
 import warnings
 
-from stimuli.components.grating import square_wave as square_wave_component
-from stimuli.components.grating import sine_wave
+from stimuli.components.gratings import square_wave as square_wave_component
+from stimuli.components.gratings import sine_wave
 from stimuli.components.shapes import parallelogram, rectangle
 from stimuli.utils import pad_dict_to_visual_size, pad_dict_to_shape, resolution
 
 __all__ = [
     "square_wave",
-    "grating_uniform",
-    "grating_grating_masked",
-    "grating_grating",
+    "uniform",
+    "grating_masked",
+    "grating",
     "counterphase_induction",
-    "grating_induction",
-    "grating_induction_blur",
+    "induction",
+    "induction_blur",
 ]
 
 
@@ -119,7 +119,7 @@ def square_wave(
     return stim
 
 
-def grating_uniform(
+def uniform(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -227,7 +227,7 @@ def grating_uniform(
     return stim
 
 
-def grating_grating_masked(
+def grating_masked(
     small_grating_params,
     large_grating_params,
     mask_size=None,
@@ -292,7 +292,7 @@ def grating_grating_masked(
     return stim
 
 
-def grating_grating(
+def grating(
     small_grating_params,
     large_grating_params,
 ):
@@ -319,7 +319,7 @@ def grating_grating(
         215–230. https://doi.org/10.1068/p100215
     """
 
-    stim = grating_grating_masked(
+    stim = grating_masked(
         small_grating_params,
         large_grating_params,
         )
@@ -426,7 +426,7 @@ def counterphase_induction(
     return stim
 
 
-def grating_induction(
+def induction(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -526,7 +526,7 @@ def grating_induction(
     return stim
 
 
-def grating_induction_blur(
+def induction_blur(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -655,17 +655,15 @@ if __name__ == "__main__":
         }
 
     stims = {
-        "Grating with targets": square_wave(**params, target_indices=(4, 6)),
-        "Grating, uniform": grating_uniform(**params, visual_size=20, grating_size=5, target_indices=3),
-        "Grating, grating": grating_grating(large_grating_params=large_grating,
-                                            small_grating_params=small_grating),
-        "Grating, grating, masked": grating_grating_masked(large_grating_params=large_grating,
-                                                            small_grating_params={**small_grating,
-                                                                                  "rotation": 90},
-                                                            mask_size=(5, 5, 2)),
-        "Counterphase induction": counterphase_induction(**params, target_size=4, target_phase_shift=90),
-        "Grating induction": grating_induction(**params, target_width=0.5),
-        "Grating induction blur": grating_induction_blur(**params, target_width=0.5, target_blur=5),
+        "square_wave": square_wave(**params, target_indices=(4, 6)),
+        "uniform": uniform(**params, visual_size=20, grating_size=5, target_indices=3),
+        "grating": grating(large_grating_params=large_grating, small_grating_params=small_grating),
+        "grating_masked": grating_masked(large_grating_params=large_grating,
+                                         small_grating_params={**small_grating, "rotation": 90},
+                                         mask_size=(5, 5, 2)),
+        "counterphase_induction": counterphase_induction(**params, target_size=4, target_phase_shift=90),
+        "induction": induction(**params, target_width=0.5),
+        "induction_blur": induction_blur(**params, target_width=0.5, target_blur=5),
     }
 
     plot_stimuli(stims, mask=True, save=None)

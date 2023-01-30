@@ -29,7 +29,7 @@ White, M. & White, T. (1985). Counterphase lightness induction. Vision
 import numpy as np
 import copy
 import warnings
-from stimuli.illusions import grating
+from stimuli.illusions import gratings as grating
 
 __all__ = [
     "wide_0phase",

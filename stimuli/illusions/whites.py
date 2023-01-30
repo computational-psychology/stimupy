@@ -2,21 +2,27 @@ import numpy as np
 import itertools
 import warnings
 
-from stimuli.components.grating import square_wave
 from stimuli.components import image_base
+from stimuli.components.gratings import square_wave
 from stimuli.utils import degrees_to_pixels
+from stimuli.illusions.angulars import pinwheel as radial
+from stimuli.illusions.circulars import rings as circular
+from stimuli.illusions.wedding_cakes import wedding_cake
 
 __all__ = [
-    "white_generalized",
+    "generalized",
     "white",
     "white_two_rows",
-    "white_anderson",
-    "white_howe",
-    "white_yazdanbakhsh",
+    "anderson",
+    "howe",
+    "yazdanbakhsh",
+    "circular",
+    "radial",
+    "wedding_cake",
 ]
 
 
-def white_generalized(
+def generalized(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -232,7 +238,7 @@ def white(
         8(4), 413–416. https://doi.org/10.1068/p080413
     """
 
-    stim = white_generalized(
+    stim = generalized(
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,
@@ -339,7 +345,7 @@ def white_two_rows(
     offsets_bottom = (target_center_offset,) * len(target_indices_bottom)
     target_center_offsets = offsets_top + offsets_bottom
 
-    stim = white_generalized(
+    stim = generalized(
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,
@@ -359,7 +365,7 @@ def white_two_rows(
     return stim
 
 
-def white_anderson(
+def anderson(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -501,7 +507,7 @@ def white_anderson(
     return stim
 
 
-def white_howe(
+def howe(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -569,7 +575,7 @@ def white_howe(
     Howe, P. D. L. (2001). A comment on the Anderson (1997), the Todorovic (1997), and the Ross
         and Pessoa (2000) explanations of White’s eﬀect. Perception, 30, 1023–1026
     """
-    return white_anderson(
+    return anderson(
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,
@@ -589,7 +595,7 @@ def white_howe(
         )
 
 
-def white_yazdanbakhsh(
+def yazdanbakhsh(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -737,12 +743,12 @@ if __name__ == "__main__":
         }
 
     stims = {
-        "White flexible": white_generalized(**params, target_indices=(1, 3), target_center_offsets=(-1, -3), target_heights=(2, 3)),
-        "White single row": white(**params, target_indices=(2, -3), target_height=2),
-        "White two rows": white_two_rows(**params, target_indices_top=(2,4), target_indices_bottom=(-2, -4), target_height=1, target_center_offset=2),
-        "Anderson's variation": white_anderson(**params, target_indices_top=3, target_indices_bottom=-2, target_center_offset=2, target_height=2, stripe_center_offset=1.5, stripe_height=2),
-        "Howe's variation": white_howe(**params, target_indices_top=3, target_indices_bottom=-2, target_center_offset=2, target_height=2),
-        "Yazdanbakhsh variation": white_yazdanbakhsh(**params, target_indices_top=3, target_indices_bottom=-2, target_center_offset=2, target_height=2, gap_size=0.5),
+        "generalized": generalized(**params, target_indices=(1, 3), target_center_offsets=(-1, -3), target_heights=(2, 3)),
+        "white": white(**params, target_indices=(2, -3), target_height=2),
+        "white_two_rows": white_two_rows(**params, target_indices_top=(2,4), target_indices_bottom=(-2, -4), target_height=1, target_center_offset=2),
+        "anderson": anderson(**params, target_indices_top=3, target_indices_bottom=-2, target_center_offset=2, target_height=2, stripe_center_offset=1.5, stripe_height=2),
+        "howe": howe(**params, target_indices_top=3, target_indices_bottom=-2, target_center_offset=2, target_height=2),
+        "yazdanbakhsh": yazdanbakhsh(**params, target_indices_top=3, target_indices_bottom=-2, target_center_offset=2, target_height=2, gap_size=0.5),
     }
 
     plot_stimuli(stims, mask=True, save=None)

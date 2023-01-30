@@ -1,17 +1,19 @@
 import numpy as np
 
-from stimuli.components.shapes import cross, rectangle
+from stimuli.components.shapes import cross as cross_shape
+from stimuli.components.shapes import rectangle as rectangle_shape
 from stimuli.utils import degrees_to_pixels, pad_dict_to_shape, resolution
 
 __all__ = [
-    "todorovic_rectangle_generalized",
-    "todorovic_rectangle",
-    "todorovic_cross_generalized",
-    "todorovic_cross",
+    "rectangle_generalized",
+    "rectangle",
+    "cross_generalized",
+    "cross",
+    "equal",
 ]
 
 
-def todorovic_rectangle_generalized(
+def rectangle_generalized(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -81,9 +83,9 @@ def todorovic_rectangle_generalized(
         raise ValueError("Need as many x- as y-coordinates")
 
     # Create image with square
-    stim = rectangle(
+    stim = rectangle_shape(
         visual_size=visual_size,
-        ppd=int(np.unique(ppd)),
+        ppd=ppd,
         rectangle_size=target_size,
         rectangle_position=target_position,
         intensity_background=intensity_background,
@@ -121,7 +123,7 @@ def todorovic_rectangle_generalized(
     return stim
 
 
-def todorovic_rectangle(
+def rectangle(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -191,7 +193,7 @@ def todorovic_rectangle(
     y2 = cy + covers_offset[0] - covers_size[0] / 2
     x2 = cx + covers_offset[1] - covers_size[1] / 2
 
-    stim = todorovic_rectangle_generalized(
+    stim = rectangle_generalized(
         visual_size=visual_size,
         ppd=ppd,
         target_size=target_size,
@@ -206,7 +208,7 @@ def todorovic_rectangle(
     return stim
 
 
-def todorovic_cross_generalized(
+def cross_generalized(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -283,7 +285,7 @@ def todorovic_cross_generalized(
     if isinstance(covers_size, (float, int)):
         covers_size = (covers_size, covers_size)
 
-    stim = cross(
+    stim = cross_shape(
         visual_size=cross_size,
         ppd=ppd,
         cross_size=cross_size,
@@ -322,7 +324,7 @@ def todorovic_cross_generalized(
     return stim
 
 
-def todorovic_cross(
+def cross(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -393,7 +395,7 @@ def todorovic_cross(
     y2 = cy + ct_half
     x2 = cx + ct_half
 
-    stim = todorovic_cross_generalized(
+    stim = cross_generalized(
         visual_size=visual_size,
         ppd=ppd,
         cross_size=cross_size,
@@ -409,7 +411,7 @@ def todorovic_cross(
     return stim
 
 
-def todorovic_equal(
+def equal(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -463,7 +465,7 @@ def todorovic_equal(
 
     covers_size = ((cross_size[0] - cross_thickness) / 2, (cross_size[1] - cross_thickness) / 2)
 
-    stim = todorovic_cross(
+    stim = cross(
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,
@@ -495,16 +497,10 @@ if __name__ == "__main__":
     }
 
     stims = {
-        "Todorovic rectangle": todorovic_rectangle(**p1, covers_offset=2),
-        "Todorovic rectangle, flex": todorovic_rectangle_generalized(**p1,
-                                                                     target_position=3,
-                                                                     covers_x=(2, 6),
-                                                                     covers_y=(2, 6)),
-        "Todorovic cross": todorovic_cross(**p2, covers_size=2),
-        "Todorovic cross, flex": todorovic_cross_generalized(**p2,
-                                                             covers_size=2,
-                                                             covers_x=(2, 6),
-                                                             covers_y=(2, 6)),
-        "Todorovic equal": todorovic_equal(**p2),
+        "rectangle": rectangle(**p1, covers_offset=2),
+        "rectangle_general": rectangle_generalized(**p1, target_position=3, covers_x=(2, 6), covers_y=(2, 6)),
+        "cross": cross(**p2, covers_size=2),
+        "cross_general": cross_generalized(**p2, covers_size=2, covers_x=(2, 6), covers_y=(2, 6)),
+        "equal": equal(**p2),
     }
     plot_stimuli(stims, mask=True, save=None)

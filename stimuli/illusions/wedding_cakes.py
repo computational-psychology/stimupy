@@ -4,13 +4,13 @@ from stimuli.utils import degrees_to_pixels, resolution
 
 
 __all__ = [
-    "wedding_cake_stimulus",
+    "wedding_cake",
 ]
 
 # TODO: constrain allowed stimulus sizes
 
 
-def wedding_cake_stimulus(
+def wedding_cake(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -183,7 +183,7 @@ if __name__ == "__main__":
         }
 
     stims = {
-        "Wedding cake": wedding_cake_stimulus(**params),
+        "wedding_cake": wedding_cake(**params),
         }
 
     plot_stimuli(stims, mask=False, save=None)

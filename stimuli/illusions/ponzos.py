@@ -146,4 +146,4 @@ if __name__ == "__main__":
         }
 
     stim = ponzo(**p1)
-    plot_stim(stim, stim_name="Ponzo", mask=True, save=None)
+    plot_stim(stim, stim_name="ponzo", mask=True, save=None)

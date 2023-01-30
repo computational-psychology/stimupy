@@ -83,4 +83,4 @@ if __name__ == "__main__":
     from stimuli.utils import plot_stim
 
     stim = cornsweet(visual_size=10, ppd=10, ramp_width=3)
-    plot_stim(stim, stim_name="Cornsweet illusion", mask=True, save=None)
+    plot_stim(stim, stim_name="cornsweet", mask=True, save=None)

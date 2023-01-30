@@ -3,13 +3,13 @@ from stimuli.utils import resolution, pad_to_shape
 
 
 __all__ = [
-    "dungeon_illusion",
+    "dungeon",
 ]
 
 
-def dungeon_illusion(
-        visual_size=None,
-        ppd=None,
+def dungeon(
+    visual_size=None,
+    ppd=None,
     shape=None,
     cell_size=None,
     n_cells=None,
@@ -19,7 +19,7 @@ def dungeon_illusion(
     intensity_target=0.5,
 ):
     """
-    Dungeon illusion (Bressan, 2001) with diamond target.
+    Dungeon stimulus (Bressan, 2001) with diamond target.
 
     Parameters
     ----------
@@ -181,5 +181,5 @@ def resolve_cells_1d(
 if __name__ == "__main__":
     from stimuli.utils import plot_stim
 
-    stim = dungeon_illusion(visual_size=10, ppd=10, n_cells=5)
-    plot_stim(stim, stim_name="Dungeon illusion", mask=True, save=None)
+    stim = dungeon(visual_size=10, ppd=10, n_cells=5)
+    plot_stim(stim, stim_name="dungeon", mask=True, save=None)

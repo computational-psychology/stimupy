@@ -34,10 +34,10 @@ import numpy as np
 import pandas as pd
 from pathlib import Path
 
-from stimuli.components import grating, gaussians, shapes, checkerboard, lines
+from stimuli.components import gratings, gaussians, shapes, checkerboards, lines
 from stimuli.components.edges import gaussian_edge
-from stimuli.components.circular import bessel
-import stimuli.noises.binary as binary_noise
+from stimuli.components.circulars import bessel
+from stimuli.noises.binaries import binary as binary_noise
 from stimuli.utils import stack_dicts, pad_dict_to_shape, resize_dict, roll_dict
 
 __all__ = [
@@ -152,7 +152,7 @@ def GaborPatch1(ppd=PPD):
         "origin": "center",
     }
 
-    stim = grating.gabor(**params)
+    stim = gratings.gabor(**params)
     
     v = 1
     experimental_data = {
@@ -199,7 +199,7 @@ def GaborPatch2(ppd=PPD):
         "origin": "center",
     }
 
-    stim = grating.gabor(**params)
+    stim = gratings.gabor(**params)
 
     v = 5
     experimental_data = {
@@ -246,7 +246,7 @@ def GaborPatch3(ppd=PPD):
         "origin": "center",
     }
 
-    stim = grating.gabor(**params)
+    stim = gratings.gabor(**params)
 
     v = 9
     experimental_data = {
@@ -293,7 +293,7 @@ def GaborPatch4(ppd=PPD):
         "origin": "center",
     }
 
-    stim = grating.gabor(**params)
+    stim = gratings.gabor(**params)
 
     v = 13
     experimental_data = {
@@ -340,7 +340,7 @@ def GaborPatch5(ppd=PPD):
         "origin": "center",
     }
 
-    stim = grating.gabor(**params)
+    stim = gratings.gabor(**params)
 
     v = 17
     experimental_data = {
@@ -387,7 +387,7 @@ def GaborPatch6(ppd=PPD):
         "origin": "center",
     }
 
-    stim = grating.gabor(**params)
+    stim = gratings.gabor(**params)
 
     v = 21
     experimental_data = {
@@ -434,7 +434,7 @@ def GaborPatch7(ppd=PPD):
         "origin": "center",
     }
 
-    stim = grating.gabor(**params)
+    stim = gratings.gabor(**params)
 
     v = 25
     experimental_data = {
@@ -481,7 +481,7 @@ def GaborPatch8(ppd=PPD):
         "origin": "center",
     }
 
-    stim = grating.gabor(**params)
+    stim = gratings.gabor(**params)
 
     v = 29
     experimental_data = {
@@ -528,7 +528,7 @@ def GaborPatch9(ppd=PPD):
         "origin": "center",
     }
 
-    stim = grating.gabor(**params)
+    stim = gratings.gabor(**params)
 
     v = 33
     experimental_data = {
@@ -575,7 +575,7 @@ def GaborPatch10(ppd=PPD):
         "origin": "center",
     }
 
-    stim = grating.gabor(**params)
+    stim = gratings.gabor(**params)
 
     v = 37
     experimental_data = {
@@ -622,7 +622,7 @@ def GaborPatch11(ppd=PPD):
         "origin": "center",
     }
 
-    stim = grating.gabor(**params)
+    stim = gratings.gabor(**params)
 
     v = 41
     experimental_data = {
@@ -669,7 +669,7 @@ def GaborPatch12(ppd=PPD):
         "origin": "center",
     }
 
-    stim = grating.gabor(**params)
+    stim = gratings.gabor(**params)
 
     v = 45
     experimental_data = {
@@ -716,7 +716,7 @@ def GaborPatch13(ppd=PPD):
         "origin": "center",
     }
 
-    stim = grating.gabor(**params)
+    stim = gratings.gabor(**params)
 
     v = 49
     experimental_data = {
@@ -763,7 +763,7 @@ def GaborPatch14(ppd=PPD):
         "origin": "center",
     }
 
-    stim = grating.gabor(**params)
+    stim = gratings.gabor(**params)
 
     v = 53
     experimental_data = {
@@ -810,7 +810,7 @@ def ElongatedGabor15(ppd=PPD):
         "origin": "center",
     }
 
-    stim = grating.gabor(**params)
+    stim = gratings.gabor(**params)
 
     v = 57
     experimental_data = {
@@ -857,7 +857,7 @@ def ElongatedGabor16(ppd=PPD):
         "origin": "center",
     }
 
-    stim = grating.gabor(**params)
+    stim = gratings.gabor(**params)
 
     v = 61
     experimental_data = {
@@ -904,7 +904,7 @@ def ElongatedGabor17(ppd=PPD):
         "origin": "center",
     }
 
-    stim = grating.gabor(**params)
+    stim = gratings.gabor(**params)
 
     v = 65
     experimental_data = {
@@ -951,7 +951,7 @@ def Baguette18(ppd=PPD):
         "origin": "center",
     }
 
-    stim = grating.gabor(**params)
+    stim = gratings.gabor(**params)
 
     v = 69
     experimental_data = {
@@ -998,7 +998,7 @@ def Baguette19(ppd=PPD):
         "origin": "center",
     }
 
-    stim = grating.gabor(**params)
+    stim = gratings.gabor(**params)
 
     v = 73
     experimental_data = {
@@ -1045,7 +1045,7 @@ def Baguette20(ppd=PPD):
         "origin": "center",
     }
 
-    stim = grating.gabor(**params)
+    stim = gratings.gabor(**params)
 
     v = 77
     experimental_data = {
@@ -1092,7 +1092,7 @@ def Baguette21(ppd=PPD):
         "origin": "center",
     }
 
-    stim = grating.gabor(**params)
+    stim = gratings.gabor(**params)
 
     v = 81
     experimental_data = {
@@ -1138,8 +1138,8 @@ def Subthreshold22(ppd=PPD):
         "origin": "mean",
     }
 
-    stim1 = grating.gabor(**params, frequency=2)
-    stim2 = grating.gabor(**params, frequency=2*np.sqrt(2))
+    stim1 = gratings.gabor(**params, frequency=2)
+    stim2 = gratings.gabor(**params, frequency=2*np.sqrt(2))
     
     stim1["img"] = stim1["img"]/2 + stim2["img"]/2
     stim1["grating_mask2"] = stim2["grating_mask"]
@@ -1192,8 +1192,8 @@ def Subthreshold23(ppd=PPD):
         "origin": "mean",
     }
 
-    stim1 = grating.gabor(**params, frequency=2)
-    stim2 = grating.gabor(**params, frequency=4)
+    stim1 = gratings.gabor(**params, frequency=2)
+    stim2 = gratings.gabor(**params, frequency=4)
     
     stim1["img"] = stim1["img"]/2 + stim2["img"]/2
     stim1["grating_mask2"] = stim2["grating_mask"]
@@ -1246,8 +1246,8 @@ def Subthreshold24(ppd=PPD):
         "origin": "mean",
     }
 
-    stim1 = grating.gabor(**params, frequency=4)
-    stim2 = grating.gabor(**params, frequency=4*np.sqrt(2))
+    stim1 = gratings.gabor(**params, frequency=4)
+    stim2 = gratings.gabor(**params, frequency=4*np.sqrt(2))
     
     stim1["img"] = stim1["img"]/2 + stim2["img"]/2
     stim1["grating_mask2"] = stim2["grating_mask"]
@@ -1300,8 +1300,8 @@ def Subthreshold25(ppd=PPD):
         "origin": "mean",
     }
 
-    stim1 = grating.gabor(**params, frequency=4)
-    stim2 = grating.gabor(**params, frequency=8)
+    stim1 = gratings.gabor(**params, frequency=4)
+    stim2 = gratings.gabor(**params, frequency=8)
     
     stim1["img"] = stim1["img"]/2 + stim2["img"]/2
     stim1["grating_mask2"] = stim2["grating_mask"]
@@ -1668,7 +1668,7 @@ def GaborString33(ppd=PPD):
         "origin": "center",
     }
 
-    stim = grating.gabor(**params)
+    stim = gratings.gabor(**params)
     
     # Stack collinear Gabors horizontally and pad
     stimc = stack_dicts(stim, stim)
@@ -1725,8 +1725,8 @@ def GaborString34(ppd=PPD):
         "origin": "center",
     }
 
-    stim1 = grating.gabor(**params, phase_shift=-90)
-    stim2 = grating.gabor(**params, phase_shift=90)
+    stim1 = gratings.gabor(**params, phase_shift=-90)
+    stim2 = gratings.gabor(**params, phase_shift=90)
     
     # Stack collinear Gabors horizontally and pad
     stimc = stack_dicts(stim2, stim1)
@@ -1866,7 +1866,7 @@ def Orientation36(ppd=PPD):
         "origin": "center",
     }
 
-    stim = grating.gabor(**params)
+    stim = gratings.gabor(**params)
 
     v = 141
     experimental_data = {
@@ -1914,7 +1914,7 @@ def Orientation37(ppd=PPD):
         "origin": "center",
     }
 
-    stim = grating.gabor(**params)
+    stim = gratings.gabor(**params)
 
     v = 145
     experimental_data = {
@@ -1961,8 +1961,8 @@ def Plaids38(ppd=PPD):
         "origin": "mean",
     }
 
-    stim = grating.gabor(**params, rotation=0)
-    stim2 = grating.gabor(**params, rotation=90)
+    stim = gratings.gabor(**params, rotation=0)
+    stim2 = gratings.gabor(**params, rotation=90)
     
     stim["img"] = stim["img"]/2 + stim2["img"]/2
     stim["rotation"] = stim2["rotation"]
@@ -2014,8 +2014,8 @@ def Plaids39(ppd=PPD):
         "origin": "mean",
     }
 
-    stim = grating.gabor(**params, rotation=45)
-    stim2 = grating.gabor(**params, rotation=90)
+    stim = gratings.gabor(**params, rotation=45)
+    stim2 = gratings.gabor(**params, rotation=90)
     
     stim["img"] = stim["img"]/2 + stim2["img"]/2
     stim["rotation"] = stim2["rotation"]
@@ -2146,7 +2146,7 @@ def Checkerboard42(ppd=PPD):
         "round_phase_width": False,
     }
 
-    stim = checkerboard.checkerboard(**params)
+    stim = checkerboards.checkerboard(**params)
     window = gaussians.gaussian(visual_size=256/PPD, ppd=ppd, sigma=0.5)
     
     img = (stim["img"] - 0.5) * window["img"] + 0.5

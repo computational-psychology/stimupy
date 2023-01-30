@@ -1,16 +1,15 @@
 import itertools
-
 import numpy as np
 
-from stimuli.components.angular import pinwheel
-from stimuli.components.shapes import ring
+from stimuli.components.angulars import pinwheel as pinwheel_shape
+from stimuli.components.shapes import ring as ring_shape
 
 __all__ = [
-    "radial_white",
+    "pinwheel",
 ]
 
 
-def radial_white(
+def pinwheel(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -27,7 +26,7 @@ def radial_white(
     origin="mean",
 ):
     """
-    Radial White stimulus
+    Pinwheel or radial White stimulus
 
     Parameters
     ----------
@@ -87,7 +86,7 @@ def radial_white(
     """
 
     # Radial grating
-    stim = pinwheel(
+    stim = pinwheel_shape(
         radius=np.max(visual_size) / 2,
         frequency=frequency,
         n_segments=n_segments,
@@ -129,7 +128,7 @@ def radial_white(
         # Draw ring
         inner_radius = center - (width / 2)
         outer_radius = center + (width / 2)
-        ring_stim = ring(
+        ring_stim = ring_shape(
             radii=[inner_radius, outer_radius],
             intensity_rings=intensity,
             visual_size=stim["visual_size"],
@@ -149,7 +148,7 @@ if __name__ == "__main__":
     from stimuli.utils import plot_stimuli
 
     stims = {
-        "Radial white": radial_white(visual_size=(8, 8), ppd=32, n_segments=8),
+        "pinwheel": pinwheel(visual_size=(8, 8), ppd=32, n_segments=8),
     }
 
     plot_stimuli(stims, mask=True, save=None)

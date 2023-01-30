@@ -1,6 +1,6 @@
 import numpy as np
 
-from stimuli.components.checkerboard import checkerboard as board
+from stimuli.components.checkerboards import checkerboard as board
 from stimuli.utils.contrast_conversions import transparency
 from stimuli.utils import resolution
 
@@ -315,16 +315,16 @@ def contrast_contrast(
 
 if __name__ == "__main__":
     from stimuli.utils import plot_stimuli
+    
+    p = {
+        "ppd": 32,
+        "board_shape": (8, 8),
+        "check_visual_size": (2, 2),
+        }
 
     stims = {
-        "Checkerboard (brightness)": checkerboard(
-            ppd=32,
-            board_shape=(8, 8),
-            check_visual_size=(2, 2),
-            targets=[(3, 2), (5, 5)],
-        ),
-        "Checkerboard contrast-contrast": contrast_contrast(
-            ppd=32, board_shape=(8, 8), check_visual_size=(2, 2), target_shape=(4, 4)
-        ),
-    }
+        "checkerboard": checkerboard(**p, targets=[(3, 2), (5, 5)],),
+        "contrast_contrast": contrast_contrast(**p, target_shape=(4, 4)),
+        }
     plot_stimuli(stims, mask=True, save=None)
+

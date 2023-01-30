@@ -146,4 +146,4 @@ if __name__ == "__main__":
         }
 
     stim = corrugated_mondrians(**p)
-    plot_stim(stim, stim_name="Corrugated mondrians", mask=True, save=None)
+    plot_stim(stim, stim_name="corrugated_mondrians", mask=True, save=None)

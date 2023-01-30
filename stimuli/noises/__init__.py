@@ -1,5 +1,5 @@
-from .white import white as white
-from .binary import binary as binary
-from .one_over_frequency import *
-from .narrowband import narrowband as narrowband
+from .whites import white as white
+from .binaries import binary as binary
+from .naturals import *
+from .narrowbands import narrowband as narrowband
 from .utils import *

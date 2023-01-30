@@ -3,10 +3,10 @@ from stimuli.utils import degrees_to_pixels, resolution
 
 
 __all__ = [
-    "hermann_grid",
+    "grid",
 ]
 
-def hermann_grid(
+def grid(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -79,5 +79,5 @@ def hermann_grid(
 if __name__ == "__main__":
     from stimuli.utils import plot_stim
 
-    stim = hermann_grid(visual_size=10, ppd=10, element_size=(1.5, 1.5, 0.2))
-    plot_stim(stim, stim_name="Hermann Grid", mask=True, save=None)
+    stim = grid(visual_size=10, ppd=10, element_size=(1.5, 1.5, 0.2))
+    plot_stim(stim, stim_name="hermann_grid", mask=True, save=None)

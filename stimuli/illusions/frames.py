@@ -1,18 +1,17 @@
 import itertools
-
 import numpy as np
 
-from stimuli.components import frame as frames_component
+from stimuli.components import frames as frames_component
 
 __all__ = [
-    "frames_stimulus",
-    "frames_generalized",
-    "bullseye_stimulus",
+    "rings",
+    "rings_generalized",
+    "bullseye",
     "bullseye_generalized",
 ]
 
 
-def frames_stimulus(
+def rings(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -102,7 +101,7 @@ def frames_stimulus(
     return stim
 
 
-def frames_generalized(
+def rings_generalized(
     frame_radii,
     visual_size=None,
     ppd=None,
@@ -183,7 +182,7 @@ def frames_generalized(
     return stim
 
 
-def bullseye_stimulus(
+def bullseye(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -238,7 +237,7 @@ def bullseye_stimulus(
         Vision Research, 44, 309–319. https://doi.org/10.1016/S0042-6989(03)00430-9
     """
 
-    stim = frames_stimulus(
+    stim = rings(
         shape=shape,
         visual_size=visual_size,
         ppd=ppd,
@@ -297,7 +296,7 @@ def bullseye_generalized(
         mask with integer index for each frame (key: "target_mask"),
         and additional keys containing stimulus parameters
     """
-    stim = frames_generalized(
+    stim = rings_generalized(
         frame_radii=frame_radii,
         visual_size=visual_size,
         ppd=ppd,
@@ -321,9 +320,9 @@ if __name__ == "__main__":
         }
 
     stims = {
-        "Frames": frames_stimulus(visual_size=10, ppd=10, frequency=0.5, target_indices=(1, 3)),
-        "Frames generalized": frames_generalized(**p1, target_indices=(1, 3)),
-        "Bullseye": bullseye_stimulus(visual_size=10, ppd=10, frequency=0.5),
-        "Bullseye generalized": bullseye_generalized(**p1),
+        "rings": rings(visual_size=10, ppd=10, frequency=0.5, target_indices=(1, 3)),
+        "rings_generalized": rings_generalized(**p1, target_indices=(1, 3)),
+        "bullseye": bullseye(visual_size=10, ppd=10, frequency=0.5),
+        "bullseye_generalized": bullseye_generalized(**p1),
     }
     plot_stimuli(stims, mask=True, save=None)

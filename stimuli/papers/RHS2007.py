@@ -323,7 +323,7 @@ def WE_anderson(ppd=PPD, pad=True):
         "period": "even",
     }
 
-    stim = illusions.whites.white_anderson(
+    stim = illusions.whites.anderson(
         visual_size=(height, width),
         **params,
     )
@@ -387,7 +387,7 @@ def WE_howe(ppd=PPD, pad=True):
         "period": "even",
     }
 
-    stim = illusions.whites.white_howe(
+    stim = illusions.whites.howe(
         visual_size=(height, width),
         **params,
     )
@@ -432,7 +432,7 @@ def WE_zigzag(ppd=PPD, pad=True):
     """
 
     i1, i2 = 1, 2
-    stim = illusions.wedding_cake.wedding_cake_stimulus(
+    stim = illusions.wedding_cakes.wedding_cake(
         visual_size=(16.0, 17.0),
         ppd=PPD,
         L_size=(4.0, 4, 1.0),
@@ -485,7 +485,7 @@ def WE_radial_thick_small(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim = illusions.angular.radial_white(
+    stim = illusions.whites.radial(
         visual_size=(16, 16),
         **params,
     )
@@ -538,7 +538,7 @@ def WE_radial_thick(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim = illusions.angular.radial_white(
+    stim = illusions.whites.radial(
         visual_size=(24, 24),
         **params,
     )
@@ -591,7 +591,7 @@ def WE_radial_thin_small(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim = illusions.angular.radial_white(
+    stim = illusions.whites.radial(
         visual_size=(16, 16),
         **params,
     )
@@ -644,7 +644,7 @@ def WE_radial_thin(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim = illusions.angular.radial_white(
+    stim = illusions.whites.radial(
         visual_size=(24, 24),
         **params,
     )
@@ -694,13 +694,13 @@ def WE_circular1(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim1 = illusions.circular.circular_white(
+    stim1 = illusions.whites.circular(
         visual_size=(height, width),
         intensity_rings=(v3, v1),
         **params,
     )
 
-    stim2 = illusions.circular.circular_white(
+    stim2 = illusions.whites.circular(
         visual_size=(height, width),
         intensity_rings=(v1, v3),
         **params,
@@ -752,13 +752,13 @@ def WE_circular05(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim1 = illusions.circular.circular_white(
+    stim1 = illusions.whites.circular(
         visual_size=(height, width),
         intensity_rings=(v3, v1),
         **params,
     )
 
-    stim2 = illusions.circular.circular_white(
+    stim2 = illusions.whites.circular(
         visual_size=(height, width),
         intensity_rings=(v1, v3),
         **params,
@@ -810,13 +810,13 @@ def WE_circular025(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim1 = illusions.circular.circular_white(
+    stim1 = illusions.whites.circular(
         visual_size=(height, width),
         intensity_rings=(v3, v1),
         **params,
     )
 
-    stim2 = illusions.circular.circular_white(
+    stim2 = illusions.whites.circular(
         visual_size=(height, width),
         intensity_rings=(v1, v3),
         **params,
@@ -872,7 +872,7 @@ def grating_induction(ppd=PPD, pad=True):
         "period": "ignore",
     }
 
-    stim = illusions.grating.grating_induction(
+    stim = illusions.gratings.induction(
         visual_size=(height, width),
         **params,
     )
@@ -927,12 +927,12 @@ def sbc_large(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim1 = illusions.sbc.simultaneous_contrast(
+    stim1 = illusions.sbcs.basic(
         visual_size=(13.0, 15.5),
         intensity_background=0.0,
         **params,
     )
-    stim2 = illusions.sbc.simultaneous_contrast(
+    stim2 = illusions.sbcs.basic(
         visual_size=(13.0, 15.5),
         intensity_background=1.0,
         **params,
@@ -986,12 +986,12 @@ def sbc_small(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim1 = illusions.sbc.simultaneous_contrast(
+    stim1 = illusions.sbcs.basic(
         visual_size=(13.0, 15.5),
         intensity_background=0.0,
         **params,
     )
-    stim2 = illusions.sbc.simultaneous_contrast(
+    stim2 = illusions.sbcs.basic(
         visual_size=(13.0, 15.5),
         intensity_background=1.0,
         **params,
@@ -1050,13 +1050,13 @@ def todorovic_equal(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim1 = illusions.todorovic.todorovic_equal(
+    stim1 = illusions.todorovics.equal(
         intensity_background=1.0,
         intensity_covers=0.0,
         **params,
     )
 
-    stim2 = illusions.todorovic.todorovic_equal(
+    stim2 = illusions.todorovics.equal(
         intensity_background=0.0,
         intensity_covers=1.0,
         **params,
@@ -1114,12 +1114,12 @@ def todorovic_in_large(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim1 = illusions.todorovic.todorovic_rectangle(
+    stim1 = illusions.todorovics.rectangle(
         intensity_background=1.0,
         intensity_covers=0.0,
         **params,
     )
-    stim2 = illusions.todorovic.todorovic_rectangle(
+    stim2 = illusions.todorovics.rectangle(
         intensity_background=0.0,
         intensity_covers=1.0,
         **params,
@@ -1177,12 +1177,12 @@ def todorovic_in_small(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim1 = illusions.todorovic.todorovic_cross(
+    stim1 = illusions.todorovics.cross(
         intensity_background=1.0,
         intensity_covers=0.0,
         **params,
     )
-    stim2 = illusions.todorovic.todorovic_cross(
+    stim2 = illusions.todorovics.cross(
         intensity_background=0.0,
         intensity_covers=1.0,
         **params,
@@ -1243,12 +1243,12 @@ def todorovic_out(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim1 = illusions.todorovic.todorovic_cross(
+    stim1 = illusions.todorovics.cross(
         intensity_background=1.0,
         intensity_covers=0.0,
         **params,
     )
-    stim2 = illusions.todorovic.todorovic_cross(
+    stim2 = illusions.todorovics.cross(
         intensity_background=0.0,
         intensity_covers=1.0,
         **params,
@@ -1528,7 +1528,7 @@ def benary_cross(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim = illusions.benary_cross.benarys_cross_triangles(
+    stim = illusions.benarys.cross_triangles(
         visual_size=(13, 23),
         **params,
     )
@@ -1593,7 +1593,7 @@ def todorovic_benary1_2(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim = illusions.benary_cross.todorovic_benary_generalized(
+    stim = illusions.benarys.todorovic_generalized(
         visual_size=(13.0, 31.0),
         **params,
     )
@@ -1651,7 +1651,7 @@ def todorovic_benary3_4(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim = illusions.benary_cross.todorovic_benary_generalized(
+    stim = illusions.benarys.todorovic_generalized(
         visual_size=(13.0, 31.0),
         **params,
     )
@@ -1709,7 +1709,7 @@ def todorovic_benary1_2_3_4(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim = illusions.benary_cross.todorovic_benary_generalized(
+    stim = illusions.benarys.todorovic_generalized(
         visual_size=(13.0, 31.0),
         **params,
     )

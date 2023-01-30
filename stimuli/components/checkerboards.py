@@ -1,6 +1,6 @@
 import numpy as np
 import warnings
-from stimuli.components.grating import square_wave
+from stimuli.components.gratings import square_wave
 
 
 __all__ = [
