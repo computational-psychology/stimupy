@@ -543,7 +543,7 @@ def checkassim(ppd=PPD, pad=PAD):
         "ppd": ppd,
         "board_shape": (7, 10),
         "check_visual_size": 1 / PPD,
-        "targets": ((3, 6), (3, 3)),
+        "target_indices": ((3, 6), (3, 3)),
         "extend_targets": False,
         "intensity_checks": (17.5, 70.0),
         "intensity_target": 35.0,

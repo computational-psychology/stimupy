@@ -56,12 +56,12 @@ def mask_from_idx(checkerboard_stim, check_idc):
     return mask
 
 
-def extend_target_idx(target_idx, offsets=[(-1, 0), (0, -1), (0, 0), (0, 1), (1, 0)]):
+def extend_target_idx(target_index, offsets=[(-1, 0), (0, -1), (0, 0), (0, 1), (1, 0)]):
     """Extend target indices, to not just the specified check(s) but also surrounding
 
     Parameters
     ----------
-    target_idx : (Number, Number)
+    target_index : (Number, Number)
         target indices (row, column of checkerboard)
     offsets : list, optional
         relative indices of neighboring checks to include in target,
@@ -74,12 +74,12 @@ def extend_target_idx(target_idx, offsets=[(-1, 0), (0, -1), (0, 0), (0, 1), (1,
     """
     extended_idc = []
     for offset in offsets:
-        new_idx = (target_idx[0] + offset[0], target_idx[1] + offset[1])
+        new_idx = (target_index[0] + offset[0], target_index[1] + offset[1])
         extended_idc.append(new_idx)
     return extended_idc
 
 
-def add_targets(checkerboard_stim, targets, extend_targets=False, intensity_target=0.5):
+def add_targets(checkerboard_stim, target_indices, extend_targets=False, intensity_target=0.5):
     """Add targets to a checkerboard stimulus
 
     Parameters
@@ -87,7 +87,7 @@ def add_targets(checkerboard_stim, targets, extend_targets=False, intensity_targ
     checkerboard_stim : dict
         stimulus dictionary of checkerboard,
         needs to contain at least "img" and "board_shape"
-    targets : Sequence[(Number, Number),...]
+    target_indices : Sequence[(Number, Number),...]
         target indices (row, column of checkerboard)
     extend_targets : bool, optional
         if true, extends the targets by 1 check in all 4 directions, by default False
@@ -106,7 +106,7 @@ def add_targets(checkerboard_stim, targets, extend_targets=False, intensity_targ
     stimuli.components.checkerboard
     """
     mask = np.zeros(checkerboard_stim["shape"])
-    for i, target in enumerate(targets):
+    for i, target in enumerate(target_indices):
         if extend_targets:
             target_idc = extend_target_idx(target)
         else:
@@ -127,7 +127,7 @@ def checkerboard(
     frequency=None,
     board_shape=None,
     check_visual_size=None,
-    targets=None,
+    target_indices=None,
     extend_targets=False,
     period="ignore",
     rotation=0,
@@ -156,7 +156,7 @@ def checkerboard(
         number of checks in [height, width] of checkerboard
     check_visual_size : Sequence[Number, Number], Number, or None (default)
         visual size of a single check [height, width] in degrees
-    targets : Sequence[(Number, Number),...], optional
+    target_indices : Sequence[(Number, Number),...], optional
         target indices (row, column of checkerboard), by default None
     extend_targets : bool, optional
         if true, extends the targets by 1 check in all 4 directions, by default False
@@ -203,10 +203,10 @@ def checkerboard(
     )
 
     # Add targets
-    if targets is not None:
+    if target_indices is not None:
         stim = add_targets(
             stim,
-            targets=targets,
+            target_indices=target_indices,
             extend_targets=extend_targets,
             intensity_target=intensity_target,
         )
@@ -323,7 +323,7 @@ if __name__ == "__main__":
         }
 
     stims = {
-        "checkerboard": checkerboard(**p, targets=[(3, 2), (5, 5)],),
+        "checkerboard": checkerboard(**p, target_indices=[(3, 2), (5, 5)],),
         "contrast_contrast": contrast_contrast(**p, target_shape=(4, 4)),
         }
     plot_stimuli(stims, mask=True, save=None)
