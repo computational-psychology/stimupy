@@ -180,7 +180,9 @@ def two_sided(
     
     stim = stack_dicts(stim1, stim2)
     del stim["intensity_background"]
+    del stim["target_position"]
     stim["intensity_backgrounds"] = intensity_backgrounds
+    stim["target_positions"] = (stim1["target_position"], stim2["target_position"])
     return stim
 
 
