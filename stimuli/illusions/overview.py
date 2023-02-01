@@ -53,7 +53,7 @@ stims = {
     "todorovic_benary_rectangles": benarys.todorovic_rectangles(**p, target_size=1, L_width=2),
     "todorovic_benary_triangles": benarys.todorovic_triangles(**p, target_size=1, L_width=2),
     # Checkerboards
-    "checkerboard": checkerboards.checkerboard(**p, board_shape=8, targets=[(3, 2), (3, 5)]),
+    "checkerboard": checkerboards.checkerboard(**p, board_shape=8, target_indices=[(3, 2), (3, 5)]),
     "contrast-contrast": checkerboards.contrast_contrast(**p, board_shape=8, target_shape=(4, 4)),
     # Circular
     "circular_rings": circulars.rings(**p, frequency=1.0),
@@ -98,6 +98,7 @@ stims = {
     # SBC
     "sbc_generalized": sbcs.generalized(**p, target_size=3, target_position=(0, 2)),
     "sbc_basic": sbcs.basic(**p, target_size=3),
+    "sbc_two_sided": sbcs.two_sided(**p, target_size=3),
     "sbc_with_dots": sbcs.with_dots(ppd=20, n_dots=5, dot_radius=3, distance=0.5, target_shape=3),
     "sbc_dotted": sbcs.dotted(ppd=20, n_dots=5, dot_radius=3, distance=0.5, target_shape=3),
     # Todorovic

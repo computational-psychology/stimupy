@@ -1,11 +1,12 @@
 import numpy as np
 
 from stimuli.components.shapes import disc, rectangle
-from stimuli.utils import pad_by_visual_size, pad_to_shape, resolution
+from stimuli.utils import pad_by_visual_size, pad_to_shape, resolution, stack_dicts
 
 __all__ = [
     "generalized",
     "basic",
+    "two_sided",
     "with_dots",
     "dotted",
 ]
@@ -117,6 +118,69 @@ def basic(
         intensity_background=intensity_background,
         intensity_target=intensity_target,
     )
+    return stim
+
+
+def two_sided(
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    target_size=None,
+    intensity_backgrounds=(0.0, 1.0),
+    intensity_target=0.5,
+):
+    """
+    Two-sided simultaneous contrast stimulus with central targets.
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of grating, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of grating, in pixels
+    target_size : float or (float, float)
+        size of the target in degree visual angle (height, width)
+    intensity_background : float
+        intensity value for background
+    intensity_target : float
+        intensity value for target
+
+    Returns
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for the target (key: "target_mask"),
+        and additional keys containing stimulus parameters
+
+    References
+    ----------
+    Chevreul, M. (1855). The principle of harmony and contrast of colors.
+    """
+    
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
+
+    stim1 = basic(
+        visual_size=(visual_size[0], visual_size[1]/2),
+        ppd=ppd,
+        target_size=target_size,
+        intensity_background=intensity_backgrounds[0],
+        intensity_target=intensity_target,
+    )
+    
+    stim2 = basic(
+        visual_size=(visual_size[0], visual_size[1]/2),
+        ppd=ppd,
+        target_size=target_size,
+        intensity_background=intensity_backgrounds[1],
+        intensity_target=intensity_target,
+    )
+    
+    stim = stack_dicts(stim1, stim2)
+    del stim["intensity_background"]
+    stim["intensity_backgrounds"] = intensity_backgrounds
     return stim
 
 
@@ -388,6 +452,7 @@ if __name__ == "__main__":
     stims = {
         "generalized": generalized(**p, target_size=5, target_position=(0, 2)),
         "basic": basic(**p, target_size=5),
+        "two_sided": two_sided(**p, target_size=5),
         "with_dots": with_dots(**p, n_dots=5, dot_radius=2, distance=0.5, target_shape=3),
         "dotted": dotted(**p, n_dots=5, dot_radius=2, distance=0.5, target_shape=3),
     }
