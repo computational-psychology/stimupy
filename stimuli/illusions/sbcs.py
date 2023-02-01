@@ -183,6 +183,8 @@ def two_sided(
     del stim["target_position"]
     stim["intensity_backgrounds"] = intensity_backgrounds
     stim["target_positions"] = (stim1["target_position"], stim2["target_position"])
+    stim["shape"] = shape
+    stim["visual_size"] = visual_size
     return stim
 
 
