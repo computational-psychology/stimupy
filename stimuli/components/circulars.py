@@ -403,6 +403,12 @@ def grating(
         mask with integer index for each ring (key: "ring_mask"),
         and additional keys containing stimulus parameters
     """
+    
+    # Resolve sizes
+    try:
+        shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
+    except:
+        pass
 
     # Resolve grating
     params = resolve_circular_params(
@@ -419,6 +425,10 @@ def grating(
     stim_params.pop("n_rings", None)
     stim_params.pop("ring_width", None)
     stim_params.pop("frequency", None)
+    if shape is not None:
+        stim_params["shape"] = shape
+    if visual_size is not None:
+        stim_params["visual_size"] = visual_size
 
     # Draw stim
     stim = disc_and_rings(
@@ -496,3 +506,19 @@ def bessel(
         }
     return stim
     
+
+if __name__ == "__main__":
+    from stimuli.utils.plotting import plot_stimuli
+    
+    p = {
+        "visual_size": (10, 20),
+        "ppd": 50,
+        }
+    
+    stims = {
+        "grating": grating(**p, frequency=1),
+        "disc_and_rings": disc_and_rings((1, 2, 3), (1,0), (10, 20), 20),
+        "ring": ring((1, 2), 1, (10, 20), 20),
+        }
+    
+    plot_stimuli(stims, mask=False)
