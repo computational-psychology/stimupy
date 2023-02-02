@@ -55,9 +55,9 @@ def mask_frames(
 
 def frames(
     frame_radii,
-    shape=None,
     visual_size=None,
     ppd=None,
+    shape=None,
     intensity_frames=(1.0, 0.0),
     intensity_background=0.5,
     origin="mean",
@@ -110,9 +110,9 @@ def frames(
 
 
 def square_wave(
-    shape=None,
     visual_size=None,
     ppd=None,
+    shape=None,
     frequency=None,
     n_frames=None,
     frame_width=None,
@@ -125,12 +125,12 @@ def square_wave(
 
     Parameters
     ----------
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
     frequency : Number, or None (default)
         spatial frequency of grating, in cycles per degree visual angle
     n_frames : int, or None (default)
@@ -182,15 +182,20 @@ def square_wave(
         frequency=frequency,
         period=period,
     )
-    shape, visual_size, ppd = resolution.resolve(
+    shape_, visual_size_, ppd = resolution.resolve(
         shape=params["length"] * 2, visual_size=params["visual_angle"] * 2, ppd=params["ppd"]
     )
+
+    if shape is not None:
+        shape_ = shape
+    if visual_size is not None:
+        visual_size_ = visual_size
 
     # Draw
     stim = frames(
         frame_radii=params["edges"],
-        shape=shape,
-        visual_size=visual_size,
+        shape=shape_,
+        visual_size=visual_size_,
         ppd=ppd,
         intensity_frames=intensity_frames,
         intensity_background=intensity_background,
@@ -205,3 +210,15 @@ def square_wave(
         "period": params["period"],
         "orientation": "cityblock",
     }
+
+
+if __name__ == "__main__":
+    from stimuli.utils import plot_stimuli
+
+    stims = {
+        "frames": frames(visual_size=(8, 16), frame_radii=(1, 2, 3), ppd=32),
+        "square_wave": square_wave(visual_size=(8, 16), ppd=32, frequency=1.0),
+    }
+
+    plot_stimuli(stims, mask=False, save=None)
+
