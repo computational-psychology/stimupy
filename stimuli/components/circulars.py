@@ -1,6 +1,6 @@
 import copy
 import itertools
-
+import warnings
 import numpy as np
 import scipy.special as sp
 
@@ -78,6 +78,12 @@ def resolve_circular_params(
         ppd=ppd_1D,
         frequency=frequency,
     )
+    
+    # Remove too large radii:
+    if params["edges"][-1] > visual_angle:
+        warnings.warn("Last ring does not perfecetly fit into image")
+        params["edges"][-1] = visual_angle
+
     shape = resolution.validate_shape(params["length"] * 2)
     visual_size = resolution.validate_visual_size(params["visual_angle"] * 2)
     ppd = resolution.validate_ppd(params["ppd"])
@@ -516,7 +522,7 @@ if __name__ == "__main__":
         }
     
     stims = {
-        "grating": grating(**p, frequency=1),
+        "grating": grating(**p, frequency=2),
         "disc_and_rings": disc_and_rings((1, 2, 3), (1,0), (10, 20), 20),
         "ring": ring((1, 2), 1, (10, 20), 20),
         }
