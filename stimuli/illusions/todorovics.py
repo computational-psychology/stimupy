@@ -2,7 +2,7 @@ import numpy as np
 
 from stimuli.components.shapes import cross as cross_shape
 from stimuli.components.shapes import rectangle as rectangle_shape
-from stimuli.utils import degrees_to_pixels, pad_dict_to_shape, resolution
+from stimuli.utils import degrees_to_pixels, pad_dict_to_shape, resolution, stack_dicts
 
 __all__ = [
     "rectangle_generalized",
@@ -10,6 +10,9 @@ __all__ = [
     "cross_generalized",
     "cross",
     "equal",
+    "two_sided_rectangle",
+    "two_sided_cross",
+    "two_sided_equal",
 ]
 
 
@@ -120,6 +123,9 @@ def rectangle_generalized(
     stim["covers_x"] = covers_x
     stim["covers_y"] = covers_y
     stim["intensity_covers"] = intensity_covers
+    del stim["rectangle_size"]
+    del stim["rectangle_position"]
+    del stim["intensity_rectangle"]
     return stim
 
 
@@ -135,8 +141,8 @@ def rectangle(
     intensity_covers=1.0,
 ):
     """
-    Todorovic's illusion with rectangular target in the center and four rectangular covers added
-    symmetrically around target center
+    Todorovic's illusion with rectangular target in the center and four rectangular
+    covers added symmetrically around target center
 
     Parameters
     ----------
@@ -223,8 +229,8 @@ def cross_generalized(
     intensity_covers=1.0,
 ):
     """
-    Todorovic's illusion with cross target and rectangular covers added with flexible number of
-    covers and flexible cover placement
+    Todorovic's illusion with cross target and rectangular covers added with
+    flexible number of covers and flexible cover placement
 
     Parameters
     ----------
@@ -336,7 +342,8 @@ def cross(
     intensity_covers=1.0,
 ):
     """
-    Todorovic's illusion with cross target and four rectangular covers added at inner cross corners
+    Todorovic's illusion with cross target and four rectangular covers added
+    at inner cross corners
 
     Parameters
     ----------
@@ -385,13 +392,14 @@ def cross(
 
     # Calculate placement of covers for generalized function:
     ppd = np.unique(ppd)[0]
-    cy, cx = np.floor(np.array(visual_size) * ppd / 2) / ppd
+    cy = np.floor(shape[0] / 2) / ppd
+    cx = np.floor(shape[1] / 2) / ppd
     ct = np.ceil(cross_thickness * ppd)
     ct = (ct + (ct % 2)) / ppd
     ct_half = ct / 2
 
-    y1 = cy - ct_half - covers_size[0]
-    x1 = cx - ct_half - covers_size[1]
+    y1 = cy - ct_half - covers_size[0] + (cy*ppd%2)/ppd
+    x1 = cx - ct_half - covers_size[1] + (cx*ppd%2)/ppd
     y2 = cy + ct_half
     x2 = cx + ct_half
 
@@ -422,7 +430,8 @@ def equal(
     intensity_covers=1.0,
 ):
     """
-    Todorovic's illusion with cross target and four rectangular covers added at inner cross corners
+    Todorovic's illusion with cross target and four rectangular covers added at
+    inner cross corners
 
     Parameters
     ----------
@@ -479,28 +488,293 @@ def equal(
     return stim
 
 
+def two_sided_rectangle(
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    target_size=None,
+    covers_size=None,
+    covers_offset=None,
+    intensity_backgrounds=(0.0, 1.0),
+    intensity_target=0.5,
+    intensity_covers=(1.0, 0.0),
+):
+    """
+    Two-sided Todorovic's illusion with rectangular target in the center and four
+    rectangular covers added symmetrically around target center
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of grating, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of grating, in pixels
+    target_size : float or (float, float)
+        size of the target in degrees of visual angle (height, width)
+    covers_size : float or (float, float)
+        size of covers in degrees of visual angle (height, width)
+    covers_offset : float or (float, float)
+        distance from cover center to target center in (y, x)
+    intensity_background : Sequence[Number, Number]
+        intensity values for backgrounds
+    intensity_target : float
+        intensity value for target
+    intensity_covers : Sequence[Number, Number]
+        intensity values for covers
+
+    Returns
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for the target (key: "target_mask"),
+        and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Blakeslee, B., & McCourt, M. E. (1999). A multiscale spatial ﬁltering account of the
+        White eﬀect, simultaneous brightness contrast and grating induction. Vision
+        Research, 39, 4361–4377.
+    Pessoa, L., Baratoff, G., Neumann, H., & Todorovic, D. (1998). Lightness and junctions:
+        variations on White’s display. Investigative Ophthalmology and Visual Science
+        (Supplement), 39, S159.
+    Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
+    """
+    
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
+
+    stim1 = rectangle(
+        visual_size=(visual_size[0], visual_size[1]/2),
+        ppd=ppd,
+        target_size=target_size,
+        covers_size=covers_size,
+        covers_offset=covers_offset,
+        intensity_background=intensity_backgrounds[0],
+        intensity_target=intensity_target,
+        intensity_covers=intensity_covers[0],
+    )
+    
+    stim2 = rectangle(
+        visual_size=(visual_size[0], visual_size[1]/2),
+        ppd=ppd,
+        target_size=target_size,
+        covers_size=covers_size,
+        covers_offset=covers_offset,
+        intensity_background=intensity_backgrounds[1],
+        intensity_target=intensity_target,
+        intensity_covers=intensity_covers[1],
+    )
+    
+    stim = stack_dicts(stim1, stim2)
+    del stim["intensity_background"]
+    del stim["target_position"]
+    stim["intensity_backgrounds"] = intensity_backgrounds
+    stim["intensity_covers"] = intensity_covers
+    stim["target_positions"] = (stim1["target_position"], stim2["target_position"])
+    stim["shape"] = shape
+    stim["visual_size"] = visual_size
+    return stim
+
+
+def two_sided_cross(
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    cross_size=None,
+    cross_thickness=None,
+    covers_size=None,
+    intensity_backgrounds=(0.0, 1.0),
+    intensity_target=0.5,
+    intensity_covers=(1.0, 0.0),
+):
+    """
+    Two-sided Todorovic's illusion with cross target and four rectangular covers
+    added at inner cross corners
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of grating, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of grating, in pixels
+    cross_size : float or (float, float)
+        size of target cross in visual angle
+    cross_thickness : float
+        thickness of target cross in visual angle
+    covers_size : float or (float, float)
+        size of covers in degrees of visual angle (height, width)
+    intensity_backgrounds : Sequence[Number, Number]
+        intensity values for backgrounds
+    intensity_target : float
+        intensity value for target
+    intensity_covers : Sequence[Number, Number]
+        intensity values for covers
+
+    Returns
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for the target (key: "target_mask"),
+        and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Blakeslee, B., & McCourt, M. E. (1999). A multiscale spatial ﬁltering account of the
+        White eﬀect, simultaneous brightness contrast and grating induction. Vision
+        Research, 39, 4361–4377.
+    Pessoa, L., Baratoff, G., Neumann, H., & Todorovic, D. (1998). Lightness and junctions:
+        variations on White’s display. Investigative Ophthalmology and Visual Science
+        (Supplement), 39, S159.
+    Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
+    """
+    
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
+
+    stim1 = cross(
+        visual_size=(visual_size[0], visual_size[1]/2),
+        ppd=ppd,
+        cross_size=cross_size,
+        cross_thickness=cross_thickness,
+        covers_size=covers_size,
+        intensity_background=intensity_backgrounds[0],
+        intensity_target=intensity_target,
+        intensity_covers=intensity_covers[0],
+    )
+    
+    stim2 = cross(
+        visual_size=(visual_size[0], visual_size[1]/2),
+        ppd=ppd,
+        cross_size=cross_size,
+        cross_thickness=cross_thickness,
+        covers_size=covers_size,
+        intensity_background=intensity_backgrounds[1],
+        intensity_target=intensity_target,
+        intensity_covers=intensity_covers[1],
+    )
+    
+    stim = stack_dicts(stim1, stim2)
+    del stim["intensity_background"]
+    stim["intensity_backgrounds"] = intensity_backgrounds
+    stim["intensity_covers"] = intensity_covers
+    stim["shape"] = shape
+    stim["visual_size"] = visual_size
+    return stim
+
+
+def two_sided_equal(
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    cross_size=None,
+    cross_thickness=None,
+    intensity_backgrounds=(0.0, 1.0),
+    intensity_target=0.5,
+    intensity_covers=(1.0, 0.0),
+):
+    """
+    Two-sided Todorovic's illusion with cross target and four rectangular covers
+    added at inner cross corners
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of grating, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of grating, in pixels
+    cross_size : float or (float, float)
+        size of target cross in visual angle
+    cross_thickness : float
+        thickness of target cross in visual angle
+    intensity_background : float
+        intensity value for background
+    intensity_target : float
+        intensity value for target
+    intensity_covers : float
+        intensity value for covers
+
+    Returns
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for the target (key: "target_mask"),
+        and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Blakeslee, B., & McCourt, M. E. (1999). A multiscale spatial ﬁltering account of the
+        White eﬀect, simultaneous brightness contrast and grating induction. Vision
+        Research, 39, 4361–4377.
+    Pessoa, L., Baratoff, G., Neumann, H., & Todorovic, D. (1998). Lightness and junctions:
+        variations on White’s display. Investigative Ophthalmology and Visual Science
+        (Supplement), 39, S159.
+    Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
+    """
+    
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
+
+    stim1 = equal(
+        visual_size=(visual_size[0], visual_size[1]/2),
+        ppd=ppd,
+        cross_size=cross_size,
+        cross_thickness=cross_thickness,
+        intensity_background=intensity_backgrounds[0],
+        intensity_target=intensity_target,
+        intensity_covers=intensity_covers[0],
+    )
+    
+    stim2 = equal(
+        visual_size=(visual_size[0], visual_size[1]/2),
+        ppd=ppd,
+        cross_size=cross_size,
+        cross_thickness=cross_thickness,
+        intensity_background=intensity_backgrounds[1],
+        intensity_target=intensity_target,
+        intensity_covers=intensity_covers[1],
+    )
+    
+    stim = stack_dicts(stim1, stim2)
+    del stim["intensity_background"]
+    stim["intensity_backgrounds"] = intensity_backgrounds
+    stim["intensity_covers"] = intensity_covers
+    stim["shape"] = shape
+    stim["visual_size"] = visual_size
+    return stim
+
+
+
 if __name__ == "__main__":
     from stimuli.utils import plot_stimuli
 
     p1 = {
         "visual_size": 10,
         "ppd": 10,
-        "target_size": 4,
-        "covers_size": 2,
+        "target_size": 3,
+        "covers_size": 1.5,
     }
     
     p2 = {
         "visual_size": 10,
         "ppd": 10,
         "cross_size": 4,
-        "cross_thickness": 2,
+        "cross_thickness": 1.5,
     }
 
     stims = {
-        "rectangle": rectangle(**p1, covers_offset=2),
-        "rectangle_general": rectangle_generalized(**p1, target_position=3, covers_x=(2, 6), covers_y=(2, 6)),
+        "rectangle": rectangle(**p1, covers_offset=1.5),
+        "rectangle_general": rectangle_generalized(**p1, target_position=3.5, covers_x=(2, 6), covers_y=(2, 6)),
         "cross": cross(**p2, covers_size=2),
         "cross_general": cross_generalized(**p2, covers_size=2, covers_x=(2, 6), covers_y=(2, 6)),
         "equal": equal(**p2),
+        "two_sided_rectangle": two_sided_rectangle(**p1, covers_offset=1),
+        "two_sided_cross": two_sided_cross(**p2, covers_size=1),
+        "two_sided_equal": two_sided_equal(**p2),
     }
     plot_stimuli(stims, mask=True, save=None)

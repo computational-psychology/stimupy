@@ -93,6 +93,10 @@ def line(
     coords = (position[::-1], (int(np.round(position[1]+line_length*alpha[1]*ppd[1])),
                                int(np.round(position[0]+line_length*alpha[0]*ppd[0]))))
     
+    if (any(num < 0  for num in coords[0]) or
+        any(num < 0  for num in coords[1])):
+        raise ValueError("Line does not fully fit into image")
+    
     # Create line image
     ImageDraw.Draw(img).line(coords, width=int(line_width*ppd[0]))
     

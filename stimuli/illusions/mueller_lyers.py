@@ -1,11 +1,12 @@
 import numpy as np
 import copy
 from stimuli.components import lines
-from stimuli.utils import resolution
+from stimuli.utils import resolution, stack_dicts
 
 
 __all__ = [
     "mueller_lyer",
+    "two_sided",
 ]
 
 def mueller_lyer(
@@ -150,19 +151,106 @@ def mueller_lyer(
     
     target_line["target_mask"] = np.where(target_line["line_mask"] == 1, 1, 0).astype(int)
     return target_line
-        
+
+
+def two_sided(
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    outer_lines_length=None,
+    outer_lines_angle=45,
+    target_length=None,
+    line_width=0,
+    intensity_outer_lines=1.0,
+    intensity_target=0.5,
+    intensity_background=0.0,
+):
+    """
+    Mueller-Lyer illusion
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of grating, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of grating, in pixels
+    outer_lines_length : Number
+        length of outer lines in degrees visual angle
+    outer_lines_angle : Number
+        angle of outer lines in degrees. Must be between -180 and 180 degrees.
+    target_length : Number
+        length of target line in degrees visual angle
+    line_width : 
+        line width in degrees visual angle; if 0 (default), line width is 1 px
+    intensity_outer_lines : Number
+        intensity value of outer lines
+    intensity_target : Number
+        intensity value of target line
+    intensity_background : Number
+        intensity value of background
+
+    Returns
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "target_mask"),
+        and additional keys containing stimulus parameters
+    
+    References
+    ----------
+    Mueller-Lyer, F. (1896). Zur Lehre von den optischen Taeuschungen. Ueber
+        Kontrast und Konfluxion. Zeitschrift fuer Psychologie und Physiologie
+        der Sinnesorgane, IX, 1-16.
+    """
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
+
+    stim1 = mueller_lyer(
+        visual_size=(visual_size[0], visual_size[1]/2),
+        ppd=ppd,
+        outer_lines_length=outer_lines_length,
+        outer_lines_angle=outer_lines_angle,
+        target_length=target_length,
+        line_width=line_width,
+        intensity_outer_lines=intensity_outer_lines,
+        intensity_target=intensity_target,
+        intensity_background=intensity_background,
+        )
+    
+    stim2 = mueller_lyer(
+        visual_size=(visual_size[0], visual_size[1]/2),
+        ppd=ppd,
+        outer_lines_length=outer_lines_length,
+        outer_lines_angle=outer_lines_angle+90,
+        target_length=target_length,
+        line_width=line_width,
+        intensity_outer_lines=intensity_outer_lines,
+        intensity_target=intensity_target,
+        intensity_background=intensity_background,
+        )
+    
+    stim = stack_dicts(stim1, stim2)
+    stim["shape"] = shape
+    stim["visual_size"] = visual_size
+    return stim
+
 
 
 if __name__ == "__main__":
-    from stimuli.utils import plot_stim
+    from stimuli.utils import plot_stimuli
     p1 = {
         "visual_size": 10,
         "ppd": 20,
         "outer_lines_length": 1,
         "outer_lines_angle" : 45,
-        "target_length": 6,
+        "target_length": 3,
         "line_width": 0.1,
         }
 
-    stim = mueller_lyer(**p1)
-    plot_stim(stim, stim_name="mueller-lyer", mask=True, save=None)
+    stims = {
+        "single": mueller_lyer(**p1),
+        "two_sided": two_sided(**p1),
+        }
+    plot_stimuli(stims, mask=True, save=None)

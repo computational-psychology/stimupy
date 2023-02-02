@@ -4,7 +4,7 @@ from .checkerboards import *
 from .circulars import *
 from .cornsweets import *
 from .cubes import *
-from .delbouefs import *
+from .delboeufs import *
 from .dungeons import *
 from .frames import *
 from .gratings import *

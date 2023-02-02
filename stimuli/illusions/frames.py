@@ -2,12 +2,15 @@ import itertools
 import numpy as np
 
 from stimuli.components import frames as frames_component
+from stimuli.utils import resolution, stack_dicts
 
 __all__ = [
     "rings",
     "rings_generalized",
+    # "two_sided_rings",
     "bullseye",
     "bullseye_generalized",
+    "two_sided_bullseye",
 ]
 
 
@@ -98,6 +101,93 @@ def rings(
 
     # Update and return stimulus
     stim["target_mask"] = targets_mask.astype(int)
+    return stim
+
+
+def two_sided_rings(
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    frequency=None,
+    n_frames=None,
+    frame_width=None,
+    period="ignore",
+    intensity_frames=(1.0, 0.0),
+    target_indices=(),
+    intensity_target=0.5,
+):
+    """Draw set of square frames, with some frame(s) as target
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    frequency : Number, or None (default)
+        spatial frequency of grating, in cycles per degree visual angle
+    n_frames : int, or None (default)
+        number of frames in the grating
+    frame_width : Number, or None (default)
+        width of a single frame, in degrees visual angle
+    period : "full", "half", "ignore" (default)
+        whether to ensure the grating only has "full" periods,
+        half "periods", or no guarantees ("ignore")
+    intensity_frames : Sequence[float, ...]
+        intensity value for each bar, by default (1.0, 0.0).
+        Can specify as many intensities as n_frames;
+        If fewer intensities are passed than n_frames, cycles through intensities
+    target_indices : int, or Sequence[int, ...]
+        indices frames where targets will be placed
+    intensity_target : float, or Sequence[float, ...], optional
+        intensity value for each target, by default 0.5.
+        Can specify as many intensities as number of target_indices;
+        If fewer intensities are passed than target_indices, cycles through intensities
+
+    Returns
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "target_mask"),
+        and additional keys containing stimulus parameters
+
+    References
+    ----------
+    Domijan, D. (2015). A neurocomputational account of the role of contour
+        facilitation in brightness perception. Frontiers in Human Neuroscience,
+        9, 93. https://doi.org/10.3389/fnhum.2015.00093
+    """
+
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
+
+    stim1 = rings(
+        visual_size=(visual_size[0], visual_size[1]/2),
+        ppd=ppd,
+        frequency=frequency,
+        n_frames=n_frames,
+        frame_width=frame_width,
+        intensity_target=intensity_target,
+        intensity_frames=intensity_frames,
+        target_indices=target_indices,
+        )
+    
+    stim2 = rings(
+        visual_size=(visual_size[0], visual_size[1]/2),
+        ppd=ppd,
+        frequency=frequency,
+        n_frames=n_frames,
+        frame_width=frame_width,
+        intensity_target=intensity_target,
+        intensity_frames=intensity_frames[::-1],
+        target_indices=target_indices,
+        )
+    
+    stim = stack_dicts(stim1, stim2)
+    stim["shape"] = shape
+    stim["visual_size"] = visual_size
     return stim
 
 
@@ -310,6 +400,90 @@ def bullseye_generalized(
     return stim
 
 
+def two_sided_bullseye(
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    frequency=None,
+    n_frames=None,
+    frame_width=None,
+    intensity_target=0.5,
+    intensity_frames=(1.0, 0.0),
+    intensity_background=0.5,
+    origin="mean",
+):
+    """Two-sided square "bullseye", i.e., set of rings with target in center
+
+    Essentially frames(target_indices=1)
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    frequency : Number, or None (default)
+        spatial frequency of grating, in cycles per degree visual angle
+    n_frames : int, or None (default)
+        number of frames in the grating
+    frame_width : Number, or None (default)
+        width of a single frame, in degrees visual angle
+    period : "full", "half", "ignore" (default)
+        whether to ensure the grating only has "full" periods,
+        half "periods", or no guarantees ("ignore")
+    intensity_frames : Sequence[float, ...]
+        intensity value for each frame, by default (1.0, 0.0).
+        Can specify as many intensities as n_franes;
+        If fewer intensities are passed than n_frames, cycles through intensities
+    intensity_target : float, or Sequence[float, ...], optional
+        intensity value for each target, by default 0.5.
+        Can specify as many intensities as number of target_indices;
+        If fewer intensities are passed than target_indices, cycles through intensities
+
+    Returns
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "target_mask"),
+        and additional keys containing stimulus parameters
+
+    References
+    -----------
+    Bindman, D., & Chubb, C. (2004). Brightness assimilation in Bullseye displays.
+        Vision Research, 44, 309–319. https://doi.org/10.1016/S0042-6989(03)00430-9
+    """
+
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
+
+    stim1 = bullseye(
+        visual_size=(visual_size[0], visual_size[1]/2),
+        ppd=ppd,
+        frequency=frequency,
+        n_frames=n_frames,
+        frame_width=frame_width,
+        intensity_target=intensity_target,
+        intensity_frames=intensity_frames,
+        )
+    
+    stim2 = bullseye(
+        visual_size=(visual_size[0], visual_size[1]/2),
+        ppd=ppd,
+        frequency=frequency,
+        n_frames=n_frames,
+        frame_width=frame_width,
+        intensity_target=intensity_target,
+        intensity_frames=intensity_frames[::-1],
+        )
+    
+    stim = stack_dicts(stim1, stim2)
+    stim["shape"] = shape
+    stim["visual_size"] = visual_size
+    return stim
+
+
 if __name__ == "__main__":
     from stimuli.utils import plot_stimuli
     
@@ -322,7 +496,9 @@ if __name__ == "__main__":
     stims = {
         "rings": rings(visual_size=10, ppd=10, frequency=0.5, target_indices=(1, 3)),
         "rings_generalized": rings_generalized(**p1, target_indices=(1, 3)),
+        "two_sided_rings": two_sided_rings(visual_size=10, ppd=10, frequency=1, target_indices=(1, 3)),
         "bullseye": bullseye(visual_size=10, ppd=10, frequency=0.5),
         "bullseye_generalized": bullseye_generalized(**p1),
+        "two_sided_bullseye": two_sided_bullseye(visual_size=10, ppd=10, frequency=1)
     }
     plot_stimuli(stims, mask=True, save=None)
