@@ -1,6 +1,6 @@
 import pytest
 
-from stimuli.components.circular import resolve_circular_params
+from stimuli.components.circulars import resolve_circular_params
 
 
 @pytest.mark.parametrize(

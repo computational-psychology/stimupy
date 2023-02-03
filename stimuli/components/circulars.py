@@ -80,9 +80,10 @@ def resolve_circular_params(
     )
     
     # Remove too large radii:
-    if params["edges"][-1] > visual_angle:
-        warnings.warn("Last ring does not perfecetly fit into image")
-        params["edges"][-1] = visual_angle
+    if visual_angle is not None:
+        if params["edges"][-1] > visual_angle:
+            warnings.warn("Last ring does not perfecetly fit into image")
+            params["edges"][-1] = visual_angle
 
     shape = resolution.validate_shape(params["length"] * 2)
     visual_size = resolution.validate_visual_size(params["visual_angle"] * 2)

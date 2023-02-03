@@ -1,5 +1,5 @@
 import pytest
-from stimuli.components.checkerboard import checkerboard, resolve_params
+from stimuli.components.checkerboards import checkerboard, resolve_params
 
 
 @pytest.mark.parametrize(
