@@ -5,7 +5,7 @@ This module reproduces most of the stimuli used by White & White (1985) as
 they were described in that paper.
 
 Each stimulus is provided by a separate function,
-a full list can be found as stimuli.papers.white1985.__all__
+a full list can be found as stimupy.papers.white1985.__all__
 
 The output of each of these functions is a stimulus dictionary.
 
@@ -18,7 +18,7 @@ Attributes
 ----------
 __all__ (list of str): list of all stimulus-functions
     that are exported by this module when executing
-        >>> from stimuli.papers.white1985 import *
+        >>> from stimupy.papers.white1985 import *
 
 References
 -----------

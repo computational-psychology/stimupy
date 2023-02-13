@@ -12,7 +12,7 @@ stimulus sizes by providing at least two of the following: a shape
 (in pixels), a visual_size (in degrees) and/or a resolution (in ppd).
 
 Each stimulus is provided by a separate function,
-a full list can be found as stimuli.papers.domijan2015.__all__
+a full list can be found as stimupy.papers.domijan2015.__all__
 
 The output of each of these functions is a stimulus dictionary.
 
@@ -25,7 +25,7 @@ Attributes
 ----------
 __all__ (list of str): list of all stimulus-functions
     that are exported by this module when executing
-        >>> from stimuli.papers.domijan2015 import *
+        >>> from stimupy.papers.domijan2015 import *
 
 References
 -----------

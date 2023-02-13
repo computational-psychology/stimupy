@@ -33,7 +33,7 @@ def mask_from_idx(checkerboard_stim, check_idc):
 
     See also
     --------
-    stimuli.components.checkerboard
+    stimupy.components.checkerboard
     """
     board_shape = checkerboard_stim["board_shape"]
 
@@ -103,7 +103,7 @@ def add_targets(checkerboard_stim, target_indices, extend_targets=False, intensi
 
     See also
     --------
-    stimuli.components.checkerboard
+    stimupy.components.checkerboard
     """
     mask = np.zeros(checkerboard_stim["shape"])
     for i, target in enumerate(target_indices):
@@ -178,7 +178,7 @@ def checkerboard(
 
     See also
     --------
-    stimuli.components.checkerboard
+    stimupy.components.checkerboard
 
     References
     ----------

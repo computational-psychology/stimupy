@@ -6,7 +6,7 @@ Hammon & de Sa (2007) as they were provided to the model described
 in that paper.
 
 Each stimulus is provided by a separate function,
-a full list can be found as stimuli.papers.RHS2007.__all__
+a full list can be found as stimupy.papers.RHS2007.__all__
 
 The output of each of these functions is a stimulus dictionary.
 
@@ -19,7 +19,7 @@ Attributes
 ----------
 __all__ (list of str): list of all stimulus-functions
     that are exported by this module when executing
-        >>> from stimuli.papers.RHS2007 import *
+        >>> from stimupy.papers.RHS2007 import *
 
 References
 -----------

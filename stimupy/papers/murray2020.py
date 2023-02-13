@@ -7,7 +7,7 @@ The stimuli are show in Fig 1 of the paper.
 NOTE that the Haze illusion (Fig 1m) is not provided.
 
 Each stimulus is provided by a separate function,
-a full list can be found as stimuli.papers.murray2020.__all__
+a full list can be found as stimupy.papers.murray2020.__all__
 
 The output of each of these functions is a stimulus dictionary.
 
@@ -20,7 +20,7 @@ Attributes
 ----------
 __all__ (list of str): list of all stimulus-functions
     that are exported by this module when executing
-        >>> from stimuli.papers.murray2020 import *
+        >>> from stimupy.papers.murray2020 import *
 
 References
 -----------

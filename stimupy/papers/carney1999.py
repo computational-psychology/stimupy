@@ -7,7 +7,7 @@ More information on Modelfest can be found here:
 https://www.visionscience.com/data/modelfest/
 
 Each stimulus is provided by a separate function,
-a full list can be found as stimuli.papers.carney1999.__all__
+a full list can be found as stimupy.papers.carney1999.__all__
 
 The output of each of these functions is a stimulus dictionary.
 
@@ -20,7 +20,7 @@ Attributes
 ----------
 __all__ (list of str): list of all stimulus-functions
     that are exported by this module when executing
-        >>> from stimuli.papers.carney1999 import *
+        >>> from stimupy.papers.carney1999 import *
 
 References
 -----------

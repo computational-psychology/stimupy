@@ -1,5 +1,6 @@
-import numpy as np
 import copy
+
+import numpy as np
 
 from . import resolution
 
@@ -29,7 +30,7 @@ def pad_by_visual_size(img, padding, ppd, pad_value=0.0):
 
     See also
     ---------
-    stimuli.utils.resolution
+    stimupy.utils.resolution
     """
 
     # Broadcast to ((before_1, after_1),...(before_N, after_N))
@@ -72,7 +73,7 @@ def pad_to_visual_size(img, visual_size, ppd, pad_value=0):
 
     See also
     ---------
-    stimuli.utils.resolution
+    stimupy.utils.resolution
     """
 
     # visual_size to shape
@@ -197,7 +198,7 @@ def pad_dict_by_visual_size(dct, padding, ppd, pad_value=0.0, keys=("img", "*mas
 
     See also
     ---------
-    stimuli.utils.resolution
+    stimupy.utils.resolution
     """
     # Create deepcopy to not override existing dict
     new_dict = copy.deepcopy(dct)
@@ -248,7 +249,7 @@ def pad_dict_to_visual_size(dct, visual_size, ppd, pad_value=0, keys=("img", "*m
 
     See also
     ---------
-    stimuli.utils.resolution
+    stimupy.utils.resolution
     """
 
     # visual_size to shape

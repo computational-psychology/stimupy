@@ -31,14 +31,14 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin="mea
         dict with keys:
         "visual_size", "ppd" : resolved from input arguments,
         "x", "y" : single axes
-        "horiztonal", "vertical" : numpy.ndarray of shape, with distance from origin,
-            in deg. visual angle, at each pixel
+        "horizontal", "vertical" : numpy.ndarray of shape, with distance from origin,
+        in deg. visual angle, at each pixel
         "radial" : numpyn.ndarray of shape, with radius from origin,
-            in deg. visual angle, at each pixel
+        in deg. visual angle, at each pixel
         "angular" : numpy.ndarray of shape, with angle relative to 3 o'clock,
-            in rad, at each pixel
+        in rad, at each pixel
         "cityblock" : numpy.ndarray of shape, with cityblock distance from origin,
-            in deg. visual angle ,at each pixel
+        in deg. visual angle ,at each pixel
     """
 
     # Resolve resolution
@@ -109,7 +109,7 @@ def mask_elements(
 
     Parameters
     ----------
-    orientation : any of keys in stimuli.components.image_base()
+    orientation : any of keys in stimupy.components.image_base()
         which dimension to mask over
     edges : Sequence[Number]
         upper-limit of each consecutive elements
