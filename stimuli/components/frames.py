@@ -54,10 +54,10 @@ def mask_frames(
 
 
 def frames(
-    frame_radii,
     visual_size=None,
     ppd=None,
     shape=None,
+    frame_radii=None,
     intensity_frames=(1.0, 0.0),
     intensity_background=0.5,
     origin="mean",
@@ -66,14 +66,14 @@ def frames(
 
     Parameters
     ----------
-    frame_radii : Sequence[Number]
-        radii of each frame, in degrees visual angle
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
+    frame_radii : Sequence[Number]
+        radii of each frame, in degrees visual angle
     intensity_frames : Sequence[float, ...]
         intensity value for each frame, by default (1.0, 0.0).
         Can specify as many intensities as number of frame_widths;

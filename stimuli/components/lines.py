@@ -8,6 +8,8 @@ from stimuli.components.shapes import ring
 
 __all__ = [
     "line",
+    "dipole",
+    "circle",
 ]
 
 
@@ -164,8 +166,6 @@ def dipole(
     """
     if line_seperation == 0:
         raise ValueError("line_seperation should not be 0")
-    if line_width > line_seperation:
-        raise ValueError("line_width cannot be larger than line_seperation")
     
     intensity_background = (intensity_lines[0] + intensity_lines[1]) / 2
     alpha1 = [np.cos(np.deg2rad(rotation)), np.sin(np.deg2rad(rotation))]
@@ -205,6 +205,11 @@ def dipole(
     
     stim1["img"] = stim1["img"] + stim2["img"]
     stim1["line_mask"] = (stim1["line_mask"] + stim2["line_mask"]*2).astype(int)
+    
+    if line_width == 0:
+        line_width = 1 / np.unique(stim1["ppd"])
+    if line_width >= line_seperation:
+        raise ValueError("line_width should not be larger than line_seperation")
     
     return stim1
 

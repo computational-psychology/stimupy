@@ -614,10 +614,10 @@ def staircase(
     edges, intensities = shift_edges(
         edges=edges,
         ppd=ppd[0],
-        phase_shift=phase_shift,
+        phase_shift=0,
         phase_width=params["phase_width"],
         intensity_bars=intensity_bars,
-        origin=origin
+        origin="corner"
         )
 
     # Get bars mask
@@ -676,6 +676,8 @@ def plaid(
     """
 
     # Create sine-wave gratings
+    grating_parameters1["origin"] = "center"
+    grating_parameters2["origin"] = "center"
     grating1 = sine_wave(**grating_parameters1)
     grating2 = sine_wave(**grating_parameters2)
     

@@ -59,21 +59,27 @@ def mask_angle(
 
 
 def wedge(
-    width,
-    radius,
-    rotation=0.0,
-    inner_radius=0.0,
-    intensity=1.0,
-    intensity_background=0.5,
     visual_size=None,
     ppd=None,
     shape=None,
+    width=None,
+    radius=None,
+    rotation=0.0,
+    inner_radius=0.0,
+    intensity_wedge=1.0,
+    intensity_background=0.5,
     origin="mean",
 ):
     """Draw a wedge, i.e., segment of a disc
 
     Parameters
     ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
     width : float
         angular-width (in degrees) of segment
     radius : float
@@ -83,16 +89,10 @@ def wedge(
         counterclockwise from 3 o'clock, by default 0.0
     inner_radius : float, optional
         inner radius (in degrees visual angle), to turn disc into a ring, by default 0
-    intensity : float, optional
+    intensity_wedge : float, optional
         intensity value of wedge, by default 1.0
     intensity_background : float, optional
         intensity value of background, by default 0.5
-    visual_size : Sequence[Number, Number], Number, or None (default)
-        visual size [height, width] of image, in degrees
-    ppd : Sequence[Number, Number], Number, or None (default)
-        pixels per degree [vertical, horizontal]
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
     origin : "corner", "mean" or "center"
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)
@@ -111,31 +111,31 @@ def wedge(
 
     # Draw disc
     stim = ring(
-        radii=[inner_radius, radius],
-        intensity=intensity,
-        intensity_background=intensity_background,
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,
+        radii=[inner_radius, radius],
+        intensity_rings=intensity_wedge,
+        intensity_background=intensity_background,
         origin=origin,
     )
-    visual_size = stim["visual_size"]
-    shape = stim["shape"]
-    ppd = stim["ppd"]
 
     # Get mask for angles
     mask = mask_angle(
         rotation=rotation,
         angles=angles,
-        visual_size=visual_size,
-        ppd=ppd,
-        shape=shape,
+        visual_size=stim["visual_size"],
+        ppd=stim["ppd"],
+        shape=stim["shape"],
         origin=origin,
     )
 
     # Remove everything but wedge
     stim["img"] = np.where(mask["wedge_mask"], stim["img"], intensity_background)
-    return stim.update(mask)
+    stim["wedge_mask"] = stim["ring_mask"] * mask["wedge_mask"]
+    stim["wedge_mask"] = np.where(stim["wedge_mask"] != 0, 1, 0).astype(int)
+    del stim["ring_mask"]
+    return stim
 
 
 def mask_segments(
@@ -246,9 +246,9 @@ def angular_segments(
 
 
 def grating(
-    shape=None,
     visual_size=None,
     ppd=None,
+    shape=None,
     frequency=None,
     n_segments=None,
     segment_width=None,
@@ -260,12 +260,12 @@ def grating(
 
     Parameters
     ----------
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
     frequency : Number, or None (default)
         angular frequency of angular grating, in cycles per angular degree
     n_segments : int, or None (default)
@@ -329,6 +329,9 @@ def grating(
 
 
 def pinwheel(
+    visual_size=None,
+    ppd=None,
+    shape=None,
     radius=None,
     frequency=None,
     n_segments=None,
@@ -337,15 +340,18 @@ def pinwheel(
     inner_radius=0.0,
     intensity_segments=(1.0, 0.0),
     intensity_background=0.5,
-    visual_size=None,
-    ppd=None,
-    shape=None,
     origin="mean",
 ):
     """Pinwheel- / wheel-of-fortune-like angular grating on disc/ring
 
     Parameters
     ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
     radius : float
         radius of wheel, in degrees visual angle
     frequency : Number, or None (default)
@@ -364,12 +370,6 @@ def pinwheel(
         If fewer intensities are passed than number of radii, cycles through intensities
     intensity_background : float (optional)
         intensity value of background, by default 0.5
-    visual_size : Sequence[Number, Number], Number, or None (default)
-        visual size [height, width] of image, in degrees
-    ppd : Sequence[Number, Number], Number, or None (default)
-        pixels per degree [vertical, horizontal]
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
     origin : "corner", "mean" or "center"
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)

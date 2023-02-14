@@ -159,11 +159,11 @@ def mask_rings(
 
 
 def disc_and_rings(
-    radii,
-    intensity_rings,
     visual_size=None,
     ppd=None,
     shape=None,
+    radii=None,
+    intensity_rings=(0, 1),
     intensity_background=0.5,
     origin="mean",
 ):
@@ -171,17 +171,17 @@ def disc_and_rings(
 
     Parameters
     ----------
-    radii : Sequence[Number]
-        outer radii of rings (& disc) in degree visual angle
-    intensity_rings : Sequence[Number, ...]
-        intensity value for each ring, from inside to out.
-        If fewer intensities are passed than number of radii, cycles through intensities
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
+    radii : Sequence[Number]
+        outer radii of rings (& disc) in degree visual angle
+    intensity_rings : Sequence[Number, ...]
+        intensity value for each ring, from inside to out.
+        If fewer intensities are passed than number of radii, cycles through intensities
     intensity_background : float (optional)
         value of background, by default 0.5
     origin : "corner", "mean" or "center"
@@ -237,11 +237,11 @@ def disc_and_rings(
 
 
 def disc(
-    radius,
-    intensity_discs=1.0,
     visual_size=None,
     ppd=None,
     shape=None,
+    radius=None,
+    intensity_discs=1.0,
     intensity_background=0.5,
     origin="mean",
 ):
@@ -251,16 +251,16 @@ def disc(
 
     Parameters
     ----------
-    radius : Number
-        outer radius of disc in degree visual angle
-    intensity_discs : Number
-        intensity value of disc, by default 1.0
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
+    radius : Number
+        outer radius of disc in degree visual angle
+    intensity_discs : Number
+        intensity value of disc, by default 1.0
     intensity_background : float (optional)
         intensity value of background, by default 0.5
     origin : "corner", "mean" or "center"
@@ -298,11 +298,11 @@ def disc(
 
 
 def ring(
-    radii,
-    intensity_rings=1.0,
     visual_size=None,
     ppd=None,
     shape=None,
+    radii=None,
+    intensity_rings=1.0,
     intensity_background=0.5,
     origin="mean",
 ):
@@ -310,16 +310,16 @@ def ring(
 
     Parameters
     ----------
-    radii : Sequence[Number, Number]
-        inner and outer radius of ring in degree visual angle
-    intensity : Number
-        intensity value of ring, by default 1.0
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
+    radii : Sequence[Number, Number]
+        inner and outer radius of ring in degree visual angle
+    intensity_rings : Number
+        intensity value of ring, by default 1.0
     intensity_background : float (optional)
         intensity value of background, by default 0.5
     origin : "corner", "mean" or "center"
@@ -524,8 +524,8 @@ if __name__ == "__main__":
     
     stims = {
         "grating": grating(**p, frequency=2),
-        "disc_and_rings": disc_and_rings((1, 2, 3), (1,0), (10, 20), 20),
-        "ring": ring((1, 2), 1, (10, 20), 20),
+        "disc_and_rings": disc_and_rings(**p, radii=(1, 2, 3)),
+        "ring": ring(**p, radii=(1, 2)),
         }
     
     plot_stimuli(stims, mask=False)

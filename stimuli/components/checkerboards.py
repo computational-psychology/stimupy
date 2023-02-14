@@ -7,6 +7,8 @@ __all__ = [
     "checkerboard",
 ]
 
+# TODO: Fix bug that changing rotation, affect check size!
+
 def checkerboard(
     visual_size=None,
     ppd=None,
@@ -39,7 +41,7 @@ def checkerboard(
         ensure whether the grating has "even" number of phases, "odd"
         number of phases, either or whether not to round the number of
         phases ("ignore")
-    rotation : Sequence[Number, Number] or Number
+    rotation : Number
         rotation of grating in degrees (default: 0 = horizontal)
     intensity_checks : Sequence[float, float]
         intensity values of checks, by default (1.0, 0.0)
