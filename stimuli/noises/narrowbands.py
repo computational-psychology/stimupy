@@ -5,6 +5,7 @@
 import numpy as np
 from stimuli.utils import bandpass_filter, resolution
 from stimuli.noises.utils import pseudo_white_spectrum
+from stimuli.utils.contrast_conversions import adapt_intensity_range
 
 
 __all__ = [
@@ -17,7 +18,7 @@ def narrowband(
     shape=None,
     center_frequency=None,
     bandwidth=None,
-    rms_contrast=None,
+    intensity_range=(0, 1),
     pseudo_noise=False,
 ):
     """
@@ -35,14 +36,16 @@ def narrowband(
         noise center frequency in cpd
     bandwidth : float
         bandwidth of the noise in octaves
-    rms_contrast : float
-        rms contrast of noise.
+    intensity_range : Sequence[Number, Number]
+        minimum and maximum intensity value; default: (0, 1)
     pseudo_noise : bool
         if True, generate pseudo-random noise with ideal power spectrum.
 
     Returns
     -------
-    A stimulus dictionary with the noise array ['img']
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        and additional keys containing stimulus parameters
     """
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
@@ -78,20 +81,21 @@ def narrowband(
     narrow_noise = np.fft.ifft2(np.fft.ifftshift(narrow_noise_fft))
     narrow_noise = np.real(narrow_noise)
 
-    # Adjust noise rms contrast:
-    narrow_noise = rms_contrast * narrow_noise / narrow_noise.std()
+    # Adjust intensity range:
+    narrow_noise = adapt_intensity_range({"img": narrow_noise}, intensity_range[0], intensity_range[1])["img"]
 
-    params = {
+    stim = {
+        "img": narrow_noise,
+        "noise_mask": None,
         "visual_size": visual_size,
         "ppd": ppd,
         "shape": shape,
-        "rms_contrast": rms_contrast,
         "center_frequency": center_frequency,
         "sigma": sigma,
         "pseudo_noise": pseudo_noise,
         "intensity_range": [narrow_noise.min(), narrow_noise.max()],
     }
-    return {"img": narrow_noise, "mask": None, **params}
+    return stim
 
 
 if __name__ == "__main__":
@@ -99,7 +103,6 @@ if __name__ == "__main__":
     params = {
         "visual_size": 10,
         "ppd": 20,
-        "rms_contrast": 0.2,
         "pseudo_noise": True,
         }
 
@@ -107,4 +110,4 @@ if __name__ == "__main__":
         "Narrowband noise - 3cpd": narrowband(**params, bandwidth=1, center_frequency=3.0),
         "Narrowband noise - 9cpd": narrowband(**params, bandwidth=1, center_frequency=9.0),
     }
-    plot_stimuli(stims, mask=True, save=None, vmin=-0.5, vmax=0.5)
+    plot_stimuli(stims, mask=True, save=None)

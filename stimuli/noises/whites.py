@@ -5,6 +5,7 @@
 import numpy as np
 from stimuli.utils import resolution
 from stimuli.noises.utils import pseudo_white_spectrum
+from stimuli.utils.contrast_conversions import adapt_intensity_range
 
 
 __all__ = [
@@ -15,7 +16,7 @@ def white(
     visual_size=None,
     ppd=None,
     shape=None,
-    rms_contrast=None,
+    intensity_range=(0, 1),
     pseudo_noise=False,
 ):
     """
@@ -29,10 +30,10 @@ def white(
         pixels per degree [vertical, horizontal]
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of grating, in pixels
-    rms_contrast : float
-        rms contrast of noise.
+    intensity_range : Sequence[Number, Number]
+        minimum and maximum intensity value; default: (0, 1)
     pseudo_noise : bool
-        if True, generate pseudo-random noise with ideal power spectrum.
+        if True, generate pseudo-random noise with ideal power spectrum
 
     Returns
     -------
@@ -55,18 +56,19 @@ def white(
         # Create white noise and fft
         white_noise = np.random.rand(*shape) * 2.0 - 1.0
 
-    # Adjust noise rms contrast:
-    white_noise = rms_contrast * white_noise / white_noise.std()
+    # Adjust intensity range:
+    white_noise = adapt_intensity_range({"img": white_noise}, intensity_range[0], intensity_range[1])["img"]
 
-    params = {
+    stim = {
+        "img": white_noise,
+        "noise_mask": None,
         "visual_size": visual_size,
         "ppd": ppd,
         "shape": shape,
-        "rms_contrast": rms_contrast,
         "pseudo_noise": pseudo_noise,
         "intensity_range": [white_noise.min(), white_noise.max()],
     }
-    return {"img": white_noise, "mask": None, **params}
+    return stim
 
 
 if __name__ == "__main__":
@@ -75,11 +77,10 @@ if __name__ == "__main__":
     params = {
         "visual_size": 10,
         "ppd": 20,
-        "rms_contrast": 0.2,
         "pseudo_noise": True,
         }
 
     stims = {
         "White noise": white(**params),
     }
-    plot_stimuli(stims, mask=True, save=None, vmin=-0.5, vmax=0.5)
+    plot_stimuli(stims, mask=True, save=None)

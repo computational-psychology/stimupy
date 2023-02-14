@@ -5,6 +5,7 @@
 import numpy as np
 from stimuli.utils import resolution
 from stimuli.noises.utils import pseudo_white_spectrum
+from stimuli.utils.contrast_conversions import adapt_intensity_range
 
 
 __all__ = [
@@ -17,8 +18,8 @@ def one_over_f(
     visual_size=None,
     ppd=None,
     shape=None,
-    rms_contrast=None,
     exponent=None,
+    intensity_range=(0, 1),
     pseudo_noise=False,
 ):
     """
@@ -32,16 +33,18 @@ def one_over_f(
         pixels per degree [vertical, horizontal]
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of grating, in pixels
-    rms_contrast : float
-        rms contrast of noise.
     exponent
-        exponent used to create 1 / (f**exponent) noise.
+        exponent used to create 1 / (f**exponent) noise
+    intensity_range : Sequence[Number, Number]
+        minimum and maximum intensity value; default: (0, 1)
     pseudo_noise : bool
         if True, generate pseudo-random noise with ideal power spectrum.
 
     Returns
     -------
-    A stimulus dictionary with the noise array ['img']
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        and additional keys containing stimulus parameters
     """
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
@@ -74,16 +77,15 @@ def one_over_f(
     noise = np.fft.ifft2(np.fft.ifftshift(noise_fft))
     noise = np.real(noise)
 
-    # Adjust noise rms contrast:
-    noise = rms_contrast * noise / noise.std()
+    # Adjust intensity range:
+    noise = adapt_intensity_range({"img": noise}, intensity_range[0], intensity_range[1])["img"]
 
     stim = {
         "img": noise,
-        "mask": None,
+        "noise_mask": None,
         "visual_size": visual_size,
         "ppd": ppd,
         "shape": shape,
-        "rms_contrast": rms_contrast,
         "exponent": exponent,
         "pseudo_noise": pseudo_noise,
         "intensity_range": [noise.min(), noise.max()],
@@ -95,7 +97,7 @@ def pink(
     visual_size=None,
     ppd=None,
     shape=None,
-    rms_contrast=None,
+    intensity_range=(0, 1),
     pseudo_noise=False,
 ):
     """
@@ -109,10 +111,10 @@ def pink(
         pixels per degree [vertical, horizontal]
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of grating, in pixels
-    rms_contrast : float
-        rms contrast of noise.
+    intensity_range : Sequence[Number, Number]
+        minimum and maximum intensity value; default: (0, 1)
     pseudo_noise : bool
-        if True, generate pseudo-random noise with ideal power spectrum.
+        if True, generate pseudo-random noise with ideal power spectrum
 
     Returns
     -------
@@ -122,8 +124,8 @@ def pink(
     stim = one_over_f(
         visual_size=visual_size,
         ppd=ppd,
-        rms_contrast=rms_contrast,
         exponent=1.0,
+        intensity_range=intensity_range,
         pseudo_noise=pseudo_noise)
     return stim
 
@@ -132,7 +134,7 @@ def brown(
     visual_size=None,
     ppd=None,
     shape=None,
-    rms_contrast=None,
+    intensity_range=(0, 1),
     pseudo_noise=False,
 ):
     """
@@ -146,10 +148,10 @@ def brown(
         pixels per degree [vertical, horizontal]
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of grating, in pixels
-    rms_contrast : float
-        rms contrast of noise.
+    intensity_range : Sequence[Number, Number]
+        minimum and maximum intensity value; default: (0, 1)
     pseudo_noise : bool
-        if True, generate pseudo-random noise with ideal power spectrum.
+        if True, generate pseudo-random noise with ideal power spectrum
 
     Returns
     -------
@@ -159,8 +161,8 @@ def brown(
     stim = one_over_f(
         visual_size=visual_size,
         ppd=ppd,
-        rms_contrast=rms_contrast,
         exponent=2.0,
+        intensity_range=intensity_range,
         pseudo_noise=pseudo_noise)
     return stim
 
@@ -170,7 +172,6 @@ if __name__ == "__main__":
     params = {
         "visual_size": 10,
         "ppd": 20,
-        "rms_contrast": 0.2,
         "pseudo_noise": True,
         }
 
@@ -179,4 +180,4 @@ if __name__ == "__main__":
         "Pink noise": pink(**params),
         "Brown noise": brown(**params),
     }
-    plot_stimuli(stims, mask=True, save=None, vmin=-0.5, vmax=0.5)
+    plot_stimuli(stims, mask=True, save=None)

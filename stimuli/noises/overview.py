@@ -8,14 +8,13 @@ from stimuli.noises.narrowbands import narrowband
 params = {
     "visual_size": 10,
     "ppd": 10,
-    "rms_contrast": 0.5,
     "pseudo_noise": True,
     }
 
 # fmt: off
 stims = {
     # Binary
-    "binary_noise": binary(visual_size=10, ppd=10, rms_contrast=0.5),
+    "binary_noise": binary(visual_size=10, ppd=10),
     # White
     "white_noise": white(**params),
     # One over frequency
@@ -29,4 +28,4 @@ stims = {
 
 
 if __name__ == "__main__":
-    plot_stimuli(stims, mask=True, save=None, vmin=-2, vmax=2)
+    plot_stimuli(stims, mask=True, save=None)
