@@ -1,30 +1,24 @@
-# Stimuli
+# Stimupy
 
 Contains submodules for
-- creating different brightness illusions ([illusions](stimuli/illusions/))
-- replicating illusions in certain published papers  ([papers](stimuli/papers/))
-- creating 2D patterns or renderings of 3D checkerboards with transparent 
-layers covering part of the image ([transparency](stimuli/transparency/))
-- various functions that calculate contrast metrics ([contrast_metrics](stimuli/contrest_metrics/))
-- some helper functions for padding, resizing, computing Munsell values, and
-converting pixel values to degrees of visual angle ([utils](stimuli/utils/))
-- (creating different random and deterministic textures ([texture](stimuli/texture/)) [yet to be fixed])
+- drawing basic visual stimulus components ([components](stimupy/components/))
+- creating different (brightness) illusions ([illusions](stimupy/illusions/))
+- replicating illusions in certain published papers  ([papers](stimupy/papers/))
+converting pixel values to degrees of visual angle ([utils](stimupy/utils/))
 
-For details, please refer to the source directory (stimuli/), the respective subdirectories and the docstrings.
+For details, please refer to the source directory (stimupy/),
+the respective subdirectories and the docstrings.
 
 ## Dependencies
-- Required: numpy, matplotlib, PIL
-- Optional: 
-    - [PovRay](http://www.povray.org/) (to render variegated checkerboards - submodule transparency.CheckerboardFactory])
-    - rpy2 and R (to render textures with specific spatial properties - submodule texture)
- 
+- Required: numpy, scipy, matplotlib
+
 
 ## Installation
 First clone the repository via 
 
 ```shell script
 git clone https://github.com/computational-psychology/stimuli.git
-``` 
+```
 
 Then run `pip install .` at the root of the repository.
 The repository may then be removed again.
@@ -34,12 +28,10 @@ This makes changes to files immediately usable,
 rather than having to reinstall the package after every change.
 
 ## Importing
-To use in your own code, import the modules. See READMEs in stimuli/ for example usages.
+To use in your own code, import (from) the modules.
 ```python
-from stimuli import lightness
-from stimuli import illusions
-from stimuli.transparency import TextureFactory
-from stimuli.transparency import CheckerboardFactory
-from stimuli import contrast_metrics as cm
-from stimuli import utils
+from stimupy import components
+from stimupy import illusions
+from stimupy import papers
+from stimupy import utils
 ```
