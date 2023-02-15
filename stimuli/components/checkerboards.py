@@ -53,6 +53,11 @@ def checkerboard(
         mask with integer index for each check (key: "checker_mask"),
         and additional keys containing stimulus parameters
     """
+    lst = [visual_size, ppd, shape, frequency, board_shape, check_visual_size]
+    if len([x for x in lst if x is not None]) < 3:
+        raise ValueError("'checkerboard()' needs 3 non-None arguments for resolving from 'visual_size', "
+                         "'ppd', 'shape', 'frequency', 'board_shape', 'check_visual_size'")
+
     if isinstance(frequency, (float, int)) or frequency is None:
         frequency = (frequency, frequency)
     if isinstance(board_shape, (float, int)) or board_shape is None:

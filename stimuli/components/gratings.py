@@ -183,6 +183,10 @@ def square_wave(
         mask with integer index for each bar (key: "grating_mask"),
         and additional keys containing stimulus parameters
     """
+    lst = [visual_size, ppd, shape, frequency, n_bars, bar_width]
+    if len([x for x in lst if x is not None]) < 3:
+        raise ValueError("'square_wave()' needs 3 non-None arguments for resolving from 'visual_size', "
+                         "'ppd', 'shape', 'frequency', 'n_bars', 'bar_width'")
 
     # Try to resolve resolution
     try:
@@ -328,6 +332,10 @@ def sine_wave(
         mask with integer index for each bar (key: "grating_mask"),
         and additional keys containing stimulus parameters
     """
+    lst = [visual_size, ppd, shape, frequency, n_bars, bar_width]
+    if len([x for x in lst if x is not None]) < 3:
+        raise ValueError("'sine_wave()' needs 3 non-None arguments for resolving from 'visual_size', "
+                         "'ppd', 'shape', 'frequency', 'n_bars', 'bar_width'")
 
     # Try to resolve resolution
     try:
@@ -477,6 +485,9 @@ def gabor(
         mask with integer index for each bar (key: "grating_mask"),
         and additional keys containing stimulus parameters
     """
+    if sigma is None:
+        raise ValueError("gabor() missing argument 'sigma' which is not 'None'")
+
     stim = sine_wave(
         shape=shape,
         visual_size=visual_size,
@@ -515,7 +526,7 @@ def staircase(
     bar_width=None,
     period="either",
     rotation=0,
-    intensity_bars=(1.0, 0.0),
+    intensity_bars=(0.0, 1.0),
 ):
     """Draw a luminance staircase
 
@@ -551,6 +562,10 @@ def staircase(
         mask with integer index for each bar (key: "grating_mask"),
         and additional keys containing stimulus parameters
     """
+    lst = [visual_size, ppd, shape, frequency, n_bars, bar_width]
+    if len([x for x in lst if x is not None]) < 3:
+        raise ValueError("'staircase()' needs 3 non-None arguments for resolving from 'visual_size', "
+                         "'ppd', 'shape', 'frequency', 'n_bars', 'bar_width'")
 
     # Try to resolve resolution
     try:
@@ -674,6 +689,8 @@ def plaid(
         mask with integer index for each bar (key: "grating_mask"),
         and additional keys containing stimulus parameters
     """
+    if sigma is None:
+        raise ValueError("plaid() missing argument 'sigma' which is not 'None'")
 
     # Create sine-wave gratings
     grating_parameters1["origin"] = "center"

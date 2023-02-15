@@ -75,6 +75,15 @@ def rectangle_generalized(
         (Supplement), 39, S159.
     Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
     """
+    if target_size is None:
+        raise ValueError("rectangle_generalized() missing argument 'target_size' which is not 'None'")
+    if covers_size is None:
+        raise ValueError("rectangle_generalized() missing argument 'covers_size' which is not 'None'")
+    if covers_x is None:
+        raise ValueError("rectangle_generalized() missing argument 'covers_x' which is not 'None'")
+    if covers_y is None:
+        raise ValueError("rectangle_generalized() missing argument 'covers_y' which is not 'None'")
+    
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
     if len(np.unique(ppd)) > 1:
@@ -182,6 +191,13 @@ def rectangle(
         (Supplement), 39, S159.
     Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
     """
+    if target_size is None:
+        raise ValueError("rectangle() missing argument 'target_size' which is not 'None'")
+    if covers_size is None:
+        raise ValueError("rectangle() missing argument 'covers_size' which is not 'None'")
+    if covers_offset is None:
+        raise ValueError("rectangle() missing argument 'covers_offset' which is not 'None'")
+
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
     if len(np.unique(ppd)) > 1:
@@ -276,6 +292,17 @@ def cross_generalized(
         (Supplement), 39, S159.
     Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
     """
+    if cross_size is None:
+        raise ValueError("cross_generalized() missing argument 'cross_size' which is not 'None'")
+    if cross_thickness is None:
+        raise ValueError("cross_generalized() missing argument 'cross_thickness' which is not 'None'")
+    if covers_size is None:
+        raise ValueError("cross_generalized() missing argument 'covers_size' which is not 'None'")
+    if covers_x is None:
+        raise ValueError("cross_generalized() missing argument 'covers_x' which is not 'None'")
+    if covers_y is None:
+        raise ValueError("cross_generalized() missing argument 'covers_y' which is not 'None'")
+
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
     ppd = np.unique(ppd)[0]
@@ -383,6 +410,13 @@ def cross(
         (Supplement), 39, S159.
     Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
     """
+    if cross_size is None:
+        raise ValueError("cross() missing argument 'cross_size' which is not 'None'")
+    if cross_thickness is None:
+        raise ValueError("cross() missing argument 'cross_thickness' which is not 'None'")
+    if covers_size is None:
+        raise ValueError("cross() missing argument 'covers_size' which is not 'None'")
+
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
     if len(np.unique(ppd)) > 1:
@@ -469,6 +503,11 @@ def equal(
         (Supplement), 39, S159.
     Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
     """
+    if cross_size is None:
+        raise ValueError("equal() missing argument 'cross_size' which is not 'None'")
+    if cross_thickness is None:
+        raise ValueError("equal() missing argument 'cross_thickness' which is not 'None'")
+
     if isinstance(cross_size, (float, int)):
         cross_size = (cross_size, cross_size)
 

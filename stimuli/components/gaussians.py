@@ -45,6 +45,8 @@ def gaussian(
         ellipse-like mask with sigma radius and integer index (key: "gaussian_mask"),
         and additional keys containing stimulus parameters
     """
+    if sigma is None:
+        raise ValueError("gaussian() missing argument 'sigma' which is not 'None'")
     if isinstance(sigma, (float, int)):
         sigma = (sigma, sigma)
     

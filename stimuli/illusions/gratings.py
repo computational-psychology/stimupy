@@ -342,6 +342,8 @@ def counterphase_induction(
     intensity_target=0.5,
     origin="corner",
 ):
+    if target_size is None:
+        raise ValueError("counterphase_induction() missing argument 'target_size' which is not 'None'")
     if orientation == "horizontal":
         rotation = 0
     elif orientation == "vertical":
@@ -437,7 +439,7 @@ def induction(
     rotation=0,
     phase_shift=0,
     intensity_bars=(1.0, 0.0),
-    target_width=0.5,
+    target_width=None,
     intensity_target=0.5,
     origin="corner",
 ):
@@ -493,6 +495,8 @@ def induction(
     McCourt, M. E. (1982). A spatial frequency dependent grating-induction effect.
         Vision Research, 22, 119–134. https://doi.org/10.1016/0042-6989(82)90173-0
     """
+    if target_width is None:
+        raise ValueError("induction() missing argument 'target_width' which is not 'None'")
 
     # Draw grating
     stim = sine_wave(
@@ -596,6 +600,8 @@ def induction_blur(
     McCourt, M. E. (1982). A spatial frequency dependent grating-induction effect.
         Vision Research, 22, 119–134. https://doi.org/10.1016/0042-6989(82)90173-0
     """
+    if target_width is None:
+        raise ValueError("induction_blur() missing argument 'target_width' which is not 'None'")
 
     # Draw grating
     stim = square_wave_component(

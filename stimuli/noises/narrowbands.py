@@ -47,6 +47,11 @@ def narrowband(
         dict with the stimulus (key: "img"),
         and additional keys containing stimulus parameters
     """
+    if center_frequency is None:
+        raise ValueError("narrowband() missing argument 'center_frequency' which is not 'None'")
+    if bandwidth is None:
+        raise ValueError("narrowband() missing argument 'bandwidth' which is not 'None'")
+
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
     

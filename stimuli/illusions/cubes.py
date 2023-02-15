@@ -1,5 +1,5 @@
 import numpy as np
-from stimuli.utils import degrees_to_pixels
+from stimuli.utils import degrees_to_pixels, resolution
 
 
 __all__ = [
@@ -9,10 +9,10 @@ __all__ = [
 
 
 def varying_cells(
-    ppd=None,
-    cell_heights=None,
-    cell_widths=None,
-    cell_spacing=None,
+    ppd,
+    cell_heights,
+    cell_widths,
+    cell_spacing,
     targets=None,
     intensity_background=0.0,
     intensity_grid=1.0,
@@ -140,6 +140,7 @@ def varying_cells(
 def cube(
     visual_size=None,
     ppd=None,
+    shape=None,
     n_cells=None,
     targets=None,
     cell_thickness=None,
@@ -154,10 +155,12 @@ def cube(
 
     Parameters
     ----------
-    visual_size : (float, float)
-        The shape of the stimulus in degrees of visual angle. (y,x)
-    ppd : int
-        pixels per degree (visual angle)
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
     n_cells : int
         the number of square cells (not counting background) per dimension
     targets : Sequence
@@ -189,8 +192,18 @@ def cube(
         facilitation in brightness perception. Frontiers in Human Neuroscience,
         9, 93. https://doi.org/10.3389/fnhum.2015.00093
     """
-    if isinstance(visual_size, (float, int)):
-        visual_size = (visual_size, visual_size)
+    
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
+    if len(np.unique(ppd)) > 1:
+        raise ValueError("ppd should be equal in x- and y-direction")
+    if n_cells is None:
+        raise ValueError("cube() missing argument 'n_cells' which is not 'None'")
+    if cell_thickness is None:
+        raise ValueError("cube() missing argument 'cell_thickness' which is not 'None'")
+    if cell_spacing is None:
+        raise ValueError("cube() missing argument 'cell_spacing' which is not 'None'")
+
     if isinstance(cell_spacing, (float, int)):
         cell_spacing = (cell_spacing, cell_spacing)
     if isinstance(n_cells, (float, int)):
@@ -198,9 +211,9 @@ def cube(
     if targets is None:
         targets = ()
 
-    height, width = degrees_to_pixels(visual_size, ppd)
-    cell_space = degrees_to_pixels(cell_spacing, ppd)
-    cell_thick = degrees_to_pixels(cell_thickness, ppd)
+    height, width = shape
+    cell_space = degrees_to_pixels(cell_spacing, np.unique(ppd)[0])
+    cell_thick = degrees_to_pixels(cell_thickness, np.unique(ppd)[0])
 
     # Initiate image
     img = np.ones([height, width]) * intensity_background
@@ -248,8 +261,8 @@ def cube(
     stim = {
         "img": img,
         "target_mask": mask.astype(int),
-        "shape": img.shape,
-        "visual_size": np.array(img.shape) / ppd,
+        "shape": shape,
+        "visual_size": visual_size,
         "ppd": ppd,
         "targets": targets,
         "n_cells": n_cells,

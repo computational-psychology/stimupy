@@ -65,6 +65,13 @@ def ponzo(
         tattili, sull'illusione di Aristotele e fenomeni analoghi. Wilhelm
         Engelmann.
     """
+    if outer_lines_length is None:
+        raise ValueError("ponzo() missing argument 'outer_lines_length' which is not 'None'")
+    if target_lines_length is None:
+        raise ValueError("ponzo() missing argument 'target_lines_length' which is not 'None'")
+    if target_distance is None:
+        raise ValueError("ponzo() missing argument 'target_distance' which is not 'None'")
+
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
     

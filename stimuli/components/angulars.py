@@ -105,6 +105,10 @@ def wedge(
         mask with integer index for each segment (key: "wedge_mask"),
         and additional keys containing stimulus parameters
     """
+    if width is None:
+        raise ValueError("wedge() missing argument 'width' which is not 'None'")
+    if radius is None:
+        raise ValueError("wedge() missing argument 'radius' which is not 'None'")
 
     # Convert to inner-, outer-angle
     angles = [0, width]
@@ -290,9 +294,16 @@ def grating(
         mask with integer index for each segment (key: "wedge_mask"),
         and additional keys containing stimulus parameters
     """
+    lst = [visual_size, ppd, shape, frequency, n_segments, segment_width]
+    if len([x for x in lst if x is not None]) < 3:
+        raise ValueError("'grating()' needs 3 non-None arguments for resolving from 'visual_size', "
+                         "'ppd', 'shape', 'frequency', 'n_segments', 'segment_width'")
 
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
+    
+    if frequency is not None and frequency > 0.5:
+        raise ValueError("'frequency' in angular grating must be smaller than 0.5")
 
     # Resolve grating
     params = resolve_grating_params(
@@ -382,6 +393,12 @@ def pinwheel(
         mask with integer index for each segment (key: "wedge_mask"),
         and additional keys containing stimulus parameters
     """
+    lst = [visual_size, ppd, shape, frequency, n_segments, segment_width]
+    if len([x for x in lst if x is not None]) < 3:
+        raise ValueError("'pinwheel()' needs 3 non-None arguments for resolving from 'visual_size', "
+                         "'ppd', 'shape', 'frequency', 'n_segments', 'segment_width'")
+    if radius is None:
+        raise ValueError("pinwheel() missing argument 'radius' which is not 'None'")
 
     # Get disc
     disc = ring(

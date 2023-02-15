@@ -102,6 +102,9 @@ def gaussian_edge(
         mask with integer index for the each lobes (key: "edge_mask"),
         and additional keys containing stimulus parameters
     """
+    if sigma is None:
+        raise ValueError("gaussian_edge() missing argument 'sigma' which is not 'None'")
+
     stim = step_edge(
         visual_size=visual_size,
         ppd=ppd,
@@ -177,6 +180,9 @@ def cornsweet_edge(
     Cornsweet, T. (1970). Visual perception. Academic press.
         https://doi.org/10.1016/B978-0-12-189750-5.X5001-5
     """
+    if ramp_width is None:
+        raise ValueError("cornsweet_edge() missing argument 'ramp_width' which is not 'None'")
+
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)    
     if len(np.unique(ppd)) > 1:

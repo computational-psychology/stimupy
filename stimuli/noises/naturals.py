@@ -46,6 +46,8 @@ def one_over_f(
         dict with the stimulus (key: "img"),
         and additional keys containing stimulus parameters
     """
+    if exponent is None:
+        raise ValueError("one_over_f() missing argument 'exponent' which is not 'None'")
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
     

@@ -71,7 +71,7 @@ def rings(
     """
 
     # Frames component
-    stim = frames_component.square_wave(
+    stim = frames_component.grating(
         shape=shape,
         visual_size=visual_size,
         ppd=ppd,

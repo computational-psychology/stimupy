@@ -50,6 +50,10 @@ def corrugated_mondrians(
     Adelson, E. H. (1993). Perceptual organization and the judgment of brightness.
         Science, 262(5142), 2042–2044. https://doi.org/10.1126/science.8266102
     """
+    if mondrian_depths is None:
+        raise ValueError("corrugated_mondrians() missing argument 'mondrian_depths' which is not 'None'")
+    if mondrian_intensities is None:
+        raise ValueError("corrugated_mondrians() missing argument 'mondrian_intensities' which is not 'None'")
 
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)

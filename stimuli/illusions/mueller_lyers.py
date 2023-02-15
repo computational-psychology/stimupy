@@ -60,6 +60,11 @@ def mueller_lyer(
         Kontrast und Konfluxion. Zeitschrift fuer Psychologie und Physiologie
         der Sinnesorgane, IX, 1-16.
     """
+    if outer_lines_length is None:
+        raise ValueError("mueller_lyer() missing argument 'outer_lines_length' which is not 'None'")
+    if target_length is None:
+        raise ValueError("mueller_lyer() missing argument 'target_length' which is not 'None'")
+
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
 

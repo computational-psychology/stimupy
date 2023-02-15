@@ -94,6 +94,8 @@ def generalized(
     White, M. (1979). A new effect of pattern on perceived lightness. Perception,
         8(4), 413–416. https://doi.org/10.1068/p080413
     """
+    if target_heights is None:
+        raise ValueError("generalized() missing argument 'target_heights' which is not 'None'")
     
     # Spatial square-wave grating
     stim = square_wave(
@@ -420,8 +422,8 @@ def anderson(
         intensity values of horizontal stripes
     stripe_center_offset : float
         offset from stripe centers to image center in degree visual angle.
-    stripe_size = float
-        stripe size (i.e. height / length) in degrees visual angle
+    stripe_height = float
+        stripe height in degrees visual angle
 
     Returns
     ----------
@@ -438,6 +440,10 @@ def anderson(
         of stimuli including White, Howe and simultaneous brightness contrast. Vision Research,
         45, 607–615.
     """
+    if target_height is None:
+        raise ValueError("anderson() missing argument 'target_height' which is not 'None'")
+    if stripe_height is None:
+        raise ValueError("anderson() missing argument 'stripe_height' which is not 'None'")
 
     stim = white_two_rows(
         visual_size=visual_size,
@@ -663,6 +669,10 @@ def yazdanbakhsh(
         like illusions without T-junctions. Perception 31, 711–715.
         https://doi.org/10.1068/p3348
     """
+    if target_height is None:
+        raise ValueError("yazdanbakhsh() missing argument 'target_height' which is not 'None'")
+    if gap_size is None:
+        raise ValueError("yazdanbakhsh() missing argument 'gap_size' which is not 'None'")
 
     stim = white_two_rows(
         visual_size=visual_size,

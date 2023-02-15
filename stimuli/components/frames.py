@@ -5,7 +5,7 @@ from stimuli.utils import resolution
 
 __all__ = [
     "frames",
-    "square_wave",
+    "grating",
 ]
 
 
@@ -92,6 +92,8 @@ def frames(
         mask with integer index for each frame (key: "frame_mask"),
         and additional keys containing stimulus parameters
     """
+    if frame_radii is None:
+        raise ValueError("frames() missing argument 'frame_radii' which is not 'None'")
 
     # Get frames mask
     stim = mask_frames(
@@ -109,7 +111,7 @@ def frames(
     return stim
 
 
-def square_wave(
+def grating(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -158,6 +160,10 @@ def square_wave(
         mask with integer index for each frame (key: "frame_mask"),
         and additional keys containing stimulus parameters
     """
+    lst = [visual_size, ppd, shape, frequency, n_frames, frame_width]
+    if len([x for x in lst if x is not None]) < 3:
+        raise ValueError("'grating()' needs 3 non-None arguments for resolving from 'visual_size', "
+                         "'ppd', 'shape', 'frequency', 'n_frames', 'frame_width'")
 
     # Try to resolve resolution
     try:
@@ -217,7 +223,7 @@ if __name__ == "__main__":
 
     stims = {
         "frames": frames(visual_size=(8, 16), frame_radii=(1, 2, 3), ppd=32),
-        "square_wave": square_wave(visual_size=(8, 16), ppd=32, frequency=1.0),
+        "grating": grating(visual_size=(8, 16), ppd=32, frequency=1.0),
     }
 
     plot_stimuli(stims, mask=False, save=None)

@@ -46,6 +46,12 @@ def mondrians(
         mask with integer index for each Mondrian (key: "mondrian_mask"),
         and additional keys containing stimulus parameters
     """
+    if mondrian_positions is None:
+        raise ValueError("mondrians() missing argument 'mondrian_positions' which is not 'None'")
+    if mondrian_sizes is None:
+        raise ValueError("mondrians() missing argument 'mondrian_sizes' which is not 'None'")
+    if mondrian_intensities is None:
+        raise ValueError("mondrians() missing argument 'mondrian_intensities' which is not 'None'")
 
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)

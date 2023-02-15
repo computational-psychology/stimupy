@@ -55,6 +55,8 @@ def generalized(
     ----------
     Chevreul, M. (1855). The principle of harmony and contrast of colors.
     """
+    if target_size is None:
+        raise ValueError("generalized() missing argument 'target_size' which is not 'None'")
 
     stim = rectangle(
         visual_size=visual_size,
@@ -111,6 +113,8 @@ def basic(
     ----------
     Chevreul, M. (1855). The principle of harmony and contrast of colors.
     """
+    if target_size is None:
+        raise ValueError("basic() missing argument 'target_size' which is not 'None'")
 
     stim = generalized(
         visual_size=visual_size,
@@ -160,6 +164,8 @@ def two_sided(
     ----------
     Chevreul, M. (1855). The principle of harmony and contrast of colors.
     """
+    if target_size is None:
+        raise ValueError("two_sided() missing argument 'target_size' which is not 'None'")
     
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
@@ -240,6 +246,15 @@ def with_dots(
     Bressan, P., & Kramer, P. (2008). Gating of remote effects on lightness. Journal
         of Vision, 8(2), 16–16. https://doi.org/10.1167/8.2.16
     """
+    if n_dots is None:
+        raise ValueError("with_dots() missing argument 'n_dots' which is not 'None'")
+    if dot_radius is None:
+        raise ValueError("with_dots() missing argument 'dot_radius' which is not 'None'")
+    if distance is None:
+        raise ValueError("with_dots() missing argument 'distance' which is not 'None'")
+    if target_shape is None:
+        raise ValueError("with_dots() missing argument 'target_shape' which is not 'None'")
+
     # n_dots = number of dots vertical, horizontal, analogous to degrees
     n_dots = resolution.validate_visual_size(n_dots)
     
@@ -366,6 +381,14 @@ def dotted(
     Bressan, P., & Kramer, P. (2008). Gating of remote effects on lightness. Journal
         of Vision, 8(2), 16–16. https://doi.org/10.1167/8.2.16
     """
+    if n_dots is None:
+        raise ValueError("dotted() missing argument 'n_dots' which is not 'None'")
+    if dot_radius is None:
+        raise ValueError("dotted() missing argument 'dot_radius' which is not 'None'")
+    if distance is None:
+        raise ValueError("dotted() missing argument 'distance' which is not 'None'")
+    if target_shape is None:
+        raise ValueError("dotted() missing argument 'target_shape' which is not 'None'")
 
     # n_dots = number of dots vertical, horizontal, analogous to degrees
     n_dots = resolution.validate_visual_size(n_dots)

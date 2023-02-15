@@ -196,6 +196,8 @@ def disc_and_rings(
         mask with integer index for each ring (key: "ring_mask"),
         and additional keys containing stimulus parameters
     """
+    if radii is None:
+        raise ValueError("disc_and_rings() missing argument 'radii' which is not 'None'")
 
     # Try to resolve resolution;
     try:
@@ -275,6 +277,8 @@ def disc(
         mask with integer index for each ring (key: "ring_mask"),
         and additional keys containing stimulus parameters
     """
+    if radius is None:
+        raise ValueError("disc() missing argument 'radius' which is not 'None'")
 
     radius = np.array(radius)
     intensity = np.array(intensity_discs)
@@ -341,7 +345,8 @@ def ring(
     ValueError
         if passed in less/more than 1 intensity
     """
-
+    if radii is None:
+        raise ValueError("ring() missing argument 'radii' which is not 'None'")
     if len(radii) != 2:
         raise ValueError("Can only pass exactly 2 radii")
     if len([intensity_rings]) != 1:
@@ -410,6 +415,10 @@ def grating(
         mask with integer index for each ring (key: "ring_mask"),
         and additional keys containing stimulus parameters
     """
+    lst = [visual_size, ppd, shape, frequency, n_rings, ring_width]
+    if len([x for x in lst if x is not None]) < 3:
+        raise ValueError("'grating()' needs 3 non-None arguments for resolving from 'visual_size', "
+                         "'ppd', 'shape', 'frequency', 'n_rings', 'ring_width'")
     
     # Resolve sizes
     try:

@@ -57,7 +57,7 @@ def dungeon(
         facilitation in brightness perception. Frontiers in Human Neuroscience,
         9, 93. https://doi.org/10.3389/fnhum.2015.00093
     """
-    
+
     if isinstance(visual_size, (float, int)) or (visual_size is None):
         visual_size = (visual_size, visual_size)
     if isinstance(cell_size, (float, int)) or (cell_size is None):

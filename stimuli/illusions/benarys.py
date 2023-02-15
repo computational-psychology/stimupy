@@ -71,6 +71,8 @@ def cross_generalized(
     Benary, W. (1924). Beobachtungen zu einem Experiment ueber Helligkeitskontrast.
         Psychologische Forschung, 5, 131–142. https://doi.org/10.1007/BF00402398
     """
+    if cross_thickness is None:
+        raise ValueError("cross_generalized() missing argument 'cross_thickness' which is not 'None'")
 
     # Create cross
     cross_stim = cross(
@@ -144,6 +146,9 @@ def cross_rectangles(
     Benary, W. (1924). Beobachtungen zu einem Experiment ueber Helligkeitskontrast.
         Psychologische Forschung, 5, 131–142. https://doi.org/10.1007/BF00402398
     """
+    if cross_thickness is None:
+        raise ValueError("cross_rectangles() missing argument 'cross_thickness' which is not 'None'")
+
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
     if len(np.unique(ppd)) > 1:
@@ -228,6 +233,9 @@ def cross_triangles(
     Benary, W. (1924). Beobachtungen zu einem Experiment ueber Helligkeitskontrast.
         Psychologische Forschung, 5, 131–142. https://doi.org/10.1007/BF00402398
     """
+    if cross_thickness is None:
+        raise ValueError("cross_triangles() missing argument 'cross_thickness' which is not 'None'")
+
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
     if len(np.unique(ppd)) > 1:
@@ -324,6 +332,9 @@ def todorovic_generalized(
     Benary, W. (1924). Beobachtungen zu einem Experiment ueber Helligkeitskontrast.
         Psychologische Forschung, 5, 131–142. https://doi.org/10.1007/BF00402398
     """
+    if L_width is None:
+        raise ValueError("todorovic_generalized() missing argument 'L_width' which is not 'None'")
+
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
     if len(np.unique(ppd)) > 1:
@@ -407,6 +418,9 @@ def todorovic_rectangles(
     Benary, W. (1924). Beobachtungen zu einem Experiment ueber Helligkeitskontrast.
         Psychologische Forschung, 5, 131–142. https://doi.org/10.1007/BF00402398
     """
+    if L_width is None:
+        raise ValueError("todorovic_rectangles() missing argument 'L_width' which is not 'None'")
+
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
     if len(np.unique(ppd)) > 1:
@@ -482,6 +496,9 @@ def todorovic_triangles(
     Benary, W. (1924). Beobachtungen zu einem Experiment ueber Helligkeitskontrast.
         Psychologische Forschung, 5, 131–142. https://doi.org/10.1007/BF00402398
     """
+    if L_width is None:
+        raise ValueError("todorovic_triangles() missing argument 'L_width' which is not 'None'")
+
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
     if len(np.unique(ppd)) > 1:

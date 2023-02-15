@@ -58,6 +58,10 @@ def delboeuf(
         et les angles. Bulletins de l’Académie Royale des Sciences, Lettres et
         Beaux-arts de Belgique, 19, 195-216.
     """
+    if outer_radius is None:
+        raise ValueError("delboeuf() missing argument 'outer_radius' which is not 'None'")
+    if target_radius is None:
+        raise ValueError("delboeuf() missing argument 'target_radius' which is not 'None'")
 
     outer = lines.circle(
         visual_size=visual_size,
@@ -135,6 +139,11 @@ def two_sided(
         et les angles. Bulletins de l’Académie Royale des Sciences, Lettres et
         Beaux-arts de Belgique, 19, 195-216.
     """
+    if outer_radii is None:
+        raise ValueError("two_sided() missing argument 'outer_radii' which is not 'None'")
+    if target_radius is None:
+        raise ValueError("delboeuf() missing argument 'target_radius' which is not 'None'")
+
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
 

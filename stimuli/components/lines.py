@@ -60,6 +60,8 @@ def line(
         mask with integer index for each line (key: "line_mask"),
         and additional keys containing stimulus parameters
     """
+    if line_length is None:
+        raise ValueError("line() missing argument 'line_length' which is not 'None'")
     
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
@@ -130,7 +132,7 @@ def dipole(
     shape=None,
     line_length=None,
     line_width=0,
-    line_seperation=None,
+    line_gap=None,
     rotation=0,
     intensity_lines=(0, 1),
     ):
@@ -149,7 +151,7 @@ def dipole(
     line_width : Number
         width of the line, in degrees visual angle;
         if line_width=0 (default), line will be one pixel wide
-    line_seperation : Number
+    line_gap : Number
         distance between line centers, in degrees visual angle
     rotation : float
         rotation of grating in degrees (default: 0 = horizontal)
@@ -164,18 +166,22 @@ def dipole(
         mask with integer index for each line (key: "line_mask"),
         and additional keys containing stimulus parameters
     """
-    if line_seperation == 0:
-        raise ValueError("line_seperation should not be 0")
+    if line_length is None:
+        raise ValueError("dipole() missing argument 'line_length' which is not 'None'")
+    if line_gap is None:
+        raise ValueError("dipole() missing argument 'line_gap' which is not 'None'")
+    if line_gap == 0:
+        raise ValueError("line_gap should be larger than 0")
     
     intensity_background = (intensity_lines[0] + intensity_lines[1]) / 2
     alpha1 = [np.cos(np.deg2rad(rotation)), np.sin(np.deg2rad(rotation))]
     alpha2 = [np.cos(np.deg2rad(rotation+90)), np.sin(np.deg2rad(rotation+90))]
 
-    line_position1 = (-line_length*alpha1[0]/2 + line_seperation/2*alpha2[0],
-                      -line_length*alpha1[1]/2 + line_seperation/2*alpha2[1])
+    line_position1 = (-line_length*alpha1[0]/2 + line_gap/2*alpha2[0],
+                      -line_length*alpha1[1]/2 + line_gap/2*alpha2[1])
     
-    line_position2 = (-line_length*alpha1[0]/2 - line_seperation/2*alpha2[0],
-                      -line_length*alpha1[1]/2 - line_seperation/2*alpha2[1])
+    line_position2 = (-line_length*alpha1[0]/2 - line_gap/2*alpha2[0],
+                      -line_length*alpha1[1]/2 - line_gap/2*alpha2[1])
 
     stim1 = line(
         visual_size=visual_size,
@@ -208,8 +214,8 @@ def dipole(
     
     if line_width == 0:
         line_width = 1 / np.unique(stim1["ppd"])
-    if line_width >= line_seperation:
-        raise ValueError("line_width should not be larger than line_seperation")
+    if line_width >= line_gap:
+        raise ValueError("line_width should not be larger than line_gap")
     
     return stim1
 
@@ -250,6 +256,8 @@ def circle(
         mask with integer index for each line (key: "line_mask"),
         and additional keys containing stimulus parameters
     """
+    if radius is None:
+        raise ValueError("circle() missing argument 'radius' which is not 'None'")
     
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
@@ -286,7 +294,7 @@ if __name__ == "__main__":
 
     stims = {
         "line": line(**p1),
-        "dipole": dipole(**p1, line_seperation=1),
+        "dipole": dipole(**p1, line_gap=1),
         "circle": circle(visual_size=10, ppd=10, radius=3)
     }
     plot_stimuli(stims, mask=False)

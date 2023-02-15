@@ -60,6 +60,9 @@ def wedding_cake(
         assimilation in White’s effect. Journal of Vision, 3, 294a.
         https://doi.org/10.1167/3.9.294
     """
+    if L_size is None:
+        raise ValueError("wedding_cake() missing argument 'L_size' which is not 'None'")
+
     # Resolve resolution
     shape, visual_size, ppd_ = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)    
     if len(np.unique(ppd)) > 1:
@@ -68,22 +71,11 @@ def wedding_cake(
     nY, nX = shape
     Ly, Lx, Lw = degrees_to_pixels(L_size, np.unique(ppd))
     Lyh, Lxh = int(Ly / 2)+1, int(Lx / 2)+1
-    theight = degrees_to_pixels(target_height, np.unique(ppd))
     
     # Create L-shaped patch
     L_patch = np.zeros([Ly, Lx])
     L_patch[0:Lw, 0:Lx] = 1
     L_patch[0:Ly, Lx - Lw : :] = 1
-    
-    # Create target patches
-    tpatch1 = np.zeros(L_patch.shape)
-    tpatch1[int(Ly/2 - theight/2):int(Ly/2+theight/2),
-            Lx-Lw::] = -intensity_grating[1] + intensity_target
-    
-    tpatch2 = np.zeros(L_patch.shape)
-    tpatch2[int(Ly/2 - theight/2):int(Ly/2+theight/2),
-            Lx-Lw::] = -intensity_grating[0] + intensity_target
-    
     
     # We initially create a larger image array to avoid boundary problems
     nY, nX = nY*2, nX*2
@@ -103,7 +95,13 @@ def wedding_cake(
 
     array3 = fftconvolve(array1, array2, "same")
 
-    if target_indices1 is not None:
+    if target_indices1 is not None and target_height is not None:
+        # Create target patch2
+        theight = degrees_to_pixels(target_height, np.unique(ppd))
+        tpatch1 = np.zeros(L_patch.shape)
+        tpatch1[int(Ly/2 - theight/2):int(Ly/2+theight/2),
+                Lx-Lw::] = -intensity_grating[1] + intensity_target
+
         array_t1 = np.zeros(array3.shape)
         for (ty, tx) in target_indices1:
             arr1 = np.copy(array1)
@@ -119,7 +117,13 @@ def wedding_cake(
     else:
         t1 = np.zeros([int(nY/2), int(nX/2)])
     
-    if target_indices2 is not None:
+    if target_indices2 is not None and target_height is not None:
+        # Create target patch2
+        theight = degrees_to_pixels(target_height, np.unique(ppd))
+        tpatch2 = np.zeros(L_patch.shape)
+        tpatch2[int(Ly/2 - theight/2):int(Ly/2+theight/2),
+                Lx-Lw::] = -intensity_grating[0] + intensity_target
+
         array_t2 = np.zeros(array3.shape)
         for (ty, tx) in target_indices2:
             arr1 = np.copy(array1)

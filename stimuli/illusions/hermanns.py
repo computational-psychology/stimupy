@@ -44,6 +44,9 @@ def grid(
     Hermann L (1870). Eine Erscheinung simultanen Contrastes". Pflügers Archiv
         fuer die gesamte Physiologie. 3: 13–15. https://doi.org/10.1007/BF01855743
     """
+    if element_size is None:
+        raise ValueError("grid() missing argument 'element_size' which is not 'None'")
+
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)    
     if len(np.unique(ppd)) > 1:

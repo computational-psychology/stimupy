@@ -57,6 +57,8 @@ def rectangle(
         mask with integer index for the shape (key: "shape_mask"),
         and additional keys containing stimulus parameters
     """
+    if rectangle_size is None:
+        raise ValueError("rectangle() missing argument 'rectangle_size' which is not 'None'")
     
     # Resolve resolutions and get distances
     base = image_base(
@@ -168,6 +170,8 @@ def triangle(
         mask with integer index for the shape (key: "shape_mask"),
         and additional keys containing stimulus parameters
     """
+    if triangle_size is None:
+        raise ValueError("triangle() missing argument 'triangle_size' which is not 'None'")
     
     # Resolve resolutions and get distances
     base = image_base(
@@ -258,6 +262,10 @@ def cross(
         mask with integer index for the shape (key: "shape_mask"),
         and additional keys containing stimulus parameters
     """
+    if cross_size is None:
+        raise ValueError("cross() missing argument 'cross_size' which is not 'None'")
+    if cross_thickness is None:
+        raise ValueError("cross() missing argument 'cross_thickness' which is not 'None'")
     
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
@@ -356,6 +364,8 @@ def parallelogram(
         mask with integer index for the shape (key: "shape_mask"),
         and additional keys containing stimulus parameters
     """
+    if parallelogram_size is None:
+        raise ValueError("parallelogram() missing argument 'parallelogram_size' which is not 'None'")
     if isinstance(parallelogram_size, (float, int)):
         parallelogram_size = (parallelogram_size, parallelogram_size, 0)
     if len(parallelogram_size) == 2:
@@ -464,6 +474,8 @@ def ellipse(
         mask with integer index for the shape (key: "shape_mask"),
         and additional keys containing stimulus parameters
     """
+    if radius is None:
+        raise ValueError("ellipse() missing argument 'radius' which is not 'None'")
 
     # Resolve resolutions and get distances
     radius = resolution.validate_visual_size(visual_size=radius)

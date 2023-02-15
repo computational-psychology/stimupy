@@ -28,13 +28,13 @@ stims = {
     # angulars
     "wedge": angulars.wedge(**p, width=30, radius=3),
     "angular_grating": angulars.grating(**p, n_segments=8),
-    "pinwheel": angulars.pinwheel(**p, n_segments=8),
+    "pinwheel": angulars.pinwheel(**p, n_segments=8, radius=3),
     # checkerboards
     "checkerboard_v1": checkerboards.checkerboard(**p, board_shape=(10, 10)),
     "checkerboard_v2": checkerboards.checkerboard(**p, board_shape=(10, 10), rotation=45),
     # circulars
     "disc_and_rings": circulars.disc_and_rings(**p, radii=[1, 2, 3]),
-    "disc": circulars.disc(**p),
+    "disc": circulars.disc(**p, radius=3),
     "ring": circulars.ring(**p, radii=(1, 3)),
     "anngulus (=ring)": circulars.annulus(**p, radii=(1, 3)),
     "circular_grating": circulars.grating(**p, frequency=1),
@@ -46,7 +46,7 @@ stims = {
     "cornsweet_edge": edges.cornsweet_edge(**p, ramp_width=3),
     # frames
     "frames": frames.frames(**p, frame_radii=(1, 2, 3)),
-    "frames_square_wave": frames.square_wave(**p, n_frames=8),
+    "frames_grating": frames.grating(**p, n_frames=8),
     # gaussians
     "gaussian": gaussians.gaussian(**p, sigma=(1, 2)),
     # gratings
@@ -59,7 +59,7 @@ stims = {
                             sigma=2),
     # lines
     "line": lines.line(**p, line_length=3),
-    "dipole": lines.dipole(**p, line_length=3, line_seperation=1/10),
+    "dipole": lines.dipole(**p, line_length=3, line_gap=0.5),
     "line_circle": lines.circle(**p, radius=3),
     # mondrians
     "mondrians": mondrians.mondrians(**p, **p_mondrians),
@@ -72,7 +72,7 @@ stims = {
     "shape_wedge": shapes.wedge(**p, width=30, radius=3),
     "shape_annulus": shapes.annulus(**p, radii=(1, 3)),
     "shape_ring": shapes.ring(**p, radii=(1, 3)),
-    "shape_disc": shapes.disc(**p),
+    "shape_disc": shapes.disc(**p, radius=3),
 }
 
 
