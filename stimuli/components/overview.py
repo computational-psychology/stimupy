@@ -32,6 +32,8 @@ stims = {
     # checkerboards
     "checkerboard_v1": checkerboards.checkerboard(**p, board_shape=(10, 10)),
     "checkerboard_v2": checkerboards.checkerboard(**p, board_shape=(10, 10), rotation=45),
+    "checkerboard_v3": checkerboards.checkerboard(**p, frequency=1),
+    "checkerboard_v4": checkerboards.checkerboard(**p, frequency=1, rotation=45),
     # circulars
     "disc_and_rings": circulars.disc_and_rings(**p, radii=[1, 2, 3]),
     "disc": circulars.disc(**p, radius=3),
@@ -51,6 +53,7 @@ stims = {
     "gaussian": gaussians.gaussian(**p, sigma=(1, 2)),
     # gratings
     "square_wave": gratings.square_wave(**p, frequency=1),
+    "square_wave2": gratings.square_wave(**p, frequency=1, rotation=45),
     "sine_wave": gratings.sine_wave(**p, frequency=1),
     "gabor": gratings.gabor(**p, frequency=1, sigma=2),
     "staircase": gratings.staircase(**p, n_bars=8),

@@ -77,12 +77,12 @@ def resolve_circular_params(
         phase_width=ring_width,
         ppd=ppd_1D,
         frequency=frequency,
+        period="ignore",
     )
     
     # Remove too large radii:
     if visual_angle is not None:
         if params["edges"][-1] > visual_angle:
-            warnings.warn("Last ring does not perfecetly fit into image")
             params["edges"][-1] = visual_angle
 
     shape = resolution.validate_shape(params["length"] * 2)
@@ -95,7 +95,7 @@ def resolve_circular_params(
         "shape": shape,
         "frequency": params["frequency"],
         "ring_width": params["phase_width"],
-        "n_rings": n_rings,
+        "n_rings": params["n_phases"],
         "radii": params["edges"],
     }
 
