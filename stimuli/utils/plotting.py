@@ -58,7 +58,7 @@ def plot_stim(
                 colormap = plt.cm.tab10
 
             for idx in np.unique(mask)[np.unique(mask) > 0]:
-                color = colormap.colors[idx % 10]
+                color = colormap.colors[idx % 19]
                 color = np.reshape(color, (1, 1, 3))
                 img = np.where(mask == idx, color, img)
             ax.imshow(img)
