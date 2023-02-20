@@ -419,9 +419,9 @@ def round_n_phases(n_phases, length, period="either"):
     return int(closest)
 
 
-def create_overview(mask=False, save=None):
+def create_overview():
     import numpy as np
-    from stimuli.utils import plot_stimuli
+
     import stimuli.components.angulars as angulars
     import stimuli.components.checkerboards as checkerboards
     import stimuli.components.circulars as circulars
@@ -499,6 +499,15 @@ def create_overview(mask=False, save=None):
         "shape_ring": shapes.ring(**p, radii=(1, 3)),
         "shape_disc": shapes.disc(**p, radius=3),
     }
-    
+    # fmt: on
+
+    return stims
+
+
+def overview(mask=False, save=None):
+    from stimuli.utils import plot_stimuli
+
+    stims = create_overview()
+
     # Plotting
     plot_stimuli(stims, mask=mask, save=save)

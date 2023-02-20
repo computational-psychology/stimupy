@@ -5,15 +5,14 @@ from .narrowbands import narrowband as narrowband
 from .utils import *
 
 
-def create_overview(mask=False, save=None):
-    from stimuli.utils import plot_stimuli
+def create_overview():
     import stimuli.noises.naturals as naturals
 
     params = {
         "visual_size": 10,
         "ppd": 10,
         "pseudo_noise": True,
-        }
+    }
 
     # fmt: off
     stims = {
@@ -29,6 +28,15 @@ def create_overview(mask=False, save=None):
         "narrowband_1cpd": narrowband(**params, bandwidth=1, center_frequency=1.0),
         "narrowband_3cpd": narrowband(**params, bandwidth=1, center_frequency=3.0),
     }
-    
+    # fmt: on
+
+    return stims
+
+
+def overview(mask=False, save=None):
+    from stimuli.utils import plot_stimuli
+
+    stims = create_overview()
+
     # Plotting
     plot_stimuli(stims, mask=mask, save=save)

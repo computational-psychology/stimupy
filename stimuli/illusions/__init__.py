@@ -18,7 +18,7 @@ from .wedding_cakes import *
 from .whites import *
 
 
-def create_overview(mask=False, save=None):
+def create_overview():
     import stimuli.illusions.angulars as angulars
     import stimuli.illusions.benarys as benarys
     import stimuli.illusions.checkerboards as checkerboards
@@ -37,7 +37,6 @@ def create_overview(mask=False, save=None):
     from stimuli.illusions.wedding_cakes import wedding_cake
     import stimuli.illusions.whites as whites
     import stimuli.illusions.frames as frames
-    from stimuli.utils import plot_stimuli
     p = {
         "visual_size": (10, 10),
         "ppd": 20,
@@ -148,6 +147,15 @@ def create_overview(mask=False, save=None):
         "Yazdanbakhsh White": whites.yazdanbakhsh(**p, frequency=0.5, target_indices_top=3, target_indices_bottom=-2, target_center_offset=2, target_height=2, gap_size=0.5),
         "Howe White": whites.howe(**p, frequency=0.5, target_indices_top=3, target_indices_bottom=-2, target_center_offset=2, target_height=2),
     }
-    
-    # Plot
+    # fmt: on
+
+    return stims
+
+
+def overview(mask=False, save=None):
+    from stimuli.utils import plot_stimuli
+
+    stims = create_overview()
+
+    # Plotting
     plot_stimuli(stims, mask=mask, save=save)
