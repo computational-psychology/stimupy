@@ -1,0 +1,1 @@
+# Replicate exact stimulus
