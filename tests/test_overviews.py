@@ -1,4 +1,4 @@
-from stimuli import components, illusions, noises
+from stimupy import components, illusions, noises
 
 
 def test_components():

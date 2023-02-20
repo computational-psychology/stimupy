@@ -1,0 +1,45 @@
+[project]
+name = "stimupy"
+description = "Stimuli for vision science, as image arrays"
+readme = "README.md"
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering",
+]
+keywords = ["stimulus","visual perception","psychophysics"]
+
+license = {file = "LICENSE"}
+authors = [
+  {name = "Lynn Schmittwilken", email = "l.schmittwilken@tu-berlin.de"},
+  {name = "Joris Vincent", email = "j.vincent@tu-berlin.de"},
+  {name = "Matko Matic"},
+  {name = "Guillermo Aguilar"},
+  {name = "Marianne Maertens"},
+]
+maintainers = [
+  {name = "Lynn Schmittwilken", email = "l.schmittwilken@tu-berlin.de"},
+  {name = "Joris Vincent", email = "j.vincent@tu-berlin.de"},
+]
+
+requires-python = ">=3.6"
+dependencies = [
+  "numpy",
+  "scipy",
+  "matplotlib",
+  "pandas",
+]
+
+dynamic = ["version"]
+
+[project.urls]
+repository = "https://github.com/computational-psychology/stimupy.git"
+
+[tool.setuptools.packages.find]
+where = ["."]  # list of folders that contain the packages (["."] by default)
+include = ["stimupy*"]  # package names should match these glob patterns (["*"] by default)
+namespaces = false  # to disable scanning PEP 420 namespaces (true by default)
+
+[tool.setuptools.dynamic]
+version = {attr = "stimupy.__version__"}

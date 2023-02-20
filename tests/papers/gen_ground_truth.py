@@ -1,8 +1,8 @@
 from os.path import abspath, dirname
 
-from stimuli.papers import *
-from stimuli.papers import __all__ as papers
-from stimuli.utils import export
+from stimupy.papers import *
+from stimupy.papers import __all__ as papers
+from stimupy.utils import export
 
 d = dirname(abspath(__file__))
 
