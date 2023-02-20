@@ -1,1 +1,1 @@
-from stimupy import components, illusions, noises, papers
+from . import components, illusions, noises, utils

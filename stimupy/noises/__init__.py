@@ -1,13 +1,11 @@
-from .binaries import binary as binary
-from .narrowbands import narrowband as narrowband
+from .binaries import *
+from .narrowbands import *
 from .naturals import *
 from .utils import *
-from .whites import white as white
+from .whites import *
 
 
 def create_overview():
-    import stimupy.noises.naturals as naturals
-
     params = {
         "visual_size": 10,
         "ppd": 10,
@@ -21,9 +19,9 @@ def create_overview():
         # White
         "white_noise": white(**params),
         # One over frequency
-        "one_over_f": naturals.one_over_f(**params, exponent=0.5),
-        "pink_noise": naturals.pink(**params),
-        "brown_noise": naturals.brown(**params),
+        "one_over_f": one_over_f(**params, exponent=0.5),
+        "pink_noise": pink(**params),
+        "brown_noise": brown(**params),
         # Narrowband
         "narrowband_1cpd": narrowband(**params, bandwidth=1, center_frequency=1.0),
         "narrowband_3cpd": narrowband(**params, bandwidth=1, center_frequency=3.0),

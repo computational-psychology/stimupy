@@ -1,43 +1,26 @@
-from .angulars import *
-from .benarys import *
-from .checkerboards import *
-from .circulars import *
-from .cornsweets import *
-from .cubes import *
-from .delboeufs import *
-from .dungeons import *
-from .frames import *
-from .gratings import *
-from .hermanns import *
-from .mondrians import *
-from .mueller_lyers import *
-from .ponzos import *
-from .sbcs import *
-from .todorovics import *
-from .wedding_cakes import *
-from .whites import *
+from . import (
+    angulars,
+    benarys,
+    checkerboards,
+    circulars,
+    cornsweets,
+    cubes,
+    delboeufs,
+    dungeons,
+    frames,
+    gratings,
+    hermanns,
+    mondrians,
+    mueller_lyers,
+    ponzos,
+    sbcs,
+    todorovics,
+    wedding_cakes,
+    whites,
+)
 
 
 def create_overview():
-    import stimupy.illusions.angulars as angulars
-    import stimupy.illusions.benarys as benarys
-    import stimupy.illusions.checkerboards as checkerboards
-    import stimupy.illusions.circulars as circulars
-    import stimupy.illusions.cubes as cubes
-    import stimupy.illusions.delboeufs as delboeufs
-    import stimupy.illusions.frames as frames
-    import stimupy.illusions.gratings as gratings
-    import stimupy.illusions.mueller_lyers as mueller_lyers
-    import stimupy.illusions.sbcs as sbcs
-    import stimupy.illusions.todorovics as todorovics
-    import stimupy.illusions.whites as whites
-    from stimupy.illusions.cornsweets import cornsweet
-    from stimupy.illusions.dungeons import dungeon
-    from stimupy.illusions.hermanns import grid as hermann_grid
-    from stimupy.illusions.mondrians import corrugated_mondrians
-    from stimupy.illusions.ponzos import ponzo
-    from stimupy.illusions.wedding_cakes import wedding_cake
-
     p = {
         "visual_size": (10, 10),
         "ppd": 20,
@@ -80,7 +63,7 @@ def create_overview():
         "circular_bullseye": circulars.bullseye(**p, frequency=1.0),
         "circular_bullseye_two_sided": circulars.two_sided_bullseye(**p, frequency=1.0),
         # Cornsweet
-        "cornsweet": cornsweet(**p, ramp_width=3),
+        "cornsweet": cornsweets.cornsweet(**p, ramp_width=3),
         # Cube
         "cube_variable": cubes.varying_cells(ppd=20, cell_heights=(1, 1.5, 1), cell_widths=(1.5, 2, 1.5), cell_spacing=0.5, targets=1),
         "cube": cubes.cube(**p, n_cells=5, targets=(1, 2), cell_thickness=1, cell_spacing=0.5),
@@ -88,7 +71,7 @@ def create_overview():
         "delboeuf": delboeufs.delboeuf(**p, outer_radius=4, target_radius=1),
         "2sided_delboeuf": delboeufs.two_sided(**p, outer_radii=(2, 1.1), target_radius=1),
         # Dungeon
-        "dungeon": dungeon(**p, n_cells=5),
+        "dungeon": dungeons.dungeon(**p, n_cells=5),
         # Frames
         "frames": frames.rings(**p, frequency=0.5, target_indices=3),
         "frames_general": frames.rings_generalized(**p, frame_radii=(1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5), target_indices=3),
@@ -112,14 +95,14 @@ def create_overview():
         "grating_induction": gratings.induction(**p, frequency=0.5, target_width=0.5),
         "grating_induction_blur": gratings.induction_blur(**p, frequency=0.5, target_width=0.5, target_blur=2),
         # Hermann´
-        "hermann": hermann_grid(**p, element_size=(1.5, 1.5, 0.2)),
+        "hermann": hermanns.grid(**p, element_size=(1.5, 1.5, 0.2)),
         # Mondrians
-        "mondrians": corrugated_mondrians(**p, **p_mondrians),
+        "mondrians": mondrians.corrugated_mondrians(**p, **p_mondrians),
         # Mueller-Lyer
         "mueller-lyer": mueller_lyers.mueller_lyer(**p, outer_lines_length=1.5, outer_lines_angle=45, target_length=6, line_width=0.1),
         "2sided_mueller-lyer": mueller_lyers.two_sided(**p, outer_lines_length=1.5, outer_lines_angle=45, target_length=2.5, line_width=0.1),
         # Ponzo
-        "ponzo": ponzo(**p, outer_lines_length=8, outer_lines_width=0.1, target_lines_length=3, target_lines_width=0.1, target_distance=3),
+        "ponzo": ponzos.ponzo(**p, outer_lines_length=8, outer_lines_width=0.1, target_lines_length=3, target_lines_width=0.1, target_distance=3),
         # SBC
         "sbc_generalized": sbcs.generalized(**p, target_size=3, target_position=(0, 2)),
         "sbc_basic": sbcs.basic(**p, target_size=3),
@@ -138,7 +121,7 @@ def create_overview():
         "2sided_todorovic_cross": todorovics.two_sided_cross(**p, cross_size=3, cross_thickness=1.5, covers_size=1.5),
         "2sided_todorovic_equal": todorovics.two_sided_equal(**p, cross_size=3, cross_thickness=1.5),
         # Wedding cake
-        "wedding_cake": wedding_cake(**p, L_size=(3, 3, 1), target_height=1, target_indices1=((1, 1), (2, 1)),),
+        "wedding_cake": wedding_cakes.wedding_cake(**p, L_size=(3, 3, 1), target_height=1, target_indices1=((1, 1), (2, 1)),),
         # White
         "white_general": whites.generalized(**p, frequency=0.5, target_indices=(1, 3, 5), target_center_offsets=(-1, -3, -1), target_heights=(2, 3, 2)),
         "white_basic": whites.white(**p, frequency=0.5, target_indices=(2, -3), target_height=2),

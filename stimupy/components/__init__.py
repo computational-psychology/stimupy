@@ -420,20 +420,21 @@ def round_n_phases(n_phases, length, period="either"):
     return int(closest)
 
 
+from . import (
+    angulars,
+    checkerboards,
+    circulars,
+    edges,
+    frames,
+    gaussians,
+    gratings,
+    lines,
+    mondrians,
+    shapes,
+)
+
+
 def create_overview():
-    import numpy as np
-
-    import stimupy.components.angulars as angulars
-    import stimupy.components.checkerboards as checkerboards
-    import stimupy.components.circulars as circulars
-    import stimupy.components.edges as edges
-    import stimupy.components.frames as frames
-    import stimupy.components.gaussians as gaussians
-    import stimupy.components.gratings as gratings
-    import stimupy.components.lines as lines
-    import stimupy.components.mondrians as mondrians
-    import stimupy.components.shapes as shapes
-
     p = {
         "visual_size": 10,
         "ppd": 20,
