@@ -25,7 +25,8 @@ and the Exception that should be raised.
 If the function under testing raises this specified exception, the test passes.
 """
 import pytest
-from stimuli.utils import resolution
+
+from stimupy.utils import resolution
 
 
 #############################

@@ -16,7 +16,8 @@ For the invalid-input tests, each parameter set specifies the (invalid) input,
 and the function should raise a ResolutionError for each of these.
 """
 import pytest
-from stimuli.utils import resolution
+
+from stimupy.utils import resolution
 
 
 @pytest.mark.parametrize(

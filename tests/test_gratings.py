@@ -1,6 +1,6 @@
 import pytest
 
-from stimuli.components.gratings import resolve_grating_params, square_wave
+from stimupy.components.gratings import resolve_grating_params, square_wave
 
 
 @pytest.mark.parametrize(

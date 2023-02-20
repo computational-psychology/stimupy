@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from stimuli.utils import pad, resolution
+from stimupy.utils import pad, resolution
 
 
 @pytest.mark.parametrize(
