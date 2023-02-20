@@ -38,17 +38,20 @@ This makes changes to files immediately usable,
 rather than having to reinstall the package after every change.
 
 ### Dependencies
-Dependencies should be automatically install (at least using `pip`).
+Dependencies should be automatically installed (at least using `pip`).
 `stimupy`s required dependencies are:
 - numpy
 - scipy
 - matplotlib
+- Pillow
+- pandas
 
 
 ## Importing
-To use in your own code, import (from) the modules.
+To use in your own code, `import` (from) the modules.
 ```python
 from stimupy import components
+from stimupy import noises
 from stimupy import illusions
 from stimupy import papers
 from stimupy import utils

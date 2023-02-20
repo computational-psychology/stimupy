@@ -55,9 +55,10 @@ rather than having to reinstall the package after every change.
 
 
 ## Dependencies
-Dependencies should be automatically install (at least using `pip`).
+Dependencies should be automatically installed (at least using `pip`).
 `stimupy`s required dependencies are:
 - numpy
 - scipy
 - matplotlib
-
+- Pillow
+- pandas
