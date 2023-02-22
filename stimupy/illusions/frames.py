@@ -8,7 +8,7 @@ from stimupy.utils import resolution, stack_dicts
 __all__ = [
     "rings",
     "rings_generalized",
-    # "two_sided_rings",
+    "two_sided_rings",
     "bullseye",
     "bullseye_generalized",
     "two_sided_bullseye",
