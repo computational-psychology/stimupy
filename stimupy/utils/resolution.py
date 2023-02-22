@@ -148,6 +148,31 @@ def resolve_1D(length=None, visual_angle=None, ppd=None, round=True):
 
 
 def resolve_dict(dct):
+    """Resolves the full resolution ("shape", "ppd", "visual_size"), for 2
+    givens and 1 unknown in the input dictionary
+
+    A resolution consists of a visual size in degrees, a shape in pixels,
+    and specification of the number of pixels per degree.
+    Since there is a strict geometric relation between these,
+    shape = visual_size * ppd,
+    if two are given, the third can be calculated using this function.
+
+    This function resolves the resolution in both dimensions.
+
+    Parameters
+    ----------
+    dct : dict
+        dictionary with at least two out the three keys: "shape", "ppd", "visual_size"
+
+    Returns
+    -------
+    Resolved dict
+
+    See also
+    ---------
+    stimupy.utils.resolution
+    """
+
     # Resolve
     ppd = dct["ppd"] if "ppd" in dct.keys() else None
     shape = dct["shape"] if "shape" in dct.keys() else None
@@ -705,7 +730,7 @@ def valid_dict(dct):
     Parameters
     ----------
     dct : dict
-        dictionary with at least two of three keys from "shape", "ppd", "visual_size"
+        dictionary with at least the keys "shape", "ppd", "visual_size"
 
     Raises
     ------
