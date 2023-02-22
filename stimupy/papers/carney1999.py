@@ -1136,7 +1136,7 @@ def Subthreshold22(ppd=PPD):
         "sigma": 0.5,
         "rotation": 90,
         "phase_shift": 90,
-        "origin": "mean",
+        "origin": "center",
     }
 
     stim1 = gratings.gabor(**params, frequency=2)
@@ -1190,7 +1190,7 @@ def Subthreshold23(ppd=PPD):
         "sigma": 0.5,
         "rotation": 90,
         "phase_shift": 90,
-        "origin": "mean",
+        "origin": "center",
     }
 
     stim1 = gratings.gabor(**params, frequency=2)
@@ -1244,7 +1244,7 @@ def Subthreshold24(ppd=PPD):
         "sigma": 0.5,
         "rotation": 90,
         "phase_shift": 90,
-        "origin": "mean",
+        "origin": "center",
     }
 
     stim1 = gratings.gabor(**params, frequency=4)
@@ -1298,7 +1298,7 @@ def Subthreshold25(ppd=PPD):
         "sigma": 0.5,
         "rotation": 90,
         "phase_shift": 90,
-        "origin": "mean",
+        "origin": "center",
     }
 
     stim1 = gratings.gabor(**params, frequency=4)
@@ -1350,6 +1350,7 @@ def Gaussians26(ppd=PPD):
         "ppd": ppd,
         "sigma": 0.5,
         "intensity_max": 1,
+        "origin": "center",
     }
 
     stim = gaussians.gaussian(**params)
@@ -1394,6 +1395,7 @@ def Gaussians27(ppd=PPD):
         "ppd": ppd,
         "sigma": 8.43 / 60,
         "intensity_max": 1,
+        "origin": "center",
     }
 
     stim = gaussians.gaussian(**params)
@@ -1438,6 +1440,7 @@ def Gaussians28(ppd=PPD):
         "ppd": ppd,
         "sigma": 2.106 / 60,
         "intensity_max": 1,
+        "origin": "center",
     }
 
     stim = gaussians.gaussian(**params)
@@ -1482,6 +1485,7 @@ def Gaussians29(ppd=PPD):
         "ppd": ppd,
         "sigma": 1.05 / 60,
         "intensity_max": 1,
+        "origin": "center",
     }
 
     stim = gaussians.gaussian(**params)
@@ -1810,7 +1814,7 @@ def Noise35(ppd=PPD):
     """
     # Read natural image from Modelfest
     img = read_tif(Path(__file__).parents[0] / "carney1999_noise.tif")
-    img = img / img.max()
+    img = img / 255
 
     stim = {
         "img": img,
@@ -1959,7 +1963,7 @@ def Plaids38(ppd=PPD):
         "frequency": 4,
         "sigma": 0.14,
         "phase_shift": 90,
-        "origin": "mean",
+        "origin": "center",
     }
 
     stim = gratings.gabor(**params, rotation=0)
@@ -2012,7 +2016,7 @@ def Plaids39(ppd=PPD):
         "frequency": 4,
         "sigma": 0.14,
         "phase_shift": 90,
-        "origin": "mean",
+        "origin": "center",
     }
 
     stim = gratings.gabor(**params, rotation=45)
@@ -2097,13 +2101,13 @@ def Bessel41(ppd=PPD):
 
     stim = bessel(visual_size=256 / PPD, ppd=ppd, frequency=4, origin="center")
     window = gaussians.gaussian(visual_size=256 / PPD, ppd=ppd, sigma=0.5)
-
-    mean_int = stim["img"].mean()
-    img = (stim["img"] - mean_int) * window["img"]
-    stim["img"] = img + mean_int
-    stim["img"] = stim["img"] + 0.41
-    stim["img"] = stim["img"] / stim["img"].max()  # TODO: adjust range
     stim["sigma"] = window["sigma"]
+    
+    # Apply Gaussian windows to Bessel
+    stim["img"] = (stim["img"] - stim["img"].mean()) * window["img"]
+    
+    # Set "background" intensity to 0.5 and make sure that max intensity = 1
+    stim["img"] = stim["img"] / stim["img"].max() / 2 + 0.5
 
     v = 161
     experimental_data = {
@@ -2190,7 +2194,7 @@ def NaturalScene43(ppd=PPD):
 
     # Read natural image from Modelfest
     img = read_tif(Path(__file__).parents[0] / "carney1999_natural_scene.tif")
-    img = img / img.max()
+    img = img / 255
 
     stim = {
         "img": img,
@@ -2221,10 +2225,11 @@ def read_tif(filename):
 
 def compare(o1, s1, filename):
     import matplotlib.pyplot as plt
+    
+    o1 = o1 / 255
+    s1 = s1 / 1
+    vmin, vmax = 0, 1
 
-    o1 = o1 / o1.mean()
-    s1 = s1 / s1.mean()
-    vmin, vmax = o1.min(), o1.max()
     plt.figure(figsize=(20, 6))
     plt.subplot(141), plt.imshow(o1, vmin=vmin, vmax=vmax), plt.title("Original")
     plt.subplot(142), plt.imshow(s1, vmin=vmin, vmax=vmax), plt.title("Our implementation")
@@ -2238,6 +2243,10 @@ def compare(o1, s1, filename):
 
 
 def compare_all():
+    import os
+    if not os.path.exists("./comparisons/"):
+        os.makedirs("./comparisons/")
+
     for stim_name in __all__:
         func = globals()[stim_name]
         o1 = read_tif(str(Path(__file__).parents[0]) + "/modelfest/" + stim_name + ".tif")
