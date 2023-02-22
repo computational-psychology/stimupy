@@ -5,7 +5,7 @@
 import numpy as np
 
 from stimupy.noises.utils import pseudo_white_spectrum
-from stimupy.utils import bandpass_filter, resolution
+from stimupy.utils import resolution, bandpass
 from stimupy.utils.contrast_conversions import adapt_intensity_range
 
 __all__ = [
@@ -59,18 +59,12 @@ def narrowband(
     if len(np.unique(ppd)) > 1:
         raise ValueError("ppd should be equal in x and y direction")
 
-    # We calculate sigma to eventuate given bandwidth (in octaves)
-    sigma = (
-        center_frequency
-        / ((2.0**bandwidth + 1) * np.sqrt(2.0 * np.log(2.0)))
-        * (2.0**bandwidth - 1)
-    )
-
-    # Prepare spatial frequency axes and create bandpass filter:
-    fy = np.fft.fftshift(np.fft.fftfreq(shape[0], d=1.0 / np.unique(ppd)))
-    fx = np.fft.fftshift(np.fft.fftfreq(shape[1], d=1.0 / np.unique(ppd)))
-    Fx, Fy = np.meshgrid(fx, fy)
-    bp_filter = bandpass_filter(Fy, Fx, center_frequency, sigma)
+    bp = bandpass(
+        visual_size=visual_size,
+        ppd=ppd,
+        center_frequency=center_frequency,
+        bandwidth=bandwidth
+        )["img"]
 
     if pseudo_noise:
         # Create white noise with frequency amplitude of 1 everywhere
@@ -81,7 +75,7 @@ def narrowband(
         white_noise_fft = np.fft.fftshift(np.fft.fft2(white_noise))
 
     # Filter white noise with bandpass filter
-    narrow_noise_fft = white_noise_fft * bp_filter
+    narrow_noise_fft = white_noise_fft * bp
 
     # ifft
     narrow_noise = np.fft.ifft2(np.fft.ifftshift(narrow_noise_fft))
@@ -99,7 +93,7 @@ def narrowband(
         "ppd": ppd,
         "shape": shape,
         "center_frequency": center_frequency,
-        "sigma": sigma,
+        "bandwidth": bandwidth,
         "pseudo_noise": pseudo_noise,
         "intensity_range": [narrow_noise.min(), narrow_noise.max()],
     }
