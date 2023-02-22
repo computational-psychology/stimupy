@@ -1683,6 +1683,8 @@ def GaborString33(ppd=PPD):
 
     stim["img"] = stimc["img"]
     stim["grating_mask"] = stimc["grating_mask"]
+    stim["visual_size"] = stimc["visual_size"]
+    stim["shape"] = stimc["shape"]
     stim = roll_dict(stim, (-1, -1), axes=(0, 1))
 
     v = 129
@@ -1742,6 +1744,8 @@ def GaborString34(ppd=PPD):
 
     stim1["img"] = stimc["img"]
     stim1["grating_mask"] = stimc["grating_mask"]
+    stim1["visual_size"] = stimc["visual_size"]
+    stim1["shape"] = stimc["shape"]
     stim1["phase_shift2"] = stim2["phase_shift"]
     stim1["edges2"] = stim2["edges"]
     stim1 = roll_dict(stim1, (-1, -1), axes=(0, 1))
@@ -2258,5 +2262,5 @@ if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
 
     stims = gen_all(skip=True)
-    plot_stimuli(stims, mask=False)
+    plot_stimuli(stims, mask=False, extent_key="visual_size")
     # compare_all()
