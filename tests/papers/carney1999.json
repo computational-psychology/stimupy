@@ -84,36 +84,36 @@
         "mask": "0495ff9cf0f6032f87e8babee49856a4"
     },
     "Subthreshold22": {
-        "img": "ee6d32647a448387877402e833ac7068",
-        "mask": "36d961dfaddc838fbeed1a31400a383e"
+        "img": "0d8e0aec83b7e4d04366d454de56e232",
+        "mask": "41283017a06b01796d218cdf1a8501b9"
     },
     "Subthreshold23": {
-        "img": "53f0b3e1510d8a1ea1d77c4093f42609",
-        "mask": "36d961dfaddc838fbeed1a31400a383e"
+        "img": "d5190101a05e527b5c552a1ab3653197",
+        "mask": "41283017a06b01796d218cdf1a8501b9"
     },
     "Subthreshold24": {
-        "img": "33e746225d2ffcf01f5a3b614f269293",
-        "mask": "cd7c4d39feb5d78605eb20b20a2083ed"
+        "img": "df0dd9ad4fad4446f300ea7282b16aa0",
+        "mask": "0495ff9cf0f6032f87e8babee49856a4"
     },
     "Subthreshold25": {
-        "img": "72010520f2a4ea67ece2f2e062415ecf",
-        "mask": "cd7c4d39feb5d78605eb20b20a2083ed"
+        "img": "67f08582d0a86b6356607a86832218b6",
+        "mask": "0495ff9cf0f6032f87e8babee49856a4"
     },
     "Gaussians26": {
-        "img": "03bbb5a7261c8641b4f900b1d1b0923a",
-        "mask": "59071590099d21dd439896592338bf95"
+        "img": "f47d708b9976b2685f1049f87f9680f0",
+        "mask": "b0a0d7ac266eefa1a12d14c30655e769"
     },
     "Gaussians27": {
-        "img": "d059e79823462c910dc12c9341e955ba",
-        "mask": "59071590099d21dd439896592338bf95"
+        "img": "dc25aecb530000f38f75edd93282ffde",
+        "mask": "c65d5ef555f2845dc89fdc517713790e"
     },
     "Gaussians28": {
-        "img": "4cf8102a654bef453c716ccff06df5ab",
-        "mask": "59071590099d21dd439896592338bf95"
+        "img": "6258b0a2edeb495e8ea8dfe80e99da1a",
+        "mask": "e5e7782bed3fa336d41c7faedb6eb864"
     },
     "Gaussians29": {
-        "img": "72444c0e829d015a28af4b6c3c28bcfc",
-        "mask": "59071590099d21dd439896592338bf95"
+        "img": "5c1dca64ab1d1db1448a41a077523e4a",
+        "mask": "c90e93e1ef645323afb6b742bd7f813d"
     },
     "Edge30": {
         "img": "8888f3dc43de6ff561501914a4bd6cf3",
@@ -148,27 +148,27 @@
         "mask": "e848b99e20b6da7cfb8b531c1ea4c6b8"
     },
     "Plaids38": {
-        "img": "4379d50cbf9eeafdb72eb49ab478223b",
-        "mask": "b246f947d8ccd325bcbf241842a91f7a"
+        "img": "6536c5b163f9bb035481a0ef7167a0fc",
+        "mask": "e848b99e20b6da7cfb8b531c1ea4c6b8"
     },
     "Plaids39": {
-        "img": "b67cf95d24bb5abafcb6362d2f205e79",
-        "mask": "53afc31b5cb3ecfb7e57f1ccebb66e1a"
+        "img": "7a1aab9dc5be311554dd870840c922f6",
+        "mask": "c9c1bbb3a5315916b1ef3c594bcfe06e"
     },
     "Disk40": {
         "img": "fc5672879d59b22076ff1a79887df0c5",
         "mask": "d774d1e22f9c1e5606e86cfad05391ed"
     },
     "Bessel41": {
-        "img": "908a1444191241ff50e2d7e19b2f704a",
-        "mask": "7dea362b3fac8e00956a4952a3d4f474"
+        "img": "aae35ab716582ae74e998f335af58bb8",
+        "mask": "59071590099d21dd439896592338bf95"
     },
     "Checkerboard42": {
         "img": "653795317b1afb5d5906a14a449a7b70",
         "mask": "a53777f6dcc9e06833fd60492291f2b0"
     },
     "NaturalScene43": {
-        "img": "529d6172a7ca35d0c2a2508f3f133408",
+        "img": "026896ccf49c53937fb33c0a051174e4",
         "mask": "59071590099d21dd439896592338bf95"
     }
 }
