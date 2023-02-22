@@ -7,20 +7,20 @@ More information on Modelfest can be found here:
 https://www.visionscience.com/data/modelfest/
 
 Each stimulus is provided by a separate function,
-a full list can be found as stimupy.papers.carney1999.__all__
+a full list can be found as stimupy.papers.modelfest.__all__
 
 The output of each of these functions is a stimulus dictionary.
 
 For a visual representation of all the stimuli and their mask,
 simply run this module as a script:
 
-    $ python stimuli/papers/carney1999.py
+    $ python stimuli/papers/modelfest.py
 
 Attributes
 ----------
 __all__ (list of str): list of all stimulus-functions
     that are exported by this module when executing
-        >>> from stimupy.papers.carney1999 import *
+        >>> from stimupy.papers.modelfest import *
 
 References
 -----------
@@ -93,14 +93,14 @@ PPD2 = 60  # pixel size of 1 arcmin (pixel replication)
 
 mean_lum = 0.5
 
-df = pd.read_csv(Path(__file__).parents[0] / "carney1999_data.csv", header=None)
+df = pd.read_csv(Path(__file__).parents[0] / "modelfest_data.csv", header=None)
 participants = df[0]
 
 
 def gen_all(ppd=PPD, skip=False):
     stims = {}  # save the stimulus-dicts in a larger dict, with name as key
     for stim_name in __all__:
-        print(f"Generating carney1999.{stim_name}")
+        print(f"Generating modelfest.{stim_name}")
 
         # Get a reference to the actual function
         func = globals()[stim_name]
@@ -1817,7 +1817,7 @@ def Noise35(ppd=PPD):
         542-551. https://doi.org/10.1117/12.348473
     """
     # Read natural image from Modelfest
-    img = read_tif(Path(__file__).parents[0] / "carney1999_noise.tif")
+    img = read_tif(Path(__file__).parents[0] / "modelfest_noise.tif")
     img = img / 255
 
     stim = {
@@ -2197,7 +2197,7 @@ def NaturalScene43(ppd=PPD):
     """
 
     # Read natural image from Modelfest
-    img = read_tif(Path(__file__).parents[0] / "carney1999_natural_scene.tif")
+    img = read_tif(Path(__file__).parents[0] / "modelfest_natural_scene.tif")
     img = img / 255
 
     stim = {
