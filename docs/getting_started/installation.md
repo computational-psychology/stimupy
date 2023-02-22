@@ -9,20 +9,38 @@
 ```python
 pip install stimupy
 ```
-
-For now, could do:
+For now, `pip` can install directly from GitHub (the `main` branch)
 
 ```python
-pip install 'stimupy @ https://github.com/computational-psychology/stimupy'
+pip install https://github.com/computational-psychology/stimupy/zipball/main
 ```
 
+:::{admonition} Install a different version
+    :class: dropdown
+
+From a specific branch, e.g. (`main`)[https://github.com/computational-psychology/stimupy/tree/main]:
+```python
+pip install https://github.com/computational-psychology/stimupy/archive/refs/heads/main.zip
+```
+
+From a specific tag, e.g. `v1.0.0`:
+```python
+pip install https://github.com/computational-psychology/stimupy/archive/tags/v1.0.0.zip
+```
+
+From a specific commit, e.g., (`9e37617`)[https://github.com/computational-psychology/stimupy/tree/9e37617]:
+```python
+pip install https://github.com/computational-psychology/stimupy/archive/9e37617.zip
+```
+:::
 ::::
 
-::::{tab-item} conda-forge 
+::::{tab-item} conda
 Surely this must also be possible...
 ::::
 
-::::{tab-item} source (GitHub) {fab}`github`
+
+::::{tab-item} source {fab}`github`
 
 1. Clone the repository from GitHub:
 
@@ -51,6 +69,7 @@ this makes changes to files immediately usable,
 rather than having to reinstall the package after every change.
 :::
 ::::
+
 :::::
 
 
