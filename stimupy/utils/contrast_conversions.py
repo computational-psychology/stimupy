@@ -1,5 +1,12 @@
 import numpy as np
 
+__all__ = [
+    "transparency",
+    "adapt_michelson_contrast",
+    "adapt_rms_contrast",
+    "adapt_normalized_rms_contrast",
+    "adapt_intensity_range",
+]
 
 def transparency(img, mask=None, alpha=0.5, tau=0.2):
     """Applies a transparency to image at specified (mask) location if provided
@@ -40,9 +47,12 @@ def adapt_michelson_contrast(stim, michelson_contrast, mean_luminance=None):
         desired mean luminance; if None (default), dont change mean luminance
 
     Returns
-    -------
-    Updated stimulus dict with keys "img", "michelson_contrast" and "mean_luminance"
-
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        Michelson contrast (key: "michelson_contrast"),
+        mean luminance ("mean_luminance")
+        and additional keys containing stimulus parameters
     """
     if mean_luminance is None:
         mean_luminance = stim["img"].mean()
@@ -72,9 +82,12 @@ def adapt_rms_contrast(stim, rms_contrast, mean_luminance=None):
         desired mean luminance; if None (default), dont change mean luminance
 
     Returns
-    -------
-    Updated stimulus dict with keys "img", "rms_contrast" and "mean_luminance"
-
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        RMS contrast (key: "rms_contrast"),
+        mean luminance ("mean_luminance")
+        and additional keys containing stimulus parameters
     """
     if mean_luminance is None:
         mean_luminance = stim["img"].mean()
@@ -102,9 +115,12 @@ def adapt_normalized_rms_contrast(stim, rms_contrast, mean_luminance=None):
         desired mean luminance; if None (default), dont change mean luminance
 
     Returns
-    -------
-    Updated stimulus dict with keys "img", "rms_contrast" and "mean_luminance"
-
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        RMS contrast (key: "rms_contrast"),
+        mean luminance ("mean_luminance")
+        and additional keys containing stimulus parameters
     """
     if mean_luminance is None:
         mean_luminance = stim["img"].mean()
@@ -132,15 +148,16 @@ def adapt_intensity_range(stim, intensity_min=0.0, intensity_max=1.0):
         new maximal intensity value
 
     Returns
-    -------
-    Updated stimulus dict with keys "img", "intensity_min" and "intensity_max"
-
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        intensity range (key: "intensity_range"),
+        and additional keys containing stimulus parameters
     """
 
     img = (stim["img"] - stim["img"].min()) / (stim["img"].max() - stim["img"].min())
     img = img * (intensity_max - intensity_min) + intensity_min
 
     stim["img"] = img
-    stim["intensity_min"] = intensity_min
-    stim["intensity_max"] = intensity_max
+    stim["intensity_range"] = (intensity_min, intensity_max)
     return stim

@@ -8,7 +8,7 @@ from stimupy.components.gratings import square_wave
 from stimupy.illusions.angulars import pinwheel as radial
 from stimupy.illusions.circulars import rings as circular
 from stimupy.illusions.wedding_cakes import wedding_cake
-from stimupy.utils import degrees_to_pixels
+from stimupy.utils import resolution
 
 __all__ = [
     "generalized",
@@ -467,17 +467,18 @@ def anderson(
 
     img = stim["img"]
     mask = stim["target_mask"]
-    stripe_center_offset_px = degrees_to_pixels(stripe_center_offset, ppd)
-    stripe_size_px = degrees_to_pixels(stripe_height, ppd)
-    cycle_width_px = degrees_to_pixels(1.0 / (frequency * 2), ppd) * 2
-    phase_width_px = cycle_width_px // 2
+    soffset = resolution.lengths_from_visual_angles_ppd(stripe_center_offset, np.unique(ppd)[0])
+    sheight = resolution.lengths_from_visual_angles_ppd(stripe_height, np.unique(ppd)[0])
+    cycle_width = resolution.lengths_from_visual_angles_ppd(1.0 / (frequency * 2), np.unique(ppd)[0]) * 2
+    
+    phase_width_px = cycle_width // 2
     height, width = img.shape
     nbars = width // phase_width_px
     ttop, tbot = np.array(target_indices_top), np.array(target_indices_bottom)
     ttop[ttop < 0] = nbars + ttop[ttop < 0]
     tbot[tbot < 0] = nbars + tbot[tbot < 0]
 
-    if stripe_size_px / 2.0 > stripe_center_offset_px:
+    if sheight / 2.0 > soffset:
         raise ValueError("Stripes overlap! Increase stripe offset or decrease stripe size.")
     if (target_height / 2 - target_center_offset + stripe_height / 2 - stripe_center_offset) > 0:
         raise ValueError(
@@ -485,27 +486,27 @@ def anderson(
             "decrease stripe or target size"
         )
     if stripe_center_offset * ppd % 1 != 0:
-        offsets_new = stripe_center_offset_px / ppd
+        offsets_new = soffset / ppd
         warnings.warn(
             f"Stripe offsets rounded because of ppd; {stripe_center_offset} -> {offsets_new}"
         )
 
     # Add stripe at top
-    ystart = height // 2 - stripe_center_offset_px - stripe_size_px // 2
-    img[ystart : ystart + stripe_size_px, 0 : phase_width_px * np.min(ttop)] = intensity_stripes[0]
+    ystart = height // 2 - soffset - sheight // 2
+    img[ystart : ystart + sheight, 0 : phase_width_px * np.min(ttop)] = intensity_stripes[0]
     img[
-        ystart : ystart + stripe_size_px, phase_width_px * (np.max(ttop) + 1) : :
+        ystart : ystart + sheight, phase_width_px * (np.max(ttop) + 1) : :
     ] = intensity_stripes[0]
-    if (ystart < 0) or (ystart + stripe_size_px > height):
+    if (ystart < 0) or (ystart + sheight > height):
         raise ValueError("Anderson stripes do not fully fit into stimulus")
 
     # Add stripe at bottom
-    ystart = height // 2 + stripe_center_offset_px - stripe_size_px // 2
-    img[ystart : ystart + stripe_size_px, 0 : phase_width_px * np.min(tbot)] = intensity_stripes[1]
+    ystart = height // 2 + soffset - sheight // 2
+    img[ystart : ystart + sheight, 0 : phase_width_px * np.min(tbot)] = intensity_stripes[1]
     img[
-        ystart : ystart + stripe_size_px, phase_width_px * (np.max(tbot) + 1) : :
+        ystart : ystart + sheight, phase_width_px * (np.max(tbot) + 1) : :
     ] = intensity_stripes[1]
-    if (ystart < 0) or (ystart + stripe_size_px > height):
+    if (ystart < 0) or (ystart + sheight > height):
         raise ValueError("Anderson stripes do not fully fit into stimulus")
 
     stim["img"] = img
@@ -698,10 +699,10 @@ def yazdanbakhsh(
 
     img = stim["img"]
     mask = stim["target_mask"]
-    gap_size_px = degrees_to_pixels(gap_size, ppd)
-    target_offset_px = degrees_to_pixels(target_center_offset, ppd)
-    tsize_px = degrees_to_pixels(target_height, ppd)
-    cycle_width_px = degrees_to_pixels(1.0 / (frequency * 2), ppd) * 2
+    gap_size_px = resolution.lengths_from_visual_angles_ppd(gap_size, np.unique(ppd)[0])
+    target_offset_px = resolution.lengths_from_visual_angles_ppd(target_center_offset, np.unique(ppd)[0])
+    tsize_px = resolution.lengths_from_visual_angles_ppd(target_height, np.unique(ppd)[0])
+    cycle_width_px = resolution.lengths_from_visual_angles_ppd(1.0 / (frequency * 2), np.unique(ppd)[0]) * 2
     phase_width_px = cycle_width_px // 2
     height, width = img.shape
     nbars = width // phase_width_px

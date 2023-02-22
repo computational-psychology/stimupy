@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.signal import fftconvolve
 
-from stimupy.utils import degrees_to_pixels, resolution
+from stimupy.utils import resolution
 
 __all__ = [
     "wedding_cake",
@@ -69,7 +69,7 @@ def wedding_cake(
         raise ValueError("ppd should be equal in x and y direction")
 
     nY, nX = shape
-    Ly, Lx, Lw = degrees_to_pixels(L_size, np.unique(ppd))
+    Ly, Lx, Lw = resolution.lengths_from_visual_angles_ppd(L_size, np.unique(ppd))
     Lyh, Lxh = int(Ly / 2) + 1, int(Lx / 2) + 1
 
     # Create L-shaped patch
@@ -97,7 +97,7 @@ def wedding_cake(
 
     if target_indices1 is not None and target_height is not None:
         # Create target patch2
-        theight = degrees_to_pixels(target_height, np.unique(ppd))
+        theight = resolution.lengths_from_visual_angles_ppd(target_height, np.unique(ppd))
         tpatch1 = np.zeros(L_patch.shape)
         tpatch1[int(Ly / 2 - theight / 2) : int(Ly / 2 + theight / 2), Lx - Lw : :] = (
             -intensity_grating[1] + intensity_target
@@ -120,7 +120,7 @@ def wedding_cake(
 
     if target_indices2 is not None and target_height is not None:
         # Create target patch2
-        theight = degrees_to_pixels(target_height, np.unique(ppd))
+        theight = resolution.lengths_from_visual_angles_ppd(target_height, np.unique(ppd))
         tpatch2 = np.zeros(L_patch.shape)
         tpatch2[int(Ly / 2 - theight / 2) : int(Ly / 2 + theight / 2), Lx - Lw : :] = (
             -intensity_grating[0] + intensity_target

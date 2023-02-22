@@ -1,16 +1,24 @@
 import numpy as np
 
+__all__ = [
+    "avg_target_values",
+    "avg_img_values",
+    "all_img_values",
+    "img_values",
+]
 
-def avg_target_values(stim, f_average=np.median):
+def avg_target_values(stim, mask_key="target_mask", f_average=np.median):
     """Average pixel value in each target region of stimulus
 
     Parameters
     ----------
     stim : dict[str: Any]
         stimulus-dict with at least "img" and "mask"
-        containing the stimulsu image and integer-mask, respectively.
+        containing the stimulus image and integer-mask, respectively.
+    mask_key : str
+        string with mask-key name
     f_average: function, default=numpy.median
-        How to average/summarise the pixels in each  target region
+        How to average/summarise the pixels in each target region
 
     Returns
     ----------
@@ -22,7 +30,7 @@ def avg_target_values(stim, f_average=np.median):
     --------
     avg_img_values
     """
-    return avg_img_values(image=stim["img"], mask=stim["mask"], f_average=f_average)
+    return avg_img_values(image=stim["img"], mask=stim[mask_key], f_average=f_average)
 
 
 def avg_img_values(image, mask, f_average=np.median):
@@ -58,7 +66,7 @@ def avg_img_values(image, mask, f_average=np.median):
 
 
 def all_img_values(img, mask):
-    """Isolate all image values/pixels, per target region specified in integer masks
+    """Isolate all image values/pixels, per target region specified in integer mask
 
     Parameters
     ----------

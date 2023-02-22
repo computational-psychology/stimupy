@@ -1,6 +1,6 @@
 import numpy as np
 
-from stimupy.utils import degrees_to_pixels, resolution
+from stimupy.utils import resolution
 
 __all__ = [
     "grid",
@@ -53,19 +53,19 @@ def grid(
     if len(np.unique(ppd)) > 1:
         raise ValueError("ppd should be equal in x and y direction")
 
-    element_height, element_width, element_thick = degrees_to_pixels(element_size, np.unique(ppd))
+    eheight, ewidth, ethick = resolution.lengths_from_visual_angles_ppd(element_size, np.unique(ppd))
 
-    if element_height <= element_thick:
+    if eheight <= ethick:
         raise ValueError("Element thickness larger than height")
-    if element_width <= element_thick:
+    if ewidth <= ethick:
         raise ValueError("Element thickness larger than width")
-    if element_thick <= 0:
+    if ethick <= 0:
         raise ValueError("Increase element thickness")
 
     img = np.ones(shape) * intensity_background
-    for i in range(element_thick):
-        img[i::element_height, :] = intensity_grid
-        img[:, i::element_width] = intensity_grid
+    for i in range(ethick):
+        img[i::eheight, :] = intensity_grid
+        img[:, i::ewidth] = intensity_grid
 
     stim = {
         "img": img,

@@ -4,8 +4,22 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 
+__all__ = [
+    "compare_plots",
+    "plot_stim",
+    "plot_stimuli",
+]
 
 def compare_plots(plots):
+    """
+    Plot multiple plots in one plot for comparing.
+
+    Parameters
+    ----------
+    plots : list of plots
+        List containing plots which should be plotted
+
+    """
     M = len(plots)
     for i, (plot_name, plot) in enumerate(plots.items()):
         plt.subplot(1, M, i + 1)
@@ -24,6 +38,38 @@ def plot_stim(
     save=None,
     extent_key="shape",
 ):
+    """
+    Utility function to plot stimulus array (key: "img") from stim dict and mask (optional)
+
+    Parameters
+    ----------
+    stim : dict
+        stimulus dict containing stimulus-array (key: "img")
+    mask : bool or str, optional
+        If True, plot mask on top of stimulus image (default: False).
+        If string is provided, plot this key from stimulus dictionary as mask
+    stim_name : str, optional
+        Stimulus name used for plotting (default: "stim")
+    ax : Axis object, optional
+        If not None (default), plot in the specified Axis object
+    vmin : float, optional
+        Minimal intensity value for plotting. The default is 0.
+    vmax : float, optional
+        Minimal intensity value for plotting. The default is 1.
+    save : None or str, optional
+        If None (default), do not save the plot.
+        If string is provided, save plot under this name.
+    extent_key : str, optional
+        Key to extent which will be used for plotting.
+        Default is "shape", using the image size in pixels as extent.
+
+    Returns
+    -------
+    ax : Axis object
+        If ax was passed and plotting is None, returns updated Axis object.
+
+    """
+    print("Plotting:", stim_name)
 
     single_plot = False
     if ax is None:
@@ -31,7 +77,12 @@ def plot_stim(
         single_plot = True
 
     if extent_key in stim.keys():
-        extent = [0, stim[extent_key][0], 0, stim[extent_key][1]]
+        if len(stim[extent_key]) == 2:
+            extent = [0, stim[extent_key][0], 0, stim[extent_key][1]]
+        elif len(stim[extent_key]) == 4:
+            extent = stim[extent_key]
+        else:
+            raise ValueError("extent should either contain 2 or 4 values")
     else:
         warnings.warn("extent_key does not exist in dict, using pixel-extent")
         extent = [0, stim["img"].shape[0], 0, stim["img"].shape[1]]
@@ -102,6 +153,28 @@ def plot_stimuli(
     save=None,
     extent_key="shape",
 ):
+    """
+    Utility function to plot multuple stimuli (key: "img") from stim dicts and mask (optional)
+
+    Parameters
+    ----------
+    stims : dict of dicts
+        dictionary composed of stimulus dicts containing stimulus-array (key: "img")
+    mask : bool or str, optional
+        If True, plot mask on top of stimulus image (default: False).
+        If string is provided, plot this key from stimulus dictionary as mask
+    vmin : float, optional
+        Minimal intensity value for plotting. The default is 0.
+    vmax : float, optional
+        Minimal intensity value for plotting. The default is 1.
+    save : None or str, optional
+        If None (default), do not save the plot.
+        If string is provided, save plot under this name.
+    extent_key : str, optional
+        Key to extent which will be used for plotting.
+        Default is "shape", using the image size in pixels as extent.
+
+    """
 
     # Plot each stimulus+mask
     n_stim = int(np.ceil(np.sqrt(len(stims))))

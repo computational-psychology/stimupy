@@ -4,7 +4,7 @@ import numpy as np
 from scipy.ndimage import rotate
 
 from stimupy.components.shapes import cross, triangle
-from stimupy.utils import degrees_to_pixels, resolution
+from stimupy.utils import resolution
 
 __all__ = [
     "cross_generalized",
@@ -348,7 +348,7 @@ def todorovic_generalized(
         raise ValueError("ppd should be equal in x and y direction")
 
     L_size = (visual_size[0] / 2, visual_size[0] / 2, L_width, visual_size[1] - L_width)
-    top, bottom, left, right = degrees_to_pixels(L_size, np.unique(ppd))
+    top, bottom, left, right = resolution.lengths_from_visual_angles_ppd(L_size, np.unique(ppd))
     width, height = left + right, top + bottom
 
     # Create stimulus without targets
@@ -632,9 +632,9 @@ def add_targets(
                 "target_type, target_orientation, target_x and target_y need the same length."
             )
 
-        theight, twidth = degrees_to_pixels(target_size, ppd)
-        ty = degrees_to_pixels(target_y, ppd)
-        tx = degrees_to_pixels(target_x, ppd)
+        theight, twidth = resolution.lengths_from_visual_angles_ppd(target_size, ppd)
+        ty = resolution.lengths_from_visual_angles_ppd(target_y, ppd)
+        tx = resolution.lengths_from_visual_angles_ppd(target_x, ppd)
 
         if (twidth + np.array(tx)).max() > img.shape[1]:
             raise ValueError("Rightmost target does not fit in image.")
