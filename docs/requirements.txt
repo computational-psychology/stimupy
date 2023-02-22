@@ -1,5 +1,3 @@
 jupyter-book
-matplotlib
-numpy
-scipy
-pandas
+jupytext
+jupyterlab_myst
