@@ -29,6 +29,7 @@ dependencies = [
   "scipy",
   "matplotlib",
   "pandas",
+  "Pillow"
 ]
 
 dynamic = ["version"]
