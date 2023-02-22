@@ -1,0 +1,122 @@
+{
+    "bullseye_thin_gw45_gb31": {
+        "img": "1711f034c916e3a94f2cc8310d162ba5",
+        "mask": "c2fb80b9db4a0b95f7019838fb9e5947"
+    },
+    "bullseye_thin_gw45_gb38": {
+        "img": "45bf2bd03b73f2c6950b42e97c66f1a5",
+        "mask": "c2fb80b9db4a0b95f7019838fb9e5947"
+    },
+    "bullseye_thin_gw45_gb45": {
+        "img": "9ac4788609ebf4b97ed4e3f76d298bdc",
+        "mask": "c2fb80b9db4a0b95f7019838fb9e5947"
+    },
+    "bullseye_thin_gw45_gb52": {
+        "img": "ed1e3f5ec8cfe683b2a73203ca26db9a",
+        "mask": "c2fb80b9db4a0b95f7019838fb9e5947"
+    },
+    "bullseye_thin_gw45_gb59": {
+        "img": "0bd0460eb3273bb2a9fa2393de7f8e03",
+        "mask": "c2fb80b9db4a0b95f7019838fb9e5947"
+    },
+    "bullseye_thin_gw60_gb46": {
+        "img": "1334a9f7a3cad72470b8ddc5f4f2f032",
+        "mask": "c2fb80b9db4a0b95f7019838fb9e5947"
+    },
+    "bullseye_thin_gw60_gb53": {
+        "img": "51bc3d23cef0a137dece859f0a885999",
+        "mask": "c2fb80b9db4a0b95f7019838fb9e5947"
+    },
+    "bullseye_thin_gw60_gb60": {
+        "img": "39eef2834dfd40f453566a3bdb4fd18b",
+        "mask": "c2fb80b9db4a0b95f7019838fb9e5947"
+    },
+    "bullseye_thin_gw60_gb67": {
+        "img": "33354a1384afe2ef21b1dad3a3520ef7",
+        "mask": "c2fb80b9db4a0b95f7019838fb9e5947"
+    },
+    "bullseye_thin_gw60_gb74": {
+        "img": "c379c3768bb213ea6f1d9679ff38bd45",
+        "mask": "c2fb80b9db4a0b95f7019838fb9e5947"
+    },
+    "bullseye_thin_gw75_gb61": {
+        "img": "f0c576b7ffffcce70a3b58f4ca284dbc",
+        "mask": "c2fb80b9db4a0b95f7019838fb9e5947"
+    },
+    "bullseye_thin_gw75_gb68": {
+        "img": "265ef97a95e4cd0d0a6e166d7b5ca8e0",
+        "mask": "c2fb80b9db4a0b95f7019838fb9e5947"
+    },
+    "bullseye_thin_gw75_gb75": {
+        "img": "65e049dd9b17209b70f4fe089ae027f7",
+        "mask": "c2fb80b9db4a0b95f7019838fb9e5947"
+    },
+    "bullseye_thin_gw75_gb82": {
+        "img": "6f90b2398063fa7d572a5ce0fc7b7fb9",
+        "mask": "c2fb80b9db4a0b95f7019838fb9e5947"
+    },
+    "bullseye_thin_gw75_gb89": {
+        "img": "8ff5a31124a51e99c05eb9b76904f1e4",
+        "mask": "c2fb80b9db4a0b95f7019838fb9e5947"
+    },
+    "bullseye_thick_gw45_gb31": {
+        "img": "e5c3fdc178018d78bcb7f0aedae2ecb3",
+        "mask": "2267230f568fdb1d953052c5d108957e"
+    },
+    "bullseye_thick_gw45_gb38": {
+        "img": "3377904691e2fe4683cff2106ff2d336",
+        "mask": "2267230f568fdb1d953052c5d108957e"
+    },
+    "bullseye_thick_gw45_gb45": {
+        "img": "8026a098ebac15dcd5f0f61cf97c14ec",
+        "mask": "2267230f568fdb1d953052c5d108957e"
+    },
+    "bullseye_thick_gw45_gb52": {
+        "img": "3836d347ea14b3b14025375ecf3d359d",
+        "mask": "2267230f568fdb1d953052c5d108957e"
+    },
+    "bullseye_thick_gw45_gb59": {
+        "img": "8fdf4b8cea6415685d712e2f9413b885",
+        "mask": "2267230f568fdb1d953052c5d108957e"
+    },
+    "bullseye_thick_gw60_gb46": {
+        "img": "147922ff13edc5d367301ae6c36be2aa",
+        "mask": "2267230f568fdb1d953052c5d108957e"
+    },
+    "bullseye_thick_gw60_gb53": {
+        "img": "f3bc6c60fcd7836f43366fa3afb11bf9",
+        "mask": "2267230f568fdb1d953052c5d108957e"
+    },
+    "bullseye_thick_gw60_gb60": {
+        "img": "f67ed86dbe55283bbb6e85c4e26a1b5d",
+        "mask": "2267230f568fdb1d953052c5d108957e"
+    },
+    "bullseye_thick_gw60_gb67": {
+        "img": "bb712e2d2373027e8e89b7e1fc8c890e",
+        "mask": "2267230f568fdb1d953052c5d108957e"
+    },
+    "bullseye_thick_gw60_gb74": {
+        "img": "a375728fddb724a7d5fcaba3abecf476",
+        "mask": "2267230f568fdb1d953052c5d108957e"
+    },
+    "bullseye_thick_gw75_gb61": {
+        "img": "497acb796372022634f6e7c6d3100f43",
+        "mask": "2267230f568fdb1d953052c5d108957e"
+    },
+    "bullseye_thick_gw75_gb68": {
+        "img": "bfa765dda329bedf3349fbb834efb50b",
+        "mask": "2267230f568fdb1d953052c5d108957e"
+    },
+    "bullseye_thick_gw75_gb75": {
+        "img": "d2087820301b947f5ea94277201b9ab2",
+        "mask": "2267230f568fdb1d953052c5d108957e"
+    },
+    "bullseye_thick_gw75_gb82": {
+        "img": "de2caca861db0c17f0b36383693820fc",
+        "mask": "2267230f568fdb1d953052c5d108957e"
+    },
+    "bullseye_thick_gw75_gb89": {
+        "img": "dab8537dc590ebbd0e6cec4a7a653da7",
+        "mask": "2267230f568fdb1d953052c5d108957e"
+    }
+}
