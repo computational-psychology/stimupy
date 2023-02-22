@@ -200,7 +200,7 @@ def dungeon(visual_size=VSIZES["dungeon"], ppd=PPD, shape=SHAPES["dungeon"]):
     Returns
     -------
     dict[str, Any]
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -269,7 +269,7 @@ def cube(visual_size=VSIZES["cube"], ppd=PPD, shape=SHAPES["cube"]):
     Returns
     -------
     dict[str, Any]
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -337,7 +337,7 @@ def grating(visual_size=VSIZES["grating"], ppd=PPD, shape=SHAPES["grating"]):
     Returns
     -------
     dict[str, Any]
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -407,7 +407,7 @@ def rings(visual_size=VSIZES["rings"], ppd=PPD, shape=SHAPES["rings"]):
     Returns
     -------
     dict[str, Any]
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -472,7 +472,7 @@ def bullseye(visual_size=VSIZES["bullseye"], ppd=PPD, shape=SHAPES["bullseye"]):
     Returns
     -------
     dict[str, Any]
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -539,7 +539,7 @@ def simultaneous_brightness_contrast(
     Returns
     -------
     dict[str, Any]
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -605,7 +605,7 @@ def white(visual_size=VSIZES["white"], ppd=PPD, pad=PAD, shape=SHAPES["white"]):
     Returns
     -------
     dict[str, Any]
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -671,7 +671,7 @@ def benary(visual_size=VSIZES["benary"], ppd=PPD, shape=SHAPES["benary"]):
     Returns
     -------
     dict[str, Any]
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -730,7 +730,7 @@ def todorovic(visual_size=VSIZES["todorovic"], ppd=PPD, shape=SHAPES["todorovic"
     Returns
     -------
     dict[str, Any]
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -803,7 +803,7 @@ def checkerboard_contrast_contrast(
     Returns
     -------
     dict[str, Any]
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -891,7 +891,7 @@ def checkerboard(
     Returns
     -------
     dict[str, Any]
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -962,7 +962,7 @@ def checkerboard_extended(
     Returns
     -------
     dict[str, Any]
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -1030,7 +1030,7 @@ def white_yazdanbakhsh(
     Returns
     -------
     dict[str, Any]
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -1109,7 +1109,7 @@ def white_anderson(
     Returns
     -------
     dict[str, Any]
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -1189,7 +1189,7 @@ def white_howe(visual_size=VSIZES["white_howe"], ppd=PPD, shape=SHAPES["white_ho
     Returns
     -------
     dict[str, Any]
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References

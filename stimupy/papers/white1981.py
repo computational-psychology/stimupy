@@ -105,7 +105,7 @@ def square_white(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -140,7 +140,7 @@ def square_black(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -176,7 +176,7 @@ def grating_white_white(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -217,7 +217,7 @@ def grating_white_black(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -258,7 +258,7 @@ def grating_black_white(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -299,7 +299,7 @@ def grating_black_black(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -340,7 +340,7 @@ def grating_white_in(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -390,7 +390,7 @@ def grating_black_in(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -440,7 +440,7 @@ def grating_white_out(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -490,7 +490,7 @@ def grating_black_out(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -540,7 +540,7 @@ def grating_white_orthogonal(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -592,7 +592,7 @@ def grating_black_orthogonal(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References

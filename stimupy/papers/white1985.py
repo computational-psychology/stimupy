@@ -104,7 +104,7 @@ def wide_0phase(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -146,7 +146,7 @@ def wide_36phase(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -187,7 +187,7 @@ def wide_72phase(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -229,7 +229,7 @@ def wide_108phase(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -271,7 +271,7 @@ def wide_144phase(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -313,7 +313,7 @@ def wide_180phase(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -355,7 +355,7 @@ def square_0phase(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -397,7 +397,7 @@ def square_36phase(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -439,7 +439,7 @@ def square_72phase(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -481,7 +481,7 @@ def square_108phase(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -523,7 +523,7 @@ def square_144phase(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -565,7 +565,7 @@ def square_180phase(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
