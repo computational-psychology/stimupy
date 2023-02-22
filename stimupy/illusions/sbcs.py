@@ -322,8 +322,8 @@ def with_dots(
     stim = {
         "img": img,
         "target_mask": mask.astype(int),
-        "shape": img.shape,
-        "visual_size": np.array(img.shape) / ppd,
+        "shape": shape,
+        "visual_size": visual_size,
         "ppd": ppd,
         "n_dots": n_dots,
         "dot_radius": dot_radius,
@@ -457,8 +457,8 @@ def dotted(
     stim = {
         "img": img,
         "target_mask": mask.astype(int),
-        "shape": img.shape,
-        "visual_size": np.array(img.shape) / ppd,
+        "shape": shape,
+        "visual_size": visual_size,
         "ppd": ppd,
         "n_dots": n_dots,
         "dot_radius": dot_radius,
@@ -558,8 +558,6 @@ def two_sided_with_dots(
     del stim["intensity_background"]
     stim["intensity_backgrounds"] = intensity_backgrounds
     stim["intensity_dots"] = intensity_dots
-    stim["shape"] = shape
-    stim["visual_size"] = visual_size
     return stim
 
 
@@ -649,8 +647,6 @@ def two_sided_dotted(
     del stim["intensity_background"]
     stim["intensity_backgrounds"] = intensity_backgrounds
     stim["intensity_dots"] = intensity_dots
-    stim["shape"] = shape
-    stim["visual_size"] = visual_size
     return stim
 
 
