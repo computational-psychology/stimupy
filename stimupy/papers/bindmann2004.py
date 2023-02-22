@@ -151,9 +151,8 @@ def bullseye_thin_gw45_gb31(ppd=PPD):
 
     References
     -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    Bindmann, D. & Chubb, C. (2004). Brightness assimilation in bullseye displays.
+        Vision Research, 44 (3), 309-319. https://doi.org/10.1016/S0042-6989(03)00430-9
     """
     
     target_size_half = resolve_target_size(ppd=ppd) / 2
@@ -213,9 +212,8 @@ def bullseye_thin_gw45_gb38(ppd=PPD):
 
     References
     -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    Bindmann, D. & Chubb, C. (2004). Brightness assimilation in bullseye displays.
+    Vision Research, 44 (3), 309-319. https://doi.org/10.1016/S0042-6989(03)00430-9
     """
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
@@ -275,9 +273,8 @@ def bullseye_thin_gw45_gb45(ppd=PPD):
 
     References
     -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    Bindmann, D. & Chubb, C. (2004). Brightness assimilation in bullseye displays.
+    Vision Research, 44 (3), 309-319. https://doi.org/10.1016/S0042-6989(03)00430-9
     """
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
@@ -337,9 +334,8 @@ def bullseye_thin_gw45_gb52(ppd=PPD):
 
     References
     -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    Bindmann, D. & Chubb, C. (2004). Brightness assimilation in bullseye displays.
+    Vision Research, 44 (3), 309-319. https://doi.org/10.1016/S0042-6989(03)00430-9
     """
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
@@ -399,9 +395,8 @@ def bullseye_thin_gw45_gb59(ppd=PPD):
 
     References
     -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    Bindmann, D. & Chubb, C. (2004). Brightness assimilation in bullseye displays.
+    Vision Research, 44 (3), 309-319. https://doi.org/10.1016/S0042-6989(03)00430-9
     """
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
@@ -461,9 +456,8 @@ def bullseye_thin_gw60_gb46(ppd=PPD):
 
     References
     -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    Bindmann, D. & Chubb, C. (2004). Brightness assimilation in bullseye displays.
+    Vision Research, 44 (3), 309-319. https://doi.org/10.1016/S0042-6989(03)00430-9
     """
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
@@ -523,9 +517,8 @@ def bullseye_thin_gw60_gb53(ppd=PPD):
 
     References
     -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    Bindmann, D. & Chubb, C. (2004). Brightness assimilation in bullseye displays.
+    Vision Research, 44 (3), 309-319. https://doi.org/10.1016/S0042-6989(03)00430-9
     """
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
@@ -585,9 +578,8 @@ def bullseye_thin_gw60_gb60(ppd=PPD):
 
     References
     -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    Bindmann, D. & Chubb, C. (2004). Brightness assimilation in bullseye displays.
+    Vision Research, 44 (3), 309-319. https://doi.org/10.1016/S0042-6989(03)00430-9
     """
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
@@ -647,9 +639,8 @@ def bullseye_thin_gw60_gb67(ppd=PPD):
 
     References
     -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    Bindmann, D. & Chubb, C. (2004). Brightness assimilation in bullseye displays.
+    Vision Research, 44 (3), 309-319. https://doi.org/10.1016/S0042-6989(03)00430-9
     """
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
@@ -709,9 +700,8 @@ def bullseye_thin_gw60_gb74(ppd=PPD):
 
     References
     -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    Bindmann, D. & Chubb, C. (2004). Brightness assimilation in bullseye displays.
+    Vision Research, 44 (3), 309-319. https://doi.org/10.1016/S0042-6989(03)00430-9
     """
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
@@ -771,9 +761,8 @@ def bullseye_thin_gw75_gb61(ppd=PPD):
 
     References
     -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    Bindmann, D. & Chubb, C. (2004). Brightness assimilation in bullseye displays.
+    Vision Research, 44 (3), 309-319. https://doi.org/10.1016/S0042-6989(03)00430-9
     """
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
@@ -833,9 +822,8 @@ def bullseye_thin_gw75_gb68(ppd=PPD):
 
     References
     -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    Bindmann, D. & Chubb, C. (2004). Brightness assimilation in bullseye displays.
+    Vision Research, 44 (3), 309-319. https://doi.org/10.1016/S0042-6989(03)00430-9
     """
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
@@ -895,9 +883,8 @@ def bullseye_thin_gw75_gb75(ppd=PPD):
 
     References
     -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    Bindmann, D. & Chubb, C. (2004). Brightness assimilation in bullseye displays.
+    Vision Research, 44 (3), 309-319. https://doi.org/10.1016/S0042-6989(03)00430-9
     """
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
@@ -957,9 +944,8 @@ def bullseye_thin_gw75_gb82(ppd=PPD):
 
     References
     -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    Bindmann, D. & Chubb, C. (2004). Brightness assimilation in bullseye displays.
+    Vision Research, 44 (3), 309-319. https://doi.org/10.1016/S0042-6989(03)00430-9
     """
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
@@ -1019,9 +1005,8 @@ def bullseye_thin_gw75_gb89(ppd=PPD):
 
     References
     -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    Bindmann, D. & Chubb, C. (2004). Brightness assimilation in bullseye displays.
+    Vision Research, 44 (3), 309-319. https://doi.org/10.1016/S0042-6989(03)00430-9
     """
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
@@ -1081,9 +1066,8 @@ def bullseye_thick_gw45_gb31(ppd=PPD):
 
     References
     -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    Bindmann, D. & Chubb, C. (2004). Brightness assimilation in bullseye displays.
+    Vision Research, 44 (3), 309-319. https://doi.org/10.1016/S0042-6989(03)00430-9
     """
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
@@ -1143,9 +1127,8 @@ def bullseye_thick_gw45_gb38(ppd=PPD):
 
     References
     -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    Bindmann, D. & Chubb, C. (2004). Brightness assimilation in bullseye displays.
+    Vision Research, 44 (3), 309-319. https://doi.org/10.1016/S0042-6989(03)00430-9
     """
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
@@ -1205,9 +1188,8 @@ def bullseye_thick_gw45_gb45(ppd=PPD):
 
     References
     -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    Bindmann, D. & Chubb, C. (2004). Brightness assimilation in bullseye displays.
+    Vision Research, 44 (3), 309-319. https://doi.org/10.1016/S0042-6989(03)00430-9
     """
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
@@ -1267,9 +1249,8 @@ def bullseye_thick_gw45_gb52(ppd=PPD):
 
     References
     -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    Bindmann, D. & Chubb, C. (2004). Brightness assimilation in bullseye displays.
+    Vision Research, 44 (3), 309-319. https://doi.org/10.1016/S0042-6989(03)00430-9
     """
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
@@ -1329,9 +1310,8 @@ def bullseye_thick_gw45_gb59(ppd=PPD):
 
     References
     -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    Bindmann, D. & Chubb, C. (2004). Brightness assimilation in bullseye displays.
+    Vision Research, 44 (3), 309-319. https://doi.org/10.1016/S0042-6989(03)00430-9
     """
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
@@ -1391,9 +1371,8 @@ def bullseye_thick_gw60_gb46(ppd=PPD):
 
     References
     -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    Bindmann, D. & Chubb, C. (2004). Brightness assimilation in bullseye displays.
+    Vision Research, 44 (3), 309-319. https://doi.org/10.1016/S0042-6989(03)00430-9
     """
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
@@ -1453,9 +1432,8 @@ def bullseye_thick_gw60_gb53(ppd=PPD):
 
     References
     -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    Bindmann, D. & Chubb, C. (2004). Brightness assimilation in bullseye displays.
+    Vision Research, 44 (3), 309-319. https://doi.org/10.1016/S0042-6989(03)00430-9
     """
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
@@ -1515,9 +1493,8 @@ def bullseye_thick_gw60_gb60(ppd=PPD):
 
     References
     -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    Bindmann, D. & Chubb, C. (2004). Brightness assimilation in bullseye displays.
+    Vision Research, 44 (3), 309-319. https://doi.org/10.1016/S0042-6989(03)00430-9
     """
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
@@ -1577,9 +1554,8 @@ def bullseye_thick_gw60_gb67(ppd=PPD):
 
     References
     -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    Bindmann, D. & Chubb, C. (2004). Brightness assimilation in bullseye displays.
+    Vision Research, 44 (3), 309-319. https://doi.org/10.1016/S0042-6989(03)00430-9
     """
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
@@ -1639,9 +1615,8 @@ def bullseye_thick_gw60_gb74(ppd=PPD):
 
     References
     -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    Bindmann, D. & Chubb, C. (2004). Brightness assimilation in bullseye displays.
+    Vision Research, 44 (3), 309-319. https://doi.org/10.1016/S0042-6989(03)00430-9
     """
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
@@ -1701,9 +1676,8 @@ def bullseye_thick_gw75_gb61(ppd=PPD):
 
     References
     -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    Bindmann, D. & Chubb, C. (2004). Brightness assimilation in bullseye displays.
+    Vision Research, 44 (3), 309-319. https://doi.org/10.1016/S0042-6989(03)00430-9
     """
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
@@ -1763,9 +1737,8 @@ def bullseye_thick_gw75_gb68(ppd=PPD):
 
     References
     -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    Bindmann, D. & Chubb, C. (2004). Brightness assimilation in bullseye displays.
+    Vision Research, 44 (3), 309-319. https://doi.org/10.1016/S0042-6989(03)00430-9
     """
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
@@ -1825,9 +1798,8 @@ def bullseye_thick_gw75_gb75(ppd=PPD):
 
     References
     -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    Bindmann, D. & Chubb, C. (2004). Brightness assimilation in bullseye displays.
+    Vision Research, 44 (3), 309-319. https://doi.org/10.1016/S0042-6989(03)00430-9
     """
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
@@ -1887,9 +1859,8 @@ def bullseye_thick_gw75_gb82(ppd=PPD):
 
     References
     -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    Bindmann, D. & Chubb, C. (2004). Brightness assimilation in bullseye displays.
+    Vision Research, 44 (3), 309-319. https://doi.org/10.1016/S0042-6989(03)00430-9
     """
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
@@ -1949,9 +1920,8 @@ def bullseye_thick_gw75_gb89(ppd=PPD):
 
     References
     -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    Bindmann, D. & Chubb, C. (2004). Brightness assimilation in bullseye displays.
+    Vision Research, 44 (3), 309-319. https://doi.org/10.1016/S0042-6989(03)00430-9
     """
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
