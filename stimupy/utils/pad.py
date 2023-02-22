@@ -1,5 +1,4 @@
 import copy
-
 import numpy as np
 
 from . import resolution
@@ -224,6 +223,10 @@ def pad_dict_by_visual_size(dct, padding, ppd, pad_value=0.0, keys=("img", "*mas
                 else:
                     img = pad_by_visual_size(img, padding, ppd, pad_value)
                 new_dict[key] = img
+    
+    # Update visual_size and shape-keys
+    dct["visual_size"] = resolution.visual_size_from_shape_ppd(img.shape, ppd)
+    dct["shape"] = resolution.validate_shape(img.shape)
     return new_dict
 
 
@@ -308,6 +311,11 @@ def pad_dict_by_shape(dct, padding, pad_value=0, keys=("img", "*mask")):
                 else:
                     img = np.pad(img, padding, mode="constant", constant_values=pad_value)
                 new_dict[key] = img
+
+    # Update visual_size and shape-keys
+    dct["shape"] = resolution.validate_shape(img.shape)
+    if "ppd" in dct.keys():
+        dct["visual_size"] = resolution.visual_size_from_shape_ppd(img.shape, dct["ppd"])
     return new_dict
 
 
@@ -366,6 +374,11 @@ def pad_dict_to_shape(dct, shape, pad_value=0, keys=("img", "*mask")):
                 else:
                     img = pad_by_shape(img, padding=padding, pad_value=pad_value)
                 new_dict[key] = img
+    
+    # Update visual_size and shape-keys
+    new_dict["shape"] = resolution.validate_shape(shape)
+    if "ppd" in dct.keys():
+        new_dict["visual_size"] = resolution.visual_size_from_shape_ppd(shape, dct["ppd"])
     return new_dict
 
 
@@ -409,6 +422,11 @@ def resize_dict(dct, factor, keys=("img", "*mask")):
                 if key.endswith("mask"):
                     img = img.astype(int)
                 new_dict[key] = img
+    
+    # Update visual_size and shape-keys
+    dct["shape"] = resolution.validate_shape(img.shape)
+    if "ppd" in dct.keys():
+        dct["visual_size"] = resolution.visual_size_from_shape_ppd(img.shape, dct["ppd"])
     return new_dict
 
 
@@ -476,6 +494,11 @@ def stack_dicts(
                 if key.endswith("mask"):
                     img = img.astype(int)
                 new_dict[key] = img
+    
+    # Update visual_size and shape-keys
+    new_dict["shape"] = resolution.validate_shape(img.shape)
+    if "ppd" in new_dict.keys():
+        new_dict["visual_size"] = resolution.visual_size_from_shape_ppd(img.shape, new_dict["ppd"])
     return new_dict
 
 
@@ -520,6 +543,11 @@ def rotate_dict(dct, nrots=1, keys=("img", "*mask")):
                 if key.endswith("mask"):
                     img = img.astype(int)
                 new_dict[key] = img
+
+    # Update visual_size and shape-keys
+    new_dict["shape"] = resolution.validate_shape(img.shape)
+    if "ppd" in new_dict.keys():
+        new_dict["visual_size"] = resolution.visual_size_from_shape_ppd(img.shape, new_dict["ppd"])
     return new_dict
 
 
