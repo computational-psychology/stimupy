@@ -22,6 +22,7 @@ def plot_stim(
     vmin=0,
     vmax=1,
     save=None,
+    extent_key="shape",
 ):
 
     single_plot = False
@@ -29,8 +30,14 @@ def plot_stim(
         ax = plt.gca()
         single_plot = True
 
+    if extent_key in stim.keys():
+        extent = [0, stim[extent_key][0], 0, stim[extent_key][1]]
+    else:
+        warnings.warn("extent_key does not exist in dict, using pixel-extent")
+        extent = [0, stim["img"].shape[0], 0, stim["img"].shape[1]]
+
     if not mask:
-        ax.imshow(stim["img"], cmap="gray", vmin=vmin, vmax=vmax)
+        ax.imshow(stim["img"], cmap="gray", vmin=vmin, vmax=vmax, extent=extent)
     else:
         img = stim["img"]
         if isinstance(mask, str):
@@ -46,7 +53,7 @@ def plot_stim(
 
         if (mask is None) or (len(np.unique(mask)) == 1):
             warnings.warn("mask is None or empty- cannot plot")
-            ax.imshow(stim["img"], cmap="gray", vmin=vmin, vmax=vmax)
+            ax.imshow(stim["img"], cmap="gray", vmin=vmin, vmax=vmax, extent=extent)
 
         else:
             img = np.dstack([img, img, img])
@@ -63,7 +70,7 @@ def plot_stim(
                 color = colormap.colors[idx]
                 color = np.reshape(color, (1, 1, 3))
                 img = np.where(mask == idx, color, img)
-            ax.imshow(img)
+            ax.imshow(img, extent=extent)
 
             # Colorbar for mask indices
             bounds = list(np.unique(mask))
@@ -93,6 +100,7 @@ def plot_stimuli(
     vmin=0,
     vmax=1,
     save=None,
+    extent_key="shape",
 ):
 
     # Plot each stimulus+mask
@@ -108,6 +116,7 @@ def plot_stimuli(
             vmin=vmin,
             vmax=vmax,
             save=None,
+            extent_key=extent_key,
         )
 
     plt.tight_layout()
