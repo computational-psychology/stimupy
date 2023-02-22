@@ -78,7 +78,7 @@ def plot_stim(
 
     if extent_key in stim.keys():
         if len(stim[extent_key]) == 2:
-            extent = [0, stim[extent_key][0], 0, stim[extent_key][1]]
+            extent = [0, stim[extent_key][1], 0, stim[extent_key][0]]
         elif len(stim[extent_key]) == 4:
             extent = stim[extent_key]
         else:
