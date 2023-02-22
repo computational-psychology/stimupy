@@ -6,12 +6,14 @@ from stimupy.utils import resolution
 __all__ = [
     "round_to_vals",
     "int_factorize",
+    "get_function_argument_names",
     "resize_array",
     "resize_dict",
     "stack_dicts",
     "rotate_dict",
     "flip_dict",
     "roll_dict",
+    "strip_dict",
 ]
 
 
@@ -72,6 +74,24 @@ def int_factorize(n):
             factors.add(n // i)
 
     return factors
+
+
+def get_function_argument_names(func):
+    """
+    Get all argument names for a given function
+
+    Parameters
+    ----------
+    func : function
+        Get argument names from this function
+
+    Returns
+    -------
+    names : tuple
+        Tuple containing all argument names of given function
+    """
+    names = func.__code__.co_varnames[:func.__code__.co_argcount]
+    return names
 
 
 def resize_array(arr, factor):
@@ -358,4 +378,37 @@ def roll_dict(dct, shift, axes, keys=("img", "*mask")):
                 if key.endswith("mask"):
                     img = img.astype(int)
                 new_dict[key] = img
+    return new_dict
+
+
+def strip_dict(
+    dct,
+    func,
+    ):
+    """
+    Create a dictionary by stripping it from all keys that are not also
+    an argument to the provided function
+
+    Parameters
+    ----------
+    dct: dict
+        dict which will be stripped
+    func : function
+        Get argument names from this function
+
+    Returns
+    -------
+    dict[str, Any]
+        same as input dict but stripped from all keys which are not also
+        an argument to the provided function
+    """
+    
+    # Get all argument names for given function
+    names = get_function_argument_names(func)
+    
+    # Add keys from dct into new_dict if the key is also an argument name
+    new_dict = dict()
+    for name in names:
+        if name in dct.keys():
+            new_dict[name] = dct[name]
     return new_dict
