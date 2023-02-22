@@ -141,7 +141,7 @@ plot_stim(ellipse)
 plt.show()
 ```
 
-## Masked regions, and composition
+## Masked regions
 
 Another key in the stimulus-{glue:}`type` not addressed yet, is the `"shape_mask"`.
 This too is a {glue:}`imgtype`, with the same shape as `"img"`
@@ -172,7 +172,7 @@ plt.show()
 In a given mask, a pixel can only belong to a single region.
 A stimulus can have multiple different masks, each for different sets of regions.
 
-### Composition
+## Composition
 
 Another use of region masking
 is to compose more complicated stimuli
@@ -215,7 +215,7 @@ The advantages of this are:
 1. the actual image can easily be integrated in existing codebases:
    - save to file using `numpy.save()`, `matplotlib.save()`, or `Pillow`
    - manipulate using any `numpy`-based code
-   - TODO: import in PsychoPy (?)
+   % TODO: import in PsychoPy (?)
 2. anything that is compliant with this basic structure
    can use (some of) `stimupy` tooling,
    e.g., `plot_stim()`

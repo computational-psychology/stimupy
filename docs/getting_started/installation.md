@@ -2,7 +2,7 @@
 
 :::::{tab-set}
 
-::::{tab-item} pip
+::::{tab-item} pip {fab}`python`
 `stimupy` is not (yet) available on PyPI
 -- but if it was, one could:
 
@@ -18,13 +18,13 @@ pip install 'stimupy @ https://github.com/computational-psychology/stimupy'
 
 ::::
 
-::::{tab-item} conda-forge
+::::{tab-item} conda-forge 
 Surely this must also be possible...
 ::::
 
-::::{tab-item} source (GitHub)
+::::{tab-item} source (GitHub) {fab}`github`
 
-1. Clone the repository from GitHub (TUB):
+1. Clone the repository from GitHub:
 
     ```bash
     git clone git@github.com:computational-psychology/stimupy.git

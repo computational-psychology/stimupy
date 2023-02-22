@@ -1,1 +1,1 @@
-# Contribute a stimulus
+# Contribute a parameterizable stimulus function

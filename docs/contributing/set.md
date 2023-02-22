@@ -1,1 +1,1 @@
-# Contribute an exact stimulus set
+# Contribute an exact stimulus (set)

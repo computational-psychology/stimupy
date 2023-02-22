@@ -4,14 +4,12 @@
 format: jb-book
 root: index
 parts:
-  - caption: Getting started
+  - caption: Getting started (Tutorial)
     chapters:
-    - file: getting_started/installation
-    - file: getting_started/first_stim
-    - file: getting_started/illusion
-    - file: getting_started/replicate
+    - file: getting_started/getting_started
   - caption: Topic guides
     chapters:
+    - file: topic_guides/topic_guides
     - file: topic_guides/organization
     - file: topic_guides/sets_papers
     - file: topic_guides/resolution
@@ -20,6 +18,5 @@ parts:
     - file: topic_guides/visual_noise
   - caption: Contributing
     chapters:
-    - file: contributing/stimulus
-    - file: contributing/set
+    - file: contributing/contribute
 
