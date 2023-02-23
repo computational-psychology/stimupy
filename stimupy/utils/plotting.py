@@ -85,7 +85,7 @@ def plot_stim(
             raise ValueError("extent should either contain 2 or 4 values")
     else:
         warnings.warn("extent_key does not exist in dict, using pixel-extent")
-        extent = [0, stim["img"].shape[0], 0, stim["img"].shape[1]]
+        extent = [0, stim["img"].shape[1], 0, stim["img"].shape[0]]
 
     if not mask:
         ax.imshow(stim["img"], cmap="gray", vmin=vmin, vmax=vmax, extent=extent)
