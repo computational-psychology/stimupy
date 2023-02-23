@@ -34,3 +34,24 @@ html:
 launch_buttons:
   notebook_interface: "classic" # The interface interactive links will activate ["classic", "jupyterlab"]
   binderhub_url: "https://mybinder.org"
+
+sphinx:
+  extra_extensions:
+    - sphinx.ext.intersphinx
+  config:
+    intersphinx_mapping:
+        numpy [stable]:
+          - 'https://numpy.org/doc/stable/'
+          - null
+        matplotlib [stable]:
+          - 'https://matplotlib.org/stable/'
+          - null
+        pandas [latest?]:
+          - 'https://pandas.pydata.org/docs/'
+          - null
+        scipy [latest]:
+          - 'https://docs.scipy.org/doc/scipy/'
+          - null
+        pillow [latest]:
+          - 'https://pillow.readthedocs.io/en/latest/'
+          - null
