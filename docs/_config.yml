@@ -44,6 +44,10 @@ sphinx:
   config:
     #autosummary_generate: True      # autosummary generates module-level .rst files?
     add_module_names: False         # Don't include module names in autosummary tables
+    autodoc_default_options: {
+     "members": True,                # Include module/class members.
+     "member-order": 'bysource',     # Order members as in source file.
+    }
     intersphinx_mapping:
         numpy [stable]:
           - 'https://numpy.org/doc/stable/'
