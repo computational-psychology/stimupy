@@ -1,9 +1,8 @@
 import warnings
 
 import numpy as np
-from scipy.ndimage import rotate
 
-from stimupy.components.shapes import cross, triangle
+from stimupy.components.shapes import cross, triangle, rectangle
 from stimupy.utils import resolution
 
 __all__ = [
@@ -167,15 +166,18 @@ def cross_rectangles(
         raise ValueError("Target size is larger than cross thickness")
 
     # Calculate target placement for classical Benarys cross
+    theight, twidth = resolution.shape_from_visual_size_ppd(target_size, ppd)
+    cheight, cwidth = resolution.shape_from_visual_size_ppd(cross_thickness, ppd)
+    
     target_x = (
-        (visual_size[1] - cross_thickness) / 2.0 - target_size[1],
-        shape[1] / ppd[1] - np.round(target_size[1] * ppd[1]) / ppd[1],
+        (shape[1]/2 - cwidth/2 - twidth) / ppd[1],
+        (shape[1] - twidth) / ppd[1],
     )
-
+    
     target_y = (
-        (visual_size[0] - cross_thickness) / 2.0 - target_size[0],
-        (visual_size[0] - cross_thickness) / 2.0,
-    )
+        (shape[0]/2 - cheight/2 - theight) / ppd[0],
+        (shape[0]/2 - cheight/2) / ppd[0],
+        )
 
     stim = cross_generalized(
         visual_size=visual_size,
@@ -257,7 +259,7 @@ def cross_triangles(
 
     # Calculate target placement for classical Benarys cross
     target_x = (
-        (visual_size[1] - cross_thickness) / 2.0 - target_size[0],
+        (visual_size[1] - cross_thickness) / 2.0 - target_size[1],
         (visual_size[1] + cross_thickness) / 2.0,
     )
 
@@ -640,42 +642,47 @@ def add_targets(
             raise ValueError("Rightmost target does not fit in image.")
         if (theight + np.array(ty)).max() > img.shape[0]:
             raise ValueError("Lowest target does not fit in image.")
-
+            
         # Add targets:
         for i in range(len(target_x)):
             if target_type[i] == "r":
-                tpatch = np.ones([theight, twidth]) * intensity_target
+                target = rectangle(
+                    shape=[theight*2, twidth*2],
+                    ppd=ppd,
+                    rectangle_size=(theight/ppd, twidth/ppd),
+                    intensity_rectangle=intensity_target,
+                    intensity_background=0,
+                    rotation=target_orientation[i],
+                    )
 
             elif target_type[i] == "t":
-                tpatch = triangle(
-                    visual_size=target_size,
+                target = triangle(
+                    shape=[theight*2, twidth*2],
                     ppd=ppd,
-                    triangle_size=target_size,
-                    intensity_background=0.0,
+                    triangle_size=(theight/ppd, twidth/ppd),
+                    intensity_background=0,
                     intensity_triangle=intensity_target,
-                )["img"]
+                    rotation=target_orientation[i],
+                    include_corners=True,
+                )
 
             else:
                 raise Exception("You can only use r or t as shapes")
 
-            # Rotate, resize to original shape and clean
-            tpatch = rotate(tpatch, angle=target_orientation[i])
-            thresh = 0.7
-            tpatch[tpatch < intensity_target * thresh] = 0.0
-            tpatch[tpatch > intensity_target * thresh] = intensity_target
-            tpatch = tpatch[~np.all(tpatch == 0, axis=1)]  # Remove zero-rows
-            tpatch = tpatch[:, ~np.all(tpatch == 0, axis=0)]  # Remove zero-cols
-            mpatch = np.copy(tpatch)
-            mpatch[mpatch != 0] = i + 1
+            # Remove zero-rows and -columns
+            mpatch = target["shape_mask"][~np.all(target["shape_mask"] == 0, axis=1)]
+            mpatch = mpatch[:, ~np.all(mpatch == 0, axis=0)]
+            tpatch = target["img"][~np.all(target["img"] == 0, axis=1)]
+            tpatch = tpatch[:, ~np.all(tpatch == 0, axis=0)]
             theight_, twidth_ = tpatch.shape
 
             # Only change the target parts of the image:
-            ipatch = img[ty[i] : ty[i] + theight_, tx[i] : tx[i] + twidth_]
-            ipatch[tpatch == intensity_target] = 0.0
-            tpatch = tpatch + ipatch
-
-            img[ty[i] : ty[i] + theight_, tx[i] : tx[i] + twidth_] = tpatch
-            mask[ty[i] : ty[i] + theight_, tx[i] : tx[i] + twidth_] = mpatch
+            mlarge = np.zeros(img.shape)
+            mlarge[ty[i] : ty[i] + theight_, tx[i] : tx[i] + twidth_] = mpatch
+            tlarge = np.zeros(img.shape)
+            tlarge[ty[i] : ty[i] + theight_, tx[i] : tx[i] + twidth_] = tpatch
+            img = np.where(mlarge, tlarge, img)
+            mask = np.where(mlarge, i+1, mask)
 
         stim = {
             "target_size": target_size,

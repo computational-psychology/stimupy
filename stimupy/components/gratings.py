@@ -533,16 +533,10 @@ if __name__ == "__main__":
         "period": "ignore",
     }
 
-    # p6 = {
-    #     "visual_size": 4.0,
-    #     "ppd": 20,
-    #     "bar_width": 0.08,
-    # }
-    
     p6 = {
+        "visual_size": 4.0,
         "ppd": 20,
-        "bar_width": 0.1,
-        "n_bars": 9,
+        "bar_width": 0.08,
     }
 
     stims = {

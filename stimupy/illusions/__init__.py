@@ -102,7 +102,7 @@ def create_overview():
                                                           mask_size=(2, 2, 1)),
         "counterphase_induction": gratings.counterphase_induction(**p, frequency=1, target_size=4, target_phase_shift=90,),
         "grating_induction": gratings.induction(**p, frequency=0.5, target_width=0.5),
-        "grating_induction_blur": gratings.induction_blur(**p, frequency=0.5, target_width=0.5, target_blur=2),
+        "grating_induction_blur": gratings.induction_blur(**p, frequency=0.5, target_width=0.5, sigma=0.1),
         # Hermann´
         "hermann": hermanns.grid(**p, element_size=(1.5, 1.5, 0.2)),
         # Mondrians

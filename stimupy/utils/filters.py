@@ -1,9 +1,51 @@
 import numpy as np
+from scipy.signal import fftconvolve
+
 from stimupy.utils import resolution
+from stimupy.utils.pad import add_padding, remove_padding
 
 __all__ = [
+    "convolve",
     "bandpass",
 ]
+
+
+def convolve(
+    arr1,
+    arr2,
+    mode="same",
+    axes=None,
+    padding=False,
+    ):
+    """
+    Convolve two N-dimensional arrays using FFT
+
+    Parameters
+    ----------
+    arr1 : numpy.ndarray
+        Input array 1
+    arr2 : numpy.ndarray
+        Input array 2
+    mode : str {"full", "valid", "same"}, optional
+        String which indicates the size of the output. The default is "same".
+    axes : int or None (default), optional
+        Axes over which to convolve. The default is over all axes
+    padding : Bool
+        if True, pad array before convolving
+
+    Returns
+    -------
+    out : numpy.ndarray
+        Output array
+
+    """
+    c = int(arr1.shape[0] / 2)
+    if padding:
+        arr1 = add_padding(arr1, c, arr1.mean())
+    out = fftconvolve(arr1, arr2, mode, axes)
+    if padding:
+        out = remove_padding(out, c)
+    return out
 
 
 def bandpass(

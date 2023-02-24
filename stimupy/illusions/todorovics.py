@@ -152,6 +152,7 @@ def rectangle(
     ppd=None,
     shape=None,
     target_size=None,
+    target_position=None,
     covers_size=None,
     covers_offset=None,
     intensity_background=0.0,
@@ -172,6 +173,8 @@ def rectangle(
         shape [height, width] of grating, in pixels
     target_size : float or (float, float)
         size of the target in degrees of visual angle (height, width)
+    target_position : float or (float, float)
+        coordinates where to place the target
     covers_size : float or (float, float)
         size of covers in degrees of visual angle (height, width)
     covers_offset : float or (float, float)
@@ -228,7 +231,7 @@ def rectangle(
         visual_size=visual_size,
         ppd=ppd,
         target_size=target_size,
-        target_position=None,
+        target_position=target_position,
         covers_size=covers_size,
         covers_x=(x1, x2, x2, x1),
         covers_y=(y1, y2, y1, y2),

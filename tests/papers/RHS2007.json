@@ -96,20 +96,20 @@
         "mask": "71088893c90765cf981304950dd4e28c"
     },
     "benary_cross": {
-        "img": "2865af1cc6d35f7e36400703addd7f2a",
-        "mask": "21f78bb399a54811d173a02ad20ffc4b"
+        "img": "35c018affdc41947da3de38b86175a96",
+        "mask": "6920625ccfcc07d7e904b4b49188d39f"
     },
     "todorovic_benary1_2": {
         "img": "973b958be7468c55e2f86094d21690e8",
         "mask": "c2b7f645d607b64f3d74b5d64156af4b"
     },
     "todorovic_benary3_4": {
-        "img": "29a0fc49e9a8071c5499ee5cea2499f9",
-        "mask": "d25a9fadff76d272a3227c184b88743d"
+        "img": "02fb79c76a8ba63ef6d85a88037ecf8f",
+        "mask": "e93a68afad23c70d25d553c0b8884d63"
     },
     "todorovic_benary1_2_3_4": {
-        "img": "5796edd6dc6153a2a47f6b9a06ed698d",
-        "mask": "763e018b2d95aa97394c4d19214ac9f6"
+        "img": "89b7ff63872f65e426bf9632befcb26c",
+        "mask": "31f959a3d7295518406c02a01d5c4c95"
     },
     "bullseye_thin": {
         "img": "9ea6183253eecc16a7a82864844d852a",

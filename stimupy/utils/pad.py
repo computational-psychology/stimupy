@@ -4,6 +4,8 @@ import numpy as np
 from .utils import resolution
 
 __all__ = [
+    "add_padding",
+    "remove_padding",
     "pad_by_visual_size",
     "pad_to_visual_size",
     "pad_by_shape",
@@ -13,6 +15,53 @@ __all__ = [
     "pad_dict_by_shape",
     "pad_dict_to_shape",
 ]
+
+
+def remove_padding(arr, c):
+    """
+    Remove padding by c
+
+    Parameters
+    ----------
+    arr : numpy.ndarray
+        input array
+    c : int
+        padding amount.
+
+    Returns
+    -------
+    arr : numpy.ndarray
+        reduced array
+
+    """
+    array_shape = arr.shape
+    arr = arr[c:array_shape[0]-c, c:array_shape[1]-c]
+    return arr
+
+
+def add_padding(arr, c, val):
+    """
+    Remove padding by c
+
+    Parameters
+    ----------
+    arr : numpy.ndarray
+        input array
+    c : int
+        padding amount
+    val : float
+        background value
+
+    Returns
+    -------
+    arr : numpy.ndarray
+        padded array
+
+    """
+    h, w = arr.shape
+    new_arr = np.ones([h+c*2, w+c*2]) * val
+    new_arr[c:h+c, c:w+c] = arr
+    return new_arr
 
 
 def pad_by_visual_size(img, padding, ppd, pad_value=0.0):

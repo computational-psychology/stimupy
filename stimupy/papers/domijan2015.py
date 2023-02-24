@@ -559,7 +559,7 @@ def simultaneous_brightness_contrast(
         "visual_size": visual_size[0],
         "ppd": ppd,
         "target_size": (2.1 * visual_resize, 2.1 * visual_resize),
-        "target_position": (3.9 * visual_resize, 3.9 * visual_resize),
+        "target_position": (3.8 * visual_resize, 3.8 * visual_resize),
     }
 
     stim1 = illusions.sbcs.generalized(
@@ -749,6 +749,7 @@ def todorovic(visual_size=VSIZES["todorovic"], ppd=PPD, shape=SHAPES["todorovic"
         "visual_size": visual_size[0],
         "ppd": ppd,
         "target_size": 4.1 * visual_resize,
+        "target_position": 2.8 * visual_resize,
         "covers_size": 3.1 * visual_resize,
         "covers_offset": 2.0 * visual_resize,
     }

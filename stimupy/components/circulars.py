@@ -1,12 +1,11 @@
 import copy
 import itertools
-import warnings
 
 import numpy as np
-import scipy.special as sp
 
 from stimupy.components import image_base, mask_elements, resolve_grating_params
 from stimupy.utils import resolution
+from stimupy.utils.utils import apply_bessel
 
 __all__ = ["disc_and_rings", "disc", "ring", "annulus", "grating", "bessel"]
 
@@ -495,8 +494,8 @@ def bessel(
         origin=origin,
     )
 
-    img = base["radial"] * frequency * 2 * np.pi
-    img = sp.jv(order, img)
+    arr = base["radial"] * frequency * 2 * np.pi
+    img = apply_bessel(arr, order=0)
     img = (img - img.min()) / (img.max() - img.min())
     img = img * (intensity_rings[0] - intensity_rings[1]) + intensity_rings[1]
 
@@ -525,6 +524,7 @@ if __name__ == "__main__":
         "grating": grating(**p, frequency=2),
         "disc_and_rings": disc_and_rings(**p, radii=(1, 2, 3)),
         "ring": ring(**p, radii=(1, 2)),
+        "bessel": bessel(**p, frequency=2),
     }
 
     plot_stimuli(stims, mask=False)

@@ -1,5 +1,6 @@
-import numpy as np
 import copy
+import numpy as np
+import scipy.special as sp
 
 from stimupy.utils import resolution
 
@@ -7,6 +8,7 @@ __all__ = [
     "round_to_vals",
     "int_factorize",
     "get_function_argument_names",
+    "apply_bessel",
     "resize_array",
     "resize_dict",
     "stack_dicts",
@@ -92,6 +94,27 @@ def get_function_argument_names(func):
     """
     names = func.__code__.co_varnames[:func.__code__.co_argcount]
     return names
+
+
+def apply_bessel(arr, order=0):
+    """
+    Bessel function of the first kind of real order and complex argument.
+
+    Parameters
+    ----------
+    arr : np.ndarray
+        Input array
+    order : float
+        Order of the bessel function. Default is 0.
+
+    Returns
+    -------
+    out : np.ndarray
+        Output array
+
+    """
+    out = sp.jv(order, arr)
+    return out
 
 
 def resize_array(arr, factor):

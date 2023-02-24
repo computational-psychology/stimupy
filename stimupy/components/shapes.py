@@ -81,13 +81,15 @@ def rectangle(
     if rectangle_position is None:
         # If no position is given, place rectangle centrally
         rectangle_position = center_pos
-    if isinstance(rectangle_position, (float, int)):
-        rectangle_position = (rectangle_position, rectangle_position)
+
+    # Positions should always be positive
+    rectangle_position = np.array(rectangle_position).clip(min=0)
+    center_pos = np.array(center_pos).clip(min=0)
 
     # Determine shift
-    rect_pos = (np.array(rectangle_position) * base["ppd"]).astype(int)
-    center_pos = np.round(np.array(center_pos) * base["ppd"])
-    rect_shift = (rect_pos - center_pos).astype(int)
+    rect_pos = resolution.shape_from_visual_size_ppd(rectangle_position,  base["ppd"])
+    center_pos = resolution.shape_from_visual_size_ppd(center_pos,  base["ppd"])
+    rect_shift = (np.array(rect_pos) - np.array(center_pos)).astype(int)
 
     # Rotate coordinate systems
     x = np.round(np.cos(theta) * xx - np.sin(theta) * yy, 8)
