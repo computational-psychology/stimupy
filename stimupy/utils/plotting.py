@@ -94,7 +94,6 @@ def plot_stim(
         if isinstance(mask, str):
             mask_keys = [mask]
         else:
-            warnings.warn("mask_key not found - cannot plot mask")
             mask_keys = [key for key in stim.keys() if key.endswith("mask")]
 
         if len(mask_keys) == 0:
@@ -116,7 +115,7 @@ def plot_stim(
     
                 if np.unique(mask).size >= 20:
                     colormap = plt.cm.colors.ListedColormap(np.random.rand(mask.max() + 1, 3))
-                elif np.unique(mask).size > 10 and np.unique(mask).size < 20:
+                elif np.unique(mask).size >= 10 and np.unique(mask).size < 20:
                     colormap = plt.cm.tab20
                 else:
                     colormap = plt.cm.tab10
