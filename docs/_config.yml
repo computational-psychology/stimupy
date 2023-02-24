@@ -39,6 +39,7 @@ sphinx:
   extra_extensions:
     - sphinx.ext.intersphinx
     - sphinx.ext.autosummary        # generate summary tables of functions in modules
+    - sphinx.ext.napoleon           # recognize NumPy style docstrings
 
   config:
     autosummary_generate: True  # Actually use sphinx.ext.autosummary
