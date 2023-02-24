@@ -283,6 +283,7 @@ def grating_masked(
     )["img"]
 
     small_grating = pad_dict_to_shape(small_grating, large_grating["shape"])
+    window = window * (small_grating["pad_mask"]-1)
     img = np.where(window, small_grating["img"], large_grating["img"])
     mask = np.where(window, small_grating["target_mask"], 0)
 

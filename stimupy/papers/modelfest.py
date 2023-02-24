@@ -1144,7 +1144,6 @@ def Subthreshold22(ppd=PPD):
 
     stim1["img"] = stim1["img"] / 2 + stim2["img"] / 2
     stim1["grating_mask2"] = stim2["grating_mask"]
-    stim1["edges2"] = stim2["edges"]
     stim1["frequency2"] = stim2["frequency"]
     stim1["bar_width2"] = stim2["bar_width"]
     stim1["n_bars2"] = stim2["n_bars"]
@@ -1198,7 +1197,6 @@ def Subthreshold23(ppd=PPD):
 
     stim1["img"] = stim1["img"] / 2 + stim2["img"] / 2
     stim1["grating_mask2"] = stim2["grating_mask"]
-    stim1["edges2"] = stim2["edges"]
     stim1["frequency2"] = stim2["frequency"]
     stim1["bar_width2"] = stim2["bar_width"]
     stim1["n_bars2"] = stim2["n_bars"]
@@ -1252,7 +1250,6 @@ def Subthreshold24(ppd=PPD):
 
     stim1["img"] = stim1["img"] / 2 + stim2["img"] / 2
     stim1["grating_mask2"] = stim2["grating_mask"]
-    stim1["edges2"] = stim2["edges"]
     stim1["frequency2"] = stim2["frequency"]
     stim1["bar_width2"] = stim2["bar_width"]
     stim1["n_bars2"] = stim2["n_bars"]
@@ -1306,7 +1303,6 @@ def Subthreshold25(ppd=PPD):
 
     stim1["img"] = stim1["img"] / 2 + stim2["img"] / 2
     stim1["grating_mask2"] = stim2["grating_mask"]
-    stim1["edges2"] = stim2["edges"]
     stim1["frequency2"] = stim2["frequency"]
     stim1["bar_width2"] = stim2["bar_width"]
     stim1["n_bars2"] = stim2["n_bars"]
@@ -1747,7 +1743,6 @@ def GaborString34(ppd=PPD):
     stim1["visual_size"] = stimc["visual_size"]
     stim1["shape"] = stimc["shape"]
     stim1["phase_shift2"] = stim2["phase_shift"]
-    stim1["edges2"] = stim2["edges"]
     stim1 = roll_dict(stim1, (-1, -1), axes=(0, 1))
 
     v = 133
@@ -1976,7 +1971,6 @@ def Plaids38(ppd=PPD):
     stim["img"] = stim["img"] / 2 + stim2["img"] / 2
     stim["rotation"] = stim2["rotation"]
     stim["grating_mask2"] = stim2["grating_mask"]
-    stim["distances2"] = stim2["distances"]
 
     v = 149
     experimental_data = {
@@ -2029,7 +2023,6 @@ def Plaids39(ppd=PPD):
     stim["img"] = stim["img"] / 2 + stim2["img"] / 2
     stim["rotation"] = stim2["rotation"]
     stim["grating_mask2"] = stim2["grating_mask"]
-    stim["distances2"] = stim2["distances"]
 
     v = 153
     experimental_data = {

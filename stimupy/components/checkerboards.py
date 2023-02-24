@@ -1,5 +1,4 @@
 import warnings
-
 import numpy as np
 
 from stimupy.components.gratings import square_wave
@@ -7,8 +6,6 @@ from stimupy.components.gratings import square_wave
 __all__ = [
     "checkerboard",
 ]
-
-# TODO: Fix bug that changing rotation, affect check size!
 
 
 def checkerboard(
@@ -162,6 +159,5 @@ def checkerboard(
         "period": period,
         "rotation": rotation,
         "intensity_checks": intensity_checks,
-        "edges": (sw1["edges"], sw2["edges"]),
     }
     return stim
