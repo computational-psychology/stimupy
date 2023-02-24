@@ -42,7 +42,7 @@ sphinx:
     - sphinx.ext.napoleon           # recognize NumPy style docstrings
 
   config:
-    autosummary_generate: True  # Actually use sphinx.ext.autosummary
+    #autosummary_generate: True      # autosummary generates module-level .rst files?
     add_module_names: False         # Don't include module names in autosummary tables
     intersphinx_mapping:
         numpy [stable]:
