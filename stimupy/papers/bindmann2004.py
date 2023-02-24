@@ -31,7 +31,7 @@ import warnings
 import numpy as np
 
 from stimupy import illusions
-from stimupy.utils.contrast_conversions import adapt_intensity_range
+from stimupy.utils.contrast_conversions import adapt_intensity_range_dict
 from stimupy.utils.pad import pad_dict_by_visual_size
 
 __all__ = [
@@ -188,7 +188,7 @@ def bullseye_thin_gw45_gb31(ppd=PPD):
     stim1["original_range"] = (INTENSITY_BLACK, INTENSITY_WHITE)
 
     # Adapt range between 0 and 1
-    stim = adapt_intensity_range(stim1)
+    stim = adapt_intensity_range_dict(stim1)
     return stim
 
 
@@ -249,7 +249,7 @@ def bullseye_thin_gw45_gb38(ppd=PPD):
     stim1["original_range"] = (INTENSITY_BLACK, INTENSITY_WHITE)
 
     # Adapt range between 0 and 1
-    stim = adapt_intensity_range(stim1)
+    stim = adapt_intensity_range_dict(stim1)
     return stim
 
 
@@ -310,7 +310,7 @@ def bullseye_thin_gw45_gb45(ppd=PPD):
     stim1["original_range"] = (INTENSITY_BLACK, INTENSITY_WHITE)
 
     # Adapt range between 0 and 1
-    stim = adapt_intensity_range(stim1)
+    stim = adapt_intensity_range_dict(stim1)
     return stim
 
 
@@ -371,7 +371,7 @@ def bullseye_thin_gw45_gb52(ppd=PPD):
     stim1["original_range"] = (INTENSITY_BLACK, INTENSITY_WHITE)
 
     # Adapt range between 0 and 1
-    stim = adapt_intensity_range(stim1)
+    stim = adapt_intensity_range_dict(stim1)
     return stim
 
 
@@ -432,7 +432,7 @@ def bullseye_thin_gw45_gb59(ppd=PPD):
     stim1["original_range"] = (INTENSITY_BLACK, INTENSITY_WHITE)
 
     # Adapt range between 0 and 1
-    stim = adapt_intensity_range(stim1)
+    stim = adapt_intensity_range_dict(stim1)
     return stim
 
 
@@ -493,7 +493,7 @@ def bullseye_thin_gw60_gb46(ppd=PPD):
     stim1["original_range"] = (INTENSITY_BLACK, INTENSITY_WHITE)
 
     # Adapt range between 0 and 1
-    stim = adapt_intensity_range(stim1)
+    stim = adapt_intensity_range_dict(stim1)
     return stim
 
 
@@ -554,7 +554,7 @@ def bullseye_thin_gw60_gb53(ppd=PPD):
     stim1["original_range"] = (INTENSITY_BLACK, INTENSITY_WHITE)
 
     # Adapt range between 0 and 1
-    stim = adapt_intensity_range(stim1)
+    stim = adapt_intensity_range_dict(stim1)
     return stim
 
 
@@ -615,7 +615,7 @@ def bullseye_thin_gw60_gb60(ppd=PPD):
     stim1["original_range"] = (INTENSITY_BLACK, INTENSITY_WHITE)
 
     # Adapt range between 0 and 1
-    stim = adapt_intensity_range(stim1)
+    stim = adapt_intensity_range_dict(stim1)
     return stim
 
 
@@ -676,7 +676,7 @@ def bullseye_thin_gw60_gb67(ppd=PPD):
     stim1["original_range"] = (INTENSITY_BLACK, INTENSITY_WHITE)
 
     # Adapt range between 0 and 1
-    stim = adapt_intensity_range(stim1)
+    stim = adapt_intensity_range_dict(stim1)
     return stim
 
 
@@ -737,7 +737,7 @@ def bullseye_thin_gw60_gb74(ppd=PPD):
     stim1["original_range"] = (INTENSITY_BLACK, INTENSITY_WHITE)
 
     # Adapt range between 0 and 1
-    stim = adapt_intensity_range(stim1)
+    stim = adapt_intensity_range_dict(stim1)
     return stim
 
 
@@ -798,7 +798,7 @@ def bullseye_thin_gw75_gb61(ppd=PPD):
     stim1["original_range"] = (INTENSITY_BLACK, INTENSITY_WHITE)
 
     # Adapt range between 0 and 1
-    stim = adapt_intensity_range(stim1)
+    stim = adapt_intensity_range_dict(stim1)
     return stim
 
 
@@ -859,7 +859,7 @@ def bullseye_thin_gw75_gb68(ppd=PPD):
     stim1["original_range"] = (INTENSITY_BLACK, INTENSITY_WHITE)
 
     # Adapt range between 0 and 1
-    stim = adapt_intensity_range(stim1)
+    stim = adapt_intensity_range_dict(stim1)
     return stim
 
 
@@ -920,7 +920,7 @@ def bullseye_thin_gw75_gb75(ppd=PPD):
     stim1["original_range"] = (INTENSITY_BLACK, INTENSITY_WHITE)
 
     # Adapt range between 0 and 1
-    stim = adapt_intensity_range(stim1)
+    stim = adapt_intensity_range_dict(stim1)
     return stim
 
 
@@ -981,7 +981,7 @@ def bullseye_thin_gw75_gb82(ppd=PPD):
     stim1["original_range"] = (INTENSITY_BLACK, INTENSITY_WHITE)
 
     # Adapt range between 0 and 1
-    stim = adapt_intensity_range(stim1)
+    stim = adapt_intensity_range_dict(stim1)
     return stim
 
 
@@ -1042,7 +1042,7 @@ def bullseye_thin_gw75_gb89(ppd=PPD):
     stim1["original_range"] = (INTENSITY_BLACK, INTENSITY_WHITE)
 
     # Adapt range between 0 and 1
-    stim = adapt_intensity_range(stim1)
+    stim = adapt_intensity_range_dict(stim1)
     return stim
 
 
@@ -1103,7 +1103,7 @@ def bullseye_thick_gw45_gb31(ppd=PPD):
     stim1["original_range"] = (INTENSITY_BLACK, INTENSITY_WHITE)
 
     # Adapt range between 0 and 1
-    stim = adapt_intensity_range(stim1)
+    stim = adapt_intensity_range_dict(stim1)
     return stim
 
 
@@ -1164,7 +1164,7 @@ def bullseye_thick_gw45_gb38(ppd=PPD):
     stim1["original_range"] = (INTENSITY_BLACK, INTENSITY_WHITE)
 
     # Adapt range between 0 and 1
-    stim = adapt_intensity_range(stim1)
+    stim = adapt_intensity_range_dict(stim1)
     return stim
 
 
@@ -1225,7 +1225,7 @@ def bullseye_thick_gw45_gb45(ppd=PPD):
     stim1["original_range"] = (INTENSITY_BLACK, INTENSITY_WHITE)
 
     # Adapt range between 0 and 1
-    stim = adapt_intensity_range(stim1)
+    stim = adapt_intensity_range_dict(stim1)
     return stim
 
 
@@ -1286,7 +1286,7 @@ def bullseye_thick_gw45_gb52(ppd=PPD):
     stim1["original_range"] = (INTENSITY_BLACK, INTENSITY_WHITE)
 
     # Adapt range between 0 and 1
-    stim = adapt_intensity_range(stim1)
+    stim = adapt_intensity_range_dict(stim1)
     return stim
 
 
@@ -1347,7 +1347,7 @@ def bullseye_thick_gw45_gb59(ppd=PPD):
     stim1["original_range"] = (INTENSITY_BLACK, INTENSITY_WHITE)
 
     # Adapt range between 0 and 1
-    stim = adapt_intensity_range(stim1)
+    stim = adapt_intensity_range_dict(stim1)
     return stim
 
 
@@ -1408,7 +1408,7 @@ def bullseye_thick_gw60_gb46(ppd=PPD):
     stim1["original_range"] = (INTENSITY_BLACK, INTENSITY_WHITE)
 
     # Adapt range between 0 and 1
-    stim = adapt_intensity_range(stim1)
+    stim = adapt_intensity_range_dict(stim1)
     return stim
 
 
@@ -1469,7 +1469,7 @@ def bullseye_thick_gw60_gb53(ppd=PPD):
     stim1["original_range"] = (INTENSITY_BLACK, INTENSITY_WHITE)
 
     # Adapt range between 0 and 1
-    stim = adapt_intensity_range(stim1)
+    stim = adapt_intensity_range_dict(stim1)
     return stim
 
 
@@ -1530,7 +1530,7 @@ def bullseye_thick_gw60_gb60(ppd=PPD):
     stim1["original_range"] = (INTENSITY_BLACK, INTENSITY_WHITE)
 
     # Adapt range between 0 and 1
-    stim = adapt_intensity_range(stim1)
+    stim = adapt_intensity_range_dict(stim1)
     return stim
 
 
@@ -1591,7 +1591,7 @@ def bullseye_thick_gw60_gb67(ppd=PPD):
     stim1["original_range"] = (INTENSITY_BLACK, INTENSITY_WHITE)
 
     # Adapt range between 0 and 1
-    stim = adapt_intensity_range(stim1)
+    stim = adapt_intensity_range_dict(stim1)
     return stim
 
 
@@ -1652,7 +1652,7 @@ def bullseye_thick_gw60_gb74(ppd=PPD):
     stim1["original_range"] = (INTENSITY_BLACK, INTENSITY_WHITE)
 
     # Adapt range between 0 and 1
-    stim = adapt_intensity_range(stim1)
+    stim = adapt_intensity_range_dict(stim1)
     return stim
 
 
@@ -1713,7 +1713,7 @@ def bullseye_thick_gw75_gb61(ppd=PPD):
     stim1["original_range"] = (INTENSITY_BLACK, INTENSITY_WHITE)
 
     # Adapt range between 0 and 1
-    stim = adapt_intensity_range(stim1)
+    stim = adapt_intensity_range_dict(stim1)
     return stim
 
 
@@ -1774,7 +1774,7 @@ def bullseye_thick_gw75_gb68(ppd=PPD):
     stim1["original_range"] = (INTENSITY_BLACK, INTENSITY_WHITE)
 
     # Adapt range between 0 and 1
-    stim = adapt_intensity_range(stim1)
+    stim = adapt_intensity_range_dict(stim1)
     return stim
 
 
@@ -1835,7 +1835,7 @@ def bullseye_thick_gw75_gb75(ppd=PPD):
     stim1["original_range"] = (INTENSITY_BLACK, INTENSITY_WHITE)
 
     # Adapt range between 0 and 1
-    stim = adapt_intensity_range(stim1)
+    stim = adapt_intensity_range_dict(stim1)
     return stim
 
 
@@ -1896,7 +1896,7 @@ def bullseye_thick_gw75_gb82(ppd=PPD):
     stim1["original_range"] = (INTENSITY_BLACK, INTENSITY_WHITE)
 
     # Adapt range between 0 and 1
-    stim = adapt_intensity_range(stim1)
+    stim = adapt_intensity_range_dict(stim1)
     return stim
 
 
@@ -1957,7 +1957,7 @@ def bullseye_thick_gw75_gb89(ppd=PPD):
     stim1["original_range"] = (INTENSITY_BLACK, INTENSITY_WHITE)
 
     # Adapt range between 0 and 1
-    stim = adapt_intensity_range(stim1)
+    stim = adapt_intensity_range_dict(stim1)
     return stim
 
 

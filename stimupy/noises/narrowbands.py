@@ -82,9 +82,7 @@ def narrowband(
     narrow_noise = np.real(narrow_noise)
 
     # Adjust intensity range:
-    narrow_noise = adapt_intensity_range(
-        {"img": narrow_noise}, intensity_range[0], intensity_range[1]
-    )["img"]
+    narrow_noise = adapt_intensity_range(narrow_noise, intensity_range[0], intensity_range[1])
 
     stim = {
         "img": narrow_noise,
