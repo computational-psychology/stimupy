@@ -51,6 +51,8 @@ sphinx:
      "members": True,                # Include module/class members.
      "member-order": 'bysource',     # Order members as in source file.
     }
+    templates_path: ['_templates']  # Path(s) that contain templates, relative to this config
+    exclude_patterns: ['_build', '_templates']
     intersphinx_mapping:
         numpy [stable]:
           - 'https://numpy.org/doc/stable/'
