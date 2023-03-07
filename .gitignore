@@ -65,3 +65,5 @@ target/
 
 **/.ipynb_checkpoints/
 **/.ipynb_checkpoints/
+
+docs/reference/_api/
