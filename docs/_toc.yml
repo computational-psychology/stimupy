@@ -16,6 +16,9 @@ parts:
     - file: topic_guides/dimensions
     - file: topic_guides/gratings
     - file: topic_guides/visual_noise
+  - caption: Reference
+    chapters:
+    - file: reference/api.md
   - caption: Contributing
     chapters:
     - file: contributing/contribute
