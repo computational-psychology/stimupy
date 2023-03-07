@@ -55,3 +55,4 @@ sphinx:
         pillow [latest]:
           - 'https://pillow.readthedocs.io/en/latest/'
           - null
+    suppress_warnings: ["etoc.toctree"]
