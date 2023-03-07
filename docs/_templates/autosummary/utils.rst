@@ -21,7 +21,6 @@
 
    .. autosummary::
       :toctree: {{ name }}
-      :template: autosummary/{{ name }}.rst
       :recursive:
    {% for item in modules %}
       {{ item }}
@@ -36,7 +35,6 @@
    -------
 
    .. autosummary::
-      :toctree: {{ name }}
       :nosignatures:
    {% for item in classes %}
       {{ item }}
@@ -50,6 +48,7 @@
    ----------
 
    .. autosummary::
+      :toctree:
    {% for item in exceptions %}
       {{ item }}
    {%- endfor %}
@@ -66,5 +65,6 @@
    {% for item in functions %}
       {{ item }}
    {%- endfor %}
+
    {% endif %}
    {% endblock %}
