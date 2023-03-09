@@ -1,0 +1,23 @@
+name: Test
+
+on: push
+
+jobs:
+  test:
+    name: PY ${{ matrix.python_version }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python_version: ['3.11']
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        name: Install Python ${{ matrix.python_version }}
+        with:
+          python-version: ${{ matrix.python_version }}
+          architecture: x64
+
+      - run: pip install -r requirements.txt
+      - run: pip install .
+      - run: pytest
