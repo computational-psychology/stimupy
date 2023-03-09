@@ -38,7 +38,21 @@ launch_buttons:
 sphinx:
   extra_extensions:
     - sphinx.ext.intersphinx
+    - sphinx.ext.autosummary        # generate summary tables of functions in modules
+    - sphinx.ext.napoleon           # recognize NumPy style docstrings
+    - sphinx.ext.viewcode           # add links to source code in API reference
+
   config:
+    #autosummary_generate: True      # autosummary generates module-level .rst files?
+    add_module_names: False         # Don't include module names in autosummary tables
+    autosummary_imported_members: True
+    autosummary_ignore_module_all: False
+    autodoc_default_options: {
+     "members": True,                # Include module/class members.
+     "member-order": 'bysource',     # Order members as in source file.
+    }
+    templates_path: ['_templates']  # Path(s) that contain templates, relative to this config
+    exclude_patterns: ['_build', '_templates']
     intersphinx_mapping:
         numpy [stable]:
           - 'https://numpy.org/doc/stable/'
