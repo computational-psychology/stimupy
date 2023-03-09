@@ -4,3 +4,4 @@ jupyter-book
 sphinx_book_theme<1.0.0
 jupytext
 jupyterlab_myst
+ipywidgets
