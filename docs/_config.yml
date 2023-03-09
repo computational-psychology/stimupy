@@ -38,7 +38,11 @@ launch_buttons:
 sphinx:
   extra_extensions:
     - sphinx.ext.intersphinx
+    - sphinx.ext.autosummary        # generate summary tables of functions in modules
+
   config:
+    autosummary_generate: True  # Actually use sphinx.ext.autosummary
+    add_module_names: False         # Don't include module names in autosummary tables
     intersphinx_mapping:
         numpy [stable]:
           - 'https://numpy.org/doc/stable/'
