@@ -1,10 +1,8 @@
 import numpy as np
-import warnings
+# import warnings
 
-from stimupy.components import resolve_grating_params, image_base, draw_regions
+from stimupy.components import draw_sine_wave, draw_regions
 from stimupy.components.gaussians import gaussian
-from stimupy.utils import resolution
-from stimupy.utils.contrast_conversions import adapt_intensity_range
 from stimupy.utils.utils import round_to_vals
 
 __all__ = [
@@ -79,108 +77,34 @@ def sine_wave(
         raise ValueError("'sine_wave()' needs 3 non-None arguments for resolving from 'visual_size', "
                          "'ppd', 'shape', 'frequency', 'n_bars', 'bar_width'")
 
-    # Try to resolve resolution
-    try:
-        shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
-    except ValueError:
-        ppd = resolution.validate_ppd(ppd)
-        shape = resolution.validate_shape(shape)
-        visual_size = resolution.validate_visual_size(visual_size)
-
-    alpha = [np.abs(np.cos(np.deg2rad(rotation))), np.abs(np.sin(np.deg2rad(rotation)))]
-
-    if shape.width is not None:
-        length = np.round(alpha[0] * shape.width + alpha[1] * shape.height)
-    else:
-        length = None
-
-    if visual_size.width is not None:
-        visual_angle = alpha[0] * visual_size.width + alpha[1] * visual_size.height
-    else:
-        visual_angle = None
-
-    if ppd.horizontal is not None:
-        ppd_1D = ppd.horizontal
-    else:
-        ppd_1D = None
-    
-    if rotation%90 != 0 and round_phase_width:
-        round_phase_width = False
-        warnings.warn("Rounding phase width is turned off for oblique gratings")
-
-    # Resolve params
-    params = resolve_grating_params(
-        length=length,
-        visual_angle=visual_angle,
+    sw = draw_sine_wave(
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        frequency=frequency,
         n_phases=n_bars,
         phase_width=bar_width,
-        ppd=ppd_1D,
-        frequency=frequency,
         period=period,
+        rotation=rotation,
+        phase_shift=phase_shift,
+        intensities=intensity_bars,
+        origin=origin,
         round_phase_width=round_phase_width,
-    )
-    length = params["length"]
-    ppd_1D = params["ppd"]
-    visual_angle = params["visual_angle"]
-
-    # Determine size/shape of whole image
-    if None in shape:
-        shape = [length*alpha[1], length*alpha[0]]
-        if np.round(alpha[1], 5) == 0:
-            shape[0] = shape[1]
-        if np.round(alpha[0], 5) == 0:
-            shape[1] = shape[0]
-
-    if None in ppd:
-        ppd = (ppd_1D, ppd_1D)
-
-    if None in visual_size:
-        visual_size = resolution.visual_size_from_shape_ppd(shape=shape, ppd=ppd)
-
-    shape = resolution.validate_shape(shape)
-    visual_size = resolution.validate_visual_size(visual_size)
-    ppd = resolution.validate_ppd(ppd)
-    
-    # Set up coordinates
-    base = image_base(shape=shape, visual_size=visual_size, ppd=ppd, rotation=rotation, origin=origin)
-    distances = base["rotated"]
-    distances = np.round(distances, 6)
-
-    # Shift distances minimally to ensure proper behavior
-    if origin == "corner":
-        distances = adapt_intensity_range(distances, 1e-03, distances.max()-1e-03)
-    else:
-        distances = adapt_intensity_range(distances, distances.min()-1e-05, distances.max()-1e-05)
-
-    # Draw image
-    img = np.sin(params["frequency"] * 2 * np.pi * distances + np.deg2rad(phase_shift))
-    img = adapt_intensity_range(img, intensity_bars[0], intensity_bars[1])
-    
-    # Create mask
-    bar_width = params["phase_width"]
-    phase_shift_ = (phase_shift%360)/180 * bar_width
-    
-    if origin == "corner":
-        vals = np.arange(distances.min()+bar_width/2, distances.max()+bar_width*2, bar_width)
-    else:
-        vals = np.arange(distances.min(), distances.max()+bar_width*2, bar_width)
-
-    mask = round_to_vals(distances, np.round(vals-phase_shift_, 6))
-    for i, val in enumerate(np.unique(mask)):
-        mask = np.where(mask==val, i+1, mask)
+        base_type="rotated",
+        )
     
     # Create stimulus dict
     stim = {
-        "img": img,
-        "grating_mask": mask.astype(int),
-        "visual_size": visual_size,
-        "ppd": ppd,
-        "shape": shape,
+        "img": sw["img"],
+        "grating_mask": sw["mask"].astype(int),
+        "visual_size": sw["visual_size"],
+        "ppd": sw["ppd"],
+        "shape": sw["shape"],
         "rotation": rotation,
         "origin": origin,
-        "frequency": params["frequency"],
-        "bar_width": bar_width,
-        "n_bars": params["n_phases"],
+        "frequency": sw["frequency"],
+        "bar_width": sw["phase_width"],
+        "n_bars": sw["n_phases"],
         "period": period,
         "intensity_bars": intensity_bars,
         "phase_shift": phase_shift,

@@ -3,11 +3,21 @@ import itertools
 
 import numpy as np
 
-from stimupy.components import image_base, mask_elements, resolve_grating_params
+from stimupy.components import image_base, mask_elements, resolve_grating_params, draw_sine_wave
 from stimupy.utils import resolution
-from stimupy.utils.utils import apply_bessel
+from stimupy.utils.utils import apply_bessel, round_to_vals
 
-__all__ = ["disc_and_rings", "disc", "ring", "annulus", "grating", "bessel"]
+
+__all__ = [
+    "disc_and_rings",
+    "disc",
+    "ring",
+    "annulus",
+    "grating",
+    "bessel",
+    "sine_wave",
+    "square_wave",
+    ]
 
 
 def resolve_circular_params(
@@ -444,7 +454,7 @@ def grating(
     )
 
     # Assemble output
-    return {**stim, **params}
+    return {**stim, **stim_params}
 
 
 def bessel(
@@ -512,6 +522,149 @@ def bessel(
     return stim
 
 
+def sine_wave(
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    frequency=None,
+    n_rings=None,
+    ring_width=None,
+    intensity_rings=(1.0, 0.0),
+    intensity_background=0.5,
+    origin="mean",
+):
+    """Draw a circular sine-wave grating over the whole image
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    frequency : Number, or None (default)
+        spatial frequency of circular grating, in cycles per degree
+    n_rings : int, or None (default)
+        number of rings
+    ring_width : Number, or None (default)
+        width of a single ring, in degrees
+    intensities : Sequence[Number, ...]
+        intensity value for each ring, from inside to out, by default (1.0, 0.0).
+        If fewer intensities are passed than number of radii, cycles through intensities
+    intensity_background : float (optional)
+        intensity value of background, by default 0.5
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
+
+    Returns
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each ring (key: "ring_mask"),
+        and additional keys containing stimulus parameters
+    """
+    lst = [visual_size, ppd, shape, frequency, n_rings, ring_width]
+    if len([x for x in lst if x is not None]) < 3:
+        raise ValueError(
+            "'grating()' needs 3 non-None arguments for resolving from 'visual_size', "
+            "'ppd', 'shape', 'frequency', 'n_rings', 'ring_width'"
+        )
+
+    sw = draw_sine_wave(
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        frequency=frequency,
+        n_phases=n_rings,
+        phase_width=ring_width,
+        period="ignore",
+        rotation=0,
+        phase_shift=0,
+        intensities=intensity_rings,
+        origin=origin,
+        round_phase_width=False,
+        base_type="radial",
+        )
+    
+    # Create stimulus dict
+    stim = {
+        "img": sw["img"],
+        "ring_mask": sw["mask"].astype(int),
+        "visual_size": sw["visual_size"],
+        "ppd": sw["ppd"],
+        "shape": sw["shape"],
+        "origin": origin,
+        "frequency": sw["frequency"],
+        "frame_width": sw["phase_width"],
+        "n_frames": sw["n_phases"],
+        "intensity_rings": intensity_rings,
+        }
+    return stim
+
+
+def square_wave(
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    frequency=None,
+    n_rings=None,
+    ring_width=None,
+    intensity_rings=(1.0, 0.0),
+    intensity_background=0.5,
+    origin="mean",
+):
+    """Draw a circular square-wave grating over the whole image
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    frequency : Number, or None (default)
+        spatial frequency of circular grating, in cycles per degree
+    n_rings : int, or None (default)
+        number of rings
+    ring_width : Number, or None (default)
+        width of a single ring, in degrees
+    intensities : Sequence[Number, ...]
+        intensity value for each ring, from inside to out, by default (1.0, 0.0).
+        If fewer intensities are passed than number of radii, cycles through intensities
+    intensity_background : float (optional)
+        intensity value of background, by default 0.5
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
+
+    Returns
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each ring (key: "ring_mask"),
+        and additional keys containing stimulus parameters
+    """
+    stim = sine_wave(
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        frequency=frequency,
+        n_rings=n_rings,
+        ring_width=ring_width,
+        intensity_rings=intensity_rings,
+        origin=origin,
+        )
+
+    # Round sine-wave to create square wave
+    stim["img"] = round_to_vals(stim["img"], intensity_rings)
+    return stim
+
+
 if __name__ == "__main__":
     from stimupy.utils.plotting import plot_stimuli
 
@@ -524,7 +677,9 @@ if __name__ == "__main__":
         "grating": grating(**p, frequency=2),
         "disc_and_rings": disc_and_rings(**p, radii=(1, 2, 3)),
         "ring": ring(**p, radii=(1, 2)),
-        "bessel": bessel(**p, frequency=2),
+        "bessel": bessel(**p, frequency=0.5),
+        "sine_wave": sine_wave(**p, frequency=0.5),
+        "square_wave": square_wave(**p, frequency=0.5),
     }
 
     plot_stimuli(stims, mask=False)

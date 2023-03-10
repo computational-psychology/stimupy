@@ -1,11 +1,14 @@
 import numpy as np
 
-from stimupy.components import draw_regions, mask_elements, resolve_grating_params
+from stimupy.components import draw_regions, mask_elements, resolve_grating_params, draw_sine_wave
 from stimupy.utils import resolution
+from stimupy.utils.utils import round_to_vals
 
 __all__ = [
     "frames",
     "grating",
+    "sine_wave",
+    "square_wave",
 ]
 
 
@@ -220,12 +223,170 @@ def grating(
     }
 
 
+def sine_wave(
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    frequency=None,
+    n_frames=None,
+    frame_width=None,
+    period="ignore",
+    intensity_frames=(1.0, 0.0),
+    intensity_background=0.5,
+    origin="mean",
+):
+    """Draw a sine-wave using cityblock distances over the whole image
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    frequency : Number, or None (default)
+        spatial frequency of grating, in cycles per degree visual angle
+    n_frames : int, or None (default)
+        number of frames in the grating
+    frame_width : Number, or None (default)
+        width of a single frame, in degrees visual angle
+    period : "full", "half", "ignore" (default)
+        whether to ensure the grating only has "full" periods,
+        half "periods", or no guarantees ("ignore")
+    intensity_frames : Sequence[float, ...]
+        intensity value for each frame, by default (1.0, 0.0).
+        Can specify as many intensities as number of frame_widths;
+        If fewer intensities are passed than frame_widhts, cycles through intensities
+    intensity_background : float (optional)
+        intensity value of background, by default 0.5
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
+
+    Returns
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each frame (key: "frame_mask"),
+        and additional keys containing stimulus parameters
+    """
+    lst = [visual_size, ppd, shape, frequency, n_frames, frame_width]
+    if len([x for x in lst if x is not None]) < 3:
+        raise ValueError(
+            "'grating()' needs 3 non-None arguments for resolving from 'visual_size', "
+            "'ppd', 'shape', 'frequency', 'n_frames', 'frame_width'"
+        )
+
+    sw = draw_sine_wave(
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        frequency=frequency,
+        n_phases=n_frames,
+        phase_width=frame_width,
+        period=period,
+        rotation=0,
+        phase_shift=0,
+        intensities=intensity_frames,
+        origin=origin,
+        round_phase_width=False,
+        base_type="cityblock",
+        )
+    
+    # Create stimulus dict
+    stim = {
+        "img": sw["img"],
+        "frame_mask": sw["mask"].astype(int),
+        "visual_size": sw["visual_size"],
+        "ppd": sw["ppd"],
+        "shape": sw["shape"],
+        "origin": origin,
+        "frequency": sw["frequency"],
+        "frame_width": sw["phase_width"],
+        "n_frames": sw["n_phases"],
+        "period": period,
+        "intensity_frames": intensity_frames,
+        }
+    return stim
+
+
+def square_wave(
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    frequency=None,
+    n_frames=None,
+    frame_width=None,
+    period="ignore",
+    intensity_frames=(1.0, 0.0),
+    intensity_background=0.5,
+    origin="mean",
+):
+    """Draw a square-wave using cityblock distances over the whole image
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    frequency : Number, or None (default)
+        spatial frequency of grating, in cycles per degree visual angle
+    n_frames : int, or None (default)
+        number of frames in the grating
+    frame_width : Number, or None (default)
+        width of a single frame, in degrees visual angle
+    period : "full", "half", "ignore" (default)
+        whether to ensure the grating only has "full" periods,
+        half "periods", or no guarantees ("ignore")
+    intensity_frames : Sequence[float, ...]
+        intensity value for each frame, by default (1.0, 0.0).
+        Can specify as many intensities as number of frame_widths;
+        If fewer intensities are passed than frame_widhts, cycles through intensities
+    intensity_background : float (optional)
+        intensity value of background, by default 0.5
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
+
+    Returns
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each frame (key: "frame_mask"),
+        and additional keys containing stimulus parameters
+    """
+
+    stim = sine_wave(
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        frequency=frequency,
+        n_frames=n_frames,
+        frame_width=frame_width,
+        period=period,
+        intensity_frames=intensity_frames,
+        origin=origin,
+        )
+
+    # Round sine-wave to create square wave
+    stim["img"] = round_to_vals(stim["img"], intensity_frames)
+    return stim
+
+
 if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
 
     stims = {
         "frames": frames(visual_size=(8, 16), frame_radii=(1, 2, 3), ppd=32),
         "grating": grating(visual_size=(8, 16), ppd=32, frequency=1.0),
+        "sine_wave": sine_wave(visual_size=(8, 16), ppd=32, frequency=0.5),
+        "square_wave": square_wave(visual_size=(8, 16), ppd=32, frequency=0.5),
     }
 
     plot_stimuli(stims, mask=False, save=None)
