@@ -395,7 +395,7 @@ def grating(
         number of rings
     ring_width : Number, or None (default)
         width of a single ring, in degrees
-    intensities : Sequence[Number, ...]
+    intensity_rings : Sequence[Number, ...]
         intensity value for each ring, from inside to out, by default (1.0, 0.0).
         If fewer intensities are passed than number of radii, cycles through intensities
     intensity_background : float (optional)
@@ -529,7 +529,7 @@ def sine_wave(
     frequency=None,
     n_rings=None,
     ring_width=None,
-    intensity_rings=(1.0, 0.0),
+    intensity_rings=(0.0, 1.0),
     intensity_background=0.5,
     origin="mean",
 ):
@@ -549,9 +549,8 @@ def sine_wave(
         number of rings
     ring_width : Number, or None (default)
         width of a single ring, in degrees
-    intensities : Sequence[Number, ...]
-        intensity value for each ring, from inside to out, by default (1.0, 0.0).
-        If fewer intensities are passed than number of radii, cycles through intensities
+    intensity_rings : Sequence[float, float]
+        min and max intensity of sine-wave, by default (0.0, 1.0)
     intensity_background : float (optional)
         intensity value of background, by default 0.5
     origin : "corner", "mean" or "center"
@@ -612,7 +611,7 @@ def square_wave(
     frequency=None,
     n_rings=None,
     ring_width=None,
-    intensity_rings=(1.0, 0.0),
+    intensity_rings=(0.0, 1.0),
     intensity_background=0.5,
     origin="mean",
 ):
@@ -632,9 +631,8 @@ def square_wave(
         number of rings
     ring_width : Number, or None (default)
         width of a single ring, in degrees
-    intensities : Sequence[Number, ...]
-        intensity value for each ring, from inside to out, by default (1.0, 0.0).
-        If fewer intensities are passed than number of radii, cycles through intensities
+    intensity_rings : Sequence[float, float]
+        min and max intensity of square-wave, by default (0.0, 1.0)
     intensity_background : float (optional)
         intensity value of background, by default 0.5
     origin : "corner", "mean" or "center"

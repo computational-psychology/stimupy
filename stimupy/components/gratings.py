@@ -122,7 +122,7 @@ def square_wave(
     period="ignore",
     rotation=0,
     phase_shift=0,
-    intensity_bars=(1.0, 0.0),
+    intensity_bars=(0.0, 1.0),
     origin="corner",
     round_phase_width=True,
 ):
@@ -151,9 +151,7 @@ def square_wave(
     phase_shift : float
         phase shift of grating in degrees
     intensity_bars : Sequence[float, float]
-        min and max intensity of sine-wave, by default (1.0, 0.0)
-        Can specify as many intensities as n_bars;
-        If fewer intensities are passed than n_bars, cycles through intensities
+        min and max intensity of square-wave, by default (0.0, 1.0)
     origin : "corner", "mean" or "center"
         if "corner": set origin to upper left corner (default)
         if "mean": set origin to hypothetical image center
@@ -168,7 +166,7 @@ def square_wave(
         mask with integer index for each bar (key: "grating_mask"),
         and additional keys containing stimulus parameters
     """
-    intensity_bars = [intensity_bars[1], intensity_bars[0]]
+
     stim = sine_wave(
         visual_size=visual_size,
         ppd=ppd,

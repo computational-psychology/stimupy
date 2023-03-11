@@ -231,7 +231,7 @@ def sine_wave(
     n_frames=None,
     frame_width=None,
     period="ignore",
-    intensity_frames=(1.0, 0.0),
+    intensity_frames=(0.0, 1.0),
     intensity_background=0.5,
     origin="mean",
 ):
@@ -254,10 +254,8 @@ def sine_wave(
     period : "full", "half", "ignore" (default)
         whether to ensure the grating only has "full" periods,
         half "periods", or no guarantees ("ignore")
-    intensity_frames : Sequence[float, ...]
-        intensity value for each frame, by default (1.0, 0.0).
-        Can specify as many intensities as number of frame_widths;
-        If fewer intensities are passed than frame_widhts, cycles through intensities
+    intensity_frames : Sequence[float, float]
+        min and max intensity of sine-wave, by default (0.0, 1.0)
     intensity_background : float (optional)
         intensity value of background, by default 0.5
     origin : "corner", "mean" or "center"
@@ -320,7 +318,7 @@ def square_wave(
     n_frames=None,
     frame_width=None,
     period="ignore",
-    intensity_frames=(1.0, 0.0),
+    intensity_frames=(0.0, 1.0),
     intensity_background=0.5,
     origin="mean",
 ):
@@ -343,10 +341,8 @@ def square_wave(
     period : "full", "half", "ignore" (default)
         whether to ensure the grating only has "full" periods,
         half "periods", or no guarantees ("ignore")
-    intensity_frames : Sequence[float, ...]
-        intensity value for each frame, by default (1.0, 0.0).
-        Can specify as many intensities as number of frame_widths;
-        If fewer intensities are passed than frame_widhts, cycles through intensities
+    intensity_frames : Sequence[float, float]
+        min and max intensity of square-wave, by default (0.0, 1.0)
     intensity_background : float (optional)
         intensity value of background, by default 0.5
     origin : "corner", "mean" or "center"

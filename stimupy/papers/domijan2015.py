@@ -368,12 +368,12 @@ def grating(visual_size=VSIZES["grating"], ppd=PPD, shape=SHAPES["grating"]):
 
     stim1 = illusions.gratings.square_wave(
         **params,
-        intensity_bars=(v3, v1),
+        intensity_bars=(v1, v3),
         intensity_target=v2,
     )
     stim2 = illusions.gratings.square_wave(
         **params,
-        intensity_bars=(v1, v3),
+        intensity_bars=(v3, v1),
         intensity_target=v2,
     )
 
@@ -633,7 +633,7 @@ def white(visual_size=VSIZES["white"], ppd=PPD, pad=PAD, shape=SHAPES["white"]):
 
     stim = illusions.whites.white(
         **params,
-        intensity_bars=(v1, v3),
+        intensity_bars=(v3, v1),
         intensity_target=v2,
     )
 
@@ -1067,7 +1067,7 @@ def white_yazdanbakhsh(
 
     stim = illusions.whites.yazdanbakhsh(
         **params,
-        intensity_bars=(v1, v3),
+        intensity_bars=(v3, v1),
         intensity_target=v2,
         intensity_stripes=(v3, v1),
     )
@@ -1087,7 +1087,7 @@ def white_yazdanbakhsh(
         original_shape_no_padding=original_shape_np,
         original_visual_size_no_padding=VSIZES["white_yazdanbakhsh"],
         original_range=(1, 9),
-        intensity_range=(v1, v3),
+        intensity_range=(v3, v1),
         visual_size=resolution.visual_size_from_shape_ppd(stim["img"].shape, ppd),
         shape=stim["img"].shape,
     )
@@ -1149,7 +1149,7 @@ def white_anderson(
 
     stim = illusions.whites.anderson(
         **params,
-        intensity_bars=(v3, v1),
+        intensity_bars=(v1, v3),
         intensity_target=v2,
         intensity_stripes=(v1, v3),
     )
@@ -1226,7 +1226,7 @@ def white_howe(visual_size=VSIZES["white_howe"], ppd=PPD, shape=SHAPES["white_ho
 
     stim = illusions.whites.howe(
         **params,
-        intensity_bars=(v3, v1),
+        intensity_bars=(v1, v3),
         intensity_target=v2,
         intensity_stripes=(v1, v3),
     )
