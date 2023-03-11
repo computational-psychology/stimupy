@@ -668,6 +668,8 @@ def create_overview():
         "circular_grating": circulars.grating(**p, frequency=1),
         "circular_grating_v2": circulars.grating(**p, n_rings=8),
         "bessel": circulars.bessel(**p, frequency=1),
+        "circular_sine_wave": circulars.sine_wave(**p, frequency=0.5),
+        "circular_square_wave": circulars.square_wave(**p, frequency=0.5),
         # edges
         "step_edge": edges.step_edge(**p),
         "gaussian_edge": edges.gaussian_edge(**p, sigma=1.5),
@@ -675,6 +677,8 @@ def create_overview():
         # frames
         "frames": frames.frames(**p, frame_radii=(1, 2, 3)),
         "frames_grating": frames.grating(**p, n_frames=8),
+        "frames_sine_wave": frames.sine_wave(**p, frequency=0.5),
+        "frames_square_wave": frames.square_wave(**p, frequency=0.5),
         # gaussians
         "gaussian": gaussians.gaussian(**p, sigma=(1, 2)),
         # gratings
