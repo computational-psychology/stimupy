@@ -1,0 +1,14 @@
+repos:
+  - repo: https://github.com/psf/black
+    rev: stable
+    hooks:
+    - id: black
+      language_version: python3
+
+  - repo: https://github.com/PyCQA/flake8
+    rev: "6.0.0"
+    hooks:
+      - id: flake8
+        additional_dependencies: ["pep8-naming"]
+        # Ignore all format-related checks as Black takes care of those.
+        args: ["--ignore", "E2,W5,E501", "--select", "E,W,F,N",]
