@@ -1,158 +1,158 @@
 {
     "GaborPatch1": {
-        "img": "0d02dc37a45fdd024cb7633f8906c38f",
+        "img": "eff3afdc3041b94ebda013696cb1ad18",
         "mask": "64bc7346182fcd9f75cef4a09f9aebe7"
     },
     "GaborPatch2": {
-        "img": "4b399050ad720285f295830a20f6b6f4",
+        "img": "27b4a0d85368276858d30ef13eb8a67f",
         "mask": "41283017a06b01796d218cdf1a8501b9"
     },
     "GaborPatch3": {
-        "img": "bc3fdc1baf7112621566f2211411f1cc",
+        "img": "392ebac0f1a4a7506a1b0dfa7fb03088",
         "mask": "c860539fcee4c5b1bc570a035a2925aa"
     },
     "GaborPatch4": {
-        "img": "dfd196b58f3871092798c8bf9b7b8bf1",
+        "img": "c9345b1524d15d051d64996d25786162",
         "mask": "0495ff9cf0f6032f87e8babee49856a4"
     },
     "GaborPatch5": {
-        "img": "77af317adf9f4a338dc302315ef1b4a5",
+        "img": "2c429466dd323b631018d99472b80ea1",
         "mask": "855231e8920378bbef3ba0c086e7ab6d"
     },
     "GaborPatch6": {
-        "img": "2e13200e31897b4fba4b5fa50d2a15e9",
+        "img": "77507b9ad4ac98d2c551a0455dccd0bf",
         "mask": "ff2be655674ee1d2bc9c0484ad892214"
     },
     "GaborPatch7": {
-        "img": "3039e31ba0836cb60f67785c991daa71",
+        "img": "5050ca0643170d7a4ed5d640d08152c1",
         "mask": "1a98722b2191f05b395899dd03ed038f"
     },
     "GaborPatch8": {
-        "img": "06d5a55d9a0fcc6692cd64113d4bf266",
+        "img": "74e4462829ed74606b13e7be87fd398a",
         "mask": "36a49a767410db41c2ee07db0a2dbacc"
     },
     "GaborPatch9": {
-        "img": "6dd216e249d0591bc85734ea6f204f65",
+        "img": "ba912f938cf8b1e577808de265cd0eba",
         "mask": "85dbba9df43729d3cf78d77baa26e555"
     },
     "GaborPatch10": {
-        "img": "8fa87569b8968811f08b21cc9b92a5d6",
+        "img": "780504aae1adc8d0e95e67b41e7d3851",
         "mask": "a50425620bd5f5112ce976234370b4a6"
     },
     "GaborPatch11": {
-        "img": "fb9666997ecfaf86e25ce9996a79508f",
+        "img": "336bfdbd2ab5a571cca8ca37c404ffe3",
         "mask": "41283017a06b01796d218cdf1a8501b9"
     },
     "GaborPatch12": {
-        "img": "c573bfb66d65e34240ea9570681ed724",
+        "img": "8bdc34db39d433538aeb7a0d4aba5ad4",
         "mask": "0495ff9cf0f6032f87e8babee49856a4"
     },
     "GaborPatch13": {
-        "img": "d8ec9ed5a981c034832fcbf5eb579204",
+        "img": "174c15d0bda2ffbba5e3b96c988b74b0",
         "mask": "ff2be655674ee1d2bc9c0484ad892214"
     },
     "GaborPatch14": {
-        "img": "8e86c18972a6defbe4ad747889c580f0",
+        "img": "945373f85f0fa48822591118316daece",
         "mask": "36a49a767410db41c2ee07db0a2dbacc"
     },
     "ElongatedGabor15": {
-        "img": "59ee24110d6c724f99eec1e982f3ada5",
+        "img": "2d0d2a4eecce43cfd8f702c74e48482e",
         "mask": "0495ff9cf0f6032f87e8babee49856a4"
     },
     "ElongatedGabor16": {
-        "img": "f6c1427def123f777bddfc29e6c40514",
+        "img": "de2abca9f226a5698dfd44296d98a17d",
         "mask": "ff2be655674ee1d2bc9c0484ad892214"
     },
     "ElongatedGabor17": {
-        "img": "eb0be54016ee73284a4da087311761c6",
+        "img": "b0c98431692c7e61bf5b6a5905a4dc64",
         "mask": "36a49a767410db41c2ee07db0a2dbacc"
     },
     "Baguette18": {
-        "img": "89d72391be70357389cac13e43df5d59",
+        "img": "33546d46863c5f76f3d2b1e6e8bb0f17",
         "mask": "0495ff9cf0f6032f87e8babee49856a4"
     },
     "Baguette19": {
-        "img": "3b89c4d4f828e6508cd3fdd1760d7fb4",
+        "img": "7b236bc7947d12458d4c2292d4afeeb3",
         "mask": "0495ff9cf0f6032f87e8babee49856a4"
     },
     "Baguette20": {
-        "img": "47c85f70d391e15376e8037b4a151b7d",
+        "img": "7253276dec984bee02bc423a995ccf63",
         "mask": "0495ff9cf0f6032f87e8babee49856a4"
     },
     "Baguette21": {
-        "img": "e0f3844bd7841829d7982b20536dd3da",
+        "img": "7ba2cbfad68bcb52f7a16663dc978c6d",
         "mask": "0495ff9cf0f6032f87e8babee49856a4"
     },
     "Subthreshold22": {
-        "img": "ee6d32647a448387877402e833ac7068",
+        "img": "4543a4c82b0380fc91dae7707238ca82",
         "mask": "36d961dfaddc838fbeed1a31400a383e"
     },
     "Subthreshold23": {
-        "img": "53f0b3e1510d8a1ea1d77c4093f42609",
+        "img": "8121b603e7e055ca239f68eeb3464d9a",
         "mask": "36d961dfaddc838fbeed1a31400a383e"
     },
     "Subthreshold24": {
-        "img": "33e746225d2ffcf01f5a3b614f269293",
+        "img": "0591df6557ed1d9bcb665cfba7637d5c",
         "mask": "cd7c4d39feb5d78605eb20b20a2083ed"
     },
     "Subthreshold25": {
-        "img": "72010520f2a4ea67ece2f2e062415ecf",
+        "img": "105503dee78e8d25d2e8408050b4331b",
         "mask": "cd7c4d39feb5d78605eb20b20a2083ed"
     },
     "Gaussians26": {
-        "img": "03bbb5a7261c8641b4f900b1d1b0923a",
-        "mask": "59071590099d21dd439896592338bf95"
+        "img": "3f992578584388aba4c1df00f7ab7786",
+        "mask": "226d30afdf4a55e5e7a996bda69b1591"
     },
     "Gaussians27": {
-        "img": "d059e79823462c910dc12c9341e955ba",
-        "mask": "59071590099d21dd439896592338bf95"
+        "img": "ecd561f4607f4f883dab6ff75e868360",
+        "mask": "21a2910d9559bfebbc44782bb174bdb9"
     },
     "Gaussians28": {
-        "img": "4cf8102a654bef453c716ccff06df5ab",
-        "mask": "59071590099d21dd439896592338bf95"
+        "img": "17f09c4b156942f8278d9e5af89cc526",
+        "mask": "02e85921d2b484d0e5e1fdaf5d56a954"
     },
     "Gaussians29": {
-        "img": "72444c0e829d015a28af4b6c3c28bcfc",
-        "mask": "59071590099d21dd439896592338bf95"
+        "img": "9e0f80f3cb383cd108dae01f1c4a0ac7",
+        "mask": "6c27d03b113fd080e32ae0f0e3f35523"
     },
     "Edge30": {
-        "img": "8888f3dc43de6ff561501914a4bd6cf3",
+        "img": "29a97256041f16e870dd7067ff157f02",
         "mask": "9eeb417981c12ec22d3466eca100f136"
     },
     "Line31": {
-        "img": "cd585c714f8587493913aa157ab08540",
+        "img": "36abbe8ee050dacba6b61248c8a17ca3",
         "mask": "c5d29c96c5f29d534aa665474327bcf4"
     },
     "Dipole32": {
-        "img": "b869f421ff0bea683907c4e468d88242",
+        "img": "872b1e0227292396b044b3dc2d441c0f",
         "mask": "9502dbb1d34c7057c670891ff362e6f8"
     },
     "GaborString33": {
-        "img": "e247c105381eb0510db0a918351454b3",
+        "img": "e16a5c79b8cfecf9770e38320994f2a6",
         "mask": "3d58a94c19e76fcf63bc8c4c607357b7"
     },
     "GaborString34": {
-        "img": "6fb253c98150029d28db9653f1c35e57",
+        "img": "b582a7d9dc3ac19342571165dd00ab48",
         "mask": "e7b22741228ec6ad3c45614205610888"
     },
     "Noise35": {
-        "img": "ea1f4e0fcb7664891389b35f5540fe86",
+        "img": "1f133434ffff9ebbef26bdd19ce45d87",
         "mask": "59071590099d21dd439896592338bf95"
     },
     "Orientation36": {
-        "img": "34e6f3b2637a7df1c4d6afb11d013afe",
+        "img": "67520c70640f6c2c44920969db93a052",
         "mask": "c9c1bbb3a5315916b1ef3c594bcfe06e"
     },
     "Orientation37": {
-        "img": "e11936fc6f86a8ab78bf8a7fbef6516a",
+        "img": "f0d54b9574a4a0c4f0740175648374ad",
         "mask": "e848b99e20b6da7cfb8b531c1ea4c6b8"
     },
     "Plaids38": {
-        "img": "4379d50cbf9eeafdb72eb49ab478223b",
+        "img": "62c347c3421c7246ec198851b5683919",
         "mask": "b246f947d8ccd325bcbf241842a91f7a"
     },
     "Plaids39": {
-        "img": "b67cf95d24bb5abafcb6362d2f205e79",
+        "img": "f4bf3f774d70595c9f2c15ad7169843c",
         "mask": "53afc31b5cb3ecfb7e57f1ccebb66e1a"
     },
     "Disk40": {
@@ -160,15 +160,15 @@
         "mask": "d774d1e22f9c1e5606e86cfad05391ed"
     },
     "Bessel41": {
-        "img": "908a1444191241ff50e2d7e19b2f704a",
-        "mask": "7dea362b3fac8e00956a4952a3d4f474"
+        "img": "62a4b2c5a4f62b016ae5fa64e46e5773",
+        "mask": "59071590099d21dd439896592338bf95"
     },
     "Checkerboard42": {
-        "img": "653795317b1afb5d5906a14a449a7b70",
+        "img": "fed398064a023aa1fdd025c3ff041e92",
         "mask": "a53777f6dcc9e06833fd60492291f2b0"
     },
     "NaturalScene43": {
-        "img": "529d6172a7ca35d0c2a2508f3f133408",
+        "img": "e5f17e215eb4c0a44e0996c5c2f5ec4b",
         "mask": "59071590099d21dd439896592338bf95"
     }
 }
