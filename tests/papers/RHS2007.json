@@ -52,11 +52,7 @@
         "mask": "99d7f9eef441d747393a87d23f32c17e"
     },
     "grating_induction": {
-<<<<<<< HEAD
-        "img": "cece83712b6e394d906a8d91051355a4",
-=======
-        "img": "dcc7759e70cacaf4d3a90d9f54f61e16",
->>>>>>> a5203fe9c6aa03c15510f888960e120351f720f8
+        "img": "816b6d5b224375480e5b23261aa6b919",
         "mask": "7f2d12554fdf1412cad55402f9e2a1b5"
     },
     "sbc_large": {
