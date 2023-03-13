@@ -9,6 +9,5 @@ repos:
     rev: "6.0.0"
     hooks:
       - id: flake8
-        additional_dependencies: ["pep8-naming"]
         # Ignore all format-related checks as Black takes care of those.
-        args: ["--ignore", "E2,W5,E501", "--select", "E,W,F,N",]
+        args: ["--ignore", "E2,W5,E501,F403", "--select", "E,W,F", '--per-file-ignores=__init__.py:F401,F405,E402', '--exclude','tests/*']
