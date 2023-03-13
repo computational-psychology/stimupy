@@ -203,7 +203,7 @@ def disc_and_rings(
     # Try to resolve resolution;
     try:
         shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
-    except ValueError:
+    except resolution.TooManyUnknownsError:
         # Check visual_size
         visual_size = resolution.validate_visual_size(visual_size)
 

@@ -139,7 +139,6 @@ def gen_all(ppd=PPD, skip=False):
 
 
 def resolve(shape, visual_size, ppd, original_visual_size):
-
     # Put in canonical form
     shape = resolution.validate_shape(shape)
     visual_size = resolution.validate_visual_size(visual_size)

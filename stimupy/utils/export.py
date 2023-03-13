@@ -31,7 +31,7 @@ def arrs_to_checksum(stim, keys=["img", "mask"]):
         keys = [keys,]
 
     for key in keys:
-        stim[key] = md5(np.ascontiguousarray(stim[key])).hexdigest()
+        stim[key] = md5(np.ascontiguousarray(stim[key].round(8))).hexdigest()
 
     return stim
 
