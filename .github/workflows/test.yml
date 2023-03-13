@@ -18,6 +18,11 @@ jobs:
           python-version: ${{ matrix.python_version }}
           architecture: x64
 
-      - run: pip install -r requirements.txt
-      - run: pip install .
-      - run: pytest
+      - name: Install nox
+        run: pip install nox
+      - name: Install (testing) requirements
+        run: pip install -r requirements.txt
+      - name: Install stimupy to be tested
+        run: pip install .
+      - name: Run tests for $ {{ matrix.python_version }} through nox
+        run: nox --non-interactive --error-on-missing-interpreter --session "tests-${{ matrix.python_version }}" -- --full-trace
