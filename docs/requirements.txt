@@ -1,7 +1,4 @@
-sphinx<6>4
-pydata-sphinx-theme<0.9
-jupyter-book
-sphinx_book_theme<1.0.0
+jupyter-book==0.14
 jupytext
 jupyterlab_myst
 ipywidgets
