@@ -1,5 +1,7 @@
 # Stimupy
 
+[![Tests](https://github.com/computational-psychology/stimupy/actions/workflows/test.yml/badge.svg)](https://github.com/computational-psychology/stimupy/actions/workflows/test.yml) [![](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+
 Contains submodules for
 - drawing basic visual stimulus components ([components](stimupy/components/))
 - creating different (brightness) illusions ([illusions](stimupy/illusions/))
