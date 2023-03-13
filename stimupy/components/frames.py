@@ -3,6 +3,8 @@ import numpy as np
 from stimupy.components import draw_regions, mask_elements, resolve_grating_params, draw_sine_wave
 from stimupy.utils import resolution
 from stimupy.utils.utils import round_to_vals
+from stimupy.components.shapes import rectangle
+
 
 __all__ = [
     "frames",
@@ -230,10 +232,12 @@ def sine_wave(
     frequency=None,
     n_frames=None,
     frame_width=None,
+    phase_shift=0,
     period="ignore",
     intensity_frames=(0.0, 1.0),
     intensity_background=0.5,
     origin="mean",
+    clip=False,
 ):
     """Draw a sine-wave using cityblock distances over the whole image
 
@@ -251,6 +255,8 @@ def sine_wave(
         number of frames in the grating
     frame_width : Number, or None (default)
         width of a single frame, in degrees visual angle
+    phase_shift : float
+        phase shift of grating in degrees
     period : "full", "half", "ignore" (default)
         whether to ensure the grating only has "full" periods,
         half "periods", or no guarantees ("ignore")
@@ -262,6 +268,8 @@ def sine_wave(
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)
         if "center": set origin to real center (closest existing value to mean)
+    clip : Bool
+        if True, clip stimulus to image size (default: False)
 
     Returns
     ----------
@@ -286,12 +294,31 @@ def sine_wave(
         phase_width=frame_width,
         period=period,
         rotation=0,
-        phase_shift=0,
+        phase_shift=phase_shift,
         intensities=intensity_frames,
         origin=origin,
         round_phase_width=False,
         base_type="cityblock",
         )
+
+    if clip:
+        if origin == "corner":
+            rsize = min(sw["visual_size"]) / 2
+            rect = rectangle(
+                visual_size=sw["visual_size"],
+                ppd=sw["ppd"],
+                rectangle_size=rsize,
+                rectangle_position=(0, 0),
+                )
+        else:
+            rsize = min(sw["visual_size"])
+            rect = rectangle(
+                visual_size=sw["visual_size"],
+                ppd=sw["ppd"],
+                rectangle_size=rsize,
+                )
+        sw["img"] = np.where(rect["shape_mask"], sw["img"], intensity_background)
+        sw["mask"] = np.where(rect["shape_mask"], sw["mask"], 0)
     
     # Create stimulus dict
     stim = {
@@ -317,10 +344,12 @@ def square_wave(
     frequency=None,
     n_frames=None,
     frame_width=None,
+    phase_shift=0,
     period="ignore",
     intensity_frames=(0.0, 1.0),
     intensity_background=0.5,
     origin="mean",
+    clip=False,
 ):
     """Draw a square-wave using cityblock distances over the whole image
 
@@ -338,6 +367,8 @@ def square_wave(
         number of frames in the grating
     frame_width : Number, or None (default)
         width of a single frame, in degrees visual angle
+    phase_shift : float
+        phase shift of grating in degrees
     period : "full", "half", "ignore" (default)
         whether to ensure the grating only has "full" periods,
         half "periods", or no guarantees ("ignore")
@@ -349,6 +380,8 @@ def square_wave(
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)
         if "center": set origin to real center (closest existing value to mean)
+    clip : Bool
+        if True, clip stimulus to image size (default: False)
 
     Returns
     ----------
@@ -365,13 +398,34 @@ def square_wave(
         frequency=frequency,
         n_frames=n_frames,
         frame_width=frame_width,
+        phase_shift=phase_shift,
         period=period,
         intensity_frames=intensity_frames,
         origin=origin,
+        clip=False,
         )
 
     # Round sine-wave to create square wave
     stim["img"] = round_to_vals(stim["img"], intensity_frames)
+    
+    if clip:
+        if origin == "corner":
+            rsize = min(stim["visual_size"]) / 2
+            rect = rectangle(
+                visual_size=stim["visual_size"],
+                ppd=stim["ppd"],
+                rectangle_size=rsize,
+                rectangle_position=(0, 0),
+                )
+        else:
+            rsize = min(stim["visual_size"])
+            rect = rectangle(
+                visual_size=stim["visual_size"],
+                ppd=stim["ppd"],
+                rectangle_size=rsize,
+                )
+        stim["img"] = np.where(rect["shape_mask"], stim["img"], intensity_background)
+        stim["frame_mask"] = np.where(rect["shape_mask"], stim["frame_mask"], 0)
     return stim
 
 

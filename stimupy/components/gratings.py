@@ -412,8 +412,8 @@ if __name__ == "__main__":
     from stimupy.utils.plotting import plot_stimuli
 
     rotation = 90
-    origin = "corner"
-    phase_shift = 20
+    origin = "center"
+    phase_shift = 30
 
     p1 = {
         "visual_size": (10, 5),
@@ -480,3 +480,4 @@ if __name__ == "__main__":
         "plaid": plaid(p3, p4, sigma=4.0),
     }
     plot_stimuli(stims, mask=False)
+    plot_stimuli(stims, mask=True)

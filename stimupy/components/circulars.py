@@ -529,9 +529,12 @@ def sine_wave(
     frequency=None,
     n_rings=None,
     ring_width=None,
+    phase_shift=0,
+    period="ignore",
     intensity_rings=(0.0, 1.0),
     intensity_background=0.5,
     origin="mean",
+    clip=False,
 ):
     """Draw a circular sine-wave grating over the whole image
 
@@ -549,6 +552,11 @@ def sine_wave(
         number of rings
     ring_width : Number, or None (default)
         width of a single ring, in degrees
+    phase_shift : float
+        phase shift of grating in degrees
+    period : "full", "half", "ignore" (default)
+        whether to ensure the grating only has "full" periods,
+        half "periods", or no guarantees ("ignore")
     intensity_rings : Sequence[float, float]
         min and max intensity of sine-wave, by default (0.0, 1.0)
     intensity_background : float (optional)
@@ -557,6 +565,8 @@ def sine_wave(
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)
         if "center": set origin to real center (closest existing value to mean)
+    clip : Bool
+        if True, clip stimulus to image size (default: False)
 
     Returns
     ----------
@@ -579,14 +589,25 @@ def sine_wave(
         frequency=frequency,
         n_phases=n_rings,
         phase_width=ring_width,
-        period="ignore",
+        period=period,
         rotation=0,
-        phase_shift=0,
+        phase_shift=phase_shift,
         intensities=intensity_rings,
         origin=origin,
         round_phase_width=False,
         base_type="radial",
         )
+    
+    if clip:
+        csize = min(sw["visual_size"]) / 2.
+        circle = disc(
+            visual_size=sw["visual_size"],
+            ppd=sw["ppd"],
+            radius=csize,
+            origin=origin,
+            )
+        sw["img"] = np.where(circle["ring_mask"], sw["img"], intensity_background)
+        sw["mask"] = np.where(circle["ring_mask"], sw["mask"], 0)
     
     # Create stimulus dict
     stim = {
@@ -611,9 +632,12 @@ def square_wave(
     frequency=None,
     n_rings=None,
     ring_width=None,
+    phase_shift=0,
+    period="ignore",
     intensity_rings=(0.0, 1.0),
     intensity_background=0.5,
     origin="mean",
+    clip=False,
 ):
     """Draw a circular square-wave grating over the whole image
 
@@ -631,6 +655,11 @@ def square_wave(
         number of rings
     ring_width : Number, or None (default)
         width of a single ring, in degrees
+    phase_shift : float
+        phase shift of grating in degrees
+    period : "full", "half", "ignore" (default)
+        whether to ensure the grating only has "full" periods,
+        half "periods", or no guarantees ("ignore")
     intensity_rings : Sequence[float, float]
         min and max intensity of square-wave, by default (0.0, 1.0)
     intensity_background : float (optional)
@@ -639,6 +668,8 @@ def square_wave(
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)
         if "center": set origin to real center (closest existing value to mean)
+    clip : Bool
+        if True, clip stimulus to image size (default: False)
 
     Returns
     ----------
@@ -654,12 +685,26 @@ def square_wave(
         frequency=frequency,
         n_rings=n_rings,
         ring_width=ring_width,
+        phase_shift=phase_shift,
+        period=period,
         intensity_rings=intensity_rings,
         origin=origin,
+        clip=False,
         )
 
     # Round sine-wave to create square wave
     stim["img"] = round_to_vals(stim["img"], intensity_rings)
+    
+    if clip:
+        csize = min(stim["visual_size"]) / 2.
+        circle = disc(
+            visual_size=stim["visual_size"],
+            ppd=stim["ppd"],
+            radius=csize,
+            origin=origin,
+            )
+        stim["img"] = np.where(circle["ring_mask"], stim["img"], intensity_background)
+        stim["ring_mask"] = np.where(circle["ring_mask"], stim["ring_mask"], 0).astype(int)
     return stim
 
 
@@ -672,7 +717,7 @@ if __name__ == "__main__":
     }
 
     stims = {
-        "grating": grating(**p, frequency=2),
+        "grating": grating(**p, frequency=0.5),
         "disc_and_rings": disc_and_rings(**p, radii=(1, 2, 3)),
         "ring": ring(**p, radii=(1, 2)),
         "bessel": bessel(**p, frequency=0.5),
@@ -681,3 +726,4 @@ if __name__ == "__main__":
     }
 
     plot_stimuli(stims, mask=False)
+    plot_stimuli(stims, mask=True)

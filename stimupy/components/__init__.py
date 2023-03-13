@@ -590,14 +590,18 @@ def draw_sine_wave(
     img = adapt_intensity_range(img, intensities[0], intensities[1])
     
     # Create mask
-    phase_shift_ = (phase_shift%360)/180 * phase_width
-    
-    if origin == "corner":
+    if origin == "corner" or base_type=="radial":
         vals = np.arange(distances.min()+phase_width/2, distances.max()+phase_width*2, phase_width)
     else:
-        vals = np.arange(distances.min(), distances.max()+phase_width*2, phase_width)
+        dmin = distances.min()
+        dmax = distances.max()+phase_width*2
+        vals1 = np.arange(0+phase_width/2, dmax, phase_width)
+        vals2 = -np.arange(-phase_width/2, -dmin+phase_width, phase_width)
+        vals = np.unique(np.append(vals2[::-1], vals1))
 
-    mask = round_to_vals(distances, np.round(vals-phase_shift_, 6))
+    phase_shift_ = (phase_shift%360)/180 * phase_width
+    mask = round_to_vals(distances-distances.min(), np.round(vals-phase_shift_, 6)-distances.min())
+    
     for i, val in enumerate(np.unique(mask)):
         mask = np.where(mask==val, i+1, mask)
     
