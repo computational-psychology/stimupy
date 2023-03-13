@@ -7,10 +7,11 @@ on:
 
 jobs:
   test:
-    name: PY ${{ matrix.python_version }}
-    runs-on: ubuntu-latest
+    name: ${{ matrix.os}} / ${{ matrix.python_version }}
+    runs-on: ${{ matrix.os }}-latest
     strategy:
       matrix:
+        os: [Ubuntu, Windows, macOS]
         python_version: ['3.8', '3.9', '3.10', '3.11']
     steps:
       - uses: actions/checkout@v3
