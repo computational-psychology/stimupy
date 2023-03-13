@@ -1,6 +1,5 @@
 import copy
 import itertools
-import warnings
 
 import numpy as np
 import scipy.special as sp
@@ -196,7 +195,7 @@ def disc_and_rings(
     # Try to resolve resolution;
     try:
         shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
-    except ValueError:
+    except resolution.TooManyUnknownsError:
         # Check visual_size
         visual_size = resolution.validate_visual_size(visual_size)
 
@@ -413,7 +412,7 @@ def grating(
     # Resolve sizes
     try:
         shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
-    except:
+    except resolution.TooManyUnknownsError:
         pass
 
     # Resolve grating

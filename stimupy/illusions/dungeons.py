@@ -122,11 +122,10 @@ def resolve_dungeon_params(
     n_cells=None,
     cell_size=None,
 ):
-
     # Try to resolve resolution
     try:
         shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
-    except ValueError:
+    except resolution.TooManyUnknownsError:
         ppd = resolution.validate_ppd(ppd)
         shape = resolution.validate_shape(shape)
         visual_size = resolution.validate_visual_size(visual_size)
@@ -157,7 +156,6 @@ def resolve_cells_1d(
     n_cells=None,
     cell_size=None,
 ):
-
     # Try to resolve number and size of cells
     if cell_size is not None:
         cells_pd = 1 / cell_size / 2

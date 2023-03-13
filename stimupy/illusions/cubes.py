@@ -149,7 +149,6 @@ def cube(
     intensity_grid=1.0,
     intensity_target=0.5,
 ):
-
     """
     Cube illusion (Agostini & Galmonte, 2002)
 

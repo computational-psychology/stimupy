@@ -23,7 +23,6 @@ def plot_stim(
     vmax=1,
     save=None,
 ):
-
     single_plot = False
     if ax is None:
         ax = plt.gca()
@@ -94,7 +93,6 @@ def plot_stimuli(
     vmax=1,
     save=None,
 ):
-
     # Plot each stimulus+mask
     n_stim = int(np.ceil(np.sqrt(len(stims))))
     F = plt.figure(figsize=(n_stim * 3, n_stim * 3))

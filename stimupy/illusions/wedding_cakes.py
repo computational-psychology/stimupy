@@ -104,7 +104,7 @@ def wedding_cake(
         )
 
         array_t1 = np.zeros(array3.shape)
-        for (ty, tx) in target_indices1:
+        for ty, tx in target_indices1:
             arr1 = np.copy(array1)
             arr2 = np.copy(array2)
             arr1[arr1 != ty + 2] = 0
@@ -127,7 +127,7 @@ def wedding_cake(
         )
 
         array_t2 = np.zeros(array3.shape)
-        for (ty, tx) in target_indices2:
+        for ty, tx in target_indices2:
             arr1 = np.copy(array1)
             arr2 = np.copy(array2)
             arr1[arr1 != ty + 2] = 0

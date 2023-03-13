@@ -54,7 +54,7 @@ def test_valid_visual_size(visual_size, expected):
 @pytest.mark.parametrize(
     "visual_size, exception",
     [
-        ((), ValueError),
+        ((), TypeError),
         ("bla", ValueError),
         ((32, 32, 32), TypeError),
         ({32, 32}, TypeError),
@@ -94,7 +94,7 @@ def test_valid_shape(shape, expected):
 @pytest.mark.parametrize(
     "shape, exception",
     [
-        ((), ValueError),
+        ((), TypeError),
         ("bla", ValueError),
         ((32, 32, 32), TypeError),
         ({32, 32}, TypeError),
@@ -134,7 +134,7 @@ def test_valid_ppd(ppd, expected):
 @pytest.mark.parametrize(
     "ppd, exception",
     [
-        ((), ValueError),
+        ((), TypeError),
         ("bla", ValueError),
         ((32, 32, 32), TypeError),
         ({32, 32}, TypeError),

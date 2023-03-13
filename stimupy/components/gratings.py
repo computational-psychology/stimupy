@@ -195,7 +195,7 @@ def square_wave(
     # Try to resolve resolution
     try:
         shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
-    except ValueError:
+    except resolution.TooManyUnknownsError:
         ppd = resolution.validate_ppd(ppd)
         shape = resolution.validate_shape(shape)
         visual_size = resolution.validate_visual_size(visual_size)
@@ -346,7 +346,7 @@ def sine_wave(
     # Try to resolve resolution
     try:
         shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
-    except ValueError:
+    except resolution.TooManyUnknownsError:
         ppd = resolution.validate_ppd(ppd)
         shape = resolution.validate_shape(shape)
         visual_size = resolution.validate_visual_size(visual_size)
@@ -578,7 +578,7 @@ def staircase(
     # Try to resolve resolution
     try:
         shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
-    except ValueError:
+    except resolution.TooManyUnknownsError:
         ppd = resolution.validate_ppd(ppd)
         shape = resolution.validate_shape(shape)
         visual_size = resolution.validate_visual_size(visual_size)

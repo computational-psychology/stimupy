@@ -1,0 +1,19 @@
+repos:
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.3.1
+    hooks:
+    -   id: pyupgrade
+
+  - repo: https://github.com/psf/black
+    rev: stable
+    hooks:
+    - id: black
+      additional_dependencies: [".[jupyter]"]
+      language_version: python3
+
+  - repo: https://github.com/PyCQA/flake8
+    rev: "6.0.0"
+    hooks:
+      - id: flake8
+        # Ignore all format-related checks as Black takes care of those.
+        args: ["--ignore", "E2,W5,E501,F403", "--select", "E,W,F", '--per-file-ignores=__init__.py:F401,F405,E402', '--exclude','tests/*']
