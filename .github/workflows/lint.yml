@@ -1,0 +1,20 @@
+name: Linting, Formatting
+
+on: 
+  push:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        name: Install Python
+        with:
+          python-version: "3.11"
+
+      - name: Lint
+        run: pipx run nox --error-on-missing-interpreters -s lint -- --show-diff-on-failure
