@@ -527,7 +527,7 @@ def two_sided_with_dots(
     try:
         shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
         visual_size_ = (visual_size[0], visual_size[1] / 2)
-    except:
+    except resolution.TooManyUnknownsError:
         visual_size_ = None
 
     stim1 = with_dots(
@@ -618,7 +618,7 @@ def two_sided_dotted(
     try:
         shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
         visual_size_ = (visual_size[0], visual_size[1] / 2)
-    except:
+    except resolution.TooManyUnknownsError:
         visual_size_ = None
 
     stim1 = dotted(

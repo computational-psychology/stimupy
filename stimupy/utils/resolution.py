@@ -1,6 +1,7 @@
+import copy
 import warnings
 from collections import namedtuple
-import copy
+
 import numpy as np
 
 Visual_size = namedtuple("Visual_size", "height width")
@@ -9,6 +10,10 @@ Ppd = namedtuple("Ppd", "vertical horizontal")
 
 
 class ResolutionError(ValueError):
+    pass
+
+
+class TooManyUnknownsError(ValueError):
     pass
 
 
@@ -105,7 +110,9 @@ def resolve_1D(length=None, visual_angle=None, ppd=None, round=True):
 
     # Triage based on number of unknowns
     if n_unknowns > 1:  # More than 1 unknown we cannot resolve
-        raise ValueError(f"Too many unkowns to resolve resolution; {length},{visual_angle},{ppd}")
+        raise TooManyUnknownsError(
+            f"Too many unkowns to resolve resolution; {length},{visual_angle},{ppd}"
+        )
     else:  # 1 unknown, so need to resolve
         # Which unknown?
         if length is None:
@@ -364,7 +371,7 @@ def validate_shape(shape):
     try:
         if len(shape) < 1:
             # Empty sequence
-            raise ValueError(f"shape must be of at least length 1: {shape}")
+            raise TypeError(f"shape must be of at least length 1: {shape}")
     except TypeError:  # not a sequence; make it one
         shape = (shape, shape)
 
@@ -431,7 +438,7 @@ def validate_ppd(ppd):
     try:
         if len(ppd) < 1:
             # Empty sequence
-            raise ValueError(f"ppd must be of at least length 1: {ppd}")
+            raise TypeError(f"ppd must be of at least length 1: {ppd}")
     except TypeError:  # not a sequence; make it one
         ppd = (ppd, ppd)
 
@@ -496,7 +503,7 @@ def validate_visual_size(visual_size):
     try:
         if len(visual_size) < 1:
             # Empty sequence
-            raise ValueError(f"visual_size must be of at least length 1: {visual_size}")
+            raise TypeError(f"visual_size must be of at least length 1: {visual_size}")
     except TypeError:  # not a sequence; make it one
         visual_size = (visual_size, visual_size)
 

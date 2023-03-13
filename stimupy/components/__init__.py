@@ -224,7 +224,7 @@ def resolve_grating_params(
         length, visual_angle, ppd = resolution.resolve_1D(
             length=length, visual_angle=visual_angle, ppd=ppd
         )
-    except ValueError:
+    except resolution.TooManyUnknownsError:
         ppd = ppd
         length = length
         visual_angle = visual_angle

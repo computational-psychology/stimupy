@@ -170,7 +170,7 @@ def grating(
     # Try to resolve resolution
     try:
         shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
-    except ValueError:
+    except resolution.TooManyUnknownsError:
         ppd = resolution.validate_ppd(ppd) if ppd is not None else None
         shape = resolution.validate_shape(shape) if shape is not None else None
         visual_size = (
