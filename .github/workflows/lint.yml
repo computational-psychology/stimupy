@@ -1,7 +1,8 @@
 name: Linting, Formatting
 
-on: 
+on:
   push:
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
