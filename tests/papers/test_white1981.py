@@ -9,7 +9,7 @@ from stimupy.utils import export
 
 data_dir = os.path.dirname(__file__)
 jsonfile = os.path.join(data_dir, "white1981.json")
-loaded = json.load(open(jsonfile, "r"))
+loaded = json.load(open(jsonfile))
 
 
 @pytest.mark.parametrize("stim_name", stimlist)
