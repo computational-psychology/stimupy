@@ -1,4 +1,3 @@
-import copy
 import itertools
 
 import numpy as np
@@ -13,7 +12,6 @@ __all__ = [
     "disc",
     "ring",
     "annulus",
-    "grating",
     "bessel",
     "sine_wave",
     "square_wave",
@@ -368,95 +366,6 @@ def ring(
 annulus = ring
 
 
-def grating(
-    visual_size=None,
-    ppd=None,
-    shape=None,
-    frequency=None,
-    n_rings=None,
-    ring_width=None,
-    intensity_rings=(1.0, 0.0),
-    intensity_background=0.5,
-    origin="mean",
-):
-    """Draw a circular grating, i.e., set of rings
-
-    Parameters
-    ----------
-    visual_size : Sequence[Number, Number], Number, or None (default)
-        visual size [height, width] of image, in degrees
-    ppd : Sequence[Number, Number], Number, or None (default)
-        pixels per degree [vertical, horizontal]
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
-    frequency : Number, or None (default)
-        spatial frequency of circular grating, in cycles per degree
-    n_rings : int, or None (default)
-        number of rings
-    ring_width : Number, or None (default)
-        width of a single ring, in degrees
-    intensity_rings : Sequence[Number, ...]
-        intensity value for each ring, from inside to out, by default (1.0, 0.0).
-        If fewer intensities are passed than number of radii, cycles through intensities
-    intensity_background : float (optional)
-        intensity value of background, by default 0.5
-    origin : "corner", "mean" or "center"
-        if "corner": set origin to upper left corner
-        if "mean": set origin to hypothetical image center (default)
-        if "center": set origin to real center (closest existing value to mean)
-
-    Returns
-    ----------
-    dict[str, Any]
-        dict with the stimulus (key: "img"),
-        mask with integer index for each ring (key: "ring_mask"),
-        and additional keys containing stimulus parameters
-    """
-    lst = [visual_size, ppd, shape, frequency, n_rings, ring_width]
-    if len([x for x in lst if x is not None]) < 3:
-        raise ValueError(
-            "'grating()' needs 3 non-None arguments for resolving from 'visual_size', "
-            "'ppd', 'shape', 'frequency', 'n_rings', 'ring_width'"
-        )
-
-    # Resolve sizes
-    try:
-        shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
-    except:
-        pass
-
-    # Resolve grating
-    params = resolve_circular_params(
-        shape=shape,
-        visual_size=visual_size,
-        ppd=ppd,
-        frequency=frequency,
-        n_rings=n_rings,
-        ring_width=ring_width,
-    )
-
-    # Clean-up params for passing through
-    stim_params = copy.deepcopy(params)
-    stim_params.pop("n_rings", None)
-    stim_params.pop("ring_width", None)
-    stim_params.pop("frequency", None)
-    if shape is not None:
-        stim_params["shape"] = shape
-    if visual_size is not None:
-        stim_params["visual_size"] = visual_size
-
-    # Draw stim
-    stim = disc_and_rings(
-        **stim_params,
-        intensity_background=intensity_background,
-        intensity_rings=intensity_rings,
-        origin=origin,
-    )
-
-    # Assemble output
-    return {**stim, **stim_params}
-
-
 def bessel(
     visual_size=None,
     ppd=None,
@@ -717,7 +626,6 @@ if __name__ == "__main__":
     }
 
     stims = {
-        "grating": grating(**p, frequency=0.5),
         "disc_and_rings": disc_and_rings(**p, radii=(1, 2, 3)),
         "ring": ring(**p, radii=(1, 2)),
         "bessel": bessel(**p, frequency=0.5),
@@ -726,4 +634,3 @@ if __name__ == "__main__":
     }
 
     plot_stimuli(stims, mask=False)
-    plot_stimuli(stims, mask=True)

@@ -26,6 +26,8 @@ def rings(
     intensity_frames=(1.0, 0.0),
     target_indices=(),
     intensity_target=0.5,
+    origin="center",
+    clip=True,
 ):
     """Draw set of square frames, with some frame(s) as target
 
@@ -56,6 +58,12 @@ def rings(
         intensity value for each target, by default 0.5.
         Can specify as many intensities as number of target_indices;
         If fewer intensities are passed than target_indices, cycles through intensities
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
+    clip : Bool
+        if True, clip stimulus to image size (default: True)
 
     Returns
     ----------
@@ -72,7 +80,7 @@ def rings(
     """
 
     # Frames component
-    stim = frames_component.grating(
+    stim = frames_component.square_wave(
         shape=shape,
         visual_size=visual_size,
         ppd=ppd,
@@ -81,6 +89,8 @@ def rings(
         frame_width=frame_width,
         period=period,
         intensity_frames=intensity_frames,
+        origin=origin,
+        clip=clip,
     )
 
     # Resolve target parameters
@@ -284,6 +294,8 @@ def bullseye(
     intensity_frames=(1.0, 0.0),
     target_indices=(),
     intensity_target=0.5,
+    origin="center",
+    clip=True,
 ):
     """Square "bullseye", i.e., set of rings with target in center
 
@@ -314,6 +326,12 @@ def bullseye(
         intensity value for each target, by default 0.5.
         Can specify as many intensities as number of target_indices;
         If fewer intensities are passed than target_indices, cycles through intensities
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
+    clip : Bool
+        if True, clip stimulus to image size (default: True)
 
     Returns
     ----------
@@ -339,6 +357,8 @@ def bullseye(
         intensity_frames=intensity_frames,
         target_indices=1,
         intensity_target=intensity_target,
+        origin=origin,
+        clip=clip,
     )
     return stim
 

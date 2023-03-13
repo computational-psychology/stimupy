@@ -590,8 +590,11 @@ def draw_sine_wave(
     img = adapt_intensity_range(img, intensities[0], intensities[1])
     
     # Create mask
-    if origin == "corner" or base_type=="radial":
+    if origin == "corner" or base_type=="radial" or base_type=="cityblock":
         vals = np.arange(distances.min()+phase_width/2, distances.max()+phase_width*2, phase_width)
+        
+        if origin == "mean":
+            vals -= distances.min()
     else:
         dmin = distances.min()
         dmax = distances.max()+phase_width*2
@@ -669,8 +672,6 @@ def create_overview():
         "disc": circulars.disc(**p, radius=3),
         "ring": circulars.ring(**p, radii=(1, 3)),
         "annulus (=ring)": circulars.annulus(**p, radii=(1, 3)),
-        "circular_grating": circulars.grating(**p, frequency=1),
-        "circular_grating_v2": circulars.grating(**p, n_rings=8),
         "bessel": circulars.bessel(**p, frequency=1),
         "circular_sine_wave": circulars.sine_wave(**p, frequency=0.5),
         "circular_square_wave": circulars.square_wave(**p, frequency=0.5),
@@ -680,7 +681,6 @@ def create_overview():
         "cornsweet_edge": edges.cornsweet_edge(**p, ramp_width=3),
         # frames
         "frames": frames.frames(**p, frame_radii=(1, 2, 3)),
-        "frames_grating": frames.grating(**p, n_frames=8),
         "frames_sine_wave": frames.sine_wave(**p, frequency=0.5),
         "frames_square_wave": frames.square_wave(**p, frequency=0.5),
         # gaussians
