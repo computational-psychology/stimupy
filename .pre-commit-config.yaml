@@ -3,6 +3,7 @@ repos:
     rev: stable
     hooks:
     - id: black
+      additional_dependencies: [".[jupyter]"]
       language_version: python3
 
   - repo: https://github.com/PyCQA/flake8
