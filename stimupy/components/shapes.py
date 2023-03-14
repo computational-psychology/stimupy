@@ -452,6 +452,7 @@ def ellipse(
     intensity_background=0.0,
     rotation=0,
     origin="mean",
+    restrict_size=True,
 ):
     """Draw an ellipse
 
@@ -475,6 +476,8 @@ def ellipse(
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)
         if "center": set origin to real center (closest existing value to mean)
+    restrict_size : Bool
+        if False, allow ellipse to reach beyond image size (default: True)
 
     Returns
     ----------
@@ -516,7 +519,7 @@ def ellipse(
     cy = np.floor((x2 + y1) * base["ppd"][0]) / base["ppd"][0]
     cx = np.floor((x1 + y2) * base["ppd"][1]) / base["ppd"][1]
 
-    if (cy > base["visual_size"][0] / 2) or (cx > base["visual_size"][1] / 2):
+    if restrict_size and ((cy > base["visual_size"][0] / 2) or (cx > base["visual_size"][1] / 2)):
         raise ValueError("stimulus does not fully fit into requested size")
 
     return {

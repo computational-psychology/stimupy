@@ -81,6 +81,7 @@ def gaussian(
         radius=sigma,
         rotation=rotation,
         origin=origin,
+        restrict_size=False,
     )["shape_mask"]
 
     stim = {
