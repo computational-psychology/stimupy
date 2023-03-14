@@ -276,7 +276,7 @@ def circle(
 
     stim = ring(
         radii=(radius, radius + line_width),
-        intensity_rings=intensity_line,
+        intensity_ring=intensity_line,
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,

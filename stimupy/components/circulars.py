@@ -214,6 +214,9 @@ def disc_and_rings(
         # one axis is None; make square
         visual_size = [x for x in visual_size if x is not None]
         visual_size = resolution.validate_visual_size(visual_size)
+    
+    if np.diff(radii).min() < 0:
+        raise ValueError("radii need to monotonically increase")
 
     # Get masks for rings
     params = mask_rings(radii=radii, shape=shape, visual_size=visual_size, ppd=ppd, origin=origin)
@@ -238,7 +241,7 @@ def disc(
     ppd=None,
     shape=None,
     radius=None,
-    intensity_discs=1.0,
+    intensity_disc=1.0,
     intensity_background=0.5,
     origin="mean",
 ):
@@ -256,7 +259,7 @@ def disc(
         shape [height, width] of image, in pixels
     radius : Number
         outer radius of disc in degree visual angle
-    intensity_discs : Number
+    intensity_disc : Number
         intensity value of disc, by default 1.0
     intensity_background : float (optional)
         intensity value of background, by default 0.5
@@ -276,7 +279,7 @@ def disc(
         raise ValueError("disc() missing argument 'radius' which is not 'None'")
 
     radius = np.array(radius)
-    intensity = np.array(intensity_discs)
+    intensity = np.array(intensity_disc)
 
     if radius.size != 1:
         raise ValueError("Can only pass 1 radius")
@@ -285,14 +288,13 @@ def disc(
 
     stim = ring(
         radii=np.insert(radius, 0, 0),
-        intensity_rings=intensity,
+        intensity_ring=intensity,
         visual_size=visual_size,
         ppd=ppd,
         intensity_background=intensity_background,
         shape=shape,
         origin=origin,
     )
-    stim["ring_mask"] = (stim["ring_mask"] / 2).astype(int)
     return stim
 
 
@@ -301,7 +303,7 @@ def ring(
     ppd=None,
     shape=None,
     radii=None,
-    intensity_rings=1.0,
+    intensity_ring=1.0,
     intensity_background=0.5,
     origin="mean",
 ):
@@ -317,7 +319,7 @@ def ring(
         shape [height, width] of image, in pixels
     radii : Sequence[Number, Number]
         inner and outer radius of ring in degree visual angle
-    intensity_rings : Number
+    intensity_ring : Number
         intensity value of ring, by default 1.0
     intensity_background : float (optional)
         intensity value of background, by default 0.5
@@ -344,22 +346,26 @@ def ring(
         raise ValueError("ring() missing argument 'radii' which is not 'None'")
     if len(radii) != 2:
         raise ValueError("Can only pass exactly 2 radii")
-    if len([intensity_rings]) != 1:
+    if len([intensity_ring]) != 1:
         raise ValueError("Can only pass 1 intensity")
 
     if radii[1] is None:
         shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
         radii[1] = np.max(visual_size) / 2
+    
+    if radii[1] < radii[0]:
+        raise ValueError("first radius needs to be smaller than second radius")
 
     stim = disc_and_rings(
         radii=radii,
-        intensity_rings=[intensity_background, intensity_rings],
+        intensity_rings=[intensity_background, intensity_ring],
         shape=shape,
         visual_size=visual_size,
         ppd=ppd,
         intensity_background=intensity_background,
         origin=origin,
     )
+    stim["ring_mask"] = np.where(stim["ring_mask"]==2, 1, 0)
     return stim
 
 
@@ -626,6 +632,7 @@ if __name__ == "__main__":
     }
 
     stims = {
+        "disc": disc(**p, radius=3),
         "disc_and_rings": disc_and_rings(**p, radii=(1, 2, 3)),
         "ring": ring(**p, radii=(1, 2)),
         "bessel": bessel(**p, frequency=0.5),
@@ -633,4 +640,4 @@ if __name__ == "__main__":
         "square_wave": square_wave(**p, frequency=0.5),
     }
 
-    plot_stimuli(stims, mask=False)
+    plot_stimuli(stims, mask=True)

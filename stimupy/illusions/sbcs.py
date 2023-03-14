@@ -283,7 +283,7 @@ def with_dots(
         radius=dot_radius,
         ppd=ppd,
         intensity_background=0.0,
-        intensity_discs=1,
+        intensity_disc=1,
     )["img"]
     patch = pad_by_visual_size(img=patch, padding=padding, ppd=ppd, pad_value=0.0)
     pixels_per_dot = patch.shape
@@ -419,7 +419,7 @@ def dotted(
         radius=dot_radius,
         ppd=ppd,
         intensity_background=0.0,
-        intensity_discs=1.0,
+        intensity_disc=1.0,
     )["img"]
     patch = pad_by_visual_size(img=patch, padding=padding, ppd=ppd, pad_value=0.0)
     pixels_per_dot = patch.shape

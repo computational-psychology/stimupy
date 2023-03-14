@@ -18,11 +18,11 @@ def pinwheel(
     n_segments=None,
     segment_width=None,
     rotation=0.0,
-    target_indices=[2, 5],
-    target_width=1.0,
-    target_center=1.0,
+    target_indices=None,
+    target_width=None,
+    target_center=None,
     intensity_segments=(1.0, 0.0),
-    intensity_background=0.3,
+    intensity_background=0.5,
     intensity_target=0.5,
     origin="mean",
 ):
@@ -85,6 +85,8 @@ def pinwheel(
         illusions using spatial filtering and local response normalization. Vision
         research, 47(12), 1631-1644. https://doi.org/10.1016/j.visres.2007.02.017
     """
+    if target_width is None:
+        raise ValueError("pinwheel() missing argument 'target_width' which is not 'None'")
 
     # Radial grating
     stim = pinwheel_shape(
@@ -99,7 +101,10 @@ def pinwheel(
         ppd=ppd,
         shape=shape,
         origin=origin,
+        inner_radius=0,
     )
+    if target_center is None:
+        target_center = stim["radius"] / 2
 
     # Place target(s)
     if isinstance(target_indices, (int)):
@@ -120,27 +125,28 @@ def pinwheel(
         intensity_target = [
             intensity_target,
         ]
-    intensity_target = itertools.cycle(intensity_target)
-
-    target_mask = np.zeros_like(stim["wedge_mask"])
-    for target_idx, (segment_idx, center, width, intensity) in enumerate(
-        zip(target_indices, target_center, target_width, intensity_target)
-    ):
-        # Draw ring
-        inner_radius = center - (width / 2)
-        outer_radius = center + (width / 2)
-        ring_stim = ring_shape(
-            radii=[inner_radius, outer_radius],
-            intensity_rings=intensity,
-            visual_size=stim["visual_size"],
-            ppd=stim["ppd"],
-            shape=stim["shape"],
-        )
-        condition1 = stim["wedge_mask"] == segment_idx
-        condition2 = ring_stim["ring_mask"] == 2
-        target_mask = np.where(condition1 & condition2, target_idx + 1, target_mask)
-        stim["img"] = np.where(target_mask == (target_idx + 1), intensity, stim["img"])
-    stim["target_mask"] = target_mask
+    if target_indices is not None:
+        intensity_target = itertools.cycle(intensity_target)
+    
+        target_mask = np.zeros_like(stim["wedge_mask"])
+        for target_idx, (segment_idx, center, width, intensity) in enumerate(
+            zip(target_indices, target_center, target_width, intensity_target)
+        ):
+            # Draw ring
+            inner_radius = center - (width / 2)
+            outer_radius = center + (width / 2)
+            ring_stim = ring_shape(
+                radii=[inner_radius, outer_radius],
+                intensity_ring=intensity,
+                visual_size=stim["visual_size"],
+                ppd=stim["ppd"],
+                shape=stim["shape"],
+            )
+            condition1 = stim["wedge_mask"] == segment_idx
+            condition2 = ring_stim["ring_mask"] == 1
+            target_mask = np.where(condition1 & condition2, target_idx + 1, target_mask)
+            stim["img"] = np.where(target_mask == (target_idx + 1), intensity, stim["img"])
+        stim["target_mask"] = target_mask
 
     return stim
 
@@ -149,7 +155,7 @@ if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
 
     stims = {
-        "pinwheel": pinwheel(visual_size=(8, 8), ppd=32, n_segments=8),
+        "pinwheel": pinwheel(visual_size=8, ppd=32, n_segments=10, target_width=1, target_indices=3),
     }
 
     plot_stimuli(stims, mask=True, save=None)
