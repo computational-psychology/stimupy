@@ -1,7 +1,0 @@
-numpy
-scipy
-pandas
-Pillow
-pytest
-
--r docs/requirements.txt
