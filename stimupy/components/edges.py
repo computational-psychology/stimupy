@@ -109,7 +109,7 @@ def gaussian_edge(
         ppd=ppd,
         shape=shape,
         rotation=rotation,
-        intensity_edges=(0.0, 1.0),
+        intensity_edges=intensity_edges,
     )
 
     window = gaussians.gaussian(
@@ -124,6 +124,7 @@ def gaussian_edge(
     stim["img"] = img
     stim["sigma"] = sigma
     stim["intensity_background"] = intensity_background
+    stim["gaussian_mask"] = window["gaussian_mask"]
     return stim
 
 
