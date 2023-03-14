@@ -1,5 +1,7 @@
 # Stimupy
 
+[![Documentation Status](https://readthedocs.org/projects/stimupy/badge/?version=latest)](https://stimupy.readthedocs.io/en/latest/?badge=latest)
+
 Contains submodules for
 - drawing basic visual stimulus components ([components](stimupy/components/))
 - creating different (brightness) illusions ([illusions](stimupy/illusions/))
