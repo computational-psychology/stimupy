@@ -1,4 +1,5 @@
 jupyter-book==0.14
 jupytext>=1.13.3
 jupyterlab_myst
+myst_nb
 ipywidgets
