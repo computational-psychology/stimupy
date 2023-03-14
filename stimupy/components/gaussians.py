@@ -62,7 +62,7 @@ def gaussian(
     yy = base["vertical"]
 
     # convert orientation parameter to radians
-    theta = np.deg2rad(rotation)
+    theta = np.deg2rad(-rotation)
 
     # determine a, b, c coefficients
     a = (np.cos(theta) ** 2 / (2 * sigma[1] ** 2)) + (np.sin(theta) ** 2 / (2 * sigma[0] ** 2))
