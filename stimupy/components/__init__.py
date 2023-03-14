@@ -430,7 +430,7 @@ def draw_sine_wave(
     frequency=None,
     n_phases=None,
     phase_width=None,
-    period=None,
+    period="ignore",
     rotation=None,
     phase_shift=None,
     intensities=None,
@@ -454,7 +454,7 @@ def draw_sine_wave(
         number of phases in the grating
     phase_width : Number, or None (default)
         width of a single phase, in degrees visual angle
-    period : "even", "odd", "either", "ignore" or None (default)
+    period : "even", "odd", "either", "ignore" (default)
         ensure whether the grating has "even" number of phases, "odd"
         number of phases, either or whether not to round the number of
         phases ("ignore")
@@ -485,8 +485,6 @@ def draw_sine_wave(
         mask with integer index for each bar (key: "grating_mask"),
         and additional keys containing stimulus parameters
     """
-    if period is None:
-        raise ValueError("draw_sine_wave() missing argument 'period' which is not 'None'")
     if rotation is None:
         raise ValueError("draw_sine_wave() missing argument 'rotation' which is not 'None'")
     if phase_shift is None:
@@ -497,6 +495,8 @@ def draw_sine_wave(
         raise ValueError("draw_sine_wave() missing argument 'origin' which is not 'None'")
     if round_phase_width is None:
         raise ValueError("draw_sine_wave() missing argument 'round_phase_width' which is not 'None'")
+    if period is None:
+        period = "ignore"
     
     base_types = ["horizontal", "vertical", "rotated", "radial", "angular", "cityblock"]
     if not base_type in base_types:
@@ -537,6 +537,10 @@ def draw_sine_wave(
     if rotation%90 != 0 and round_phase_width:
         round_phase_width = False
         warnings.warn("Rounding phase width is turned off for oblique gratings")
+    
+    if rotation%90 != 0 and period != "ignore":
+        period = "ignore"
+        warnings.warn("Period ignored for oblique gratings")
 
     # Resolve params
     params = resolve_grating_params(
