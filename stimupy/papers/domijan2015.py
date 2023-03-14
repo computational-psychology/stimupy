@@ -421,12 +421,12 @@ def rings(visual_size=VSIZES["rings"], ppd=PPD, shape=SHAPES["rings"]):
 
     # Resolve resolution
     shape, visual_size, ppd, visual_resize = resolve(shape, visual_size, ppd, VSIZES["rings"])
-    frame_radii = np.array((0.55, 1.05, 1.55, 2.05, 2.55, 3.05, 3.55, 4.05)) * visual_resize
+    radii = np.array((0.55, 1.05, 1.55, 2.05, 2.55, 3.05, 3.55, 4.05)) * visual_resize
 
     params = {
-        "visual_size": frame_radii.max()*2,
+        "visual_size": radii.max()*2,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
     }
 
     stim1 = illusions.frames.rings_generalized(
@@ -486,12 +486,12 @@ def bullseye(visual_size=VSIZES["bullseye"], ppd=PPD, shape=SHAPES["bullseye"]):
 
     # Resolve resolution
     shape, visual_size, ppd, visual_resize = resolve(shape, visual_size, ppd, VSIZES["bullseye"])
-    frame_radii = np.array((0.55, 1.05, 1.55, 2.05, 2.55, 3.05, 3.55, 4.05)) * visual_resize
+    radii = np.array((0.55, 1.05, 1.55, 2.05, 2.55, 3.05, 3.55, 4.05)) * visual_resize
 
     params = {
-        "visual_size": frame_radii.max()*2,
+        "visual_size": radii.max()*2,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
     }
 
     stim1 = illusions.frames.bullseye_generalized(

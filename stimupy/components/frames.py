@@ -60,7 +60,7 @@ def frames(
     visual_size=None,
     ppd=None,
     shape=None,
-    frame_radii=None,
+    radii=None,
     intensity_frames=(1.0, 0.0),
     intensity_background=0.5,
     origin="mean",
@@ -75,7 +75,7 @@ def frames(
         pixels per degree [vertical, horizontal]
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
-    frame_radii : Sequence[Number]
+    radii : Sequence[Number]
         radii of each frame, in degrees visual angle
     intensity_frames : Sequence[float, ...]
         intensity value for each frame, by default (1.0, 0.0).
@@ -95,12 +95,15 @@ def frames(
         mask with integer index for each frame (key: "frame_mask"),
         and additional keys containing stimulus parameters
     """
-    if frame_radii is None:
-        raise ValueError("frames() missing argument 'frame_radii' which is not 'None'")
+    if radii is None:
+        raise ValueError("frames() missing argument 'radii' which is not 'None'")
+    
+    if np.diff(radii).min() < 0:
+        raise ValueError("radii need to monotonically increase")
 
     # Get frames mask
     stim = mask_frames(
-        edges=frame_radii,
+        edges=radii,
         shape=shape,
         visual_size=visual_size,
         ppd=ppd,

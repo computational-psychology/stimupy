@@ -157,12 +157,12 @@ def bullseye_thin_gw45_gb31(ppd=PPD):
     
     target_size_half = resolve_target_size(ppd=ppd) / 2
     band_width = resolve_band_width(0.122, ppd=ppd)
-    frame_radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
+    radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
 
     params = {
         "shape": (target_size_half+band_width*4)*2 * ppd - 1,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -218,12 +218,12 @@ def bullseye_thin_gw45_gb38(ppd=PPD):
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
     band_width = resolve_band_width(0.122, ppd=ppd)
-    frame_radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
+    radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
 
     params = {
         "shape": (target_size_half+band_width*4)*2 * ppd - 1,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -279,12 +279,12 @@ def bullseye_thin_gw45_gb45(ppd=PPD):
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
     band_width = resolve_band_width(0.122, ppd=ppd)
-    frame_radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
+    radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
 
     params = {
         "shape": (target_size_half+band_width*4)*2 * ppd - 1,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -340,12 +340,12 @@ def bullseye_thin_gw45_gb52(ppd=PPD):
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
     band_width = resolve_band_width(0.122, ppd=ppd)
-    frame_radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
+    radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
 
     params = {
         "shape": (target_size_half+band_width*4)*2 * ppd - 1,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -401,12 +401,12 @@ def bullseye_thin_gw45_gb59(ppd=PPD):
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
     band_width = resolve_band_width(0.122, ppd=ppd)
-    frame_radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
+    radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
 
     params = {
         "shape": (target_size_half+band_width*4)*2 * ppd - 1,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -462,12 +462,12 @@ def bullseye_thin_gw60_gb46(ppd=PPD):
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
     band_width = resolve_band_width(0.122, ppd=ppd)
-    frame_radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
+    radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
 
     params = {
         "shape": (target_size_half+band_width*4)*2 * ppd - 1,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -523,12 +523,12 @@ def bullseye_thin_gw60_gb53(ppd=PPD):
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
     band_width = resolve_band_width(0.122, ppd=ppd)
-    frame_radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
+    radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
 
     params = {
         "shape": (target_size_half+band_width*4)*2 * ppd - 1,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -584,12 +584,12 @@ def bullseye_thin_gw60_gb60(ppd=PPD):
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
     band_width = resolve_band_width(0.122, ppd=ppd)
-    frame_radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
+    radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
 
     params = {
         "shape": (target_size_half+band_width*4)*2 * ppd - 1,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -645,12 +645,12 @@ def bullseye_thin_gw60_gb67(ppd=PPD):
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
     band_width = resolve_band_width(0.122, ppd=ppd)
-    frame_radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
+    radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
 
     params = {
         "shape": (target_size_half+band_width*4)*2 * ppd - 1,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -706,12 +706,12 @@ def bullseye_thin_gw60_gb74(ppd=PPD):
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
     band_width = resolve_band_width(0.122, ppd=ppd)
-    frame_radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
+    radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
 
     params = {
         "shape": (target_size_half+band_width*4)*2 * ppd - 1,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -767,12 +767,12 @@ def bullseye_thin_gw75_gb61(ppd=PPD):
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
     band_width = resolve_band_width(0.122, ppd=ppd)
-    frame_radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
+    radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
 
     params = {
         "shape": (target_size_half+band_width*4)*2 * ppd - 1,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -828,12 +828,12 @@ def bullseye_thin_gw75_gb68(ppd=PPD):
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
     band_width = resolve_band_width(0.122, ppd=ppd)
-    frame_radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
+    radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
 
     params = {
         "shape": (target_size_half+band_width*4)*2 * ppd - 1,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -889,12 +889,12 @@ def bullseye_thin_gw75_gb75(ppd=PPD):
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
     band_width = resolve_band_width(0.122, ppd=ppd)
-    frame_radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
+    radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
 
     params = {
         "shape": (target_size_half+band_width*4)*2 * ppd - 1,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -950,12 +950,12 @@ def bullseye_thin_gw75_gb82(ppd=PPD):
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
     band_width = resolve_band_width(0.122, ppd=ppd)
-    frame_radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
+    radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
 
     params = {
         "shape": (target_size_half+band_width*4)*2 * ppd - 1,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -1011,12 +1011,12 @@ def bullseye_thin_gw75_gb89(ppd=PPD):
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
     band_width = resolve_band_width(0.122, ppd=ppd)
-    frame_radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
+    radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
 
     params = {
         "shape": (target_size_half+band_width*4)*2 * ppd - 1,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -1072,12 +1072,12 @@ def bullseye_thick_gw45_gb31(ppd=PPD):
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
     band_width = resolve_band_width(0.243, ppd=ppd)
-    frame_radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
+    radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
 
     params = {
         "shape": (target_size_half+band_width*4)*2 * ppd - 1,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -1133,12 +1133,12 @@ def bullseye_thick_gw45_gb38(ppd=PPD):
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
     band_width = resolve_band_width(0.243, ppd=ppd)
-    frame_radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
+    radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
 
     params = {
         "shape": (target_size_half+band_width*4)*2 * ppd - 1,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -1194,12 +1194,12 @@ def bullseye_thick_gw45_gb45(ppd=PPD):
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
     band_width = resolve_band_width(0.243, ppd=ppd)
-    frame_radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
+    radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
 
     params = {
         "shape": (target_size_half+band_width*4)*2 * ppd - 1,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -1255,12 +1255,12 @@ def bullseye_thick_gw45_gb52(ppd=PPD):
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
     band_width = resolve_band_width(0.243, ppd=ppd)
-    frame_radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
+    radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
 
     params = {
         "shape": (target_size_half+band_width*4)*2 * ppd - 1,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -1316,12 +1316,12 @@ def bullseye_thick_gw45_gb59(ppd=PPD):
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
     band_width = resolve_band_width(0.243, ppd=ppd)
-    frame_radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
+    radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
 
     params = {
         "shape": (target_size_half+band_width*4)*2 * ppd - 1,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -1377,12 +1377,12 @@ def bullseye_thick_gw60_gb46(ppd=PPD):
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
     band_width = resolve_band_width(0.243, ppd=ppd)
-    frame_radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
+    radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
 
     params = {
         "shape": (target_size_half+band_width*4)*2 * ppd - 1,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -1438,12 +1438,12 @@ def bullseye_thick_gw60_gb53(ppd=PPD):
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
     band_width = resolve_band_width(0.243, ppd=ppd)
-    frame_radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
+    radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
 
     params = {
         "shape": (target_size_half+band_width*4)*2 * ppd - 1,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -1499,12 +1499,12 @@ def bullseye_thick_gw60_gb60(ppd=PPD):
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
     band_width = resolve_band_width(0.243, ppd=ppd)
-    frame_radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
+    radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
 
     params = {
         "shape": (target_size_half+band_width*4)*2 * ppd - 1,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -1560,12 +1560,12 @@ def bullseye_thick_gw60_gb67(ppd=PPD):
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
     band_width = resolve_band_width(0.243, ppd=ppd)
-    frame_radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
+    radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
 
     params = {
         "shape": (target_size_half+band_width*4)*2 * ppd - 1,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -1621,12 +1621,12 @@ def bullseye_thick_gw60_gb74(ppd=PPD):
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
     band_width = resolve_band_width(0.243, ppd=ppd)
-    frame_radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
+    radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
 
     params = {
         "shape": (target_size_half+band_width*4)*2 * ppd - 1,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -1682,12 +1682,12 @@ def bullseye_thick_gw75_gb61(ppd=PPD):
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
     band_width = resolve_band_width(0.243, ppd=ppd)
-    frame_radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
+    radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
 
     params = {
         "shape": (target_size_half+band_width*4)*2 * ppd - 1,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -1743,12 +1743,12 @@ def bullseye_thick_gw75_gb68(ppd=PPD):
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
     band_width = resolve_band_width(0.243, ppd=ppd)
-    frame_radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
+    radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
 
     params = {
         "shape": (target_size_half+band_width*4)*2 * ppd - 1,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -1804,12 +1804,12 @@ def bullseye_thick_gw75_gb75(ppd=PPD):
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
     band_width = resolve_band_width(0.243, ppd=ppd)
-    frame_radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
+    radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
 
     params = {
         "shape": (target_size_half+band_width*4)*2 * ppd - 1,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -1865,12 +1865,12 @@ def bullseye_thick_gw75_gb82(ppd=PPD):
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
     band_width = resolve_band_width(0.243, ppd=ppd)
-    frame_radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
+    radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
 
     params = {
         "shape": (target_size_half+band_width*4)*2 * ppd - 1,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -1926,12 +1926,12 @@ def bullseye_thick_gw75_gb89(ppd=PPD):
 
     target_size_half = resolve_target_size(ppd=ppd) / 2
     band_width = resolve_band_width(0.243, ppd=ppd)
-    frame_radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
+    radii = np.linspace(target_size_half, target_size_half+band_width*4, 5)
 
     params = {
         "shape": (target_size_half+band_width*4)*2 * ppd - 1,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
     }
 
     stim1 = illusions.frames.bullseye_generalized(

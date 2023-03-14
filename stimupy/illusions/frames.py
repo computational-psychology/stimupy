@@ -203,10 +203,10 @@ def two_sided_rings(
 
 
 def rings_generalized(
-    frame_radii,
     visual_size=None,
     ppd=None,
     shape=None,
+    radii=None,
     intensity_frames=(1.0, 0.0),
     intensity_background=0.5,
     target_indices=(),
@@ -217,14 +217,14 @@ def rings_generalized(
 
     Parameters
     ----------
-    frame_radii : Sequence[Number]
-        radii of each frame, in degrees visual angle
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
+    radii : Sequence[Number] or None (default)
+        radii of each frame, in degrees visual angle
     intensity_frames : Sequence[float, ...]
         intensity value for each frame, by default (1.0, 0.0).
         Can specify as many intensities as number of frame_widths;
@@ -252,7 +252,7 @@ def rings_generalized(
 
     # Frames component
     stim = frames_component.frames(
-        frame_radii=frame_radii,
+        radii=radii,
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,
@@ -364,10 +364,10 @@ def bullseye(
 
 
 def bullseye_generalized(
-    frame_radii,
     visual_size=None,
     ppd=None,
     shape=None,
+    radii=None,
     intensity_frames=(1.0, 0.0),
     intensity_background=0.5,
     intensity_target=0.5,
@@ -385,6 +385,8 @@ def bullseye_generalized(
         pixels per degree [vertical, horizontal]
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
+    radii : Sequence[Number] or None (default)
+        radii of each frame, in degrees visual angle
     intensity_frames : Sequence[float, ...]
         intensity value for each frame, by default (1.0, 0.0).
         Can specify as many intensities as number of frame_widths;
@@ -408,7 +410,7 @@ def bullseye_generalized(
         and additional keys containing stimulus parameters
     """
     stim = rings_generalized(
-        frame_radii=frame_radii,
+        radii=radii,
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,
@@ -509,7 +511,7 @@ if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
 
     p1 = {
-        "frame_radii": (1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5),
+        "radii": (1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5),
         "visual_size": 10,
         "ppd": 10,
     }

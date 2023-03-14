@@ -1749,12 +1749,12 @@ def bullseye_thin(ppd=PPD, pad=True):
         Research, 44, 309–319.
     """
 
-    frame_radii = np.array([0.304, 0.426, 0.548, 0.670, 0.792])
+    radii = np.array([0.304, 0.426, 0.548, 0.670, 0.792])
 
     params = {
         "visual_size": 0.792 * 2,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
         "intensity_target": v2,
     }
 
@@ -1807,12 +1807,12 @@ def bullseye_thick(ppd=PPD, pad=True):
     Bindman, D., & Chubb, C. (2004). Brightness assimilation in bullseye displays. Vision
         Research, 44, 309–319.
     """
-    frame_radii = np.array([0.304, 0.547, 0.790, 1.033, 1.276])
+    radii = np.array([0.304, 0.547, 0.790, 1.033, 1.276])
 
     params = {
         "visual_size": 1.276 * 2,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
         "intensity_target": v2,
     }
 
