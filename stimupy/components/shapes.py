@@ -2,7 +2,7 @@ import numpy as np
 
 from stimupy.components import image_base
 from stimupy.components.angulars import wedge
-from stimupy.components.circulars import annulus, disc, ring
+from stimupy.components.circulars import annulus, ring, disc
 from stimupy.utils import resolution
 
 __all__ = [
@@ -11,6 +11,7 @@ __all__ = [
     "cross",
     "parallelogram",
     "ellipse",
+    "circle",
     "wedge",
     "annulus",
     "disc",
@@ -535,6 +536,65 @@ def ellipse(
     }
 
 
+def circle(
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    radius=None,
+    intensity_circle=1.0,
+    intensity_background=0.0,
+    origin="mean",
+    restrict_size=True,
+):
+    """Draw an ellipse
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees visual angle
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    radius : Number or None (default)
+        circle radius in degrees visual angle
+    intensity_circle : float, optional
+        intensity value for circle, by default 1.0
+    intensity_background : float, optional
+        intensity value of background, by default 0.0
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
+    restrict_size : Bool
+        if False, allow circle to reach beyond image size (default: True)
+
+    Returns
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for the shape (key: "shape_mask"),
+        and additional keys containing stimulus parameters
+    """
+    if radius is None:
+        raise ValueError("circle() missing argument 'radius' which is not 'None'")
+    if not isinstance(radius, (int, float)):
+        raise ValueError("radius should be a single number")
+
+    stim = ellipse(
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        radius=radius,
+        intensity_ellipse=intensity_circle,
+        intensity_background=intensity_background,
+        rotation=0,
+        origin=origin,
+        restrict_size=restrict_size,
+        )
+    return stim
+
+
 if __name__ == "__main__":
     from stimupy.utils.plotting import plot_stimuli
 
@@ -551,6 +611,7 @@ if __name__ == "__main__":
         "parallelogram": parallelogram(**p, parallelogram_size=(5.2, 3.1, 0.9)),
         "parallelogram2": parallelogram(shape=(100, 100), ppd=10, parallelogram_size=(10, 9, -1)),
         "ellipse": ellipse(**p, radius=(4, 3)),
+        "circle": circle(visual_size=(10, 8), ppd=50, radius=3),
     }
 
     plot_stimuli(stims, mask=False)
