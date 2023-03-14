@@ -12,6 +12,7 @@ def cornsweet(
     ppd=None,
     shape=None,
     ramp_width=None,
+    rotation=0,
     intensity_edges=(0.0, 1.0),
     intensity_plateau=0.5,
     exponent=2.75,
@@ -37,6 +38,8 @@ def cornsweet(
         shape [height, width] of grating, in pixels
     ramp_width : float
         width of luminance ramp in degrees of visual angle
+    rotation : float
+        rotation of stimulus in degrees (default: 0)
     intensity_edges : (float, float)
         intensity of edges
     intensity_plateau : float
@@ -65,17 +68,14 @@ def cornsweet(
         ppd=ppd,
         shape=shape,
         ramp_width=ramp_width,
+        rotation=rotation,
         intensity_edges=intensity_edges,
         intensity_plateau=intensity_plateau,
         exponent=exponent,
     )
-    shape = stim["shape"]
-    ramp_width_px = stim["ramp_width"] * stim["ppd"][0]
 
     # Generate the target mask
-    mask = np.zeros(shape)
-    mask[:, 0 : int(shape[1] / 2.0 - ramp_width_px - 1)] = 1
-    mask[:, int(shape[1] / 2.0 + ramp_width_px + 1) : :] = 2
+    mask = np.where(stim["d1"]==1, stim["edge_mask"], 0) + np.where(stim["d2"]==1, stim["edge_mask"], 0)
     stim["target_mask"] = mask.astype(int)
     return stim
 
