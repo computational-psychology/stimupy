@@ -55,7 +55,7 @@ def create_overview():
     # fmt: off
     stims = {
         # Angular
-        "pinwheel": angulars.pinwheel(**p, n_segments=8),
+        "pinwheel": angulars.pinwheel(**p, n_segments=8, target_width=1, target_indices=3),
         # Benary
         "benary_general": benarys.cross_generalized(**p, target_size=1, cross_thickness=2, target_x=(3, 6, 3, 6), target_y=(4, 6, 6, 4)),
         "benary_rectangles": benarys.cross_rectangles(**p, target_size=1, cross_thickness=2),

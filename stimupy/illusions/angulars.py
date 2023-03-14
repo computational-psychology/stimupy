@@ -85,8 +85,6 @@ def pinwheel(
         illusions using spatial filtering and local response normalization. Vision
         research, 47(12), 1631-1644. https://doi.org/10.1016/j.visres.2007.02.017
     """
-    if target_width is None:
-        raise ValueError("pinwheel() missing argument 'target_width' which is not 'None'")
 
     # Radial grating
     stim = pinwheel_shape(
@@ -126,6 +124,9 @@ def pinwheel(
             intensity_target,
         ]
     if target_indices is not None:
+        if target_width is None:
+            raise ValueError("pinwheel() missing argument 'target_width' which is not 'None'")
+
         intensity_target = itertools.cycle(intensity_target)
     
         target_mask = np.zeros_like(stim["wedge_mask"])
