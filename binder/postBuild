@@ -6,12 +6,5 @@ echo `which pip`  # in case the wrong `pip` is used, this will let us debug
 mkdir -p ${HOME}/.jupyter/labconfig
 cp binder/labconfig/* ${HOME}/.jupyter/labconfig
 
-# Install and enable extensions...
-pip install "jupytext[myst]>=1.13.3"
-jupyter nbextension install --py jupytext --user
-jupyter nbextension enable --py jupytext --user
-jupyter lab build
-jupyter serverextension enable jupytext
-
 # Install stimupy
 pip install -e .
