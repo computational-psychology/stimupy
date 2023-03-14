@@ -420,7 +420,7 @@ def bessel(
     )
 
     arr = base["radial"] * frequency * 2 * np.pi
-    img = apply_bessel(arr, order=0)
+    img = apply_bessel(arr, order=order)
     img = (img - img.min()) / (img.max() - img.min())
     img = img * (intensity_rings[0] - intensity_rings[1]) + intensity_rings[1]
 
