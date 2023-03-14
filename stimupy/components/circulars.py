@@ -445,7 +445,6 @@ def sine_wave(
     n_rings=None,
     ring_width=None,
     phase_shift=0,
-    period="ignore",
     intensity_rings=(0.0, 1.0),
     intensity_background=0.5,
     origin="mean",
@@ -469,9 +468,6 @@ def sine_wave(
         width of a single ring, in degrees
     phase_shift : float
         phase shift of grating in degrees
-    period : "full", "half", "ignore" (default)
-        whether to ensure the grating only has "full" periods,
-        half "periods", or no guarantees ("ignore")
     intensity_rings : Sequence[float, float]
         min and max intensity of sine-wave, by default (0.0, 1.0)
     intensity_background : float (optional)
@@ -504,7 +500,7 @@ def sine_wave(
         frequency=frequency,
         n_phases=n_rings,
         phase_width=ring_width,
-        period=period,
+        period="ignore",
         rotation=0,
         phase_shift=phase_shift,
         intensities=intensity_rings,
@@ -548,7 +544,6 @@ def square_wave(
     n_rings=None,
     ring_width=None,
     phase_shift=0,
-    period="ignore",
     intensity_rings=(0.0, 1.0),
     intensity_background=0.5,
     origin="mean",
@@ -572,9 +567,6 @@ def square_wave(
         width of a single ring, in degrees
     phase_shift : float
         phase shift of grating in degrees
-    period : "full", "half", "ignore" (default)
-        whether to ensure the grating only has "full" periods,
-        half "periods", or no guarantees ("ignore")
     intensity_rings : Sequence[float, float]
         min and max intensity of square-wave, by default (0.0, 1.0)
     intensity_background : float (optional)
@@ -601,7 +593,6 @@ def square_wave(
         n_rings=n_rings,
         ring_width=ring_width,
         phase_shift=phase_shift,
-        period=period,
         intensity_rings=intensity_rings,
         origin=origin,
         clip=False,
