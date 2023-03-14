@@ -185,7 +185,7 @@ def resolve_dict(dct):
     shape = dct["shape"] if "shape" in dct.keys() else None
     visual_size = dct["visual_size"] if "visual_size" in dct.keys() else None
     shape, visual_size, ppd = resolve(shape=shape, visual_size=visual_size, ppd=ppd)
-    
+
     # Update dict
     dct["shape"] = shape
     dct["visual_size"] = visual_size
@@ -232,7 +232,9 @@ def visual_angles_from_lengths_ppd(lengths, ppd):
     List with lengths (pixels) translated to visual angles (degrees)
     """
     if isinstance(lengths, (int, float)):
-        lengths = [lengths,]
+        lengths = [
+            lengths,
+        ]
 
     if lengths is not None and ppd is not None:
         visual_angles = []
@@ -240,7 +242,7 @@ def visual_angles_from_lengths_ppd(lengths, ppd):
             visual_angles.append(visual_angle_from_length_ppd(length, ppd))
     else:
         visual_angles = None
-    
+
     if len(visual_angles) == 1:
         visual_angles = visual_angles[0]
     return visual_angles
@@ -327,7 +329,9 @@ def lengths_from_visual_angles_ppd(visual_angles, ppd, round=True):
     List with visual angles (degrees) translated to lengths (pixels)
     """
     if isinstance(visual_angles, (int, float, np.int64)):
-        visual_angles = [visual_angles,]
+        visual_angles = [
+            visual_angles,
+        ]
     if isinstance(ppd, (list, tuple)):
         raise ValueError("ppd should be a single number")
 

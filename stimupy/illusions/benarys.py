@@ -168,16 +168,16 @@ def cross_rectangles(
     # Calculate target placement for classical Benarys cross
     theight, twidth = resolution.shape_from_visual_size_ppd(target_size, ppd)
     cheight, cwidth = resolution.shape_from_visual_size_ppd(cross_thickness, ppd)
-    
+
     target_x = (
-        (shape[1]/2 - cwidth/2 - twidth) / ppd[1],
+        (shape[1] / 2 - cwidth / 2 - twidth) / ppd[1],
         (shape[1] - twidth) / ppd[1],
     )
-    
+
     target_y = (
-        (shape[0]/2 - cheight/2 - theight) / ppd[0],
-        (shape[0]/2 - cheight/2) / ppd[0],
-        )
+        (shape[0] / 2 - cheight / 2 - theight) / ppd[0],
+        (shape[0] / 2 - cheight / 2) / ppd[0],
+    )
 
     stim = cross_generalized(
         visual_size=visual_size,
@@ -642,24 +642,24 @@ def add_targets(
             raise ValueError("Rightmost target does not fit in image.")
         if (theight + np.array(ty)).max() > img.shape[0]:
             raise ValueError("Lowest target does not fit in image.")
-            
+
         # Add targets:
         for i in range(len(target_x)):
             if target_type[i] == "r":
                 target = rectangle(
-                    shape=[theight*2, twidth*2],
+                    shape=[theight * 2, twidth * 2],
                     ppd=ppd,
-                    rectangle_size=(theight/ppd, twidth/ppd),
+                    rectangle_size=(theight / ppd, twidth / ppd),
                     intensity_rectangle=intensity_target,
                     intensity_background=0,
                     rotation=target_orientation[i],
-                    )
+                )
 
             elif target_type[i] == "t":
                 target = triangle(
-                    shape=[theight*2, twidth*2],
+                    shape=[theight * 2, twidth * 2],
                     ppd=ppd,
-                    triangle_size=(theight/ppd, twidth/ppd),
+                    triangle_size=(theight / ppd, twidth / ppd),
                     intensity_background=0,
                     intensity_triangle=intensity_target,
                     rotation=target_orientation[i],
@@ -682,7 +682,7 @@ def add_targets(
             tlarge = np.zeros(img.shape)
             tlarge[ty[i] : ty[i] + theight_, tx[i] : tx[i] + twidth_] = tpatch
             img = np.where(mlarge, tlarge, img)
-            mask = np.where(mlarge, i+1, mask)
+            mask = np.where(mlarge, i + 1, mask)
 
         stim = {
             "target_size": target_size,

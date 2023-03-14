@@ -48,7 +48,6 @@ def round_to_vals(arr, vals):
     return out_arr
 
 
-
 def int_factorize(n):
     """All integer factors of integer n
 
@@ -92,7 +91,7 @@ def get_function_argument_names(func):
     names : tuple
         Tuple containing all argument names of given function
     """
-    names = func.__code__.co_varnames[:func.__code__.co_argcount]
+    names = func.__code__.co_varnames[: func.__code__.co_argcount]
     return names
 
 
@@ -179,7 +178,7 @@ def resize_dict(dct, factor, keys=("img", "*mask")):
                 if key.endswith("mask"):
                     img = img.astype(int)
                 new_dict[key] = img
-    
+
     # Update visual_size and shape-keys
     dct["shape"] = resolution.validate_shape(img.shape)
     if "ppd" in dct.keys():
@@ -253,7 +252,7 @@ def stack_dicts(
                 if key.endswith("mask"):
                     img = img.astype(int)
                 new_dict[key] = img
-    
+
     # Update visual_size and shape-keys
     new_dict["shape"] = resolution.validate_shape(img.shape)
     if "ppd" in new_dict.keys():
@@ -407,7 +406,7 @@ def roll_dict(dct, shift, axes, keys=("img", "*mask")):
 def strip_dict(
     dct,
     func,
-    ):
+):
     """
     Create a dictionary by stripping it from all keys that are not also
     an argument to the provided function
@@ -425,10 +424,10 @@ def strip_dict(
         same as input dict but stripped from all keys which are not also
         an argument to the provided function
     """
-    
+
     # Get all argument names for given function
     names = get_function_argument_names(func)
-    
+
     # Add keys from dct into new_dict if the key is also an argument name
     new_dict = dict()
     for name in names:

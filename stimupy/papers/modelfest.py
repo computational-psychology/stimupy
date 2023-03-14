@@ -2099,10 +2099,10 @@ def Bessel41(ppd=PPD):
     stim = bessel(visual_size=256 / PPD, ppd=ppd, frequency=4, origin="center")
     window = gaussians.gaussian(visual_size=256 / PPD, ppd=ppd, sigma=0.5)
     stim["sigma"] = window["sigma"]
-    
+
     # Apply Gaussian windows to Bessel
     stim["img"] = (stim["img"] - stim["img"].mean()) * window["img"]
-    
+
     # Set "background" intensity to 0.5 and make sure that max intensity = 1
     stim["img"] = stim["img"] / stim["img"].max() / 2 + 0.5
 
@@ -2222,7 +2222,7 @@ def read_tif(filename):
 
 def compare(o1, s1, filename):
     import matplotlib.pyplot as plt
-    
+
     o1 = o1 / 255
     s1 = s1 / 1
     vmin, vmax = 0, 1
@@ -2241,6 +2241,7 @@ def compare(o1, s1, filename):
 
 def compare_all():
     import os
+
     if not os.path.exists("./comparisons/"):
         os.makedirs("./comparisons/")
 

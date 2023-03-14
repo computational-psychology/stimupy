@@ -97,7 +97,7 @@ def frames(
     """
     if radii is None:
         raise ValueError("frames() missing argument 'radii' which is not 'None'")
-    
+
     if np.diff(radii).min() < 0:
         raise ValueError("radii need to monotonically increase")
 
@@ -191,7 +191,7 @@ def sine_wave(
         origin=origin,
         round_phase_width=False,
         base_type="cityblock",
-        )
+    )
 
     if clip:
         if origin == "corner":
@@ -201,17 +201,17 @@ def sine_wave(
                 ppd=sw["ppd"],
                 rectangle_size=rsize,
                 rectangle_position=(0, 0),
-                )
+            )
         else:
             rsize = min(sw["visual_size"])
             rect = rectangle(
                 visual_size=sw["visual_size"],
                 ppd=sw["ppd"],
                 rectangle_size=rsize,
-                )
+            )
         sw["img"] = np.where(rect["shape_mask"], sw["img"], intensity_background)
         sw["mask"] = np.where(rect["shape_mask"], sw["mask"], 0)
-    
+
     # Create stimulus dict
     stim = {
         "img": sw["img"],
@@ -225,7 +225,7 @@ def sine_wave(
         "n_frames": sw["n_phases"],
         "period": period,
         "intensity_frames": intensity_frames,
-        }
+    }
     return stim
 
 
@@ -295,11 +295,11 @@ def square_wave(
         intensity_frames=intensity_frames,
         origin=origin,
         clip=False,
-        )
+    )
 
     # Round sine-wave to create square wave
     stim["img"] = round_to_vals(stim["img"], intensity_frames)
-    
+
     if clip:
         if origin == "corner":
             rsize = min(stim["visual_size"]) / 2
@@ -308,14 +308,14 @@ def square_wave(
                 ppd=stim["ppd"],
                 rectangle_size=rsize,
                 rectangle_position=(0, 0),
-                )
+            )
         else:
             rsize = min(stim["visual_size"])
             rect = rectangle(
                 visual_size=stim["visual_size"],
                 ppd=stim["ppd"],
                 rectangle_size=rsize,
-                )
+            )
         stim["img"] = np.where(rect["shape_mask"], stim["img"], intensity_background)
         stim["frame_mask"] = np.where(rect["shape_mask"], stim["frame_mask"], 0)
     return stim

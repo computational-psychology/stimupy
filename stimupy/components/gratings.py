@@ -1,4 +1,5 @@
 import numpy as np
+
 # import warnings
 
 from stimupy.components import draw_sine_wave, draw_regions
@@ -68,14 +69,16 @@ def sine_wave(
         mask with integer index for each bar (key: "grating_mask"),
         and additional keys containing stimulus parameters
     """
-    
+
     if len(intensity_bars) != 2:
         raise ValueError("intensity_bars should be [float, float]")
 
     lst = [visual_size, ppd, shape, frequency, n_bars, bar_width]
     if len([x for x in lst if x is not None]) < 3:
-        raise ValueError("'sine_wave()' needs 3 non-None arguments for resolving from 'visual_size', "
-                         "'ppd', 'shape', 'frequency', 'n_bars', 'bar_width'")
+        raise ValueError(
+            "'sine_wave()' needs 3 non-None arguments for resolving from 'visual_size', "
+            "'ppd', 'shape', 'frequency', 'n_bars', 'bar_width'"
+        )
 
     sw = draw_sine_wave(
         visual_size=visual_size,
@@ -91,8 +94,8 @@ def sine_wave(
         origin=origin,
         round_phase_width=round_phase_width,
         base_type="rotated",
-        )
-    
+    )
+
     # Create stimulus dict
     stim = {
         "img": sw["img"],
@@ -108,7 +111,7 @@ def sine_wave(
         "period": period,
         "intensity_bars": intensity_bars,
         "phase_shift": phase_shift,
-        }
+    }
     return stim
 
 
@@ -180,7 +183,7 @@ def square_wave(
         intensity_bars=intensity_bars,
         origin=origin,
         round_phase_width=round_phase_width,
-        )
+    )
 
     # Round sine-wave to create square wave
     stim["img"] = round_to_vals(stim["img"], intensity_bars)
@@ -251,10 +254,12 @@ def staircase(
         origin="corner",
         round_phase_width=round_phase_width,
     )
-    
+
     if len(intensity_bars) == 2:
-        intensity_bars = np.linspace(intensity_bars[0], intensity_bars[1], int(np.ceil(stim["n_bars"])))
-    
+        intensity_bars = np.linspace(
+            intensity_bars[0], intensity_bars[1], int(np.ceil(stim["n_bars"]))
+        )
+
     # Use grating_mask to draw staircase
     stim["img"] = draw_regions(mask=stim["grating_mask"], intensities=intensity_bars)
     stim["intensity_bars"] = intensity_bars

@@ -28,7 +28,9 @@ def arrs_to_checksum(stim, keys=["img", "mask"]):
         same as input dict but keys now only contain the hex
     """
     if isinstance(keys, str):
-        keys = [keys,]
+        keys = [
+            keys,
+        ]
 
     for key in keys:
         stim[key] = md5(np.ascontiguousarray(stim[key].round(8))).hexdigest()

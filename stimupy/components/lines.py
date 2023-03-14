@@ -281,7 +281,7 @@ def ellipse(
         intensity_background=intensity_background,
         origin="mean",
     )
-    
+
     stim2 = ellipse_shape(
         radius=np.array(radius) - line_width,
         visual_size=visual_size,
@@ -289,9 +289,9 @@ def ellipse(
         shape=shape,
         origin="mean",
     )
-    
-    stim["img"] = np.where(stim2["shape_mask"]==1, intensity_background, stim["img"])
-    stim["line_mask"] = np.where(stim2["shape_mask"]==1, 0, stim["shape_mask"])
+
+    stim["img"] = np.where(stim2["shape_mask"] == 1, intensity_background, stim["img"])
+    stim["line_mask"] = np.where(stim2["shape_mask"] == 1, 0, stim["shape_mask"])
     del stim["shape_mask"]
     return stim
 
@@ -345,7 +345,7 @@ def circle(
         line_width=line_width,
         intensity_line=intensity_line,
         intensity_background=intensity_background,
-        )
+    )
     return stim
 
 

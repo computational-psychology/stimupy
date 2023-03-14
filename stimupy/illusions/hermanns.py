@@ -53,7 +53,9 @@ def grid(
     if len(np.unique(ppd)) > 1:
         raise ValueError("ppd should be equal in x and y direction")
 
-    eheight, ewidth, ethick = resolution.lengths_from_visual_angles_ppd(element_size, np.unique(ppd))
+    eheight, ewidth, ethick = resolution.lengths_from_visual_angles_ppd(
+        element_size, np.unique(ppd)
+    )
 
     if eheight <= ethick:
         raise ValueError("Element thickness larger than height")

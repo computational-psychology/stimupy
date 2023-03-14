@@ -7,6 +7,7 @@ __all__ = [
     "img_values",
 ]
 
+
 def avg_target_values(stim, mask_key="target_mask", f_average=np.median):
     """Average pixel value in each target region of stimulus
 

@@ -35,7 +35,7 @@ def remove_padding(arr, c):
 
     """
     array_shape = arr.shape
-    arr = arr[c:array_shape[0]-c, c:array_shape[1]-c]
+    arr = arr[c : array_shape[0] - c, c : array_shape[1] - c]
     return arr
 
 
@@ -59,8 +59,8 @@ def add_padding(arr, c, val):
 
     """
     h, w = arr.shape
-    new_arr = np.ones([h+c*2, w+c*2]) * val
-    new_arr[c:h+c, c:w+c] = arr
+    new_arr = np.ones([h + c * 2, w + c * 2]) * val
+    new_arr[c : h + c, c : w + c] = arr
     return new_arr
 
 
@@ -257,8 +257,9 @@ def pad_dict_by_visual_size(dct, padding, ppd, pad_value=0.0, keys=("img", "*mas
             img = dct[key]
             if isinstance(img, np.ndarray):
                 # Add mask which indicates padded region
-                new_dict["pad_mask"] = pad_by_visual_size(np.zeros(img.shape), padding,
-                                                          ppd, 1).astype(int)
+                new_dict["pad_mask"] = pad_by_visual_size(
+                    np.zeros(img.shape), padding, ppd, 1
+                ).astype(int)
 
                 if key.endswith("mask"):
                     img = pad_by_visual_size(img, padding, ppd, 0)
@@ -266,7 +267,7 @@ def pad_dict_by_visual_size(dct, padding, ppd, pad_value=0.0, keys=("img", "*mas
                 else:
                     img = pad_by_visual_size(img, padding, ppd, pad_value)
                 new_dict[key] = img
-    
+
     # Update visual_size and shape-keys
     new_dict["visual_size"] = resolution.visual_size_from_shape_ppd(img.shape, ppd)
     new_dict["shape"] = resolution.validate_shape(img.shape)
@@ -348,9 +349,10 @@ def pad_dict_by_shape(dct, padding, pad_value=0, keys=("img", "*mask")):
             img = dct[key]
             if isinstance(img, np.ndarray):
                 # Add mask which indicates padded region
-                new_dict["pad_mask"] = np.pad(np.zeros(img.shape), padding, mode="constant",
-                                              constant_values=1).astype(int)
-    
+                new_dict["pad_mask"] = np.pad(
+                    np.zeros(img.shape), padding, mode="constant", constant_values=1
+                ).astype(int)
+
                 if key.endswith("mask"):
                     img = np.pad(img, padding, mode="constant", constant_values=0)
                     img = img.astype(int)
@@ -415,10 +417,11 @@ def pad_dict_to_shape(dct, shape, pad_value=0, keys=("img", "*mask")):
                 padding_before = padding_per_axis // 2
                 padding_after = padding_per_axis - padding_before
                 padding = np.stack([padding_before, padding_after]).T
-                
+
                 # Add mask which indicates padded region
-                new_dict["pad_mask"] = pad_by_shape(np.zeros(img.shape), padding=padding,
-                                                    pad_value=1).astype(int)
+                new_dict["pad_mask"] = pad_by_shape(
+                    np.zeros(img.shape), padding=padding, pad_value=1
+                ).astype(int)
 
                 if key.endswith("mask"):
                     img = pad_by_shape(img, padding=padding, pad_value=0)

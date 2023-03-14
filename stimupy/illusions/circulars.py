@@ -93,7 +93,7 @@ def rings(
         origin=origin,
         clip=clip,
     )
-    
+
     if isinstance(target_indices, (float, int)):
         target_indices = [target_indices]
 
@@ -103,8 +103,8 @@ def rings(
     # Add targets
     stim["target_mask"] = np.zeros(stim["shape"])
     for i, ring_idx in enumerate(target_indices):
-        stim["img"] = np.where(stim["ring_mask"]==ring_idx+1, intensity_target, stim["img"])
-        stim["target_mask"] = np.where(stim["ring_mask"]==ring_idx+1, i+1, 0).astype(int)
+        stim["img"] = np.where(stim["ring_mask"] == ring_idx + 1, intensity_target, stim["img"])
+        stim["target_mask"] = np.where(stim["ring_mask"] == ring_idx + 1, i + 1, 0).astype(int)
 
     # Update stim dict
     stim["target_indices"] = target_indices

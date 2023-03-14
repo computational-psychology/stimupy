@@ -128,7 +128,7 @@ def pinwheel(
             raise ValueError("pinwheel() missing argument 'target_width' which is not 'None'")
 
         intensity_target = itertools.cycle(intensity_target)
-    
+
         target_mask = np.zeros_like(stim["wedge_mask"])
         for target_idx, (segment_idx, center, width, intensity) in enumerate(
             zip(target_indices, target_center, target_width, intensity_target)
@@ -156,7 +156,9 @@ if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
 
     stims = {
-        "pinwheel": pinwheel(visual_size=8, ppd=32, n_segments=10, target_width=1, target_indices=3),
+        "pinwheel": pinwheel(
+            visual_size=8, ppd=32, n_segments=10, target_width=1, target_indices=3
+        ),
     }
 
     plot_stimuli(stims, mask=True, save=None)

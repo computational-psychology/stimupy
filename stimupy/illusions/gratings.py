@@ -284,7 +284,7 @@ def grating_masked(
     )["img"]
 
     small_grating = pad_dict_to_shape(small_grating, large_grating["shape"])
-    window = window * (small_grating["pad_mask"]-1)
+    window = window * (small_grating["pad_mask"] - 1)
     img = np.where(window, small_grating["img"], large_grating["img"])
     mask = np.where(window, small_grating["target_mask"], 0)
 
@@ -633,14 +633,14 @@ def induction_blur(
         origin=origin,
         round_phase_width=True,
     )
-    
+
     gauss = gaussian(
         visual_size=stim["visual_size"],
         ppd=stim["ppd"],
         shape=stim["shape"],
         sigma=sigma,
         origin="center",
-        )["img"]
+    )["img"]
     stim["img"] = convolve(stim["img"], gauss / np.sum(gauss), "same", padding=True)
 
     # Identify target region

@@ -494,12 +494,14 @@ def draw_sine_wave(
     if origin is None:
         raise ValueError("draw_sine_wave() missing argument 'origin' which is not 'None'")
     if round_phase_width is None:
-        raise ValueError("draw_sine_wave() missing argument 'round_phase_width' which is not 'None'")
+        raise ValueError(
+            "draw_sine_wave() missing argument 'round_phase_width' which is not 'None'"
+        )
     if period is None:
         period = "ignore"
-    
+
     base_types = ["horizontal", "vertical", "rotated", "radial", "angular", "cityblock"]
-    if not base_type in base_types:
+    if base_type not in base_types:
         raise ValueError(f"base_type needs to be one of {base_types}")
 
     lst = [visual_size, ppd, shape, frequency, n_phases, phase_width]
@@ -533,12 +535,12 @@ def draw_sine_wave(
         ppd_1D = ppd.horizontal
     else:
         ppd_1D = None
-    
-    if rotation%90 != 0 and round_phase_width:
+
+    if rotation % 90 != 0 and round_phase_width:
         round_phase_width = False
         warnings.warn("Rounding phase width is turned off for oblique gratings")
-    
-    if rotation%90 != 0 and period != "ignore":
+
+    if rotation % 90 != 0 and period != "ignore":
         period = "ignore"
         warnings.warn("Period ignored for oblique gratings")
 
@@ -562,7 +564,7 @@ def draw_sine_wave(
 
     # Determine size/shape of whole image
     if None in shape:
-        shape = [length*alpha[1], length*alpha[0]]
+        shape = [length * alpha[1], length * alpha[0]]
         if np.round(alpha[1], 5) == 0:
             shape[0] = shape[1]
         if np.round(alpha[0], 5) == 0:
@@ -579,39 +581,47 @@ def draw_sine_wave(
     ppd = resolution.validate_ppd(ppd)
 
     # Set up coordinates
-    base = image_base(shape=shape, visual_size=visual_size, ppd=ppd, rotation=rotation, origin=origin)
+    base = image_base(
+        shape=shape, visual_size=visual_size, ppd=ppd, rotation=rotation, origin=origin
+    )
     distances = base[base_type]
     distances = np.round(distances, 6)
 
     # Shift distances minimally to ensure proper behavior
     if origin == "corner":
-        distances = adapt_intensity_range(distances, 1e-03, distances.max()-1e-03)
+        distances = adapt_intensity_range(distances, 1e-03, distances.max() - 1e-03)
     else:
-        distances = adapt_intensity_range(distances, distances.min()-1e-05, distances.max()-1e-05)
+        distances = adapt_intensity_range(
+            distances, distances.min() - 1e-05, distances.max() - 1e-05
+        )
 
     # Draw image
     img = np.sin(frequency * 2 * np.pi * distances + np.deg2rad(phase_shift))
     img = adapt_intensity_range(img, intensities[0], intensities[1])
-    
+
     # Create mask
-    if origin == "corner" or base_type=="radial" or base_type=="cityblock":
-        vals = np.arange(distances.min()+phase_width/2, distances.max()+phase_width*2, phase_width)
-        
+    if origin == "corner" or base_type == "radial" or base_type == "cityblock":
+        vals = np.arange(
+            distances.min() + phase_width / 2, distances.max() + phase_width * 2, phase_width
+        )
+
         if origin == "mean":
             vals -= distances.min()
     else:
         dmin = distances.min()
-        dmax = distances.max()+phase_width*2
-        vals1 = np.arange(0+phase_width/2, dmax, phase_width)
-        vals2 = -np.arange(-phase_width/2, -dmin+phase_width, phase_width)
+        dmax = distances.max() + phase_width * 2
+        vals1 = np.arange(0 + phase_width / 2, dmax, phase_width)
+        vals2 = -np.arange(-phase_width / 2, -dmin + phase_width, phase_width)
         vals = np.unique(np.append(vals2[::-1], vals1))
 
-    phase_shift_ = (phase_shift%360)/180 * phase_width
-    mask = round_to_vals(distances-distances.min(), np.round(vals-phase_shift_, 6)-distances.min())
-    
+    phase_shift_ = (phase_shift % 360) / 180 * phase_width
+    mask = round_to_vals(
+        distances - distances.min(), np.round(vals - phase_shift_, 6) - distances.min()
+    )
+
     for i, val in enumerate(np.unique(mask)):
-        mask = np.where(mask==val, i+1, mask)
-    
+        mask = np.where(mask == val, i + 1, mask)
+
     stim = {
         "img": img,
         "mask": mask.astype(int),
@@ -621,7 +631,7 @@ def draw_sine_wave(
         "frequency": frequency,
         "n_phases": n_phases,
         "phase_width": phase_width,
-        }
+    }
     return stim
 
 
@@ -722,7 +732,7 @@ def create_overview():
 
 def overview(mask=False, save=None, extent_key="shape"):
     """
-    Plot overview with examples from all stimulus-components 
+    Plot overview with examples from all stimulus-components
 
     Parameters
     ----------

@@ -180,7 +180,7 @@ def resolve(shape, visual_size, ppd, original_visual_size):
         shape, visual_size, ppd = resolution.resolve(
             shape, np.array(original_visual_size) * visual_resize, ppd
         )
-    
+
     if ppd[0] % 2 != 0:
         raise ValueError("use an even ppd for domijan2015-stimuli")
 
@@ -424,7 +424,7 @@ def rings(visual_size=VSIZES["rings"], ppd=PPD, shape=SHAPES["rings"]):
     radii = np.array((0.55, 1.05, 1.55, 2.05, 2.55, 3.05, 3.55, 4.05)) * visual_resize
 
     params = {
-        "visual_size": radii.max()*2,
+        "visual_size": radii.max() * 2,
         "ppd": ppd,
         "radii": radii,
     }
@@ -489,7 +489,7 @@ def bullseye(visual_size=VSIZES["bullseye"], ppd=PPD, shape=SHAPES["bullseye"]):
     radii = np.array((0.55, 1.05, 1.55, 2.05, 2.55, 3.05, 3.55, 4.05)) * visual_resize
 
     params = {
-        "visual_size": radii.max()*2,
+        "visual_size": radii.max() * 2,
         "ppd": ppd,
         "radii": radii,
     }

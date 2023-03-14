@@ -60,11 +60,8 @@ def narrowband(
         raise ValueError("ppd should be equal in x and y direction")
 
     bp = bandpass(
-        visual_size=visual_size,
-        ppd=ppd,
-        center_frequency=center_frequency,
-        bandwidth=bandwidth
-        )["img"]
+        visual_size=visual_size, ppd=ppd, center_frequency=center_frequency, bandwidth=bandwidth
+    )["img"]
 
     if pseudo_noise:
         # Create white noise with frequency amplitude of 1 everywhere

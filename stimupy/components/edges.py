@@ -2,7 +2,6 @@ import copy
 import numpy as np
 
 from stimupy.components import gaussians, image_base
-from stimupy.utils import resolution
 
 __all__ = [
     "step_edge",
@@ -186,18 +185,18 @@ def cornsweet_edge(
     """
     if ramp_width is None:
         raise ValueError("cornsweet_edge() missing argument 'ramp_width' which is not 'None'")
-    
+
     base = image_base(
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,
         rotation=rotation,
         origin="mean",
-        )
-    
+    )
+
     if ramp_width > max(base["visual_size"]) / 2:
         raise ValueError("ramp_width is too large")
-    
+
     dist = np.round(base["rotated"] / ramp_width, 6)
     d1 = copy.deepcopy(dist)
     d2 = copy.deepcopy(dist) * (-1)
@@ -207,11 +206,15 @@ def cornsweet_edge(
     d2[d2 > 1] = 1
 
     # Create ramp profiles individually for left and right side
-    profile1 = (1.0 - d1) ** exponent * (intensity_edges[0] - intensity_plateau) + intensity_plateau
-    profile2 = (1.0 - d2) ** exponent * (intensity_edges[1] - intensity_plateau) + intensity_plateau
-    img = np.where(d1==-1, 0, profile1) + np.where(d2==-1, 0, profile2)
-    mask = np.where(d1==-1, 0, 2) + np.where(d2==-1, 0, 1)
-    mask[mask==3] = 1
+    profile1 = (1.0 - d1) ** exponent * (
+        intensity_edges[0] - intensity_plateau
+    ) + intensity_plateau
+    profile2 = (1.0 - d2) ** exponent * (
+        intensity_edges[1] - intensity_plateau
+    ) + intensity_plateau
+    img = np.where(d1 == -1, 0, profile1) + np.where(d2 == -1, 0, profile2)
+    mask = np.where(d1 == -1, 0, 2) + np.where(d2 == -1, 0, 1)
+    mask[mask == 3] = 1
 
     stim = {
         "img": img,

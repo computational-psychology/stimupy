@@ -12,6 +12,7 @@ __all__ = [
     "adapt_intensity_range_dict",
 ]
 
+
 def transparency(img, mask=None, alpha=0.5, tau=0.2):
     """Applies a transparency to image at specified (mask) location if provided
 

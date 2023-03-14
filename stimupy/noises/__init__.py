@@ -42,7 +42,7 @@ def create_overview():
 
 def overview(mask=False, save=None, extent_key="shape"):
     """
-    Plot overview with examples from all stimulus-noises 
+    Plot overview with examples from all stimulus-noises
 
     Parameters
     ----------

@@ -75,7 +75,9 @@ def cornsweet(
     )
 
     # Generate the target mask
-    mask = np.where(stim["d1"]==1, stim["edge_mask"], 0) + np.where(stim["d2"]==1, stim["edge_mask"], 0)
+    mask = np.where(stim["d1"] == 1, stim["edge_mask"], 0) + np.where(
+        stim["d2"] == 1, stim["edge_mask"], 0
+    )
     stim["target_mask"] = mask.astype(int)
     return stim
 

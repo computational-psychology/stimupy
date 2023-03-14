@@ -469,8 +469,10 @@ def anderson(
     mask = stim["target_mask"]
     soffset = resolution.lengths_from_visual_angles_ppd(stripe_center_offset, np.unique(ppd)[0])
     sheight = resolution.lengths_from_visual_angles_ppd(stripe_height, np.unique(ppd)[0])
-    cycle_width = resolution.lengths_from_visual_angles_ppd(1.0 / (frequency * 2), np.unique(ppd)[0]) * 2
-    
+    cycle_width = (
+        resolution.lengths_from_visual_angles_ppd(1.0 / (frequency * 2), np.unique(ppd)[0]) * 2
+    )
+
     phase_width_px = cycle_width // 2
     height, width = img.shape
     nbars = width // phase_width_px
@@ -494,18 +496,14 @@ def anderson(
     # Add stripe at top
     ystart = height // 2 - soffset - sheight // 2
     img[ystart : ystart + sheight, 0 : phase_width_px * np.min(ttop)] = intensity_stripes[0]
-    img[
-        ystart : ystart + sheight, phase_width_px * (np.max(ttop) + 1) : :
-    ] = intensity_stripes[0]
+    img[ystart : ystart + sheight, phase_width_px * (np.max(ttop) + 1) : :] = intensity_stripes[0]
     if (ystart < 0) or (ystart + sheight > height):
         raise ValueError("Anderson stripes do not fully fit into stimulus")
 
     # Add stripe at bottom
     ystart = height // 2 + soffset - sheight // 2
     img[ystart : ystart + sheight, 0 : phase_width_px * np.min(tbot)] = intensity_stripes[1]
-    img[
-        ystart : ystart + sheight, phase_width_px * (np.max(tbot) + 1) : :
-    ] = intensity_stripes[1]
+    img[ystart : ystart + sheight, phase_width_px * (np.max(tbot) + 1) : :] = intensity_stripes[1]
     if (ystart < 0) or (ystart + sheight > height):
         raise ValueError("Anderson stripes do not fully fit into stimulus")
 
@@ -700,9 +698,13 @@ def yazdanbakhsh(
     img = stim["img"]
     mask = stim["target_mask"]
     gap_size_px = resolution.lengths_from_visual_angles_ppd(gap_size, np.unique(ppd)[0])
-    target_offset_px = resolution.lengths_from_visual_angles_ppd(target_center_offset, np.unique(ppd)[0])
+    target_offset_px = resolution.lengths_from_visual_angles_ppd(
+        target_center_offset, np.unique(ppd)[0]
+    )
     tsize_px = resolution.lengths_from_visual_angles_ppd(target_height, np.unique(ppd)[0])
-    cycle_width_px = resolution.lengths_from_visual_angles_ppd(1.0 / (frequency * 2), np.unique(ppd)[0]) * 2
+    cycle_width_px = (
+        resolution.lengths_from_visual_angles_ppd(1.0 / (frequency * 2), np.unique(ppd)[0]) * 2
+    )
     phase_width_px = cycle_width_px // 2
     height, width = img.shape
     nbars = width // phase_width_px

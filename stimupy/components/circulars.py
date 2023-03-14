@@ -15,7 +15,7 @@ __all__ = [
     "bessel",
     "sine_wave",
     "square_wave",
-    ]
+]
 
 
 def resolve_circular_params(
@@ -214,7 +214,7 @@ def disc_and_rings(
         # one axis is None; make square
         visual_size = [x for x in visual_size if x is not None]
         visual_size = resolution.validate_visual_size(visual_size)
-    
+
     if np.diff(radii).min() < 0:
         raise ValueError("radii need to monotonically increase")
 
@@ -352,7 +352,7 @@ def ring(
     if radii[1] is None:
         shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
         radii[1] = np.max(visual_size) / 2
-    
+
     if radii[1] < radii[0]:
         raise ValueError("first radius needs to be smaller than second radius")
 
@@ -365,7 +365,7 @@ def ring(
         intensity_background=intensity_background,
         origin=origin,
     )
-    stim["ring_mask"] = np.where(stim["ring_mask"]==2, 1, 0)
+    stim["ring_mask"] = np.where(stim["ring_mask"] == 2, 1, 0)
     return stim
 
 
@@ -507,19 +507,19 @@ def sine_wave(
         origin=origin,
         round_phase_width=False,
         base_type="radial",
-        )
-    
+    )
+
     if clip:
-        csize = min(sw["visual_size"]) / 2.
+        csize = min(sw["visual_size"]) / 2.0
         circle = disc(
             visual_size=sw["visual_size"],
             ppd=sw["ppd"],
             radius=csize,
             origin=origin,
-            )
+        )
         sw["img"] = np.where(circle["ring_mask"], sw["img"], intensity_background)
         sw["mask"] = np.where(circle["ring_mask"], sw["mask"], 0)
-    
+
     # Create stimulus dict
     stim = {
         "img": sw["img"],
@@ -532,7 +532,7 @@ def sine_wave(
         "frame_width": sw["phase_width"],
         "n_frames": sw["n_phases"],
         "intensity_rings": intensity_rings,
-        }
+    }
     return stim
 
 
@@ -596,19 +596,19 @@ def square_wave(
         intensity_rings=intensity_rings,
         origin=origin,
         clip=False,
-        )
+    )
 
     # Round sine-wave to create square wave
     stim["img"] = round_to_vals(stim["img"], intensity_rings)
-    
+
     if clip:
-        csize = min(stim["visual_size"]) / 2.
+        csize = min(stim["visual_size"]) / 2.0
         circle = disc(
             visual_size=stim["visual_size"],
             ppd=stim["ppd"],
             radius=csize,
             origin=origin,
-            )
+        )
         stim["img"] = np.where(circle["ring_mask"], stim["img"], intensity_background)
         stim["ring_mask"] = np.where(circle["ring_mask"], stim["ring_mask"], 0).astype(int)
     return stim

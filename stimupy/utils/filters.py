@@ -16,7 +16,7 @@ def convolve(
     mode="same",
     axes=None,
     padding=False,
-    ):
+):
     """
     Convolve two N-dimensional arrays using FFT
 
@@ -54,7 +54,7 @@ def bandpass(
     shape=None,
     center_frequency=None,
     bandwidth=None,
-    ):
+):
     """
     Function to create a 2d bandpass filter in the frequency domain
 
@@ -84,7 +84,7 @@ def bandpass(
 
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
-    
+
     if center_frequency > (min(ppd) / 2):
         raise ValueError(
             f"Center frequency ({center_frequency}) should not exceed Nyquist limit {min(ppd)/2} (ppd/2)"
@@ -97,7 +97,7 @@ def bandpass(
 
     # Calculate the distance of each 2d spatial frequency from requested center frequency
     distance = np.abs(center_frequency - np.sqrt(Fx**2.0 + Fy**2.0))
-    
+
     # Calculate sigma to eventuate given bandwidth (in octaves)
     sigma = (
         center_frequency
@@ -106,7 +106,7 @@ def bandpass(
     )
 
     # Create bandpass filter
-    fil = 1./(np.sqrt(2.*np.pi) * sigma) * np.exp(-(distance**2.) / (2. * sigma**2.))
+    fil = 1.0 / (np.sqrt(2.0 * np.pi) * sigma) * np.exp(-(distance**2.0) / (2.0 * sigma**2.0))
     fil = fil / fil.max()
 
     stim = {
@@ -116,7 +116,7 @@ def bandpass(
         "shape": shape,
         "center_frequency": center_frequency,
         "sigma": sigma,
-        "frequency_extent": [fy[0], fy[-1], fx[0], fx[-1]]
-        }
+        "frequency_extent": [fy[0], fy[-1], fx[0], fx[-1]],
+    }
 
     return stim

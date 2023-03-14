@@ -88,8 +88,8 @@ def rectangle(
     center_pos = np.array(center_pos).clip(min=0)
 
     # Determine shift
-    rect_pos = resolution.shape_from_visual_size_ppd(rectangle_position,  base["ppd"])
-    center_pos = resolution.shape_from_visual_size_ppd(center_pos,  base["ppd"])
+    rect_pos = resolution.shape_from_visual_size_ppd(rectangle_position, base["ppd"])
+    center_pos = resolution.shape_from_visual_size_ppd(center_pos, base["ppd"])
     rect_shift = (np.array(rect_pos) - np.array(center_pos)).astype(int)
 
     # Rotate coordinate systems
@@ -591,7 +591,7 @@ def circle(
         rotation=0,
         origin=origin,
         restrict_size=restrict_size,
-        )
+    )
     return stim
 
 

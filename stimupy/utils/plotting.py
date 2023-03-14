@@ -10,6 +10,7 @@ __all__ = [
     "plot_stimuli",
 ]
 
+
 def compare_plots(plots):
     """
     Plot multiple plots in one plot for comparing.
@@ -104,28 +105,28 @@ def plot_stim(
                 mask = stim["target_mask"]
             else:
                 mask = stim[mask_keys[0]]
-    
+
             if (mask is None) or (len(np.unique(mask)) == 1):
                 warnings.warn("mask is None or empty- cannot plot mask")
                 ax.imshow(stim["img"], cmap="gray", vmin=vmin, vmax=vmax, extent=extent)
-    
+
             else:
                 img = np.dstack([img, img, img])
                 mask = np.dstack([mask, mask, mask])
-    
+
                 if np.unique(mask).size >= 20:
                     colormap = plt.cm.colors.ListedColormap(np.random.rand(mask.max() + 1, 3))
                 elif np.unique(mask).size >= 10 and np.unique(mask).size < 20:
                     colormap = plt.cm.tab20
                 else:
                     colormap = plt.cm.tab10
-    
+
                 for idx in np.unique(mask)[np.unique(mask) > 0]:
                     color = colormap.colors[idx]
                     color = np.reshape(color, (1, 1, 3))
                     img = np.where(mask == idx, color, img)
                 ax.imshow(img, extent=extent)
-    
+
                 # Colorbar for mask indices
                 bounds = list(np.unique(mask))
                 norm = mpl.colors.BoundaryNorm(bounds, len(bounds) + 1, extend="both")

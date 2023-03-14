@@ -111,7 +111,9 @@ def rectangle_generalized(
     mask = stim["shape_mask"]
 
     # Add covers
-    cheight, cwidth = resolution.lengths_from_visual_angles_ppd(covers_size, np.unique(ppd), round=False)
+    cheight, cwidth = resolution.lengths_from_visual_angles_ppd(
+        covers_size, np.unique(ppd), round=False
+    )
     cx = resolution.lengths_from_visual_angles_ppd(covers_x, np.unique(ppd), round=False)
     cy = resolution.lengths_from_visual_angles_ppd(covers_y, np.unique(ppd), round=False)
 
@@ -346,10 +348,12 @@ def cross_generalized(
     img = stim["img"]
     mask = stim["shape_mask"]
 
-    cheight, cwidth = resolution.lengths_from_visual_angles_ppd(covers_size, np.unique(ppd), round=False)
+    cheight, cwidth = resolution.lengths_from_visual_angles_ppd(
+        covers_size, np.unique(ppd), round=False
+    )
     cx = resolution.lengths_from_visual_angles_ppd(covers_x, np.unique(ppd), round=False)
     cy = resolution.lengths_from_visual_angles_ppd(covers_y, np.unique(ppd), round=False)
-    
+
     cheight = int(np.round(cheight))
     cwidth = int(np.round(cwidth))
     cx = np.round(cx).astype(int)
