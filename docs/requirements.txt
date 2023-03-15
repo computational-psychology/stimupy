@@ -1,5 +1,1 @@
-jupyter-book
-matplotlib
-numpy
-scipy
-pandas
+.[docs]
