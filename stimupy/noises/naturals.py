@@ -1,7 +1,3 @@
-"""
-@author: lynnschmittwilken
-"""
-
 import numpy as np
 
 from stimupy.noises.utils import pseudo_white_spectrum
