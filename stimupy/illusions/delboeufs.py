@@ -16,8 +16,7 @@ def delboeuf(
     intensity_target=0.0,
     intensity_background=1.0,
 ):
-    """
-    Delboeuf stimulus
+    """Delboeuf's (1865) stimulus
 
     Parameters
     ----------
@@ -99,8 +98,7 @@ def two_sided(
     intensity_target=0.0,
     intensity_background=1.0,
 ):
-    """
-    Two-sided Delboeuf stimulus
+    """Two-sided Delboeuf's (1865) stimulus
 
     Parameters
     ----------

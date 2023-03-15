@@ -18,8 +18,7 @@ def binary(
     shape=None,
     intensity_range=(0, 1),
 ):
-    """
-    Function to create white noise.
+    """Draw binary noise texture
 
     Parameters
     ----------

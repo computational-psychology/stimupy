@@ -462,8 +462,7 @@ def induction(
     intensity_target=0.5,
     origin="corner",
 ):
-    """
-    Grating induction illusion using a sine-wave grating
+    """Grating induction illusion using a sine-wave grating
 
     Parameters
     ----------
@@ -567,8 +566,7 @@ def induction_blur(
     intensity_target=0.5,
     origin="corner",
 ):
-    """
-    Grating induction illusion using a blurred square-wave grating
+    """Grating induction illusion using a blurred square-wave grating
 
     Parameters
     ----------

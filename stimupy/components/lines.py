@@ -26,7 +26,7 @@ def line(
     intensity_background=0,
     origin="corner",
 ):
-    """Draw a line given the input parameters
+    """Draw a line
 
     Parameters
     ----------
@@ -142,7 +142,7 @@ def dipole(
     rotation=0,
     intensity_lines=(0, 1),
 ):
-    """Draw a two centered parallel lines given the input parameters
+    """Draw a two centered parallel lines
 
     Parameters
     ----------
@@ -239,7 +239,7 @@ def circle(
     intensity_line=1,
     intensity_background=0,
 ):
-    """Draw a circle given the input parameters
+    """Draw a circle
 
     Parameters
     ----------

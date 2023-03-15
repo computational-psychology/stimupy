@@ -29,9 +29,7 @@ def rectangle_generalized(
     intensity_target=0.5,
     intensity_covers=1.0,
 ):
-    """
-    Todorovic's illusion with rectangular target and rectangular covers added with flexible
-    number of covers and flexible target and cover placement
+    """Rectangular target and rectangular covers added with flexible number of covers and flexible target and cover placement
 
     Parameters
     ----------
@@ -155,9 +153,7 @@ def rectangle(
     intensity_target=0.5,
     intensity_covers=1.0,
 ):
-    """
-    Todorovic's illusion with rectangular target in the center and four rectangular
-    covers added symmetrically around target center
+    """Rectangular target in the center and four rectangular covers added symmetrically around target center
 
     Parameters
     ----------
@@ -252,9 +248,7 @@ def cross_generalized(
     intensity_target=0.5,
     intensity_covers=1.0,
 ):
-    """
-    Todorovic's illusion with cross target and rectangular covers added with
-    flexible number of covers and flexible cover placement
+    """Cross target and rectangular covers added with flexible number of covers and flexible cover placement
 
     Parameters
     ----------
@@ -380,9 +374,7 @@ def cross(
     intensity_target=0.5,
     intensity_covers=1.0,
 ):
-    """
-    Todorovic's illusion with cross target and four rectangular covers added
-    at inner cross corners
+    """Cross target and four rectangular covers added at inner cross corners
 
     Parameters
     ----------
@@ -477,9 +469,7 @@ def equal(
     intensity_target=0.5,
     intensity_covers=1.0,
 ):
-    """
-    Todorovic's illusion with cross target and four rectangular covers added at
-    inner cross corners
+    """Cross target and four rectangular covers added at inner cross corners
 
     Parameters
     ----------
@@ -646,9 +636,7 @@ def two_sided_cross(
     intensity_target=0.5,
     intensity_covers=(1.0, 0.0),
 ):
-    """
-    Two-sided Todorovic's illusion with cross target and four rectangular covers
-    added at inner cross corners
+    """Two-sided with cross target and four rectangular covers added at inner cross corners
 
     Parameters
     ----------
@@ -735,9 +723,7 @@ def two_sided_equal(
     intensity_target=0.5,
     intensity_covers=(1.0, 0.0),
 ):
-    """
-    Two-sided Todorovic's illusion with cross target and four rectangular covers
-    added at inner cross corners
+    """Two-sided with cross target and four rectangular covers added at inner cross corners
 
     Parameters
     ----------

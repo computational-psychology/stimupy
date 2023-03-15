@@ -136,8 +136,7 @@ def cornsweet_edge(
     intensity_plateau=0.5,
     exponent=2.75,
 ):
-    """
-    Create a matrix containing a rectangular Cornsweet edge stimulus.
+    """Draw rectangular Cornsweet edge stimulus.
     The 2D luminance profile of the stimulus is defined as
     Left side:
     v = vtarget + (1 - X / w) ** a * (intensity_max-vtarget) for the ramp and v = vtarget beyond.

@@ -18,8 +18,7 @@ def varying_cells(
     intensity_grid=1.0,
     intensity_target=0.5,
 ):
-    """
-    Cube stimulus (Agostini & Galmonte, 2002) with flexible cell sizes.
+    """Cube stimulus (Agostini & Galmonte, 2002) with flexible cell sizes.
 
     Parameters
     ----------
@@ -153,9 +152,7 @@ def cube(
     intensity_grid=1.0,
     intensity_target=0.5,
 ):
-
-    """
-    Cube illusion (Agostini & Galmonte, 2002)
+    """Cube illusion (Agostini & Galmonte, 2002)
 
     Parameters
     ----------

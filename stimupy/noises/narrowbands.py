@@ -22,8 +22,7 @@ def narrowband(
     intensity_range=(0, 1),
     pseudo_noise=False,
 ):
-    """
-    Function to create narrowband noise.
+    """Draw narrowband noise texture
 
     Parameters
     ----------

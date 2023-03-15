@@ -20,8 +20,7 @@ def white(
     intensity_range=(0, 1),
     pseudo_noise=False,
 ):
-    """
-    Function to create white noise.
+    """Draw white noise texture
 
     Parameters
     ----------

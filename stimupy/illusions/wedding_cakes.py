@@ -21,8 +21,7 @@ def wedding_cake(
     intensity_grating=(1.0, 0.0),
     intensity_target=0.5,
 ):
-    """
-    Wedding cake stimulus
+    """Wedding cake stimulus
 
     Parameters
     ----------

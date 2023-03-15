@@ -26,8 +26,7 @@ def pinwheel(
     intensity_target=0.5,
     origin="mean",
 ):
-    """
-    Pinwheel or radial White stimulus
+    """Pinwheel / radial White stimulus
 
     Parameters
     ----------

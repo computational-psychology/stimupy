@@ -30,8 +30,7 @@ def cross_generalized(
     intensity_cross=0.0,
     intensity_target=0.5,
 ):
-    """
-    Benary's Cross Illusion
+    """Benary's Cross Illusion
 
     Parameters
     ----------

@@ -17,8 +17,7 @@ def mondrians(
     mondrian_intensities=None,
     intensity_background=0.5,
 ):
-    """
-    Draw Mondrians of given size and intensity at given position
+    """Draw Mondrians of given size and intensity at given position
 
     Parameters
     ----------

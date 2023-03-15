@@ -188,8 +188,7 @@ def white(
     target_height=None,
     origin="corner",
 ):
-    """
-    White's stimulus where all targets are vertically aligned at half the stimulus height
+    """White's stimulus where all targets are vertically aligned at half the stimulus height
 
     Parameters
     ----------
@@ -283,8 +282,7 @@ def white_two_rows(
     target_height=None,
     origin="corner",
 ):
-    """
-    White's stimulus where targets are placed in two rows (top, bottom) that have the same
+    """White's stimulus where targets are placed in two rows (top, bottom) that have the same
     distance from the center.
 
     Parameters
@@ -392,8 +390,7 @@ def anderson(
     stripe_center_offset=0,
     stripe_height=None,
 ):
-    """
-    Anderson variation of White's stimulus
+    """Anderson variation of White's stimulus
 
     Parameters
     ----------
@@ -541,8 +538,7 @@ def howe(
     target_height=None,
     intensity_stripes=(1.0, 0.0),
 ):
-    """
-    Howe variation of White's stimulus
+    """Howe variation of White's stimulus
 
     Parameters
     ----------
@@ -633,8 +629,7 @@ def yazdanbakhsh(
     intensity_stripes=(1.0, 0.0),
     gap_size=None,
 ):
-    """
-    Yazsdanbakhsh variation of White's stimulus
+    """Yazsdanbakhsh variation of White's stimulus
 
     Parameters
     ----------

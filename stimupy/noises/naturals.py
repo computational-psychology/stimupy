@@ -23,8 +23,7 @@ def one_over_f(
     intensity_range=(0, 1),
     pseudo_noise=False,
 ):
-    """
-    Function to create  1 / (f**exponent) noise.
+    """Draw 1 / (f**exponent) noise texture
 
     Parameters
     ----------
@@ -103,8 +102,7 @@ def pink(
     intensity_range=(0, 1),
     pseudo_noise=False,
 ):
-    """
-    Function to create  1 / (f**exponent) noise.
+    """Draw pink (1 / f) noise texture
 
     Parameters
     ----------
@@ -141,8 +139,7 @@ def brown(
     intensity_range=(0, 1),
     pseudo_noise=False,
 ):
-    """
-    Function to create  1 / (f**exponent) noise.
+    """Draw brown (1 / (f**2.0)) noise texture
 
     Parameters
     ----------

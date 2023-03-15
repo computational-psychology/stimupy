@@ -72,7 +72,7 @@ def shift_edges(
     intensity_bars=None,
     origin=None,
 ):
-    """Function to shift edges
+    """Shift edges
 
     Parameters
     ----------
@@ -675,7 +675,7 @@ def plaid(
     weight2=1,
     sigma=None,
 ):
-    """Create plaid consisting of two sine-wave gratings
+    """Draw plaid consisting of two sine-wave gratings
 
     Parameters
     ----------

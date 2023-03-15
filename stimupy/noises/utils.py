@@ -10,7 +10,7 @@ from stimupy.utils import oriented_filter
 
 
 def randomize_sign(array):
-    """Helper function that randomizes the sign of values in an array.
+    """Randomize the sign of values in an array
 
     Parameters
     ----------
@@ -34,7 +34,7 @@ def pseudo_white_helper(
     shape,
     amplitude,
 ):
-    """Helper function used to generate pseudorandom white noise patch.
+    """Generate pseudorandom white noise patch
 
     Parameters
     ----------
@@ -63,8 +63,10 @@ def pseudo_white_spectrum(
     shape=(100, 100),
     amplitude=2.0,
 ):
-    """Function to create pseudorandom white noise. Code translated and adapted
-    from Matlab scripts provided by T. Peromaa
+    """Create pseudorandom white noise spectrum
+
+    Code translated and adapted from Matlab scripts
+    provided by T. Peromaa
 
     Parameters
     ----------

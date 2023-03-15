@@ -23,8 +23,7 @@ def generalized(
     intensity_background=0.0,
     intensity_target=0.5,
 ):
-    """
-    Simultaneous contrast stimulus with free target placement.
+    """Simultaneous contrast stimulus with free target placement.
 
     Parameters
     ----------
@@ -90,8 +89,7 @@ def basic(
     intensity_background=0.0,
     intensity_target=0.5,
 ):
-    """
-    Simultaneous contrast stimulus with central target.
+    """Simultaneous contrast stimulus with central target.
 
     Parameters
     ----------
@@ -142,8 +140,7 @@ def two_sided(
     intensity_backgrounds=(0.0, 1.0),
     intensity_target=0.5,
 ):
-    """
-    Two-sided simultaneous contrast stimulus with central targets.
+    """Two-sided simultaneous contrast display with central targets.
 
     Parameters
     ----------
@@ -216,8 +213,7 @@ def with_dots(
     intensity_dots=1.0,
     intensity_target=0.5,
 ):
-    """
-    Simultaneous contrast stimulus with dots
+    """Simultaneous contrast stimulus with dots
 
     Parameters
     ----------
@@ -354,8 +350,7 @@ def dotted(
     intensity_dots=1.0,
     intensity_target=0.5,
 ):
-    """
-    Dotted simultaneous contrast
+    """Dotted simultaneous contrast
 
     Parameters
     ----------
@@ -491,8 +486,7 @@ def two_sided_with_dots(
     intensity_dots=(1.0, 0.0),
     intensity_target=0.5,
 ):
-    """
-    Two-sided simultaneous contrast stimulus with dots
+    """Two-sided simultaneous contrast stimulus with dots
 
     Parameters
     ----------
@@ -584,8 +578,7 @@ def two_sided_dotted(
     intensity_dots=(1.0, 0.0),
     intensity_target=0.5,
 ):
-    """
-    Two-sided dotted simultaneous contrast stimulus
+    """Two-sided dotted simultaneous contrast stimulus
 
     Parameters
     ----------

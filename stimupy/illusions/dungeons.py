@@ -18,8 +18,7 @@ def dungeon(
     intensity_grid=1.0,
     intensity_target=0.5,
 ):
-    """
-    Dungeon stimulus (Bressan, 2001) with diamond target.
+    """Dungeon stimulus (Bressan, 2001) with diamond target.
 
     Parameters
     ----------
@@ -126,7 +125,6 @@ def resolve_dungeon_params(
     n_cells=None,
     cell_size=None,
 ):
-
     # Try to resolve resolution
     try:
         shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
@@ -161,7 +159,6 @@ def resolve_cells_1d(
     n_cells=None,
     cell_size=None,
 ):
-
     # Try to resolve number and size of cells
     if cell_size is not None:
         cells_pd = 1 / cell_size / 2
