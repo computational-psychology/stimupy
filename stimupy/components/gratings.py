@@ -44,7 +44,7 @@ def mask_bars(
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         mask with integer index for each bar (key: "grating_mask"),
         and additional keys containing stimulus parameters
@@ -92,7 +92,7 @@ def shift_edges(
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
-    ----------
+    -------
     Updated edges and intensity_bars
     """
 
@@ -179,7 +179,7 @@ def square_wave(
         if True, round width of bars
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each bar (key: "grating_mask"),
@@ -330,7 +330,7 @@ def sine_wave(
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each bar (key: "grating_mask"),
@@ -485,7 +485,7 @@ def gabor(
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each bar (key: "grating_mask"),
@@ -562,7 +562,7 @@ def staircase(
         If fewer intensities are passed than n_bars, cycles through intensities
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each bar (key: "grating_mask"),
@@ -691,7 +691,7 @@ def plaid(
         sigma of Gaussian window in degree visual angle (y, x)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each bar (key: "grating_mask"),

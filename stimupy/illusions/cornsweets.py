@@ -45,7 +45,7 @@ def cornsweet(
         determines steepness of ramp (default is 2.75. 1 would be linear)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),

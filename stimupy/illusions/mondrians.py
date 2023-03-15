@@ -38,7 +38,7 @@ def corrugated_mondrians(
         intensity value for background
 
     Returns
-    ----------
+    ------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),

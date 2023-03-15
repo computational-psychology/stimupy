@@ -110,7 +110,7 @@ def wide_0phase(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     White, M. & White, T. (1985).
         Counterphase lightness induction.
         Vision Research, 25 (9), 1331-1335.
@@ -154,7 +154,7 @@ def wide_36phase(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     White, M. & White, T. (1985).
         Counterphase lightness induction.
         Vision Research, 25 (9), 1331-1335.
@@ -197,7 +197,7 @@ def wide_72phase(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     White, M. & White, T. (1985).
         Counterphase lightness induction.
         Vision Research, 25 (9), 1331-1335.
@@ -241,7 +241,7 @@ def wide_108phase(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     White, M. & White, T. (1985).
         Counterphase lightness induction.
         Vision Research, 25 (9), 1331-1335.
@@ -285,7 +285,7 @@ def wide_144phase(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     White, M. & White, T. (1985).
         Counterphase lightness induction.
         Vision Research, 25 (9), 1331-1335.
@@ -329,7 +329,7 @@ def wide_180phase(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     White, M. & White, T. (1985).
         Counterphase lightness induction.
         Vision Research, 25 (9), 1331-1335.
@@ -373,7 +373,7 @@ def square_0phase(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     White, M. & White, T. (1985).
         Counterphase lightness induction.
         Vision Research, 25 (9), 1331-1335.
@@ -417,7 +417,7 @@ def square_36phase(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     White, M. & White, T. (1985).
         Counterphase lightness induction.
         Vision Research, 25 (9), 1331-1335.
@@ -461,7 +461,7 @@ def square_72phase(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     White, M. & White, T. (1985).
         Counterphase lightness induction.
         Vision Research, 25 (9), 1331-1335.
@@ -505,7 +505,7 @@ def square_108phase(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     White, M. & White, T. (1985).
         Counterphase lightness induction.
         Vision Research, 25 (9), 1331-1335.
@@ -549,7 +549,7 @@ def square_144phase(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     White, M. & White, T. (1985).
         Counterphase lightness induction.
         Vision Research, 25 (9), 1331-1335.
@@ -593,7 +593,7 @@ def square_180phase(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     White, M. & White, T. (1985).
         Counterphase lightness induction.
         Vision Research, 25 (9), 1331-1335.

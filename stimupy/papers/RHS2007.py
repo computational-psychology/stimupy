@@ -306,7 +306,7 @@ def WE_anderson(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Anderson, B. L. (2001).
         Contrasting theories of White's illusion. Perception, 30, 1499-1501
     Blakeslee, B., Pasieka, W., & McCourt, M. E. (2005).
@@ -373,7 +373,7 @@ def WE_howe(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Blakeslee, B., Pasieka, W., & McCourt, M. E. (2005).
         Oriented multiscale spatial ﬁltering and contrast normalization:
         a parsimonious model of brightness induction in a continuum
@@ -437,7 +437,7 @@ def WE_zigzag(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Clifford, C. W. G., & Spehar, B. (2003).
         Using colour to disambiguate contrast and assimilation in White's effect.
         Journal of Vision, 3, 294a.
@@ -481,7 +481,7 @@ def WE_radial_thick_small(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Anstis, S. (2003).
         White's eﬀect in brightness & color.
         Online Demonstration
@@ -761,7 +761,7 @@ def WE_circular05(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Howe, P. D. L. (2005).
         White's eﬀect:
         removing the junctions but preserving the strength of the illusion.
@@ -821,7 +821,7 @@ def WE_circular025(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Howe, P. D. L. (2005).
         White's eﬀect:
         removing the junctions but preserving the strength of the illusion.
@@ -881,7 +881,7 @@ def grating_induction(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Blakeslee, B., & McCourt, M. E. (1999).
         A multiscale spatial ﬁltering account
         of the White eﬀect, simultaneous brightness contrast and grating induction.
@@ -945,7 +945,7 @@ def sbc_large(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Blakeslee, B., & McCourt, M. E. (1999).
         A multiscale spatial ﬁltering account
         of the White eﬀect, simultaneous brightness contrast and grating induction.
@@ -1005,7 +1005,7 @@ def sbc_small(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Blakeslee, B., & McCourt, M. E. (1999).
         A multiscale spatial ﬁltering account
         of the White eﬀect, simultaneous brightness contrast and grating induction.
@@ -1065,7 +1065,7 @@ def todorovic_equal(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Blakeslee, B., & McCourt, M. E. (1999).
         A multiscale spatial ﬁltering account
         of the White eﬀect, simultaneous brightness contrast and grating induction.
@@ -1131,7 +1131,7 @@ def todorovic_in_large(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Blakeslee, B., & McCourt, M. E. (1999).
         A multiscale spatial ﬁltering account
         of the White eﬀect, simultaneous brightness contrast and grating induction.
@@ -1197,7 +1197,7 @@ def todorovic_in_small(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Blakeslee, B., & McCourt, M. E. (1999).
         A multiscale spatial ﬁltering account
         of the White eﬀect, simultaneous brightness contrast and grating induction.
@@ -1265,7 +1265,7 @@ def todorovic_out(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Blakeslee, B., & McCourt, M. E. (1999).
         A multiscale spatial ﬁltering account
         of the White eﬀect, simultaneous brightness contrast and grating induction.
@@ -1331,7 +1331,7 @@ def checkerboard_016(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Blakeslee, B., & McCourt, M. E. (2004).
         A uniﬁed theory of brightness contrast and assimilation
         incorporating oriented multi-scale spatial ﬁltering and contrast normalization.
@@ -1389,7 +1389,7 @@ def checkerboard_094(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Blakeslee, B., & McCourt, M. E. (2004).
         A uniﬁed theory of brightness contrast and assimilation
         incorporating oriented multi-scale spatial ﬁltering and contrast normalization.
@@ -1447,7 +1447,7 @@ def checkerboard_21(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Blakeslee, B., & McCourt, M. E. (2004).
         A uniﬁed theory of brightness contrast and assimilation
         incorporating oriented multi-scale spatial ﬁltering and contrast normalization.
@@ -1503,7 +1503,7 @@ def corrugated_mondrian(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Blakeslee, B., & McCourt, M. E. (2001).
         A multiscale spatial filtering account
         of the Wertheimer-Benary effect and the corrugated Mondrian.
@@ -1566,7 +1566,7 @@ def benary_cross(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Blakeslee, B., & McCourt, M. E. (2001).
         A multiscale spatial filtering account
         of the Wertheimer-Benary effect and the corrugated Mondrian.
@@ -1632,7 +1632,7 @@ def todorovic_benary1_2(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Blakeslee, B., & McCourt, M. E. (2001).
         A multiscale spatial filtering account
         of the Wertheimer-Benary effect and the corrugated Mondrian.
@@ -1694,7 +1694,7 @@ def todorovic_benary3_4(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Blakeslee, B., & McCourt, M. E. (2001).
         A multiscale spatial filtering account
         of the Wertheimer-Benary effect and the corrugated Mondrian.
@@ -1756,7 +1756,7 @@ def todorovic_benary1_2_3_4(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Blakeslee, B., & McCourt, M. E. (2001).
         A multiscale spatial filtering account
         of the Wertheimer-Benary effect and the corrugated Mondrian.
@@ -1814,7 +1814,7 @@ def bullseye_thin(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Bindman, D., & Chubb, C. (2004).
         Brightness assimilation in bullseye displays.
         Vision Research, 44, 309-319.
@@ -1875,7 +1875,7 @@ def bullseye_thick(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Bindman, D., & Chubb, C. (2004).
         Brightness assimilation in bullseye displays.
         Vision Research, 44, 309-319.

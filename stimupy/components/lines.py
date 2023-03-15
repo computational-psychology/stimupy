@@ -55,7 +55,7 @@ def line(
         if "mean" or "center": set origin to center (closest existing value to mean)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each line (key: "line_mask"),
@@ -166,7 +166,7 @@ def dipole(
         background intensity is the mean of these two values
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each line (key: "line_mask"),
@@ -260,7 +260,7 @@ def circle(
         intensity value of the background (default: 0)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each line (key: "line_mask"),

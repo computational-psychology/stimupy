@@ -49,7 +49,7 @@ def dungeon(
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Bressan, P. (2001).
         Explaining lightness illusions.
         Perception, 30(9), 1031-1046.

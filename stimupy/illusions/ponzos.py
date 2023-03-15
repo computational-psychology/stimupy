@@ -52,7 +52,7 @@ def ponzo(
         intensity value of background
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),

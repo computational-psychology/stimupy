@@ -47,14 +47,14 @@ def wedding_cake(
         intensity value of targets
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for the target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Clifford, C. W. G., & Spehar, B. (2003).
         Using colour to disambiguate contrast and assimilation in White's effect.
         Journal of Vision, 3, 294a.

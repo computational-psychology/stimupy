@@ -95,7 +95,7 @@ def add_targets(checkerboard_stim, target_indices, extend_targets=False, intensi
         intensity value of the target checks, by default 0.5
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the updated stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
@@ -170,7 +170,7 @@ def checkerboard(
         intensity values of checks, by default (0.0, 1.0)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
@@ -260,7 +260,7 @@ def contrast_contrast(
         alpha of transparency (i.e. how transparant the medium is), default 0.2
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),

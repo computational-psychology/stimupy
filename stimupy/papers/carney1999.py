@@ -138,7 +138,7 @@ def GaborPatch1(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -187,7 +187,7 @@ def GaborPatch2(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -236,7 +236,7 @@ def GaborPatch3(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -285,7 +285,7 @@ def GaborPatch4(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -334,7 +334,7 @@ def GaborPatch5(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -383,7 +383,7 @@ def GaborPatch6(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -432,7 +432,7 @@ def GaborPatch7(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -481,7 +481,7 @@ def GaborPatch8(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -530,7 +530,7 @@ def GaborPatch9(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -579,7 +579,7 @@ def GaborPatch10(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -628,7 +628,7 @@ def GaborPatch11(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -677,7 +677,7 @@ def GaborPatch12(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -726,7 +726,7 @@ def GaborPatch13(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -775,7 +775,7 @@ def GaborPatch14(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -824,7 +824,7 @@ def ElongatedGabor15(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -873,7 +873,7 @@ def ElongatedGabor16(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -922,7 +922,7 @@ def ElongatedGabor17(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -971,7 +971,7 @@ def Baguette18(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -1020,7 +1020,7 @@ def Baguette19(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -1069,7 +1069,7 @@ def Baguette20(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -1118,7 +1118,7 @@ def Baguette21(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -1167,7 +1167,7 @@ def Subthreshold22(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -1223,7 +1223,7 @@ def Subthreshold23(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -1279,7 +1279,7 @@ def Subthreshold24(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -1335,7 +1335,7 @@ def Subthreshold25(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -1390,7 +1390,7 @@ def Gaussians26(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -1436,7 +1436,7 @@ def Gaussians27(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -1482,7 +1482,7 @@ def Gaussians28(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -1528,7 +1528,7 @@ def Gaussians29(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -1574,7 +1574,7 @@ def Edge30(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -1613,7 +1613,7 @@ def Line31(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -1665,7 +1665,7 @@ def Dipole32(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -1718,7 +1718,7 @@ def GaborString33(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -1778,7 +1778,7 @@ def GaborString34(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -1839,7 +1839,7 @@ def Noise35_random(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -1874,7 +1874,7 @@ def Noise35(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -1924,7 +1924,7 @@ def Orientation36(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -1974,7 +1974,7 @@ def Orientation37(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -2024,7 +2024,7 @@ def Plaids38(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -2079,7 +2079,7 @@ def Plaids39(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -2132,7 +2132,7 @@ def Disk40(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -2172,7 +2172,7 @@ def Bessel41(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -2219,7 +2219,7 @@ def Checkerboard42(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database
@@ -2269,7 +2269,7 @@ def NaturalScene43(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
         ... & Eckstein, M. P. (1999).
         Development of an image/threshold database

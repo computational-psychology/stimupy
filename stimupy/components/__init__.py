@@ -127,7 +127,7 @@ def mask_elements(
         If None, set to center of visual_size
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         mask with integer index for each angular segment (key: "mask"),
         and additional keys containing stimulus parameters

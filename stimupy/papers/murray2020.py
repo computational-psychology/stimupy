@@ -121,7 +121,7 @@ def argyle(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Murray, R. F. (2020).
         A model of lightness perception
         guided by probabilistic assumptions about lighting and reflectance.
@@ -173,7 +173,7 @@ def argyle_control(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Murray, R. F. (2020).
         A model of lightness perception
         guided by probabilistic assumptions about lighting and reflectance.
@@ -227,7 +227,7 @@ def argyle_long(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Murray, R. F. (2020).
         A model of lightness perception
         guided by probabilistic assumptions about lighting and reflectance.
@@ -281,7 +281,7 @@ def snake(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Murray, R. F. (2020).
         A model of lightness perception
         guided by probabilistic assumptions about lighting and reflectance.
@@ -335,7 +335,7 @@ def snake_control(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Murray, R. F. (2020).
         A model of lightness perception
         guided by probabilistic assumptions about lighting and reflectance.
@@ -389,7 +389,7 @@ def koffka_adelson(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Murray, R. F. (2020).
         A model of lightness perception
         guided by probabilistic assumptions about lighting and reflectance.
@@ -443,7 +443,7 @@ def koffka_broken(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Murray, R. F. (2020).
         A model of lightness perception
         guided by probabilistic assumptions about lighting and reflectance.
@@ -497,7 +497,7 @@ def koffka_connected(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Murray, R. F. (2020).
         A model of lightness perception
         guided by probabilistic assumptions about lighting and reflectance.
@@ -551,7 +551,7 @@ def checkassim(ppd=PPD, pad=PAD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Murray, R. F. (2020).
         A model of lightness perception
         guided by probabilistic assumptions about lighting and reflectance.
@@ -611,7 +611,7 @@ def simcon(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Murray, R. F. (2020).
         A model of lightness perception
         guided by probabilistic assumptions about lighting and reflectance.
@@ -665,7 +665,7 @@ def simcon_articulated(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Murray, R. F. (2020).
         A model of lightness perception
         guided by probabilistic assumptions about lighting and reflectance.
@@ -719,7 +719,7 @@ def white(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Murray, R. F. (2020).
         A model of lightness perception
         guided by probabilistic assumptions about lighting and reflectance.

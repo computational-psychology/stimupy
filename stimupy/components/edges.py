@@ -33,7 +33,7 @@ def step_edge(
         intensity values of edges (default: (0., 1.))
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for the each lobes (key: "edge_mask"),
@@ -95,7 +95,7 @@ def gaussian_edge(
         intensity value of background, by default 0.5
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for the each lobes (key: "edge_mask"),
@@ -164,7 +164,7 @@ def cornsweet_edge(
         determines steepness of ramp (default is 2.75. 1 would be linear)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for the each lobes (key: "edge_mask"),

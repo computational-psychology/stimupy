@@ -13,7 +13,7 @@ def avg_target_values(stim, f_average=np.median):
         How to average/summarise the pixels in each  target region
 
     Returns
-    ----------
+    -------
     list[float]
         each entry in the list is the average value of pixels in target region,
         index in the list is the integer index in the mask
@@ -42,7 +42,7 @@ def avg_img_values(image, mask, f_average=np.median):
         How to average/summarise the pixels in each target region
 
     Returns
-    ----------
+    -------
     list[float]
         each entry in the list is the average value of pixels in target region,
         index in the list is the integer index in the mask
@@ -100,7 +100,7 @@ def img_values(img, mask):
         All non-zero pixels/values are treated as ones in a binary bit mask.
 
     Returns
-    ----------
+    -------
     numpy.ndarray
         numpy.ndarray of same size as img.
         All bits corresponding to zero bits in the mask are set to NaN.

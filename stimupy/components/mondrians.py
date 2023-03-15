@@ -39,7 +39,7 @@ def mondrians(
         intensity value of background
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each Mondrian (key: "mondrian_mask"),

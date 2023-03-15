@@ -58,7 +58,7 @@ def rings(
         If fewer intensities are passed than target_indices, cycles through intensities
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
@@ -150,7 +150,7 @@ def two_sided_rings(
         If fewer intensities are passed than target_indices, cycles through intensities
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
@@ -237,7 +237,7 @@ def rings_generalized(
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each frame (key: "target_mask"),
@@ -320,14 +320,14 @@ def bullseye(
         If fewer intensities are passed than target_indices, cycles through intensities
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Bindman, D., & Chubb, C. (2004).
         Brightness assimilation in bullseye displays.
         Vision Research, 44, 309-319.
@@ -387,7 +387,7 @@ def bullseye_generalized(
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each frame (key: "target_mask"),
@@ -450,14 +450,14 @@ def two_sided_bullseye(
         If fewer intensities are passed than target_indices, cycles through intensities
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
         Bindman, D., & Chubb, C. (2004).
         Brightness assimilation in bullseye displays.
         Vision Research, 44, 309-319.

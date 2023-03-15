@@ -44,7 +44,7 @@ def generalized(
         intensity value for target
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for the target (key: "target_mask"),
@@ -376,7 +376,7 @@ def dotted(
         intensity value for target
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for the targets (key: "target_mask"),
@@ -512,7 +512,7 @@ def two_sided_with_dots(
         intensity value for target
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for the target (key: "target_mask"),
@@ -604,7 +604,7 @@ def two_sided_dotted(
         intensity value for target
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for the targets (key: "target_mask"),

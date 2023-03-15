@@ -60,14 +60,14 @@ def cross_generalized(
         intensity value for target
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Benary, W. (1924).
         Beobachtungen zu einem Experiment über Helligkeitskontrast.
         Psychologische Forschung, 5, 131-142.
@@ -139,14 +139,14 @@ def cross_rectangles(
         intensity value for target
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Benary, W. (1924).
         Beobachtungen zu einem Experiment über Helligkeitskontrast.
         Psychologische Forschung, 5, 131-142.
@@ -230,14 +230,14 @@ def cross_triangles(
         intensity value for target
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
      Benary, W. (1924).
         Beobachtungen zu einem Experiment über Helligkeitskontrast.
         Psychologische Forschung, 5, 131-142.
@@ -333,14 +333,14 @@ def todorovic_generalized(
         intensity value for target
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Benary, W. (1924).
         Beobachtungen zu einem Experiment über Helligkeitskontrast.
         Psychologische Forschung, 5, 131-142.
@@ -421,14 +421,14 @@ def todorovic_rectangles(
         intensity value for target
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Benary, W. (1924).
         Beobachtungen zu einem Experiment über Helligkeitskontrast.
         Psychologische Forschung, 5, 131-142.
@@ -501,14 +501,14 @@ def todorovic_triangles(
         intensity value for target
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
      Benary, W. (1924).
         Beobachtungen zu einem Experiment über Helligkeitskontrast.
         Psychologische Forschung, 5, 131-142.
@@ -581,7 +581,7 @@ def add_targets(
         intensity value for target
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the updated stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),

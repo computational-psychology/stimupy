@@ -49,7 +49,7 @@ def mueller_lyer(
         intensity value of background
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
@@ -202,7 +202,7 @@ def two_sided(
         intensity value of background
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),

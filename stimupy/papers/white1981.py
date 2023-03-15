@@ -111,7 +111,7 @@ def square_white(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     White, M. (1981).
         The effect of the nature of the surround on the perceived lightness
         of grey bars within square-wave test grating.
@@ -148,7 +148,7 @@ def square_black(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     White, M. (1981).
         The effect of the nature of the surround on the perceived lightness
         of grey bars within square-wave test grating.
@@ -186,7 +186,7 @@ def grating_white_white(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     White, M. (1981).
         The effect of the nature of the surround on the perceived lightness
         of grey bars within square-wave test grating.
@@ -229,7 +229,7 @@ def grating_white_black(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     White, M. (1981).
         The effect of the nature of the surround on the perceived lightness
         of grey bars within square-wave test grating.
@@ -272,7 +272,7 @@ def grating_black_white(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     White, M. (1981).
         The effect of the nature of the surround on the perceived lightness
         of grey bars within square-wave test grating.
@@ -315,7 +315,7 @@ def grating_black_black(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     White, M. (1981).
         The effect of the nature of the surround on the perceived lightness
         of grey bars within square-wave test grating.
@@ -358,7 +358,7 @@ def grating_white_in(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     White, M. (1981).
         The effect of the nature of the surround on the perceived lightness
         of grey bars within square-wave test grating.
@@ -410,7 +410,7 @@ def grating_black_in(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     White, M. (1981).
         The effect of the nature of the surround on the perceived lightness
         of grey bars within square-wave test grating.
@@ -462,7 +462,7 @@ def grating_white_out(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     White, M. (1981).
         The effect of the nature of the surround on the perceived lightness
         of grey bars within square-wave test grating.
@@ -514,7 +514,7 @@ def grating_black_out(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     White, M. (1981).
         The effect of the nature of the surround on the perceived lightness
         of grey bars within square-wave test grating.
@@ -566,7 +566,7 @@ def grating_white_orthogonal(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     White, M. (1981).
         The effect of the nature of the surround on the perceived lightness
         of grey bars within square-wave test grating.
@@ -620,7 +620,7 @@ def grating_black_orthogonal(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     White, M. (1981).
         The effect of the nature of the surround on the perceived lightness
         of grey bars within square-wave test grating.

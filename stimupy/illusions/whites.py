@@ -84,7 +84,7 @@ def generalized(
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "mask"),
@@ -230,7 +230,7 @@ def white(
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "mask"),
@@ -327,7 +327,7 @@ def white_two_rows(
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "mask"),
@@ -574,14 +574,14 @@ def howe(
         intensity values of horizontal stripes
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Blakeslee, B., Pasieka, W., & McCourt, M. E. (2005).
         Oriented multiscale spatial ﬁltering and contrast normalization:
         a parsimonious model of brightness induction in a continuum
@@ -667,7 +667,7 @@ def yazdanbakhsh(
         size of gap between target and grating bar
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "mask"),

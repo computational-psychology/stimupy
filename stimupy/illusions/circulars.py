@@ -66,14 +66,14 @@ def rings(
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Hong, S. W., and Shevell, S. K. (2004).
         Brightness contrast and assimilation from patterned inducing backgrounds.
         Vision Research, 44, 35-43.
@@ -191,14 +191,14 @@ def two_sided_rings(
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Hong, S. W., and Shevell, S. K. (2004).
         Brightness contrast and assimilation from patterned inducing backgrounds.
         Vision Research, 44, 35-43.
@@ -302,14 +302,14 @@ def bullseye(
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Bindman, D., & Chubb, C. (2004).
         Brightness assimilation in bullseye displays.
         Vision Research, 44, 309-319.
@@ -397,14 +397,14 @@ def two_sided_bullseye(
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
+    ----------
     Bindman, D., & Chubb, C. (2004).
         Brightness assimilation in bullseye displays.
         Vision Research, 44, 309-319.
