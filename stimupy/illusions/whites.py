@@ -92,8 +92,10 @@ def generalized(
 
     References
     ----------
-    White, M. (1979). A new effect of pattern on perceived lightness. Perception,
-        8(4), 413–416. https://doi.org/10.1068/p080413
+    White, M. (1979).
+        A new effect of pattern on perceived lightness.
+        Perception, 8(4), 413-416.
+        https://doi.org/10.1068/p080413
     """
     if target_heights is None:
         raise ValueError("generalized() missing argument 'target_heights' which is not 'None'")
@@ -237,8 +239,10 @@ def white(
 
     References
     ----------
-    White, M. (1979). A new effect of pattern on perceived lightness. Perception,
-        8(4), 413–416. https://doi.org/10.1068/p080413
+    White, M. (1979).
+        A new effect of pattern on perceived lightness.
+        Perception, 8(4), 413-416.
+        https://doi.org/10.1068/p080413
     """
 
     stim = generalized(
@@ -333,8 +337,10 @@ def white_two_rows(
 
     References
     ----------
-    White, M. (1979). A new effect of pattern on perceived lightness. Perception,
-        8(4), 413–416. https://doi.org/10.1068/p080413
+    White, M. (1979).
+        A new effect of pattern on perceived lightness.
+        Perception, 8(4), 413-416.
+        https://doi.org/10.1068/p080413
     """
     if not isinstance(target_center_offset, (float, int)):
         raise ValueError("target_center_offset should be a single float / int")
@@ -427,19 +433,22 @@ def anderson(
         stripe height in degrees visual angle
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Anderson, B. L. (2001). Contrasting theories of White’s illusion. Perception, 30, 1499–1501
-    Blakeslee, B., Pasieka, W., & McCourt, M. E. (2005). Oriented multiscale spatial ﬁltering
-        and contrast normalization: a parsimonious model of brightness induction in a continuum
-        of stimuli including White, Howe and simultaneous brightness contrast. Vision Research,
-        45, 607–615.
+    ----------
+    Anderson, B. L. (2001).
+        Contrasting theories of White's illusion.
+        Perception, 30, 1499-1501.
+    Blakeslee, B., Pasieka, W., & McCourt, M. E. (2005).
+        Oriented multiscale spatial ﬁltering and contrast normalization:
+        a parsimonious model of brightness induction in a continuum
+        of stimuli including White, Howe and simultaneous brightness contrast.
+        Vision Research, 45, 607-615.
     """
     if target_height is None:
         raise ValueError("anderson() missing argument 'target_height' which is not 'None'")
@@ -577,12 +586,15 @@ def howe(
 
     References
     -----------
-    Blakeslee, B., Pasieka, W., & McCourt, M. E. (2005). Oriented multiscale spatial ﬁltering
-        and contrast normalization: a parsimonious model of brightness induction in a continuum
-        of stimuli including White, Howe and simultaneous brightness contrast. Vision Research,
-        45, 607–615.
-    Howe, P. D. L. (2001). A comment on the Anderson (1997), the Todorovic (1997), and the Ross
-        and Pessoa (2000) explanations of White’s eﬀect. Perception, 30, 1023–1026
+    Blakeslee, B., Pasieka, W., & McCourt, M. E. (2005).
+        Oriented multiscale spatial ﬁltering and contrast normalization:
+        a parsimonious model of brightness induction in a continuum
+        of stimuli including White, Howe and simultaneous brightness contrast.
+        Vision Research, 45, 607-615.
+    Howe, P. D. L. (2001).
+        A comment on the Anderson (1997), the Todorovic (1997),
+        and the Ross nd Pessoa (2000) explanations of White's eﬀect.
+        Perception, 30, 1023-1026
     """
     return anderson(
         visual_size=visual_size,
@@ -668,9 +680,9 @@ def yazdanbakhsh(
 
     References
     ----------
-    Yazdanbakhsh, A., Arabzadeh, E., Babadi, B., and Fazl, A. (2002). Munker-White-
-        like illusions without T-junctions. Perception 31, 711–715.
-        https://doi.org/10.1068/p3348
+    Yazdanbakhsh, A., Arabzadeh, E., Babadi, B., and Fazl, A. (2002).
+        Munker-White-like illusions without T-junctions.
+        Perception 31, 711-715. https://doi.org/10.1068/p3348
     """
     if target_height is None:
         raise ValueError("yazdanbakhsh() missing argument 'target_height' which is not 'None'")

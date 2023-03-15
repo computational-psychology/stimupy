@@ -53,7 +53,8 @@ def generalized(
 
     References
     ----------
-    Chevreul, M. (1855). The principle of harmony and contrast of colors.
+    Chevreul, M. (1855).
+        The principle of harmony and contrast of colors.
     """
     if target_size is None:
         raise ValueError("generalized() missing argument 'target_size' which is not 'None'")
@@ -108,7 +109,7 @@ def basic(
         intensity value for target
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for the target (key: "target_mask"),
@@ -116,7 +117,8 @@ def basic(
 
     References
     ----------
-    Chevreul, M. (1855). The principle of harmony and contrast of colors.
+    Chevreul, M. (1855).
+        The principle of harmony and contrast of colors.
     """
     if target_size is None:
         raise ValueError("basic() missing argument 'target_size' which is not 'None'")
@@ -159,7 +161,7 @@ def two_sided(
         intensity value for target
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for the target (key: "target_mask"),
@@ -167,7 +169,8 @@ def two_sided(
 
     References
     ----------
-    Chevreul, M. (1855). The principle of harmony and contrast of colors.
+    Chevreul, M. (1855).
+        The principle of harmony and contrast of colors.
     """
     if target_size is None:
         raise ValueError("two_sided() missing argument 'target_size' which is not 'None'")
@@ -240,7 +243,7 @@ def with_dots(
         intensity value for target
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for the target (key: "target_mask"),
@@ -248,8 +251,10 @@ def with_dots(
 
     References
     ----------
-    Bressan, P., & Kramer, P. (2008). Gating of remote effects on lightness. Journal
-        of Vision, 8(2), 16–16. https://doi.org/10.1167/8.2.16
+    Bressan, P., & Kramer, P. (2008).
+        Gating of remote effects on lightness.
+        Journal of Vision, 8(2), 16-16.
+        https://doi.org/10.1167/8.2.16
     """
     if n_dots is None:
         raise ValueError("with_dots() missing argument 'n_dots' which is not 'None'")
@@ -384,8 +389,10 @@ def dotted(
 
     References
     ----------
-    Bressan, P., & Kramer, P. (2008). Gating of remote effects on lightness. Journal
-        of Vision, 8(2), 16–16. https://doi.org/10.1167/8.2.16
+    Bressan, P., & Kramer, P. (2008).
+        Gating of remote effects on lightness.
+        Journal of Vision, 8(2), 16-16.
+        https://doi.org/10.1167/8.2.16
     """
     if n_dots is None:
         raise ValueError("dotted() missing argument 'n_dots' which is not 'None'")
@@ -519,8 +526,10 @@ def two_sided_with_dots(
 
     References
     ----------
-    Bressan, P., & Kramer, P. (2008). Gating of remote effects on lightness. Journal
-        of Vision, 8(2), 16–16. https://doi.org/10.1167/8.2.16
+    Bressan, P., & Kramer, P. (2008).
+        Gating of remote effects on lightness.
+        Journal of Vision, 8(2), 16-16.
+        https://doi.org/10.1167/8.2.16
     """
 
     # Resolve resolution
@@ -610,8 +619,10 @@ def two_sided_dotted(
 
     References
     ----------
-    Bressan, P., & Kramer, P. (2008). Gating of remote effects on lightness. Journal
-        of Vision, 8(2), 16–16. https://doi.org/10.1167/8.2.16
+    Bressan, P., & Kramer, P. (2008).
+        Gating of remote effects on lightness.
+        Journal of Vision, 8(2), 16-16.
+        https://doi.org/10.1167/8.2.16
     """
 
     # Resolve resolution

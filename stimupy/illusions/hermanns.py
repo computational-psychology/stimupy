@@ -15,8 +15,7 @@ def grid(
     intensity_background=0.0,
     intensity_grid=1.0,
 ):
-    """
-    Hermann grid
+    """Hermann's (1870) grid
 
     Parameters
     ----------
@@ -42,8 +41,10 @@ def grid(
 
     References
     ----------
-    Hermann L (1870). Eine Erscheinung simultanen Contrastes". Pflügers Archiv
-        fuer die gesamte Physiologie. 3: 13–15. https://doi.org/10.1007/BF01855743
+    Hermann L (1870).
+        Eine Erscheinung simultanen Contrastes".
+        Pflügers Archiv für die gesamte Physiologie. 3: 13-15.
+        https://doi.org/10.1007/BF01855743
     """
     if element_size is None:
         raise ValueError("grid() missing argument 'element_size' which is not 'None'")

@@ -42,7 +42,7 @@ def delboeuf(
         intensity value of background (default: 1)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for the target (key: "target_mask"),
@@ -50,9 +50,11 @@ def delboeuf(
 
     References
     ----------
-    Delboeuf, F. J. (1865). Note sur certaines illusions d’optique: Essai d'une
-        théorie psychophysique de la maniere dont l’oeil apprécie les distances
-        et les angles. Bulletins de l’Académie Royale des Sciences, Lettres et
+    Delboeuf, F. J. (1865).
+        Note sur certaines illusions d'optique:
+        Essai d'une théorie psychophysique de la maniere
+        dont l'oeil apprécie les distances et les angles.
+        Bulletins de l'Académie Royale des Sciences, Lettres et
         Beaux-arts de Belgique, 19, 195-216.
     """
     if outer_radius is None:
@@ -123,7 +125,7 @@ def two_sided(
         intensity value of background (default: 1)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for the target (key: "target_mask"),
@@ -131,9 +133,11 @@ def two_sided(
 
     References
     ----------
-    Delboeuf, F. J. (1865). Note sur certaines illusions d’optique: Essai d'une
-        théorie psychophysique de la maniere dont l’oeil apprécie les distances
-        et les angles. Bulletins de l’Académie Royale des Sciences, Lettres et
+    Delboeuf, F. J. (1865).
+        Note sur certaines illusions d'optique:
+        Essai d'une théorie psychophysique de la maniere
+        dont l'oeil apprécie les distances et les angles.
+        Bulletins de l'Académie Royale des Sciences, Lettres et
         Beaux-arts de Belgique, 19, 195-216.
     """
     if outer_radii is None:

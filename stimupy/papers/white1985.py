@@ -22,8 +22,10 @@ __all__ (list of str): list of all stimulus-functions
 
 References
 -----------
-White, M. & White, T. (1985). Counterphase lightness induction. Vision
-    research, 25 (9), 1331-1335. https://doi.org/10.1016/0042-6989(85)90049-5
+White, M. & White, T. (1985).
+    Counterphase lightness induction.
+    Vision Research, 25 (9), 1331-1335.
+    https://doi.org/10.1016/0042-6989(85)90049-5
 """
 
 import copy
@@ -109,8 +111,10 @@ def wide_0phase(ppd=PPD):
 
     References
     -----------
-    White, M. & White, T. (1985). Counterphase lightness induction. Vision research,
-        25 (9), 1331-1335. https://doi.org/10.1016/0042-6989(85)90049-5
+    White, M. & White, T. (1985).
+        Counterphase lightness induction.
+        Vision Research, 25 (9), 1331-1335.
+        https://doi.org/10.1016/0042-6989(85)90049-5
     """
 
     bar_width = resolve_bar_width(BAR_WIDTH, ppd)
@@ -151,8 +155,10 @@ def wide_36phase(ppd=PPD):
 
     References
     -----------
-    White, M. & White, T. (1985). Counterphase lightness induction. Vision research,
-        25 (9), 1331-1335. https://doi.org/10.1016/0042-6989(85)90049-5
+    White, M. & White, T. (1985).
+        Counterphase lightness induction.
+        Vision Research, 25 (9), 1331-1335.
+        https://doi.org/10.1016/0042-6989(85)90049-5
     """
     bar_width = resolve_bar_width(BAR_WIDTH, ppd)
 
@@ -192,8 +198,10 @@ def wide_72phase(ppd=PPD):
 
     References
     -----------
-    White, M. & White, T. (1985). Counterphase lightness induction. Vision research,
-        25 (9), 1331-1335. https://doi.org/10.1016/0042-6989(85)90049-5
+    White, M. & White, T. (1985).
+        Counterphase lightness induction.
+        Vision Research, 25 (9), 1331-1335.
+        https://doi.org/10.1016/0042-6989(85)90049-5
     """
 
     bar_width = resolve_bar_width(BAR_WIDTH, ppd)
@@ -234,8 +242,10 @@ def wide_108phase(ppd=PPD):
 
     References
     -----------
-    White, M. & White, T. (1985). Counterphase lightness induction. Vision research,
-        25 (9), 1331-1335. https://doi.org/10.1016/0042-6989(85)90049-5
+    White, M. & White, T. (1985).
+        Counterphase lightness induction.
+        Vision Research, 25 (9), 1331-1335.
+        https://doi.org/10.1016/0042-6989(85)90049-5
     """
 
     bar_width = resolve_bar_width(BAR_WIDTH, ppd)
@@ -276,8 +286,10 @@ def wide_144phase(ppd=PPD):
 
     References
     -----------
-    White, M. & White, T. (1985). Counterphase lightness induction. Vision research,
-        25 (9), 1331-1335. https://doi.org/10.1016/0042-6989(85)90049-5
+    White, M. & White, T. (1985).
+        Counterphase lightness induction.
+        Vision Research, 25 (9), 1331-1335.
+        https://doi.org/10.1016/0042-6989(85)90049-5
     """
 
     bar_width = resolve_bar_width(BAR_WIDTH, ppd)
@@ -318,8 +330,10 @@ def wide_180phase(ppd=PPD):
 
     References
     -----------
-    White, M. & White, T. (1985). Counterphase lightness induction. Vision research,
-        25 (9), 1331-1335. https://doi.org/10.1016/0042-6989(85)90049-5
+    White, M. & White, T. (1985).
+        Counterphase lightness induction.
+        Vision Research, 25 (9), 1331-1335.
+        https://doi.org/10.1016/0042-6989(85)90049-5
     """
 
     bar_width = resolve_bar_width(BAR_WIDTH, ppd)
@@ -360,8 +374,10 @@ def square_0phase(ppd=PPD):
 
     References
     -----------
-    White, M. & White, T. (1985). Counterphase lightness induction. Vision research,
-        25 (9), 1331-1335. https://doi.org/10.1016/0042-6989(85)90049-5
+    White, M. & White, T. (1985).
+        Counterphase lightness induction.
+        Vision Research, 25 (9), 1331-1335.
+        https://doi.org/10.1016/0042-6989(85)90049-5
     """
 
     bar_width = resolve_bar_width(BAR_WIDTH, ppd)
@@ -402,8 +418,10 @@ def square_36phase(ppd=PPD):
 
     References
     -----------
-    White, M. & White, T. (1985). Counterphase lightness induction. Vision research,
-        25 (9), 1331-1335. https://doi.org/10.1016/0042-6989(85)90049-5
+    White, M. & White, T. (1985).
+        Counterphase lightness induction.
+        Vision Research, 25 (9), 1331-1335.
+        https://doi.org/10.1016/0042-6989(85)90049-5
     """
 
     bar_width = resolve_bar_width(BAR_WIDTH, ppd)
@@ -444,8 +462,10 @@ def square_72phase(ppd=PPD):
 
     References
     -----------
-    White, M. & White, T. (1985). Counterphase lightness induction. Vision research,
-        25 (9), 1331-1335. https://doi.org/10.1016/0042-6989(85)90049-5
+    White, M. & White, T. (1985).
+        Counterphase lightness induction.
+        Vision Research, 25 (9), 1331-1335.
+        https://doi.org/10.1016/0042-6989(85)90049-5
     """
 
     bar_width = resolve_bar_width(BAR_WIDTH, ppd)
@@ -486,8 +506,10 @@ def square_108phase(ppd=PPD):
 
     References
     -----------
-    White, M. & White, T. (1985). Counterphase lightness induction. Vision research,
-        25 (9), 1331-1335. https://doi.org/10.1016/0042-6989(85)90049-5
+    White, M. & White, T. (1985).
+        Counterphase lightness induction.
+        Vision Research, 25 (9), 1331-1335.
+        https://doi.org/10.1016/0042-6989(85)90049-5
     """
 
     bar_width = resolve_bar_width(BAR_WIDTH, ppd)
@@ -528,8 +550,10 @@ def square_144phase(ppd=PPD):
 
     References
     -----------
-    White, M. & White, T. (1985). Counterphase lightness induction. Vision research,
-        25 (9), 1331-1335. https://doi.org/10.1016/0042-6989(85)90049-5
+    White, M. & White, T. (1985).
+        Counterphase lightness induction.
+        Vision Research, 25 (9), 1331-1335.
+        https://doi.org/10.1016/0042-6989(85)90049-5
     """
 
     bar_width = resolve_bar_width(BAR_WIDTH, ppd)
@@ -570,8 +594,10 @@ def square_180phase(ppd=PPD):
 
     References
     -----------
-    White, M. & White, T. (1985). Counterphase lightness induction. Vision research,
-        25 (9), 1331-1335. https://doi.org/10.1016/0042-6989(85)90049-5
+    White, M. & White, T. (1985).
+        Counterphase lightness induction.
+        Vision Research, 25 (9), 1331-1335.
+        https://doi.org/10.1016/0042-6989(85)90049-5
     """
 
     bar_width = resolve_bar_width(BAR_WIDTH, ppd)

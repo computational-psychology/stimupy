@@ -24,9 +24,11 @@ __all__ (list of str): list of all stimulus-functions
 
 References
 -----------
-Murray, R. F. (2020). A model of lightness perception guided by
-probabilistic assumptions about lighting and reflectance.
-Journal of Vision, 20(7), 28. https://doi.org/10/gh57gf
+Murray, R. F. (2020).
+    A model of lightness perception
+    guided by probabilistic assumptions about lighting and reflectance.
+    Journal of Vision, 20(7), 28.
+    https://doi.org/10/gh57gf
 """
 
 import os.path
@@ -120,9 +122,11 @@ def argyle(ppd=PPD):
 
     References
     -----------
-    Murray, R. F. (2020). A model of lightness perception guided by
-        probabilistic assumptions about lighting and reflectance.
-        Journal of Vision, 20(7), 28. https://doi.org/10/gh57gf
+    Murray, R. F. (2020).
+        A model of lightness perception
+        guided by probabilistic assumptions about lighting and reflectance.
+        Journal of Vision, 20(7), 28.
+        https://doi.org/10/gh57gf
     """
 
     a = mat_content["argyle"]
@@ -170,9 +174,11 @@ def argyle_control(ppd=PPD):
 
     References
     -----------
-    Murray, R. F. (2020). A model of lightness perception guided by
-        probabilistic assumptions about lighting and reflectance.
-        Journal of Vision, 20(7), 28. https://doi.org/10/gh57gf
+    Murray, R. F. (2020).
+        A model of lightness perception
+        guided by probabilistic assumptions about lighting and reflectance.
+        Journal of Vision, 20(7), 28.
+        https://doi.org/10/gh57gf
     """
 
     a = mat_content["argyle_control"]
@@ -222,9 +228,11 @@ def argyle_long(ppd=PPD):
 
     References
     -----------
-    Murray, R. F. (2020). A model of lightness perception guided by
-        probabilistic assumptions about lighting and reflectance.
-        Journal of Vision, 20(7), 28. https://doi.org/10/gh57gf
+    Murray, R. F. (2020).
+        A model of lightness perception
+        guided by probabilistic assumptions about lighting and reflectance.
+        Journal of Vision, 20(7), 28.
+        https://doi.org/10/gh57gf
     """
 
     a = mat_content["argyle_long"]
@@ -274,9 +282,11 @@ def snake(ppd=PPD):
 
     References
     -----------
-    Murray, R. F. (2020). A model of lightness perception guided by
-        probabilistic assumptions about lighting and reflectance.
-        Journal of Vision, 20(7), 28. https://doi.org/10/gh57gf
+    Murray, R. F. (2020).
+        A model of lightness perception
+        guided by probabilistic assumptions about lighting and reflectance.
+        Journal of Vision, 20(7), 28.
+        https://doi.org/10/gh57gf
     """
 
     a = mat_content["snake"]
@@ -326,9 +336,11 @@ def snake_control(ppd=PPD):
 
     References
     -----------
-    Murray, R. F. (2020). A model of lightness perception guided by
-        probabilistic assumptions about lighting and reflectance.
-        Journal of Vision, 20(7), 28. https://doi.org/10/gh57gf
+    Murray, R. F. (2020).
+        A model of lightness perception
+        guided by probabilistic assumptions about lighting and reflectance.
+        Journal of Vision, 20(7), 28.
+        https://doi.org/10/gh57gf
     """
 
     a = mat_content["snake_control"]
@@ -378,9 +390,11 @@ def koffka_adelson(ppd=PPD):
 
     References
     -----------
-    Murray, R. F. (2020). A model of lightness perception guided by
-        probabilistic assumptions about lighting and reflectance.
-        Journal of Vision, 20(7), 28. https://doi.org/10/gh57gf
+    Murray, R. F. (2020).
+        A model of lightness perception
+        guided by probabilistic assumptions about lighting and reflectance.
+        Journal of Vision, 20(7), 28.
+        https://doi.org/10/gh57gf
     """
 
     a = mat_content["koffka_adelson"]
@@ -430,9 +444,11 @@ def koffka_broken(ppd=PPD):
 
     References
     -----------
-    Murray, R. F. (2020). A model of lightness perception guided by
-        probabilistic assumptions about lighting and reflectance.
-        Journal of Vision, 20(7), 28. https://doi.org/10/gh57gf
+    Murray, R. F. (2020).
+        A model of lightness perception
+        guided by probabilistic assumptions about lighting and reflectance.
+        Journal of Vision, 20(7), 28.
+        https://doi.org/10/gh57gf
     """
 
     a = mat_content["koffka_broken"]
@@ -482,9 +498,11 @@ def koffka_connected(ppd=PPD):
 
     References
     -----------
-    Murray, R. F. (2020). A model of lightness perception guided by
-        probabilistic assumptions about lighting and reflectance.
-        Journal of Vision, 20(7), 28. https://doi.org/10/gh57gf
+    Murray, R. F. (2020).
+        A model of lightness perception
+        guided by probabilistic assumptions about lighting and reflectance.
+        Journal of Vision, 20(7), 28.
+        https://doi.org/10/gh57gf
     """
 
     a = mat_content["koffka_connected"]
@@ -534,9 +552,11 @@ def checkassim(ppd=PPD, pad=PAD):
 
     References
     -----------
-    Murray, R. F. (2020). A model of lightness perception guided by
-        probabilistic assumptions about lighting and reflectance.
-        Journal of Vision, 20(7), 28. https://doi.org/10/gh57gf
+    Murray, R. F. (2020).
+        A model of lightness perception
+        guided by probabilistic assumptions about lighting and reflectance.
+        Journal of Vision, 20(7), 28.
+        https://doi.org/10/gh57gf
     """
 
     params = {
@@ -592,9 +612,11 @@ def simcon(ppd=PPD):
 
     References
     -----------
-    Murray, R. F. (2020). A model of lightness perception guided by
-        probabilistic assumptions about lighting and reflectance.
-        Journal of Vision, 20(7), 28. https://doi.org/10/gh57gf
+    Murray, R. F. (2020).
+        A model of lightness perception
+        guided by probabilistic assumptions about lighting and reflectance.
+        Journal of Vision, 20(7), 28.
+        https://doi.org/10/gh57gf
     """
 
     a = mat_content["simcon"]
@@ -644,9 +666,11 @@ def simcon_articulated(ppd=PPD):
 
     References
     -----------
-    Murray, R. F. (2020). A model of lightness perception guided by
-        probabilistic assumptions about lighting and reflectance.
-        Journal of Vision, 20(7), 28. https://doi.org/10/gh57gf
+    Murray, R. F. (2020).
+        A model of lightness perception
+        guided by probabilistic assumptions about lighting and reflectance.
+        Journal of Vision, 20(7), 28.
+        https://doi.org/10/gh57gf
     """
 
     a = mat_content["simcon_articulated"]
@@ -696,9 +720,11 @@ def white(ppd=PPD):
 
     References
     -----------
-    Murray, R. F. (2020). A model of lightness perception guided by
-        probabilistic assumptions about lighting and reflectance.
-        Journal of Vision, 20(7), 28. https://doi.org/10/gh57gf
+    Murray, R. F. (2020).
+        A model of lightness perception
+        guided by probabilistic assumptions about lighting and reflectance.
+        Journal of Vision, 20(7), 28.
+        https://doi.org/10/gh57gf
     """
 
     params = {

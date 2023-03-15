@@ -20,8 +20,7 @@ def ponzo(
     intensity_target_lines=0.5,
     intensity_background=0.0,
 ):
-    """
-    Ponzo illusion
+    """Ponzo's (1910) illusion
 
     Parameters
     ----------
@@ -61,9 +60,10 @@ def ponzo(
 
     References
     ----------
-    Ponzo, M. (1910). Intorno ad alcune illusioni nel campo delle sensazioni
-        tattili, sull'illusione di Aristotele e fenomeni analoghi. Wilhelm
-        Engelmann.
+    Ponzo, M. (1910).
+        Intorno ad alcune illusioni nel campo delle sensazioni tattili,
+        sull'illusione di Aristotele e fenomeni analoghi.
+        Wilhelm Engelmann.
     """
     if outer_lines_length is None:
         raise ValueError("ponzo() missing argument 'outer_lines_length' which is not 'None'")

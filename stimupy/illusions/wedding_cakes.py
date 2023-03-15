@@ -56,8 +56,9 @@ def wedding_cake(
 
     References
     -----------
-    Clifford, C. W. G., & Spehar, B. (2003). Using colour to disambiguate contrast and
-        assimilation in White’s effect. Journal of Vision, 3, 294a.
+    Clifford, C. W. G., & Spehar, B. (2003).
+        Using colour to disambiguate contrast and assimilation in White's effect.
+        Journal of Vision, 3, 294a.
         https://doi.org/10.1167/3.9.294
     """
     if L_size is None:

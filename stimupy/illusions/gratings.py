@@ -189,9 +189,11 @@ def uniform(
 
     References
     ----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test gratings. Perception, 10(2),
-        215–230. https://doi.org/10.1068/p100215
+    White, M. (1981).
+        The effect of the nature of the surround on the perceived lightness
+        of grey bars within square-wave test grating.
+        Perception, 10, 215-230.
+        https://doi.org/10.1068/p100215
     """
 
     # Resolve resolution
@@ -258,9 +260,11 @@ def grating_masked(
 
     References
     ----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test gratings. Perception, 10(2),
-        215–230. https://doi.org/10.1068/p100215
+    White, M. (1981).
+        The effect of the nature of the surround on the perceived lightness
+        of grey bars within square-wave test grating.
+        Perception, 10, 215-230.
+        https://doi.org/10.1068/p100215
     """
 
     # Create gratings
@@ -317,9 +321,11 @@ def grating(
 
     References
     ----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test gratings. Perception, 10(2),
-        215–230. https://doi.org/10.1068/p100215
+    White, M. (1981).
+        The effect of the nature of the surround on the perceived lightness
+        of grey bars within square-wave test grating.
+        Perception, 10, 215-230.
+        https://doi.org/10.1068/p100215
     """
 
     stim = grating_masked(
@@ -505,8 +511,10 @@ def induction(
 
     References
     ----------
-    McCourt, M. E. (1982). A spatial frequency dependent grating-induction effect.
-        Vision Research, 22, 119–134. https://doi.org/10.1016/0042-6989(82)90173-0
+    McCourt, M. E. (1982).
+        A spatial frequency dependent grating-induction effect.
+        Vision Research, 22, 119-134.
+        https://doi.org/10.1016/0042-6989(82)90173-0
     """
     if target_width is None:
         raise ValueError("induction() missing argument 'target_width' which is not 'None'")
@@ -610,8 +618,10 @@ def induction_blur(
 
     References
     ----------
-    McCourt, M. E. (1982). A spatial frequency dependent grating-induction effect.
-        Vision Research, 22, 119–134. https://doi.org/10.1016/0042-6989(82)90173-0
+     McCourt, M. E. (1982).
+        A spatial frequency dependent grating-induction effect.
+        Vision Research, 22, 119-134.
+        https://doi.org/10.1016/0042-6989(82)90173-0
     """
     if target_width is None:
         raise ValueError("induction_blur() missing argument 'target_width' which is not 'None'")

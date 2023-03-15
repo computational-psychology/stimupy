@@ -173,10 +173,12 @@ def cornsweet_edge(
 
     References
     ----------
-    Boyaci, H., Fang, F., Murray, S.O., Kersten, D. (2007). Responses to lightness
-        variations in early human visual cortex. Current Biology 17, 989-993.
+    Boyaci, H., Fang, F., Murray, S.O., Kersten, D. (2007).
+        Responses to lightness variations in early human visual cortex.
+        Current Biology 17, 989-993.
         https://doi.org/10.1016/j.cub.2007.05.005
-    Cornsweet, T. (1970). Visual perception. Academic press.
+    Cornsweet, T. (1970).
+        Visual perception. Academic press.
         https://doi.org/10.1016/B978-0-12-189750-5.X5001-5
     """
     if ramp_width is None:
