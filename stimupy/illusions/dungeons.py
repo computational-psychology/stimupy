@@ -128,7 +128,7 @@ def resolve_dungeon_params(
     # Try to resolve resolution
     try:
         shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
-    except ValueError:
+    except resolution.TooManyUnknownsError:
         ppd = resolution.validate_ppd(ppd)
         shape = resolution.validate_shape(shape)
         visual_size = resolution.validate_visual_size(visual_size)

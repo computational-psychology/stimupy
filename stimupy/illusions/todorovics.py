@@ -2,7 +2,7 @@ import numpy as np
 
 from stimupy.components.shapes import cross as cross_shape
 from stimupy.components.shapes import rectangle as rectangle_shape
-from stimupy.utils import degrees_to_pixels, pad_dict_to_shape, resolution, stack_dicts
+from stimupy.utils import pad_dict_to_shape, resolution, stack_dicts
 
 __all__ = [
     "rectangle_generalized",
@@ -111,9 +111,16 @@ def rectangle_generalized(
     mask = stim["shape_mask"]
 
     # Add covers
-    cheight, cwidth = degrees_to_pixels(covers_size, ppd)
-    cx = degrees_to_pixels(covers_x, np.unique(ppd))
-    cy = degrees_to_pixels(covers_y, np.unique(ppd))
+    cheight, cwidth = resolution.lengths_from_visual_angles_ppd(
+        covers_size, np.unique(ppd), round=False
+    )
+    cx = resolution.lengths_from_visual_angles_ppd(covers_x, np.unique(ppd), round=False)
+    cy = resolution.lengths_from_visual_angles_ppd(covers_y, np.unique(ppd), round=False)
+
+    cheight = int(np.round(cheight))
+    cwidth = int(np.round(cwidth))
+    cx = np.round(cx).astype(int)
+    cy = np.round(cy).astype(int)
 
     if np.max(cx) < np.min(cx) + cwidth or np.max(cy) < np.min(cy) + cheight:
         raise ValueError("Covers overlap")
@@ -147,6 +154,7 @@ def rectangle(
     ppd=None,
     shape=None,
     target_size=None,
+    target_position=None,
     covers_size=None,
     covers_offset=None,
     intensity_background=0.0,
@@ -165,6 +173,8 @@ def rectangle(
         shape [height, width] of grating, in pixels
     target_size : float or (float, float)
         size of the target in degrees of visual angle (height, width)
+    target_position : float or (float, float)
+        coordinates where to place the target
     covers_size : float or (float, float)
         size of covers in degrees of visual angle (height, width)
     covers_offset : float or (float, float)
@@ -223,7 +233,7 @@ def rectangle(
         visual_size=visual_size,
         ppd=ppd,
         target_size=target_size,
-        target_position=None,
+        target_position=target_position,
         covers_size=covers_size,
         covers_x=(x1, x2, x2, x1),
         covers_y=(y1, y2, y1, y2),
@@ -338,9 +348,16 @@ def cross_generalized(
     img = stim["img"]
     mask = stim["shape_mask"]
 
-    cheight, cwidth = degrees_to_pixels(covers_size, ppd)
-    cx = degrees_to_pixels(covers_x, ppd)
-    cy = degrees_to_pixels(covers_y, ppd)
+    cheight, cwidth = resolution.lengths_from_visual_angles_ppd(
+        covers_size, np.unique(ppd), round=False
+    )
+    cx = resolution.lengths_from_visual_angles_ppd(covers_x, np.unique(ppd), round=False)
+    cy = resolution.lengths_from_visual_angles_ppd(covers_y, np.unique(ppd), round=False)
+
+    cheight = int(np.round(cheight))
+    cwidth = int(np.round(cwidth))
+    cx = np.round(cx).astype(int)
+    cy = np.round(cy).astype(int)
 
     for i in range(len(covers_x)):
         img[cy[i] : cy[i] + cheight, cx[i] : cx[i] + cwidth] = intensity_covers

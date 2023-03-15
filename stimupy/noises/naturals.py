@@ -76,7 +76,7 @@ def one_over_f(
     noise = np.real(noise)
 
     # Adjust intensity range:
-    noise = adapt_intensity_range({"img": noise}, intensity_range[0], intensity_range[1])["img"]
+    noise = adapt_intensity_range(noise, intensity_range[0], intensity_range[1])
 
     stim = {
         "img": noise,

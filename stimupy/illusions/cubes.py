@@ -1,6 +1,6 @@
 import numpy as np
 
-from stimupy.utils import degrees_to_pixels, resolution
+from stimupy.utils import resolution
 
 __all__ = [
     "varying_cells",
@@ -83,9 +83,9 @@ def varying_cells(
     cell_spacing = list(cell_spacing)
     cell_spacing[n_cells - 1] = 0
 
-    cheights = degrees_to_pixels(cell_heights, ppd)
-    cwidths = degrees_to_pixels(cell_widths, ppd)
-    cspaces = degrees_to_pixels(cell_spacing, ppd)
+    cheights = resolution.lengths_from_visual_angles_ppd(cell_heights, np.unique(ppd))
+    cwidths = resolution.lengths_from_visual_angles_ppd(cell_widths, np.unique(ppd))
+    cspaces = resolution.lengths_from_visual_angles_ppd(cell_spacing, np.unique(ppd))
     height = sum(cwidths) + sum(cspaces)
     width = height
 
@@ -217,8 +217,8 @@ def cube(
         targets = ()
 
     height, width = shape
-    cell_space = degrees_to_pixels(cell_spacing, np.unique(ppd)[0])
-    cell_thick = degrees_to_pixels(cell_thickness, np.unique(ppd)[0])
+    cell_space = resolution.lengths_from_visual_angles_ppd(cell_spacing, np.unique(ppd))
+    cell_thick = resolution.lengths_from_visual_angles_ppd(cell_thickness, np.unique(ppd))
 
     # Initiate image
     img = np.ones([height, width]) * intensity_background

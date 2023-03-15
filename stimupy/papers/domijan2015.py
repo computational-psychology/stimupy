@@ -141,7 +141,6 @@ def gen_all(ppd=PPD, skip=False):
 
 
 def resolve(shape, visual_size, ppd, original_visual_size):
-
     # Put in canonical form
     shape = resolution.validate_shape(shape)
     visual_size = resolution.validate_visual_size(visual_size)
@@ -184,6 +183,9 @@ def resolve(shape, visual_size, ppd, original_visual_size):
             shape, np.array(original_visual_size) * visual_resize, ppd
         )
 
+    if ppd[0] % 2 != 0:
+        raise ValueError("use an even ppd for domijan2015-stimuli")
+
     return shape, visual_size, ppd, visual_resize
 
 
@@ -202,7 +204,7 @@ def dungeon(visual_size=VSIZES["dungeon"], ppd=PPD, shape=SHAPES["dungeon"]):
     Returns
     -------
     dict[str, Any]
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -273,7 +275,7 @@ def cube(visual_size=VSIZES["cube"], ppd=PPD, shape=SHAPES["cube"]):
     Returns
     -------
     dict[str, Any]
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -343,7 +345,7 @@ def grating(visual_size=VSIZES["grating"], ppd=PPD, shape=SHAPES["grating"]):
     Returns
     -------
     dict[str, Any]
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -373,12 +375,12 @@ def grating(visual_size=VSIZES["grating"], ppd=PPD, shape=SHAPES["grating"]):
 
     stim1 = illusions.gratings.square_wave(
         **params,
-        intensity_bars=(v3, v1),
+        intensity_bars=(v1, v3),
         intensity_target=v2,
     )
     stim2 = illusions.gratings.square_wave(
         **params,
-        intensity_bars=(v1, v3),
+        intensity_bars=(v3, v1),
         intensity_target=v2,
     )
 
@@ -415,7 +417,7 @@ def rings(visual_size=VSIZES["rings"], ppd=PPD, shape=SHAPES["rings"]):
     Returns
     -------
     dict[str, Any]
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -429,12 +431,12 @@ def rings(visual_size=VSIZES["rings"], ppd=PPD, shape=SHAPES["rings"]):
 
     # Resolve resolution
     shape, visual_size, ppd, visual_resize = resolve(shape, visual_size, ppd, VSIZES["rings"])
-    frame_radii = np.array((0.55, 1.05, 1.55, 2.05, 2.55, 3.05, 3.55, 4.05)) * visual_resize
+    radii = np.array((0.55, 1.05, 1.55, 2.05, 2.55, 3.05, 3.55, 4.05)) * visual_resize
 
     params = {
-        "visual_size": 4.05 * 2,
+        "visual_size": radii.max() * 2,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
     }
 
     stim1 = illusions.frames.rings_generalized(
@@ -482,7 +484,7 @@ def bullseye(visual_size=VSIZES["bullseye"], ppd=PPD, shape=SHAPES["bullseye"]):
     Returns
     -------
     dict[str, Any]
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -496,12 +498,12 @@ def bullseye(visual_size=VSIZES["bullseye"], ppd=PPD, shape=SHAPES["bullseye"]):
 
     # Resolve resolution
     shape, visual_size, ppd, visual_resize = resolve(shape, visual_size, ppd, VSIZES["bullseye"])
-    frame_radii = np.array((0.55, 1.05, 1.55, 2.05, 2.55, 3.05, 3.55, 4.05)) * visual_resize
+    radii = np.array((0.55, 1.05, 1.55, 2.05, 2.55, 3.05, 3.55, 4.05)) * visual_resize
 
     params = {
-        "visual_size": 4.05 * 2,
+        "visual_size": radii.max() * 2,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -551,7 +553,7 @@ def simultaneous_brightness_contrast(
     Returns
     -------
     dict[str, Any]
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -573,7 +575,7 @@ def simultaneous_brightness_contrast(
         "visual_size": visual_size[0],
         "ppd": ppd,
         "target_size": (2.1 * visual_resize, 2.1 * visual_resize),
-        "target_position": (3.9 * visual_resize, 3.9 * visual_resize),
+        "target_position": (3.8 * visual_resize, 3.8 * visual_resize),
     }
 
     stim1 = illusions.sbcs.generalized(
@@ -619,7 +621,7 @@ def white(visual_size=VSIZES["white"], ppd=PPD, pad=PAD, shape=SHAPES["white"]):
     Returns
     -------
     dict[str, Any]
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -646,7 +648,7 @@ def white(visual_size=VSIZES["white"], ppd=PPD, pad=PAD, shape=SHAPES["white"]):
 
     stim = illusions.whites.white(
         **params,
-        intensity_bars=(v1, v3),
+        intensity_bars=(v3, v1),
         intensity_target=v2,
     )
 
@@ -687,7 +689,7 @@ def benary(visual_size=VSIZES["benary"], ppd=PPD, shape=SHAPES["benary"]):
     Returns
     -------
     dict[str, Any]
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -748,7 +750,7 @@ def todorovic(visual_size=VSIZES["todorovic"], ppd=PPD, shape=SHAPES["todorovic"
     Returns
     -------
     dict[str, Any]
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -769,6 +771,7 @@ def todorovic(visual_size=VSIZES["todorovic"], ppd=PPD, shape=SHAPES["todorovic"
         "visual_size": visual_size[0],
         "ppd": ppd,
         "target_size": 4.1 * visual_resize,
+        "target_position": 2.8 * visual_resize,
         "covers_size": 3.1 * visual_resize,
         "covers_offset": 2.0 * visual_resize,
     }
@@ -823,7 +826,7 @@ def checkerboard_contrast_contrast(
     Returns
     -------
     dict[str, Any]
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -913,7 +916,7 @@ def checkerboard(
     Returns
     -------
     dict[str, Any]
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -986,7 +989,7 @@ def checkerboard_extended(
     Returns
     -------
     dict[str, Any]
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -1056,7 +1059,7 @@ def white_yazdanbakhsh(
     Returns
     -------
     dict[str, Any]
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -1092,7 +1095,7 @@ def white_yazdanbakhsh(
 
     stim = illusions.whites.yazdanbakhsh(
         **params,
-        intensity_bars=(v1, v3),
+        intensity_bars=(v3, v1),
         intensity_target=v2,
         intensity_stripes=(v3, v1),
     )
@@ -1112,7 +1115,7 @@ def white_yazdanbakhsh(
         original_shape_no_padding=original_shape_np,
         original_visual_size_no_padding=VSIZES["white_yazdanbakhsh"],
         original_range=(1, 9),
-        intensity_range=(v1, v3),
+        intensity_range=(v3, v1),
         visual_size=resolution.visual_size_from_shape_ppd(stim["img"].shape, ppd),
         shape=stim["img"].shape,
     )
@@ -1138,7 +1141,7 @@ def white_anderson(
     Returns
     -------
     dict[str, Any]
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -1179,7 +1182,7 @@ def white_anderson(
 
     stim = illusions.whites.anderson(
         **params,
-        intensity_bars=(v3, v1),
+        intensity_bars=(v1, v3),
         intensity_target=v2,
         intensity_stripes=(v1, v3),
     )
@@ -1223,7 +1226,7 @@ def white_howe(visual_size=VSIZES["white_howe"], ppd=PPD, shape=SHAPES["white_ho
     Returns
     -------
     dict[str, Any]
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -1261,7 +1264,7 @@ def white_howe(visual_size=VSIZES["white_howe"], ppd=PPD, shape=SHAPES["white_ho
 
     stim = illusions.whites.howe(
         **params,
-        intensity_bars=(v3, v1),
+        intensity_bars=(v1, v3),
         intensity_target=v2,
         intensity_stripes=(v1, v3),
     )

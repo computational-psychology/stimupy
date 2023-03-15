@@ -119,7 +119,7 @@ def wedge(
         ppd=ppd,
         shape=shape,
         radii=[inner_radius, radius],
-        intensity_rings=intensity_wedge,
+        intensity_ring=intensity_wedge,
         intensity_background=intensity_background,
         origin=origin,
     )
@@ -409,7 +409,7 @@ def pinwheel(
     # Get disc
     disc = ring(
         radii=[inner_radius, radius],
-        intensity_rings=1.0,
+        intensity_ring=1.0,
         intensity_background=0.0,
         visual_size=visual_size,
         ppd=ppd,
@@ -435,6 +435,7 @@ def pinwheel(
 
     # Mask out everything but the disc
     stim["img"] = np.where(disc["ring_mask"], stim["img"], intensity_background)
-    stim["radii"] = disc["edges"]
+    stim["wedge_mask"] = np.where(disc["ring_mask"], stim["wedge_mask"], 0).astype(int)
+    stim["radius"] = radius
     stim["intensity_background"] = intensity_background
     return stim

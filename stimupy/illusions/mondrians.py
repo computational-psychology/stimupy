@@ -1,7 +1,7 @@
 import numpy as np
 
 from stimupy.components.mondrians import mondrians
-from stimupy.utils import degrees_to_pixels, resolution
+from stimupy.utils import resolution
 
 __all__ = [
     "corrugated_mondrians",
@@ -77,7 +77,7 @@ def corrugated_mondrians(
         )
 
     height, width = visual_size
-    mdepths_px = degrees_to_pixels(mondrian_depths, ppd[0])
+    mdepths_px = resolution.lengths_from_visual_angles_ppd(mondrian_depths, ppd[0])
     max_depth = np.abs(np.array(mdepths_px)).max()
     sum_depth = np.array(mdepths_px).sum()
     red_depth = np.maximum(max_depth, sum_depth)

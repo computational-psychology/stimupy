@@ -4,10 +4,6 @@
 
 import numpy as np
 
-from stimupy.utils import oriented_filter
-
-# TODO: what to do with orient_noise?
-
 
 def randomize_sign(array):
     """Randomize the sign of values in an array
@@ -139,23 +135,3 @@ def pseudo_white_spectrum(
     # Set DC = 0:
     spectrum[int(y / 2), int(x / 2)] = 0 + 0j
     return spectrum
-
-
-# Function to orient noise
-def orient_noise(noise, sigma, orientation, ppd=60.0, rms_contrast=0.2):
-    shape = noise.shape
-
-    # Prepare spatial frequency axes and create bandpass filter:
-    fy = np.fft.fftshift(np.fft.fftfreq(shape[0], d=1.0 / ppd))
-    fx = np.fft.fftshift(np.fft.fftfreq(shape[1], d=1.0 / ppd))
-    Fx, Fy = np.meshgrid(fx, fy)
-    ofilter = oriented_filter(Fx, Fy, sigma, orientation)
-
-    noise_fft = np.fft.fftshift(np.fft.fft2(noise))
-    ori_noise_fft = noise_fft * ofilter
-    ori_noise = np.fft.ifft2(np.fft.ifftshift(ori_noise_fft))
-    ori_noise = np.real(ori_noise)
-
-    # Re-adjust noise rms contrast:
-    ori_noise = rms_contrast * ori_noise / ori_noise.std()
-    return {"img": ori_noise}

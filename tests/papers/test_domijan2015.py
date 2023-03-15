@@ -11,7 +11,7 @@ from stimupy.utils import export
 
 data_dir = os.path.dirname(__file__)
 jsonfile = os.path.join(data_dir, "domijan2015.json")
-loaded = json.load(open(jsonfile, "r"))
+loaded = json.load(open(jsonfile))
 
 
 @pytest.mark.parametrize("stim_name", stimlist)
@@ -22,7 +22,7 @@ def test_stim(stim_name):
     assert stim["target_mask"] == loaded[stim_name]["mask"], "masks are different"
 
 
-@pytest.mark.parametrize("stim_name, ppd", product(stimlist, (8, 10, 12, 13, 15, 20)))
+@pytest.mark.parametrize("stim_name, ppd", product(stimlist, (8, 10, 12, 14, 18, 20)))
 def test_ppd(stim_name, ppd):
     func = getattr(stimupy.papers.domijan2015, stim_name)
 

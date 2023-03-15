@@ -1,9 +1,6 @@
-import itertools
-from copy import deepcopy
-
 import numpy as np
 
-from stimupy.components.circulars import grating
+from stimupy.components.circulars import square_wave as grating
 from stimupy.utils import resolution, stack_dicts
 
 __all__ = ["rings", "two_sided_rings", "bullseye", "two_sided_bullseye"]
@@ -21,6 +18,7 @@ def rings(
     intensity_rings=(1.0, 0.0),
     intensity_background=0.5,
     origin="mean",
+    clip=True,
 ):
     """Circular grating, with one or more target rings
 
@@ -64,6 +62,8 @@ def rings(
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)
         if "center": set origin to real center (closest existing value to mean)
+    clip : Bool
+        if True, clip stimulus to image size (default: True)
 
     Returns
     -------
@@ -96,41 +96,24 @@ def rings(
         intensity_rings=intensity_rings,
         shape=shape,
         origin=origin,
+        clip=clip,
     )
 
-    # Add target intensity
-    intensities = [*itertools.islice(itertools.cycle(intensity_rings), len(stim["radii"]))]
-    if target_indices is None:
-        target_indices = len(intensities) // 2
-    try:
-        for ring_idx in target_indices:
-            intensities[ring_idx] = intensity_target
-    except TypeError:
-        intensities[target_indices] = intensity_target
+    if isinstance(target_indices, (float, int)):
         target_indices = [target_indices]
 
-    # Redraw stim with target
-    stim = grating(
-        visual_size=visual_size,
-        ppd=ppd,
-        frequency=frequency,
-        n_rings=n_rings,
-        ring_width=ring_width,
-        intensity_rings=intensities,
-        intensity_background=intensity_background,
-        shape=shape,
-        origin=origin,
-    )
+    if target_indices is None:
+        target_indices = [int(stim["ring_mask"].max() / 2)]
 
-    # Update mask to only be targets
-    stim["rings"] = deepcopy(stim["ring_mask"])
-    mask = np.zeros(stim["shape"])
+    # Add targets
+    stim["target_mask"] = np.zeros(stim["shape"])
     for i, ring_idx in enumerate(target_indices):
-        mask = np.where(stim["ring_mask"] == ring_idx + 1, i + 1, 0)
-    stim["target_mask"] = mask.astype(int)
+        stim["img"] = np.where(stim["ring_mask"] == ring_idx + 1, intensity_target, stim["img"])
+        stim["target_mask"] = np.where(stim["ring_mask"] == ring_idx + 1, i + 1, 0).astype(int)
+
+    # Update stim dict
     stim["target_indices"] = target_indices
     stim["intensity_target"] = intensity_target
-
     return stim
 
 
@@ -224,6 +207,7 @@ def two_sided_rings(
         intensity_rings=intensity_rings,
         intensity_background=intensity_background,
         origin=origin,
+        clip=True,
     )
 
     stim2 = rings(
@@ -237,6 +221,7 @@ def two_sided_rings(
         intensity_rings=intensity_rings[::-1],
         intensity_background=intensity_background,
         origin=origin,
+        clip=True,
     )
 
     stim = stack_dicts(stim1, stim2)
@@ -256,6 +241,7 @@ def bullseye(
     intensity_rings=(1.0, 0.0),
     intensity_background=0.5,
     origin="mean",
+    clip=True,
 ):
     """Circular Bullseye stimulus
 
@@ -300,6 +286,8 @@ def bullseye(
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)
         if "center": set origin to real center (closest existing value to mean)
+    clip : Bool
+        if True, clip stimulus to image size (default: True)
 
     Returns
     -------
@@ -336,6 +324,7 @@ def bullseye(
         intensity_target=intensity_target,
         target_indices=0,
         origin=origin,
+        clip=clip,
     )
     return stim
 
@@ -433,6 +422,7 @@ def two_sided_bullseye(
         intensity_rings=intensity_rings,
         intensity_background=intensity_background,
         origin=origin,
+        clip=True,
     )
 
     stim2 = bullseye(
@@ -445,6 +435,7 @@ def two_sided_bullseye(
         intensity_rings=intensity_rings[::-1],
         intensity_background=intensity_background,
         origin=origin,
+        clip=True,
     )
 
     stim = stack_dicts(stim1, stim2)

@@ -1,7 +1,7 @@
 import numpy as np
 
 from stimupy.components.shapes import parallelogram
-from stimupy.utils import degrees_to_pixels, resolution
+from stimupy.utils import resolution
 
 __all__ = [
     "mondrians",
@@ -87,8 +87,8 @@ def mondrians(
         except Exception:
             raise ValueError("Mondrian position tuples should be (ypos, xpos)")
 
-        ypos, xpos = degrees_to_pixels(mondrian_positions[m], ppd[0])
-        individual_shapes = degrees_to_pixels(mondrian_sizes[m], ppd[0])
+        ypos, xpos = resolution.lengths_from_visual_angles_ppd(mondrian_positions[m], ppd[0])
+        individual_shapes = resolution.lengths_from_visual_angles_ppd(mondrian_sizes[m], ppd[0])
 
         try:
             if len(individual_shapes) == 2:

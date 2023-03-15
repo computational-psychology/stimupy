@@ -42,9 +42,7 @@ def binary(
     binary_noise = np.random.randint(0, 2, size=shape) - 0.5
 
     # Adjust intensity range:
-    binary_noise = adapt_intensity_range(
-        {"img": binary_noise}, intensity_range[0], intensity_range[1]
-    )["img"]
+    binary_noise = adapt_intensity_range(binary_noise, intensity_range[0], intensity_range[1])
 
     stim = {
         "img": binary_noise,

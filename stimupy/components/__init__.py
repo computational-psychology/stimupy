@@ -1,10 +1,11 @@
 import itertools
 import warnings
 from copy import deepcopy
-
 import numpy as np
 
 from stimupy.utils import int_factorize, resolution
+from stimupy.utils.contrast_conversions import adapt_intensity_range
+from stimupy.utils.utils import round_to_vals
 
 
 def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin="mean"):
@@ -32,6 +33,8 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin="mea
         "visual_size", "ppd" : resolved from input arguments,
         "x", "y" : single axes
         "horizontal", "vertical" : numpy.ndarray of shape, with distance from origin,
+        in deg. visual angle, at each pixel
+        "rotated" : numpy.ndarray of shape, with rotated distance from origin,
         in deg. visual angle, at each pixel
         "radial" : numpyn.ndarray of shape, with radius from origin,
         in deg. visual angle, at each pixel
@@ -224,7 +227,7 @@ def resolve_grating_params(
         length, visual_angle, ppd = resolution.resolve_1D(
             length=length, visual_angle=visual_angle, ppd=ppd
         )
-    except ValueError:
+    except resolution.TooManyUnknownsError:
         ppd = ppd
         length = length
         visual_angle = visual_angle
@@ -420,6 +423,218 @@ def round_n_phases(n_phases, length, period="either"):
     return int(closest)
 
 
+def draw_sine_wave(
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    frequency=None,
+    n_phases=None,
+    phase_width=None,
+    period="ignore",
+    rotation=None,
+    phase_shift=None,
+    intensities=None,
+    origin=None,
+    base_type=None,
+    round_phase_width=None,
+):
+    """Draw a sine-wave grating given a certain base_type
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    frequency : Number, or None (default)
+        spatial frequency of grating, in cycles per degree visual angle
+    n_phases : int, or None (default)
+        number of phases in the grating
+    phase_width : Number, or None (default)
+        width of a single phase, in degrees visual angle
+    period : "even", "odd", "either", "ignore" (default)
+        ensure whether the grating has "even" number of phases, "odd"
+        number of phases, either or whether not to round the number of
+        phases ("ignore")
+    rotation : float or None (default)
+        rotation of grating in degrees
+    phase_shift : float or None (default)
+        phase shift of grating in degrees
+    intensities : Sequence[float, float] or None (default)
+        min and max intensity of sine-wave
+    origin : "corner", "mean", "center" or None (default)
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center
+        if "center": set origin to real center (closest existing value to mean)
+    base_type : str or None
+        if "horizontal", use distance from origin in x-direction,
+        if "vertical", use distance from origin in x-direction;
+        if "rotated", use combined and rotated distance from origin in x-y;
+        if "radial", use radial distance from origin,
+        if "angular", use angular distance from origin,
+        if "cityblock", use cityblock distance from origin
+    round_phase_width : Bool or None (default)
+        if True, round width of bars given resolution
+
+    Returns
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each bar (key: "grating_mask"),
+        and additional keys containing stimulus parameters
+    """
+    if rotation is None:
+        raise ValueError("draw_sine_wave() missing argument 'rotation' which is not 'None'")
+    if phase_shift is None:
+        raise ValueError("draw_sine_wave() missing argument 'phase_shift' which is not 'None'")
+    if intensities is None:
+        raise ValueError("draw_sine_wave() missing argument 'intensities' which is not 'None'")
+    if origin is None:
+        raise ValueError("draw_sine_wave() missing argument 'origin' which is not 'None'")
+    if round_phase_width is None:
+        raise ValueError(
+            "draw_sine_wave() missing argument 'round_phase_width' which is not 'None'"
+        )
+    if period is None:
+        period = "ignore"
+
+    base_types = ["horizontal", "vertical", "rotated", "radial", "angular", "cityblock"]
+    if base_type not in base_types:
+        raise ValueError(f"base_type needs to be one of {base_types}")
+
+    lst = [visual_size, ppd, shape, frequency, n_phases, phase_width]
+    if len([x for x in lst if x is not None]) < 3:
+        raise ValueError(
+            "'grating()' needs 3 non-None arguments for resolving from 'visual_size', "
+            "'ppd', 'shape', 'frequency', 'n_phases', 'phase_width'"
+        )
+
+    # Try to resolve resolution
+    try:
+        shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
+    except ValueError:
+        ppd = resolution.validate_ppd(ppd)
+        shape = resolution.validate_shape(shape)
+        visual_size = resolution.validate_visual_size(visual_size)
+
+    alpha = [np.abs(np.cos(np.deg2rad(rotation))), np.abs(np.sin(np.deg2rad(rotation)))]
+
+    if shape.width is not None:
+        length = np.round(alpha[0] * shape.width + alpha[1] * shape.height)
+    else:
+        length = None
+
+    if visual_size.width is not None:
+        visual_angle = alpha[0] * visual_size.width + alpha[1] * visual_size.height
+    else:
+        visual_angle = None
+
+    if ppd.horizontal is not None:
+        ppd_1D = ppd.horizontal
+    else:
+        ppd_1D = None
+
+    if rotation % 90 != 0 and round_phase_width:
+        round_phase_width = False
+        warnings.warn("Rounding phase width is turned off for oblique gratings")
+
+    if rotation % 90 != 0 and period != "ignore":
+        period = "ignore"
+        warnings.warn("Period ignored for oblique gratings")
+
+    # Resolve params
+    params = resolve_grating_params(
+        length=length,
+        visual_angle=visual_angle,
+        n_phases=n_phases,
+        phase_width=phase_width,
+        ppd=ppd_1D,
+        frequency=frequency,
+        period=period,
+        round_phase_width=round_phase_width,
+    )
+    length = params["length"]
+    ppd_1D = params["ppd"]
+    visual_angle = params["visual_angle"]
+    frequency = params["frequency"]
+    phase_width = params["phase_width"]
+    n_phases = params["n_phases"]
+
+    # Determine size/shape of whole image
+    if None in shape:
+        shape = [length * alpha[1], length * alpha[0]]
+        if np.round(alpha[1], 5) == 0:
+            shape[0] = shape[1]
+        if np.round(alpha[0], 5) == 0:
+            shape[1] = shape[0]
+
+    if None in ppd:
+        ppd = (ppd_1D, ppd_1D)
+
+    if None in visual_size:
+        visual_size = resolution.visual_size_from_shape_ppd(shape=shape, ppd=ppd)
+
+    shape = resolution.validate_shape(shape)
+    visual_size = resolution.validate_visual_size(visual_size)
+    ppd = resolution.validate_ppd(ppd)
+
+    # Set up coordinates
+    base = image_base(
+        shape=shape, visual_size=visual_size, ppd=ppd, rotation=rotation, origin=origin
+    )
+    distances = base[base_type]
+    distances = np.round(distances, 6)
+
+    # Shift distances minimally to ensure proper behavior
+    if origin == "corner":
+        distances = adapt_intensity_range(distances, 1e-03, distances.max() - 1e-03)
+    else:
+        distances = adapt_intensity_range(
+            distances, distances.min() - 1e-05, distances.max() - 1e-05
+        )
+
+    # Draw image
+    img = np.sin(frequency * 2 * np.pi * distances + np.deg2rad(phase_shift))
+    img = adapt_intensity_range(img, intensities[0], intensities[1])
+
+    # Create mask
+    if origin == "corner" or base_type == "radial" or base_type == "cityblock":
+        vals = np.arange(
+            distances.min() + phase_width / 2, distances.max() + phase_width * 2, phase_width
+        )
+
+        if origin == "mean":
+            vals -= distances.min()
+    else:
+        dmin = distances.min()
+        dmax = distances.max() + phase_width * 2
+        vals1 = np.arange(0 + phase_width / 2, dmax, phase_width)
+        vals2 = -np.arange(-phase_width / 2, -dmin + phase_width, phase_width)
+        vals = np.unique(np.append(vals2[::-1], vals1))
+
+    phase_shift_ = (phase_shift % 360) / 180 * phase_width
+    mask = round_to_vals(
+        distances - distances.min(), np.round(vals - phase_shift_, 6) - distances.min()
+    )
+
+    for i, val in enumerate(np.unique(mask)):
+        mask = np.where(mask == val, i + 1, mask)
+
+    stim = {
+        "img": img,
+        "mask": mask.astype(int),
+        "visual_size": visual_size,
+        "ppd": ppd,
+        "shape": shape,
+        "frequency": frequency,
+        "n_phases": n_phases,
+        "phase_width": phase_width,
+    }
+    return stim
+
+
 from . import (
     angulars,
     checkerboards,
@@ -435,6 +650,15 @@ from . import (
 
 
 def create_overview():
+    """
+    Create dictionary with examples from all stimulus-components
+
+    Returns
+    -------
+    stims : dict
+        dict with all stimuli containing individual stimulus dicts.
+    """
+
     p = {
         "visual_size": 10,
         "ppd": 20,
@@ -462,16 +686,17 @@ def create_overview():
         "disc": circulars.disc(**p, radius=3),
         "ring": circulars.ring(**p, radii=(1, 3)),
         "annulus (=ring)": circulars.annulus(**p, radii=(1, 3)),
-        "circular_grating": circulars.grating(**p, frequency=1),
-        "circular_grating_v2": circulars.grating(**p, n_rings=8),
         "bessel": circulars.bessel(**p, frequency=1),
+        "circular_sine_wave": circulars.sine_wave(**p, frequency=0.5),
+        "circular_square_wave": circulars.square_wave(**p, frequency=0.5),
         # edges
         "step_edge": edges.step_edge(**p),
         "gaussian_edge": edges.gaussian_edge(**p, sigma=1.5),
         "cornsweet_edge": edges.cornsweet_edge(**p, ramp_width=3),
         # frames
-        "frames": frames.frames(**p, frame_radii=(1, 2, 3)),
-        "frames_grating": frames.grating(**p, n_frames=8),
+        "frames": frames.frames(**p, radii=(1, 2, 3)),
+        "frames_sine_wave": frames.sine_wave(**p, frequency=0.5),
+        "frames_square_wave": frames.square_wave(**p, frequency=0.5),
         # gaussians
         "gaussian": gaussians.gaussian(**p, sigma=(1, 2)),
         # gratings
@@ -505,13 +730,29 @@ def create_overview():
     return stims
 
 
-def overview(mask=False, save=None):
+def overview(mask=False, save=None, extent_key="shape"):
+    """
+    Plot overview with examples from all stimulus-components
+
+    Parameters
+    ----------
+    mask : bool or str, optional
+        If True, plot mask on top of stimulus image (default: False).
+        If string is provided, plot this key from stimulus dictionary as mask
+    save : None or str, optional
+        If None (default), do not save the plot.
+        If string is provided, save plot under this name.
+    extent_key : str, optional
+        Key to extent which will be used for plotting.
+        Default is "shape", using the image size in pixels as extent.
+
+    """
     from stimupy.utils import plot_stimuli
 
     stims = create_overview()
 
     # Plotting
-    plot_stimuli(stims, mask=mask, save=save)
+    plot_stimuli(stims, mask=mask, save=save, extent_key=extent_key)
 
 
 __all__ = [

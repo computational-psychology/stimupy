@@ -1,10 +1,9 @@
 import warnings
 
 import numpy as np
-from scipy.ndimage import rotate
 
-from stimupy.components.shapes import cross, triangle
-from stimupy.utils import degrees_to_pixels, resolution
+from stimupy.components.shapes import cross, triangle, rectangle
+from stimupy.utils import resolution
 
 __all__ = [
     "cross_generalized",
@@ -170,14 +169,17 @@ def cross_rectangles(
         raise ValueError("Target size is larger than cross thickness")
 
     # Calculate target placement for classical Benarys cross
+    theight, twidth = resolution.shape_from_visual_size_ppd(target_size, ppd)
+    cheight, cwidth = resolution.shape_from_visual_size_ppd(cross_thickness, ppd)
+
     target_x = (
-        (visual_size[1] - cross_thickness) / 2.0 - target_size[1],
-        shape[1] / ppd[1] - np.round(target_size[1] * ppd[1]) / ppd[1],
+        (shape[1] / 2 - cwidth / 2 - twidth) / ppd[1],
+        (shape[1] - twidth) / ppd[1],
     )
 
     target_y = (
-        (visual_size[0] - cross_thickness) / 2.0 - target_size[0],
-        (visual_size[0] - cross_thickness) / 2.0,
+        (shape[0] / 2 - cheight / 2 - theight) / ppd[0],
+        (shape[0] / 2 - cheight / 2) / ppd[0],
     )
 
     stim = cross_generalized(
@@ -262,7 +264,7 @@ def cross_triangles(
 
     # Calculate target placement for classical Benarys cross
     target_x = (
-        (visual_size[1] - cross_thickness) / 2.0 - target_size[0],
+        (visual_size[1] - cross_thickness) / 2.0 - target_size[1],
         (visual_size[1] + cross_thickness) / 2.0,
     )
 
@@ -355,7 +357,7 @@ def todorovic_generalized(
         raise ValueError("ppd should be equal in x and y direction")
 
     L_size = (visual_size[0] / 2, visual_size[0] / 2, L_width, visual_size[1] - L_width)
-    top, bottom, left, right = degrees_to_pixels(L_size, np.unique(ppd))
+    top, bottom, left, right = resolution.lengths_from_visual_angles_ppd(L_size, np.unique(ppd))
     width, height = left + right, top + bottom
 
     # Create stimulus without targets
@@ -643,9 +645,9 @@ def add_targets(
                 "target_type, target_orientation, target_x and target_y need the same length."
             )
 
-        theight, twidth = degrees_to_pixels(target_size, ppd)
-        ty = degrees_to_pixels(target_y, ppd)
-        tx = degrees_to_pixels(target_x, ppd)
+        theight, twidth = resolution.lengths_from_visual_angles_ppd(target_size, ppd)
+        ty = resolution.lengths_from_visual_angles_ppd(target_y, ppd)
+        tx = resolution.lengths_from_visual_angles_ppd(target_x, ppd)
 
         if (twidth + np.array(tx)).max() > img.shape[1]:
             raise ValueError("Rightmost target does not fit in image.")
@@ -655,38 +657,43 @@ def add_targets(
         # Add targets:
         for i in range(len(target_x)):
             if target_type[i] == "r":
-                tpatch = np.ones([theight, twidth]) * intensity_target
+                target = rectangle(
+                    shape=[theight * 2, twidth * 2],
+                    ppd=ppd,
+                    rectangle_size=(theight / ppd, twidth / ppd),
+                    intensity_rectangle=intensity_target,
+                    intensity_background=0,
+                    rotation=target_orientation[i],
+                )
 
             elif target_type[i] == "t":
-                tpatch = triangle(
-                    visual_size=target_size,
+                target = triangle(
+                    shape=[theight * 2, twidth * 2],
                     ppd=ppd,
-                    triangle_size=target_size,
-                    intensity_background=0.0,
+                    triangle_size=(theight / ppd, twidth / ppd),
+                    intensity_background=0,
                     intensity_triangle=intensity_target,
-                )["img"]
+                    rotation=target_orientation[i],
+                    include_corners=True,
+                )
 
             else:
                 raise Exception("You can only use r or t as shapes")
 
-            # Rotate, resize to original shape and clean
-            tpatch = rotate(tpatch, angle=target_orientation[i])
-            thresh = 0.7
-            tpatch[tpatch < intensity_target * thresh] = 0.0
-            tpatch[tpatch > intensity_target * thresh] = intensity_target
-            tpatch = tpatch[~np.all(tpatch == 0, axis=1)]  # Remove zero-rows
-            tpatch = tpatch[:, ~np.all(tpatch == 0, axis=0)]  # Remove zero-cols
-            mpatch = np.copy(tpatch)
-            mpatch[mpatch != 0] = i + 1
+            # Remove zero-rows and -columns
+            mpatch = target["shape_mask"][~np.all(target["shape_mask"] == 0, axis=1)]
+            mpatch = mpatch[:, ~np.all(mpatch == 0, axis=0)]
+            tpatch = target["img"][~np.all(target["img"] == 0, axis=1)]
+            tpatch = tpatch[:, ~np.all(tpatch == 0, axis=0)]
             theight_, twidth_ = tpatch.shape
 
             # Only change the target parts of the image:
-            ipatch = img[ty[i] : ty[i] + theight_, tx[i] : tx[i] + twidth_]
-            ipatch[tpatch == intensity_target] = 0.0
-            tpatch = tpatch + ipatch
-
-            img[ty[i] : ty[i] + theight_, tx[i] : tx[i] + twidth_] = tpatch
-            mask[ty[i] : ty[i] + theight_, tx[i] : tx[i] + twidth_] = mpatch
+            mlarge = np.zeros(img.shape)
+            mlarge[ty[i] : ty[i] + theight_, tx[i] : tx[i] + twidth_] = mpatch
+            tlarge = np.zeros(img.shape)
+            tlarge[ty[i] : ty[i] + theight_, tx[i] : tx[i] + twidth_] = tpatch
+            img = np.where(mlarge, tlarge, img)
+            mask = np.where(mlarge, i + 1, mask)
 
         stim = {
             "target_size": target_size,

@@ -1,8 +1,67 @@
 import copy
-
 import numpy as np
 
-from . import resolution
+from .utils import resolution
+
+__all__ = [
+    "add_padding",
+    "remove_padding",
+    "pad_by_visual_size",
+    "pad_to_visual_size",
+    "pad_by_shape",
+    "pad_to_shape",
+    "pad_dict_by_visual_size",
+    "pad_dict_to_visual_size",
+    "pad_dict_by_shape",
+    "pad_dict_to_shape",
+]
+
+
+def remove_padding(arr, c):
+    """
+    Remove padding by c
+
+    Parameters
+    ----------
+    arr : numpy.ndarray
+        input array
+    c : int
+        padding amount.
+
+    Returns
+    -------
+    arr : numpy.ndarray
+        reduced array
+
+    """
+    array_shape = arr.shape
+    arr = arr[c : array_shape[0] - c, c : array_shape[1] - c]
+    return arr
+
+
+def add_padding(arr, c, val):
+    """
+    Remove padding by c
+
+    Parameters
+    ----------
+    arr : numpy.ndarray
+        input array
+    c : int
+        padding amount
+    val : float
+        background value
+
+    Returns
+    -------
+    arr : numpy.ndarray
+        padded array
+
+    """
+    h, w = arr.shape
+    new_arr = np.ones([h + c * 2, w + c * 2]) * val
+    new_arr[c : h + c, c : w + c] = arr
+    return new_arr
 
 
 def pad_by_visual_size(img, padding, ppd, pad_value=0.0):
@@ -43,7 +102,7 @@ def pad_by_visual_size(img, padding, ppd, pad_value=0.0):
     padding_px = []
     for axis in padding_degs:
         shape = [
-            resolution.pix_from_visual_angle_ppd_1D(i, ppd) if i > 0 else 0
+            resolution.length_from_visual_angle_ppd(i, ppd) if i > 0 else 0
             for i, ppd in zip(axis, ppd)
         ]
         padding_px.append(shape)
@@ -149,25 +208,6 @@ def pad_to_shape(img, shape, pad_value=0):
     )
 
 
-def resize_array(arr, factor):
-    """
-    Return a copy of an array, resized by the given factor. Every value is
-    repeated factor[d] times along dimension d.
-
-    Parameters
-    ----------
-    arr : 2D array
-          the array to be resized
-    factor : tupel of 2 ints
-             the resize factor in the y and x dimensions
-
-    Returns
-    -------
-    An array of shape (arr.shape[0] * factor[0], arr.shape[1] * factor[1])
-    """
-    return np.repeat(np.repeat(arr, factor[0], axis=0), factor[1], axis=1)
-
-
 # %%
 #################################
 #         Dictionaries          #
@@ -194,11 +234,9 @@ def pad_dict_by_visual_size(dct, padding, ppd, pad_value=0.0, keys=("img", "*mas
 
     Returns
     -------
-    dict with padded images by the specified amount(s)
-
-    See also
-    ---------
-    stimupy.utils.resolution
+    dict[str, Any]
+        same as input dict but with larger key-arrays and updated keys for
+        "visual_size" and "shape"
     """
     # Create deepcopy to not override existing dict
     new_dict = copy.deepcopy(dct)
@@ -218,12 +256,21 @@ def pad_dict_by_visual_size(dct, padding, ppd, pad_value=0.0, keys=("img", "*mas
         if key in keys:
             img = dct[key]
             if isinstance(img, np.ndarray):
+                # Add mask which indicates padded region
+                new_dict["pad_mask"] = pad_by_visual_size(
+                    np.zeros(img.shape), padding, ppd, 1
+                ).astype(int)
+
                 if key.endswith("mask"):
                     img = pad_by_visual_size(img, padding, ppd, 0)
                     img = img.astype(int)
                 else:
                     img = pad_by_visual_size(img, padding, ppd, pad_value)
                 new_dict[key] = img
+
+    # Update visual_size and shape-keys
+    new_dict["visual_size"] = resolution.visual_size_from_shape_ppd(img.shape, ppd)
+    new_dict["shape"] = resolution.validate_shape(img.shape)
     return new_dict
 
 
@@ -245,11 +292,9 @@ def pad_dict_to_visual_size(dct, visual_size, ppd, pad_value=0, keys=("img", "*m
 
     Returns
     -------
-    dict with padded images by the specified amount(s)
-
-    See also
-    ---------
-    stimupy.utils.resolution
+    dict[str, Any]
+        same as input dict but with larger key-arrays and updated keys for
+        "visual_size" and "shape"
     """
 
     # visual_size to shape
@@ -261,7 +306,6 @@ def pad_dict_to_visual_size(dct, visual_size, ppd, pad_value=0, keys=("img", "*m
 
 def pad_dict_by_shape(dct, padding, pad_value=0, keys=("img", "*mask")):
     """Pad images in dictionary by specified amount(s) of pixels
-
     Can specify different amount (before, after) each axis.
 
     Parameters
@@ -279,7 +323,9 @@ def pad_dict_by_shape(dct, padding, pad_value=0, keys=("img", "*mask")):
 
     Returns
     -------
-    dict with padded images by the specified amount(s)
+    dict[str, Any]
+        same as input dict but with larger key-arrays and updated keys for
+        "visual_size" and "shape"
     """
     # Ensure padding is in integers
     padding = np.array(padding, dtype=np.int32)
@@ -302,12 +348,22 @@ def pad_dict_by_shape(dct, padding, pad_value=0, keys=("img", "*mask")):
         if key in keys:
             img = dct[key]
             if isinstance(img, np.ndarray):
+                # Add mask which indicates padded region
+                new_dict["pad_mask"] = np.pad(
+                    np.zeros(img.shape), padding, mode="constant", constant_values=1
+                ).astype(int)
+
                 if key.endswith("mask"):
                     img = np.pad(img, padding, mode="constant", constant_values=0)
                     img = img.astype(int)
                 else:
                     img = np.pad(img, padding, mode="constant", constant_values=pad_value)
                 new_dict[key] = img
+
+    # Update visual_size and shape-keys
+    new_dict["shape"] = resolution.validate_shape(img.shape)
+    if "ppd" in dct.keys():
+        new_dict["visual_size"] = resolution.visual_size_from_shape_ppd(img.shape, dct["ppd"])
     return new_dict
 
 
@@ -327,7 +383,9 @@ def pad_dict_to_shape(dct, shape, pad_value=0, keys=("img", "*mask")):
 
     Returns
     -------
-    dict with padded images by the specified amount(s)
+    dict[str, Any]
+        same as input dict but with larger key-arrays and updated keys for
+        "visual_size" and "shape"
 
     Raises
     ------
@@ -360,254 +418,20 @@ def pad_dict_to_shape(dct, shape, pad_value=0, keys=("img", "*mask")):
                 padding_after = padding_per_axis - padding_before
                 padding = np.stack([padding_before, padding_after]).T
 
+                # Add mask which indicates padded region
+                new_dict["pad_mask"] = pad_by_shape(
+                    np.zeros(img.shape), padding=padding, pad_value=1
+                ).astype(int)
+
                 if key.endswith("mask"):
                     img = pad_by_shape(img, padding=padding, pad_value=0)
                     img = img.astype(int)
                 else:
                     img = pad_by_shape(img, padding=padding, pad_value=pad_value)
                 new_dict[key] = img
-    return new_dict
 
-
-def resize_dict(dct, factor, keys=("img", "*mask")):
-    """
-    Return a copy of an array, resized by the given factor. Every value is
-    repeated factor[d] times along dimension d.
-
-    Parameters
-    ----------
-    dct : dict
-        dict containing arrays to be resized
-    factor : tupel of 2 ints
-        the resize factor in the y and x dimensions
-    keys : Sequence[String, String] or String
-        keys in dict for images to be padded
-
-    Returns
-    -------
-    dict with arrays of shape (arr.shape[0] * factor[0], arr.shape[1] * factor[1])
-    """
-    # Create deepcopy to not override existing dict
-    new_dict = copy.deepcopy(dct)
-
-    if isinstance(keys, str):
-        keys = (keys,)
-
-    # Find relevant keys
-    keys = [
-        dkey
-        for key in keys
-        for dkey in dct.keys()
-        if ((dkey == key) or ((dkey.endswith(key[1::])) and (key.startswith("*"))))
-    ]
-
-    for key in dct.keys():
-        if key in keys:
-            img = dct[key]
-            if isinstance(img, np.ndarray):
-                img = np.repeat(np.repeat(img, factor[0], axis=0), factor[1], axis=1)
-                if key.endswith("mask"):
-                    img = img.astype(int)
-                new_dict[key] = img
-    return new_dict
-
-
-def stack_dicts(
-    dct1, dct2, direction="horizontal", keys=("img", "*mask"), keep_mask_indices=False
-):
-    """
-    Return a dict with resized key-arrays by the given factor. Every value is
-    repeated factor[d] times along dimension d.
-
-    Parameters
-    ----------
-    dct1: dict
-        dict containing arrays to be stacked
-    dct2: dict
-        dict containing arrays to be stacked
-    direction : str
-        stack horizontal(ly) or vertical(ly) (default: horizontal)
-    keys : Sequence[String, String] or String
-        keys in dict for images to be padded
-
-    Returns
-    -------
-    dict with keys with stacked arrays
-    """
-
-    # Create deepcopy to not override existing dict
-    new_dict = copy.deepcopy(dct1)
-
-    if isinstance(keys, str):
-        keys = (keys,)
-
-    # Find relevant keys
-    keys1 = [
-        dkey
-        for key in keys
-        for dkey in dct1.keys()
-        if ((dkey == key) or ((dkey.endswith(key[1::])) and (key.startswith("*"))))
-    ]
-    keys2 = [
-        dkey
-        for key in keys
-        for dkey in dct2.keys()
-        if ((dkey == key) or ((dkey.endswith(key[1::])) and (key.startswith("*"))))
-    ]
-
-    if not keys1 == keys2:
-        raise ValueError("The requested keys do not exist in both dicts")
-
-    for key in dct1.keys():
-        if key in keys1:
-            img1 = dct1[key]
-            img2 = dct2[key]
-            if isinstance(img1, np.ndarray) and isinstance(img2, np.ndarray):
-                if key.endswith("mask") and not keep_mask_indices:
-                    img2 = np.where(img2 != 0, img2 + img1.max(), 0)
-
-                if direction == "horizontal":
-                    img = np.hstack([img1, img2])
-                elif direction == "vertical":
-                    img = np.vstack([img1, img2])
-                else:
-                    raise ValueError("direction must be horizontal or vertical")
-
-                if key.endswith("mask"):
-                    img = img.astype(int)
-                new_dict[key] = img
-    return new_dict
-
-
-def rotate_dict(dct, nrots=1, keys=("img", "*mask")):
-    """
-    Return a dict with key-arrays rotated by nrots*90 degrees.
-
-    Parameters
-    ----------
-    dct: dict
-        dict containing arrays to be stacked
-    nrot : int
-        number of rotations by 90 degrees
-    keys : Sequence[String, String] or String
-        keys in dict for images to be padded
-
-    Returns
-    -------
-    dict with keys with rotated arrays
-    """
-
-    # Create deepcopy to not override existing dict
-    new_dict = copy.deepcopy(dct)
-
-    # Find relevant keys
-    keys = [
-        dkey
-        for key in keys
-        for dkey in dct.keys()
-        if ((dkey == key) or ((dkey.endswith(key[1::])) and (key.startswith("*"))))
-    ]
-
-    for key in dct.keys():
-        if key in keys:
-            img = dct[key]
-            if isinstance(img, np.ndarray):
-                if isinstance(nrots, (int, float)):
-                    img = np.rot90(img, nrots)
-                else:
-                    raise ValueError("nrots must be a number")
-
-                if key.endswith("mask"):
-                    img = img.astype(int)
-                new_dict[key] = img
-    return new_dict
-
-
-def flip_dict(dct, direction="lr", keys=("img", "*mask")):
-    """
-    Return a dict with key-arrays rotated by nrots*90 degrees.
-
-    Parameters
-    ----------
-    dct: dict
-        dict containing arrays to be stacked
-    direction : str
-        "lr" for left-right, "ud" for up-down flipping
-    keys : Sequence[String, String] or String
-        keys in dict for images to be padded
-
-    Returns
-    -------
-    dict with keys with rotated arrays
-    """
-
-    # Create deepcopy to not override existing dict
-    new_dict = copy.deepcopy(dct)
-
-    # Find relevant keys
-    keys = [
-        dkey
-        for key in keys
-        for dkey in dct.keys()
-        if ((dkey == key) or ((dkey.endswith(key[1::])) and (key.startswith("*"))))
-    ]
-
-    for key in dct.keys():
-        if key in keys:
-            img = dct[key]
-            if isinstance(img, np.ndarray):
-                if direction == "lr":
-                    img = np.fliplr(img)
-                elif direction == "ud":
-                    img = np.flipud(img)
-                else:
-                    raise ValueError("direction must be lr or ud")
-
-                if key.endswith("mask"):
-                    img = img.astype(int)
-                new_dict[key] = img
-    return new_dict
-
-
-def roll_dict(dct, shift, axes, keys=("img", "*mask")):
-    """
-    Return a dict with key-arrays rolled by shift in axes.
-
-    Parameters
-    ----------
-    dct: dict
-        dict containing arrays to be stacked
-    shift : int
-        number of pixels by which to shift
-    axes : Number or Sequence[Number, ...]
-        axes in which to shift
-    keys : Sequence[String, String] or String
-        keys in dict for images to be padded
-
-    Returns
-    -------
-    dict with keys with rolled arrays
-    """
-
-    # Create deepcopy to not override existing dict
-    new_dict = copy.deepcopy(dct)
-    shift = np.array(shift).astype(int)
-
-    # Find relevant keys
-    keys = [
-        dkey
-        for key in keys
-        for dkey in dct.keys()
-        if ((dkey == key) or ((dkey.endswith(key[1::])) and (key.startswith("*"))))
-    ]
-
-    for key in dct.keys():
-        if key in keys:
-            img = dct[key]
-            if isinstance(img, np.ndarray):
-                img = np.roll(img, shift=shift, axis=axes)
-
-                if key.endswith("mask"):
-                    img = img.astype(int)
-                new_dict[key] = img
+    # Update visual_size and shape-keys
+    new_dict["shape"] = resolution.validate_shape(shape)
+    if "ppd" in dct.keys():
+        new_dict["visual_size"] = resolution.visual_size_from_shape_ppd(shape, dct["ppd"])
     return new_dict

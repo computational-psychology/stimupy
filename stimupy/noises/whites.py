@@ -53,9 +53,7 @@ def white(
         white_noise = np.random.rand(*shape) * 2.0 - 1.0
 
     # Adjust intensity range:
-    white_noise = adapt_intensity_range(
-        {"img": white_noise}, intensity_range[0], intensity_range[1]
-    )["img"]
+    white_noise = adapt_intensity_range(white_noise, intensity_range[0], intensity_range[1])
 
     stim = {
         "img": white_noise,

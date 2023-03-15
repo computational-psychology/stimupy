@@ -4,12 +4,13 @@ import warnings
 import numpy as np
 from PIL import Image, ImageDraw
 
-from stimupy.components.shapes import ring
+from stimupy.components.shapes import ellipse as ellipse_shape
 from stimupy.utils import resolution
 
 __all__ = [
     "line",
     "dipole",
+    "ellipse",
     "circle",
 ]
 
@@ -103,9 +104,6 @@ def line(
             int(np.round(position[0] + line_length * alpha[0] * ppd[0])),
         ),
     )
-
-    if any(num < 0 for num in coords[0]) or any(num < 0 for num in coords[1]):
-        raise ValueError("Line does not fully fit into image")
 
     # Create line image
     ImageDraw.Draw(img).line(coords, width=int(line_width * ppd[0]))
@@ -230,6 +228,74 @@ def dipole(
     return stim1
 
 
+def ellipse(
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    radius=None,
+    line_width=0,
+    intensity_line=1,
+    intensity_background=0,
+):
+    """Draw an ellipse
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    radius : Sequence[Number, Number], Number or None (default)
+        ellipse radius [ry, rx] in degrees visual angle
+    line_width : Number
+        width of the line, in degrees visual angle;
+        if line_width=0 (default), line will be one pixel wide
+    intensity_line : Number
+        intensity value of the line (default: 1)
+    intensity_background : Number
+        intensity value of the background (default: 0)
+
+    Returns
+    -------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each line (key: "line_mask"),
+        and additional keys containing stimulus parameters
+    """
+    if radius is None:
+        raise ValueError("ellipse() missing argument 'radius' which is not 'None'")
+
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
+    if line_width * ppd[0] == 0:
+        line_width = 1 / ppd[0]
+
+    stim = ellipse_shape(
+        radius=np.array(radius),
+        intensity_ellipse=intensity_line,
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        intensity_background=intensity_background,
+        origin="mean",
+    )
+
+    stim2 = ellipse_shape(
+        radius=np.array(radius) - line_width,
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        origin="mean",
+    )
+
+    stim["img"] = np.where(stim2["shape_mask"] == 1, intensity_background, stim["img"])
+    stim["line_mask"] = np.where(stim2["shape_mask"] == 1, 0, stim["shape_mask"])
+    del stim["shape_mask"]
+    return stim
+
+
 def circle(
     visual_size=None,
     ppd=None,
@@ -239,7 +305,7 @@ def circle(
     intensity_line=1,
     intensity_background=0,
 ):
-    """Draw a circle
+    """Draw a circle given the input parameters
 
     Parameters
     ----------
@@ -260,7 +326,7 @@ def circle(
         intensity value of the background (default: 0)
 
     Returns
-    -------
+    ----------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each line (key: "line_mask"),
@@ -268,24 +334,18 @@ def circle(
     """
     if radius is None:
         raise ValueError("circle() missing argument 'radius' which is not 'None'")
+    if not isinstance(radius, (int, float)):
+        raise ValueError("radius should be a single number")
 
-    # Resolve resolution
-    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
-    if line_width * ppd[0] == 0:
-        line_width = 1 / ppd[0]
-
-    stim = ring(
-        radii=(radius, radius + line_width),
-        intensity_rings=intensity_line,
+    stim = ellipse(
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,
+        radius=radius,
+        line_width=line_width,
+        intensity_line=intensity_line,
         intensity_background=intensity_background,
-        origin="mean",
     )
-    stim["ring_mask"] = np.where(stim["ring_mask"] == 2, 1, 0)
-    stim["line_mask"] = stim["ring_mask"]
-    del stim["ring_mask"]
     return stim
 
 
@@ -298,13 +358,12 @@ if __name__ == "__main__":
         "line_length": 2,
         "line_width": 0.01,
         "rotation": 30,
-        # "line_position": (5, 1),
-        # "origin": "center"
     }
 
     stims = {
-        "line": line(**p1),
+        "line": line(**p1, origin="center", line_position=(-1, -1)),
         "dipole": dipole(**p1, line_gap=1),
         "circle": circle(visual_size=10, ppd=10, radius=3),
+        "ellipse": ellipse(visual_size=10, ppd=10, radius=(3, 4)),
     }
-    plot_stimuli(stims, mask=False)
+    plot_stimuli(stims, mask=True)

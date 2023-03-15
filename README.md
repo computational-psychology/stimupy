@@ -1,6 +1,13 @@
 # Stimupy
 
+[![Tests](https://github.com/computational-psychology/stimupy/actions/workflows/test.yml/badge.svg)](https://github.com/computational-psychology/stimupy/actions/workflows/test.yml) [![](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![Documentation Status](https://readthedocs.org/projects/stimupy/badge/?version=latest)](https://stimupy.readthedocs.io/en/latest/?badge=latest)
+
+Contains submodules for
+- drawing basic visual stimulus components ([components](stimupy/components/))
+- creating different (brightness) illusions ([illusions](stimupy/illusions/))
+- replicating illusions in certain published papers  ([papers](stimupy/papers/))
+converting pixel values to degrees of visual angle ([utils](stimupy/utils/))
 
 `Stimupy` is a pure-Python package
 for creating new and exiting visual stimuli

@@ -67,3 +67,7 @@ target/
 **/.ipynb_checkpoints/
 
 docs/reference/_api/
+
+# Modelfest dataset for easy comparison / testing
+**/modelfest/
+

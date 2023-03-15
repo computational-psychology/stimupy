@@ -1,6 +1,7 @@
 import pytest
 
-from stimupy.components.gratings import resolve_grating_params, square_wave
+from stimupy.components import resolve_grating_params
+from stimupy.components.gratings import square_wave
 
 
 @pytest.mark.parametrize(

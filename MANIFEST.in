@@ -1,4 +1,4 @@
 include stimupy/papers/murray2020.mat
-include stimupy/papers/carney1999_data.csv
-include stimupy/papers/carney1999_noise.tif
-include stimupy/papers/carney1999_natural_scene.tif
+include stimupy/papers/modelfest_data.csv
+include stimupy/papers/modelfest_noise.tif
+include stimupy/papers/modelfest_natural_scene.tif
