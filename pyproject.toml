@@ -35,6 +35,13 @@ dependencies = [
 ]
 
 
+[project.optional-dependencies]
+dev = [
+  "pytest",
+  "black",
+  "pyupgrade",
+  "flake8"
+]
 
 [project.urls]
 repository = "https://github.com/computational-psychology/stimupy.git"
