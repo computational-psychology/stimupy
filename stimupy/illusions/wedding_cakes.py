@@ -1,7 +1,7 @@
 import numpy as np
-from scipy.signal import fftconvolve
 
-from stimupy.utils import degrees_to_pixels, resolution
+from stimupy.utils import resolution
+from stimupy.utils.filters import convolve
 
 __all__ = [
     "wedding_cake",
@@ -69,7 +69,7 @@ def wedding_cake(
         raise ValueError("ppd should be equal in x and y direction")
 
     nY, nX = shape
-    Ly, Lx, Lw = degrees_to_pixels(L_size, np.unique(ppd))
+    Ly, Lx, Lw = resolution.lengths_from_visual_angles_ppd(L_size, np.unique(ppd))
     Lyh, Lxh = int(Ly / 2) + 1, int(Lx / 2) + 1
 
     # Create L-shaped patch
@@ -93,11 +93,11 @@ def wedding_cake(
     array2 = np.rot90(array2)
     amax = int((array2.max() + 1) / 2)
 
-    array3 = fftconvolve(array1, array2, "same")
+    array3 = convolve(array1, array2, "same")
 
     if target_indices1 is not None and target_height is not None:
         # Create target patch2
-        theight = degrees_to_pixels(target_height, np.unique(ppd))
+        theight = resolution.lengths_from_visual_angles_ppd(target_height, np.unique(ppd))
         tpatch1 = np.zeros(L_patch.shape)
         tpatch1[int(Ly / 2 - theight / 2) : int(Ly / 2 + theight / 2), Lx - Lw : :] = (
             -intensity_grating[1] + intensity_target
@@ -109,10 +109,10 @@ def wedding_cake(
             arr2 = np.copy(array2)
             arr1[arr1 != ty + 2] = 0
             arr2[arr2 != tx + amax] = 0
-            array_t1 += fftconvolve(arr1, arr2, "same")
+            array_t1 += convolve(arr1, arr2, "same")
         array_t1[array_t1 < 1] = 0
         array_t1[array_t1 > 1] = 1
-        t1 = np.round(fftconvolve(array_t1, tpatch1, "same"), 5)
+        t1 = np.round(convolve(array_t1, tpatch1, "same"), 5)
         t1 = t1[Lyh : Lyh + int(nY / 2), Lxh : Lxh + int(nX / 2)]
 
     else:
@@ -120,7 +120,7 @@ def wedding_cake(
 
     if target_indices2 is not None and target_height is not None:
         # Create target patch2
-        theight = degrees_to_pixels(target_height, np.unique(ppd))
+        theight = resolution.lengths_from_visual_angles_ppd(target_height, np.unique(ppd))
         tpatch2 = np.zeros(L_patch.shape)
         tpatch2[int(Ly / 2 - theight / 2) : int(Ly / 2 + theight / 2), Lx - Lw : :] = (
             -intensity_grating[0] + intensity_target
@@ -132,17 +132,17 @@ def wedding_cake(
             arr2 = np.copy(array2)
             arr1[arr1 != ty + 2] = 0
             arr2[arr2 != tx + amax] = 0
-            array_t2 += fftconvolve(arr1, arr2, "same")
+            array_t2 += convolve(arr1, arr2, "same")
         array_t2[array_t2 < 1] = 0
         array_t2[array_t2 > 1] = 1
-        t2 = np.round(fftconvolve(array_t2, tpatch2, "same"), 5)
+        t2 = np.round(convolve(array_t2, tpatch2, "same"), 5)
         t2 = t2[Lyh - Lw : Lyh + int(nY / 2) - Lw, Lxh + Lw : Lxh + int(nX / 2) + Lw]
 
     else:
         t2 = np.zeros([int(nY / 2), int(nX / 2)])
 
     # Create wedding cake pattern
-    imgt = fftconvolve(array3, L_patch, "same")
+    imgt = convolve(array3, L_patch, "same")
     imgt = np.round(imgt)
     img = np.copy(imgt)
     img[imgt > 1] = intensity_grating[1]

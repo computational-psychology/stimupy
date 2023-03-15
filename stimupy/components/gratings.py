@@ -1,132 +1,118 @@
 import numpy as np
 
-from stimupy.components import draw_regions, mask_elements, resolve_grating_params
+# import warnings
+
+from stimupy.components import draw_sine_wave, draw_regions
 from stimupy.components.gaussians import gaussian
-from stimupy.utils import resolution
+from stimupy.utils.utils import round_to_vals
 
 __all__ = [
-    "square_wave",
     "sine_wave",
-    "gabor",
+    "square_wave",
     "staircase",
+    "gabor",
     "plaid",
 ]
 
 
-def mask_bars(
-    edges,
-    shape=None,
+def sine_wave(
     visual_size=None,
     ppd=None,
-    orientation="horizontal",
-    rotation=0.0,
-    origin="corner",
+    shape=None,
+    frequency=None,
+    n_bars=None,
+    bar_width=None,
+    period="ignore",
+    rotation=0,
+    phase_shift=0,
+    intensity_bars=(0.0, 1.0),
+    origin="center",
+    round_phase_width=False,
 ):
-    """Generate mask with integer indices for sequential bars
+    """Draw sine-wave grating (set of bars) of given spatial frequency
 
     Parameters
     ----------
-    edges : Sequence[Number, ...]
-        upper-limit, in degrees visual angle, of each bar
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
-    orientation : "vertical" or "horizontal" (default)
-        orientation of the grating
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    frequency : Number, or None (default)
+        spatial frequency of grating, in cycles per degree visual angle
+    n_bars : int, or None (default)
+        number of bars in the grating
+    bar_width : Number, or None (default)
+        width of a single bar, in degrees visual angle
+    period : "even", "odd", "either" or "ignore" (default)
+        ensure whether the grating has "even" number of phases, "odd"
+        number of phases, either or whether not to round the number of
+        phases ("ignore")
     rotation : float
-        rotation of grating in degrees (default: 0)
+        rotation of grating in degrees (default: 0 = horizontal)
+    phase_shift : float
+        phase shift of grating in degrees
+    intensity_bars : Sequence[float, float]
+        min and max intensity of sine-wave, by default (0.0, 1.0)
     origin : "corner", "mean" or "center"
         if "corner": set origin to upper left corner (default)
         if "mean": set origin to hypothetical image center
         if "center": set origin to real center (closest existing value to mean)
+    round_phase_width : Bool
+        if True, round width of bars given resolution
 
     Returns
     ----------
     dict[str, Any]
+        dict with the stimulus (key: "img"),
         mask with integer index for each bar (key: "grating_mask"),
         and additional keys containing stimulus parameters
     """
 
-    stim = mask_elements(
-        edges=edges,
-        orientation=orientation,
-        rotation=rotation,
-        origin=origin,
-        shape=shape,
+    if len(intensity_bars) != 2:
+        raise ValueError("intensity_bars should be [float, float]")
+
+    lst = [visual_size, ppd, shape, frequency, n_bars, bar_width]
+    if len([x for x in lst if x is not None]) < 3:
+        raise ValueError(
+            "'sine_wave()' needs 3 non-None arguments for resolving from 'visual_size', "
+            "'ppd', 'shape', 'frequency', 'n_bars', 'bar_width'"
+        )
+
+    sw = draw_sine_wave(
         visual_size=visual_size,
         ppd=ppd,
+        shape=shape,
+        frequency=frequency,
+        n_phases=n_bars,
+        phase_width=bar_width,
+        period=period,
+        rotation=rotation,
+        phase_shift=phase_shift,
+        intensities=intensity_bars,
+        origin=origin,
+        round_phase_width=round_phase_width,
+        base_type="rotated",
     )
-    stim["grating_mask"] = stim["mask"]
-    del stim["mask"]
+
+    # Create stimulus dict
+    stim = {
+        "img": sw["img"],
+        "grating_mask": sw["mask"].astype(int),
+        "visual_size": sw["visual_size"],
+        "ppd": sw["ppd"],
+        "shape": sw["shape"],
+        "rotation": rotation,
+        "origin": origin,
+        "frequency": sw["frequency"],
+        "bar_width": sw["phase_width"],
+        "n_bars": sw["n_phases"],
+        "period": period,
+        "intensity_bars": intensity_bars,
+        "phase_shift": phase_shift,
+    }
     return stim
-
-
-def shift_edges(
-    edges,
-    ppd=None,
-    phase_shift=None,
-    phase_width=None,
-    intensity_bars=None,
-    origin=None,
-):
-    """Function to shift edges
-
-    Parameters
-    ----------
-    edges : Sequence[Number, ...]
-        upper-limit, in degrees visual angle, of each bar
-    ppd : Sequence[Number, Number], Number, or None (default)
-        pixels per degree [vertical, horizontal]
-    phase_shift : float
-        phase shift of grating in degrees
-    phase_width : float
-        width of individual phase in visual angle
-    intensity_bars : Sequence[float, float]
-        intensity value for the two bars
-    origin : "corner", "mean" or "center"
-        if "corner": set origin to upper left corner (default)
-        if "mean": set origin to hypothetical image center
-        if "center": set origin to real center (closest existing value to mean)
-
-    Returns
-    ----------
-    Updated edges and intensity_bars
-    """
-
-    phase_shift = phase_shift % 360
-    edges = np.array(edges)
-
-    if phase_shift != 0:
-        if phase_shift > 0 and phase_shift <= 180:
-            intensity_bars = (intensity_bars[1], intensity_bars[0])
-
-        phase_shift_deg = phase_shift * phase_width / 180
-        phase_shift_deg = np.round(phase_shift_deg * ppd) / ppd
-
-        edges = edges + phase_shift_deg
-
-        if phase_shift > 0 and phase_shift <= 180:
-            edges = np.append(phase_shift_deg, edges)
-        elif phase_shift > 180:
-            edges = np.append([phase_shift_deg - phase_width, phase_shift_deg], edges)
-
-    if origin != "corner":
-        nedges = int(len(edges) / 2)
-        phase_width = np.diff(edges).mean()
-        edges_small = edges[0 : nedges + 1]
-        edges_large = edges[nedges::] - edges[nedges] + phase_width - edges[0]
-        # edges_large = -np.round(edges_large[::-1], 8)
-        edges_large = np.ceil(-edges_large[::-1] * 10e7) / 10e7
-        edges_large = edges_large[edges_large <= 1e-07]
-        edges = list(np.append(edges_large, edges_small))
-        if nedges % 2:
-            edges = [
-                edges[0] - phase_width,
-            ] + edges
-    return list(edges), intensity_bars
 
 
 def square_wave(
@@ -139,7 +125,7 @@ def square_wave(
     period="ignore",
     rotation=0,
     phase_shift=0,
-    intensity_bars=(1.0, 0.0),
+    intensity_bars=(0.0, 1.0),
     origin="corner",
     round_phase_width=True,
 ):
@@ -167,16 +153,14 @@ def square_wave(
         rotation of grating in degrees (default: 0 = horizontal)
     phase_shift : float
         phase shift of grating in degrees
-    intensity_bars : Sequence[float, ...]
-        intensity value for each bar, by default (1.0, 0.0).
-        Can specify as many intensities as n_bars;
-        If fewer intensities are passed than n_bars, cycles through intensities
+    intensity_bars : Sequence[float, float]
+        min and max intensity of square-wave, by default (0.0, 1.0)
     origin : "corner", "mean" or "center"
         if "corner": set origin to upper left corner (default)
         if "mean": set origin to hypothetical image center
         if "center": set origin to real center (closest existing value to mean)
     round_phase_width : Bool
-        if True, round width of bars
+        if True, round width of bars given resolution
 
     Returns
     ----------
@@ -185,129 +169,49 @@ def square_wave(
         mask with integer index for each bar (key: "grating_mask"),
         and additional keys containing stimulus parameters
     """
-    lst = [visual_size, ppd, shape, frequency, n_bars, bar_width]
-    if len([x for x in lst if x is not None]) < 3:
-        raise ValueError(
-            "'square_wave()' needs 3 non-None arguments for resolving from 'visual_size', "
-            "'ppd', 'shape', 'frequency', 'n_bars', 'bar_width'"
-        )
 
-    # Try to resolve resolution
-    try:
-        shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
-    except resolution.TooManyUnknownsError:
-        ppd = resolution.validate_ppd(ppd)
-        shape = resolution.validate_shape(shape)
-        visual_size = resolution.validate_visual_size(visual_size)
-
-    alpha = [np.abs(np.cos(np.deg2rad(rotation))), np.abs(np.sin(np.deg2rad(rotation)))]
-
-    if None not in shape:
-        length = np.round(alpha[0] * shape.width + alpha[1] * shape.height)
-    else:
-        length = None
-
-    if None not in visual_size:
-        visual_angle = alpha[0] * visual_size.width + alpha[1] * visual_size.height
-    else:
-        visual_angle = None
-
-    if None not in ppd:
-        ppd_1D = ppd.horizontal
-    else:
-        ppd_1D = None
-
-    # Resolve params
-    params = resolve_grating_params(
-        length=length,
-        visual_angle=visual_angle,
-        n_phases=n_bars,
-        phase_width=bar_width,
-        ppd=ppd_1D,
-        frequency=frequency,
-        period=period,
-        round_phase_width=round_phase_width,
-    )
-    length = params["length"]
-    ppd_1D = params["ppd"]
-    visual_angle = params["visual_angle"]
-
-    # Determine size/shape of whole image
-    if None in shape:
-        shape = [length * alpha[1], length * alpha[0]]
-        if np.round(alpha[1], 5) == 0:
-            shape[0] = shape[1]
-        if np.round(alpha[0], 5) == 0:
-            shape[1] = shape[0]
-
-    if None in ppd:
-        ppd = (ppd_1D, ppd_1D)
-
-    if None in visual_size:
-        visual_size = resolution.visual_size_from_shape_ppd(shape=shape, ppd=ppd)
-
-    shape = resolution.validate_shape(shape)
-    visual_size = resolution.validate_visual_size(visual_size)
-    ppd = resolution.validate_ppd(ppd)
-
-    # Phase shift:
-    edges = params["edges"]
-    edges, intensities = shift_edges(
-        edges=edges,
-        ppd=ppd[0],
-        phase_shift=phase_shift,
-        phase_width=params["phase_width"],
-        intensity_bars=intensity_bars,
-        origin=origin,
-    )
-
-    # Get bars mask
-    stim = mask_bars(
-        edges=edges,
-        shape=shape,
+    stim = sine_wave(
         visual_size=visual_size,
         ppd=ppd,
-        orientation="rotated",
+        shape=shape,
+        frequency=frequency,
+        n_bars=n_bars,
+        bar_width=bar_width,
+        period=period,
         rotation=rotation,
+        phase_shift=phase_shift,
+        intensity_bars=intensity_bars,
         origin=origin,
+        round_phase_width=round_phase_width,
     )
 
-    # Draw image
-    stim["img"] = draw_regions(stim["grating_mask"], intensities=intensities)
-
-    return {
-        **stim,
-        "frequency": params["frequency"],
-        "bar_width": params["phase_width"],
-        "n_bars": params["n_phases"],
-        "period": params["period"],
-        "intensity_bars": intensity_bars,
-    }
+    # Round sine-wave to create square wave
+    stim["img"] = round_to_vals(stim["img"], intensity_bars)
+    return stim
 
 
-def sine_wave(
-    shape=None,
+def staircase(
     visual_size=None,
     ppd=None,
+    shape=None,
     frequency=None,
     n_bars=None,
     bar_width=None,
-    period="ignore",
+    period="either",
     rotation=0,
-    phase_shift=0,
     intensity_bars=(0.0, 1.0),
-    origin="corner",
+    round_phase_width=True,
 ):
-    """Draw sine-wave grating (set of bars) of given spatial frequency
+    """Draw a luminance staircase
 
     Parameters
     ----------
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
     frequency : Number, or None (default)
         spatial frequency of grating, in cycles per degree visual angle
     n_bars : int, or None (default)
@@ -320,14 +224,13 @@ def sine_wave(
         phases ("ignore")
     rotation : float
         rotation of grating in degrees (default: 0 = horizontal)
-    phase_shift : float
-        phase shift of grating in degrees
     intensity_bars : Sequence[float, ...]
-        maximal intensity value for each bar, by default (0.0, 1.0).
-    origin : "corner", "mean" or "center"
-        if "corner": set origin to upper left corner (default)
-        if "mean": set origin to hypothetical image center
-        if "center": set origin to real center (closest existing value to mean)
+        if len(intensity_bars)==2, intensity range of staircase (default 0.0, 1.0);
+        if len(intensity_bars)>2, intensity value for each bar.
+        Can specify as many intensities as n_bars.
+        If fewer intensities are passed than n_bars, cycles through intensities.
+    round_phase_width : Bool
+        if True, round width of bars given resolution
 
     Returns
     ----------
@@ -336,108 +239,31 @@ def sine_wave(
         mask with integer index for each bar (key: "grating_mask"),
         and additional keys containing stimulus parameters
     """
-    lst = [visual_size, ppd, shape, frequency, n_bars, bar_width]
-    if len([x for x in lst if x is not None]) < 3:
-        raise ValueError(
-            "'sine_wave()' needs 3 non-None arguments for resolving from 'visual_size', "
-            "'ppd', 'shape', 'frequency', 'n_bars', 'bar_width'"
-        )
 
-    # Try to resolve resolution
-    try:
-        shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
-    except resolution.TooManyUnknownsError:
-        ppd = resolution.validate_ppd(ppd)
-        shape = resolution.validate_shape(shape)
-        visual_size = resolution.validate_visual_size(visual_size)
-
-    alpha = [np.abs(np.cos(np.deg2rad(rotation))), np.abs(np.sin(np.deg2rad(rotation)))]
-
-    if shape.width is not None:
-        length = np.round(alpha[0] * shape.width + alpha[1] * shape.height)
-    else:
-        length = None
-
-    if visual_size.width is not None:
-        visual_angle = alpha[0] * visual_size.width + alpha[1] * visual_size.height
-    else:
-        visual_angle = None
-
-    if ppd.horizontal is not None:
-        ppd_1D = ppd.horizontal
-    else:
-        ppd_1D = None
-
-    # Resolve params
-    params = resolve_grating_params(
-        length=length,
-        visual_angle=visual_angle,
-        n_phases=n_bars,
-        phase_width=bar_width,
-        ppd=ppd_1D,
-        frequency=frequency,
-        period=period,
-        round_phase_width=False,
-    )
-    length = params["length"]
-    ppd_1D = params["ppd"]
-    visual_angle = params["visual_angle"]
-
-    # Determine size/shape of whole image
-    if None in shape:
-        shape = [length * alpha[1], length * alpha[0]]
-        if np.round(alpha[1], 5) == 0:
-            shape[0] = shape[1]
-        if np.round(alpha[0], 5) == 0:
-            shape[1] = shape[0]
-
-    if None in ppd:
-        ppd = (ppd_1D, ppd_1D)
-
-    if None in visual_size:
-        visual_size = resolution.visual_size_from_shape_ppd(shape=shape, ppd=ppd)
-
-    shape = resolution.validate_shape(shape)
-    visual_size = resolution.validate_visual_size(visual_size)
-    ppd = resolution.validate_ppd(ppd)
-
-    # Phase shift:
-    edges = params["edges"]
-    edges, intensities = shift_edges(
-        edges=edges,
-        ppd=ppd[0],
-        phase_shift=phase_shift,
-        phase_width=params["phase_width"],
-        intensity_bars=intensity_bars,
-        origin=origin,
-    )
-
-    # Get bars mask
-    stim = mask_bars(
-        edges=edges,
-        shape=shape,
+    stim = square_wave(
         visual_size=visual_size,
         ppd=ppd,
-        orientation="rotated",
+        shape=shape,
+        frequency=frequency,
+        n_bars=n_bars,
+        bar_width=bar_width,
+        period=period,
         rotation=rotation,
-        origin=origin,
+        phase_shift=0,
+        intensity_bars=(0, 1),
+        origin="corner",
+        round_phase_width=round_phase_width,
     )
 
-    # Draw image
-    stim["img"] = np.sin(
-        params["frequency"] * 2 * np.pi * stim["distances"] + np.deg2rad(phase_shift)
-    )
-    stim["img"] = stim["img"] / 2 + 0.5
-    stim["img"] = stim["img"] * (intensity_bars[1] - intensity_bars[0]) + intensity_bars[0]
+    if len(intensity_bars) == 2:
+        intensity_bars = np.linspace(
+            intensity_bars[0], intensity_bars[1], int(np.ceil(stim["n_bars"]))
+        )
 
-    return {
-        **stim,
-        "frequency": params["frequency"],
-        "bar_width": params["phase_width"],
-        "n_bars": params["n_phases"],
-        "period": params["period"],
-        "phase_shift": phase_shift,
-    }
+    # Use grating_mask to draw staircase
+    stim["img"] = draw_regions(mask=stim["grating_mask"], intensities=intensity_bars)
+    stim["intensity_bars"] = intensity_bars
+    return stim
 
 
 def gabor(
@@ -451,7 +277,7 @@ def gabor(
     rotation=0,
     phase_shift=0,
     intensity_bars=(0.0, 1.0),
-    origin="mean",
+    origin="center",
 ):
     """Draw sine-wave grating (set of bars) of given spatial frequency
 
@@ -495,9 +321,9 @@ def gabor(
         raise ValueError("gabor() missing argument 'sigma' which is not 'None'")
 
     stim = sine_wave(
-        shape=shape,
         visual_size=visual_size,
         ppd=ppd,
+        shape=shape,
         frequency=frequency,
         bar_width=bar_width,
         period=period,
@@ -520,151 +346,6 @@ def gabor(
         **stim,
         "sigma": sigma,
         "gaussian_mask": gaussian_window["gaussian_mask"],
-    }
-
-
-def staircase(
-    visual_size=None,
-    ppd=None,
-    shape=None,
-    frequency=None,
-    n_bars=None,
-    bar_width=None,
-    period="either",
-    rotation=0,
-    intensity_bars=(0.0, 1.0),
-):
-    """Draw a luminance staircase
-
-    Parameters
-    ----------
-    visual_size : Sequence[Number, Number], Number, or None (default)
-        visual size [height, width] of image, in degrees
-    ppd : Sequence[Number, Number], Number, or None (default)
-        pixels per degree [vertical, horizontal]
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
-    frequency : Number, or None (default)
-        spatial frequency of grating, in cycles per degree visual angle
-    n_bars : int, or None (default)
-        number of bars in the grating
-    bar_width : Number, or None (default)
-        width of a single bar, in degrees visual angle
-    period : "even", "odd", "either" or "ignore" (default)
-        ensure whether the grating has "even" number of phases, "odd"
-        number of phases, either or whether not to round the number of
-        phases ("ignore")
-    rotation : float
-        rotation of grating in degrees (default: 0 = horizontal)
-    intensity_bars : Sequence[float, ...]
-        intensity value for each bar, by default (1.0, 0.0).
-        Can specify as many intensities as n_bars;
-        If fewer intensities are passed than n_bars, cycles through intensities
-
-    Returns
-    ----------
-    dict[str, Any]
-        dict with the stimulus (key: "img"),
-        mask with integer index for each bar (key: "grating_mask"),
-        and additional keys containing stimulus parameters
-    """
-    lst = [visual_size, ppd, shape, frequency, n_bars, bar_width]
-    if len([x for x in lst if x is not None]) < 3:
-        raise ValueError(
-            "'staircase()' needs 3 non-None arguments for resolving from 'visual_size', "
-            "'ppd', 'shape', 'frequency', 'n_bars', 'bar_width'"
-        )
-
-    # Try to resolve resolution
-    try:
-        shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
-    except resolution.TooManyUnknownsError:
-        ppd = resolution.validate_ppd(ppd)
-        shape = resolution.validate_shape(shape)
-        visual_size = resolution.validate_visual_size(visual_size)
-
-    alpha = [np.abs(np.cos(np.deg2rad(rotation))), np.abs(np.sin(np.deg2rad(rotation)))]
-
-    if None not in shape:
-        length = np.round(alpha[0] * shape.width + alpha[1] * shape.height)
-    else:
-        length = None
-
-    if None not in visual_size:
-        visual_angle = alpha[0] * visual_size.width + alpha[1] * visual_size.height
-    else:
-        visual_angle = None
-
-    if None not in ppd:
-        ppd_1D = ppd.horizontal
-    else:
-        ppd_1D = None
-
-    # Resolve params
-    params = resolve_grating_params(
-        length=length,
-        visual_angle=visual_angle,
-        n_phases=n_bars,
-        phase_width=bar_width,
-        ppd=ppd_1D,
-        frequency=frequency,
-        period=period,
-    )
-    length = params["length"]
-    ppd_1D = params["ppd"]
-    visual_angle = params["visual_angle"]
-
-    # Determine size/shape of whole image
-    if None in shape:
-        shape = [length * alpha[1], length * alpha[0]]
-        if np.round(alpha[1], 5) == 0:
-            shape[0] = shape[1]
-        if np.round(alpha[0], 5) == 0:
-            shape[1] = shape[0]
-
-    if None in ppd:
-        ppd = (ppd_1D, ppd_1D)
-
-    if None in visual_size:
-        visual_size = resolution.visual_size_from_shape_ppd(shape=shape, ppd=ppd)
-
-    shape = resolution.validate_shape(shape)
-    visual_size = resolution.validate_visual_size(visual_size)
-    ppd = resolution.validate_ppd(ppd)
-
-    # Phase shift:
-    edges = params["edges"]
-    edges, intensities = shift_edges(
-        edges=edges,
-        ppd=ppd[0],
-        phase_shift=0,
-        phase_width=params["phase_width"],
-        intensity_bars=intensity_bars,
-        origin="corner",
-    )
-
-    # Get bars mask
-    stim = mask_bars(
-        edges=params["edges"],
-        shape=shape,
-        visual_size=visual_size,
-        ppd=ppd,
-        orientation="rotated",
-        rotation=rotation,
-        origin="corner",
-    )
-
-    # Draw image
-    if len(intensity_bars) == 2:
-        intensity_bars = np.linspace(intensity_bars[0], intensity_bars[1], int(params["n_phases"]))
-    stim["img"] = draw_regions(stim["grating_mask"], intensities=intensity_bars)
-
-    return {
-        **stim,
-        "frequency": params["frequency"],
-        "bar_width": params["phase_width"],
-        "n_bars": params["n_phases"],
-        "period": params["period"],
     }
 
 
@@ -701,8 +382,6 @@ def plaid(
         raise ValueError("plaid() missing argument 'sigma' which is not 'None'")
 
     # Create sine-wave gratings
-    grating_parameters1["origin"] = "center"
-    grating_parameters2["origin"] = "center"
     grating1 = sine_wave(**grating_parameters1)
     grating2 = sine_wave(**grating_parameters2)
 
@@ -713,6 +392,7 @@ def plaid(
     if grating1["origin"] != grating2["origin"]:
         raise ValueError("Grating origins must be the same")
 
+    # Create Gaussian window
     window = gaussian(
         visual_size=grating1["visual_size"],
         ppd=grating1["ppd"],
@@ -737,9 +417,9 @@ def plaid(
 if __name__ == "__main__":
     from stimupy.utils.plotting import plot_stimuli
 
-    rotation = 0
+    rotation = 90
     origin = "center"
-    phase_shift = 0
+    phase_shift = 30
 
     p1 = {
         "visual_size": (10, 5),
@@ -750,7 +430,7 @@ if __name__ == "__main__":
 
     p2 = {
         "visual_size": 5,
-        "ppd": 10,
+        "ppd": 20,
         "frequency": 2,
         "phase_shift": phase_shift,
     }
@@ -783,7 +463,7 @@ if __name__ == "__main__":
 
     p6 = {
         "visual_size": 4.0,
-        "ppd": 25,
+        "ppd": 20,
         "bar_width": 0.08,
     }
 
@@ -806,3 +486,4 @@ if __name__ == "__main__":
         "plaid": plaid(p3, p4, sigma=4.0),
     }
     plot_stimuli(stims, mask=False)
+    plot_stimuli(stims, mask=True)

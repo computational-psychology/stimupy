@@ -1,7 +1,7 @@
+import copy
 import numpy as np
 
 from stimupy.components import gaussians, image_base
-from stimupy.utils import resolution
 
 __all__ = [
     "step_edge",
@@ -109,7 +109,7 @@ def gaussian_edge(
         ppd=ppd,
         shape=shape,
         rotation=rotation,
-        intensity_edges=(0.0, 1.0),
+        intensity_edges=intensity_edges,
     )
 
     window = gaussians.gaussian(
@@ -124,6 +124,7 @@ def gaussian_edge(
     stim["img"] = img
     stim["sigma"] = sigma
     stim["intensity_background"] = intensity_background
+    stim["gaussian_mask"] = window["gaussian_mask"]
     return stim
 
 
@@ -132,6 +133,7 @@ def cornsweet_edge(
     ppd=None,
     shape=None,
     ramp_width=None,
+    rotation=0,
     intensity_edges=(0.0, 1.0),
     intensity_plateau=0.5,
     exponent=2.75,
@@ -157,6 +159,8 @@ def cornsweet_edge(
         shape [height, width] of grating, in pixels
     ramp_width : float
         width of luminance ramp in degrees of visual angle
+    rotation : float
+        rotation of stimulus in degrees (default: 0)
     intensity_edges : (float, float)
         intensity of edges
     intensity_plateau : float
@@ -182,40 +186,49 @@ def cornsweet_edge(
     if ramp_width is None:
         raise ValueError("cornsweet_edge() missing argument 'ramp_width' which is not 'None'")
 
-    # Resolve resolution
-    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
-    if len(np.unique(ppd)) > 1:
-        raise ValueError("ppd should be equal in x and y direction")
-    if ramp_width > visual_size[1] / 2:
+    base = image_base(
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        rotation=rotation,
+        origin="mean",
+    )
+
+    if ramp_width > max(base["visual_size"]) / 2:
         raise ValueError("ramp_width is too large")
 
-    ramp_width_px = int(ramp_width * ppd[1])
-    img = np.ones(shape) * intensity_plateau
-    mask = np.zeros(shape)
+    dist = np.round(base["rotated"] / ramp_width, 6)
+    d1 = copy.deepcopy(dist)
+    d2 = copy.deepcopy(dist) * (-1)
+    d1[d1 < 0] = -1
+    d1[d1 > 1] = 1
+    d2[d2 < 0] = -1
+    d2[d2 > 1] = 1
 
     # Create ramp profiles individually for left and right side
-    dist = np.arange(shape[1] / 2.0)
-    dist = dist / ramp_width_px
-    dist[dist > 1.0] = 1.0
-    profile1 = (1.0 - dist) ** exponent * (intensity_edges[0] - intensity_plateau)
-    profile2 = (1.0 - dist) ** exponent * (intensity_edges[1] - intensity_plateau)
-    img[:, : int(shape[1] / 2.0)] += profile1[::-1]
-    img[:, shape[1] // 2 :] += profile2
-
-    # Generate the edge mask
-    mask[:, int(shape[1] / 2.0 - ramp_width_px - 1) : int(shape[1] / 2.0)] = 1
-    mask[:, int(shape[1] / 2.0) : int(shape[1] / 2.0 + ramp_width_px + 1)] = 2
+    profile1 = (1.0 - d1) ** exponent * (
+        intensity_edges[0] - intensity_plateau
+    ) + intensity_plateau
+    profile2 = (1.0 - d2) ** exponent * (
+        intensity_edges[1] - intensity_plateau
+    ) + intensity_plateau
+    img = np.where(d1 == -1, 0, profile1) + np.where(d2 == -1, 0, profile2)
+    mask = np.where(d1 == -1, 0, 2) + np.where(d2 == -1, 0, 1)
+    mask[mask == 3] = 1
 
     stim = {
         "img": img,
         "edge_mask": mask.astype(int),
-        "visual_size": visual_size,
-        "ppd": ppd,
-        "shape": shape,
+        "visual_size": base["visual_size"],
+        "ppd": base["ppd"],
+        "shape": base["shape"],
         "intensity_edges": intensity_edges,
         "intensity_plateau": intensity_plateau,
         "ramp_width": ramp_width,
+        "rotation": rotation,
         "exponent": exponent,
+        "d1": d1,
+        "d2": d2,
     }
 
     return stim

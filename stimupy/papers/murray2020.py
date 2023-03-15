@@ -115,7 +115,7 @@ def argyle(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -165,7 +165,7 @@ def argyle_control(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -217,7 +217,7 @@ def argyle_long(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -269,7 +269,7 @@ def snake(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -321,7 +321,7 @@ def snake_control(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -373,7 +373,7 @@ def koffka_adelson(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -425,7 +425,7 @@ def koffka_broken(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -477,7 +477,7 @@ def koffka_connected(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -529,7 +529,7 @@ def checkassim(ppd=PPD, pad=PAD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -587,7 +587,7 @@ def simcon(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -639,7 +639,7 @@ def simcon_articulated(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -691,7 +691,7 @@ def white(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -709,7 +709,7 @@ def white(ppd=PPD):
         "target_indices_bottom": (2, 4, 6),
         "target_center_offset": 2,
         "target_height": 2,
-        "intensity_bars": (70, 17.5),
+        "intensity_bars": (17.5, 70),
         "intensity_target": 35.0,
         "period": "even",
     }

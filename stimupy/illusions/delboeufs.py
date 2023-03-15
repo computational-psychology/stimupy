@@ -72,7 +72,7 @@ def delboeuf(
 
     inner = disc(
         radius=target_radius,
-        intensity_discs=intensity_target - intensity_background,
+        intensity_disc=intensity_target - intensity_background,
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,

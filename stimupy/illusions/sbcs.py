@@ -283,7 +283,7 @@ def with_dots(
         radius=dot_radius,
         ppd=ppd,
         intensity_background=0.0,
-        intensity_discs=1,
+        intensity_disc=1,
     )["img"]
     patch = pad_by_visual_size(img=patch, padding=padding, ppd=ppd, pad_value=0.0)
     pixels_per_dot = patch.shape
@@ -322,8 +322,8 @@ def with_dots(
     stim = {
         "img": img,
         "target_mask": mask.astype(int),
-        "shape": img.shape,
-        "visual_size": np.array(img.shape) / ppd,
+        "shape": shape,
+        "visual_size": visual_size,
         "ppd": ppd,
         "n_dots": n_dots,
         "dot_radius": dot_radius,
@@ -419,7 +419,7 @@ def dotted(
         radius=dot_radius,
         ppd=ppd,
         intensity_background=0.0,
-        intensity_discs=1.0,
+        intensity_disc=1.0,
     )["img"]
     patch = pad_by_visual_size(img=patch, padding=padding, ppd=ppd, pad_value=0.0)
     pixels_per_dot = patch.shape
@@ -457,8 +457,8 @@ def dotted(
     stim = {
         "img": img,
         "target_mask": mask.astype(int),
-        "shape": img.shape,
-        "visual_size": np.array(img.shape) / ppd,
+        "shape": shape,
+        "visual_size": visual_size,
         "ppd": ppd,
         "n_dots": n_dots,
         "dot_radius": dot_radius,
@@ -558,8 +558,6 @@ def two_sided_with_dots(
     del stim["intensity_background"]
     stim["intensity_backgrounds"] = intensity_backgrounds
     stim["intensity_dots"] = intensity_dots
-    stim["shape"] = shape
-    stim["visual_size"] = visual_size
     return stim
 
 
@@ -649,8 +647,6 @@ def two_sided_dotted(
     del stim["intensity_background"]
     stim["intensity_backgrounds"] = intensity_backgrounds
     stim["intensity_dots"] = intensity_dots
-    stim["shape"] = shape
-    stim["visual_size"] = visual_size
     return stim
 
 

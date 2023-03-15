@@ -4,6 +4,27 @@ from collections import namedtuple
 
 import numpy as np
 
+__all__ = [
+    "resolve",
+    "resolve_1D",
+    "resolve_dict",
+    "visual_angle_from_length_ppd",
+    "visual_angles_from_lengths_ppd",
+    "visual_size_from_shape_ppd",
+    "length_from_visual_angle_ppd",
+    "lengths_from_visual_angles_ppd",
+    "shape_from_visual_size_ppd",
+    "ppd_from_shape_visual_size",
+    "ppd_from_length_visual_angle",
+    "compute_ppd",
+    "validate_shape",
+    "validate_ppd",
+    "validate_visual_size",
+    "valid_1D",
+    "valid_resolution",
+    "valid_dict",
+]
+
 Visual_size = namedtuple("Visual_size", "height width")
 Shape = namedtuple("Shape", "height width")
 Ppd = namedtuple("Ppd", "vertical horizontal")
@@ -124,89 +145,107 @@ def resolve_1D(length=None, visual_angle=None, ppd=None, round=True):
                         f"Rounding visual angle because of ppd; {visual_angle_old} ->"
                         f" {visual_angle}"
                     )
-            length = pix_from_visual_angle_ppd_1D(visual_angle=visual_angle, ppd=ppd, round=round)
+            length = length_from_visual_angle_ppd(visual_angle=visual_angle, ppd=ppd, round=round)
         elif visual_angle is None:
-            visual_angle = visual_angle_from_length_ppd_1D(length=length, ppd=ppd)
+            visual_angle = visual_angle_from_length_ppd(length=length, ppd=ppd)
         elif ppd is None:
-            ppd = ppd_from_length_visual_angle_1D(length=length, visual_angle=visual_angle)
+            ppd = ppd_from_length_visual_angle(length=length, visual_angle=visual_angle)
 
     return length, visual_angle, ppd
 
 
-def valid_1D(length, visual_angle, ppd):
-    """Asserts that the combined specification of resolution is geometrically valid.
+def resolve_dict(dct):
+    """Resolves the full resolution ("shape", "ppd", "visual_size"), for 2
+    givens and 1 unknown in the input dictionary
 
-    Asserts the combined specification of shape (in pixels), visual_size (deg) and ppd.
-    If this makes sense, i.e. (roughly), int(visual_size * ppd) == shape,
-    this function passes without output.
-    If the specification does not make sense, raises a ResolutionError.
+    A resolution consists of a visual size in degrees, a shape in pixels,
+    and specification of the number of pixels per degree.
+    Since there is a strict geometric relation between these,
+    shape = visual_size * ppd,
+    if two are given, the third can be calculated using this function.
 
-    Note that the resolution specification has to be fully resolved,
-    i.e., none of the parameters can be None
-
-    Parameters
-    ----------
-    length : int, length in pixels
-    visual_angle : float, size in degrees
-    ppd : int, resolution in pixels-per-degree
-
-    Raises
-    ------
-    ResolutionError
-        if resolution specification is invalid,
-        i.e. (roughly), if int(visual_angle * ppd) != length
-    """
-
-    # Check by calculating one component
-    calculated = pix_from_visual_angle_ppd_1D(visual_angle=visual_angle, ppd=ppd)
-    if calculated != length:
-        raise ResolutionError(f"Invalid resolution; {visual_angle},{length},{ppd}")
-
-
-def valid_resolution(shape, visual_size, ppd):
-    """Asserts that the combined specification of resolution is geometrically valid.
-
-    Asserts the combined specification of shape (in pixels), visual_size (deg) and ppd.
-    If this makes sense, i.e. (roughly), int(visual_size * ppd) == shape,
-    this function passes without output.
-    If the specification does not make sense, raises a ResolutionError.
-
-    Note that the resolution specification has to be fully resolved,
-    i.e., none of the parameters can be/contain None
+    This function resolves the resolution in both dimensions.
 
     Parameters
     ----------
-    shape : 2-tuple (height, width), or something that can be cast (see validate_shape)
-    visual_size : 2-tuple (height, width), or something that can be cast (see validate_visual_size)
-    ppd : 2-tuple (vertical, horizontal), or something that can be cast (see validate_ppd)
+    dct : dict
+        dictionary with at least two out the three keys: "shape", "ppd", "visual_size"
 
-    Raises
-    ------
-    ResolutionError
-        if resolution specification is invalid,
-        i.e. (roughly), if int(visual_size * ppd) != shape
+    Returns
+    -------
+    Resolved dict
+
+    See also
+    ---------
+    stimupy.utils.resolution
     """
 
-    # Canonize inputs
-    shape = validate_shape(shape)
-    ppd = validate_ppd(ppd)
-    visual_size = validate_visual_size(visual_size)
+    # Resolve
+    ppd = dct["ppd"] if "ppd" in dct.keys() else None
+    shape = dct["shape"] if "shape" in dct.keys() else None
+    visual_size = dct["visual_size"] if "visual_size" in dct.keys() else None
+    shape, visual_size, ppd = resolve(shape=shape, visual_size=visual_size, ppd=ppd)
 
-    # Check by calculating one component
-    calculated = shape_from_visual_size_ppd(visual_size=visual_size, ppd=ppd)
-    if calculated != shape:
-        raise ResolutionError(f"Invalid resolution; {visual_size},{shape},{ppd}")
+    # Update dict
+    dct["shape"] = shape
+    dct["visual_size"] = visual_size
+    dct["ppd"] = ppd
+    return
 
 
 #############################
 #    Resolve components     #
 #############################
-def visual_angle_from_length_ppd_1D(length, ppd):
+def visual_angle_from_length_ppd(length, ppd):
+    """Calculate visual angle (degrees) from length (pixels) and pixels-per-degree
+
+    Parameters
+    ----------
+    length : int or None
+        length in pixels
+    ppd : int or None
+        pixels per degree
+
+    Returns
+    -------
+    Length (pixels) translated to visual angle (degrees)
+    """
     if length is not None and ppd is not None:
         visual_angle = length / ppd
     else:
         visual_angle = None
     return visual_angle
+
+
+def visual_angles_from_lengths_ppd(lengths, ppd):
+    """Calculate visual sizes (degrees) from given shapes (pixels) and pixels-per-degree
+
+    Parameters
+    ----------
+    lengths : Sequence[int, int, ...] or None
+        list of lengths
+    ppd : int or None
+        pixels per degree
+
+    Returns
+    -------
+    List with lengths (pixels) translated to visual angles (degrees)
+    """
+    if isinstance(lengths, (int, float)):
+        lengths = [
+            lengths,
+        ]
+
+    if lengths is not None and ppd is not None:
+        visual_angles = []
+        for length in lengths:
+            visual_angles.append(visual_angle_from_length_ppd(length, ppd))
+    else:
+        visual_angles = None
+
+    if len(visual_angles) == 1:
+        visual_angles = visual_angles[0]
+    return visual_angles
 
 
 def visual_size_from_shape_ppd(shape, ppd):
@@ -234,8 +273,8 @@ def visual_size_from_shape_ppd(shape, ppd):
     ppd = validate_ppd(ppd)
 
     # Calculate width and height in pixels
-    width = visual_angle_from_length_ppd_1D(shape.width, ppd.horizontal)
-    height = visual_angle_from_length_ppd_1D(shape.height, ppd.vertical)
+    width = visual_angle_from_length_ppd(shape.width, ppd.horizontal)
+    height = visual_angle_from_length_ppd(shape.height, ppd.vertical)
 
     # Construct Visual size NamedTuple:
     visual_size = Visual_size(width=width, height=height)
@@ -243,7 +282,22 @@ def visual_size_from_shape_ppd(shape, ppd):
     return visual_size
 
 
-def pix_from_visual_angle_ppd_1D(visual_angle, ppd, round=True):
+def length_from_visual_angle_ppd(visual_angle, ppd, round=True):
+    """Calculate length (pixels) from visual angle (degrees) and pixels-per-degree
+
+    Parameters
+    ----------
+    visual_angle : float or None
+        visual angle in degrees
+    ppd : int or None
+        pixels per degree
+    round : bool
+        if True, round output length to full pixels
+
+    Returns
+    -------
+    visual angle (degrees) translated to length (pixels)
+    """
     if visual_angle is not None and ppd is not None:
         fpix = np.round(visual_angle * ppd, 10)
 
@@ -252,10 +306,45 @@ def pix_from_visual_angle_ppd_1D(visual_angle, ppd, round=True):
             if fpix > 0 and fpix % pix:
                 warnings.warn(f"Rounding shape; {visual_angle} * {ppd} = {fpix} -> {pix}")
         else:
-            pix = fpix
+            pix = float(fpix)
     else:
         pix = None
     return pix
+
+
+def lengths_from_visual_angles_ppd(visual_angles, ppd, round=True):
+    """Calculate lengths (pixels) from visual angles (degrees) and pixels-per-degree
+
+    Parameters
+    ----------
+    visual_angles : Sequence[float, float, ...] or None
+        list of visual angles
+    ppd : int or None
+        pixels per degree
+    round : bool
+        if True, round output length to full pixels
+
+    Returns
+    -------
+    List with visual angles (degrees) translated to lengths (pixels)
+    """
+    if isinstance(visual_angles, (int, float, np.int64)):
+        visual_angles = [
+            visual_angles,
+        ]
+    if isinstance(ppd, (list, tuple)):
+        raise ValueError("ppd should be a single number")
+
+    if visual_angles is not None and ppd is not None:
+        lengths = []
+        for angle in visual_angles:
+            lengths.append(length_from_visual_angle_ppd(angle, ppd, round=round))
+    else:
+        lengths = None
+
+    if len(lengths) == 1:
+        lengths = lengths[0]
+    return lengths
 
 
 def shape_from_visual_size_ppd(visual_size, ppd):
@@ -282,8 +371,8 @@ def shape_from_visual_size_ppd(visual_size, ppd):
     ppd = validate_ppd(ppd)
 
     # Calculate width and height in pixels
-    width = pix_from_visual_angle_ppd_1D(visual_size.width, ppd.horizontal)
-    height = pix_from_visual_angle_ppd_1D(visual_size.height, ppd.vertical)
+    width = length_from_visual_angle_ppd(visual_size.width, ppd.horizontal)
+    height = length_from_visual_angle_ppd(visual_size.height, ppd.vertical)
 
     # Construct Shape NamedTuple:
     shape = Shape(width=width, height=height)
@@ -316,8 +405,8 @@ def ppd_from_shape_visual_size(shape, visual_size):
     visual_size = validate_visual_size(visual_size)
 
     # Calculate horizontal and vertical ppds
-    horizontal = ppd_from_length_visual_angle_1D(shape.width, visual_size.width)
-    vertical = ppd_from_length_visual_angle_1D(shape.height, visual_size.height)
+    horizontal = ppd_from_length_visual_angle(shape.width, visual_size.width)
+    vertical = ppd_from_length_visual_angle(shape.height, visual_size.height)
 
     # Construct Ppd NamedTuple
     ppd = Ppd(horizontal=horizontal, vertical=vertical)
@@ -325,12 +414,52 @@ def ppd_from_shape_visual_size(shape, visual_size):
     return ppd
 
 
-def ppd_from_length_visual_angle_1D(length, visual_angle):
+def ppd_from_length_visual_angle(length, visual_angle):
+    """Calculate pixels-per-degree from length (pixels) and visual angle (degrees)
+
+    Parameters
+    ----------
+    length : int or None
+        length in pixels
+    visual_angle : float or None
+        visual angle in degrees
+
+    Returns
+    -------
+    visual angle (degrees) translated to length (pixels)
+    """
     if visual_angle is not None and length is not None:
         ppd = length / visual_angle
     else:
         ppd = None
     return ppd
+
+
+def compute_ppd(screen_size, resolution, distance):
+    """
+    Compute the pixels per degree, i.e. the number of pixels in the central
+    one degree of visual angle, in a presentation setup.
+
+    Parameters
+    ----------
+    screen_size : scalar
+                  the size of the presentation screen, in whatever unti you
+                  prefer.
+    resolution : scalar
+                 the sceen resolution in the same direction that screen size
+                 was measured in.
+    distance : scalar
+               the distance between the observer and the screen, in the same
+               unit as screen_size.
+    Returns
+    -------
+    ppd : number
+          the number of pixels in one degree of visual angle.
+    """
+
+    ppmm = resolution / screen_size
+    mmpd = 2 * np.tan(np.radians(0.5)) * distance
+    return ppmm * mmpd
 
 
 #############################
@@ -533,51 +662,96 @@ def validate_visual_size(visual_size):
     return Visual_size(height=height, width=width)
 
 
-def degrees_to_pixels(degrees, ppd):
-    """
-    convert degrees of visual angle to pixels, given the number of pixels in
-    1deg of visual angle.
+def valid_1D(length, visual_angle, ppd):
+    """Asserts that the combined specification of resolution is geometrically valid.
+
+    Asserts the combined specification of shape (in pixels), visual_size (deg) and ppd.
+    If this makes sense, i.e. (roughly), int(visual_size * ppd) == shape,
+    this function passes without output.
+    If the specification does not make sense, raises a ResolutionError.
+
+    Note that the resolution specification has to be fully resolved,
+    i.e., none of the parameters can be None
 
     Parameters
     ----------
-    degrees : number, tuple, list or a ndarray
-              the degree values to be converted.
-    ppd : number
-          the number of pixels in the central 1 degree of visual angle.
+    length : int, length in pixels
+    visual_angle : float, size in degrees
+    ppd : int, resolution in pixels-per-degree
 
-    Returns
-    -------
-    pixels : number or ndarray
+    Raises
+    ------
+    ResolutionError
+        if resolution specification is invalid,
+        i.e. (roughly), if int(visual_angle * ppd) != length
     """
-    degrees = np.array(degrees)
-    return (np.round(degrees * ppd)).astype(int)
 
-    # This is the 'super correct' conversion, but it makes very little difference in practice
-    # return (np.tan(np.radians(degrees / 2.)) / np.tan(np.radians(.5)) * ppd).astype(int)
+    # Check by calculating one component
+    calculated = length_from_visual_angle_ppd(visual_angle=visual_angle, ppd=ppd)
+    if calculated != length:
+        raise ResolutionError(f"Invalid resolution; {visual_angle},{length},{ppd}")
 
 
-def compute_ppd(screen_size, resolution, distance):
-    """
-    Compute the pixels per degree, i.e. the number of pixels in the central
-    one degree of visual angle, in a presentation setup.
+def valid_resolution(shape, visual_size, ppd):
+    """Asserts that the combined specification of resolution is geometrically valid.
+
+    Asserts the combined specification of shape (in pixels), visual_size (deg) and ppd.
+    If this makes sense, i.e. (roughly), int(visual_size * ppd) == shape,
+    this function passes without output.
+    If the specification does not make sense, raises a ResolutionError.
+
+    Note that the resolution specification has to be fully resolved,
+    i.e., none of the parameters can be/contain None
 
     Parameters
     ----------
-    screen_size : scalar
-                  the size of the presentation screen, in whatever unti you
-                  prefer.
-    resolution : scalar
-                 the sceen resolution in the same direction that screen size
-                 was measured in.
-    distance : scalar
-               the distance between the observer and the screen, in the same
-               unit as screen_size.
-    Returns
-    -------
-    ppd : number
-          the number of pixels in one degree of visual angle.
+    shape : 2-tuple (height, width), or something that can be cast (see validate_shape)
+    visual_size : 2-tuple (height, width), or something that can be cast (see validate_visual_size)
+    ppd : 2-tuple (vertical, horizontal), or something that can be cast (see validate_ppd)
+
+    Raises
+    ------
+    ResolutionError
+        if resolution specification is invalid,
+        i.e. (roughly), if int(visual_size * ppd) != shape
     """
 
-    ppmm = resolution / screen_size
-    mmpd = 2 * np.tan(np.radians(0.5)) * distance
-    return ppmm * mmpd
+    # Canonize inputs
+    shape = validate_shape(shape)
+    ppd = validate_ppd(ppd)
+    visual_size = validate_visual_size(visual_size)
+
+    # Check by calculating one component
+    calculated = shape_from_visual_size_ppd(visual_size=visual_size, ppd=ppd)
+    if calculated != shape:
+        raise ResolutionError(f"Invalid resolution; {visual_size},{shape},{ppd}")
+
+
+def valid_dict(dct):
+    """Asserts that the combined specification of resolution in dict is geometrically valid.
+
+    Asserts the combined specification of shape (in pixels), visual_size (deg) and ppd.
+    If this makes sense, i.e. (roughly), int(visual_size * ppd) == shape,
+    this function passes without output.
+    If the specification does not make sense, raises a ResolutionError.
+
+    Note that the resolution specification has to be fully resolved,
+    i.e., none of the parameters can be/contain None
+
+    Parameters
+    ----------
+    dct : dict
+        dictionary with at least the keys "shape", "ppd", "visual_size"
+
+    Raises
+    ------
+    ResolutionError
+        if resolution specification is invalid,
+        i.e. (roughly), if int(visual_size * ppd) != shape
+    """
+    ppd = dct["ppd"] if "ppd" in dct.keys() else None
+    shape = dct["shape"] if "shape" in dct.keys() else None
+    visual_size = dct["visual_size"] if "visual_size" in dct.keys() else None
+
+    # Assert that resolution is valid
+    valid_resolution(shape=shape, visual_size=visual_size, ppd=ppd)

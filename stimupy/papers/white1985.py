@@ -104,7 +104,7 @@ def wide_0phase(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -119,9 +119,9 @@ def wide_0phase(ppd=PPD):
         "visual_size": 25 * bar_width,
         "ppd": ppd,
         "bar_width": bar_width,
-        "target_size": (bar_width * 7, 0.75),
+        "target_size": (bar_width * 9, 0.75),
         "target_phase_shift": START_PHASE1 + 0,
-        "intensity_bars": (v1, v3),
+        "intensity_bars": (v3, v1),
         "intensity_target": v2,
         "orientation": "vertical",
     }
@@ -146,7 +146,7 @@ def wide_36phase(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -160,9 +160,9 @@ def wide_36phase(ppd=PPD):
         "visual_size": 25 * bar_width,
         "ppd": ppd,
         "bar_width": bar_width,
-        "target_size": (bar_width * 7, 0.75),
+        "target_size": (bar_width * 9, 0.75),
         "target_phase_shift": START_PHASE1 + 36,
-        "intensity_bars": (v1, v3),
+        "intensity_bars": (v3, v1),
         "intensity_target": v2,
         "orientation": "vertical",
     }
@@ -187,7 +187,7 @@ def wide_72phase(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -202,9 +202,9 @@ def wide_72phase(ppd=PPD):
         "visual_size": 25 * bar_width,
         "ppd": ppd,
         "bar_width": bar_width,
-        "target_size": (bar_width * 7, 0.75),
+        "target_size": (bar_width * 9, 0.75),
         "target_phase_shift": START_PHASE1 + 72,
-        "intensity_bars": (v1, v3),
+        "intensity_bars": (v3, v1),
         "intensity_target": v2,
         "orientation": "vertical",
     }
@@ -229,7 +229,7 @@ def wide_108phase(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -244,9 +244,9 @@ def wide_108phase(ppd=PPD):
         "visual_size": 25 * bar_width,
         "ppd": ppd,
         "bar_width": bar_width,
-        "target_size": (bar_width * 7, 0.75),
+        "target_size": (bar_width * 9, 0.75),
         "target_phase_shift": START_PHASE1 + 108,
-        "intensity_bars": (v1, v3),
+        "intensity_bars": (v3, v1),
         "intensity_target": v2,
         "orientation": "vertical",
     }
@@ -271,7 +271,7 @@ def wide_144phase(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -286,9 +286,9 @@ def wide_144phase(ppd=PPD):
         "visual_size": 25 * bar_width,
         "ppd": ppd,
         "bar_width": bar_width,
-        "target_size": (bar_width * 7, 0.75),
+        "target_size": (bar_width * 9, 0.75),
         "target_phase_shift": START_PHASE1 + 144,
-        "intensity_bars": (v1, v3),
+        "intensity_bars": (v3, v1),
         "intensity_target": v2,
         "orientation": "vertical",
     }
@@ -313,7 +313,7 @@ def wide_180phase(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -328,9 +328,9 @@ def wide_180phase(ppd=PPD):
         "visual_size": 25 * bar_width,
         "ppd": ppd,
         "bar_width": bar_width,
-        "target_size": (bar_width * 7, 0.75),
+        "target_size": (bar_width * 9, 0.75),
         "target_phase_shift": START_PHASE1 + 180,
-        "intensity_bars": (v1, v3),
+        "intensity_bars": (v3, v1),
         "intensity_target": v2,
         "orientation": "vertical",
     }
@@ -355,7 +355,7 @@ def square_0phase(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -370,9 +370,9 @@ def square_0phase(ppd=PPD):
         "visual_size": 25 * bar_width,
         "ppd": ppd,
         "bar_width": bar_width,
-        "target_size": (bar_width * 7, bar_width),
+        "target_size": (bar_width * 9, bar_width),
         "target_phase_shift": START_PHASE2 + 0,
-        "intensity_bars": (v1, v3),
+        "intensity_bars": (v3, v1),
         "intensity_target": v2,
         "orientation": "vertical",
     }
@@ -397,7 +397,7 @@ def square_36phase(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -412,9 +412,9 @@ def square_36phase(ppd=PPD):
         "visual_size": 25 * bar_width,
         "ppd": ppd,
         "bar_width": bar_width,
-        "target_size": (bar_width * 7, bar_width),
+        "target_size": (bar_width * 9, bar_width),
         "target_phase_shift": START_PHASE2 + 36,
-        "intensity_bars": (v1, v3),
+        "intensity_bars": (v3, v1),
         "intensity_target": v2,
         "orientation": "vertical",
     }
@@ -439,7 +439,7 @@ def square_72phase(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -454,9 +454,9 @@ def square_72phase(ppd=PPD):
         "visual_size": 25 * bar_width,
         "ppd": ppd,
         "bar_width": bar_width,
-        "target_size": (bar_width * 7, bar_width),
+        "target_size": (bar_width * 9, bar_width),
         "target_phase_shift": START_PHASE2 + 72,
-        "intensity_bars": (v1, v3),
+        "intensity_bars": (v3, v1),
         "intensity_target": v2,
         "orientation": "vertical",
     }
@@ -481,7 +481,7 @@ def square_108phase(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -496,9 +496,9 @@ def square_108phase(ppd=PPD):
         "visual_size": 25 * bar_width,
         "ppd": ppd,
         "bar_width": bar_width,
-        "target_size": (bar_width * 7, bar_width),
+        "target_size": (bar_width * 9, bar_width),
         "target_phase_shift": START_PHASE2 + 108,
-        "intensity_bars": (v1, v3),
+        "intensity_bars": (v3, v1),
         "intensity_target": v2,
         "orientation": "vertical",
     }
@@ -523,7 +523,7 @@ def square_144phase(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -538,9 +538,9 @@ def square_144phase(ppd=PPD):
         "visual_size": 25 * bar_width,
         "ppd": ppd,
         "bar_width": bar_width,
-        "target_size": (bar_width * 7, bar_width),
+        "target_size": (bar_width * 9, bar_width),
         "target_phase_shift": START_PHASE2 + 144,
-        "intensity_bars": (v1, v3),
+        "intensity_bars": (v3, v1),
         "intensity_target": v2,
         "orientation": "vertical",
     }
@@ -565,7 +565,7 @@ def square_180phase(ppd=PPD):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -580,9 +580,9 @@ def square_180phase(ppd=PPD):
         "visual_size": 25 * bar_width,
         "ppd": ppd,
         "bar_width": bar_width,
-        "target_size": (bar_width * 7, bar_width),
+        "target_size": (bar_width * 9, bar_width),
         "target_phase_shift": START_PHASE2 + 180,
-        "intensity_bars": (v1, v3),
+        "intensity_bars": (v3, v1),
         "intensity_target": v2,
         "orientation": "vertical",
     }

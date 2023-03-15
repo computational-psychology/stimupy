@@ -7,20 +7,20 @@ More information on Modelfest can be found here:
 https://www.visionscience.com/data/modelfest/
 
 Each stimulus is provided by a separate function,
-a full list can be found as stimupy.papers.carney1999.__all__
+a full list can be found as stimupy.papers.modelfest.__all__
 
 The output of each of these functions is a stimulus dictionary.
 
 For a visual representation of all the stimuli and their mask,
 simply run this module as a script:
 
-    $ python stimuli/papers/carney1999.py
+    $ python stimuli/papers/modelfest.py
 
 Attributes
 ----------
 __all__ (list of str): list of all stimulus-functions
     that are exported by this module when executing
-        >>> from stimupy.papers.carney1999 import *
+        >>> from stimupy.papers.modelfest import *
 
 References
 -----------
@@ -93,14 +93,14 @@ PPD2 = 60  # pixel size of 1 arcmin (pixel replication)
 
 mean_lum = 0.5
 
-df = pd.read_csv(Path(__file__).parents[0] / "carney1999_data.csv", header=None)
+df = pd.read_csv(Path(__file__).parents[0] / "modelfest_data.csv", header=None)
 participants = df[0]
 
 
 def gen_all(ppd=PPD, skip=False):
     stims = {}  # save the stimulus-dicts in a larger dict, with name as key
     for stim_name in __all__:
-        print(f"Generating carney1999.{stim_name}")
+        print(f"Generating modelfest.{stim_name}")
 
         # Get a reference to the actual function
         func = globals()[stim_name]
@@ -1136,7 +1136,7 @@ def Subthreshold22(ppd=PPD):
         "sigma": 0.5,
         "rotation": 90,
         "phase_shift": 90,
-        "origin": "mean",
+        "origin": "center",
     }
 
     stim1 = gratings.gabor(**params, frequency=2)
@@ -1144,7 +1144,6 @@ def Subthreshold22(ppd=PPD):
 
     stim1["img"] = stim1["img"] / 2 + stim2["img"] / 2
     stim1["grating_mask2"] = stim2["grating_mask"]
-    stim1["edges2"] = stim2["edges"]
     stim1["frequency2"] = stim2["frequency"]
     stim1["bar_width2"] = stim2["bar_width"]
     stim1["n_bars2"] = stim2["n_bars"]
@@ -1190,7 +1189,7 @@ def Subthreshold23(ppd=PPD):
         "sigma": 0.5,
         "rotation": 90,
         "phase_shift": 90,
-        "origin": "mean",
+        "origin": "center",
     }
 
     stim1 = gratings.gabor(**params, frequency=2)
@@ -1198,7 +1197,6 @@ def Subthreshold23(ppd=PPD):
 
     stim1["img"] = stim1["img"] / 2 + stim2["img"] / 2
     stim1["grating_mask2"] = stim2["grating_mask"]
-    stim1["edges2"] = stim2["edges"]
     stim1["frequency2"] = stim2["frequency"]
     stim1["bar_width2"] = stim2["bar_width"]
     stim1["n_bars2"] = stim2["n_bars"]
@@ -1244,7 +1242,7 @@ def Subthreshold24(ppd=PPD):
         "sigma": 0.5,
         "rotation": 90,
         "phase_shift": 90,
-        "origin": "mean",
+        "origin": "center",
     }
 
     stim1 = gratings.gabor(**params, frequency=4)
@@ -1252,7 +1250,6 @@ def Subthreshold24(ppd=PPD):
 
     stim1["img"] = stim1["img"] / 2 + stim2["img"] / 2
     stim1["grating_mask2"] = stim2["grating_mask"]
-    stim1["edges2"] = stim2["edges"]
     stim1["frequency2"] = stim2["frequency"]
     stim1["bar_width2"] = stim2["bar_width"]
     stim1["n_bars2"] = stim2["n_bars"]
@@ -1298,7 +1295,7 @@ def Subthreshold25(ppd=PPD):
         "sigma": 0.5,
         "rotation": 90,
         "phase_shift": 90,
-        "origin": "mean",
+        "origin": "center",
     }
 
     stim1 = gratings.gabor(**params, frequency=4)
@@ -1306,7 +1303,6 @@ def Subthreshold25(ppd=PPD):
 
     stim1["img"] = stim1["img"] / 2 + stim2["img"] / 2
     stim1["grating_mask2"] = stim2["grating_mask"]
-    stim1["edges2"] = stim2["edges"]
     stim1["frequency2"] = stim2["frequency"]
     stim1["bar_width2"] = stim2["bar_width"]
     stim1["n_bars2"] = stim2["n_bars"]
@@ -1350,6 +1346,7 @@ def Gaussians26(ppd=PPD):
         "ppd": ppd,
         "sigma": 0.5,
         "intensity_max": 1,
+        "origin": "center",
     }
 
     stim = gaussians.gaussian(**params)
@@ -1394,6 +1391,7 @@ def Gaussians27(ppd=PPD):
         "ppd": ppd,
         "sigma": 8.43 / 60,
         "intensity_max": 1,
+        "origin": "center",
     }
 
     stim = gaussians.gaussian(**params)
@@ -1438,6 +1436,7 @@ def Gaussians28(ppd=PPD):
         "ppd": ppd,
         "sigma": 2.106 / 60,
         "intensity_max": 1,
+        "origin": "center",
     }
 
     stim = gaussians.gaussian(**params)
@@ -1482,6 +1481,7 @@ def Gaussians29(ppd=PPD):
         "ppd": ppd,
         "sigma": 1.05 / 60,
         "intensity_max": 1,
+        "origin": "center",
     }
 
     stim = gaussians.gaussian(**params)
@@ -1679,6 +1679,8 @@ def GaborString33(ppd=PPD):
 
     stim["img"] = stimc["img"]
     stim["grating_mask"] = stimc["grating_mask"]
+    stim["visual_size"] = stimc["visual_size"]
+    stim["shape"] = stimc["shape"]
     stim = roll_dict(stim, (-1, -1), axes=(0, 1))
 
     v = 129
@@ -1738,8 +1740,9 @@ def GaborString34(ppd=PPD):
 
     stim1["img"] = stimc["img"]
     stim1["grating_mask"] = stimc["grating_mask"]
+    stim1["visual_size"] = stimc["visual_size"]
+    stim1["shape"] = stimc["shape"]
     stim1["phase_shift2"] = stim2["phase_shift"]
-    stim1["edges2"] = stim2["edges"]
     stim1 = roll_dict(stim1, (-1, -1), axes=(0, 1))
 
     v = 133
@@ -1809,8 +1812,8 @@ def Noise35(ppd=PPD):
         542-551. https://doi.org/10.1117/12.348473
     """
     # Read natural image from Modelfest
-    img = read_tif(Path(__file__).parents[0] / "carney1999_noise.tif")
-    img = img / img.max()
+    img = read_tif(Path(__file__).parents[0] / "modelfest_noise.tif")
+    img = img / 255
 
     stim = {
         "img": img,
@@ -1959,7 +1962,7 @@ def Plaids38(ppd=PPD):
         "frequency": 4,
         "sigma": 0.14,
         "phase_shift": 90,
-        "origin": "mean",
+        "origin": "center",
     }
 
     stim = gratings.gabor(**params, rotation=0)
@@ -1968,7 +1971,6 @@ def Plaids38(ppd=PPD):
     stim["img"] = stim["img"] / 2 + stim2["img"] / 2
     stim["rotation"] = stim2["rotation"]
     stim["grating_mask2"] = stim2["grating_mask"]
-    stim["distances2"] = stim2["distances"]
 
     v = 149
     experimental_data = {
@@ -2012,7 +2014,7 @@ def Plaids39(ppd=PPD):
         "frequency": 4,
         "sigma": 0.14,
         "phase_shift": 90,
-        "origin": "mean",
+        "origin": "center",
     }
 
     stim = gratings.gabor(**params, rotation=45)
@@ -2021,7 +2023,6 @@ def Plaids39(ppd=PPD):
     stim["img"] = stim["img"] / 2 + stim2["img"] / 2
     stim["rotation"] = stim2["rotation"]
     stim["grating_mask2"] = stim2["grating_mask"]
-    stim["distances2"] = stim2["distances"]
 
     v = 153
     experimental_data = {
@@ -2097,13 +2098,13 @@ def Bessel41(ppd=PPD):
 
     stim = bessel(visual_size=256 / PPD, ppd=ppd, frequency=4, origin="center")
     window = gaussians.gaussian(visual_size=256 / PPD, ppd=ppd, sigma=0.5)
-
-    mean_int = stim["img"].mean()
-    img = (stim["img"] - mean_int) * window["img"]
-    stim["img"] = img + mean_int
-    stim["img"] = stim["img"] + 0.41
-    stim["img"] = stim["img"] / stim["img"].max()  # TODO: adjust range
     stim["sigma"] = window["sigma"]
+
+    # Apply Gaussian windows to Bessel
+    stim["img"] = (stim["img"] - stim["img"].mean()) * window["img"]
+
+    # Set "background" intensity to 0.5 and make sure that max intensity = 1
+    stim["img"] = stim["img"] / stim["img"].max() / 2 + 0.5
 
     v = 161
     experimental_data = {
@@ -2189,8 +2190,8 @@ def NaturalScene43(ppd=PPD):
     """
 
     # Read natural image from Modelfest
-    img = read_tif(Path(__file__).parents[0] / "carney1999_natural_scene.tif")
-    img = img / img.max()
+    img = read_tif(Path(__file__).parents[0] / "modelfest_natural_scene.tif")
+    img = img / 255
 
     stim = {
         "img": img,
@@ -2222,9 +2223,10 @@ def read_tif(filename):
 def compare(o1, s1, filename):
     import matplotlib.pyplot as plt
 
-    o1 = o1 / o1.mean()
-    s1 = s1 / s1.mean()
-    vmin, vmax = o1.min(), o1.max()
+    o1 = o1 / 255
+    s1 = s1 / 1
+    vmin, vmax = 0, 1
+
     plt.figure(figsize=(20, 6))
     plt.subplot(141), plt.imshow(o1, vmin=vmin, vmax=vmax), plt.title("Original")
     plt.subplot(142), plt.imshow(s1, vmin=vmin, vmax=vmax), plt.title("Our implementation")
@@ -2238,6 +2240,11 @@ def compare(o1, s1, filename):
 
 
 def compare_all():
+    import os
+
+    if not os.path.exists("./comparisons/"):
+        os.makedirs("./comparisons/")
+
     for stim_name in __all__:
         func = globals()[stim_name]
         o1 = read_tif(str(Path(__file__).parents[0]) + "/modelfest/" + stim_name + ".tif")
@@ -2249,5 +2256,5 @@ if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
 
     stims = gen_all(skip=True)
-    plot_stimuli(stims, mask=False)
+    plot_stimuli(stims, mask=False, extent_key="visual_size")
     # compare_all()

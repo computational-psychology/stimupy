@@ -2,12 +2,13 @@ import itertools
 import warnings
 
 import numpy as np
-from scipy.ndimage import gaussian_filter
 
 from stimupy.components.gratings import sine_wave
 from stimupy.components.gratings import square_wave as square_wave_component
+from stimupy.components.gaussians import gaussian
 from stimupy.components.shapes import parallelogram, rectangle
 from stimupy.utils import pad_dict_to_shape, pad_dict_to_visual_size, resolution
+from stimupy.utils.filters import convolve
 
 __all__ = [
     "square_wave",
@@ -283,6 +284,7 @@ def grating_masked(
     )["img"]
 
     small_grating = pad_dict_to_shape(small_grating, large_grating["shape"])
+    window = window * (small_grating["pad_mask"] - 1)
     img = np.where(window, small_grating["img"], large_grating["img"])
     mask = np.where(window, small_grating["target_mask"], 0)
 
@@ -555,7 +557,7 @@ def induction_blur(
     phase_shift=0,
     intensity_bars=(1.0, 0.0),
     target_width=None,
-    target_blur=0,
+    sigma=None,
     intensity_target=0.5,
     origin="corner",
 ):
@@ -631,7 +633,15 @@ def induction_blur(
         origin=origin,
         round_phase_width=True,
     )
-    stim["img"] = gaussian_filter(stim["img"], target_blur)
+
+    gauss = gaussian(
+        visual_size=stim["visual_size"],
+        ppd=stim["ppd"],
+        shape=stim["shape"],
+        sigma=sigma,
+        origin="center",
+    )["img"]
+    stim["img"] = convolve(stim["img"], gauss / np.sum(gauss), "same", padding=True)
 
     # Identify target region
     rectangle_size = (target_width, stim["visual_size"].width)
@@ -686,7 +696,7 @@ if __name__ == "__main__":
             **params, target_size=4, target_phase_shift=90
         ),
         "induction": induction(**params, target_width=0.5),
-        "induction_blur": induction_blur(**params, target_width=0.5, target_blur=5),
+        "induction_blur": induction_blur(**params, target_width=0.5, sigma=0.1),
     }
 
-    plot_stimuli(stims, mask=True, save=None)
+    plot_stimuli(stims, mask=False, save=None)

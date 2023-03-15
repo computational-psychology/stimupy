@@ -117,7 +117,7 @@ def WE_thick(ppd=PPD, pad=True):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -132,7 +132,7 @@ def WE_thick(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "frequency": 4.0 / width,
-        "intensity_bars": (v1, v3),
+        "intensity_bars": (v3, v1),
         "intensity_target": v2,
         "target_indices": (2, 5),
         "target_height": 4.0,
@@ -176,7 +176,7 @@ def WE_thin_wide(ppd=PPD, pad=True):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -191,7 +191,7 @@ def WE_thin_wide(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "frequency": 8.0 / width,
-        "intensity_bars": (v3, v1),
+        "intensity_bars": (v1, v3),
         "intensity_target": v2,
         "target_indices": (3, 12),
         "target_height": 2.0,
@@ -235,7 +235,7 @@ def WE_dual(ppd=PPD, pad=True):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
     """
 
@@ -243,7 +243,7 @@ def WE_dual(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "frequency": 4.0 / width,
-        "intensity_bars": (v1, v3),
+        "intensity_bars": (v3, v1),
         "intensity_target": v2,
         "target_indices": (2, 5),
         "target_height": 2.0,
@@ -295,7 +295,7 @@ def WE_anderson(ppd=PPD, pad=True):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -311,7 +311,7 @@ def WE_anderson(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "frequency": 8.0 / width,
-        "intensity_bars": (v1, v3),
+        "intensity_bars": (v3, v1),
         "intensity_target": v2,
         "target_indices_top": (5,),
         "target_indices_bottom": (10,),
@@ -360,7 +360,7 @@ def WE_howe(ppd=PPD, pad=True):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -377,7 +377,7 @@ def WE_howe(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "frequency": 8.0 / width,
-        "intensity_bars": (v1, v3),
+        "intensity_bars": (v3, v1),
         "intensity_target": v2,
         "target_indices_top": (5,),
         "target_indices_bottom": (10,),
@@ -421,7 +421,7 @@ def WE_zigzag(ppd=PPD, pad=True):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -464,7 +464,7 @@ def WE_radial_thick_small(ppd=PPD, pad=True):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -517,7 +517,7 @@ def WE_radial_thick(ppd=PPD, pad=True):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -570,7 +570,7 @@ def WE_radial_thin_small(ppd=PPD, pad=True):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -623,7 +623,7 @@ def WE_radial_thin(ppd=PPD, pad=True):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -676,7 +676,7 @@ def WE_circular1(ppd=PPD, pad=True):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -696,13 +696,13 @@ def WE_circular1(ppd=PPD, pad=True):
 
     stim1 = illusions.whites.circular(
         visual_size=(height, width),
-        intensity_rings=(v3, v1),
+        intensity_rings=(v1, v3),
         **params,
     )
 
     stim2 = illusions.whites.circular(
         visual_size=(height, width),
-        intensity_rings=(v1, v3),
+        intensity_rings=(v3, v1),
         **params,
     )
     stim = stack_dicts(stim1, stim2)
@@ -734,7 +734,7 @@ def WE_circular05(ppd=PPD, pad=True):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -754,13 +754,13 @@ def WE_circular05(ppd=PPD, pad=True):
 
     stim1 = illusions.whites.circular(
         visual_size=(height, width),
-        intensity_rings=(v3, v1),
+        intensity_rings=(v1, v3),
         **params,
     )
 
     stim2 = illusions.whites.circular(
         visual_size=(height, width),
-        intensity_rings=(v1, v3),
+        intensity_rings=(v3, v1),
         **params,
     )
     stim = stack_dicts(stim1, stim2)
@@ -792,7 +792,7 @@ def WE_circular025(ppd=PPD, pad=True):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -812,13 +812,13 @@ def WE_circular025(ppd=PPD, pad=True):
 
     stim1 = illusions.whites.circular(
         visual_size=(height, width),
-        intensity_rings=(v3, v1),
+        intensity_rings=(v1, v3),
         **params,
     )
 
     stim2 = illusions.whites.circular(
         visual_size=(height, width),
-        intensity_rings=(v1, v3),
+        intensity_rings=(v3, v1),
         **params,
     )
     stim = stack_dicts(stim1, stim2)
@@ -850,7 +850,7 @@ def grating_induction(ppd=PPD, pad=True):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -911,7 +911,7 @@ def sbc_large(ppd=PPD, pad=True):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -970,7 +970,7 @@ def sbc_small(ppd=PPD, pad=True):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -1029,7 +1029,7 @@ def todorovic_equal(ppd=PPD, pad=True):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -1094,7 +1094,7 @@ def todorovic_in_large(ppd=PPD, pad=True):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -1157,7 +1157,7 @@ def todorovic_in_small(ppd=PPD, pad=True):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -1221,7 +1221,7 @@ def todorovic_out(ppd=PPD, pad=True):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -1286,7 +1286,7 @@ def checkerboard_016(ppd=PPD, pad=True):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -1341,7 +1341,7 @@ def checkerboard_094(ppd=PPD, pad=True):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -1396,7 +1396,7 @@ def checkerboard_21(ppd=PPD, pad=True):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -1449,7 +1449,7 @@ def corrugated_mondrian(ppd=PPD, pad=True):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -1508,7 +1508,7 @@ def benary_cross(ppd=PPD, pad=True):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -1570,7 +1570,7 @@ def todorovic_benary1_2(ppd=PPD, pad=True):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -1628,7 +1628,7 @@ def todorovic_benary3_4(ppd=PPD, pad=True):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -1686,7 +1686,7 @@ def todorovic_benary1_2_3_4(ppd=PPD, pad=True):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -1740,7 +1740,7 @@ def bullseye_thin(ppd=PPD, pad=True):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -1749,12 +1749,12 @@ def bullseye_thin(ppd=PPD, pad=True):
         Research, 44, 309–319.
     """
 
-    frame_radii = np.array([0.304, 0.426, 0.548, 0.670, 0.792])
+    radii = np.array([0.304, 0.426, 0.548, 0.670, 0.792])
 
     params = {
         "visual_size": 0.792 * 2,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
         "intensity_target": v2,
     }
 
@@ -1799,7 +1799,7 @@ def bullseye_thick(ppd=PPD, pad=True):
     Returns
     -------
     dict of str
-        dict with the stimulus (key: "img") and target mask (key: "mask")
+        dict with the stimulus (key: "img") and target mask (key: "target_mask")
         and additional keys containing stimulus parameters
 
     References
@@ -1807,12 +1807,12 @@ def bullseye_thick(ppd=PPD, pad=True):
     Bindman, D., & Chubb, C. (2004). Brightness assimilation in bullseye displays. Vision
         Research, 44, 309–319.
     """
-    frame_radii = np.array([0.304, 0.547, 0.790, 1.033, 1.276])
+    radii = np.array([0.304, 0.547, 0.790, 1.033, 1.276])
 
     params = {
         "visual_size": 1.276 * 2,
         "ppd": ppd,
-        "frame_radii": frame_radii,
+        "radii": radii,
         "intensity_target": v2,
     }
 

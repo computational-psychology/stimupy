@@ -2,7 +2,7 @@ import numpy as np
 
 from stimupy.components import image_base
 from stimupy.components.angulars import wedge
-from stimupy.components.circulars import annulus, disc, ring
+from stimupy.components.circulars import annulus, ring, disc
 from stimupy.utils import resolution
 
 __all__ = [
@@ -11,6 +11,7 @@ __all__ = [
     "cross",
     "parallelogram",
     "ellipse",
+    "circle",
     "wedge",
     "annulus",
     "disc",
@@ -81,13 +82,15 @@ def rectangle(
     if rectangle_position is None:
         # If no position is given, place rectangle centrally
         rectangle_position = center_pos
-    if isinstance(rectangle_position, (float, int)):
-        rectangle_position = (rectangle_position, rectangle_position)
+
+    # Positions should always be positive
+    rectangle_position = np.array(rectangle_position).clip(min=0)
+    center_pos = np.array(center_pos).clip(min=0)
 
     # Determine shift
-    rect_pos = (np.array(rectangle_position) * base["ppd"]).astype(int)
-    center_pos = np.round(np.array(center_pos) * base["ppd"])
-    rect_shift = (rect_pos - center_pos).astype(int)
+    rect_pos = resolution.shape_from_visual_size_ppd(rectangle_position, base["ppd"])
+    center_pos = resolution.shape_from_visual_size_ppd(center_pos, base["ppd"])
+    rect_shift = (np.array(rect_pos) - np.array(center_pos)).astype(int)
 
     # Rotate coordinate systems
     x = np.round(np.cos(theta) * xx - np.sin(theta) * yy, 8)
@@ -431,9 +434,9 @@ def parallelogram(
     return {
         "img": img * (intensity_parallelogram - intensity_background) + intensity_background,
         "shape_mask": img.astype(int),
-        "shape": shape,
-        "visual_size": visual_size,
-        "ppd": ppd,
+        "shape": base["shape"],
+        "visual_size": base["visual_size"],
+        "ppd": base["ppd"],
         "parallelogram_size": parallelogram_size,
         "intensity_background": intensity_background,
         "intensity_parallelogram": intensity_parallelogram,
@@ -450,6 +453,7 @@ def ellipse(
     intensity_background=0.0,
     rotation=0,
     origin="mean",
+    restrict_size=True,
 ):
     """Draw an ellipse
 
@@ -473,6 +477,8 @@ def ellipse(
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)
         if "center": set origin to real center (closest existing value to mean)
+    restrict_size : Bool
+        if False, allow ellipse to reach beyond image size (default: True)
 
     Returns
     ----------
@@ -514,20 +520,79 @@ def ellipse(
     cy = np.floor((x2 + y1) * base["ppd"][0]) / base["ppd"][0]
     cx = np.floor((x1 + y2) * base["ppd"][1]) / base["ppd"][1]
 
-    if (cy > base["visual_size"][0] / 2) or (cx > base["visual_size"][1] / 2):
+    if restrict_size and ((cy > base["visual_size"][0] / 2) or (cx > base["visual_size"][1] / 2)):
         raise ValueError("stimulus does not fully fit into requested size")
 
     return {
         "img": img * (intensity_ellipse - intensity_background) + intensity_background,
         "shape_mask": img.astype(int),
-        "shape": shape,
-        "visual_size": visual_size,
-        "ppd": ppd,
+        "shape": base["shape"],
+        "visual_size": base["visual_size"],
+        "ppd": base["ppd"],
         "radius": radius,
         "intensity_background": intensity_background,
         "intensity_ellipse": intensity_ellipse,
         "rotation": rotation,
     }
+
+
+def circle(
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    radius=None,
+    intensity_circle=1.0,
+    intensity_background=0.0,
+    origin="mean",
+    restrict_size=True,
+):
+    """Draw an ellipse
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees visual angle
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    radius : Number or None (default)
+        circle radius in degrees visual angle
+    intensity_circle : float, optional
+        intensity value for circle, by default 1.0
+    intensity_background : float, optional
+        intensity value of background, by default 0.0
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
+    restrict_size : Bool
+        if False, allow circle to reach beyond image size (default: True)
+
+    Returns
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for the shape (key: "shape_mask"),
+        and additional keys containing stimulus parameters
+    """
+    if radius is None:
+        raise ValueError("circle() missing argument 'radius' which is not 'None'")
+    if not isinstance(radius, (int, float)):
+        raise ValueError("radius should be a single number")
+
+    stim = ellipse(
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        radius=radius,
+        intensity_ellipse=intensity_circle,
+        intensity_background=intensity_background,
+        rotation=0,
+        origin=origin,
+        restrict_size=restrict_size,
+    )
+    return stim
 
 
 if __name__ == "__main__":
@@ -546,6 +611,7 @@ if __name__ == "__main__":
         "parallelogram": parallelogram(**p, parallelogram_size=(5.2, 3.1, 0.9)),
         "parallelogram2": parallelogram(shape=(100, 100), ppd=10, parallelogram_size=(10, 9, -1)),
         "ellipse": ellipse(**p, radius=(4, 3)),
+        "circle": circle(visual_size=(10, 8), ppd=50, radius=3),
     }
 
     plot_stimuli(stims, mask=False)
