@@ -512,3 +512,21 @@ def overview(mask=False, save=None):
 
     # Plotting
     plot_stimuli(stims, mask=mask, save=save)
+
+
+__all__ = [
+    image_base,
+    draw_regions,
+    mask_elements,
+    angulars,
+    checkerboards,
+    circulars,
+    edges,
+    frames,
+    gaussians,
+    gratings,
+    lines,
+    mondrians,
+    shapes,
+    overview,
+]
