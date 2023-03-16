@@ -22,8 +22,9 @@ def rings(
     frequency=None,
     n_frames=None,
     frame_width=None,
-    period="ignore",
+    phase_shift=0,
     intensity_frames=(1.0, 0.0),
+    intensity_background=0.5,
     target_indices=(),
     intensity_target=0.5,
     origin="center",
@@ -45,13 +46,12 @@ def rings(
         number of frames in the grating
     frame_width : Number, or None (default)
         width of a single frame, in degrees visual angle
-    period : "full", "half", "ignore" (default)
-        whether to ensure the grating only has "full" periods,
-        half "periods", or no guarantees ("ignore")
-    intensity_frames : Sequence[float, ...]
-        intensity value for each bar, by default (1.0, 0.0).
-        Can specify as many intensities as n_frames;
-        If fewer intensities are passed than n_frames, cycles through intensities
+    phase_shift : float
+        phase shift of grating in degrees
+    intensity_frames : Sequence[float, float]
+        min and max intensity of square-wave, by default (0.0, 1.0)
+    intensity_background : float (optional)
+        intensity value of background, by default 0.5
     target_indices : int, or Sequence[int, ...]
         indices frames where targets will be placed
     intensity_target : float, or Sequence[float, ...], optional
@@ -87,8 +87,10 @@ def rings(
         frequency=frequency,
         n_frames=n_frames,
         frame_width=frame_width,
-        period=period,
+        phase_shift=phase_shift,
+        period="ignore",
         intensity_frames=intensity_frames,
+        intensity_background=intensity_background,
         origin=origin,
         clip=clip,
     )
@@ -109,6 +111,8 @@ def rings(
     for target_idx, (bar_idx, intensity) in enumerate(zip(target_indices, intensity_target)):
         targets_mask = np.where(stim["frame_mask"] == bar_idx, target_idx + 1, targets_mask)
         stim["img"] = np.where(targets_mask == target_idx + 1, intensity, stim["img"])
+        if bar_idx > stim["frame_mask"].max():
+            raise ValueError("target_idx is outside stimulus")
 
     # Update and return stimulus
     stim["target_mask"] = targets_mask.astype(int)
@@ -122,8 +126,9 @@ def two_sided_rings(
     frequency=None,
     n_frames=None,
     frame_width=None,
-    period="ignore",
+    phase_shift=0,
     intensity_frames=(1.0, 0.0),
+    intensity_background=0.5,
     target_indices=(),
     intensity_target=0.5,
 ):
@@ -143,13 +148,12 @@ def two_sided_rings(
         number of frames in the grating
     frame_width : Number, or None (default)
         width of a single frame, in degrees visual angle
-    period : "full", "half", "ignore" (default)
-        whether to ensure the grating only has "full" periods,
-        half "periods", or no guarantees ("ignore")
-    intensity_frames : Sequence[float, ...]
-        intensity value for each bar, by default (1.0, 0.0).
-        Can specify as many intensities as n_frames;
-        If fewer intensities are passed than n_frames, cycles through intensities
+    phase_shift : float
+        phase shift of grating in degrees
+    intensity_frames : Sequence[float, float]
+        min and max intensity of square-wave, by default (0.0, 1.0)
+    intensity_background : float (optional)
+        intensity value of background, by default 0.5
     target_indices : int, or Sequence[int, ...]
         indices frames where targets will be placed
     intensity_target : float, or Sequence[float, ...], optional
@@ -180,6 +184,7 @@ def two_sided_rings(
         frequency=frequency,
         n_frames=n_frames,
         frame_width=frame_width,
+        phase_shift=phase_shift,
         intensity_target=intensity_target,
         intensity_frames=intensity_frames,
         target_indices=target_indices,
@@ -191,6 +196,7 @@ def two_sided_rings(
         frequency=frequency,
         n_frames=n_frames,
         frame_width=frame_width,
+        phase_shift=phase_shift,
         intensity_target=intensity_target,
         intensity_frames=intensity_frames[::-1],
         target_indices=target_indices,
@@ -211,7 +217,7 @@ def rings_generalized(
     intensity_background=0.5,
     target_indices=(),
     intensity_target=0.5,
-    origin="mean",
+    origin="center",
 ):
     """Draw sequential set of square frames with specified radii and targets
 
@@ -225,11 +231,9 @@ def rings_generalized(
         shape [height, width] of image, in pixels
     radii : Sequence[Number] or None (default)
         radii of each frame, in degrees visual angle
-    intensity_frames : Sequence[float, ...]
-        intensity value for each frame, by default (1.0, 0.0).
-        Can specify as many intensities as number of frame_widths;
-        If fewer intensities are passed than frame_widhts, cycles through intensities
-    intensity_background : float, optional
+    intensity_frames : Sequence[float, float]
+        min and max intensity of square-wave, by default (0.0, 1.0)
+    intensity_background : float (optional)
         intensity value of background, by default 0.5
     target_indices : int, or Sequence[int, ...]
         indices frames where targets will be placed
@@ -277,6 +281,8 @@ def rings_generalized(
     for target_idx, (bar_idx, intensity) in enumerate(zip(target_indices, intensity_target)):
         targets_mask = np.where(stim["frame_mask"] == bar_idx, target_idx + 1, targets_mask)
         stim["img"] = np.where(targets_mask == target_idx + 1, intensity, stim["img"])
+        if bar_idx > stim["frame_mask"].max():
+            raise ValueError("target_idx is outside stimulus")
 
     # Update and return stimulus
     stim["target_mask"] = targets_mask
@@ -290,8 +296,9 @@ def bullseye(
     frequency=None,
     n_frames=None,
     frame_width=None,
-    period="ignore",
+    phase_shift=0,
     intensity_frames=(1.0, 0.0),
+    intensity_background=0.5,
     target_indices=(),
     intensity_target=0.5,
     origin="center",
@@ -315,13 +322,12 @@ def bullseye(
         number of frames in the grating
     frame_width : Number, or None (default)
         width of a single frame, in degrees visual angle
-    period : "full", "half", "ignore" (default)
-        whether to ensure the grating only has "full" periods,
-        half "periods", or no guarantees ("ignore")
-    intensity_frames : Sequence[float, ...]
-        intensity value for each frame, by default (1.0, 0.0).
-        Can specify as many intensities as n_franes;
-        If fewer intensities are passed than n_frames, cycles through intensities
+    phase_shift : float
+        phase shift of grating in degrees
+    intensity_frames : Sequence[float, float]
+        min and max intensity of square-wave, by default (0.0, 1.0)
+    intensity_background : float (optional)
+        intensity value of background, by default 0.5
     intensity_target : float, or Sequence[float, ...], optional
         intensity value for each target, by default 0.5.
         Can specify as many intensities as number of target_indices;
@@ -353,7 +359,7 @@ def bullseye(
         frequency=frequency,
         n_frames=n_frames,
         frame_width=frame_width,
-        period=period,
+        phase_shift=phase_shift,
         intensity_frames=intensity_frames,
         target_indices=1,
         intensity_target=intensity_target,
@@ -371,7 +377,7 @@ def bullseye_generalized(
     intensity_frames=(1.0, 0.0),
     intensity_background=0.5,
     intensity_target=0.5,
-    origin="mean",
+    origin="center",
 ):
     """Draw sequential set of square frames with specified radii with central target
 
@@ -387,11 +393,9 @@ def bullseye_generalized(
         shape [height, width] of image, in pixels
     radii : Sequence[Number] or None (default)
         radii of each frame, in degrees visual angle
-    intensity_frames : Sequence[float, ...]
-        intensity value for each frame, by default (1.0, 0.0).
-        Can specify as many intensities as number of frame_widths;
-        If fewer intensities are passed than frame_widhts, cycles through intensities
-    intensity_background : float, optional
+    intensity_frames : Sequence[float, float]
+        min and max intensity of square-wave, by default (0.0, 1.0)
+    intensity_background : float (optional)
         intensity value of background, by default 0.5
     intensity_target : float, or Sequence[float, ...], optional
         intensity value for each target, by default 0.5.
@@ -430,10 +434,10 @@ def two_sided_bullseye(
     frequency=None,
     n_frames=None,
     frame_width=None,
+    phase_shift=0,
     intensity_target=0.5,
     intensity_frames=(1.0, 0.0),
     intensity_background=0.5,
-    origin="mean",
 ):
     """Two-sided square "bullseye", i.e., set of rings with target in center
 
@@ -453,17 +457,19 @@ def two_sided_bullseye(
         number of frames in the grating
     frame_width : Number, or None (default)
         width of a single frame, in degrees visual angle
+    phase_shift : float
+        phase shift of grating in degrees
     period : "full", "half", "ignore" (default)
         whether to ensure the grating only has "full" periods,
         half "periods", or no guarantees ("ignore")
-    intensity_frames : Sequence[float, ...]
-        intensity value for each frame, by default (1.0, 0.0).
-        Can specify as many intensities as n_franes;
-        If fewer intensities are passed than n_frames, cycles through intensities
     intensity_target : float, or Sequence[float, ...], optional
         intensity value for each target, by default 0.5.
         Can specify as many intensities as number of target_indices;
         If fewer intensities are passed than target_indices, cycles through intensities
+    intensity_frames : Sequence[float, float]
+        min and max intensity of square-wave, by default (0.0, 1.0)
+    intensity_background : float (optional)
+        intensity value of background, by default 0.5
 
     Returns
     ----------
@@ -487,6 +493,7 @@ def two_sided_bullseye(
         frequency=frequency,
         n_frames=n_frames,
         frame_width=frame_width,
+        phase_shift=phase_shift,
         intensity_target=intensity_target,
         intensity_frames=intensity_frames,
     )
@@ -497,6 +504,7 @@ def two_sided_bullseye(
         frequency=frequency,
         n_frames=n_frames,
         frame_width=frame_width,
+        phase_shift=phase_shift,
         intensity_target=intensity_target,
         intensity_frames=intensity_frames[::-1],
     )
