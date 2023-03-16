@@ -1,7 +1,3 @@
-"""
-@author: lynnschmittwilken
-"""
-
 import numpy as np
 
 from stimupy.noises.utils import pseudo_white_spectrum
@@ -22,8 +18,7 @@ def narrowband(
     intensity_range=(0, 1),
     pseudo_noise=False,
 ):
-    """
-    Function to create narrowband noise.
+    """Draw narrowband noise texture
 
     Parameters
     ----------

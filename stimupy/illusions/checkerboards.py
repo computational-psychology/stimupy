@@ -95,7 +95,7 @@ def add_targets(checkerboard_stim, target_indices, extend_targets=False, intensi
         intensity value of the target checks, by default 0.5
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the updated stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
@@ -170,7 +170,7 @@ def checkerboard(
         intensity values of checks, by default (0.0, 1.0)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
@@ -182,11 +182,13 @@ def checkerboard(
 
     References
     ----------
-    Blakeslee, B., & McCourt, M. E. (2004). A unified theory of brightness contrast and
-        assimilation incorporating oriented multiscale spatial filtering and contrast
-        normalization. Vision Research, 44(21), 2483-2503. https://doi.org/10/fmcx5p
-    De Valois, R. L., & De Valois, K. K. (1988). Spatial Vision. Oxford University Press.
-
+    Blakeslee, B., & McCourt, M. E. (2004).
+        A unified theory of brightness contrast and assimilation
+        incorporating oriented multiscale spatial filtering and contrast normalization.
+        Vision Research, 44(21), 2483-2503.
+        https://doi.org/10/fmcx5p
+    De Valois, R. L., & De Valois, K. K. (1988).
+        Spatial Vision. Oxford University Press.
     """
 
     # Set up basic checkerboard
@@ -258,21 +260,23 @@ def contrast_contrast(
         alpha of transparency (i.e. how transparant the medium is), default 0.2
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
-    References:
-    -----------
-    Chubb, C., Sperling, G., & Solomon, J. A. (1989). Texture interactions determine
-        perceived contrast. Proc. Natl. Acad. Sci. USA, 5.
+    References
+    ----------
+    Chubb, C., Sperling, G., & Solomon, J. A. (1989).
+        Texture interactions determine perceived contrast.
+        Proc. Natl. Acad. Sci. USA, 5.
         https://doi.org/10.1073/pnas.86.23.9631
-    Domijan, D. (2015). A Neurocomputational account of the role of contour facilitation
-        in brightness perception. Frontiers in Human Neuroscience, 9(February), 1-16.
+    Domijan, D. (2015).
+        A Neurocomputational account of the role
+        of contour facilitation in brightness perception.
+        Frontiers in Human Neuroscience, 9(February), 1-16.
         https://doi.org/10/gh62x2
-
     """
 
     # Set up basic checkerboard

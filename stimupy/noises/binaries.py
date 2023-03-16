@@ -1,7 +1,3 @@
-"""
-@author: lynnschmittwilken
-"""
-
 import numpy as np
 
 from stimupy.utils import resolution
@@ -18,8 +14,7 @@ def binary(
     shape=None,
     intensity_range=(0, 1),
 ):
-    """
-    Function to create white noise.
+    """Draw binary noise texture
 
     Parameters
     ----------

@@ -29,9 +29,11 @@ __all__ (list of str): list of all stimulus-functions
 
 References
 -----------
-Domijan, D. (2015). A neurocomputational account of the role of contour
-facilitation in brightness perception. Frontiers in Human Neuroscience,
-9, 93. https://doi.org/10.3389/fnhum.2015.00093
+Domijan, D. (2015).
+    A neurocomputational account
+    of the role of contour facilitation in brightness perception.
+    Frontiers in Human Neuroscience, 9, 93.
+    https://doi.org/10.3389/fnhum.2015.00093
 """
 
 import numpy as np
@@ -206,10 +208,12 @@ def dungeon(visual_size=VSIZES["dungeon"], ppd=PPD, shape=SHAPES["dungeon"]):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Domijan, D. (2015). A neurocomputational account of the role of contour
-        facilitation in brightness perception. Frontiers in Human Neuroscience,
-        9, 93. https://doi.org/10.3389/fnhum.2015.00093
+    ----------
+    Domijan, D. (2015).
+        A neurocomputational account
+        of the role of contour facilitation in brightness perception.
+        Frontiers in Human Neuroscience, 9, 93.
+        https://doi.org/10.3389/fnhum.2015.00093
     """
 
     # Resolve resolution
@@ -275,10 +279,12 @@ def cube(visual_size=VSIZES["cube"], ppd=PPD, shape=SHAPES["cube"]):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Domijan, D. (2015). A neurocomputational account of the role of contour
-        facilitation in brightness perception. Frontiers in Human Neuroscience,
-        9, 93. https://doi.org/10.3389/fnhum.2015.00093
+    ----------
+    Domijan, D. (2015).
+        A neurocomputational account
+        of the role of contour facilitation in brightness perception.
+        Frontiers in Human Neuroscience, 9, 93.
+        https://doi.org/10.3389/fnhum.2015.00093
     """
 
     # Resolve resolution
@@ -343,10 +349,12 @@ def grating(visual_size=VSIZES["grating"], ppd=PPD, shape=SHAPES["grating"]):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Domijan, D. (2015). A neurocomputational account of the role of contour
-        facilitation in brightness perception. Frontiers in Human Neuroscience,
-        9, 93. https://doi.org/10.3389/fnhum.2015.00093
+    ----------
+    Domijan, D. (2015).
+        A neurocomputational account
+        of the role of contour facilitation in brightness perception.
+        Frontiers in Human Neuroscience, 9, 93.
+        https://doi.org/10.3389/fnhum.2015.00093
     """
 
     # Resolve resolution
@@ -413,10 +421,12 @@ def rings(visual_size=VSIZES["rings"], ppd=PPD, shape=SHAPES["rings"]):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Domijan, D. (2015). A neurocomputational account of the role of contour
-        facilitation in brightness perception. Frontiers in Human Neuroscience,
-        9, 93. https://doi.org/10.3389/fnhum.2015.00093
+    ----------
+    Domijan, D. (2015).
+        A neurocomputational account
+        of the role of contour facilitation in brightness perception.
+        Frontiers in Human Neuroscience, 9, 93.
+        https://doi.org/10.3389/fnhum.2015.00093
     """
 
     # Resolve resolution
@@ -478,10 +488,12 @@ def bullseye(visual_size=VSIZES["bullseye"], ppd=PPD, shape=SHAPES["bullseye"]):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Domijan, D. (2015). A neurocomputational account of the role of contour
-        facilitation in brightness perception. Frontiers in Human Neuroscience,
-        9, 93. https://doi.org/10.3389/fnhum.2015.00093
+    ----------
+    Domijan, D. (2015).
+        A neurocomputational account
+        of the role of contour facilitation in brightness perception.
+        Frontiers in Human Neuroscience, 9, 93.
+        https://doi.org/10.3389/fnhum.2015.00093
     """
 
     # Resolve resolution
@@ -545,10 +557,12 @@ def simultaneous_brightness_contrast(
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Domijan, D. (2015). A neurocomputational account of the role of contour
-        facilitation in brightness perception. Frontiers in Human Neuroscience,
-        9, 93. https://doi.org/10.3389/fnhum.2015.00093
+    ----------
+    Domijan, D. (2015).
+        A neurocomputational account
+        of the role of contour facilitation in brightness perception.
+        Frontiers in Human Neuroscience, 9, 93.
+        https://doi.org/10.3389/fnhum.2015.00093
     """
 
     # Resolve resolution
@@ -611,10 +625,12 @@ def white(visual_size=VSIZES["white"], ppd=PPD, pad=PAD, shape=SHAPES["white"]):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Domijan, D. (2015). A neurocomputational account of the role of contour
-        facilitation in brightness perception. Frontiers in Human Neuroscience,
-        9, 93. https://doi.org/10.3389/fnhum.2015.00093
+    ----------
+    Domijan, D. (2015).
+        A neurocomputational account
+        of the role of contour facilitation in brightness perception.
+        Frontiers in Human Neuroscience, 9, 93.
+        https://doi.org/10.3389/fnhum.2015.00093
     """
 
     # Resolve resolution
@@ -677,10 +693,12 @@ def benary(visual_size=VSIZES["benary"], ppd=PPD, shape=SHAPES["benary"]):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Domijan, D. (2015). A neurocomputational account of the role of contour
-        facilitation in brightness perception. Frontiers in Human Neuroscience,
-        9, 93. https://doi.org/10.3389/fnhum.2015.00093
+    ----------
+    Domijan, D. (2015).
+        A neurocomputational account
+        of the role of contour facilitation in brightness perception.
+        Frontiers in Human Neuroscience, 9, 93.
+        https://doi.org/10.3389/fnhum.2015.00093
     """
 
     # Resolve resolution
@@ -736,10 +754,12 @@ def todorovic(visual_size=VSIZES["todorovic"], ppd=PPD, shape=SHAPES["todorovic"
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Domijan, D. (2015). A neurocomputational account of the role of contour
-        facilitation in brightness perception. Frontiers in Human Neuroscience,
-        9, 93. https://doi.org/10.3389/fnhum.2015.00093
+    ----------
+    Domijan, D. (2015).
+        A neurocomputational account
+        of the role of contour facilitation in brightness perception.
+        Frontiers in Human Neuroscience, 9, 93.
+        https://doi.org/10.3389/fnhum.2015.00093
     """
 
     # Note: Compared to original, targets are moved by one pixel
@@ -810,10 +830,12 @@ def checkerboard_contrast_contrast(
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Domijan, D. (2015). A neurocomputational account of the role of contour
-        facilitation in brightness perception. Frontiers in Human Neuroscience,
-        9, 93. https://doi.org/10.3389/fnhum.2015.00093
+    ----------
+    Domijan, D. (2015).
+        A neurocomputational account
+        of the role of contour facilitation in brightness perception.
+        Frontiers in Human Neuroscience, 9, 93.
+        https://doi.org/10.3389/fnhum.2015.00093
     """
 
     # Resolve resolution
@@ -898,10 +920,12 @@ def checkerboard(
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Domijan, D. (2015). A neurocomputational account of the role of contour
-        facilitation in brightness perception. Frontiers in Human Neuroscience,
-        9, 93. https://doi.org/10.3389/fnhum.2015.00093
+    ----------
+    Domijan, D. (2015).
+        A neurocomputational account
+        of the role of contour facilitation in brightness perception.
+        Frontiers in Human Neuroscience, 9, 93.
+        https://doi.org/10.3389/fnhum.2015.00093
     """
 
     # Resolve resolution
@@ -969,10 +993,12 @@ def checkerboard_extended(
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Domijan, D. (2015). A neurocomputational account of the role of contour
-        facilitation in brightness perception. Frontiers in Human Neuroscience,
-        9, 93. https://doi.org/10.3389/fnhum.2015.00093
+    ----------
+    Domijan, D. (2015).
+        A neurocomputational account
+        of the role of contour facilitation in brightness perception.
+        Frontiers in Human Neuroscience, 9, 93.
+        https://doi.org/10.3389/fnhum.2015.00093
     """
 
     # Resolve resolution
@@ -1037,12 +1063,15 @@ def white_yazdanbakhsh(
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Domijan, D. (2015). A neurocomputational account of the role of contour
-        facilitation in brightness perception. Frontiers in Human Neuroscience,
-        9, 93. https://doi.org/10.3389/fnhum.2015.00093
-    Yazdanbakhsh, A., Arabzadeh, E., Babadi, B., and Fazl, A. (2002). Munker-White-
-        like illusions without T-junctions. Perception 31, 711–715.
+    ----------
+    Domijan, D. (2015).
+        A neurocomputational account
+        of the role of contour facilitation in brightness perception.
+        Frontiers in Human Neuroscience, 9, 93.
+        https://doi.org/10.3389/fnhum.2015.00093
+    Yazdanbakhsh, A., Arabzadeh, E., Babadi, B., and Fazl, A. (2002).
+        Munker-White-like illusions without T-junctions.
+        Perception 31, 711-715.
         https://doi.org/10.1068/p3348
     """
 
@@ -1116,15 +1145,20 @@ def white_anderson(
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Anderson, B. L. (2001). Contrasting theories of White’s illusion. Perception, 30, 1499–1501
-    Blakeslee, B., Pasieka, W., & McCourt, M. E. (2005). Oriented multiscale spatial ﬁltering
-        and contrast normalization: a parsimonious model of brightness induction in a continuum
-        of stimuli including White, Howe and simultaneous brightness contrast. Vision Research,
-        45, 607–615.
-    Domijan, D. (2015). A neurocomputational account of the role of contour
-        facilitation in brightness perception. Frontiers in Human Neuroscience,
-        9, 93. https://doi.org/10.3389/fnhum.2015.00093
+    ----------
+    Anderson, B. L. (2001).
+        Contrasting theories of White's illusion.
+        Perception, 30, 1499-1501.
+    Blakeslee, B., Pasieka, W., & McCourt, M. E. (2005).
+        Oriented multiscale spatial ﬁltering and contrast normalization:
+        a parsimonious model of brightness induction in a continuum
+        of stimuli including White, Howe and simultaneous brightness contrast.
+        Vision Research, 45, 607-615.
+    Domijan, D. (2015).
+        A neurocomputational account
+        of the role of contour facilitation in brightness perception.
+        Frontiers in Human Neuroscience, 9, 93.
+        https://doi.org/10.3389/fnhum.2015.00093
     """
 
     # Resolve resolution
@@ -1196,16 +1230,21 @@ def white_howe(visual_size=VSIZES["white_howe"], ppd=PPD, shape=SHAPES["white_ho
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Blakeslee, B., Pasieka, W., & McCourt, M. E. (2005). Oriented multiscale spatial ﬁltering
-        and contrast normalization: a parsimonious model of brightness induction in a continuum
-        of stimuli including White, Howe and simultaneous brightness contrast. Vision Research,
-        45, 607–615.
-    Domijan, D. (2015). A neurocomputational account of the role of contour
-        facilitation in brightness perception. Frontiers in Human Neuroscience,
-        9, 93. https://doi.org/10.3389/fnhum.2015.00093
-    Howe, P. D. L. (2001). A comment on the Anderson (1997), the Todorovic (1997), and the Ross
-        and Pessoa (2000) explanations of White’s eﬀect. Perception, 30, 1023–1026
+    ----------
+    Blakeslee, B., Pasieka, W., & McCourt, M. E. (2005).
+        Oriented multiscale spatial ﬁltering and contrast normalization:
+        a parsimonious model of brightness induction in a continuum
+        of stimuli including White, Howe and simultaneous brightness contrast.
+        Vision Research, 45, 607-615.
+    Domijan, D. (2015).
+        A neurocomputational account
+        of the role of contour facilitation in brightness perception.
+        Frontiers in Human Neuroscience, 9, 93.
+        https://doi.org/10.3389/fnhum.2015.00093
+    Howe, P. D. L. (2001).
+        A comment on the Anderson (1997), the Todorovic (1997),
+        and the Ross nd Pessoa (2000) explanations of White's eﬀect.
+        Perception, 30, 1023-1026
     """
 
     # Resolve resolution

@@ -17,8 +17,7 @@ def corrugated_mondrians(
     target_indices=None,
     intensity_background=0.5,
 ):
-    """
-    Corrugated mondrians
+    """Corrugated Mondrians
 
     Parameters
     ----------
@@ -39,7 +38,7 @@ def corrugated_mondrians(
         intensity value for background
 
     Returns
-    ----------
+    ------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
@@ -47,8 +46,10 @@ def corrugated_mondrians(
 
     References
     ----------
-    Adelson, E. H. (1993). Perceptual organization and the judgment of brightness.
-        Science, 262(5142), 2042–2044. https://doi.org/10.1126/science.8266102
+    Adelson, E. H. (1993).
+        Perceptual organization and the judgment of brightness.
+        Science, 262, 2042-2044.
+        https://doi.org/10.1126/science.8266102
     """
     if mondrian_depths is None:
         raise ValueError(

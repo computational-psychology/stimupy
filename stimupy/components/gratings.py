@@ -63,7 +63,7 @@ def sine_wave(
         if True, round width of bars given resolution
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each bar (key: "grating_mask"),
@@ -163,7 +163,7 @@ def square_wave(
         if True, round width of bars given resolution
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each bar (key: "grating_mask"),
@@ -233,7 +233,7 @@ def staircase(
         if True, round width of bars given resolution
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each bar (key: "grating_mask"),
@@ -311,7 +311,7 @@ def gabor(
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each bar (key: "grating_mask"),
@@ -356,7 +356,7 @@ def plaid(
     weight2=1,
     sigma=None,
 ):
-    """Create plaid consisting of two sine-wave gratings
+    """Draw plaid consisting of two sine-wave gratings
 
     Parameters
     ----------
@@ -372,7 +372,7 @@ def plaid(
         sigma of Gaussian window in degree visual angle (y, x)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each bar (key: "grating_mask"),

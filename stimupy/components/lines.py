@@ -27,7 +27,7 @@ def line(
     intensity_background=0,
     origin="corner",
 ):
-    """Draw a line given the input parameters
+    """Draw a line
 
     Parameters
     ----------
@@ -56,7 +56,7 @@ def line(
         if "mean" or "center": set origin to center (closest existing value to mean)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each line (key: "line_mask"),
@@ -140,7 +140,7 @@ def dipole(
     rotation=0,
     intensity_lines=(0, 1),
 ):
-    """Draw a two centered parallel lines given the input parameters
+    """Draw a two centered parallel lines
 
     Parameters
     ----------
@@ -164,7 +164,7 @@ def dipole(
         background intensity is the mean of these two values
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each line (key: "line_mask"),
@@ -237,7 +237,7 @@ def ellipse(
     intensity_line=1,
     intensity_background=0,
 ):
-    """Draw an ellipse given the input parameters
+    """Draw an ellipse
 
     Parameters
     ----------
@@ -258,7 +258,7 @@ def ellipse(
         intensity value of the background (default: 0)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each line (key: "line_mask"),

@@ -29,8 +29,7 @@ def cross_generalized(
     intensity_cross=0.0,
     intensity_target=0.5,
 ):
-    """
-    Benary's Cross Illusion
+    """Benary's Cross Illusion
 
     Parameters
     ----------
@@ -60,16 +59,18 @@ def cross_generalized(
         intensity value for target
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Benary, W. (1924). Beobachtungen zu einem Experiment ueber Helligkeitskontrast.
-        Psychologische Forschung, 5, 131–142. https://doi.org/10.1007/BF00402398
+    ----------
+    Benary, W. (1924).
+        Beobachtungen zu einem Experiment über Helligkeitskontrast.
+        Psychologische Forschung, 5, 131-142.
+        https://doi.org/10.1007/BF00402398
     """
     if cross_thickness is None:
         raise ValueError(
@@ -137,16 +138,18 @@ def cross_rectangles(
         intensity value for target
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Benary, W. (1924). Beobachtungen zu einem Experiment ueber Helligkeitskontrast.
-        Psychologische Forschung, 5, 131–142. https://doi.org/10.1007/BF00402398
+    ----------
+    Benary, W. (1924).
+        Beobachtungen zu einem Experiment über Helligkeitskontrast.
+        Psychologische Forschung, 5, 131-142.
+        https://doi.org/10.1007/BF00402398
     """
     if cross_thickness is None:
         raise ValueError(
@@ -229,16 +232,18 @@ def cross_triangles(
         intensity value for target
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Benary, W. (1924). Beobachtungen zu einem Experiment ueber Helligkeitskontrast.
-        Psychologische Forschung, 5, 131–142. https://doi.org/10.1007/BF00402398
+    ----------
+     Benary, W. (1924).
+        Beobachtungen zu einem Experiment über Helligkeitskontrast.
+        Psychologische Forschung, 5, 131-142.
+        https://doi.org/10.1007/BF00402398
     """
     if cross_thickness is None:
         raise ValueError(
@@ -330,16 +335,18 @@ def todorovic_generalized(
         intensity value for target
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Benary, W. (1924). Beobachtungen zu einem Experiment ueber Helligkeitskontrast.
-        Psychologische Forschung, 5, 131–142. https://doi.org/10.1007/BF00402398
+    ----------
+    Benary, W. (1924).
+        Beobachtungen zu einem Experiment über Helligkeitskontrast.
+        Psychologische Forschung, 5, 131-142.
+        https://doi.org/10.1007/BF00402398
     """
     if L_width is None:
         raise ValueError("todorovic_generalized() missing argument 'L_width' which is not 'None'")
@@ -416,16 +423,18 @@ def todorovic_rectangles(
         intensity value for target
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Benary, W. (1924). Beobachtungen zu einem Experiment ueber Helligkeitskontrast.
-        Psychologische Forschung, 5, 131–142. https://doi.org/10.1007/BF00402398
+    ----------
+    Benary, W. (1924).
+        Beobachtungen zu einem Experiment über Helligkeitskontrast.
+        Psychologische Forschung, 5, 131-142.
+        https://doi.org/10.1007/BF00402398
     """
     if L_width is None:
         raise ValueError("todorovic_rectangles() missing argument 'L_width' which is not 'None'")
@@ -494,16 +503,18 @@ def todorovic_triangles(
         intensity value for target
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Benary, W. (1924). Beobachtungen zu einem Experiment ueber Helligkeitskontrast.
-        Psychologische Forschung, 5, 131–142. https://doi.org/10.1007/BF00402398
+    ----------
+     Benary, W. (1924).
+        Beobachtungen zu einem Experiment über Helligkeitskontrast.
+        Psychologische Forschung, 5, 131-142.
+        https://doi.org/10.1007/BF00402398
     """
     if L_width is None:
         raise ValueError("todorovic_triangles() missing argument 'L_width' which is not 'None'")
@@ -572,7 +583,7 @@ def add_targets(
         intensity value for target
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the updated stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),

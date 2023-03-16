@@ -22,9 +22,11 @@ __all__ (list of str): list of all stimulus-functions
 
 References
 -----------
-White, M. (1981). The effect of the nature of the surround on the perceived
-    lightness of grey bars within square-wave test grating. Perception, 10,
-    215–230. https://doi.org/10.1068/p100215
+White, M. (1981).
+    The effect of the nature of the surround on the perceived lightness
+    of grey bars within square-wave test grating.
+    Perception, 10, 215-230.
+    https://doi.org/10.1068/p100215
 """
 
 import copy
@@ -109,10 +111,12 @@ def square_white(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    ----------
+    White, M. (1981).
+        The effect of the nature of the surround on the perceived lightness
+        of grey bars within square-wave test grating.
+        Perception, 10, 215-230.
+        https://doi.org/10.1068/p100215
     """
 
     params = {
@@ -144,10 +148,12 @@ def square_black(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    ----------
+    White, M. (1981).
+        The effect of the nature of the surround on the perceived lightness
+        of grey bars within square-wave test grating.
+        Perception, 10, 215-230.
+        https://doi.org/10.1068/p100215
     """
 
     params = {
@@ -180,10 +186,12 @@ def grating_white_white(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    ----------
+    White, M. (1981).
+        The effect of the nature of the surround on the perceived lightness
+        of grey bars within square-wave test grating.
+        Perception, 10, 215-230.
+        https://doi.org/10.1068/p100215
     """
     bar_width = resolve_bar_width(BAR_WIDTH, ppd)
 
@@ -221,10 +229,12 @@ def grating_white_black(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    ----------
+    White, M. (1981).
+        The effect of the nature of the surround on the perceived lightness
+        of grey bars within square-wave test grating.
+        Perception, 10, 215-230.
+        https://doi.org/10.1068/p100215
     """
     bar_width = resolve_bar_width(BAR_WIDTH, ppd)
 
@@ -262,10 +272,12 @@ def grating_black_white(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    ----------
+    White, M. (1981).
+        The effect of the nature of the surround on the perceived lightness
+        of grey bars within square-wave test grating.
+        Perception, 10, 215-230.
+        https://doi.org/10.1068/p100215
     """
     bar_width = resolve_bar_width(BAR_WIDTH, ppd)
 
@@ -303,10 +315,12 @@ def grating_black_black(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    ----------
+    White, M. (1981).
+        The effect of the nature of the surround on the perceived lightness
+        of grey bars within square-wave test grating.
+        Perception, 10, 215-230.
+        https://doi.org/10.1068/p100215
     """
     bar_width = resolve_bar_width(BAR_WIDTH, ppd)
 
@@ -344,10 +358,12 @@ def grating_white_in(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    ----------
+    White, M. (1981).
+        The effect of the nature of the surround on the perceived lightness
+        of grey bars within square-wave test grating.
+        Perception, 10, 215-230.
+        https://doi.org/10.1068/p100215
     """
     bar_width = resolve_bar_width(BAR_WIDTH, ppd)
 
@@ -394,10 +410,12 @@ def grating_black_in(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    ----------
+    White, M. (1981).
+        The effect of the nature of the surround on the perceived lightness
+        of grey bars within square-wave test grating.
+        Perception, 10, 215-230.
+        https://doi.org/10.1068/p100215
     """
     bar_width = resolve_bar_width(BAR_WIDTH, ppd)
 
@@ -444,10 +462,12 @@ def grating_white_out(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    ----------
+    White, M. (1981).
+        The effect of the nature of the surround on the perceived lightness
+        of grey bars within square-wave test grating.
+        Perception, 10, 215-230.
+        https://doi.org/10.1068/p100215
     """
     bar_width = resolve_bar_width(BAR_WIDTH, ppd)
 
@@ -494,10 +514,12 @@ def grating_black_out(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    ----------
+    White, M. (1981).
+        The effect of the nature of the surround on the perceived lightness
+        of grey bars within square-wave test grating.
+        Perception, 10, 215-230.
+        https://doi.org/10.1068/p100215
     """
     bar_width = resolve_bar_width(BAR_WIDTH, ppd)
 
@@ -544,10 +566,12 @@ def grating_white_orthogonal(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    ----------
+    White, M. (1981).
+        The effect of the nature of the surround on the perceived lightness
+        of grey bars within square-wave test grating.
+        Perception, 10, 215-230.
+        https://doi.org/10.1068/p100215
     """
     bar_width = resolve_bar_width(BAR_WIDTH, ppd)
 
@@ -596,10 +620,12 @@ def grating_black_orthogonal(ppd=PPD):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    White, M. (1981). The effect of the nature of the surround on the perceived
-        lightness of grey bars within square-wave test grating. Perception, 10,
-        215–230.
+    ----------
+    White, M. (1981).
+        The effect of the nature of the surround on the perceived lightness
+        of grey bars within square-wave test grating.
+        Perception, 10, 215-230.
+        https://doi.org/10.1068/p100215
     """
     bar_width = resolve_bar_width(BAR_WIDTH, ppd)
 

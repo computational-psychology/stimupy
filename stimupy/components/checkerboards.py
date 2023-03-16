@@ -46,7 +46,7 @@ def checkerboard(
         intensity values of checks, by default (1.0, 0.0)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each check (key: "checker_mask"),

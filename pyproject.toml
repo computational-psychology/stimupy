@@ -34,7 +34,6 @@ dependencies = [
   "Pillow"
 ]
 
-
 [project.optional-dependencies]
 dev = [
   "pytest",
@@ -43,9 +42,12 @@ dev = [
   "flake8"
 ]
 docs = [
-  "jupyter-book",
+  "jupyter-book==0.14",
+  "jupytext>=1.13.3",
+  "jupyterlab_myst",
+  "myst_nb",
+  "ipywidgets",
 ]
-
 
 [project.urls]
 repository = "https://github.com/computational-psychology/stimupy.git"

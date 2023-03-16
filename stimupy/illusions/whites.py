@@ -84,7 +84,7 @@ def generalized(
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "mask"),
@@ -92,8 +92,10 @@ def generalized(
 
     References
     ----------
-    White, M. (1979). A new effect of pattern on perceived lightness. Perception,
-        8(4), 413–416. https://doi.org/10.1068/p080413
+    White, M. (1979).
+        A new effect of pattern on perceived lightness.
+        Perception, 8(4), 413-416.
+        https://doi.org/10.1068/p080413
     """
     if target_heights is None:
         raise ValueError("generalized() missing argument 'target_heights' which is not 'None'")
@@ -186,8 +188,7 @@ def white(
     target_height=None,
     origin="corner",
 ):
-    """
-    White's stimulus where all targets are vertically aligned at half the stimulus height
+    """White's stimulus where all targets are vertically aligned at half the stimulus height
 
     Parameters
     ----------
@@ -229,7 +230,7 @@ def white(
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "mask"),
@@ -237,8 +238,10 @@ def white(
 
     References
     ----------
-    White, M. (1979). A new effect of pattern on perceived lightness. Perception,
-        8(4), 413–416. https://doi.org/10.1068/p080413
+    White, M. (1979).
+        A new effect of pattern on perceived lightness.
+        Perception, 8(4), 413-416.
+        https://doi.org/10.1068/p080413
     """
 
     stim = generalized(
@@ -279,8 +282,7 @@ def white_two_rows(
     target_height=None,
     origin="corner",
 ):
-    """
-    White's stimulus where targets are placed in two rows (top, bottom) that have the same
+    """White's stimulus where targets are placed in two rows (top, bottom) that have the same
     distance from the center.
 
     Parameters
@@ -325,7 +327,7 @@ def white_two_rows(
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "mask"),
@@ -333,8 +335,10 @@ def white_two_rows(
 
     References
     ----------
-    White, M. (1979). A new effect of pattern on perceived lightness. Perception,
-        8(4), 413–416. https://doi.org/10.1068/p080413
+    White, M. (1979).
+        A new effect of pattern on perceived lightness.
+        Perception, 8(4), 413-416.
+        https://doi.org/10.1068/p080413
     """
     if not isinstance(target_center_offset, (float, int)):
         raise ValueError("target_center_offset should be a single float / int")
@@ -386,8 +390,7 @@ def anderson(
     stripe_center_offset=0,
     stripe_height=None,
 ):
-    """
-    Anderson variation of White's stimulus
+    """Anderson variation of White's stimulus
 
     Parameters
     ----------
@@ -427,19 +430,22 @@ def anderson(
         stripe height in degrees visual angle
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Anderson, B. L. (2001). Contrasting theories of White’s illusion. Perception, 30, 1499–1501
-    Blakeslee, B., Pasieka, W., & McCourt, M. E. (2005). Oriented multiscale spatial ﬁltering
-        and contrast normalization: a parsimonious model of brightness induction in a continuum
-        of stimuli including White, Howe and simultaneous brightness contrast. Vision Research,
-        45, 607–615.
+    ----------
+    Anderson, B. L. (2001).
+        Contrasting theories of White's illusion.
+        Perception, 30, 1499-1501.
+    Blakeslee, B., Pasieka, W., & McCourt, M. E. (2005).
+        Oriented multiscale spatial ﬁltering and contrast normalization:
+        a parsimonious model of brightness induction in a continuum
+        of stimuli including White, Howe and simultaneous brightness contrast.
+        Vision Research, 45, 607-615.
     """
     if target_height is None:
         raise ValueError("anderson() missing argument 'target_height' which is not 'None'")
@@ -531,8 +537,7 @@ def howe(
     target_height=None,
     intensity_stripes=(1.0, 0.0),
 ):
-    """
-    Howe variation of White's stimulus
+    """Howe variation of White's stimulus
 
     Parameters
     ----------
@@ -568,20 +573,23 @@ def howe(
         intensity values of horizontal stripes
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Blakeslee, B., Pasieka, W., & McCourt, M. E. (2005). Oriented multiscale spatial ﬁltering
-        and contrast normalization: a parsimonious model of brightness induction in a continuum
-        of stimuli including White, Howe and simultaneous brightness contrast. Vision Research,
-        45, 607–615.
-    Howe, P. D. L. (2001). A comment on the Anderson (1997), the Todorovic (1997), and the Ross
-        and Pessoa (2000) explanations of White’s eﬀect. Perception, 30, 1023–1026
+    ----------
+    Blakeslee, B., Pasieka, W., & McCourt, M. E. (2005).
+        Oriented multiscale spatial ﬁltering and contrast normalization:
+        a parsimonious model of brightness induction in a continuum
+        of stimuli including White, Howe and simultaneous brightness contrast.
+        Vision Research, 45, 607-615.
+    Howe, P. D. L. (2001).
+        A comment on the Anderson (1997), the Todorovic (1997),
+        and the Ross nd Pessoa (2000) explanations of White's eﬀect.
+        Perception, 30, 1023-1026
     """
     return anderson(
         visual_size=visual_size,
@@ -620,8 +628,7 @@ def yazdanbakhsh(
     intensity_stripes=(1.0, 0.0),
     gap_size=None,
 ):
-    """
-    Yazsdanbakhsh variation of White's stimulus
+    """Yazsdanbakhsh variation of White's stimulus
 
     Parameters
     ----------
@@ -659,7 +666,7 @@ def yazdanbakhsh(
         size of gap between target and grating bar
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "mask"),
@@ -667,9 +674,9 @@ def yazdanbakhsh(
 
     References
     ----------
-    Yazdanbakhsh, A., Arabzadeh, E., Babadi, B., and Fazl, A. (2002). Munker-White-
-        like illusions without T-junctions. Perception 31, 711–715.
-        https://doi.org/10.1068/p3348
+    Yazdanbakhsh, A., Arabzadeh, E., Babadi, B., and Fazl, A. (2002).
+        Munker-White-like illusions without T-junctions.
+        Perception 31, 711-715. https://doi.org/10.1068/p3348
     """
     if target_height is None:
         raise ValueError("yazdanbakhsh() missing argument 'target_height' which is not 'None'")

@@ -18,8 +18,7 @@ def varying_cells(
     intensity_grid=1.0,
     intensity_target=0.5,
 ):
-    """
-    Cube stimulus (Agostini & Galmonte, 2002) with flexible cell sizes.
+    """Cube stimulus (Agostini & Galmonte, 2002) with flexible cell sizes.
 
     Parameters
     ----------
@@ -41,7 +40,7 @@ def varying_cells(
         intensity value for target
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
@@ -49,12 +48,16 @@ def varying_cells(
 
     References
     ----------
-    Agostini, T., and Galmonte, A. (2002). Perceptual organization overcomes the
-        effects of local surround in determining simultaneous lightness contrast.
-        Psychol. Sci. 13, 89–93. https://doi.org/10.1111/1467-9280.00417
-    Domijan, D. (2015). A neurocomputational account of the role of contour
-        facilitation in brightness perception. Frontiers in Human Neuroscience,
-        9, 93. https://doi.org/10.3389/fnhum.2015.00093
+    Agostini, T., and Galmonte, A. (2002).
+        Perceptual organization overcomes the effects of local surround
+        in determining simultaneous lightness contrast.
+        Psychol. Sci. 13, 89-93.
+        https://doi.org/10.1111/1467-9280.00417
+    Domijan, D. (2015).
+        A neurocomputational account
+        of the role of contour facilitation in brightness perception.
+        Frontiers in Human Neuroscience, 9, 93.
+        https://doi.org/10.3389/fnhum.2015.00093
     """
 
     if isinstance(cell_heights, (float, int)):
@@ -149,8 +152,7 @@ def cube(
     intensity_grid=1.0,
     intensity_target=0.5,
 ):
-    """
-    Cube illusion (Agostini & Galmonte, 2002)
+    """Cube illusion (Agostini & Galmonte, 2002)
 
     Parameters
     ----------
@@ -176,7 +178,7 @@ def cube(
         intensity value for target
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
@@ -184,12 +186,16 @@ def cube(
 
     References
     ----------
-    Agostini, T., and Galmonte, A. (2002). Perceptual organization overcomes the
-        effects of local surround in determining simultaneous lightness contrast.
-        Psychol. Sci. 13, 89–93. https://doi.org/10.1111/1467-9280.00417
-    Domijan, D. (2015). A neurocomputational account of the role of contour
-        facilitation in brightness perception. Frontiers in Human Neuroscience,
-        9, 93. https://doi.org/10.3389/fnhum.2015.00093
+    Agostini, T., and Galmonte, A. (2002).
+        Perceptual organization overcomes the effects of local surround
+        in determining simultaneous lightness contrast.
+        Psychol. Sci. 13, 89-93.
+        https://doi.org/10.1111/1467-9280.00417
+    Domijan, D. (2015).
+        A neurocomputational account
+        of the role of contour facilitation in brightness perception.
+        Frontiers in Human Neuroscience, 9, 93.
+        https://doi.org/10.3389/fnhum.2015.00093
     """
 
     # Resolve resolution

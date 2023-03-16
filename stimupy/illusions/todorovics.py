@@ -29,9 +29,7 @@ def rectangle_generalized(
     intensity_target=0.5,
     intensity_covers=1.0,
 ):
-    """
-    Todorovic's illusion with rectangular target and rectangular covers added with flexible
-    number of covers and flexible target and cover placement
+    """Rectangular target and rectangular covers added with flexible number of covers and flexible target and cover placement
 
     Parameters
     ----------
@@ -59,21 +57,23 @@ def rectangle_generalized(
         intensity value for covers
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for the target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Blakeslee, B., & McCourt, M. E. (1999). A multiscale spatial ﬁltering account of the
-        White eﬀect, simultaneous brightness contrast and grating induction. Vision
-        Research, 39, 4361–4377.
-    Pessoa, L., Baratoff, G., Neumann, H., & Todorovic, D. (1998). Lightness and junctions:
-        variations on White’s display. Investigative Ophthalmology and Visual Science
-        (Supplement), 39, S159.
-    Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
+    ----------
+    Blakeslee, B., & McCourt, M. E. (1999).
+        A multiscale spatial ﬁltering account
+        of the White eﬀect, simultaneous brightness contrast and grating induction.
+        Vision Research, 39, 4361-4377.
+    Pessoa, L., Baratoff, G., Neumann, H., & Todorovic, D. (1998).
+        Lightness and junctions: variations on White's display.
+        Investigative Ophthalmology and Visual Science (Supplement), 39, S159.
+    Todorovic, D. (1997).
+        Lightness and junctions. Perception, 26, 379-395.
     """
     if target_size is None:
         raise ValueError(
@@ -161,9 +161,7 @@ def rectangle(
     intensity_target=0.5,
     intensity_covers=1.0,
 ):
-    """
-    Todorovic's illusion with rectangular target in the center and four rectangular
-    covers added symmetrically around target center
+    """Rectangular target in the center and four rectangular covers added symmetrically around target center
 
     Parameters
     ----------
@@ -189,21 +187,23 @@ def rectangle(
         intensity value for covers
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for the target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Blakeslee, B., & McCourt, M. E. (1999). A multiscale spatial ﬁltering account of the
-        White eﬀect, simultaneous brightness contrast and grating induction. Vision
-        Research, 39, 4361–4377.
-    Pessoa, L., Baratoff, G., Neumann, H., & Todorovic, D. (1998). Lightness and junctions:
-        variations on White’s display. Investigative Ophthalmology and Visual Science
-        (Supplement), 39, S159.
-    Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
+    ----------
+    Blakeslee, B., & McCourt, M. E. (1999).
+        A multiscale spatial ﬁltering account
+        of the White eﬀect, simultaneous brightness contrast and grating induction.
+        Vision Research, 39, 4361-4377.
+    Pessoa, L., Baratoff, G., Neumann, H., & Todorovic, D. (1998).
+        Lightness and junctions: variations on White's display.
+        Investigative Ophthalmology and Visual Science (Supplement), 39, S159.
+    Todorovic, D. (1997).
+        Lightness and junctions. Perception, 26, 379-395.
     """
     if target_size is None:
         raise ValueError("rectangle() missing argument 'target_size' which is not 'None'")
@@ -258,9 +258,7 @@ def cross_generalized(
     intensity_target=0.5,
     intensity_covers=1.0,
 ):
-    """
-    Todorovic's illusion with cross target and rectangular covers added with
-    flexible number of covers and flexible cover placement
+    """Cross target and rectangular covers added with flexible number of covers and flexible cover placement
 
     Parameters
     ----------
@@ -290,21 +288,23 @@ def cross_generalized(
         intensity value for covers
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for the target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Blakeslee, B., & McCourt, M. E. (1999). A multiscale spatial ﬁltering account of the
-        White eﬀect, simultaneous brightness contrast and grating induction. Vision
-        Research, 39, 4361–4377.
-    Pessoa, L., Baratoff, G., Neumann, H., & Todorovic, D. (1998). Lightness and junctions:
-        variations on White’s display. Investigative Ophthalmology and Visual Science
-        (Supplement), 39, S159.
-    Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
+    ----------
+    Blakeslee, B., & McCourt, M. E. (1999).
+        A multiscale spatial ﬁltering account
+        of the White eﬀect, simultaneous brightness contrast and grating induction.
+        Vision Research, 39, 4361-4377.
+    Pessoa, L., Baratoff, G., Neumann, H., & Todorovic, D. (1998).
+        Lightness and junctions: variations on White's display.
+        Investigative Ophthalmology and Visual Science (Supplement), 39, S159.
+    Todorovic, D. (1997).
+        Lightness and junctions. Perception, 26, 379-395.
     """
     if cross_size is None:
         raise ValueError("cross_generalized() missing argument 'cross_size' which is not 'None'")
@@ -391,9 +391,7 @@ def cross(
     intensity_target=0.5,
     intensity_covers=1.0,
 ):
-    """
-    Todorovic's illusion with cross target and four rectangular covers added
-    at inner cross corners
+    """Cross target and four rectangular covers added at inner cross corners
 
     Parameters
     ----------
@@ -417,21 +415,23 @@ def cross(
         intensity value for covers
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for the target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Blakeslee, B., & McCourt, M. E. (1999). A multiscale spatial ﬁltering account of the
-        White eﬀect, simultaneous brightness contrast and grating induction. Vision
-        Research, 39, 4361–4377.
-    Pessoa, L., Baratoff, G., Neumann, H., & Todorovic, D. (1998). Lightness and junctions:
-        variations on White’s display. Investigative Ophthalmology and Visual Science
-        (Supplement), 39, S159.
-    Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
+    ----------
+    Blakeslee, B., & McCourt, M. E. (1999).
+        A multiscale spatial ﬁltering account
+        of the White eﬀect, simultaneous brightness contrast and grating induction.
+        Vision Research, 39, 4361-4377.
+    Pessoa, L., Baratoff, G., Neumann, H., & Todorovic, D. (1998).
+        Lightness and junctions: variations on White's display.
+        Investigative Ophthalmology and Visual Science (Supplement), 39, S159.
+    Todorovic, D. (1997).
+        Lightness and junctions. Perception, 26, 379-395.
     """
     if cross_size is None:
         raise ValueError("cross() missing argument 'cross_size' which is not 'None'")
@@ -486,9 +486,7 @@ def equal(
     intensity_target=0.5,
     intensity_covers=1.0,
 ):
-    """
-    Todorovic's illusion with cross target and four rectangular covers added at
-    inner cross corners
+    """Cross target and four rectangular covers added at inner cross corners
 
     Parameters
     ----------
@@ -510,21 +508,23 @@ def equal(
         intensity value for covers
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for the target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Blakeslee, B., & McCourt, M. E. (1999). A multiscale spatial ﬁltering account of the
-        White eﬀect, simultaneous brightness contrast and grating induction. Vision
-        Research, 39, 4361–4377.
-    Pessoa, L., Baratoff, G., Neumann, H., & Todorovic, D. (1998). Lightness and junctions:
-        variations on White’s display. Investigative Ophthalmology and Visual Science
-        (Supplement), 39, S159.
-    Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
+    ----------
+    Blakeslee, B., & McCourt, M. E. (1999).
+        A multiscale spatial ﬁltering account
+        of the White eﬀect, simultaneous brightness contrast and grating induction.
+        Vision Research, 39, 4361-4377.
+    Pessoa, L., Baratoff, G., Neumann, H., & Todorovic, D. (1998).
+        Lightness and junctions: variations on White's display.
+        Investigative Ophthalmology and Visual Science (Supplement), 39, S159.
+    Todorovic, D. (1997).
+        Lightness and junctions. Perception, 26, 379-395.
     """
     if cross_size is None:
         raise ValueError("equal() missing argument 'cross_size' which is not 'None'")
@@ -587,21 +587,23 @@ def two_sided_rectangle(
         intensity values for covers
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for the target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Blakeslee, B., & McCourt, M. E. (1999). A multiscale spatial ﬁltering account of the
-        White eﬀect, simultaneous brightness contrast and grating induction. Vision
-        Research, 39, 4361–4377.
-    Pessoa, L., Baratoff, G., Neumann, H., & Todorovic, D. (1998). Lightness and junctions:
-        variations on White’s display. Investigative Ophthalmology and Visual Science
-        (Supplement), 39, S159.
-    Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
+    ----------
+    Blakeslee, B., & McCourt, M. E. (1999).
+        A multiscale spatial ﬁltering account
+        of the White eﬀect, simultaneous brightness contrast and grating induction.
+        Vision Research, 39, 4361-4377.
+    Pessoa, L., Baratoff, G., Neumann, H., & Todorovic, D. (1998).
+        Lightness and junctions: variations on White's display.
+        Investigative Ophthalmology and Visual Science (Supplement), 39, S159.
+    Todorovic, D. (1997).
+        Lightness and junctions. Perception, 26, 379-395.
     """
 
     # Resolve resolution
@@ -651,9 +653,7 @@ def two_sided_cross(
     intensity_target=0.5,
     intensity_covers=(1.0, 0.0),
 ):
-    """
-    Two-sided Todorovic's illusion with cross target and four rectangular covers
-    added at inner cross corners
+    """Two-sided with cross target and four rectangular covers added at inner cross corners
 
     Parameters
     ----------
@@ -677,21 +677,23 @@ def two_sided_cross(
         intensity values for covers
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for the target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Blakeslee, B., & McCourt, M. E. (1999). A multiscale spatial ﬁltering account of the
-        White eﬀect, simultaneous brightness contrast and grating induction. Vision
-        Research, 39, 4361–4377.
-    Pessoa, L., Baratoff, G., Neumann, H., & Todorovic, D. (1998). Lightness and junctions:
-        variations on White’s display. Investigative Ophthalmology and Visual Science
-        (Supplement), 39, S159.
-    Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
+    ----------
+    Blakeslee, B., & McCourt, M. E. (1999).
+        A multiscale spatial ﬁltering account
+        of the White eﬀect, simultaneous brightness contrast and grating induction.
+        Vision Research, 39, 4361-4377.
+    Pessoa, L., Baratoff, G., Neumann, H., & Todorovic, D. (1998).
+        Lightness and junctions: variations on White's display.
+        Investigative Ophthalmology and Visual Science (Supplement), 39, S159.
+    Todorovic, D. (1997).
+        Lightness and junctions. Perception, 26, 379-395.
     """
 
     # Resolve resolution
@@ -738,9 +740,7 @@ def two_sided_equal(
     intensity_target=0.5,
     intensity_covers=(1.0, 0.0),
 ):
-    """
-    Two-sided Todorovic's illusion with cross target and four rectangular covers
-    added at inner cross corners
+    """Two-sided with cross target and four rectangular covers added at inner cross corners
 
     Parameters
     ----------
@@ -762,21 +762,23 @@ def two_sided_equal(
         intensity value for covers
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for the target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Blakeslee, B., & McCourt, M. E. (1999). A multiscale spatial ﬁltering account of the
-        White eﬀect, simultaneous brightness contrast and grating induction. Vision
-        Research, 39, 4361–4377.
-    Pessoa, L., Baratoff, G., Neumann, H., & Todorovic, D. (1998). Lightness and junctions:
-        variations on White’s display. Investigative Ophthalmology and Visual Science
-        (Supplement), 39, S159.
-    Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
+    ----------
+    Blakeslee, B., & McCourt, M. E. (1999).
+        A multiscale spatial ﬁltering account
+        of the White eﬀect, simultaneous brightness contrast and grating induction.
+        Vision Research, 39, 4361-4377.
+    Pessoa, L., Baratoff, G., Neumann, H., & Todorovic, D. (1998).
+        Lightness and junctions: variations on White's display.
+        Investigative Ophthalmology and Visual Science (Supplement), 39, S159.
+    Todorovic, D. (1997).
+        Lightness and junctions. Perception, 26, 379-395.
     """
 
     # Resolve resolution

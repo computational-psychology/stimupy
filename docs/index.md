@@ -16,7 +16,8 @@ Welcome to `stimupy`
 :::
 
 :::{grid-item-card} Reference 📑
-
+:link: reference/api
+:link-type: doc
 :::
 
 :::{grid-item-card} Contribute 🎁
