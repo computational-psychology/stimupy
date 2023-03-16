@@ -425,6 +425,7 @@ def rings(visual_size=VSIZES["rings"], ppd=PPD, shape=SHAPES["rings"]):
         "visual_size": radii.max() * 2,
         "ppd": ppd,
         "radii": radii,
+        "origin": "mean",
     }
 
     stim1 = illusions.frames.rings_generalized(
@@ -490,6 +491,7 @@ def bullseye(visual_size=VSIZES["bullseye"], ppd=PPD, shape=SHAPES["bullseye"]):
         "visual_size": radii.max() * 2,
         "ppd": ppd,
         "radii": radii,
+        "origin": "mean",
     }
 
     stim1 = illusions.frames.bullseye_generalized(
