@@ -82,7 +82,7 @@ def corrugated_mondrians(
     mdepths_px = resolution.lengths_from_visual_angles_ppd(mondrian_depths, ppd[0])
     max_depth = np.abs(np.array(mdepths_px)).max()
     sum_depth = np.abs(np.array(mdepths_px).sum())
-    red_depth = np.maximum(max_depth, sum_depth+max_depth)
+    red_depth = np.maximum(max_depth, sum_depth + max_depth)
     mheight_px, mwidth_px = int(shape[0] / nrows), int((shape[1] - red_depth) / ncols)
 
     # Initial y coordinates
@@ -107,8 +107,8 @@ def corrugated_mondrians(
             xst -= int(mondrian_depths[r] * ppd[0])
 
         for c in range(ncols):
-            if c != ncols-1:
-                msize = (mheight_px / ppd[0], (mwidth_px+1) / ppd[1], mondrian_depths[r])
+            if c != ncols - 1:
+                msize = (mheight_px / ppd[0], (mwidth_px + 1) / ppd[1], mondrian_depths[r])
             else:
                 msize = (mheight_px / ppd[0], mwidth_px / ppd[1], mondrian_depths[r])
             mpos = (yst / ppd[0], xst / ppd[1])
@@ -140,10 +140,10 @@ def corrugated_mondrians(
 
     stim["target_mask"] = target_mask.astype(int)
     stim["target_indices"] = target_indices
-    
+
     if intensity_target is not None:
         for t in range(len(tlist)):
-            stim["img"] = np.where(target_mask==t+1, intensity_target, stim["img"])
+            stim["img"] = np.where(target_mask == t + 1, intensity_target, stim["img"])
 
     if len(np.unique(stim["img"][target_mask != 0])) > 1:
         raise Exception("targets are not equiluminant.")

@@ -75,7 +75,12 @@ def varying_cells(
     clengths = resolution.lengths_from_visual_angles_ppd(cell_lengths, ppd)
     cthick = resolution.lengths_from_visual_angles_ppd(cell_thickness, ppd)
     cspace = resolution.lengths_from_visual_angles_ppd(cell_spacing, ppd)
-    height = np.maximum(clengths[0], cthick) + np.maximum(clengths[-1], cthick) + sum(clengths[1:n_cells-1]) + cspace*(n_cells-1)
+    height = (
+        np.maximum(clengths[0], cthick)
+        + np.maximum(clengths[-1], cthick)
+        + sum(clengths[1 : n_cells - 1])
+        + cspace * (n_cells - 1)
+    )
     width = height
 
     # Initiate image
@@ -91,36 +96,36 @@ def varying_cells(
             fill_mask = 0
 
         # Add cells top
-        cell_mask[0 : cthick, xs : xs + clengths[i]] = counter
-        target_mask[0 : cthick, xs : xs + clengths[i]] += fill_mask
+        cell_mask[0:cthick, xs : xs + clengths[i]] = counter
+        target_mask[0:cthick, xs : xs + clengths[i]] += fill_mask
 
         # Add cells bottom
-        cell_mask[height - cthick : :, width - xs - clengths[i] : width - xs] = counter+1
+        cell_mask[height - cthick : :, width - xs - clengths[i] : width - xs] = counter + 1
         target_mask[height - cthick : :, width - xs - clengths[i] : width - xs] += fill_mask
 
         # Add cells left
-        cell_mask[height - xs - clengths[i]: height - xs, 0 : cthick] = counter+2
-        target_mask[height - xs - clengths[i]: height - xs, 0 : cthick] += fill_mask
-        
+        cell_mask[height - xs - clengths[i] : height - xs, 0:cthick] = counter + 2
+        target_mask[height - xs - clengths[i] : height - xs, 0:cthick] += fill_mask
+
         # Add cells right
-        cell_mask[xs : xs + clengths[i], width - cthick : :] = counter+3
+        cell_mask[xs : xs + clengths[i], width - cthick : :] = counter + 3
         target_mask[xs : xs + clengths[i], width - cthick : :] += fill_mask
-        
+
         if i == 0:
             xs += np.maximum(clengths[i], cthick) + cspace
-        elif i == n_cells-2:
+        elif i == n_cells - 2:
             xs += np.maximum(clengths[-2], cthick) + cspace
         else:
             xs += clengths[i] + cspace
         counter += 4
-    
+
     unique_vals = np.unique(cell_mask)
-    for v in range(len(unique_vals)-1):
-        cell_mask[cell_mask == unique_vals[v+1]] = v + 1
-    
+    for v in range(len(unique_vals) - 1):
+        cell_mask[cell_mask == unique_vals[v + 1]] = v + 1
+
     img = np.where(cell_mask != 0, intensity_cells, intensity_background)
     img = np.where(target_mask != 0, intensity_target, img)
-    target_mask = np.where(target_mask>=1, 1, 0)
+    target_mask = np.where(target_mask >= 1, 1, 0)
 
     stim = {
         "img": img,
@@ -262,14 +267,14 @@ def cube(
         target_mask[rys[i] : rys[i] + cell_height, 0:cell_thick] += fill_mask
         target_mask[ys[i] : ys[i] + cell_height, height - cell_thick : :] += fill_mask
         counter += 2
-    
+
     unique_vals = np.unique(cell_mask)
-    for v in range(len(unique_vals)-1):
-        cell_mask[cell_mask == unique_vals[v+1]] = v + 1
-    
+    for v in range(len(unique_vals) - 1):
+        cell_mask[cell_mask == unique_vals[v + 1]] = v + 1
+
     img = np.where(cell_mask != 0, intensity_cells, intensity_background)
     img = np.where(target_mask != 0, intensity_target, img)
-    target_mask = np.where(target_mask>=1, 1, 0)
+    target_mask = np.where(target_mask >= 1, 1, 0)
 
     stim = {
         "img": img,

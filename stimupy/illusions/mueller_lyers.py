@@ -71,7 +71,7 @@ def mueller_lyer(
 
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
-    
+
     if outer_lines_angle > 180:
         outer_lines_angle -= 360
 

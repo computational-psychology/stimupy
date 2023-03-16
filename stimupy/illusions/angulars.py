@@ -124,14 +124,14 @@ def pinwheel(
         intensity_target = [
             intensity_target,
         ]
-    
+
     # Initiate target mask
     target_mask = np.zeros_like(stim["wedge_mask"])
 
     if target_indices is not None:
         if target_width is None:
             raise ValueError("pinwheel() missing argument 'target_width' which is not 'None'")
-        
+
         target_center = itertools.cycle(target_center)
         target_width = itertools.cycle(target_width)
         intensity_target = itertools.cycle(intensity_target)

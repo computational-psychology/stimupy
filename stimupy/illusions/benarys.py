@@ -256,7 +256,7 @@ def cross_triangles(
         target_size = (target_size, target_size)
     if target_size[0] != target_size[1]:
         raise ValueError("target needs to have the same height and width")
-    if np.sqrt(target_size[0]**2 * 2.) / 2. > cross_thickness:
+    if np.sqrt(target_size[0] ** 2 * 2.0) / 2.0 > cross_thickness:
         raise ValueError("Target size is larger than cross thickness")
 
     # Calculate target placement for classical Benarys cross
@@ -350,8 +350,8 @@ def todorovic_generalized(
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
     if len(np.unique(ppd)) > 1:
         raise ValueError("ppd should be equal in x and y direction")
-    
-    if L_width > visual_size[1]/2:
+
+    if L_width > visual_size[1] / 2:
         raise ValueError("L_width cannot be larger than stimulus_width / 2")
 
     L_size = (visual_size[0] / 2, visual_size[0] / 2, L_width, visual_size[1] - L_width)
@@ -642,7 +642,7 @@ def add_targets(
         theight, twidth = resolution.lengths_from_visual_angles_ppd(target_size, ppd)
         ty = resolution.lengths_from_visual_angles_ppd(target_y, ppd)
         tx = resolution.lengths_from_visual_angles_ppd(target_x, ppd)
-        
+
         if isinstance(ty, (int, float)):
             ty = (ty,)
             tx = (tx,)

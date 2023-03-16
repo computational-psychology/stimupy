@@ -109,7 +109,7 @@ def rings(
     for i, ring_idx in enumerate(target_indices):
         stim["img"] = np.where(stim["ring_mask"] == ring_idx + 1, intensity_target, stim["img"])
         stim["target_mask"] = np.where(stim["ring_mask"] == ring_idx + 1, i + 1, 0).astype(int)
-        if ring_idx > stim["ring_mask"].max()-1:
+        if ring_idx > stim["ring_mask"].max() - 1:
             raise ValueError(f"target idx {ring_idx} is above maximum ring idx")
 
     # Update stim dict

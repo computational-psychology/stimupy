@@ -40,12 +40,14 @@ def mask_from_idx(checkerboard_stim, check_idc):
     for i, coords in enumerate(check_idc):
         if coords[0] < 0 or coords[0] > coords[0] or coords[1] < 0 or coords[1] > board_shape[1]:
             raise ValueError(f"Cannot provide mask for check {coords} outside board {board_shape}")
-        m1 = np.where(checkerboard_stim["grating_mask"]==coords[1]+1, 1, 0)
-        m2 = np.where(checkerboard_stim["grating_mask2"]==coords[0]+1, 1, 0)
-        mask = np.where(m1+m2==2, i+1, mask)
+        m1 = np.where(checkerboard_stim["grating_mask"] == coords[1] + 1, 1, 0)
+        m2 = np.where(checkerboard_stim["grating_mask2"] == coords[0] + 1, 1, 0)
+        mask = np.where(m1 + m2 == 2, i + 1, mask)
 
         if len(np.unique(mask)) == 1:
-            raise ValueError(f"Cannot provide mask for check {coords} outside board because of rotation")
+            raise ValueError(
+                f"Cannot provide mask for check {coords} outside board because of rotation"
+            )
     return mask
 
 
