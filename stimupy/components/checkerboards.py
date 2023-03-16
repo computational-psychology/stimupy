@@ -44,6 +44,8 @@ def checkerboard(
         rotation of grating in degrees (default: 0 = horizontal)
     intensity_checks : Sequence[float, float]
         intensity values of checks, by default (1.0, 0.0)
+    round_phase_width : Bool
+        if True, round width of bars given resolution (default: True)
 
     Returns
     ----------
@@ -150,6 +152,8 @@ def checkerboard(
     stim = {
         "img": img,
         "checker_mask": mask.astype(int),
+        "grating_mask": sw1["grating_mask"],
+        "grating_mask2": sw2["grating_mask"],
         "visual_size": sw1["visual_size"],
         "ppd": sw1["ppd"],
         "shape": sw1["shape"],
