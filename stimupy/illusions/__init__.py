@@ -74,8 +74,8 @@ def create_overview():
         # Cornsweet
         "cornsweet": cornsweets.cornsweet(**p, ramp_width=3),
         # Cube
-        "cube_variable": cubes.varying_cells(ppd=20, cell_heights=(1, 1.5, 1), cell_widths=(1.5, 2, 1.5), cell_spacing=0.5, targets=1),
-        "cube": cubes.cube(**p, n_cells=5, targets=(1, 2), cell_thickness=1, cell_spacing=0.5),
+        "cube_variable": cubes.varying_cells(ppd=20, cell_lengths=(1, 1.5, 1), cell_thickness=0.5, cell_spacing=0.5, target_indices=1),
+        "cube": cubes.cube(**p, n_cells=5, target_indices=(1, 2), cell_thickness=1, cell_spacing=0.5),
         # Delbouef
         "delboeuf": delboeufs.delboeuf(**p, outer_radius=4, target_radius=1),
         "2sided_delboeuf": delboeufs.two_sided(**p, outer_radii=(2, 1.1), target_radius=1),

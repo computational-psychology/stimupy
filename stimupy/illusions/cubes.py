@@ -9,33 +9,33 @@ __all__ = [
 
 
 def varying_cells(
-    ppd,
-    cell_heights,
-    cell_widths,
-    cell_spacing,
-    targets=None,
+    ppd=None,
+    cell_lengths=None,
+    cell_thickness=None,
+    cell_spacing=None,
+    target_indices=None,
     intensity_background=0.0,
-    intensity_grid=1.0,
+    intensity_cells=1.0,
     intensity_target=0.5,
 ):
     """
-    Cube stimulus (Agostini & Galmonte, 2002) with flexible cell sizes.
+    Cube stimulus (Agostini & Galmonte, 2002) with flexible cell lengths.
 
     Parameters
     ----------
-    ppd : int
+    ppd : Number or None (default)
         pixels per degree (visual angle)
-    cell_heights : Sequence or float
-        Heights of individual cell elements in degrees. Will be used on each side.
-    cell_widths : Sequence or float
-        Widths of individual cell elements in degrees. Will be used on each side.
-    cell_spacing : Sequence or float
-        distance between individual cells iin degrees. Will be used on each side.
-    targets : Sequence
-        Target indices. Will be used on each side
+    cell_lengths : Sequence[Number, ...], Number of None (default)
+        lengths of individual cells in degrees
+    cell_thickness : Number or None (default)
+        thickness of each cell in degrees
+    cell_spacing : Number or None (default)
+        spacing between cells in degrees
+    target_indices : Sequence or None
+        target indices; will be used on each side
     intensity_background : float
         intensity value for background
-    intensity_grid : float
+    intensity_cells : float
         intensity value for grid cells
     intensity_target : float
         intensity value for target
@@ -56,82 +56,85 @@ def varying_cells(
         facilitation in brightness perception. Frontiers in Human Neuroscience,
         9, 93. https://doi.org/10.3389/fnhum.2015.00093
     """
+    if not isinstance(ppd, (float, int)):
+        ppd = np.unique(ppd)
+        if len(ppd) != 1:
+            raise ValueError("ppd has to be the same in x and y direction")
+        else:
+            ppd = ppd[0]
 
-    if isinstance(cell_heights, (float, int)):
-        cell_heights = (cell_heights,)
-    if isinstance(cell_widths, (float, int)):
-        cell_widths = (cell_widths,)
-    if isinstance(cell_spacing, (float, int)):
-        cell_spacing = (cell_spacing,)
-    if targets is None:
-        targets = ()
-    if isinstance(targets, (float, int)):
-        targets = (targets,)
+    if isinstance(cell_lengths, (float, int)):
+        cell_lengths = (cell_lengths,)
+    if target_indices is None:
+        target_indices = ()
+    if isinstance(target_indices, (float, int)):
+        target_indices = (target_indices,)
 
-    n_cells = np.maximum(len(cell_heights), len(cell_widths))
-    n_cells = np.maximum(n_cells, len(cell_spacing) + 1)
+    n_cells = len(cell_lengths)
 
-    if len(cell_heights) == 1:
-        cell_heights = cell_heights * n_cells
-    if len(cell_widths) == 1:
-        cell_widths = cell_widths * n_cells
-    if len(cell_spacing) == 1:
-        cell_spacing = cell_spacing * n_cells
-    cell_spacing = list(cell_spacing)
-    cell_spacing[n_cells - 1] = 0
-
-    cheights = resolution.lengths_from_visual_angles_ppd(cell_heights, np.unique(ppd))
-    cwidths = resolution.lengths_from_visual_angles_ppd(cell_widths, np.unique(ppd))
-    cspaces = resolution.lengths_from_visual_angles_ppd(cell_spacing, np.unique(ppd))
-    height = sum(cwidths) + sum(cspaces)
+    clengths = resolution.lengths_from_visual_angles_ppd(cell_lengths, ppd)
+    cthick = resolution.lengths_from_visual_angles_ppd(cell_thickness, ppd)
+    cspace = resolution.lengths_from_visual_angles_ppd(cell_spacing, ppd)
+    height = np.maximum(clengths[0], cthick) + np.maximum(clengths[-1], cthick) + sum(clengths[1:n_cells-1]) + cspace*(n_cells-1)
     width = height
 
     # Initiate image
-    img = np.ones([height, width]) * intensity_background
-    mask = np.zeros([height, width])
+    cell_mask = np.zeros([height, width])
+    target_mask = np.zeros([height, width])
 
-    # Add cells: top and bottom
     xs = 0
+    counter = 1
     for i in range(n_cells):
-        if i in targets:
-            fill_img = intensity_target
+        if i in target_indices:
             fill_mask = 1
         else:
-            fill_img = intensity_grid
             fill_mask = 0
-        img[0 : cheights[i], xs : xs + cwidths[i]] = fill_img
-        img[height - cheights[i] : :, xs : xs + cwidths[i]] = fill_img
-        mask[0 : cheights[i], xs : xs + cwidths[i]] = fill_mask
-        mask[height - cheights[i] : :, xs : xs + cwidths[i]] = fill_mask
-        xs += cwidths[i] + cspaces[i]
 
-    # Add cells: left and right
-    xs = 0
-    for i in range(n_cells):
-        if i in targets:
-            fill_img = intensity_target
-            fill_mask = 1
+        # Add cells top
+        cell_mask[0 : cthick, xs : xs + clengths[i]] = counter
+        target_mask[0 : cthick, xs : xs + clengths[i]] += fill_mask
+
+        # Add cells bottom
+        cell_mask[height - cthick : :, width - xs - clengths[i] : width - xs] = counter+1
+        target_mask[height - cthick : :, width - xs - clengths[i] : width - xs] += fill_mask
+
+        # Add cells left
+        cell_mask[height - xs - clengths[i]: height - xs, 0 : cthick] = counter+2
+        target_mask[height - xs - clengths[i]: height - xs, 0 : cthick] += fill_mask
+        
+        # Add cells right
+        cell_mask[xs : xs + clengths[i], width - cthick : :] = counter+3
+        target_mask[xs : xs + clengths[i], width - cthick : :] += fill_mask
+        
+        if i == 0:
+            xs += np.maximum(clengths[i], cthick) + cspace
+        elif i == n_cells-2:
+            xs += np.maximum(clengths[-2], cthick) + cspace
         else:
-            fill_img = intensity_grid
-            fill_mask = 0
-        img[xs : xs + cwidths[i], 0 : cheights[i]] = fill_img
-        img[xs : xs + cwidths[i], width - cheights[i] : :] = fill_img
-        mask[xs : xs + cwidths[i], 0 : cheights[i]] = fill_mask
-        mask[xs : xs + cwidths[i], width - cheights[i] : :] = fill_mask
-        xs += cwidths[i] + cspaces[i]
+            xs += clengths[i] + cspace
+        counter += 4
+    
+    unique_vals = np.unique(cell_mask)
+    for v in range(len(unique_vals)-1):
+        cell_mask[cell_mask == unique_vals[v+1]] = v + 1
+    
+    img = np.where(cell_mask != 0, intensity_cells, intensity_background)
+    img = np.where(target_mask != 0, intensity_target, img)
+    target_mask = np.where(target_mask>=1, 1, 0)
 
     stim = {
         "img": img,
-        "target_mask": mask.astype(int),
+        "cell_mask": cell_mask.astype(int),
+        "target_mask": target_mask.astype(int),
         "shape": img.shape,
         "visual_size": np.array(img.shape) / ppd,
         "ppd": ppd,
-        "targets": targets,
-        "cell_heights": cell_heights,
-        "cell_widths": cell_widths,
+        "target_indices": target_indices,
+        "cell_lengths": cell_lengths,
+        "cell_thickness": cell_thickness,
         "cell_spacing": cell_spacing,
         "intensity_background": intensity_background,
-        "intensity_grid": intensity_grid,
+        "intensity_cells": intensity_cells,
         "intensity_target": intensity_target,
     }
     return stim
@@ -142,11 +145,11 @@ def cube(
     ppd=None,
     shape=None,
     n_cells=None,
-    targets=None,
+    target_indices=None,
     cell_thickness=None,
     cell_spacing=None,
     intensity_background=0.0,
-    intensity_grid=1.0,
+    intensity_cells=1.0,
     intensity_target=0.5,
 ):
     """
@@ -162,15 +165,15 @@ def cube(
         shape [height, width] of image, in pixels
     n_cells : int
         the number of square cells (not counting background) per dimension
-    targets : Sequence
+    target_indices : Sequence
         Target indices. Will be used on each side
-    cell_thickness : float
-        Thickness of each cell in degree of visual angle
-    cell_spacing : float or (float, float)
-        distance between two cells in degrees visual angle
+    cell_thickness : Number or None (default)
+        thickness of each cell in degrees
+    cell_spacing : Sequence[Number, Number], Number or None (default)
+        spacing between cells in degrees (height, width)
     intensity_background : float
         intensity value for background
-    intensity_grid : float
+    intensity_cells : float
         intensity value for grid cells
     intensity_target : float
         intensity value for target
@@ -207,23 +210,25 @@ def cube(
         cell_spacing = (cell_spacing, cell_spacing)
     if isinstance(n_cells, (float, int)):
         n_cells = (n_cells, n_cells)
-    if targets is None:
-        targets = ()
+    if target_indices is None:
+        target_indices = ()
+    if isinstance(target_indices, (float, int)):
+        target_indices = (target_indices,)
 
     height, width = shape
     cell_space = resolution.lengths_from_visual_angles_ppd(cell_spacing, np.unique(ppd))
     cell_thick = resolution.lengths_from_visual_angles_ppd(cell_thickness, np.unique(ppd))
 
     # Initiate image
-    img = np.ones([height, width]) * intensity_background
-    mask = np.zeros([height, width])
+    cell_mask = np.zeros([height, width])
+    target_mask = np.zeros([height, width])
 
     # Calculate cell widths and heights
     cell_height = int((height - cell_space[0] * (n_cells[0] - 1)) / n_cells[0])
     cell_width = int((width - cell_space[1] * (n_cells[1] - 1)) / n_cells[1])
 
     if (cell_thick > cell_height) or (cell_thick > cell_width):
-        raise ValueError("cell_thickness is too large")
+        raise ValueError("cannot fit all cells into image")
 
     # Calculate cell placements:
     xs = np.arange(0, width - 1, cell_width + cell_space[1])
@@ -232,43 +237,53 @@ def cube(
     rys = ys[::-1]
 
     # Add cells: top and bottom
+    counter = 1
     for i in range(n_cells[1]):
-        if i in targets:
-            fill_img = intensity_target
+        if i in target_indices:
             fill_mask = 1
         else:
-            fill_img = intensity_grid
             fill_mask = 0
-        img[0:cell_thick, xs[i] : xs[i] + cell_width] = fill_img
-        img[height - cell_thick : :, rxs[i] : rxs[i] + cell_width] = fill_img
-        mask[0:cell_thick, xs[i] : xs[i] + cell_width] = fill_mask
-        mask[height - cell_thick : :, rxs[i] : rxs[i] + cell_width] = fill_mask
+
+        cell_mask[0:cell_thick, xs[i] : xs[i] + cell_width] = counter
+        cell_mask[height - cell_thick : :, rxs[i] : rxs[i] + cell_width] = counter + 1
+        target_mask[0:cell_thick, xs[i] : xs[i] + cell_width] += fill_mask
+        target_mask[height - cell_thick : :, rxs[i] : rxs[i] + cell_width] += fill_mask
+        counter += 2
 
     # Add cells: left and right
     for i in range(n_cells[0]):
-        if i in targets:
-            fill_img = intensity_target
+        if i in target_indices:
             fill_mask = 1
         else:
-            fill_img = intensity_grid
             fill_mask = 0
-        img[rys[i] : rys[i] + cell_height, 0:cell_thick] = fill_img
-        img[ys[i] : ys[i] + cell_height, height - cell_thick : :] = fill_img
-        mask[rys[i] : rys[i] + cell_height, 0:cell_thick] = fill_mask
-        mask[ys[i] : ys[i] + cell_height, height - cell_thick : :] = fill_mask
+
+        cell_mask[rys[i] : rys[i] + cell_height, 0:cell_thick] = counter
+        cell_mask[ys[i] : ys[i] + cell_height, height - cell_thick : :] = counter + 1
+        target_mask[rys[i] : rys[i] + cell_height, 0:cell_thick] += fill_mask
+        target_mask[ys[i] : ys[i] + cell_height, height - cell_thick : :] += fill_mask
+        counter += 2
+    
+    unique_vals = np.unique(cell_mask)
+    for v in range(len(unique_vals)-1):
+        cell_mask[cell_mask == unique_vals[v+1]] = v + 1
+    
+    img = np.where(cell_mask != 0, intensity_cells, intensity_background)
+    img = np.where(target_mask != 0, intensity_target, img)
+    target_mask = np.where(target_mask>=1, 1, 0)
 
     stim = {
         "img": img,
-        "target_mask": mask.astype(int),
+        "cell_mask": cell_mask.astype(int),
+        "target_mask": target_mask.astype(int),
         "shape": shape,
         "visual_size": visual_size,
         "ppd": ppd,
-        "targets": targets,
+        "target_indices": target_indices,
         "n_cells": n_cells,
         "cell_thickness": cell_thickness,
         "cell_spacing": cell_spacing,
         "intensity_background": intensity_background,
-        "intensity_grid": intensity_grid,
+        "intensity_cells": intensity_cells,
         "intensity_target": intensity_target,
     }
     return stim
@@ -279,17 +294,17 @@ if __name__ == "__main__":
 
     p1 = {
         "ppd": 10,
-        "cell_heights": (1, 2, 1),
-        "cell_widths": (1.5, 2, 1.5),
+        "cell_lengths": (2, 4, 2),
+        "cell_thickness": 1,
         "cell_spacing": 0.5,
-        "targets": 1,
+        "target_indices": 1,
     }
 
     p2 = {
         "visual_size": 10,
         "ppd": 10,
         "n_cells": 5,
-        "targets": (1, 2),
+        "target_indices": (1, 2),
         "cell_thickness": 1,
         "cell_spacing": 0.5,
     }
