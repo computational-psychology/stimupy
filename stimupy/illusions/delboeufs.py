@@ -83,6 +83,8 @@ def delboeuf(
     inner["line_mask"] = outer["line_mask"]
     inner["outer_radius"] = outer_radius
     inner["target_radius"] = target_radius
+    inner["target_mask"] = inner["ring_mask"]
+    del inner["ring_mask"]
     return inner
 
 
@@ -108,12 +110,12 @@ def two_sided(
         pixels per degree [vertical, horizontal]
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of grating, in pixels
-    outer_radius : Number
+    outer_radii : Sequence[Number, Number], or None (default)
         radius of outer circle
     outer_line_width : Number
         line width of outer circle in degrees visual angle
         if 0 (default), set line width to 1 px
-    target_radius : Number
+    target_radius : Number or None (default)
         radius of target circle
     intensity_outer_line : Number
         intensity value of outer circle line (default: 0)
