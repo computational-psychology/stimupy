@@ -23,6 +23,8 @@ maintainers = [
   {name = "Joris Vincent", email = "j.vincent@tu-berlin.de"},
 ]
 
+dynamic = ["version"]
+
 requires-python = ">=3.6"
 dependencies = [
   "numpy",
@@ -32,7 +34,18 @@ dependencies = [
   "Pillow"
 ]
 
-dynamic = ["version"]
+
+[project.optional-dependencies]
+dev = [
+  "pytest",
+  "black",
+  "pyupgrade",
+  "flake8"
+]
+docs = [
+  "jupyter-book",
+]
+
 
 [project.urls]
 repository = "https://github.com/computational-psychology/stimupy.git"
