@@ -13,6 +13,7 @@ def rings(
     frequency=None,
     n_rings=None,
     ring_width=None,
+    phase_shift=0,
     target_indices=None,
     intensity_target=0.5,
     intensity_rings=(1.0, 0.0),
@@ -49,6 +50,8 @@ def rings(
         number of rings
     ring_width : Number, or None (default)
         width of a single ring, in degrees
+    phase_shift : float
+        phase shift of grating in degrees
     target_indices : int or Sequence[int, ] (optional)
         indices of target discs. If not specified, use middle ring (round down)
     intensity_target : float (optional)
@@ -87,6 +90,7 @@ def rings(
         frequency=frequency,
         n_rings=n_rings,
         ring_width=ring_width,
+        phase_shift=phase_shift,
         intensity_background=intensity_background,
         intensity_rings=intensity_rings,
         shape=shape,
@@ -105,6 +109,8 @@ def rings(
     for i, ring_idx in enumerate(target_indices):
         stim["img"] = np.where(stim["ring_mask"] == ring_idx + 1, intensity_target, stim["img"])
         stim["target_mask"] = np.where(stim["ring_mask"] == ring_idx + 1, i + 1, 0).astype(int)
+        if ring_idx > stim["ring_mask"].max()-1:
+            raise ValueError(f"target idx {ring_idx} is above maximum ring idx")
 
     # Update stim dict
     stim["target_indices"] = target_indices
@@ -119,6 +125,7 @@ def two_sided_rings(
     frequency=None,
     n_rings=None,
     ring_width=None,
+    phase_shift=0,
     target_indices=None,
     intensity_target=0.5,
     intensity_rings=(1.0, 0.0),
@@ -154,6 +161,8 @@ def two_sided_rings(
         number of rings
     ring_width : Number, or None (default)
         width of a single ring, in degrees
+    phase_shift : float
+        phase shift of grating in degrees
     target_indices : int or Sequence[int, ] (optional)
         indices of target discs. If not specified, use middle ring (round down)
     intensity_target : float (optional)
@@ -192,6 +201,7 @@ def two_sided_rings(
         frequency=frequency,
         n_rings=n_rings,
         ring_width=ring_width,
+        phase_shift=phase_shift,
         target_indices=target_indices,
         intensity_target=intensity_target,
         intensity_rings=intensity_rings,
@@ -206,6 +216,7 @@ def two_sided_rings(
         frequency=frequency,
         n_rings=n_rings,
         ring_width=ring_width,
+        phase_shift=phase_shift,
         target_indices=target_indices,
         intensity_target=intensity_target,
         intensity_rings=intensity_rings[::-1],
@@ -227,6 +238,7 @@ def bullseye(
     frequency=None,
     n_rings=None,
     ring_width=None,
+    phase_shift=0,
     intensity_target=0.5,
     intensity_rings=(1.0, 0.0),
     intensity_background=0.5,
@@ -265,6 +277,8 @@ def bullseye(
         number of rings
     ring_width : Number, or None (default)
         width of a single ring, in degrees
+    phase_shift : float
+        phase shift of grating in degrees
     intensity_target : float (optional)
         intensity value of target ring(s), by default 0.5
     intensity_rings : Sequence[Number, ...]
@@ -302,6 +316,7 @@ def bullseye(
         frequency=frequency,
         n_rings=n_rings,
         ring_width=ring_width,
+        phase_shift=phase_shift,
         intensity_rings=intensity_rings,
         intensity_background=intensity_background,
         intensity_target=intensity_target,
@@ -319,6 +334,7 @@ def two_sided_bullseye(
     frequency=None,
     n_rings=None,
     ring_width=None,
+    phase_shift=0,
     intensity_target=0.5,
     intensity_rings=(1.0, 0.0),
     intensity_background=0.5,
@@ -356,6 +372,8 @@ def two_sided_bullseye(
         number of rings
     ring_width : Number, or None (default)
         width of a single ring, in degrees
+    phase_shift : float
+        phase shift of grating in degrees
     intensity_target : float (optional)
         intensity value of target ring(s), by default 0.5
     intensity_rings : Sequence[Number, ...]
@@ -394,6 +412,7 @@ def two_sided_bullseye(
         frequency=frequency,
         n_rings=n_rings,
         ring_width=ring_width,
+        phase_shift=phase_shift,
         intensity_target=intensity_target,
         intensity_rings=intensity_rings,
         intensity_background=intensity_background,
@@ -407,6 +426,7 @@ def two_sided_bullseye(
         frequency=frequency,
         n_rings=n_rings,
         ring_width=ring_width,
+        phase_shift=phase_shift,
         intensity_target=intensity_target,
         intensity_rings=intensity_rings[::-1],
         intensity_background=intensity_background,
