@@ -23,6 +23,7 @@ kernelspec:
 ```{code-cell} ipython3
 :tags: [remove-cell]
 
+
 import IPython
 import ipywidgets as iw
 from stimupy.utils import plot_stim

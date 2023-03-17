@@ -69,18 +69,23 @@ def rings(
         if True, clip stimulus to image size (default: True)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Hong, S. W., and Shevell, S. K. (2004). Brightness contrast and assimilation from patterned
-        inducing backgrounds. Vision Research, 44, 35–43. https://doi.org/10.1016/j.visres.2003.07.010
-    Howe, P. D. L. (2005). White's effect: removing the junctions but preserving the
-        strength of the illusion. Perception, 34, 557–564. https://doi.org/10.1068/p5414
+    ----------
+    Hong, S. W., and Shevell, S. K. (2004).
+        Brightness contrast and assimilation from patterned inducing backgrounds.
+        Vision Research, 44, 35-43.
+        https://doi.org/10.1016/j.visres.2003.07.010
+    Howe, P. D. L. (2005).
+        White's effect:
+        removing the junctions but preserving the strength of the illusion.
+        Perception, 34, 557-564.
+        https://doi.org/10.1068/p5414
     """
 
     # Get stim
@@ -178,18 +183,23 @@ def two_sided_rings(
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Hong, S. W., and Shevell, S. K. (2004). Brightness contrast and assimilation from patterned
-        inducing backgrounds. Vision Research, 44, 35–43. https://doi.org/10.1016/j.visres.2003.07.010
-    Howe, P. D. L. (2005). White's effect: removing the junctions but preserving the
-        strength of the illusion. Perception, 34, 557–564. https://doi.org/10.1068/p5414
+    ----------
+    Hong, S. W., and Shevell, S. K. (2004).
+        Brightness contrast and assimilation from patterned inducing backgrounds.
+        Vision Research, 44, 35-43.
+        https://doi.org/10.1016/j.visres.2003.07.010
+    Howe, P. D. L. (2005).
+        White's effect:
+        removing the junctions but preserving the strength of the illusion.
+        Perception, 34, 557-564.
+        https://doi.org/10.1068/p5414
     """
 
     # Resolve resolution
@@ -294,20 +304,27 @@ def bullseye(
         if True, clip stimulus to image size (default: True)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Bindman, D., & Chubb, C. (2004). Brightness assimilation in Bullseye displays.
-        Vision Research, 44, 309–319. https://doi.org/10.1016/S0042-6989(03)00430-9
-    Hong, S. W., and Shevell, S. K. (2004). Brightness contrast and assimilation from patterned
-        inducing backgrounds. Vision Research, 44, 35–43. https://doi.org/10.1016/j.visres.2003.07.010
-    Howe, P. D. L. (2005). White's effect: removing the junctions but preserving the
-        strength of the illusion. Perception, 34, 557–564. https://doi.org/10.1068/p5414
+    ----------
+    Bindman, D., & Chubb, C. (2004).
+        Brightness assimilation in bullseye displays.
+        Vision Research, 44, 309-319.
+        https://doi.org/10.1016/S0042-6989(03)00430-9
+    Hong, S. W., and Shevell, S. K. (2004).
+        Brightness contrast and assimilation from patterned inducing backgrounds.
+        Vision Research, 44, 35-43.
+        https://doi.org/10.1016/j.visres.2003.07.010
+    Howe, P. D. L. (2005).
+        White's effect:
+        removing the junctions but preserving the strength of the illusion.
+        Perception, 34, 557-564.
+        https://doi.org/10.1068/p5414
     """
     stim = rings(
         visual_size=visual_size,
@@ -387,20 +404,27 @@ def two_sided_bullseye(
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Bindman, D., & Chubb, C. (2004). Brightness assimilation in Bullseye displays.
-        Vision Research, 44, 309–319. https://doi.org/10.1016/S0042-6989(03)00430-9
-    Hong, S. W., and Shevell, S. K. (2004). Brightness contrast and assimilation from patterned
-        inducing backgrounds. Vision Research, 44, 35–43. https://doi.org/10.1016/j.visres.2003.07.010
-    Howe, P. D. L. (2005). White's effect: removing the junctions but preserving the
-        strength of the illusion. Perception, 34, 557–564. https://doi.org/10.1068/p5414
+    ----------
+    Bindman, D., & Chubb, C. (2004).
+        Brightness assimilation in bullseye displays.
+        Vision Research, 44, 309-319.
+        https://doi.org/10.1016/S0042-6989(03)00430-9
+    Hong, S. W., and Shevell, S. K. (2004).
+        Brightness contrast and assimilation from patterned inducing backgrounds.
+        Vision Research, 44, 35-43.
+        https://doi.org/10.1016/j.visres.2003.07.010
+    Howe, P. D. L. (2005).
+        White's effect:
+        removing the junctions but preserving the strength of the illusion.
+        Perception, 34, 557-564.
+        https://doi.org/10.1068/p5414
     """
 
     # Resolve resolution

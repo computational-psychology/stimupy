@@ -126,7 +126,7 @@ def mask_rings(
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each ring (key: "ring_mask"),
@@ -191,7 +191,7 @@ def disc_and_rings(
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each ring (key: "ring_mask"),
@@ -269,7 +269,7 @@ def disc(
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each ring (key: "ring_mask"),
@@ -329,7 +329,7 @@ def ring(
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each ring (key: "ring_mask"),
@@ -480,7 +480,7 @@ def sine_wave(
         if True, clip stimulus to image size (default: False)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each ring (key: "ring_mask"),
@@ -579,7 +579,7 @@ def square_wave(
         if True, clip stimulus to image size (default: False)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each ring (key: "ring_mask"),

@@ -48,7 +48,7 @@ def checkerboard(
         if True, round width of bars given resolution (default: True)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each check (key: "checker_mask"),

@@ -25,9 +25,11 @@ __all__ (list of str): list of all stimulus-functions
 References
 -----------
 Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-    ... & Eckstein, M. P. (1999). Development of an image/threshold database
-    for designing and testing human vision models. Proceedings of SPIE, 3644,
-    542-551. https://doi.org/10.1117/12.348473
+    ... & Eckstein, M. P. (1999).
+    Development of an image/threshold database
+    for designing and testing human vision models.
+    Proceedings of SPIE, 3644, 542-551.
+    https://doi.org/10.1117/12.348473
 """
 
 from pathlib import Path
@@ -136,11 +138,13 @@ def GaborPatch1(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     params = {
@@ -183,11 +187,13 @@ def GaborPatch2(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     params = {
@@ -230,11 +236,13 @@ def GaborPatch3(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     params = {
@@ -277,11 +285,13 @@ def GaborPatch4(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     params = {
@@ -324,11 +334,13 @@ def GaborPatch5(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     params = {
@@ -371,11 +383,13 @@ def GaborPatch6(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     params = {
@@ -418,11 +432,13 @@ def GaborPatch7(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     params = {
@@ -465,11 +481,13 @@ def GaborPatch8(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     params = {
@@ -512,11 +530,13 @@ def GaborPatch9(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     params = {
@@ -559,11 +579,13 @@ def GaborPatch10(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     params = {
@@ -606,11 +628,13 @@ def GaborPatch11(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     params = {
@@ -653,11 +677,13 @@ def GaborPatch12(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     params = {
@@ -700,11 +726,13 @@ def GaborPatch13(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     params = {
@@ -747,11 +775,13 @@ def GaborPatch14(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     params = {
@@ -794,11 +824,13 @@ def ElongatedGabor15(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     params = {
@@ -841,11 +873,13 @@ def ElongatedGabor16(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     params = {
@@ -888,11 +922,13 @@ def ElongatedGabor17(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     params = {
@@ -935,11 +971,13 @@ def Baguette18(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     params = {
@@ -982,11 +1020,13 @@ def Baguette19(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     params = {
@@ -1029,11 +1069,13 @@ def Baguette20(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     params = {
@@ -1076,11 +1118,13 @@ def Baguette21(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     params = {
@@ -1123,11 +1167,13 @@ def Subthreshold22(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     params = {
@@ -1176,11 +1222,13 @@ def Subthreshold23(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     params = {
@@ -1229,11 +1277,13 @@ def Subthreshold24(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     params = {
@@ -1282,11 +1332,13 @@ def Subthreshold25(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     params = {
@@ -1334,11 +1386,13 @@ def Gaussians26(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     params = {
@@ -1379,11 +1433,13 @@ def Gaussians27(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     params = {
@@ -1424,11 +1480,13 @@ def Gaussians28(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     params = {
@@ -1469,11 +1527,13 @@ def Gaussians29(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     params = {
@@ -1514,11 +1574,13 @@ def Edge30(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     stim = gaussian_edge(visual_size=256 / PPD, ppd=ppd, rotation=90, sigma=0.5)
@@ -1551,11 +1613,13 @@ def Line31(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     stim = lines.line(
@@ -1601,11 +1665,13 @@ def Dipole32(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     stim = lines.dipole(
@@ -1652,11 +1718,13 @@ def GaborString33(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     params = {
@@ -1712,11 +1780,13 @@ def GaborString34(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     params = {
@@ -1772,11 +1842,13 @@ def Noise35_random(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     stim = binary_noise(visual_size=256 / PPD, ppd=ppd / 2, rms_contrast=1)
@@ -1805,11 +1877,13 @@ def Noise35(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
     # Read natural image from Modelfest
     img = read_tif(Path(__file__).parents[0] / "modelfest_noise.tif")
@@ -1853,11 +1927,13 @@ def Orientation36(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     params = {
@@ -1901,11 +1977,13 @@ def Orientation37(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     params = {
@@ -1949,11 +2027,13 @@ def Plaids38(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     params = {
@@ -2001,11 +2081,13 @@ def Plaids39(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     params = {
@@ -2051,11 +2133,13 @@ def Disk40(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     stim = shapes.disc(visual_size=256 / PPD, ppd=ppd, radius=0.125, origin="center")
@@ -2089,11 +2173,13 @@ def Bessel41(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     stim = bessel(visual_size=256 / PPD, ppd=ppd, frequency=4, origin="center")
@@ -2134,11 +2220,13 @@ def Checkerboard42(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
     params = {
         "visual_size": 256 / PPD,
@@ -2182,11 +2270,13 @@ def NaturalScene43(ppd=PPD):
         stimulus parameters
 
     References
-    -----------
+    ----------
     Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D.,
-        ... & Eckstein, M. P. (1999). Development of an image/threshold database
-        for designing and testing human vision models. Proceedings of SPIE, 3644,
-        542-551. https://doi.org/10.1117/12.348473
+        ... & Eckstein, M. P. (1999).
+        Development of an image/threshold database
+        for designing and testing human vision models.
+        Proceedings of SPIE, 3644, 542-551.
+        https://doi.org/10.1117/12.348473
     """
 
     # Read natural image from Modelfest

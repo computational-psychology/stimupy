@@ -17,8 +17,8 @@ def cornsweet(
     intensity_plateau=0.5,
     exponent=2.75,
 ):
-    """
-    Create a matrix containing a rectangular Cornsweet edge stimulus.
+    """Draw rectangular Cornsweet edge stimulus.
+
     The 2D luminance profile of the stimulus is defined as
     Left side:
     v = vtarget + (1 - X / w) ** a * (intensity_max-vtarget) for the ramp and v = vtarget beyond.
@@ -48,7 +48,7 @@ def cornsweet(
         determines steepness of ramp (default is 2.75. 1 would be linear)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
@@ -56,10 +56,12 @@ def cornsweet(
 
     References
     ----------
-    Boyaci, H., Fang, F., Murray, S.O., Kersten, D. (2007). Responses to lightness
-        variations in early human visual cortex. Current Biology 17, 989-993.
+    Boyaci, H., Fang, F., Murray, S.O., Kersten, D. (2007).
+        Responses to lightness variations in early human visual cortex.
+        Current Biology 17, 989-993.
         https://doi.org/10.1016/j.cub.2007.05.005
-    Cornsweet, T. (1970). Visual perception. Academic press.
+    Cornsweet, T. (1970).
+        Visual perception. Academic press.
         https://doi.org/10.1016/B978-0-12-189750-5.X5001-5
     """
 

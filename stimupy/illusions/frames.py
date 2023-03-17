@@ -66,7 +66,7 @@ def rings(
         if True, clip stimulus to image size (default: True)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
@@ -74,9 +74,11 @@ def rings(
 
     References
     ----------
-    Domijan, D. (2015). A neurocomputational account of the role of contour
-        facilitation in brightness perception. Frontiers in Human Neuroscience,
-        9, 93. https://doi.org/10.3389/fnhum.2015.00093
+    Domijan, D. (2015).
+        A neurocomputational account
+        of the role of contour facilitation in brightness perception.
+        Frontiers in Human Neuroscience, 9, 93.
+        https://doi.org/10.3389/fnhum.2015.00093
     """
 
     # Frames component
@@ -162,7 +164,7 @@ def two_sided_rings(
         If fewer intensities are passed than target_indices, cycles through intensities
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
@@ -170,9 +172,11 @@ def two_sided_rings(
 
     References
     ----------
-    Domijan, D. (2015). A neurocomputational account of the role of contour
-        facilitation in brightness perception. Frontiers in Human Neuroscience,
-        9, 93. https://doi.org/10.3389/fnhum.2015.00093
+    Domijan, D. (2015).
+        A neurocomputational account
+        of the role of contour facilitation in brightness perception.
+        Frontiers in Human Neuroscience, 9, 93.
+        https://doi.org/10.3389/fnhum.2015.00093
     """
 
     # Resolve resolution
@@ -247,7 +251,7 @@ def rings_generalized(
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each frame (key: "target_mask"),
@@ -340,16 +344,18 @@ def bullseye(
         if True, clip stimulus to image size (default: True)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Bindman, D., & Chubb, C. (2004). Brightness assimilation in Bullseye displays.
-        Vision Research, 44, 309–319. https://doi.org/10.1016/S0042-6989(03)00430-9
+    ----------
+    Bindman, D., & Chubb, C. (2004).
+        Brightness assimilation in bullseye displays.
+        Vision Research, 44, 309-319.
+        https://doi.org/10.1016/S0042-6989(03)00430-9
     """
 
     stim = rings(
@@ -407,7 +413,7 @@ def bullseye_generalized(
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each frame (key: "target_mask"),
@@ -472,16 +478,18 @@ def two_sided_bullseye(
         intensity value of background, by default 0.5
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Bindman, D., & Chubb, C. (2004). Brightness assimilation in Bullseye displays.
-        Vision Research, 44, 309–319. https://doi.org/10.1016/S0042-6989(03)00430-9
+    ----------
+        Bindman, D., & Chubb, C. (2004).
+        Brightness assimilation in bullseye displays.
+        Vision Research, 44, 309-319.
+        https://doi.org/10.1016/S0042-6989(03)00430-9
     """
 
     # Resolve resolution

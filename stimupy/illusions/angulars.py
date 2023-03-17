@@ -27,8 +27,7 @@ def pinwheel(
     intensity_target=0.5,
     origin="mean",
 ):
-    """
-    Pinwheel or radial White stimulus
+    """Pinwheel / radial White stimulus
 
     Parameters
     ----------
@@ -74,7 +73,7 @@ def pinwheel(
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
@@ -82,9 +81,11 @@ def pinwheel(
 
     References
     ----------
-    Robinson, A. E., Hammon, P. S., & de Sa, V. R. (2007). Explaining brightness
-        illusions using spatial filtering and local response normalization. Vision
-        research, 47(12), 1631-1644. https://doi.org/10.1016/j.visres.2007.02.017
+    Robinson, A. E., Hammon, P. S., & de Sa, V. R. (2007).
+        Explaining brightness illusions
+        using spatial filtering and local response normalization.
+        Vision Research, 47(12), 1631-1644.
+        https://doi.org/10.1016/j.visres.2007.02.017
     """
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)

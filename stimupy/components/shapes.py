@@ -52,7 +52,7 @@ def rectangle(
         orientation of rectangle in degrees visual angle (default 0)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for the shape (key: "shape_mask"),
@@ -167,7 +167,7 @@ def triangle(
         orientation of triangle in degrees visual angle (default 0)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for the shape (key: "shape_mask"),
@@ -259,7 +259,7 @@ def cross(
         orientation of triangle in degrees visual angle (default 0)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for the shape (key: "shape_mask"),
@@ -361,7 +361,7 @@ def parallelogram(
         orientation of triangle in degrees visual angle (default 0)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for the shape (key: "shape_mask"),
@@ -481,7 +481,7 @@ def ellipse(
         if False, allow ellipse to reach beyond image size (default: True)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for the shape (key: "shape_mask"),

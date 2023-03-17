@@ -7,6 +7,23 @@ from stimupy.utils import int_factorize, resolution
 from stimupy.utils.contrast_conversions import adapt_intensity_range
 from stimupy.utils.utils import round_to_vals
 
+__all__ = [
+    "image_base",
+    "draw_regions",
+    "mask_elements",
+    "overview",
+    "angulars",
+    "checkerboards",
+    "circulars",
+    "edges",
+    "frames",
+    "gaussians",
+    "gratings",
+    "lines",
+    "mondrians",
+    "shapes",
+]
+
 
 def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin="mean"):
     """Create coordinate-arrays to serve as image base for drawing
@@ -130,7 +147,7 @@ def mask_elements(
         If None, set to center of visual_size
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         mask with integer index for each angular segment (key: "mask"),
         and additional keys containing stimulus parameters

@@ -18,8 +18,7 @@ def dungeon(
     intensity_grid=1.0,
     intensity_target=0.5,
 ):
-    """
-    Dungeon stimulus (Bressan, 2001) with diamond target.
+    """Dungeon stimulus (Bressan, 2001) with diamond target.
 
     Parameters
     ----------
@@ -43,19 +42,23 @@ def dungeon(
         intensity value for target
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Bressan, P. (2001). Explaining lightness illusions. Perception, 30(9), 1031–1046.
+    ----------
+    Bressan, P. (2001).
+        Explaining lightness illusions.
+        Perception, 30(9), 1031-1046.
         https://doi.org/10.1068/p3109
-    Domijan, D. (2015). A neurocomputational account of the role of contour
-        facilitation in brightness perception. Frontiers in Human Neuroscience,
-        9, 93. https://doi.org/10.3389/fnhum.2015.00093
+    Domijan, D. (2015).
+        A neurocomputational account
+        of the role of contour facilitation in brightness perception.
+        Frontiers in Human Neuroscience, 9, 93.
+        https://doi.org/10.3389/fnhum.2015.00093
     """
 
     if isinstance(visual_size, (float, int)) or (visual_size is None):

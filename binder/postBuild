@@ -1,0 +1,10 @@
+#!/bin/bash
+set -e  # don't allow errors to fail silently
+echo `which pip`  # in case the wrong `pip` is used, this will let us debug
+
+# See https://github.com/mwouts/jupytext/issues/803#issuecomment-982170660
+mkdir -p ${HOME}/.jupyter/labconfig
+cp binder/labconfig/* ${HOME}/.jupyter/labconfig
+
+# Install stimupy
+pip install -e .

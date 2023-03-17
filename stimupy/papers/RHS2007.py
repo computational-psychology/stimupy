@@ -22,10 +22,12 @@ __all__ (list of str): list of all stimulus-functions
         >>> from stimupy.papers.RHS2007 import *
 
 References
------------
-Robinson, A. E., Hammon, P. S., & de Sa, V. R. (2007). Explaining brightness
-illusions using spatial filtering and local response normalization. Vision
-research, 47(12), 1631-1644. https://doi.org/10.1016/j.visres.2007.02.017
+----------
+Robinson, A. E., Hammon, P. S., & de Sa, V. R. (2007).
+    Explaining brightness illusions
+    using spatial filtering and local response normalization.
+    Vision Research, 47(12), 1631-1644.
+    https://doi.org/10.1016/j.visres.2007.02.017
 """
 
 import numpy as np
@@ -121,11 +123,14 @@ def WE_thick(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Blakeslee, B., & McCourt, M. E. (1999). A multiscale spatial ﬁltering account of the
-        White eﬀect, simultaneous brightness contrast and grating induction. Vision
-        Research, 39, 4361–4377.
-    White, M. (1979). A new eﬀect of pattern on perceived lightness. Perception, 8, 413–416.
+    ----------
+    Blakeslee, B., & McCourt, M. E. (1999).
+        A multiscale spatial ﬁltering account
+        of the White eﬀect, simultaneous brightness contrast and grating induction.
+        Vision Research, 39, 4361-4377.
+    White, M. (1979).
+        A new eﬀect of pattern on perceived lightness.
+        Perception, 8, 413-416.
     """
 
     height, width = 12.0, 16.0
@@ -180,11 +185,13 @@ def WE_thin_wide(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Blakeslee, B., & McCourt, M. E. (1999). A multiscale spatial ﬁltering account of the
-        White eﬀect, simultaneous brightness contrast and grating induction. Vision
-        Research, 39, 4361–4377.
-    White, M. (1979). A new eﬀect of pattern on perceived lightness. Perception, 8, 413–416.
+    ----------
+    Blakeslee, B., & McCourt, M. E. (1999).
+        A multiscale spatial ﬁltering account
+        of the White eﬀect, simultaneous brightness contrast and grating induction.
+        Vision Research, 39, 4361-4377.
+    White, M. (1979).
+        A new eﬀect of pattern on perceived lightness. Perception, 8, 413-416.
     """
 
     height, width = 12.0, 16.0
@@ -299,12 +306,14 @@ def WE_anderson(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Anderson, B. L. (2001). Contrasting theories of White’s illusion. Perception, 30, 1499–1501
-    Blakeslee, B., Pasieka, W., & McCourt, M. E. (2005). Oriented multiscale spatial ﬁltering
-        and contrast normalization: a parsimonious model of brightness induction in a continuum
-        of stimuli including White, Howe and simultaneous brightness contrast. Vision Research,
-        45, 607–615.
+    ----------
+    Anderson, B. L. (2001).
+        Contrasting theories of White's illusion. Perception, 30, 1499-1501
+    Blakeslee, B., Pasieka, W., & McCourt, M. E. (2005).
+        Oriented multiscale spatial ﬁltering and contrast normalization:
+        a parsimonious model of brightness induction in a continuum of stimuli
+        including White, Howe and simultaneous brightness contrast.
+        Vision Research, 45, 607-615.
     """
 
     height, width = 16.0, 16.0
@@ -364,13 +373,16 @@ def WE_howe(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Blakeslee, B., Pasieka, W., & McCourt, M. E. (2005). Oriented multiscale spatial ﬁltering
-        and contrast normalization: a parsimonious model of brightness induction in a continuum
-        of stimuli including White, Howe and simultaneous brightness contrast. Vision Research,
-        45, 607–615.
-    Howe, P. D. L. (2001). A comment on the Anderson (1997), the Todorovic (1997), and the Ross
-        and Pessoa (2000) explanations of White’s eﬀect. Perception, 30, 1023–1026
+    ----------
+    Blakeslee, B., Pasieka, W., & McCourt, M. E. (2005).
+        Oriented multiscale spatial ﬁltering and contrast normalization:
+        a parsimonious model of brightness induction in a continuum
+        of stimuli including White, Howe and simultaneous brightness contrast.
+        Vision Research, 45, 607-615.
+    Howe, P. D. L. (2001).
+        A comment on the Anderson (1997), the Todorovic (1997),
+        and the Ross and Pessoa (2000) explanations of White's eﬀect.
+        Perception, 30, 1023-1026
     """
 
     height, width = 16.0, 16.0
@@ -425,9 +437,10 @@ def WE_zigzag(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Clifford, C. W. G., & Spehar, B. (2003). Using colour to disambiguate contrast and
-        assimilation in White’s effect. Journal of Vision, 3, 294a.
+    ----------
+    Clifford, C. W. G., & Spehar, B. (2003).
+        Using colour to disambiguate contrast and assimilation in White's effect.
+        Journal of Vision, 3, 294a.
         https://doi.org/10.1167/3.9.294
     """
 
@@ -468,8 +481,10 @@ def WE_radial_thick_small(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Anstis, S. (2003). White’s eﬀect in brightness & color. Online Demonstration
+    ----------
+    Anstis, S. (2003).
+        White's eﬀect in brightness & color.
+        Online Demonstration
     """
 
     n_segments = 14
@@ -521,8 +536,10 @@ def WE_radial_thick(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Anstis, S. (2003). White’s eﬀect in brightness & color. Online Demonstration
+    ----------
+    Anstis, S. (2003).
+        White's eﬀect in brightness & color.
+        Online Demonstration
     """
 
     n_segments = 18
@@ -574,8 +591,10 @@ def WE_radial_thin_small(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Anstis, S. (2003). White’s eﬀect in brightness & color. Online Demonstration
+    ----------
+    Anstis, S. (2003).
+        White's eﬀect in brightness & color.
+        Online Demonstration
     """
 
     n_segments = 26
@@ -627,8 +646,10 @@ def WE_radial_thin(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Anstis, S. (2003). White’s eﬀect in brightness & color. Online Demonstration
+    ----------
+    Anstis, S. (2003).
+        White's eﬀect in brightness & color.
+        Online Demonstration
     """
 
     n_segments = 42
@@ -680,9 +701,11 @@ def WE_circular1(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Howe, P. D. L. (2005). White’s eﬀect: removing the junctions but preserving the strength
-        of the illusion. Perception, 34, 557–564.
+    ----------
+    Howe, P. D. L. (2005).
+        White's eﬀect:
+        removing the junctions but preserving the strength of the illusion.
+        Perception, 34, 557-564.
     """
 
     height, width = 16.0, 16.0
@@ -738,9 +761,11 @@ def WE_circular05(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Howe, P. D. L. (2005). White’s eﬀect: removing the junctions but preserving the strength
-        of the illusion. Perception, 34, 557–564.
+    ----------
+    Howe, P. D. L. (2005).
+        White's eﬀect:
+        removing the junctions but preserving the strength of the illusion.
+        Perception, 34, 557-564.
     """
 
     height, width = 16.0, 16.0
@@ -796,9 +821,11 @@ def WE_circular025(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Howe, P. D. L. (2005). White’s eﬀect: removing the junctions but preserving the strength
-        of the illusion. Perception, 34, 557–564.
+    ----------
+    Howe, P. D. L. (2005).
+        White's eﬀect:
+        removing the junctions but preserving the strength of the illusion.
+        Perception, 34, 557-564.
     """
 
     height, width = 16.0, 16.0
@@ -854,12 +881,15 @@ def grating_induction(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Blakeslee, B., & McCourt, M. E. (1999). A multiscale spatial ﬁltering account of the
-        White eﬀect, simultaneous brightness contrast and grating induction. Vision
-        Research, 39, 4361–4377.
-    McCourt, M. E. (1982). A spatial frequency dependent grating-induction effect. Vision
-        Research, 22, 119–134.
+    ----------
+    Blakeslee, B., & McCourt, M. E. (1999).
+        A multiscale spatial ﬁltering account
+        of the White eﬀect, simultaneous brightness contrast and grating induction.
+        Vision Research, 39, 4361-4377.
+    McCourt, M. E. (1982).
+        A spatial frequency dependent grating-induction effect.
+        Vision Research, 22, 119-134.
+        https://doi.org/10.1016/0042-6989(82)90173-0
     """
 
     height, width = 12.0, 16.0
@@ -915,10 +945,11 @@ def sbc_large(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Blakeslee, B., & McCourt, M. E. (1999). A multiscale spatial ﬁltering account of the
-        White eﬀect, simultaneous brightness contrast and grating induction. Vision
-        Research, 39, 4361–4377.
+    ----------
+    Blakeslee, B., & McCourt, M. E. (1999).
+        A multiscale spatial ﬁltering account
+        of the White eﬀect, simultaneous brightness contrast and grating induction.
+        Vision Research, 39, 4361-4377.
     """
 
     params = {
@@ -974,10 +1005,11 @@ def sbc_small(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Blakeslee, B., & McCourt, M. E. (1999). A multiscale spatial ﬁltering account of the
-        White eﬀect, simultaneous brightness contrast and grating induction. Vision
-        Research, 39, 4361–4377.
+    ----------
+    Blakeslee, B., & McCourt, M. E. (1999).
+        A multiscale spatial ﬁltering account
+        of the White eﬀect, simultaneous brightness contrast and grating induction.
+        Vision Research, 39, 4361-4377.
     """
 
     params = {
@@ -1033,13 +1065,14 @@ def todorovic_equal(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Blakeslee, B., & McCourt, M. E. (1999). A multiscale spatial ﬁltering account of the
-        White eﬀect, simultaneous brightness contrast and grating induction. Vision
-        Research, 39, 4361–4377.
-    Pessoa, L., Baratoff, G., Neumann, H., & Todorovic, D. (1998). Lightness and junctions:
-        variations on White’s display. Investigative Ophthalmology and Visual Science
-        (Supplement), 39, S159.
+    ----------
+    Blakeslee, B., & McCourt, M. E. (1999).
+        A multiscale spatial ﬁltering account
+        of the White eﬀect, simultaneous brightness contrast and grating induction.
+        Vision Research, 39, 4361-4377.
+    Pessoa, L., Baratoff, G., Neumann, H., & Todorovic, D. (1998).
+        Lightness and junctions: variations on White's display.
+        Investigative Ophthalmology and Visual Science (Supplement), 39, S159.
     """
 
     params = {
@@ -1098,11 +1131,14 @@ def todorovic_in_large(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Blakeslee, B., & McCourt, M. E. (1999). A multiscale spatial ﬁltering account of the
-        White eﬀect, simultaneous brightness contrast and grating induction. Vision
-        Research, 39, 4361–4377.
-    Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
+    ----------
+    Blakeslee, B., & McCourt, M. E. (1999).
+        A multiscale spatial ﬁltering account
+        of the White eﬀect, simultaneous brightness contrast and grating induction.
+        Vision Research, 39, 4361-4377.
+    Todorovic, D. (1997).
+        Lightness and junctions.
+        Perception, 26, 379-395.
     """
 
     params = {
@@ -1161,11 +1197,14 @@ def todorovic_in_small(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Blakeslee, B., & McCourt, M. E. (1999). A multiscale spatial ﬁltering account of the
-        White eﬀect, simultaneous brightness contrast and grating induction. Vision
-        Research, 39, 4361–4377.
-    Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
+    ----------
+    Blakeslee, B., & McCourt, M. E. (1999).
+        A multiscale spatial ﬁltering account
+        of the White eﬀect, simultaneous brightness contrast and grating induction.
+        Vision Research, 39, 4361-4377.
+    Todorovic, D. (1997).
+        Lightness and junctions.
+        Perception, 26, 379-395.
     """
 
     params = {
@@ -1208,8 +1247,9 @@ def todorovic_in_small(ppd=PPD, pad=True):
 def todorovic_out(ppd=PPD, pad=True):
     """Todorovic stimulus - out as shown in Robinson, Hammon, & de Sa (2007) Fig 1t.
     Stimulus size: 13x31 deg
-    Target size: 9.4x9.4 deg (note: in RHS2007, it says 8.7x8.7 deg, however that does not
-                              match with Fig 1t)
+    Target size: 9.4x9.4 deg
+
+    (note: in RHS2007, it says 8.7x8.7 deg, however that does not match with Fig 1t)
 
     Parameters
     ----------
@@ -1225,13 +1265,14 @@ def todorovic_out(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Blakeslee, B., & McCourt, M. E. (1999). A multiscale spatial ﬁltering account of the
-        White eﬀect, simultaneous brightness contrast and grating induction. Vision
-        Research, 39, 4361–4377.
-    Pessoa, L., Baratoff, G., Neumann, H., & Todorovic, D. (1998). Lightness and junctions:
-        variations on White’s display. Investigative Ophthalmology and Visual Science
-        (Supplement), 39, S159.
+    ----------
+    Blakeslee, B., & McCourt, M. E. (1999).
+        A multiscale spatial ﬁltering account
+        of the White eﬀect, simultaneous brightness contrast and grating induction.
+        Vision Research, 39, 4361-4377.
+    Pessoa, L., Baratoff, G., Neumann, H., & Todorovic, D. (1998).
+        Lightness and junctions: variations on White's display.
+        Investigative Ophthalmology and Visual Science (Supplement), 39, S159.
     """
 
     params = {
@@ -1290,11 +1331,14 @@ def checkerboard_016(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Blakeslee, B., & McCourt, M. E. (2004). A uniﬁed theory of brightness contrast and
-        assimilation incorporating oriented multi-scale spatial ﬁltering and contrast
-        normalization. Vision Research, 44, 2483–2503.
-    DeValois, R. L., & DeValois, K. K. (1988). Spatial vision. New York: Oxford University Press.
+    ----------
+    Blakeslee, B., & McCourt, M. E. (2004).
+        A uniﬁed theory of brightness contrast and assimilation
+        incorporating oriented multi-scale spatial ﬁltering and contrast normalization.
+        Vision Research, 44, 2483-2503.
+    DeValois, R. L., & DeValois, K. K. (1988).
+        Spatial vision.
+        New York: Oxford University Press.
     """
 
     nchecks_height, nchecks_width = 40, 102
@@ -1345,11 +1389,14 @@ def checkerboard_094(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Blakeslee, B., & McCourt, M. E. (2004). A uniﬁed theory of brightness contrast and
-        assimilation incorporating oriented multi-scale spatial ﬁltering and contrast
-        normalization. Vision Research, 44, 2483–2503.
-    DeValois, R. L., & DeValois, K. K. (1988). Spatial vision. New York: Oxford University Press.
+    ----------
+    Blakeslee, B., & McCourt, M. E. (2004).
+        A uniﬁed theory of brightness contrast and assimilation
+        incorporating oriented multi-scale spatial ﬁltering and contrast normalization.
+        Vision Research, 44, 2483-2503.
+    DeValois, R. L., & DeValois, K. K. (1988).
+        Spatial vision.
+        New York: Oxford University Press.
     """
 
     nchecks_height, nchecks_width = 7, 25
@@ -1400,11 +1447,14 @@ def checkerboard_21(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Blakeslee, B., & McCourt, M. E. (2004). A uniﬁed theory of brightness contrast and
-        assimilation incorporating oriented multi-scale spatial ﬁltering and contrast
-        normalization. Vision Research, 44, 2483–2503.
-    DeValois, R. L., & DeValois, K. K. (1988). Spatial vision. New York: Oxford University Press.
+    ----------
+    Blakeslee, B., & McCourt, M. E. (2004).
+        A uniﬁed theory of brightness contrast and assimilation
+        incorporating oriented multi-scale spatial ﬁltering and contrast normalization.
+        Vision Research, 44, 2483-2503.
+    DeValois, R. L., & DeValois, K. K. (1988).
+        Spatial vision.
+        New York: Oxford University Press.
     """
 
     nchecks_height, nchecks_width = 3, 10
@@ -1453,11 +1503,15 @@ def corrugated_mondrian(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Blakeslee, B., & McCourt, M. E. (2001). A multiscale spatial filtering account of the
-        Wertheimer-Benary effect and the corrugated Mondrian. Vision Research, 41, 2487–2502.
-    Adelson, E. H. (1993). Perceptual organization and the judgment of brightness. Science,
-        262, 2042–2044.
+    ----------
+    Blakeslee, B., & McCourt, M. E. (2001).
+        A multiscale spatial filtering account
+        of the Wertheimer-Benary effect and the corrugated Mondrian.
+        Vision Research, 41, 2487-2502.
+    Adelson, E. H. (1993).
+        Perceptual organization and the judgment of brightness.
+        Science, 262, 2042-2044.
+        https://doi.org/10.1126/science.8266102
     """
 
     v1, v2, v3, v4 = 0.0, 0.4, 0.75, 1.0
@@ -1512,11 +1566,15 @@ def benary_cross(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Blakeslee, B., & McCourt, M. E. (2001). A multiscale spatial filtering account of the
-        Wertheimer-Benary effect and the corrugated Mondrian. Vision Research, 41, 2487–2502.
-    Benary, W. (1924). Beobachtungen zu einem Experiment über Helligkeitskontrast.
-        Psychologische Forschung, 5, 131–142.
+    ----------
+    Blakeslee, B., & McCourt, M. E. (2001).
+        A multiscale spatial filtering account
+        of the Wertheimer-Benary effect and the corrugated Mondrian.
+        Vision Research, 41, 2487-2502.
+    Benary, W. (1924).
+        Beobachtungen zu einem Experiment über Helligkeitskontrast.
+        Psychologische Forschung, 5, 131-142.
+        https://doi.org/10.1007/BF00402398
     """
 
     params = {
@@ -1574,10 +1632,14 @@ def todorovic_benary1_2(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Blakeslee, B., & McCourt, M. E. (2001). A multiscale spatial filtering account of the
-        Wertheimer-Benary effect and the corrugated Mondrian. Vision Research, 41, 2487–2502.
-    Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
+    ----------
+    Blakeslee, B., & McCourt, M. E. (2001).
+        A multiscale spatial filtering account
+        of the Wertheimer-Benary effect and the corrugated Mondrian.
+        Vision Research, 41, 2487-2502.
+    Todorovic, D. (1997).
+        Lightness and junctions.
+        Perception, 26, 379-395.
     """
 
     params = {
@@ -1632,10 +1694,14 @@ def todorovic_benary3_4(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Blakeslee, B., & McCourt, M. E. (2001). A multiscale spatial filtering account of the
-        Wertheimer-Benary effect and the corrugated Mondrian. Vision Research, 41, 2487–2502.
-    Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
+    ----------
+    Blakeslee, B., & McCourt, M. E. (2001).
+        A multiscale spatial filtering account
+        of the Wertheimer-Benary effect and the corrugated Mondrian.
+        Vision Research, 41, 2487-2502.
+    Todorovic, D. (1997).
+        Lightness and junctions.
+        Perception, 26, 379-395.
     """
 
     params = {
@@ -1690,10 +1756,14 @@ def todorovic_benary1_2_3_4(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Blakeslee, B., & McCourt, M. E. (2001). A multiscale spatial filtering account of the
-        Wertheimer-Benary effect and the corrugated Mondrian. Vision Research, 41, 2487–2502.
-    Todorovic, D. (1997). Lightness and junctions. Perception, 26, 379–395.
+    ----------
+    Blakeslee, B., & McCourt, M. E. (2001).
+        A multiscale spatial filtering account
+        of the Wertheimer-Benary effect and the corrugated Mondrian.
+        Vision Research, 41, 2487-2502.
+    Todorovic, D. (1997).
+        Lightness and junctions.
+        Perception, 26, 379-395.
     """
 
     params = {
@@ -1744,9 +1814,11 @@ def bullseye_thin(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Bindman, D., & Chubb, C. (2004). Brightness assimilation in bullseye displays. Vision
-        Research, 44, 309–319.
+    ----------
+    Bindman, D., & Chubb, C. (2004).
+        Brightness assimilation in bullseye displays.
+        Vision Research, 44, 309-319.
+        https://doi.org/10.1016/S0042-6989(03)00430-9
     """
 
     radii = np.array([0.304, 0.426, 0.548, 0.670, 0.792])
@@ -1804,9 +1876,11 @@ def bullseye_thick(ppd=PPD, pad=True):
         and additional keys containing stimulus parameters
 
     References
-    -----------
-    Bindman, D., & Chubb, C. (2004). Brightness assimilation in bullseye displays. Vision
-        Research, 44, 309–319.
+    ----------
+    Bindman, D., & Chubb, C. (2004).
+        Brightness assimilation in bullseye displays.
+        Vision Research, 44, 309-319.
+        https://doi.org/10.1016/S0042-6989(03)00430-9
     """
     radii = np.array([0.304, 0.547, 0.790, 1.033, 1.276])
 

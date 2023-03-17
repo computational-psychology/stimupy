@@ -37,7 +37,7 @@ def mask_frames(
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         mask with integer index for each frame (key: "frame_mask"),
         and additional keys containing stimulus parameters
@@ -89,7 +89,7 @@ def frames(
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each frame (key: "frame_mask"),
@@ -164,7 +164,7 @@ def sine_wave(
         if True, clip stimulus to image size (default: False)
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each frame (key: "frame_mask"),

@@ -23,8 +23,7 @@ def mueller_lyer(
     intensity_target=0.5,
     intensity_background=0.0,
 ):
-    """
-    Mueller-Lyer illusion
+    """Mueller-Lyer's (1896) illusion
 
     Parameters
     ----------
@@ -50,7 +49,7 @@ def mueller_lyer(
         intensity value of background
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
@@ -58,9 +57,10 @@ def mueller_lyer(
 
     References
     ----------
-    Mueller-Lyer, F. (1896). Zur Lehre von den optischen Taeuschungen. Ueber
-        Kontrast und Konfluxion. Zeitschrift fuer Psychologie und Physiologie
-        der Sinnesorgane, IX, 1-16.
+    Mueller-Lyer, F. (1896).
+        Zur Lehre von den optischen Taeuschungen.
+        Ueber Kontrast und Konfluxion.
+        Zeitschrift fuer Psychologie und Physiologie der Sinnesorgane, IX, 1-16.
     """
     if outer_lines_length is None:
         raise ValueError(
@@ -179,8 +179,7 @@ def two_sided(
     intensity_target=0.5,
     intensity_background=0.0,
 ):
-    """
-    Mueller-Lyer illusion
+    """Two-sided Mueller-Lyer's (1896) illusion
 
     Parameters
     ----------
@@ -206,7 +205,7 @@ def two_sided(
         intensity value of background
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
@@ -214,9 +213,10 @@ def two_sided(
 
     References
     ----------
-    Mueller-Lyer, F. (1896). Zur Lehre von den optischen Taeuschungen. Ueber
-        Kontrast und Konfluxion. Zeitschrift fuer Psychologie und Physiologie
-        der Sinnesorgane, IX, 1-16.
+    Mueller-Lyer, F. (1896).
+        Zur Lehre von den optischen Taeuschungen.
+        Ueber Kontrast und Konfluxion.
+        Zeitschrift fuer Psychologie und Physiologie der Sinnesorgane, IX, 1-16.
     """
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
