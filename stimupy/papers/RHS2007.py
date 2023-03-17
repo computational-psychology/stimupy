@@ -439,7 +439,7 @@ def WE_zigzag(ppd=PPD, pad=True):
         target_height=2.0,
         target_indices1=((i1, -1), (i1, 0), (i1, 1), (i1, 2)),
         target_indices2=((i2, 0), (i2, 1), (i2, 2), (i2, 3)),
-        intensity_grating=(1.0, 0.0),
+        intensity_bars=(1.0, 0.0),
         intensity_target=0.5,
     )
 

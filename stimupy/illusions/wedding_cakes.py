@@ -7,8 +7,6 @@ __all__ = [
     "wedding_cake",
 ]
 
-# TODO: constrain allowed stimulus sizes
-
 
 def wedding_cake(
     visual_size=None,
@@ -18,7 +16,7 @@ def wedding_cake(
     target_height=None,
     target_indices1=None,
     target_indices2=None,
-    intensity_grating=(1.0, 0.0),
+    intensity_bars=(1.0, 0.0),
     intensity_target=0.5,
 ):
     """
@@ -42,8 +40,8 @@ def wedding_cake(
     target_indices2 : nested tuples
         target indices with intensity2-value; as many tuples as there are targets
         each with (y, x) indices
-    intensity_grating : (float, float)
-        intensity values of the grating
+    intensity_bars : (float, float)
+        intensity values of the bars
     intensity_target : float
         intensity value of targets
 
@@ -67,10 +65,16 @@ def wedding_cake(
     shape, visual_size, ppd_ = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
     if len(np.unique(ppd)) > 1:
         raise ValueError("ppd should be equal in x and y direction")
+    if visual_size[1] < visual_size[0] * 0.75 or visual_size[1] > visual_size[0] * 1.25:
+        raise ValueError(
+            "wedding_cake not available for images with very different heights+widths"
+        )
 
     nY, nX = shape
     Ly, Lx, Lw = resolution.lengths_from_visual_angles_ppd(L_size, np.unique(ppd))
     Lyh, Lxh = int(Ly / 2) + 1, int(Lx / 2) + 1
+    if Lw > Ly / 2:
+        raise ValueError("L-thickness should not exceed L_height / 2")
 
     # Create L-shaped patch
     L_patch = np.zeros([Ly, Lx])
@@ -100,7 +104,7 @@ def wedding_cake(
         theight = resolution.lengths_from_visual_angles_ppd(target_height, np.unique(ppd))
         tpatch1 = np.zeros(L_patch.shape)
         tpatch1[int(Ly / 2 - theight / 2) : int(Ly / 2 + theight / 2), Lx - Lw : :] = (
-            -intensity_grating[1] + intensity_target
+            -intensity_bars[1] + intensity_target
         )
 
         array_t1 = np.zeros(array3.shape)
@@ -123,7 +127,7 @@ def wedding_cake(
         theight = resolution.lengths_from_visual_angles_ppd(target_height, np.unique(ppd))
         tpatch2 = np.zeros(L_patch.shape)
         tpatch2[int(Ly / 2 - theight / 2) : int(Ly / 2 + theight / 2), Lx - Lw : :] = (
-            -intensity_grating[0] + intensity_target
+            -intensity_bars[0] + intensity_target
         )
 
         array_t2 = np.zeros(array3.shape)
@@ -145,8 +149,8 @@ def wedding_cake(
     imgt = convolve(array3, L_patch, "same")
     imgt = np.round(imgt)
     img = np.copy(imgt)
-    img[imgt > 1] = intensity_grating[1]
-    img[imgt < 1] = intensity_grating[0]
+    img[imgt > 1] = intensity_bars[1]
+    img[imgt < 1] = intensity_bars[0]
     img = img[Lyh : Lyh + int(nY / 2), Lxh : Lxh + int(nX / 2)]
 
     # Create target mask
@@ -165,7 +169,7 @@ def wedding_cake(
         "ppd": ppd,
         "L_size": L_size,
         "target_height": target_height,
-        "intensity_grating": intensity_grating,
+        "intensity_bars": intensity_bars,
         "intensity_target": intensity_target,
         "target_indices1": target_indices1,
         "target_indices2": target_indices2,
