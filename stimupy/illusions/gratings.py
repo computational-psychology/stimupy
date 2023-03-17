@@ -35,6 +35,7 @@ def square_wave(
     target_indices=(),
     intensity_target=0.5,
     origin="corner",
+    round_phase_width=True,
 ):
     """Spatial square-wave grating (set of bars), with some bar(s) as target(s)
 
@@ -74,6 +75,8 @@ def square_wave(
         if "corner": set origin to upper left corner (default)
         if "mean": set origin to hypothetical image center
         if "center": set origin to real center (closest existing value to mean)
+    round_phase_width : Bool
+        if True, round width of bars given resolution
 
     Returns
     ----------
@@ -96,7 +99,7 @@ def square_wave(
         period=period,
         intensity_bars=intensity_bars,
         origin=origin,
-        round_phase_width=True,
+        round_phase_width=round_phase_width,
     )
 
     # Resolve target parameters
@@ -137,6 +140,7 @@ def uniform(
     intensity_target=0.5,
     intensity_background=0.5,
     origin="corner",
+    round_phase_width=True,
 ):
     """Spatial square-wave grating (set of bars), on a background
 
@@ -180,6 +184,8 @@ def uniform(
         if "corner": set origin to upper left corner (default)
         if "mean": set origin to hypothetical image center
         if "center": set origin to real center (closest existing value to mean)
+    round_phase_width : Bool
+        if True, round width of bars given resolution
 
     Returns
     ----------
@@ -212,6 +218,7 @@ def uniform(
         target_indices=target_indices,
         intensity_target=intensity_target,
         origin=origin,
+        round_phase_width=round_phase_width,
     )
 
     # Padding
