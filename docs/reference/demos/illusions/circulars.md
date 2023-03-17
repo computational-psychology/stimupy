@@ -48,7 +48,7 @@ w_int_back = iw.FloatSlider(value=0.5, min=0, max=1, description="int background
 
 w_ori = iw.Dropdown(value="mean", options=['mean', 'corner', 'center'], description="origin")
 w_clip = iw.ToggleButton(value=False, disabled=False, description="clip")
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'ring_mask'], description="origin")
+w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'ring_mask'], description="add mask")
 
 w_tidx = iw.IntSlider(value=0, min=0, max=10, description="target idx")
 w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
@@ -134,7 +134,7 @@ w_int2 = iw.FloatSlider(value=0, min=0, max=1, description="int-ring2")
 w_int_back = iw.FloatSlider(value=0.5, min=0, max=1, description="int background")
 
 w_ori = iw.Dropdown(value="mean", options=['mean', 'corner', 'center'], description="origin")
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'ring_mask'], description="origin")
+w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'ring_mask'], description="add mask")
 
 w_tidx = iw.IntSlider(value=0, min=0, max=10, description="target idx")
 w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
@@ -218,7 +218,7 @@ w_int_back = iw.FloatSlider(value=0.5, min=0, max=1, description="int background
 
 w_ori = iw.Dropdown(value="mean", options=['mean', 'corner', 'center'], description="origin")
 w_clip = iw.ToggleButton(value=False, disabled=False, description="clip")
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'ring_mask'], description="origin")
+w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'ring_mask'], description="add mask")
 
 w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
 
@@ -300,7 +300,7 @@ w_int2 = iw.FloatSlider(value=0, min=0, max=1, description="int-ring2")
 w_int_back = iw.FloatSlider(value=0.5, min=0, max=1, description="int background")
 
 w_ori = iw.Dropdown(value="mean", options=['mean', 'corner', 'center'], description="origin")
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'ring_mask'], description="origin")
+w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'ring_mask'], description="add mask")
 
 w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
 
