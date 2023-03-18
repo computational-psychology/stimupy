@@ -46,8 +46,6 @@ from stimupy.utils import (
     stack_dicts,
 )
 
-# TODO: Add warning when stimulus shape or visual_size is different from what requested!
-
 __all__ = [
     "dungeon",
     "cube",
@@ -293,22 +291,22 @@ def cube(visual_size=VSIZES["cube"], ppd=PPD, shape=SHAPES["cube"]):
 
     params = {
         "ppd": ppd,
-        "cell_heights": 1.1 * visual_resize,
-        "cell_widths": np.array([1.8, 1.5, 1.5, 1.8]) * visual_resize,
-        "targets": (1, 2),
+        "cell_thickness": 1.1 * visual_resize,
+        "cell_lengths": np.array([1.8, 1.5, 1.5, 1.8]) * visual_resize,
+        "target_indices": (1, 2),
         "cell_spacing": 0.5 * visual_resize,
     }
 
     stim1 = illusions.cubes.varying_cells(
         **params,
         intensity_background=v1,
-        intensity_grid=v3,
+        intensity_cells=v3,
         intensity_target=v2,
     )
     stim2 = illusions.cubes.varying_cells(
         **params,
         intensity_background=v3,
-        intensity_grid=v1,
+        intensity_cells=v1,
         intensity_target=v2,
     )
 
@@ -437,6 +435,7 @@ def rings(visual_size=VSIZES["rings"], ppd=PPD, shape=SHAPES["rings"]):
         "visual_size": radii.max() * 2,
         "ppd": ppd,
         "radii": radii,
+        "origin": "mean",
     }
 
     stim1 = illusions.frames.rings_generalized(
@@ -504,6 +503,7 @@ def bullseye(visual_size=VSIZES["bullseye"], ppd=PPD, shape=SHAPES["bullseye"]):
         "visual_size": radii.max() * 2,
         "ppd": ppd,
         "radii": radii,
+        "origin": "mean",
     }
 
     stim1 = illusions.frames.bullseye_generalized(

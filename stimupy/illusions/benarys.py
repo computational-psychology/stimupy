@@ -22,7 +22,7 @@ def cross_generalized(
     cross_thickness=None,
     target_size=None,
     target_type="r",
-    target_orientation=0,
+    target_rotation=0,
     target_x=None,
     target_y=None,
     intensity_background=1.0,
@@ -45,8 +45,8 @@ def cross_generalized(
         size of all target(s) in degrees visual angle
     target_type : tuple of strings
         type of targets to use; option: r (rectangle), t (triangle); as many targets as types
-    target_orientation : tuple of floats
-        tuple with orientation of targets in deg, as many targets as orientations
+    target_rotation : tuple of floats
+        tuple with rotation of targets in deg, as many targets as rotations
     target_x : tuple of floats
         tuple with x coordinates of targets in degrees, as many targets as coordinates
     target_y : tuple of floats
@@ -95,7 +95,7 @@ def cross_generalized(
         np.unique(ppd),
         target_size,
         target_type,
-        target_orientation,
+        target_rotation,
         target_x,
         target_y,
         intensity_target,
@@ -189,7 +189,7 @@ def cross_rectangles(
         cross_thickness=cross_thickness,
         target_size=target_size,
         target_type=("r",) * 2,
-        target_orientation=0.0,
+        target_rotation=0.0,
         target_x=np.round(np.array(target_x) * ppd) / ppd,
         target_y=np.round(np.array(target_y) * ppd) / ppd,
         intensity_background=intensity_background,
@@ -259,7 +259,9 @@ def cross_triangles(
         raise ValueError("target_size cannot be None")
     if isinstance(target_size, (float, int)):
         target_size = (target_size, target_size)
-    if target_size[0] > cross_thickness:
+    if target_size[0] != target_size[1]:
+        raise ValueError("target needs to have the same height and width")
+    if np.sqrt(target_size[0] ** 2 * 2.0) / 2.0 > cross_thickness:
         raise ValueError("Target size is larger than cross thickness")
 
     # Calculate target placement for classical Benarys cross
@@ -280,7 +282,7 @@ def cross_triangles(
         cross_thickness=cross_thickness,
         target_size=target_size,
         target_type=("t",) * 2,
-        target_orientation=(90.0, 45.0),
+        target_rotation=(90.0, 45.0),
         target_x=np.round(np.array(target_x) * ppd) / ppd,
         target_y=np.round(np.array(target_y) * ppd) / ppd,
         intensity_background=intensity_background,
@@ -297,7 +299,7 @@ def todorovic_generalized(
     L_width=None,
     target_size=None,
     target_type="r",
-    target_orientation=0,
+    target_rotation=0,
     target_x=None,
     target_y=None,
     intensity_background=1.0,
@@ -321,8 +323,8 @@ def todorovic_generalized(
         size of all target(s) in degrees visual angle
     target_type : tuple of strings
         type of targets to use; option: r (rectangle), t (triangle); as many targets as types
-    target_orientation : tuple of floats
-        tuple with orientation of targets in deg, as many targets as orientations
+    target_rotation : tuple of floats
+        tuple with rotation of targets in deg, as many targets as rotations
     target_x : tuple of floats
         tuple with x coordinates of targets in degrees, as many targets as coordinates
     target_y : tuple of floats
@@ -356,6 +358,9 @@ def todorovic_generalized(
     if len(np.unique(ppd)) > 1:
         raise ValueError("ppd should be equal in x and y direction")
 
+    if L_width > visual_size[1] / 2:
+        raise ValueError("L_width cannot be larger than stimulus_width / 2")
+
     L_size = (visual_size[0] / 2, visual_size[0] / 2, L_width, visual_size[1] - L_width)
     top, bottom, left, right = resolution.lengths_from_visual_angles_ppd(L_size, np.unique(ppd))
     width, height = left + right, top + bottom
@@ -372,7 +377,7 @@ def todorovic_generalized(
         np.unique(ppd),
         target_size,
         target_type,
-        target_orientation,
+        target_rotation,
         target_x,
         target_y,
         intensity_target,
@@ -459,7 +464,7 @@ def todorovic_rectangles(
         L_width=L_width,
         target_size=target_size,
         target_type=("r",) * 2,
-        target_orientation=0,
+        target_rotation=0,
         target_x=np.round(np.array(target_x) * ppd) / ppd,
         target_y=np.round(np.array(target_y) * ppd) / ppd,
         intensity_background=intensity_background,
@@ -541,7 +546,7 @@ def todorovic_triangles(
         L_width=L_width,
         target_size=target_size,
         target_type=("t",) * 2,
-        target_orientation=(0.0, 180.0),
+        target_rotation=(0.0, 180.0),
         target_x=np.round(np.array(target_x) * ppd) / ppd,
         target_y=np.round(np.array(target_y) * ppd) / ppd,
         intensity_background=intensity_background,
@@ -556,7 +561,7 @@ def add_targets(
     ppd,
     target_size,
     target_type,
-    target_orientation,
+    target_rotation,
     target_x,
     target_y,
     intensity_target,
@@ -573,8 +578,8 @@ def add_targets(
         size of all target(s) in degrees visual angle
     target_type : tuple of strings
         type of targets to use; option: r (rectangle), t (triangle); as many targets as types
-    target_orientation : tuple of floats
-        tuple with orientation of targets in deg, as many targets as orientations
+    target_rotation : tuple of floats
+        tuple with rotation of targets in deg, as many targets as rotations
     target_x : tuple of floats
         tuple with x coordinates of targets in degrees, as many targets as coordinates
     target_y : tuple of floats
@@ -596,7 +601,7 @@ def add_targets(
     if (
         (target_size is None)
         or (target_type is None)
-        or (target_orientation is None)
+        or (target_rotation is None)
         or (target_x is None)
         or (target_y is None)
     ):
@@ -604,7 +609,7 @@ def add_targets(
         stim = {
             "target_size": None,
             "target_type": None,
-            "target_orientation": None,
+            "target_rotation": None,
             "target_x": None,
             "target_y": None,
             "intensity_target": None,
@@ -616,8 +621,8 @@ def add_targets(
             target_size = (target_size, target_size)
         if isinstance(target_type, (str)):
             target_type = [target_type]
-        if isinstance(target_orientation, (float, int)):
-            target_orientation = [target_orientation]
+        if isinstance(target_rotation, (float, int)):
+            target_rotation = [target_rotation]
         if isinstance(target_x, (float, int)):
             target_x = [target_x]
         if isinstance(target_y, (float, int)):
@@ -628,26 +633,30 @@ def add_targets(
             raise ValueError("Topmost target does not fit into image")
 
         n_targets = np.max(
-            np.array([len(target_type), len(target_orientation), len(target_x), len(target_y)])
+            np.array([len(target_type), len(target_rotation), len(target_x), len(target_y)])
         )
 
         if len(target_type) == 1:
             target_type = target_type * n_targets
-        if len(target_orientation) == 1:
-            target_orientation = target_orientation * n_targets
+        if len(target_rotation) == 1:
+            target_rotation = target_rotation * n_targets
         if len(target_x) == 1:
             target_x = target_x * n_targets
         if len(target_y) == 1:
             target_y = target_y * n_targets
 
-        if any(len(lst) != n_targets for lst in [target_orientation, target_x, target_y]):
+        if any(len(lst) != n_targets for lst in [target_rotation, target_x, target_y]):
             raise Exception(
-                "target_type, target_orientation, target_x and target_y need the same length."
+                "target_type, target_rotation, target_x and target_y need the same length."
             )
 
         theight, twidth = resolution.lengths_from_visual_angles_ppd(target_size, ppd)
         ty = resolution.lengths_from_visual_angles_ppd(target_y, ppd)
         tx = resolution.lengths_from_visual_angles_ppd(target_x, ppd)
+
+        if isinstance(ty, (int, float)):
+            ty = (ty,)
+            tx = (tx,)
 
         if (twidth + np.array(tx)).max() > img.shape[1]:
             raise ValueError("Rightmost target does not fit in image.")
@@ -663,17 +672,17 @@ def add_targets(
                     rectangle_size=(theight / ppd, twidth / ppd),
                     intensity_rectangle=intensity_target,
                     intensity_background=0,
-                    rotation=target_orientation[i],
+                    rotation=target_rotation[i],
                 )
 
             elif target_type[i] == "t":
                 target = triangle(
-                    shape=[theight * 2, twidth * 2],
+                    shape=[theight * 3, twidth * 3],
                     ppd=ppd,
                     triangle_size=(theight / ppd, twidth / ppd),
                     intensity_background=0,
                     intensity_triangle=intensity_target,
-                    rotation=target_orientation[i],
+                    rotation=target_rotation[i],
                     include_corners=True,
                 )
 
@@ -682,9 +691,9 @@ def add_targets(
 
             # Remove zero-rows and -columns
             mpatch = target["shape_mask"][~np.all(target["shape_mask"] == 0, axis=1)]
+            tpatch = target["img"][~np.all(target["shape_mask"] == 0, axis=1)]
+            tpatch = tpatch[:, ~np.all(mpatch == 0, axis=0)]
             mpatch = mpatch[:, ~np.all(mpatch == 0, axis=0)]
-            tpatch = target["img"][~np.all(target["img"] == 0, axis=1)]
-            tpatch = tpatch[:, ~np.all(tpatch == 0, axis=0)]
             theight_, twidth_ = tpatch.shape
 
             # Only change the target parts of the image:
@@ -698,7 +707,7 @@ def add_targets(
         stim = {
             "target_size": target_size,
             "target_type": target_type,
-            "target_orientation": target_orientation,
+            "target_rotation": target_rotation,
             "target_x": target_x,
             "target_y": target_y,
             "intensity_target": intensity_target,

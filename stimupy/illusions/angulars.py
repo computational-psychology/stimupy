@@ -4,6 +4,7 @@ import numpy as np
 
 from stimupy.components.angulars import pinwheel as pinwheel_shape
 from stimupy.components.shapes import ring as ring_shape
+from stimupy.utils import resolution
 
 __all__ = [
     "pinwheel",
@@ -86,10 +87,12 @@ def pinwheel(
         Vision Research, 47(12), 1631-1644.
         https://doi.org/10.1016/j.visres.2007.02.017
     """
+    # Resolve resolution
+    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
 
     # Radial grating
     stim = pinwheel_shape(
-        radius=np.max(visual_size) / 2,
+        radius=np.min(visual_size) / 2,
         frequency=frequency,
         n_segments=n_segments,
         segment_width=segment_width,
@@ -114,29 +117,34 @@ def pinwheel(
         target_center = [
             target_center,
         ]
-    target_center = itertools.cycle(target_center)
     if isinstance(target_width, (int, float)):
         target_width = [
             target_width,
         ]
-    target_width = itertools.cycle(target_width)
     if isinstance(intensity_target, (int, float)):
         intensity_target = [
             intensity_target,
         ]
+
+    # Initiate target mask
+    target_mask = np.zeros_like(stim["wedge_mask"])
+
     if target_indices is not None:
         if target_width is None:
             raise ValueError("pinwheel() missing argument 'target_width' which is not 'None'")
 
+        target_center = itertools.cycle(target_center)
+        target_width = itertools.cycle(target_width)
         intensity_target = itertools.cycle(intensity_target)
 
-        target_mask = np.zeros_like(stim["wedge_mask"])
         for target_idx, (segment_idx, center, width, intensity) in enumerate(
             zip(target_indices, target_center, target_width, intensity_target)
         ):
             # Draw ring
             inner_radius = center - (width / 2)
             outer_radius = center + (width / 2)
+            if inner_radius < 0 or outer_radius > np.min(visual_size) / 2:
+                raise ValueError("target does not fully with into pinwheel")
             ring_stim = ring_shape(
                 radii=[inner_radius, outer_radius],
                 intensity_ring=intensity,
@@ -148,8 +156,7 @@ def pinwheel(
             condition2 = ring_stim["ring_mask"] == 1
             target_mask = np.where(condition1 & condition2, target_idx + 1, target_mask)
             stim["img"] = np.where(target_mask == (target_idx + 1), intensity, stim["img"])
-        stim["target_mask"] = target_mask
-
+    stim["target_mask"] = target_mask
     return stim
 
 

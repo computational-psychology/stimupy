@@ -36,23 +36,18 @@ def mask_from_idx(checkerboard_stim, check_idc):
     stimupy.components.checkerboard
     """
     board_shape = checkerboard_stim["board_shape"]
-
-    check_size = checkerboard_stim["check_visual_size"]
-    ppd = checkerboard_stim["ppd"]
-
-    check_size_px = resolution.shape_from_visual_size_ppd(check_size, ppd)
-
     mask = np.zeros(checkerboard_stim["shape"])
-    for coords in check_idc:
+    for i, coords in enumerate(check_idc):
         if coords[0] < 0 or coords[0] > coords[0] or coords[1] < 0 or coords[1] > board_shape[1]:
             raise ValueError(f"Cannot provide mask for check {coords} outside board {board_shape}")
-        ypos = int(coords[0] * check_size_px.height)
-        xpos = int(coords[1] * check_size_px.width)
-        mask[
-            ypos : ypos + int(check_size_px.height),
-            xpos : xpos + int(check_size_px.width),
-        ] = 1
+        m1 = np.where(checkerboard_stim["grating_mask"] == coords[1] + 1, 1, 0)
+        m2 = np.where(checkerboard_stim["grating_mask2"] == coords[0] + 1, 1, 0)
+        mask = np.where(m1 + m2 == 2, i + 1, mask)
 
+        if len(np.unique(mask)) == 1:
+            raise ValueError(
+                f"Cannot provide mask for check {coords} outside board because of rotation"
+            )
     return mask
 
 
@@ -133,6 +128,7 @@ def checkerboard(
     rotation=0,
     intensity_checks=(0.0, 1.0),
     intensity_target=0.5,
+    round_phase_width=True,
 ):
     """Checkerboard assimilation effect
 
@@ -168,6 +164,8 @@ def checkerboard(
         rotation of grating in degrees (default: 0 = horizontal)
     intensity_checks : Sequence[float, float]
         intensity values of checks, by default (0.0, 1.0)
+    round_phase_width : Bool
+        if True, round width of bars given resolution (default: True)
 
     Returns
     -------
@@ -202,6 +200,7 @@ def checkerboard(
         period=period,
         rotation=rotation,
         intensity_checks=intensity_checks,
+        round_phase_width=round_phase_width,
     )
 
     # Add targets
@@ -230,6 +229,7 @@ def contrast_contrast(
     intensity_checks=(0.0, 1.0),
     tau=0.5,
     alpha=0.2,
+    round_phase_width=True,
 ):
     """Contrast-contrast effect on checkerboard with square transparency layer
 
@@ -258,6 +258,8 @@ def contrast_contrast(
         tau of transparency (i.e. value of transparent medium), default 0.5
     alpha : Number
         alpha of transparency (i.e. how transparant the medium is), default 0.2
+    round_phase_width : Bool
+        if True, round width of bars given resolution (default: True)
 
     Returns
     -------
@@ -290,6 +292,7 @@ def contrast_contrast(
         period=period,
         rotation=rotation,
         intensity_checks=intensity_checks,
+        round_phase_width=round_phase_width,
     )
     img = stim["img"]
 

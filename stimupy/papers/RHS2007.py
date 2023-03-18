@@ -452,7 +452,7 @@ def WE_zigzag(ppd=PPD, pad=True):
         target_height=2.0,
         target_indices1=((i1, -1), (i1, 0), (i1, 1), (i1, 2)),
         target_indices2=((i2, 0), (i2, 1), (i2, 2), (i2, 3)),
-        intensity_grating=(1.0, 0.0),
+        intensity_bars=(1.0, 0.0),
         intensity_target=0.5,
     )
 
@@ -1647,7 +1647,7 @@ def todorovic_benary1_2(ppd=PPD, pad=True):
         "L_width": 2.5,
         "target_size": 2.5,
         "target_type": ("t", "t"),
-        "target_orientation": (0.0, 180.0),
+        "target_rotation": (0.0, 180.0),
         "target_x": (2.5, 26.0),
         "target_y": (4.0, 6.5),
         "intensity_background": v3,
@@ -1709,7 +1709,7 @@ def todorovic_benary3_4(ppd=PPD, pad=True):
         "L_width": 2.5,
         "target_size": 2.5,
         "target_type": ("t", "t"),
-        "target_orientation": (45.0, 225.0),
+        "target_rotation": (45.0, 225.0),
         "target_x": (9.5, 18.0),
         "target_y": (6.5, 6.5 - np.sqrt(12.5) / 2.0 + 1 / ppd),
         "intensity_background": v3,
@@ -1771,7 +1771,7 @@ def todorovic_benary1_2_3_4(ppd=PPD, pad=True):
         "L_width": 2.5,
         "target_size": 2.5,
         "target_type": ("t", "t", "t", "t"),
-        "target_orientation": (0.0, 45.0, 225.0, 180.0),
+        "target_rotation": (0.0, 45.0, 225.0, 180.0),
         "target_x": (2.5, 9.5, 18.0, 26.0),
         "target_y": (4.0, 6.5, 6.5 - np.sqrt(12.5) / 2.0 + 1 / ppd, 6.5),
         "intensity_background": v3,
@@ -1828,6 +1828,7 @@ def bullseye_thin(ppd=PPD, pad=True):
         "ppd": ppd,
         "radii": radii,
         "intensity_target": v2,
+        "origin": "mean",
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -1888,6 +1889,7 @@ def bullseye_thick(ppd=PPD, pad=True):
         "ppd": ppd,
         "radii": radii,
         "intensity_target": v2,
+        "origin": "mean",
     }
 
     stim1 = illusions.frames.bullseye_generalized(

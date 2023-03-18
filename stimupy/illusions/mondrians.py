@@ -16,6 +16,7 @@ def corrugated_mondrians(
     mondrian_intensities=None,
     target_indices=None,
     intensity_background=0.5,
+    intensity_target=None,
 ):
     """Corrugated Mondrians
 
@@ -27,7 +28,7 @@ def corrugated_mondrians(
         pixels per degree [vertical, horizontal]
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
-    mondrian_depths : Sequence[Number, ... ], NUmber, or None (default)
+    mondrian_depths : Sequence[Number, ... ], Number, or None (default)
         depth of Mondrian parallelograms per row
     mondrian_intensities : nested tuples
         intensities of mondrians; as many tuples as there are rows and as many
@@ -36,6 +37,8 @@ def corrugated_mondrians(
         indices of targets; as many tuples as there are targets with (y, x) indices
     intensity_background : float
         intensity value for background
+    intensity_target : float or None
+            target intensity value. If None, use values defined in mondrian_intensities
 
     Returns
     ------
@@ -79,8 +82,8 @@ def corrugated_mondrians(
     height, width = visual_size
     mdepths_px = resolution.lengths_from_visual_angles_ppd(mondrian_depths, ppd[0])
     max_depth = np.abs(np.array(mdepths_px)).max()
-    sum_depth = np.array(mdepths_px).sum()
-    red_depth = np.maximum(max_depth, sum_depth)
+    sum_depth = np.abs(np.array(mdepths_px).sum())
+    red_depth = np.maximum(max_depth, sum_depth + max_depth)
     mheight_px, mwidth_px = int(shape[0] / nrows), int((shape[1] - red_depth) / ncols)
 
     # Initial y coordinates
@@ -105,7 +108,10 @@ def corrugated_mondrians(
             xst -= int(mondrian_depths[r] * ppd[0])
 
         for c in range(ncols):
-            msize = (mheight_px / ppd[0], mwidth_px / ppd[1], mondrian_depths[r])
+            if c != ncols - 1:
+                msize = (mheight_px / ppd[0], (mwidth_px + 1) / ppd[1], mondrian_depths[r])
+            else:
+                msize = (mheight_px / ppd[0], mwidth_px / ppd[1], mondrian_depths[r])
             mpos = (yst / ppd[0], xst / ppd[1])
             mint = mondrian_intensities[r][c]
 
@@ -132,8 +138,13 @@ def corrugated_mondrians(
     target_mask = np.zeros(shape)
     for t in range(len(tlist)):
         target_mask[stim["mondrian_mask"] == tlist[t]] = t + 1
+
     stim["target_mask"] = target_mask.astype(int)
     stim["target_indices"] = target_indices
+
+    if intensity_target is not None:
+        for t in range(len(tlist)):
+            stim["img"] = np.where(target_mask == t + 1, intensity_target, stim["img"])
 
     if len(np.unique(stim["img"][target_mask != 0])) > 1:
         raise Exception("targets are not equiluminant.")

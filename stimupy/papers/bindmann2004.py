@@ -83,6 +83,7 @@ INTENSITY_WHITE = 118
 INTENSITY_BACKGROUND = 60
 PAD1 = ((0, 1.2), (0, 2.7))
 PAD2 = ((1.2, 0), (2.7, 0))
+ORIGIN = "mean"
 
 
 def gen_all(ppd=PPD, skip=False):
@@ -163,6 +164,7 @@ def bullseye_thin_gw45_gb31(ppd=PPD):
         "shape": (target_size_half + band_width * 4) * 2 * ppd - 1,
         "ppd": ppd,
         "radii": radii,
+        "origin": ORIGIN,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -224,6 +226,7 @@ def bullseye_thin_gw45_gb38(ppd=PPD):
         "shape": (target_size_half + band_width * 4) * 2 * ppd - 1,
         "ppd": ppd,
         "radii": radii,
+        "origin": ORIGIN,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -285,6 +288,7 @@ def bullseye_thin_gw45_gb45(ppd=PPD):
         "shape": (target_size_half + band_width * 4) * 2 * ppd - 1,
         "ppd": ppd,
         "radii": radii,
+        "origin": ORIGIN,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -346,6 +350,7 @@ def bullseye_thin_gw45_gb52(ppd=PPD):
         "shape": (target_size_half + band_width * 4) * 2 * ppd - 1,
         "ppd": ppd,
         "radii": radii,
+        "origin": ORIGIN,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -407,6 +412,7 @@ def bullseye_thin_gw45_gb59(ppd=PPD):
         "shape": (target_size_half + band_width * 4) * 2 * ppd - 1,
         "ppd": ppd,
         "radii": radii,
+        "origin": ORIGIN,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -468,6 +474,7 @@ def bullseye_thin_gw60_gb46(ppd=PPD):
         "shape": (target_size_half + band_width * 4) * 2 * ppd - 1,
         "ppd": ppd,
         "radii": radii,
+        "origin": ORIGIN,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -529,6 +536,7 @@ def bullseye_thin_gw60_gb53(ppd=PPD):
         "shape": (target_size_half + band_width * 4) * 2 * ppd - 1,
         "ppd": ppd,
         "radii": radii,
+        "origin": ORIGIN,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -590,6 +598,7 @@ def bullseye_thin_gw60_gb60(ppd=PPD):
         "shape": (target_size_half + band_width * 4) * 2 * ppd - 1,
         "ppd": ppd,
         "radii": radii,
+        "origin": ORIGIN,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -651,6 +660,7 @@ def bullseye_thin_gw60_gb67(ppd=PPD):
         "shape": (target_size_half + band_width * 4) * 2 * ppd - 1,
         "ppd": ppd,
         "radii": radii,
+        "origin": ORIGIN,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -712,6 +722,7 @@ def bullseye_thin_gw60_gb74(ppd=PPD):
         "shape": (target_size_half + band_width * 4) * 2 * ppd - 1,
         "ppd": ppd,
         "radii": radii,
+        "origin": ORIGIN,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -773,6 +784,7 @@ def bullseye_thin_gw75_gb61(ppd=PPD):
         "shape": (target_size_half + band_width * 4) * 2 * ppd - 1,
         "ppd": ppd,
         "radii": radii,
+        "origin": ORIGIN,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -834,6 +846,7 @@ def bullseye_thin_gw75_gb68(ppd=PPD):
         "shape": (target_size_half + band_width * 4) * 2 * ppd - 1,
         "ppd": ppd,
         "radii": radii,
+        "origin": ORIGIN,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -895,6 +908,7 @@ def bullseye_thin_gw75_gb75(ppd=PPD):
         "shape": (target_size_half + band_width * 4) * 2 * ppd - 1,
         "ppd": ppd,
         "radii": radii,
+        "origin": ORIGIN,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -956,6 +970,7 @@ def bullseye_thin_gw75_gb82(ppd=PPD):
         "shape": (target_size_half + band_width * 4) * 2 * ppd - 1,
         "ppd": ppd,
         "radii": radii,
+        "origin": ORIGIN,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -1017,6 +1032,7 @@ def bullseye_thin_gw75_gb89(ppd=PPD):
         "shape": (target_size_half + band_width * 4) * 2 * ppd - 1,
         "ppd": ppd,
         "radii": radii,
+        "origin": ORIGIN,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -1078,6 +1094,7 @@ def bullseye_thick_gw45_gb31(ppd=PPD):
         "shape": (target_size_half + band_width * 4) * 2 * ppd - 1,
         "ppd": ppd,
         "radii": radii,
+        "origin": ORIGIN,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -1139,6 +1156,7 @@ def bullseye_thick_gw45_gb38(ppd=PPD):
         "shape": (target_size_half + band_width * 4) * 2 * ppd - 1,
         "ppd": ppd,
         "radii": radii,
+        "origin": ORIGIN,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -1200,6 +1218,7 @@ def bullseye_thick_gw45_gb45(ppd=PPD):
         "shape": (target_size_half + band_width * 4) * 2 * ppd - 1,
         "ppd": ppd,
         "radii": radii,
+        "origin": ORIGIN,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -1261,6 +1280,7 @@ def bullseye_thick_gw45_gb52(ppd=PPD):
         "shape": (target_size_half + band_width * 4) * 2 * ppd - 1,
         "ppd": ppd,
         "radii": radii,
+        "origin": ORIGIN,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -1322,6 +1342,7 @@ def bullseye_thick_gw45_gb59(ppd=PPD):
         "shape": (target_size_half + band_width * 4) * 2 * ppd - 1,
         "ppd": ppd,
         "radii": radii,
+        "origin": ORIGIN,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -1383,6 +1404,7 @@ def bullseye_thick_gw60_gb46(ppd=PPD):
         "shape": (target_size_half + band_width * 4) * 2 * ppd - 1,
         "ppd": ppd,
         "radii": radii,
+        "origin": ORIGIN,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -1444,6 +1466,7 @@ def bullseye_thick_gw60_gb53(ppd=PPD):
         "shape": (target_size_half + band_width * 4) * 2 * ppd - 1,
         "ppd": ppd,
         "radii": radii,
+        "origin": ORIGIN,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -1505,6 +1528,7 @@ def bullseye_thick_gw60_gb60(ppd=PPD):
         "shape": (target_size_half + band_width * 4) * 2 * ppd - 1,
         "ppd": ppd,
         "radii": radii,
+        "origin": ORIGIN,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -1566,6 +1590,7 @@ def bullseye_thick_gw60_gb67(ppd=PPD):
         "shape": (target_size_half + band_width * 4) * 2 * ppd - 1,
         "ppd": ppd,
         "radii": radii,
+        "origin": ORIGIN,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -1627,6 +1652,7 @@ def bullseye_thick_gw60_gb74(ppd=PPD):
         "shape": (target_size_half + band_width * 4) * 2 * ppd - 1,
         "ppd": ppd,
         "radii": radii,
+        "origin": ORIGIN,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -1688,6 +1714,7 @@ def bullseye_thick_gw75_gb61(ppd=PPD):
         "shape": (target_size_half + band_width * 4) * 2 * ppd - 1,
         "ppd": ppd,
         "radii": radii,
+        "origin": ORIGIN,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -1749,6 +1776,7 @@ def bullseye_thick_gw75_gb68(ppd=PPD):
         "shape": (target_size_half + band_width * 4) * 2 * ppd - 1,
         "ppd": ppd,
         "radii": radii,
+        "origin": ORIGIN,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -1810,6 +1838,7 @@ def bullseye_thick_gw75_gb75(ppd=PPD):
         "shape": (target_size_half + band_width * 4) * 2 * ppd - 1,
         "ppd": ppd,
         "radii": radii,
+        "origin": ORIGIN,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -1871,6 +1900,7 @@ def bullseye_thick_gw75_gb82(ppd=PPD):
         "shape": (target_size_half + band_width * 4) * 2 * ppd - 1,
         "ppd": ppd,
         "radii": radii,
+        "origin": ORIGIN,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
@@ -1932,6 +1962,7 @@ def bullseye_thick_gw75_gb89(ppd=PPD):
         "shape": (target_size_half + band_width * 4) * 2 * ppd - 1,
         "ppd": ppd,
         "radii": radii,
+        "origin": ORIGIN,
     }
 
     stim1 = illusions.frames.bullseye_generalized(
