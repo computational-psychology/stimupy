@@ -21,7 +21,6 @@ __all__ = [
     "gaussians",
     "gratings",
     "lines",
-    "mondrians",
     "shapes",
 ]
 
@@ -653,18 +652,7 @@ def draw_sine_wave(
     return stim
 
 
-from . import (
-    angulars,
-    checkerboards,
-    circulars,
-    edges,
-    frames,
-    gaussians,
-    gratings,
-    lines,
-    mondrians,
-    shapes,
-)
+from . import angulars, checkerboards, circulars, edges, frames, gaussians, gratings, lines, shapes
 
 
 def create_overview():
@@ -680,12 +668,6 @@ def create_overview():
     p = {
         "visual_size": 10,
         "ppd": 20,
-    }
-
-    p_mondrians = {
-        "mondrian_positions": ((0, 0), (0, 5), (1, 3), (4, 6), (6, 1)),
-        "mondrian_sizes": 3,
-        "mondrian_intensities": np.random.rand(5),
     }
 
     # fmt: off
@@ -729,8 +711,6 @@ def create_overview():
         "line": lines.line(**p, line_length=3),
         "dipole": lines.dipole(**p, line_length=3, line_gap=0.5),
         "line_circle": lines.circle(**p, radius=3),
-        # mondrians
-        "mondrians": mondrians.mondrians(**p, **p_mondrians),
         # shapes
         "rectangle": shapes.rectangle(**p, rectangle_size=3),
         "triangle": shapes.triangle(**p, triangle_size=3),

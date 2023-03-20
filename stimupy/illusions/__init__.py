@@ -10,7 +10,6 @@ from . import (
     frames,
     gratings,
     hermanns,
-    mondrians,
     mueller_lyers,
     ponzos,
     sbcs,
@@ -33,17 +32,6 @@ def create_overview():
     p = {
         "visual_size": (10, 10),
         "ppd": 20,
-    }
-
-    p_mondrians = {
-        "mondrian_depths": (0.0, 1.0, 0.0, -1.0),
-        "target_indices": ((1, 1), (3, 1)),
-        "mondrian_intensities": (
-            (0.4, 0.75, 0.4, 0.75),
-            (0.75, 0.4, 0.75, 1.0),
-            (0.4, 0.75, 0.4, 0.75),
-            (0.0, 0.4, 0.0, 0.4),
-        ),
     }
 
     p_small_grating = {
@@ -105,8 +93,6 @@ def create_overview():
         "grating_induction_blur": gratings.induction_blur(**p, frequency=0.5, target_width=0.5, sigma=0.1),
         # Hermann´
         "hermann": hermanns.grid(**p, element_size=(1.5, 1.5, 0.2)),
-        # Mondrians
-        "mondrians": mondrians.corrugated_mondrians(**p, **p_mondrians),
         # Mueller-Lyer
         "mueller-lyer": mueller_lyers.mueller_lyer(**p, outer_lines_length=1.5, outer_lines_angle=45, target_length=6, line_width=0.1),
         "2sided_mueller-lyer": mueller_lyers.two_sided(**p, outer_lines_length=1.5, outer_lines_angle=45, target_length=2.5, line_width=0.1),

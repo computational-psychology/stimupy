@@ -32,6 +32,7 @@ Robinson, A. E., Hammon, P. S., & de Sa, V. R. (2007).
 
 import numpy as np
 
+import stimupy
 from stimupy import illusions
 from stimupy.utils import (
     flip_dict,
@@ -1531,7 +1532,7 @@ def corrugated_mondrian(ppd=PPD, pad=True):
         "intensity_background": 0.5,
     }
 
-    stim = illusions.mondrians.corrugated_mondrians(**params)
+    stim = stimupy.mondrians.corrugated_mondrian(**params)
 
     if pad:
         stim = pad_dict_to_visual_size(stim, VISEXTENT, ppd, pad_value=0.5)
