@@ -959,12 +959,12 @@ def sbc_large(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim1 = illusions.sbcs.basic(
+    stim1 = stimupy.sbcs.basic(
         visual_size=(13.0, 15.5),
         intensity_background=0.0,
         **params,
     )
-    stim2 = illusions.sbcs.basic(
+    stim2 = stimupy.sbcs.basic(
         visual_size=(13.0, 15.5),
         intensity_background=1.0,
         **params,
@@ -1019,12 +1019,12 @@ def sbc_small(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim1 = illusions.sbcs.basic(
+    stim1 = stimupy.sbcs.basic(
         visual_size=(13.0, 15.5),
         intensity_background=0.0,
         **params,
     )
-    stim2 = illusions.sbcs.basic(
+    stim2 = stimupy.sbcs.basic(
         visual_size=(13.0, 15.5),
         intensity_background=1.0,
         **params,

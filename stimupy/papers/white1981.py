@@ -34,6 +34,7 @@ import warnings
 
 import numpy as np
 
+import stimupy
 from stimupy import illusions
 
 __all__ = [
@@ -127,7 +128,7 @@ def square_white(ppd=PPD):
         "intensity_target": v2,
     }
 
-    stim = illusions.sbcs.basic(**params)
+    stim = stimupy.sbcs.basic(**params)
     return stim
 
 
@@ -164,7 +165,7 @@ def square_black(ppd=PPD):
         "intensity_target": v2,
     }
 
-    stim = illusions.sbcs.basic(**params)
+    stim = stimupy.sbcs.basic(**params)
     return stim
 
 

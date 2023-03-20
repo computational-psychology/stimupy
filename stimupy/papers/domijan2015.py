@@ -574,12 +574,12 @@ def simultaneous_brightness_contrast(
         "target_position": (3.8 * visual_resize, 3.8 * visual_resize),
     }
 
-    stim1 = illusions.sbcs.generalized(
+    stim1 = stimupy.sbcs.generalized(
         **params,
         intensity_background=v3,
         intensity_target=v2,
     )
-    stim2 = illusions.sbcs.generalized(
+    stim2 = stimupy.sbcs.generalized(
         **params,
         intensity_background=v1,
         intensity_target=v2,

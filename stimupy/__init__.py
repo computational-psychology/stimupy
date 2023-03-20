@@ -6,6 +6,7 @@ from . import (
     illusions,
     mondrians,
     noises,
+    sbcs,
     todorovics,
     utils,
     wedding_cakes,

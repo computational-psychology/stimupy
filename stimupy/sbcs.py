@@ -654,24 +654,36 @@ def two_sided_dotted(
     return stim
 
 
+def overview(**kwargs):
+    """Generate example stimuli from this module
+
+    Returns
+    -------
+    stims : dict
+        dict with all stimuli containing individual stimulus dicts.
+    """
+    default_params = {
+        "ppd": 30,
+    }
+    default_params.update(kwargs)
+
+    # fmt: off
+    stimuli = {
+        "generalized": generalized(**default_params, visual_size=10, target_size=3, target_position=(0, 2)),
+        "basic": basic(**default_params, visual_size=10, target_size=3),
+        "two_sided": two_sided(**default_params, visual_size=10, target_size=2),
+        "with_dots": with_dots(**default_params, n_dots=5, dot_radius=2, distance=0.5, target_shape=3),
+        "dotted": dotted(**default_params, n_dots=5, dot_radius=2, distance=0.5, target_shape=3),
+        "2sided_with_dots": two_sided_with_dots(**default_params, n_dots=5, dot_radius=2, distance=0.5, target_shape=3),
+        "2sided_dotted": two_sided_dotted(**default_params, n_dots=5, dot_radius=2, distance=0.5, target_shape=3),
+    }
+    # fmt: on
+
+    return stimuli
+
+
 if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
 
-    p = {
-        "ppd": 20,
-    }
-
-    stims = {
-        "generalized": generalized(**p, visual_size=10, target_size=3, target_position=(0, 2)),
-        "basic": basic(**p, visual_size=10, target_size=3),
-        "two_sided": two_sided(**p, visual_size=10, target_size=2),
-        "with_dots": with_dots(**p, n_dots=5, dot_radius=2, distance=0.5, target_shape=3),
-        "dotted": dotted(**p, n_dots=5, dot_radius=2, distance=0.5, target_shape=3),
-        "2sided_with_dots": two_sided_with_dots(
-            **p, n_dots=5, dot_radius=2, distance=0.5, target_shape=3
-        ),
-        "2sided_dotted": two_sided_dotted(
-            **p, n_dots=5, dot_radius=2, distance=0.5, target_shape=3
-        ),
-    }
+    stims = overview()
     plot_stimuli(stims, mask=True, save=None)

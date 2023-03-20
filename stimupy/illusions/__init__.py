@@ -12,7 +12,6 @@ from . import (
     hermanns,
     mueller_lyers,
     ponzos,
-    sbcs,
 )
 
 
@@ -95,14 +94,6 @@ def create_overview():
         "2sided_mueller-lyer": mueller_lyers.two_sided(**p, outer_lines_length=1.5, outer_lines_angle=45, target_length=2.5, line_width=0.1),
         # Ponzo
         "ponzo": ponzos.ponzo(**p, outer_lines_length=8, outer_lines_width=0.1, target_lines_length=3, target_lines_width=0.1, target_distance=3),
-        # SBC
-        "sbc_generalized": sbcs.generalized(**p, target_size=3, target_position=(0, 2)),
-        "sbc_basic": sbcs.basic(**p, target_size=3),
-        "sbc_two_sided": sbcs.two_sided(**p, target_size=3),
-        "sbc_with_dots": sbcs.with_dots(ppd=20, n_dots=5, dot_radius=3, distance=0.5, target_shape=3),
-        "sbc_dotted": sbcs.dotted(ppd=20, n_dots=5, dot_radius=3, distance=0.5, target_shape=3),
-        "2sided_sbc_with_dots": sbcs.two_sided_with_dots(ppd=20, n_dots=5, dot_radius=3, distance=0.5, target_shape=3),
-        "2sided_dotted_sbc": sbcs.two_sided_dotted(ppd=20, n_dots=5, dot_radius=3, distance=0.5, target_shape=3),
     }
     # fmt: on
 
