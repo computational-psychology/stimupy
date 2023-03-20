@@ -813,33 +813,50 @@ def two_sided_equal(
     return stim
 
 
-if __name__ == "__main__":
-    from stimupy.utils import plot_stimuli
+def overview(**kwargs):
+    """Generate example stimuli from this module
 
-    p1 = {
+    Returns
+    -------
+    stims : dict
+        dict with all stimuli containing individual stimulus dicts.
+    """
+    default_params = {
         "visual_size": 10,
-        "ppd": 10,
+        "ppd": 30,
+    }
+    default_params.update(kwargs)
+
+    rectangle_params = {
         "target_size": 3,
         "covers_size": 1.5,
     }
 
-    p2 = {
-        "visual_size": 10,
-        "ppd": 10,
+    cross_params = {
         "cross_size": 4,
         "cross_thickness": 1.5,
     }
-
-    stims = {
-        "rectangle": rectangle(**p1, covers_offset=1.5),
-        "rectangle_general": rectangle_generalized(
-            **p1, target_position=3.5, covers_x=(2, 6), covers_y=(2, 6)
+    # fmt: off
+    stimuli = {
+        "rectangle": rectangle(**default_params, **rectangle_params, covers_offset=1.5),
+        "rectangle_general": rectangle_generalized(**default_params, **rectangle_params,
+                    target_position=3.5, covers_x=(2, 6), covers_y=(2, 6)
         ),
-        "cross": cross(**p2, covers_size=2),
-        "cross_general": cross_generalized(**p2, covers_size=2, covers_x=(2, 6), covers_y=(2, 6)),
-        "equal": equal(**p2),
-        "two_sided_rectangle": two_sided_rectangle(**p1, covers_offset=1),
-        "two_sided_cross": two_sided_cross(**p2, covers_size=1),
-        "two_sided_equal": two_sided_equal(**p2),
+        "cross": cross(**default_params, **cross_params, covers_size=2),
+        "cross_general": cross_generalized(**default_params, **cross_params,
+                    covers_size=2, covers_x=(2, 6), covers_y=(2, 6)),
+        "equal": equal(**default_params, **cross_params,),
+        "two_sided_rectangle": two_sided_rectangle(**default_params, **rectangle_params, covers_offset=1),
+        "two_sided_cross": two_sided_cross(**default_params, **cross_params, covers_size=1),
+        "two_sided_equal": two_sided_equal(**default_params, **cross_params,),
     }
+    # fmt: on
+
+    return stimuli
+
+
+if __name__ == "__main__":
+    from stimupy.utils import plot_stimuli
+
+    stims = overview()
     plot_stimuli(stims, mask=True, save=None)

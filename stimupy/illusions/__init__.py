@@ -13,7 +13,6 @@ from . import (
     mueller_lyers,
     ponzos,
     sbcs,
-    todorovics,
 )
 
 
@@ -104,15 +103,6 @@ def create_overview():
         "sbc_dotted": sbcs.dotted(ppd=20, n_dots=5, dot_radius=3, distance=0.5, target_shape=3),
         "2sided_sbc_with_dots": sbcs.two_sided_with_dots(ppd=20, n_dots=5, dot_radius=3, distance=0.5, target_shape=3),
         "2sided_dotted_sbc": sbcs.two_sided_dotted(ppd=20, n_dots=5, dot_radius=3, distance=0.5, target_shape=3),
-        # Todorovic
-        "todorovic_rectangle_general": todorovics.rectangle_generalized(**p, target_size=4, target_position=3, covers_size=2, covers_x=(2, 6), covers_y=(2, 6)),
-        "todorovic_rectangle": todorovics.rectangle(**p, target_size=4, covers_size=2, covers_offset=2),
-        "todorovic_cross_general": todorovics.cross_generalized(**p, cross_size=4, cross_arm_ratios=1., cross_thickness=2, covers_size=2, covers_x=(2, 6), covers_y=(2, 6)),
-        "todorovic_cross": todorovics.cross(**p, cross_size=4, cross_thickness=2, covers_size=2),
-        "todorovic_equal": todorovics.equal(**p, cross_size=4, cross_thickness=2),
-        "2sided_todorovic_rectangle": todorovics.two_sided_rectangle(**p, target_size=3, covers_size=1.5, covers_offset=1.5),
-        "2sided_todorovic_cross": todorovics.two_sided_cross(**p, cross_size=3, cross_thickness=1.5, covers_size=1.5),
-        "2sided_todorovic_equal": todorovics.two_sided_equal(**p, cross_size=3, cross_thickness=1.5),
     }
     # fmt: on
 

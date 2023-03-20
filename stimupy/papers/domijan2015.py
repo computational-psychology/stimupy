@@ -772,13 +772,13 @@ def todorovic(visual_size=VSIZES["todorovic"], ppd=PPD, shape=SHAPES["todorovic"
         "covers_offset": 2.0 * visual_resize,
     }
 
-    stim1 = illusions.todorovics.rectangle(
+    stim1 = stimupy.todorovics.rectangle(
         **params,
         intensity_background=0.0,
         intensity_target=0.5,
         intensity_covers=1.0,
     )
-    stim2 = illusions.todorovics.rectangle(
+    stim2 = stimupy.todorovics.rectangle(
         **params,
         intensity_background=1.0,
         intensity_target=0.5,

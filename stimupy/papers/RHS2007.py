@@ -1084,13 +1084,13 @@ def todorovic_equal(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim1 = illusions.todorovics.equal(
+    stim1 = stimupy.todorovics.equal(
         intensity_background=1.0,
         intensity_covers=0.0,
         **params,
     )
 
-    stim2 = illusions.todorovics.equal(
+    stim2 = stimupy.todorovics.equal(
         intensity_background=0.0,
         intensity_covers=1.0,
         **params,
@@ -1151,12 +1151,12 @@ def todorovic_in_large(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim1 = illusions.todorovics.rectangle(
+    stim1 = stimupy.todorovics.rectangle(
         intensity_background=1.0,
         intensity_covers=0.0,
         **params,
     )
-    stim2 = illusions.todorovics.rectangle(
+    stim2 = stimupy.todorovics.rectangle(
         intensity_background=0.0,
         intensity_covers=1.0,
         **params,
@@ -1217,12 +1217,12 @@ def todorovic_in_small(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim1 = illusions.todorovics.cross(
+    stim1 = stimupy.todorovics.cross(
         intensity_background=1.0,
         intensity_covers=0.0,
         **params,
     )
-    stim2 = illusions.todorovics.cross(
+    stim2 = stimupy.todorovics.cross(
         intensity_background=0.0,
         intensity_covers=1.0,
         **params,
@@ -1285,12 +1285,12 @@ def todorovic_out(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim1 = illusions.todorovics.cross(
+    stim1 = stimupy.todorovics.cross(
         intensity_background=1.0,
         intensity_covers=0.0,
         **params,
     )
-    stim2 = illusions.todorovics.cross(
+    stim2 = stimupy.todorovics.cross(
         intensity_background=0.0,
         intensity_covers=1.0,
         **params,
