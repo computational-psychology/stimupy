@@ -293,13 +293,13 @@ def cube(visual_size=VSIZES["cube"], ppd=PPD, shape=SHAPES["cube"]):
         "cell_spacing": 0.5 * visual_resize,
     }
 
-    stim1 = illusions.cubes.varying_cells(
+    stim1 = stimupy.cubes.varying_cells(
         **params,
         intensity_background=v1,
         intensity_cells=v3,
         intensity_target=v2,
     )
-    stim2 = illusions.cubes.varying_cells(
+    stim2 = stimupy.cubes.varying_cells(
         **params,
         intensity_background=v3,
         intensity_cells=v1,

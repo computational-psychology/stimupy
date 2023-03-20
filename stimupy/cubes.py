@@ -301,28 +301,33 @@ def cube(
     return stim
 
 
+def overview(**kwargs):
+    """Generate example stimuli from this module
+
+    Returns
+    -------
+    stims : dict
+        dict with all stimuli containing individual stimulus dicts.
+    """
+    default_params = {
+        "ppd": 30,
+        "cell_thickness": 1,
+        "cell_spacing": 0.5,
+    }
+    default_params.update(kwargs)
+
+    # fmt: off
+    stimuli = {
+        "Cube stimulus": cube(**default_params, visual_size=10, n_cells=5, target_indices=(1,2)),
+        "Cube - varying cells": varying_cells(**default_params, cell_lengths=(2,4,2), target_indices=1),
+    }
+    # fmt: on
+
+    return stimuli
+
+
 if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
 
-    p1 = {
-        "ppd": 10,
-        "cell_lengths": (2, 4, 2),
-        "cell_thickness": 1,
-        "cell_spacing": 0.5,
-        "target_indices": 1,
-    }
-
-    p2 = {
-        "visual_size": 10,
-        "ppd": 10,
-        "n_cells": 5,
-        "target_indices": (1, 2),
-        "cell_thickness": 1,
-        "cell_spacing": 0.5,
-    }
-
-    stims = {
-        "varying cells": varying_cells(**p1),
-        "cube": cube(**p2),
-    }
+    stims = overview()
     plot_stimuli(stims, mask=True, save=None)

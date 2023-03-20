@@ -2,6 +2,7 @@ __version__ = "0.99.0"
 
 from . import (
     components,
+    cubes,
     dungeons,
     gabors,
     illusions,
