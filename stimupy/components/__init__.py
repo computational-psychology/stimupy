@@ -704,9 +704,6 @@ def create_overview():
         "square_wave2": gratings.square_wave(**p, frequency=1, rotation=45),
         "sine_wave": gratings.sine_wave(**p, frequency=1),
         "staircase": gratings.staircase(**p, n_bars=8),
-        "plaid": gratings.plaid(grating_parameters1={**p, "frequency": 1},
-                                grating_parameters2={**p, "frequency": 1, "rotation": 90},
-                                sigma=2),
         # lines
         "line": lines.line(**p, line_length=3),
         "dipole": lines.dipole(**p, line_length=3, line_gap=0.5),

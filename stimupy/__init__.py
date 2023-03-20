@@ -9,6 +9,7 @@ from . import (
     illusions,
     mondrians,
     noises,
+    plaids,
     sbcs,
     todorovics,
     utils,
