@@ -245,7 +245,7 @@ def sine(
     n_phases=None,
     phase_width=None,
     period="ignore",
-    rotation=None,
+    rotation=0.0,
     phase_shift=None,
     intensities=None,
     origin=None,
@@ -299,8 +299,6 @@ def sine(
         mask with integer index for each bar (key: "grating_mask"),
         and additional keys containing stimulus parameters
     """
-    if rotation is None:
-        raise ValueError("waves.sine() missing argument 'rotation' which is not 'None'")
     if phase_shift is None:
         raise ValueError("waves.sine() missing argument 'phase_shift' which is not 'None'")
     if intensities is None:
@@ -455,7 +453,7 @@ def square(
     n_phases=None,
     phase_width=None,
     period="ignore",
-    rotation=None,
+    rotation=0.0,
     phase_shift=None,
     intensities=None,
     origin=None,
