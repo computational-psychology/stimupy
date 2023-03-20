@@ -445,3 +445,87 @@ def sine(
         "phase_width": phase_width,
     }
     return stim
+
+
+def square(
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    frequency=None,
+    n_phases=None,
+    phase_width=None,
+    period="ignore",
+    rotation=None,
+    phase_shift=None,
+    intensities=None,
+    origin=None,
+    base_type=None,
+    round_phase_width=None,
+):
+    """Draw a sine-wave grating given a certain base_type
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    frequency : Number, or None (default)
+        spatial frequency of grating, in cycles per degree visual angle
+    n_phases : int, or None (default)
+        number of phases in the grating
+    phase_width : Number, or None (default)
+        width of a single phase, in degrees visual angle
+    period : "even", "odd", "either", "ignore" (default)
+        ensure whether the grating has "even" number of phases, "odd"
+        number of phases, either or whether not to round the number of
+        phases ("ignore")
+    rotation : float or None (default)
+        rotation of grating in degrees
+    phase_shift : float or None (default)
+        phase shift of grating in degrees
+    intensities : Sequence[float, float] or None (default)
+        min and max intensity of sine-wave
+    origin : "corner", "mean", "center" or None (default)
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center
+        if "center": set origin to real center (closest existing value to mean)
+    base_type : str or None
+        if "horizontal", use distance from origin in x-direction,
+        if "vertical", use distance from origin in x-direction;
+        if "rotated", use combined and rotated distance from origin in x-y;
+        if "radial", use radial distance from origin,
+        if "angular", use angular distance from origin,
+        if "cityblock", use cityblock distance from origin
+    round_phase_width : Bool or None (default)
+        if True, round width of bars given resolution
+
+    Returns
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each bar (key: "grating_mask"),
+        and additional keys containing stimulus parameters
+    """
+
+    stim = sine(
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        frequency=frequency,
+        n_phases=n_phases,
+        phase_width=phase_width,
+        period=period,
+        rotation=rotation,
+        phase_shift=phase_shift,
+        intensities=intensities,
+        origin=origin,
+        round_phase_width=round_phase_width,
+        base_type=base_type,
+    )
+
+    # Round sine-wave to create square wave
+    stim["img"] = round_to_vals(stim["img"], intensities)
+    return stim
