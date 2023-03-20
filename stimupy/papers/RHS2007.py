@@ -446,7 +446,7 @@ def WE_zigzag(ppd=PPD, pad=True):
     """
 
     i1, i2 = 1, 2
-    stim = illusions.wedding_cakes.wedding_cake(
+    stim = stimupy.wedding_cakes.wedding_cake(
         visual_size=(16.0, 17.0),
         ppd=PPD,
         L_size=(4.0, 4, 1.0),

@@ -178,20 +178,35 @@ def wedding_cake(
     return stim
 
 
+def overview(**kwargs):
+    """Generate example stimuli from this module
+
+    Returns
+    -------
+    stims : dict
+        dict with all stimuli containing individual stimulus dicts.
+    """
+    default_params = {
+        "visual_size": 10,
+        "ppd": 30,
+    }
+    default_params.update(kwargs)
+
+    # fmt: off
+    stimuli = {
+        "Wedding cake": wedding_cake(**default_params,
+        L_size= (3, 3, 1),
+        target_height=1,
+        target_indices1=None,
+        target_indices2=((0, 1), (1, 1)),)
+    }
+    # fmt: on
+
+    return stimuli
+
+
 if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
 
-    params = {
-        "visual_size": 10,
-        "ppd": 10,
-        "L_size": (3, 3, 1),
-        "target_height": 1,
-        "target_indices1": None,
-        "target_indices2": ((0, 1), (1, 1)),
-    }
-
-    stims = {
-        "wedding_cake": wedding_cake(**params),
-    }
-
-    plot_stimuli(stims, mask=False, save=None)
+    stims = overview()
+    plot_stimuli(stims, mask=True, save=None)

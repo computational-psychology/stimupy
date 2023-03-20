@@ -14,7 +14,6 @@ from . import (
     ponzos,
     sbcs,
     todorovics,
-    wedding_cakes,
 )
 
 
@@ -114,8 +113,6 @@ def create_overview():
         "2sided_todorovic_rectangle": todorovics.two_sided_rectangle(**p, target_size=3, covers_size=1.5, covers_offset=1.5),
         "2sided_todorovic_cross": todorovics.two_sided_cross(**p, cross_size=3, cross_thickness=1.5, covers_size=1.5),
         "2sided_todorovic_equal": todorovics.two_sided_equal(**p, cross_size=3, cross_thickness=1.5),
-        # Wedding cake
-        "wedding_cake": wedding_cakes.wedding_cake(**p, L_size=(3, 3, 1), target_height=1, target_indices1=((1, 1), (2, 1)),),
     }
     # fmt: on
 

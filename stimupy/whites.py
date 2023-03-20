@@ -7,8 +7,8 @@ from stimupy.components import image_base
 from stimupy.components.gratings import square_wave
 from stimupy.illusions.angulars import pinwheel as radial
 from stimupy.illusions.circulars import rings as circular
-from stimupy.illusions.wedding_cakes import wedding_cake
 from stimupy.utils import resolution
+from stimupy.wedding_cakes import wedding_cake
 
 __all__ = [
     "generalized",
