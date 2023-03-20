@@ -145,7 +145,7 @@ def WE_thick(ppd=PPD, pad=True):
         "period": "even",
     }
 
-    stim = illusions.whites.white(
+    stim = stimupy.whites.white(
         visual_size=(height, width),
         **params,
     )
@@ -206,7 +206,7 @@ def WE_thin_wide(ppd=PPD, pad=True):
         "period": "even",
     }
 
-    stim = illusions.whites.white(
+    stim = stimupy.whites.white(
         visual_size=(height, width),
         **params,
     )
@@ -258,12 +258,12 @@ def WE_dual(ppd=PPD, pad=True):
         "period": "even",
     }
 
-    stim1 = illusions.whites.white(
+    stim1 = stimupy.whites.white(
         visual_size=(height, width),
         **params,
     )
 
-    stim2 = illusions.whites.white(
+    stim2 = stimupy.whites.white(
         visual_size=(height, width),
         **params,
     )
@@ -333,7 +333,7 @@ def WE_anderson(ppd=PPD, pad=True):
         "period": "even",
     }
 
-    stim = illusions.whites.anderson(
+    stim = stimupy.whites.anderson(
         visual_size=(height, width),
         **params,
     )
@@ -400,7 +400,7 @@ def WE_howe(ppd=PPD, pad=True):
         "period": "even",
     }
 
-    stim = illusions.whites.howe(
+    stim = stimupy.whites.howe(
         visual_size=(height, width),
         **params,
     )
@@ -501,7 +501,7 @@ def WE_radial_thick_small(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim = illusions.whites.radial(
+    stim = stimupy.whites.radial(
         visual_size=(16, 16),
         **params,
     )
@@ -556,7 +556,7 @@ def WE_radial_thick(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim = illusions.whites.radial(
+    stim = stimupy.whites.radial(
         visual_size=(24, 24),
         **params,
     )
@@ -611,7 +611,7 @@ def WE_radial_thin_small(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim = illusions.whites.radial(
+    stim = stimupy.whites.radial(
         visual_size=(16, 16),
         **params,
     )
@@ -666,7 +666,7 @@ def WE_radial_thin(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim = illusions.whites.radial(
+    stim = stimupy.whites.radial(
         visual_size=(24, 24),
         **params,
     )
@@ -718,13 +718,13 @@ def WE_circular1(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim1 = illusions.whites.circular(
+    stim1 = stimupy.whites.circular(
         visual_size=(height, width),
         intensity_rings=(v1, v3),
         **params,
     )
 
-    stim2 = illusions.whites.circular(
+    stim2 = stimupy.whites.circular(
         visual_size=(height, width),
         intensity_rings=(v3, v1),
         **params,
@@ -778,13 +778,13 @@ def WE_circular05(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim1 = illusions.whites.circular(
+    stim1 = stimupy.whites.circular(
         visual_size=(height, width),
         intensity_rings=(v1, v3),
         **params,
     )
 
-    stim2 = illusions.whites.circular(
+    stim2 = stimupy.whites.circular(
         visual_size=(height, width),
         intensity_rings=(v3, v1),
         **params,
@@ -838,13 +838,13 @@ def WE_circular025(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim1 = illusions.whites.circular(
+    stim1 = stimupy.whites.circular(
         visual_size=(height, width),
         intensity_rings=(v1, v3),
         **params,
     )
 
-    stim2 = illusions.whites.circular(
+    stim2 = stimupy.whites.circular(
         visual_size=(height, width),
         intensity_rings=(v3, v1),
         **params,

@@ -38,13 +38,9 @@ Domijan, D. (2015).
 
 import numpy as np
 
+import stimupy
 from stimupy import illusions
-from stimupy.utils import (
-    pad_dict_by_visual_size,
-    pad_dict_to_shape,
-    resolution,
-    stack_dicts,
-)
+from stimupy.utils import pad_dict_by_visual_size, pad_dict_to_shape, resolution, stack_dicts
 
 __all__ = [
     "dungeon",
@@ -646,7 +642,7 @@ def white(visual_size=VSIZES["white"], ppd=PPD, pad=PAD, shape=SHAPES["white"]):
         "period": "even",
     }
 
-    stim = illusions.whites.white(
+    stim = stimupy.whites.white(
         **params,
         intensity_bars=(v3, v1),
         intensity_target=v2,
@@ -1093,7 +1089,7 @@ def white_yazdanbakhsh(
         "period": "even",
     }
 
-    stim = illusions.whites.yazdanbakhsh(
+    stim = stimupy.whites.yazdanbakhsh(
         **params,
         intensity_bars=(v3, v1),
         intensity_target=v2,
@@ -1180,7 +1176,7 @@ def white_anderson(
         "period": "even",
     }
 
-    stim = illusions.whites.anderson(
+    stim = stimupy.whites.anderson(
         **params,
         intensity_bars=(v1, v3),
         intensity_target=v2,
@@ -1262,7 +1258,7 @@ def white_howe(visual_size=VSIZES["white_howe"], ppd=PPD, shape=SHAPES["white_ho
         "period": "even",
     }
 
-    stim = illusions.whites.howe(
+    stim = stimupy.whites.howe(
         **params,
         intensity_bars=(v1, v3),
         intensity_target=v2,

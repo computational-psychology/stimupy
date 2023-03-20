@@ -15,7 +15,6 @@ from . import (
     sbcs,
     todorovics,
     wedding_cakes,
-    whites,
 )
 
 
@@ -117,13 +116,6 @@ def create_overview():
         "2sided_todorovic_equal": todorovics.two_sided_equal(**p, cross_size=3, cross_thickness=1.5),
         # Wedding cake
         "wedding_cake": wedding_cakes.wedding_cake(**p, L_size=(3, 3, 1), target_height=1, target_indices1=((1, 1), (2, 1)),),
-        # White
-        "white_general": whites.generalized(**p, frequency=0.5, target_indices=(1, 3, 5), target_center_offsets=(-1, -3, -1), target_heights=(2, 3, 2)),
-        "white_basic": whites.white(**p, frequency=0.5, target_indices=(2, -3), target_height=2),
-        "white_two-rows": whites.white_two_rows(**p, frequency=0.5, target_indices_top=(2,4), target_indices_bottom=(-2, -4), target_height=1, target_center_offset=2),
-        "Anderson White": whites.anderson(**p, frequency=0.5, target_indices_top=3, target_indices_bottom=-2, target_center_offset=2, target_height=2, stripe_center_offset=1.5, stripe_height=2),
-        "Yazdanbakhsh White": whites.yazdanbakhsh(**p, frequency=0.5, target_indices_top=3, target_indices_bottom=-2, target_center_offset=2, target_height=2, gap_size=0.5),
-        "Howe White": whites.howe(**p, frequency=0.5, target_indices_top=3, target_indices_bottom=-2, target_center_offset=2, target_height=2),
     }
     # fmt: on
 

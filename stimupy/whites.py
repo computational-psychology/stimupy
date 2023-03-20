@@ -756,29 +756,36 @@ def yazdanbakhsh(
     return stim
 
 
-if __name__ == "__main__":
-    from stimupy.utils import plot_stimuli
+def overview(**kwargs):
+    """Generate example stimuli from this module
 
-    params = {
+    Returns
+    -------
+    stims : dict
+        dict with all stimuli containing individual stimulus dicts.
+    """
+    default_params = {
         "visual_size": 10,
-        "ppd": 10,
+        "ppd": 30,
         "frequency": 0.5,
     }
+    default_params.update(kwargs)
 
-    stims = {
-        "generalized": generalized(
-            **params, target_indices=(1, 3), target_center_offsets=(-1, -3), target_heights=(2, 3)
+    # fmt: off
+    stimuli = {
+        "White's stimulus": white(**default_params, target_indices=(2, -3), target_height=2),
+        "White's, generalized": generalized(
+            **default_params, target_indices=(1, 3, 5), target_center_offsets=(-1, -3, -1), target_heights=(2, 3, 2)
         ),
-        "white": white(**params, target_indices=(2, -3), target_height=2),
-        "white_two_rows": white_two_rows(
-            **params,
+        "White's, two rows": white_two_rows(
+            **default_params,
             target_indices_top=(2, 4),
             target_indices_bottom=(-2, -4),
             target_height=1,
             target_center_offset=2,
         ),
-        "anderson": anderson(
-            **params,
+        "White's - Anderson": anderson(
+            **default_params,
             target_indices_top=3,
             target_indices_bottom=-2,
             target_center_offset=2,
@@ -786,15 +793,15 @@ if __name__ == "__main__":
             stripe_center_offset=1.5,
             stripe_height=2,
         ),
-        "howe": howe(
-            **params,
+        "White's - Howe": howe(
+            **default_params,
             target_indices_top=3,
             target_indices_bottom=-2,
             target_center_offset=2,
             target_height=2,
         ),
-        "yazdanbakhsh": yazdanbakhsh(
-            **params,
+        "White's - Yazdanbakhsh": yazdanbakhsh(
+            **default_params,
             target_indices_top=3,
             target_indices_bottom=-2,
             target_center_offset=2,
@@ -802,5 +809,13 @@ if __name__ == "__main__":
             gap_size=0.5,
         ),
     }
+    # fmt: on
 
+    return stimuli
+
+
+if __name__ == "__main__":
+    from stimupy.utils import plot_stimuli
+
+    stims = overview()
     plot_stimuli(stims, mask=True, save=None)

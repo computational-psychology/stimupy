@@ -36,6 +36,7 @@ import os.path
 import numpy as np
 import scipy.io
 
+import stimupy
 from stimupy import illusions
 from stimupy.utils import pad_dict_by_visual_size, rotate_dict
 
@@ -740,7 +741,7 @@ def white(ppd=PPD):
         "period": "even",
     }
 
-    stim = illusions.whites.white_two_rows(**params)
+    stim = stimupy.whites.white_two_rows(**params)
     stim = rotate_dict(stim)
     reduced_mask = np.where(stim["target_mask"] == 2, 2, 0)
     reduced_mask = np.where(stim["target_mask"] == 5, 1, reduced_mask).astype(int)
