@@ -223,13 +223,13 @@ def dungeon(visual_size=VSIZES["dungeon"], ppd=PPD, shape=SHAPES["dungeon"]):
     }
 
     # Generate each side
-    stim1 = illusions.dungeons.dungeon(
+    stim1 = stimupy.dungeons.dungeon(
         **params,
         intensity_background=v1,
         intensity_grid=v3,
         intensity_target=v2,
     )
-    stim2 = illusions.dungeons.dungeon(
+    stim2 = stimupy.dungeons.dungeon(
         **params,
         intensity_background=v3,
         intensity_grid=v1,

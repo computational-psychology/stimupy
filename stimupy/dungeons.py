@@ -177,8 +177,31 @@ def resolve_cells_1d(
     return n_cells, visual_angle, cell_size
 
 
-if __name__ == "__main__":
-    from stimupy.utils import plot_stim
+def overview(**kwargs):
+    """Generate example stimuli from this module
 
-    stim = dungeon(visual_size=10, ppd=10, n_cells=5)
-    plot_stim(stim, stim_name="dungeon", mask=True, save=None)
+    Returns
+    -------
+    stims : dict
+        dict with all stimuli containing individual stimulus dicts.
+    """
+    default_params = {
+        "visual_size": 10,
+        "ppd": 30,
+    }
+    default_params.update(kwargs)
+
+    # fmt: off
+    stimuli = {
+        "Dungeon illusion": dungeon(**default_params, n_cells=5)
+    }
+    # fmt: on
+
+    return stimuli
+
+
+if __name__ == "__main__":
+    from stimupy.utils import plot_stimuli
+
+    stims = overview()
+    plot_stimuli(stims, mask=True, save=None)

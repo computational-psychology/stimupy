@@ -6,7 +6,6 @@ from . import (
     cornsweets,
     cubes,
     delboeufs,
-    dungeons,
     frames,
     gratings,
     hermanns,
@@ -63,8 +62,6 @@ def create_overview():
         # Delbouef
         "delboeuf": delboeufs.delboeuf(**p, outer_radius=4, target_radius=1),
         "2sided_delboeuf": delboeufs.two_sided(**p, outer_radii=(2, 1.1), target_radius=1),
-        # Dungeon
-        "dungeon": dungeons.dungeon(**p, n_cells=5),
         # Frames
         "frames": frames.rings(**p, frequency=0.5, target_indices=3),
         "frames_general": frames.rings_generalized(**p, radii=(1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5), target_indices=3),
