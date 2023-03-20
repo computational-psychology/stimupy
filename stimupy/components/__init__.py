@@ -1,6 +1,7 @@
 import itertools
 import warnings
 from copy import deepcopy
+
 import numpy as np
 
 from stimupy.utils import int_factorize, resolution
@@ -720,7 +721,6 @@ def create_overview():
         "square_wave": gratings.square_wave(**p, frequency=1),
         "square_wave2": gratings.square_wave(**p, frequency=1, rotation=45),
         "sine_wave": gratings.sine_wave(**p, frequency=1),
-        "gabor": gratings.gabor(**p, frequency=1, sigma=2),
         "staircase": gratings.staircase(**p, n_bars=8),
         "plaid": gratings.plaid(grating_parameters1={**p, "frequency": 1},
                                 grating_parameters2={**p, "frequency": 1, "rotation": 90},

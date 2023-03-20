@@ -1,3 +1,3 @@
 __version__ = "0.99.0"
 
-from . import components, illusions, noises, utils
+from . import components, gabors, illusions, noises, utils
