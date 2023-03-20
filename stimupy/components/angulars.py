@@ -1,6 +1,6 @@
 import numpy as np
 
-from stimupy.components import draw_regions, mask_elements, resolve_grating_params
+from stimupy.components import draw_regions, mask_elements, waves
 from stimupy.components.circulars import ring
 from stimupy.utils import resolution
 
@@ -310,7 +310,7 @@ def grating(
         raise ValueError("'frequency' in angular grating must be smaller than 0.5")
 
     # Resolve grating
-    params = resolve_grating_params(
+    params = waves.resolve_grating_params(
         visual_angle=360,
         ppd=1,
         frequency=frequency,

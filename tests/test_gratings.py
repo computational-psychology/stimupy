@@ -1,6 +1,6 @@
 import pytest
 
-from stimupy.components import resolve_grating_params
+from stimupy.components import waves
 from stimupy.components.gratings import square_wave
 
 
@@ -19,7 +19,7 @@ from stimupy.components.gratings import square_wave
     ),
 )
 def test_valid_params(ppd, length, visual_angle, n_phases, phase_width, frequency):
-    resolve_grating_params(
+    waves.resolve_grating_params(
         ppd=ppd,
         length=length,
         visual_angle=visual_angle,

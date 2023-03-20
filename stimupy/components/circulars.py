@@ -2,10 +2,9 @@ import itertools
 
 import numpy as np
 
-from stimupy.components import image_base, mask_elements, resolve_grating_params, draw_sine_wave
+from stimupy.components import image_base, mask_elements, waves
 from stimupy.utils import resolution
 from stimupy.utils.utils import apply_bessel, round_to_vals
-
 
 __all__ = [
     "disc_and_rings",
@@ -410,7 +409,7 @@ def sine_wave(
             "'ppd', 'shape', 'frequency', 'n_rings', 'ring_width'"
         )
 
-    sw = draw_sine_wave(
+    sw = waves.sine(
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,

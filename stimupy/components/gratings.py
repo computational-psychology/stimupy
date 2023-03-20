@@ -1,6 +1,6 @@
 import numpy as np
 
-from stimupy.components import draw_regions, draw_sine_wave
+from stimupy.components import draw_regions, waves
 from stimupy.utils.utils import round_to_vals
 
 # import warnings
@@ -78,7 +78,7 @@ def sine_wave(
             "'ppd', 'shape', 'frequency', 'n_bars', 'bar_width'"
         )
 
-    sw = draw_sine_wave(
+    sw = waves.sine(
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,
