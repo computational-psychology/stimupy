@@ -1,6 +1,5 @@
 from . import (
     angulars,
-    benarys,
     checkerboards,
     circulars,
     cornsweets,
@@ -38,13 +37,6 @@ def create_overview():
     stims = {
         # Angular
         "pinwheel": angulars.pinwheel(**p, n_segments=8, target_width=1, target_indices=3),
-        # Benary
-        "benary_general": benarys.cross_generalized(**p, target_size=1, cross_thickness=2, target_x=(3, 6, 3, 6), target_y=(4, 6, 6, 4)),
-        "benary_rectangles": benarys.cross_rectangles(**p, target_size=1, cross_thickness=2),
-        "benary_triangles": benarys.cross_triangles(**p, target_size=1, cross_thickness=2),
-        "todorovic_benary_general": benarys.todorovic_generalized(**p, L_width=2, target_size=1, target_x=(3, 6, 3, 6), target_y=(4, 6, 6, 4)),
-        "todorovic_benary_rectangles": benarys.todorovic_rectangles(**p, target_size=1, L_width=2),
-        "todorovic_benary_triangles": benarys.todorovic_triangles(**p, target_size=1, L_width=2),
         # Checkerboards
         "checkerboard": checkerboards.checkerboard(**p, board_shape=8, target_indices=[(3, 2), (3, 5)]),
         "contrast-contrast": checkerboards.contrast_contrast(**p, board_shape=8, target_shape=(4, 4)),

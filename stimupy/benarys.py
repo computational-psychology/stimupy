@@ -2,7 +2,7 @@ import warnings
 
 import numpy as np
 
-from stimupy.components.shapes import cross, triangle, rectangle
+from stimupy.components.shapes import cross, rectangle, triangle
 from stimupy.utils import resolution
 
 __all__ = [
@@ -718,21 +718,27 @@ def add_targets(
     return stim
 
 
-if __name__ == "__main__":
-    from stimupy.utils import plot_stimuli
+def overview(**kwargs):
+    """Generate example stimuli from this module
+
+    Returns
+    -------
+    stims : dict
+        dict with all stimuli containing individual stimulus dicts.
+    """
+    default_params = {
+        "visual_size": 10,
+        "ppd": 30,
+        "target_size": 1,
+    }
+    default_params.update(kwargs)
 
     params_benary = {
-        "visual_size": 10,
-        "ppd": 20,
         "cross_thickness": 2,
-        "target_size": 1,
     }
 
     params_todo = {
-        "visual_size": 10,
-        "ppd": 20,
         "target_size": 1,
-        "L_width": 2,
     }
 
     target_pos = {
@@ -741,12 +747,21 @@ if __name__ == "__main__":
     }
 
     # fmt: off
-    stims = {
-        "cross": cross_generalized(**params_benary, **target_pos),
-        "rectangles": cross_rectangles(**params_benary),
-        "triangles": cross_triangles(**params_benary),
-        "todorovic_general": todorovic_generalized(**params_todo, **target_pos),
-        "todorovic_rectangles": todorovic_rectangles(**params_todo),
-        "todorovic_triangles": todorovic_triangles(**params_todo),
+    stimuli = {
+        "cross": cross_generalized(**default_params, **params_benary, **target_pos),
+        "rectangles": cross_rectangles(**default_params, **params_benary),
+        "triangles": cross_triangles(**default_params, **params_benary),
+        "todorovic_general": todorovic_generalized(**default_params, **params_todo, **target_pos),
+        "todorovic_rectangles": todorovic_rectangles(**default_params, **params_todo),
+        "todorovic_triangles": todorovic_triangles(**default_params, **params_todo),
     }
+    # fmt: on
+
+    return stimuli
+
+
+if __name__ == "__main__":
+    from stimupy.utils import plot_stimuli
+
+    stims = overview()
     plot_stimuli(stims, mask=True, save=None)

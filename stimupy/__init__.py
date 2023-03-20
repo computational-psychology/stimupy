@@ -1,6 +1,7 @@
 __version__ = "0.99.0"
 
 from . import (
+    benarys,
     components,
     cubes,
     dungeons,

@@ -708,7 +708,7 @@ def benary(visual_size=VSIZES["benary"], ppd=PPD, shape=SHAPES["benary"]):
         "target_size": 1.1 * visual_resize,
     }
 
-    stim = illusions.benarys.cross_rectangles(
+    stim = stimupy.benarys.cross_rectangles(
         **params,
         intensity_background=v3,
         intensity_cross=v1,

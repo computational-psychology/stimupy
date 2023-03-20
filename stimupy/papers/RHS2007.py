@@ -1587,7 +1587,7 @@ def benary_cross(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim = illusions.benarys.cross_triangles(
+    stim = stimupy.benarys.cross_triangles(
         visual_size=(13, 23),
         **params,
     )
@@ -1656,7 +1656,7 @@ def todorovic_benary1_2(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim = illusions.benarys.todorovic_generalized(
+    stim = stimupy.benarys.todorovic_generalized(
         visual_size=(13.0, 31.0),
         **params,
     )
@@ -1718,7 +1718,7 @@ def todorovic_benary3_4(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim = illusions.benarys.todorovic_generalized(
+    stim = stimupy.benarys.todorovic_generalized(
         visual_size=(13.0, 31.0),
         **params,
     )
@@ -1780,7 +1780,7 @@ def todorovic_benary1_2_3_4(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim = illusions.benarys.todorovic_generalized(
+    stim = stimupy.benarys.todorovic_generalized(
         visual_size=(13.0, 31.0),
         **params,
     )
