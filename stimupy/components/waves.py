@@ -527,3 +527,51 @@ def square(
     # Round sine-wave to create square wave
     stim["img"] = round_to_vals(stim["img"], intensities)
     return stim
+
+
+def overview(**kwargs):
+    """Generate example stimuli from this module
+
+    Returns
+    -------
+    stims : dict
+        dict with all stimuli containing individual stimulus dicts.
+    """
+    default_params = {"visual_size": 15, "ppd": 30, "intensities": (0.0, 1.0)}
+    default_params.update(kwargs)
+
+    grating_params = {
+        "phase_width": 3.5,
+        "period": "odd",
+        "phase_shift": 30,
+        "origin": "center",
+        "round_phase_width": False,
+    }
+
+    # fmt: off
+    stimuli = {
+        "sine wave - horizontal": sine(**default_params, **grating_params, base_type="horizontal"),
+        "sine wave - vertical": sine(**default_params, **grating_params, base_type="vertical"),
+        "sine wave - oblique": sine(**default_params, **grating_params, base_type="rotated", rotation=30),
+        "sine wave - radial": sine(**default_params, **grating_params, base_type="radial"),
+        "sine wave - angular": sine(**default_params, **grating_params, base_type="angular"),
+        "sine wave - cityblock": sine(**default_params, **grating_params, base_type="cityblock"),
+
+        "square wave - horizontal": square(**default_params, **grating_params, base_type="horizontal"),
+        "square wave - vertical": square(**default_params, **grating_params, base_type="vertical"),
+        "square wave - oblique": square(**default_params, **grating_params, base_type="rotated", rotation=30),
+        "square wave - radial": square(**default_params, **grating_params, base_type="radial"),
+        "square wave - angular": square(**default_params, **grating_params, base_type="angular"),
+        "square wave - cityblock": square(**default_params, **grating_params, base_type="cityblock"),
+
+    }
+    # fmt: on
+
+    return stimuli
+
+
+if __name__ == "__main__":
+    from stimupy.utils import plot_stimuli
+
+    stims = overview()
+    plot_stimuli(stims, mask=False, save=None)
