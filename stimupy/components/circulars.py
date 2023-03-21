@@ -4,14 +4,13 @@ import numpy as np
 
 from stimupy.components import image_base, mask_elements, waves
 from stimupy.utils import resolution
-from stimupy.utils.utils import apply_bessel, round_to_vals
+from stimupy.utils.utils import round_to_vals
 
 __all__ = [
     "disc_and_rings",
     "disc",
     "ring",
     "annulus",
-    "bessel",
     "sine_wave",
     "square_wave",
 ]
@@ -288,71 +287,6 @@ def ring(
 annulus = ring
 
 
-def bessel(
-    visual_size=None,
-    ppd=None,
-    shape=None,
-    frequency=None,
-    order=0,
-    intensity_rings=(1.0, 0.0),
-    origin="mean",
-):
-    """Draw a Bessel stimulus, i.e. draw circular rings following an nth order
-    Bessel function of a given frequency.
-
-    Parameters
-    ----------
-    visual_size : Sequence[Number, Number], Number, or None (default)
-        visual size [height, width] of image, in degrees
-    ppd : Sequence[Number, Number], Number, or None (default)
-        pixels per degree [vertical, horizontal]
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
-    frequency : Number, or None (default)
-        spatial frequency of circular grating, in cycles per degree
-    order : int
-        n-th order Bessel function
-    intensity_rings : (float, float)
-        intensity values of rings, first value indicating center intensity
-    origin : "corner", "mean" or "center"
-        if "corner": set origin to upper left corner
-        if "mean": set origin to hypothetical image center (default)
-        if "center": set origin to real center (closest existing value to mean)
-
-    Returns
-    ----------
-    dict[str, Any]
-        dict with the stimulus (key: "img"),
-        empty mask (key: "ring_mask"),
-        and additional keys containing stimulus parameters
-    """
-
-    base = image_base(
-        visual_size=visual_size,
-        ppd=ppd,
-        shape=shape,
-        rotation=0,
-        origin=origin,
-    )
-
-    arr = base["radial"] * frequency * 2 * np.pi
-    img = apply_bessel(arr, order=order)
-    img = (img - img.min()) / (img.max() - img.min())
-    img = img * (intensity_rings[0] - intensity_rings[1]) + intensity_rings[1]
-
-    stim = {
-        "img": img,
-        "ring_mask": np.zeros(base["shape"]).astype(int),
-        "visual_size": base["visual_size"],
-        "ppd": base["ppd"],
-        "shape": base["shape"],
-        "order": order,
-        "frequency": frequency,
-        "intensity_rings": intensity_rings,
-    }
-    return stim
-
-
 def sine_wave(
     visual_size=None,
     ppd=None,
@@ -542,7 +476,6 @@ if __name__ == "__main__":
         "disc": disc(**p, radius=3),
         "disc_and_rings": disc_and_rings(**p, radii=(1, 2, 3)),
         "ring": ring(**p, radii=(1, 2)),
-        "bessel": bessel(**p, frequency=0.5),
         "sine_wave": sine_wave(**p, frequency=0.5),
         "square_wave": square_wave(**p, frequency=0.5),
     }

@@ -38,8 +38,8 @@ import numpy as np
 import pandas as pd
 
 from stimupy.components import gaussians, lines, shapes
-from stimupy.components.circulars import bessel
 from stimupy.components.edges import gaussian_edge
+from stimupy.components.waves import bessel
 from stimupy.gabors import gabor
 from stimupy.illusions import checkerboards
 from stimupy.noises.binaries import binary as binary_noise

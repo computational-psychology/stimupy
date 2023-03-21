@@ -237,7 +237,6 @@ def create_overview():
         "disc": circulars.disc(**p, radius=3),
         "ring": circulars.ring(**p, radii=(1, 3)),
         "annulus (=ring)": circulars.annulus(**p, radii=(1, 3)),
-        "bessel": circulars.bessel(**p, frequency=1),
         "circular_sine_wave": circulars.sine_wave(**p, frequency=0.5),
         "circular_square_wave": circulars.square_wave(**p, frequency=0.5),
         # edges

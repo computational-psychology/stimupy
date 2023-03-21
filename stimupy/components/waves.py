@@ -7,7 +7,14 @@ import numpy as np
 from stimupy.components import draw_regions, image_base
 from stimupy.utils import int_factorize, resolution
 from stimupy.utils.contrast_conversions import adapt_intensity_range
-from stimupy.utils.utils import round_to_vals
+from stimupy.utils.utils import apply_bessel, round_to_vals
+
+__all__ = [
+    "sine",
+    "square",
+    "staircase",
+    "bessel",
+]
 
 
 def resolve_grating_params(
@@ -624,6 +631,71 @@ def staircase(
     return stim
 
 
+def bessel(
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    frequency=None,
+    order=0,
+    intensities=(1.0, 0.0),
+    origin="mean",
+):
+    """Draw a Bessel stimulus, i.e. draw circular rings following an nth order
+    Bessel function of a given frequency.
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    frequency : Number, or None (default)
+        spatial frequency of circular grating, in cycles per degree
+    order : int
+        n-th order Bessel function
+    intensities : (float, float)
+        intensity values of rings, first value indicating center intensity
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
+
+    Returns
+    ----------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        empty mask (key: "ring_mask"),
+        and additional keys containing stimulus parameters
+    """
+
+    base = image_base(
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        rotation=0,
+        origin=origin,
+    )
+
+    arr = base["radial"] * frequency * 2 * np.pi
+    img = apply_bessel(arr, order=order)
+    img = (img - img.min()) / (img.max() - img.min())
+    img = img * (intensities[0] - intensities[1]) + intensities[1]
+
+    stim = {
+        "img": img,
+        "ring_mask": np.zeros(base["shape"]).astype(int),
+        "visual_size": base["visual_size"],
+        "ppd": base["ppd"],
+        "shape": base["shape"],
+        "order": order,
+        "frequency": frequency,
+        "intensity_rings": intensities,
+    }
+    return stim
+
+
 def overview(**kwargs):
     """Generate example stimuli from this module
 
@@ -666,6 +738,7 @@ def overview(**kwargs):
         "staircase - angular": staircase(**default_params, **grating_params, base_type="angular"),
         "staircase - cityblock": staircase(**default_params, **grating_params, base_type="cityblock"),
 
+        "bessel": bessel(**default_params, frequency=0.5),
     }
     # fmt: on
 
