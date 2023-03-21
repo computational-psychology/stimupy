@@ -729,16 +729,17 @@ def overview(**kwargs):
     default_params = {
         "visual_size": 10,
         "ppd": 30,
-        "target_size": 1,
     }
     default_params.update(kwargs)
 
     params_benary = {
+        "target_size": 1,
         "cross_thickness": 2,
     }
 
     params_todo = {
         "target_size": 1,
+        "L_width": 2,
     }
 
     target_pos = {
