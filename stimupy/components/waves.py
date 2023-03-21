@@ -441,6 +441,13 @@ def sine(
         "frequency": frequency,
         "n_phases": n_phases,
         "phase_width": phase_width,
+        "period": period,
+        "rotation": rotation,
+        "phase_shift": phase_shift,
+        "round_phase_width": round_phase_width,
+        "origin": origin,
+        "base_type": base_type,
+        "intensities": intensities,
     }
     return stim
 
