@@ -2,6 +2,7 @@ __version__ = "0.99.0"
 
 from . import (
     benarys,
+    bullseyes,
     checkerboards,
     components,
     cornsweets,
@@ -17,6 +18,7 @@ from . import (
     noises,
     plaids,
     ponzos,
+    rings,
     sbcs,
     todorovics,
     utils,
@@ -27,6 +29,7 @@ from . import (
 
 __stimuli__ = [
     "benarys",
+    "bullseyes",
     "checkerboards",
     "cornsweets",
     "cubes",
@@ -39,6 +42,7 @@ __stimuli__ = [
     "mueller_lyers",
     "plaids",
     "ponzos",
+    "rings",
     "sbcs",
     "todorovics",
     "waves",
