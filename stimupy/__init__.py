@@ -17,6 +17,7 @@ from . import (
     sbcs,
     todorovics,
     utils,
+    waves,
     wedding_cakes,
     whites,
 )
@@ -34,6 +35,7 @@ __stimuli__ = [
     "ponzos",
     "sbcs",
     "todorovics",
+    "waves",
     "wedding_cakes",
     "whites",
 ]
