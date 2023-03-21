@@ -4,11 +4,11 @@ import warnings
 import numpy as np
 
 from stimupy.components import image_base
-from stimupy.gratings import squarewave
-from stimupy.pinwheels import pinwheel as radial
+from stimupy.stimuli.gratings import squarewave
+from stimupy.stimuli.pinwheels import pinwheel as radial
+from stimupy.stimuli.waves import square_radial as circular
+from stimupy.stimuli.wedding_cakes import wedding_cake
 from stimupy.utils import resolution
-from stimupy.waves import square_radial as circular
-from stimupy.wedding_cakes import wedding_cake
 
 __all__ = [
     "generalized",

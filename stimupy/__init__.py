@@ -1,10 +1,10 @@
 __version__ = "0.99.0"
 
-from . import (
+from stimupy import components, noises, utils
+from stimupy.stimuli import (
     benarys,
     bullseyes,
     checkerboards,
-    components,
     cornsweets,
     cubes,
     delboeufs,
@@ -14,13 +14,11 @@ from . import (
     hermanns,
     mondrians,
     mueller_lyers,
-    noises,
     plaids,
     ponzos,
     rings,
     sbcs,
     todorovics,
-    utils,
     waves,
     wedding_cakes,
     whites,
@@ -48,6 +46,8 @@ __stimuli__ = [
     "wedding_cakes",
     "whites",
 ]
+
+__all__ = ["components", "noises", "utils", *__stimuli__]
 
 
 def overview(skip=False):

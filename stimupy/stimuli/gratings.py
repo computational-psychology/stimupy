@@ -4,10 +4,10 @@ import numpy as np
 
 from stimupy.components.gaussians import gaussian
 from stimupy.components.shapes import parallelogram, rectangle
+from stimupy.stimuli.waves import sine_linear as sinewave
+from stimupy.stimuli.waves import square_linear as squarewave
 from stimupy.utils import pad_dict_to_shape, pad_dict_to_visual_size, resolution
 from stimupy.utils.filters import convolve
-from stimupy.waves import sine_linear as sinewave
-from stimupy.waves import square_linear as squarewave
 
 __all__ = [
     "sinewave",
