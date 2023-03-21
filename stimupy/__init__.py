@@ -11,6 +11,7 @@ from . import (
     mondrians,
     noises,
     plaids,
+    ponzos,
     sbcs,
     todorovics,
     utils,

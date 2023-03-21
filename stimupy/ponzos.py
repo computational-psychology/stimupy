@@ -140,17 +140,35 @@ def ponzo(
     return line1
 
 
-if __name__ == "__main__":
-    from stimupy.utils import plot_stim
+def overview(**kwargs):
+    """Generate example stimuli from this module
 
-    p1 = {
+    Returns
+    -------
+    stims : dict
+        dict with all stimuli containing individual stimulus dicts.
+    """
+    default_params = {
         "visual_size": 10,
-        "ppd": 20,
-        "outer_lines_length": 8,
-        "outer_lines_angle": 10,
-        "target_lines_length": 3,
-        "target_distance": 5,
+        "ppd": 30,
     }
+    default_params.update(kwargs)
 
-    stim = ponzo(**p1)
-    plot_stim(stim, stim_name="ponzo", mask=True, save=None)
+    # fmt: off
+    stimuli = {
+        "Ponzo illusion": ponzo(**default_params,
+                                outer_lines_angle=10,
+                                outer_lines_length=8,
+                                target_lines_length=3,
+                                target_distance=5)
+    }
+    # fmt: on
+
+    return stimuli
+
+
+if __name__ == "__main__":
+    from stimupy.utils import plot_stimuli
+
+    stims = overview()
+    plot_stimuli(stims, mask=True, save=None)

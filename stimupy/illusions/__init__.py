@@ -7,7 +7,6 @@ from . import (
     frames,
     gratings,
     mueller_lyers,
-    ponzos,
 )
 
 
@@ -74,8 +73,6 @@ def create_overview():
         # Mueller-Lyer
         "mueller-lyer": mueller_lyers.mueller_lyer(**p, outer_lines_length=1.5, outer_lines_angle=45, target_length=6, line_width=0.1),
         "2sided_mueller-lyer": mueller_lyers.two_sided(**p, outer_lines_length=1.5, outer_lines_angle=45, target_length=2.5, line_width=0.1),
-        # Ponzo
-        "ponzo": ponzos.ponzo(**p, outer_lines_length=8, outer_lines_width=0.1, target_lines_length=3, target_lines_width=0.1, target_distance=3),
     }
     # fmt: on
 
