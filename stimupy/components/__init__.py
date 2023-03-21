@@ -15,7 +15,6 @@ __all__ = [
     "edges",
     "frames",
     "gaussians",
-    "gratings",
     "lines",
     "shapes",
     "waves",
@@ -210,18 +209,7 @@ def draw_regions(mask, intensities, intensity_background=0.5):
     return img
 
 
-from . import (
-    angulars,
-    checkerboards,
-    circulars,
-    edges,
-    frames,
-    gaussians,
-    gratings,
-    lines,
-    shapes,
-    waves,
-)
+from . import angulars, checkerboards, circulars, edges, frames, gaussians, lines, shapes, waves
 
 
 def create_overview():
@@ -268,10 +256,6 @@ def create_overview():
         "frames_square_wave": frames.square_wave(**p, frequency=0.5),
         # gaussians
         "gaussian": gaussians.gaussian(**p, sigma=(1, 2)),
-        # gratings
-        "square_wave": gratings.square_wave(**p, frequency=1),
-        "square_wave2": gratings.square_wave(**p, frequency=1, rotation=45),
-        "sine_wave": gratings.sine_wave(**p, frequency=1),
         # lines
         "line": lines.line(**p, line_length=3),
         "dipole": lines.dipole(**p, line_length=3, line_gap=0.5),
