@@ -363,7 +363,7 @@ def grating(visual_size=VSIZES["grating"], ppd=PPD, shape=SHAPES["grating"]):
         "visual_size": single_vissize,
         "ppd": ppd,
         "n_bars": 9,
-        "target_indices": (5,),
+        "target_indices": (4,),
         "bar_width": 1.0 * visual_resize,
     }
 
