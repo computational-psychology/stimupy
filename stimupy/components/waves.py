@@ -247,7 +247,7 @@ def sine(
     period="ignore",
     rotation=0.0,
     phase_shift=None,
-    intensities=None,
+    intensities=(0.0, 1.0),
     origin=None,
     base_type=None,
     round_phase_width=None,
@@ -276,8 +276,8 @@ def sine(
         rotation of grating in degrees
     phase_shift : float or None (default)
         phase shift of grating in degrees
-    intensities : Sequence[float, float] or None (default)
-        min and max intensity of sine-wave
+    intensities : Sequence[float, float]
+        min and max intensity of sine-wave, by default (0.0, 1.0).
     origin : "corner", "mean", "center" or None (default)
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center
@@ -462,7 +462,7 @@ def square(
     period="ignore",
     rotation=0.0,
     phase_shift=None,
-    intensities=None,
+    intensities=(0.0, 1.0),
     origin=None,
     base_type=None,
     round_phase_width=None,
@@ -491,8 +491,8 @@ def square(
         rotation of grating in degrees
     phase_shift : float or None (default)
         phase shift of grating in degrees
-    intensities : Sequence[float, float] or None (default)
-        min and max intensity of square-wave
+    intensities : Sequence[float, float]
+        min and max intensity of square-wave, by default (0.0, 1.0).
     origin : "corner", "mean", "center" or None (default)
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center
