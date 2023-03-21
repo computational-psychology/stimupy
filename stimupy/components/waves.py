@@ -460,7 +460,7 @@ def square(
     base_type=None,
     round_phase_width=None,
 ):
-    """Draw a sine-wave grating given a certain base_type
+    """Draw a square-wave grating given a certain base_type
 
     Parameters
     ----------
@@ -485,7 +485,7 @@ def square(
     phase_shift : float or None (default)
         phase shift of grating in degrees
     intensities : Sequence[float, float] or None (default)
-        min and max intensity of sine-wave
+        min and max intensity of square-wave
     origin : "corner", "mean", "center" or None (default)
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center
