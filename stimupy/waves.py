@@ -17,6 +17,29 @@ __all__ = [
 ]
 
 
+def add_targets(wave_stim, target_indices, intensity_target):
+    # Create target-mask
+    if isinstance(target_indices, (int)):
+        target_indices = [target_indices]
+
+    targets_mask = np.zeros_like(wave_stim["grating_mask"])
+    for target_idx, bar_idx in enumerate(target_indices):
+        targets_mask = np.where(
+            wave_stim["grating_mask"] == (bar_idx + 1), target_idx + 1, targets_mask
+        )
+    targets_mask = targets_mask.astype(int)
+    wave_stim["target_mask"] = targets_mask
+
+    # Place target(s)
+    if isinstance(intensity_target, (int, float)):
+        intensities = [intensity_target]
+        intensities = itertools.cycle(intensities)
+    for target_idx, intensity in zip(np.unique(targets_mask[targets_mask > 0]), intensities):
+        wave_stim["img"] = np.where(targets_mask == target_idx, intensity, wave_stim["img"])
+
+    return wave_stim
+
+
 def sine_linear(
     visual_size=None,
     ppd=None,
@@ -118,26 +141,9 @@ def sine_linear(
     stim["bar_width"] = stim.pop("phase_width")
     stim.pop("base_type")
 
-    # Resolve targets
+    # Add targets(?)
     if target_indices is not None and target_indices != ():
-        # Create target-mask
-        if isinstance(target_indices, (int)):
-            target_indices = [target_indices]
-
-        targets_mask = np.zeros_like(stim["grating_mask"])
-        for target_idx, bar_idx in enumerate(target_indices):
-            targets_mask = np.where(
-                stim["grating_mask"] == (bar_idx + 1), target_idx + 1, targets_mask
-            )
-        targets_mask = targets_mask.astype(int)
-        stim["target_mask"] = targets_mask
-
-        # Place target(s)
-        if isinstance(intensity_target, (int, float)):
-            intensities = [intensity_target]
-            intensities = itertools.cycle(intensities)
-        for target_idx, intensity in zip(np.unique(targets_mask[targets_mask > 0]), intensities):
-            stim["img"] = np.where(targets_mask == target_idx, intensity, stim["img"])
+        stim = add_targets(stim, target_indices=target_indices, intensity_target=intensity_target)
 
     return stim
 
@@ -238,26 +244,9 @@ def square_linear(
     stim["intensity_bars"] = stim.pop("intensities")
     stim.pop("base_type")
 
-    # Resolve targets
+    # Add targets(?)
     if target_indices is not None and target_indices != ():
-        # Create target-mask
-        if isinstance(target_indices, (int)):
-            target_indices = [target_indices]
-
-        targets_mask = np.zeros_like(stim["grating_mask"])
-        for target_idx, bar_idx in enumerate(target_indices):
-            targets_mask = np.where(
-                stim["grating_mask"] == (bar_idx + 1), target_idx + 1, targets_mask
-            )
-        targets_mask = targets_mask.astype(int)
-        stim["target_mask"] = targets_mask
-
-        # Place target(s)
-        if isinstance(intensity_target, (int, float)):
-            intensities = [intensity_target]
-            intensities = itertools.cycle(intensities)
-        for target_idx, intensity in zip(np.unique(targets_mask[targets_mask > 0]), intensities):
-            stim["img"] = np.where(targets_mask == target_idx, intensity, stim["img"])
+        stim = add_targets(stim, target_indices=target_indices, intensity_target=intensity_target)
 
     return stim
 
