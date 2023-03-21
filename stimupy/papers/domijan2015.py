@@ -369,12 +369,12 @@ def grating(visual_size=VSIZES["grating"], ppd=PPD, shape=SHAPES["grating"]):
 
     stim1 = stimupy.waves.square_linear(
         **params,
-        intensity_bars=(v1, v3),
+        intensity_bars=(v3, v1),
         intensity_target=v2,
     )
     stim2 = stimupy.waves.square_linear(
         **params,
-        intensity_bars=(v3, v1),
+        intensity_bars=(v1, v3),
         intensity_target=v2,
     )
 
