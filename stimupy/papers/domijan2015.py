@@ -502,12 +502,12 @@ def bullseye(visual_size=VSIZES["bullseye"], ppd=PPD, shape=SHAPES["bullseye"]):
         "origin": "mean",
     }
 
-    stim1 = illusions.frames.bullseye_generalized(
+    stim1 = stimupy.bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(v1, v3),
         intensity_target=v2,
     )
-    stim2 = illusions.frames.bullseye_generalized(
+    stim2 = stimupy.bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(v3, v1),
         intensity_target=v2,
