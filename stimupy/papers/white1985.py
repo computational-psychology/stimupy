@@ -56,6 +56,12 @@ v1, v2, v3 = 0.0, 0.5, 1.0
 START_PHASE1 = -180
 START_PHASE2 = 0
 
+COMMON_PARAMS = {
+    "intensity_bars": (v1, v3),
+    "intensity_target": v2,
+    "orientation": "vertical",
+}
+
 
 def gen_all(ppd=PPD, skip=False):
     stims = {}  # save the stimulus-dicts in a larger dict, with name as key
@@ -125,12 +131,10 @@ def wide_0phase(ppd=PPD):
         "bar_width": bar_width,
         "target_size": (bar_width * 9, 0.75),
         "target_phase_shift": START_PHASE1 + 0,
-        "intensity_bars": (v3, v1),
-        "intensity_target": v2,
-        "orientation": "vertical",
+        **COMMON_PARAMS,
     }
 
-    stim = grating.counterphase_induction(**params)
+    stim = grating.phase_shifted(**params)
     stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
@@ -168,12 +172,10 @@ def wide_36phase(ppd=PPD):
         "bar_width": bar_width,
         "target_size": (bar_width * 9, 0.75),
         "target_phase_shift": START_PHASE1 + 36,
-        "intensity_bars": (v3, v1),
-        "intensity_target": v2,
-        "orientation": "vertical",
+        **COMMON_PARAMS,
     }
 
-    stim = grating.counterphase_induction(**params)
+    stim = grating.phase_shifted(**params)
     stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
@@ -212,12 +214,10 @@ def wide_72phase(ppd=PPD):
         "bar_width": bar_width,
         "target_size": (bar_width * 9, 0.75),
         "target_phase_shift": START_PHASE1 + 72,
-        "intensity_bars": (v3, v1),
-        "intensity_target": v2,
-        "orientation": "vertical",
+        **COMMON_PARAMS,
     }
 
-    stim = grating.counterphase_induction(**params)
+    stim = grating.phase_shifted(**params)
     stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
@@ -256,12 +256,10 @@ def wide_108phase(ppd=PPD):
         "bar_width": bar_width,
         "target_size": (bar_width * 9, 0.75),
         "target_phase_shift": START_PHASE1 + 108,
-        "intensity_bars": (v3, v1),
-        "intensity_target": v2,
-        "orientation": "vertical",
+        **COMMON_PARAMS,
     }
 
-    stim = grating.counterphase_induction(**params)
+    stim = grating.phase_shifted(**params)
     stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
@@ -300,12 +298,10 @@ def wide_144phase(ppd=PPD):
         "bar_width": bar_width,
         "target_size": (bar_width * 9, 0.75),
         "target_phase_shift": START_PHASE1 + 144,
-        "intensity_bars": (v3, v1),
-        "intensity_target": v2,
-        "orientation": "vertical",
+        **COMMON_PARAMS,
     }
 
-    stim = grating.counterphase_induction(**params)
+    stim = grating.phase_shifted(**params)
     stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
@@ -344,12 +340,10 @@ def wide_180phase(ppd=PPD):
         "bar_width": bar_width,
         "target_size": (bar_width * 9, 0.75),
         "target_phase_shift": START_PHASE1 + 180,
-        "intensity_bars": (v3, v1),
-        "intensity_target": v2,
-        "orientation": "vertical",
+        **COMMON_PARAMS,
     }
 
-    stim = grating.counterphase_induction(**params)
+    stim = grating.phase_shifted(**params)
     stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
@@ -388,12 +382,10 @@ def square_0phase(ppd=PPD):
         "bar_width": bar_width,
         "target_size": (bar_width * 9, bar_width),
         "target_phase_shift": START_PHASE2 + 0,
-        "intensity_bars": (v3, v1),
-        "intensity_target": v2,
-        "orientation": "vertical",
+        **COMMON_PARAMS,
     }
 
-    stim = grating.counterphase_induction(**params)
+    stim = grating.phase_shifted(**params)
     stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
@@ -432,12 +424,10 @@ def square_36phase(ppd=PPD):
         "bar_width": bar_width,
         "target_size": (bar_width * 9, bar_width),
         "target_phase_shift": START_PHASE2 + 36,
-        "intensity_bars": (v3, v1),
-        "intensity_target": v2,
-        "orientation": "vertical",
+        **COMMON_PARAMS,
     }
 
-    stim = grating.counterphase_induction(**params)
+    stim = grating.phase_shifted(**params)
     stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
@@ -476,12 +466,10 @@ def square_72phase(ppd=PPD):
         "bar_width": bar_width,
         "target_size": (bar_width * 9, bar_width),
         "target_phase_shift": START_PHASE2 + 72,
-        "intensity_bars": (v3, v1),
-        "intensity_target": v2,
-        "orientation": "vertical",
+        **COMMON_PARAMS,
     }
 
-    stim = grating.counterphase_induction(**params)
+    stim = grating.phase_shifted(**params)
     stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
@@ -520,12 +508,10 @@ def square_108phase(ppd=PPD):
         "bar_width": bar_width,
         "target_size": (bar_width * 9, bar_width),
         "target_phase_shift": START_PHASE2 + 108,
-        "intensity_bars": (v3, v1),
-        "intensity_target": v2,
-        "orientation": "vertical",
+        **COMMON_PARAMS,
     }
 
-    stim = grating.counterphase_induction(**params)
+    stim = grating.phase_shifted(**params)
     stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
@@ -564,12 +550,10 @@ def square_144phase(ppd=PPD):
         "bar_width": bar_width,
         "target_size": (bar_width * 9, bar_width),
         "target_phase_shift": START_PHASE2 + 144,
-        "intensity_bars": (v3, v1),
-        "intensity_target": v2,
-        "orientation": "vertical",
+        **COMMON_PARAMS,
     }
 
-    stim = grating.counterphase_induction(**params)
+    stim = grating.phase_shifted(**params)
     stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
@@ -608,12 +592,10 @@ def square_180phase(ppd=PPD):
         "bar_width": bar_width,
         "target_size": (bar_width * 9, bar_width),
         "target_phase_shift": START_PHASE2 + 180,
-        "intensity_bars": (v3, v1),
-        "intensity_target": v2,
-        "orientation": "vertical",
+        **COMMON_PARAMS,
     }
 
-    stim = grating.counterphase_induction(**params)
+    stim = grating.phase_shifted(**params)
     stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
