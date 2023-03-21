@@ -6,7 +6,6 @@ from . import (
     delboeufs,
     frames,
     gratings,
-    hermanns,
     mueller_lyers,
     ponzos,
 )
@@ -72,8 +71,6 @@ def create_overview():
         "counterphase_induction": gratings.counterphase_induction(**p, frequency=1, target_size=4, target_phase_shift=90,),
         "grating_induction": gratings.induction(**p, frequency=0.5, target_width=0.5),
         "grating_induction_blur": gratings.induction_blur(**p, frequency=0.5, target_width=0.5, sigma=0.1),
-        # Hermann´
-        "hermann": hermanns.grid(**p, element_size=(1.5, 1.5, 0.2)),
         # Mueller-Lyer
         "mueller-lyer": mueller_lyers.mueller_lyer(**p, outer_lines_length=1.5, outer_lines_angle=45, target_length=6, line_width=0.1),
         "2sided_mueller-lyer": mueller_lyers.two_sided(**p, outer_lines_length=1.5, outer_lines_angle=45, target_length=2.5, line_width=0.1),

@@ -6,6 +6,7 @@ from . import (
     cubes,
     dungeons,
     gabors,
+    hermanns,
     illusions,
     mondrians,
     noises,

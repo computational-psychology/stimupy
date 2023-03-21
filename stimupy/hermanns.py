@@ -83,8 +83,31 @@ def grid(
     return stim
 
 
-if __name__ == "__main__":
-    from stimupy.utils import plot_stim
+def overview(**kwargs):
+    """Generate example stimuli from this module
 
-    stim = grid(visual_size=10, ppd=10, element_size=(1.5, 1.5, 0.2))
-    plot_stim(stim, stim_name="hermann_grid", mask=True, save=None)
+    Returns
+    -------
+    stims : dict
+        dict with all stimuli containing individual stimulus dicts.
+    """
+    default_params = {
+        "visual_size": 10,
+        "ppd": 30,
+    }
+    default_params.update(kwargs)
+
+    # fmt: off
+    stimuli = {
+        "Hermann grid": grid(**default_params, element_size=(1.5, 1.5, 0.2))
+    }
+    # fmt: on
+
+    return stimuli
+
+
+if __name__ == "__main__":
+    from stimupy.utils import plot_stimuli
+
+    stims = overview()
+    plot_stimuli(stims, mask=True, save=None)
