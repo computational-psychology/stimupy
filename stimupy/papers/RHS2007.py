@@ -138,7 +138,7 @@ def WE_thick(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "frequency": 4.0 / width,
-        "intensity_bars": (v3, v1),
+        "intensity_bars": (v1, v3),
         "intensity_target": v2,
         "target_indices": (2, 5),
         "target_height": 4.0,
@@ -199,7 +199,7 @@ def WE_thin_wide(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "frequency": 8.0 / width,
-        "intensity_bars": (v1, v3),
+        "intensity_bars": (v3, v1),
         "intensity_target": v2,
         "target_indices": (3, 12),
         "target_height": 2.0,
@@ -251,7 +251,7 @@ def WE_dual(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "frequency": 4.0 / width,
-        "intensity_bars": (v3, v1),
+        "intensity_bars": (v1, v3),
         "intensity_target": v2,
         "target_indices": (2, 5),
         "target_height": 2.0,
@@ -321,7 +321,7 @@ def WE_anderson(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "frequency": 8.0 / width,
-        "intensity_bars": (v3, v1),
+        "intensity_bars": (v1, v3),
         "intensity_target": v2,
         "target_indices_top": (5,),
         "target_indices_bottom": (10,),
@@ -390,7 +390,7 @@ def WE_howe(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "frequency": 8.0 / width,
-        "intensity_bars": (v3, v1),
+        "intensity_bars": (v1, v3),
         "intensity_target": v2,
         "target_indices_top": (5,),
         "target_indices_bottom": (10,),

@@ -4,7 +4,7 @@ import warnings
 import numpy as np
 
 from stimupy.components import image_base
-from stimupy.components.gratings import square_wave
+from stimupy.gratings import squarewave
 from stimupy.illusions.angulars import pinwheel as radial
 from stimupy.illusions.circulars import rings as circular
 from stimupy.utils import resolution
@@ -33,7 +33,7 @@ def generalized(
     period="ignore",
     rotation=0,
     phase_shift=0,
-    intensity_bars=(1.0, 0.0),
+    intensity_bars=(0.0, 1.0),
     target_indices=(),
     intensity_target=0.5,
     target_center_offsets=0,
@@ -101,7 +101,7 @@ def generalized(
         raise ValueError("generalized() missing argument 'target_heights' which is not 'None'")
 
     # Spatial square-wave grating
-    stim = square_wave(
+    stim = squarewave(
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,

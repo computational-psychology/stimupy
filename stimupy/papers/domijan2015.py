@@ -644,7 +644,7 @@ def white(visual_size=VSIZES["white"], ppd=PPD, pad=PAD, shape=SHAPES["white"]):
 
     stim = stimupy.whites.white(
         **params,
-        intensity_bars=(v3, v1),
+        intensity_bars=(v1, v3),
         intensity_target=v2,
     )
 
@@ -1091,7 +1091,7 @@ def white_yazdanbakhsh(
 
     stim = stimupy.whites.yazdanbakhsh(
         **params,
-        intensity_bars=(v3, v1),
+        intensity_bars=(v1, v3),
         intensity_target=v2,
         intensity_stripes=(v3, v1),
     )
@@ -1178,7 +1178,7 @@ def white_anderson(
 
     stim = stimupy.whites.anderson(
         **params,
-        intensity_bars=(v1, v3),
+        intensity_bars=(v3, v1),
         intensity_target=v2,
         intensity_stripes=(v1, v3),
     )
@@ -1260,7 +1260,7 @@ def white_howe(visual_size=VSIZES["white_howe"], ppd=PPD, shape=SHAPES["white_ho
 
     stim = stimupy.whites.howe(
         **params,
-        intensity_bars=(v1, v3),
+        intensity_bars=(v3, v1),
         intensity_target=v2,
         intensity_stripes=(v1, v3),
     )
