@@ -195,10 +195,10 @@ def overview(**kwargs):
     # fmt: off
     stimuli = {
         "Wedding cake": wedding_cake(**default_params,
-        L_size= (3, 3, 1),
-        target_height=1,
-        target_indices1=None,
-        target_indices2=((0, 1), (1, 1)),)
+                                     L_size= (3, 3, 1),
+                                     target_height=1,
+                                     target_indices1=None,
+                                     target_indices2=((0, 1), (1, 1)),)
     }
     # fmt: on
 

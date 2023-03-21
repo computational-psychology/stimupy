@@ -1,5 +1,3 @@
-import numpy as np
-
 from stimupy.components import waves
 from stimupy.components.gaussians import gaussian
 

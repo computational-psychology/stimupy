@@ -839,12 +839,9 @@ def overview(**kwargs):
     # fmt: off
     stimuli = {
         "rectangle": rectangle(**default_params, **rectangle_params, covers_offset=1.5),
-        "rectangle_general": rectangle_generalized(**default_params, **rectangle_params,
-                    target_position=3.5, covers_x=(2, 6), covers_y=(2, 6)
-        ),
+        "rectangle_general": rectangle_generalized(**default_params, **rectangle_params, target_position=3.5, covers_x=(2, 6), covers_y=(2, 6)),
         "cross": cross(**default_params, **cross_params, covers_size=2),
-        "cross_general": cross_generalized(**default_params, **cross_params,
-                    covers_size=2, covers_x=(2, 6), covers_y=(2, 6)),
+        "cross_general": cross_generalized(**default_params, **cross_params, covers_size=2, covers_x=(2, 6), covers_y=(2, 6)),
         "equal": equal(**default_params, **cross_params,),
         "two_sided_rectangle": two_sided_rectangle(**default_params, **rectangle_params, covers_offset=1),
         "two_sided_cross": two_sided_cross(**default_params, **cross_params, covers_size=1),
