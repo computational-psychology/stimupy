@@ -18,7 +18,7 @@ __all__ = [
     "gratings",
     "lines",
     "shapes",
-    "waves"
+    "waves",
 ]
 
 
@@ -272,7 +272,6 @@ def create_overview():
         "square_wave": gratings.square_wave(**p, frequency=1),
         "square_wave2": gratings.square_wave(**p, frequency=1, rotation=45),
         "sine_wave": gratings.sine_wave(**p, frequency=1),
-        "staircase": gratings.staircase(**p, n_bars=8),
         # lines
         "line": lines.line(**p, line_length=3),
         "dipole": lines.dipole(**p, line_length=3, line_gap=0.5),

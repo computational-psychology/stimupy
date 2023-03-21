@@ -4,7 +4,7 @@ from copy import deepcopy
 
 import numpy as np
 
-from stimupy.components import image_base
+from stimupy.components import draw_regions, image_base
 from stimupy.utils import int_factorize, resolution
 from stimupy.utils.contrast_conversions import adapt_intensity_range
 from stimupy.utils.utils import round_to_vals
@@ -534,6 +534,96 @@ def square(
     return stim
 
 
+def staircase(
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    frequency=None,
+    n_phases=None,
+    phase_width=None,
+    period="ignore",
+    rotation=0.0,
+    phase_shift=None,
+    origin=None,
+    base_type=None,
+    round_phase_width=None,
+    intensities=(0.0, 1.0),
+):
+    """Draw a luminance staircase
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    frequency : Number, or None (default)
+        spatial frequency of grating, in cycles per degree visual angle
+    n_phases : int, or None (default)
+        number of phases in the grating
+    phase_width : Number, or None (default)
+        width of a single phase, in degrees visual angle
+    period : "even", "odd", "either", "ignore" (default)
+        ensure whether the grating has "even" number of phases, "odd"
+        number of phases, either or whether not to round the number of
+        phases ("ignore")
+    rotation : float or None (default)
+        rotation of grating in degrees
+    phase_shift : float or None (default)
+        phase shift of grating in degrees
+    origin : "corner", "mean", "center" or None (default)
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center
+        if "center": set origin to real center (closest existing value to mean)
+    base_type : str or None
+        if "horizontal", use distance from origin in x-direction,
+        if "vertical", use distance from origin in x-direction;
+        if "rotated", use combined and rotated distance from origin in x-y;
+        if "radial", use radial distance from origin,
+        if "angular", use angular distance from origin,
+        if "cityblock", use cityblock distance from origin
+    round_phase_width : Bool or None (default)
+        if True, round width of bars given resolution
+    intensities : Sequence[float, ...]
+        if len(intensities)==2, intensity range of staircase (default 0.0, 1.0);
+        if len(intensities)>2, intensity value for each phase.
+        Can specify as many intensities as n_phases.
+        If fewer intensities are passed than n_phases, cycles through intensities.
+
+    Returns
+    -------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each phase (key: "grating_mask"),
+        and additional keys containing stimulus parameters
+    """
+
+    stim = square(
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        frequency=frequency,
+        n_phases=n_phases,
+        phase_width=phase_width,
+        period=period,
+        rotation=rotation,
+        phase_shift=phase_shift,
+        origin=origin,
+        round_phase_width=round_phase_width,
+        base_type=base_type,
+    )
+
+    if len(intensities) == 2:
+        intensities = np.linspace(intensities[0], intensities[1], int(np.ceil(stim["n_phases"])))
+
+    # Use grating_mask to draw staircase
+    stim["img"] = draw_regions(mask=stim["grating_mask"], intensities=intensities)
+    stim["intensity_phases"] = intensities
+    return stim
+
+
 def overview(**kwargs):
     """Generate example stimuli from this module
 
@@ -568,6 +658,13 @@ def overview(**kwargs):
         "square wave - radial": square(**default_params, **grating_params, base_type="radial"),
         "square wave - angular": square(**default_params, **grating_params, base_type="angular"),
         "square wave - cityblock": square(**default_params, **grating_params, base_type="cityblock"),
+
+        "staircase - horizontal": staircase(**default_params, **grating_params, base_type="horizontal"),
+        "staircase - vertical": staircase(**default_params, **grating_params, base_type="vertical"),
+        "staircase - oblique": staircase(**default_params, **grating_params, base_type="rotated", rotation=30),
+        "staircase - radial": staircase(**default_params, **grating_params, base_type="radial"),
+        "staircase - angular": staircase(**default_params, **grating_params, base_type="angular"),
+        "staircase - cityblock": staircase(**default_params, **grating_params, base_type="cityblock"),
 
     }
     # fmt: on
