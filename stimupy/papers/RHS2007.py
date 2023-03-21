@@ -1835,11 +1835,11 @@ def bullseye_thin(ppd=PPD, pad=True):
         "origin": "mean",
     }
 
-    stim1 = illusions.frames.bullseye_generalized(
+    stim1 = stimupy.bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(v1, v3),
     )
-    stim2 = illusions.frames.bullseye_generalized(
+    stim2 = stimupy.bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(v3, v1),
     )
@@ -1896,11 +1896,11 @@ def bullseye_thick(ppd=PPD, pad=True):
         "origin": "mean",
     }
 
-    stim1 = illusions.frames.bullseye_generalized(
+    stim1 = stimupy.bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(v1, v3),
     )
-    stim2 = illusions.frames.bullseye_generalized(
+    stim2 = stimupy.bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(v3, v1),
     )

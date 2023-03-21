@@ -1,4 +1,4 @@
-from . import angulars, frames
+from . import angulars
 
 
 def create_overview():
@@ -26,13 +26,6 @@ def create_overview():
     stims = {
         # Angular
         "pinwheel": angulars.pinwheel(**p, n_segments=8, target_width=1, target_indices=3),
-        # Frames
-        "frames": frames.rings(**p, frequency=0.5, target_indices=3),
-        "frames_general": frames.rings_generalized(**p, radii=(1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5), target_indices=3),
-        "2sided_frames": frames.two_sided_rings(**p, frequency=1, target_indices=3),
-        "frames_bullseye": frames.bullseye(**p, frequency=0.5),
-        "frames_bullseye_general": frames.bullseye_generalized(**p, radii=(1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5)),
-        "2sided_bullseye": frames.two_sided_bullseye(**p, frequency=1),
     }
     # fmt: on
 

@@ -243,8 +243,6 @@ def create_overview():
         "cornsweet_edge": edges.cornsweet_edge(**p, ramp_width=3),
         # frames
         "frames": frames.frames(**p, radii=(1, 2, 3)),
-        "frames_sine_wave": frames.sine_wave(**p, frequency=0.5),
-        "frames_square_wave": frames.square_wave(**p, frequency=0.5),
         # gaussians
         "gaussian": gaussians.gaussian(**p, sigma=(1, 2)),
         # lines
