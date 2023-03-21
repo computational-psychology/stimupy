@@ -143,7 +143,7 @@ def rectangular_generalized(
     intensity_background=0.5,
     target_indices=(),
     intensity_target=0.5,
-    origin="center",
+    origin="mean",
 ):
     """Draw sequential set of square frames with specified radii and targets
 
@@ -227,6 +227,7 @@ def rectangular_two_sided(
     intensity_background=0.5,
     target_indices=(),
     intensity_target=0.5,
+    origin="mean",
 ):
     """Draw set of square frames, with some frame(s) as target
 
@@ -256,6 +257,10 @@ def rectangular_two_sided(
         intensity value for each target, by default 0.5.
         Can specify as many intensities as number of target_indices;
         If fewer intensities are passed than target_indices, cycles through intensities
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
 
     Returns
     -------
@@ -286,6 +291,7 @@ def rectangular_two_sided(
         intensity_target=intensity_target,
         intensity_frames=intensity_frames,
         target_indices=target_indices,
+        origin=origin,
         clip=True,
         intensity_background=intensity_background,
     )
@@ -300,6 +306,7 @@ def rectangular_two_sided(
         intensity_target=intensity_target,
         intensity_frames=intensity_frames[::-1],
         target_indices=target_indices,
+        origin=origin,
         clip=True,
         intensity_background=intensity_background,
     )
