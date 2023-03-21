@@ -44,7 +44,6 @@ def create_overview():
         "frames_bullseye_general": frames.bullseye_generalized(**p, radii=(1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5)),
         "2sided_bullseye": frames.two_sided_bullseye(**p, frequency=1),
         # Grating
-        "square_wave": gratings.square_wave(**p, frequency=0.5, target_indices=(3,)),
         "grating_uniform": gratings.uniform(**p, frequency=1, grating_size=3, target_indices=(3,)),
         "grating_grating1": gratings.grating(large_grating_params={**p, "frequency": 2, "rotation": 45},
                                              small_grating_params={**p_small_grating, "visual_size": 4, "target_indices": (1, 3, 5, 7),}),

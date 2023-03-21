@@ -367,12 +367,12 @@ def grating(visual_size=VSIZES["grating"], ppd=PPD, shape=SHAPES["grating"]):
         "bar_width": 1.0 * visual_resize,
     }
 
-    stim1 = illusions.gratings.square_wave(
+    stim1 = stimupy.waves.square_linear(
         **params,
         intensity_bars=(v1, v3),
         intensity_target=v2,
     )
-    stim2 = illusions.gratings.square_wave(
+    stim2 = stimupy.waves.square_linear(
         **params,
         intensity_bars=(v3, v1),
         intensity_target=v2,
