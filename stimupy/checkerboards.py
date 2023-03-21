@@ -419,22 +419,21 @@ def overview(**kwargs):
     stims : dict
         dict with all stimuli containing individual stimulus dicts.
     """
-    default_params = {"ppd": 30}
+    default_params = {"visual_size": (10, 10), "ppd": 30}
     default_params.update(kwargs)
 
-    p = {
-        "board_shape": (10, 10),
-        "check_visual_size": (2, 2),
-    }
+    # p = {
+    #     "board_shape": (10, 10),
+    # }
 
     # fmt: off
     stimuli = {
-        "checkerboard": checkerboard(**p),
-        "checkerboard rotated": checkerboard(**p, rotation=45),
-        "checkerboard from frequency": checkerboard(**p, frequency=1),
-        "checkerboard from frequency, rotated": checkerboard(**p, frequency=1, rotation=45),
-        "checkerboard with targets": checkerboard(**p, target_indices=[(3, 2), (5, 5)]),
-        "Checkerboard Contrast-Contrast illusion": contrast_contrast(**p, target_shape=(4, 4)),
+        "checkerboard": checkerboard(**default_params, check_visual_size=(1, 1)),
+        "checkerboard rotated": checkerboard(**default_params, check_visual_size=(1, 1), rotation=45),
+        "checkerboard from frequency": checkerboard(**default_params, frequency=1),
+        "checkerboard from frequency, rotated": checkerboard(**default_params, frequency=1, rotation=45),
+        "checkerboard with targets": checkerboard(**default_params, check_visual_size=(1, 1), target_indices=[(3, 2), (5, 5)]),
+        "Checkerboard Contrast-Contrast illusion": contrast_contrast(**default_params, check_visual_size=(1, 1), target_shape=(4, 4)),
     }
     # fmt: on
 
