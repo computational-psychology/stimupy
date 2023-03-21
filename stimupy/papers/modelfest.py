@@ -1192,8 +1192,8 @@ def Subthreshold22(ppd=PPD):
     stim1["img"] = stim1["img"] / 2 + stim2["img"] / 2
     stim1["grating_mask2"] = stim2["grating_mask"]
     stim1["frequency2"] = stim2["frequency"]
-    stim1["bar_width2"] = stim2["bar_width"]
-    stim1["n_bars2"] = stim2["n_bars"]
+    stim1["phase_width2"] = stim2["phase_width"]
+    stim1["n_phases2"] = stim2["n_phases"]
 
     v = 85
     experimental_data = {
@@ -1247,8 +1247,8 @@ def Subthreshold23(ppd=PPD):
     stim1["img"] = stim1["img"] / 2 + stim2["img"] / 2
     stim1["grating_mask2"] = stim2["grating_mask"]
     stim1["frequency2"] = stim2["frequency"]
-    stim1["bar_width2"] = stim2["bar_width"]
-    stim1["n_bars2"] = stim2["n_bars"]
+    stim1["phase_width2"] = stim2["phase_width"]
+    stim1["n_phases2"] = stim2["n_phases"]
 
     v = 89
     experimental_data = {
@@ -1302,8 +1302,8 @@ def Subthreshold24(ppd=PPD):
     stim1["img"] = stim1["img"] / 2 + stim2["img"] / 2
     stim1["grating_mask2"] = stim2["grating_mask"]
     stim1["frequency2"] = stim2["frequency"]
-    stim1["bar_width2"] = stim2["bar_width"]
-    stim1["n_bars2"] = stim2["n_bars"]
+    stim1["phase_width2"] = stim2["phase_width"]
+    stim1["n_phases2"] = stim2["n_phases"]
 
     v = 93
     experimental_data = {
@@ -1357,8 +1357,8 @@ def Subthreshold25(ppd=PPD):
     stim1["img"] = stim1["img"] / 2 + stim2["img"] / 2
     stim1["grating_mask2"] = stim2["grating_mask"]
     stim1["frequency2"] = stim2["frequency"]
-    stim1["bar_width2"] = stim2["bar_width"]
-    stim1["n_bars2"] = stim2["n_bars"]
+    stim1["phase_width2"] = stim2["phase_width"]
+    stim1["n_phases2"] = stim2["n_phases"]
 
     v = 97
     experimental_data = {
