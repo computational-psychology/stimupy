@@ -417,8 +417,8 @@ def sine(
         if origin == "mean":
             edges -= distances.min()
     else:
-        edges_pos = np.arange(0 + (phase_width / 2), dmax, phase_width) + 1e-5
-        edges_neg = -np.arange(0 + (phase_width / 2), dmax, phase_width) - 1e-5
+        edges_pos = np.arange(0 + (phase_width / 2), dmax, phase_width) + 1e-4
+        edges_neg = -np.arange(0 + (phase_width / 2), dmax, phase_width) - 1e-4
         edges = np.unique(np.append(edges_neg[::-1], edges_pos))
 
     edges -= (((phase_shift) % 360) / 180) * phase_width
