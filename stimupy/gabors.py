@@ -1,7 +1,7 @@
 import numpy as np
 
+from stimupy.components import waves
 from stimupy.components.gaussians import gaussian
-from stimupy.components.gratings import sine_wave
 
 __all__ = ["gabor"]
 
@@ -11,15 +11,17 @@ def gabor(
     ppd=None,
     shape=None,
     frequency=None,
-    bar_width=None,
-    sigma=None,
+    n_phases=None,
+    phase_width=None,
     period="ignore",
-    rotation=0,
-    phase_shift=0,
-    intensity_bars=(0.0, 1.0),
-    origin="center",
+    rotation=0.0,
+    phase_shift=None,
+    intensities=(0.0, 1.0),
+    origin=None,
+    round_phase_width=False,
+    sigma=None,
 ):
-    """Draw sine-wave grating (set of bars) of given spatial frequency
+    """Draw a Gabor: a sinewave grating in a Gaussian envelope
 
     Parameters
     ----------
@@ -60,17 +62,20 @@ def gabor(
     if sigma is None:
         raise ValueError("gabor() missing argument 'sigma' which is not 'None'")
 
-    stim = sine_wave(
+    stim = waves.sine(
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,
         frequency=frequency,
-        bar_width=bar_width,
+        n_phases=n_phases,
+        phase_width=phase_width,
         period=period,
         rotation=rotation,
         phase_shift=phase_shift,
-        intensity_bars=intensity_bars,
+        intensities=intensities,
         origin=origin,
+        base_type="rotated",
+        round_phase_width=round_phase_width,
     )
 
     gaussian_window = gaussian(
@@ -79,7 +84,7 @@ def gabor(
         sigma=sigma,
         origin=origin,
     )
-    mean_int = (intensity_bars[0] + intensity_bars[1]) / 2
+    mean_int = (intensities[0] + intensities[1]) / 2
     stim["img"] = (stim["img"] - mean_int) * gaussian_window["img"] + mean_int
 
     return {

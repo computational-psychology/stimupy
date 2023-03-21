@@ -7,6 +7,7 @@ from . import (
     delboeufs,
     dungeons,
     gabors,
+    gratings,
     hermanns,
     illusions,
     mondrians,
@@ -17,6 +18,7 @@ from . import (
     sbcs,
     todorovics,
     utils,
+    waves,
     wedding_cakes,
     whites,
 )
@@ -27,6 +29,7 @@ __stimuli__ = [
     "delboeufs",
     "dungeons",
     "gabors",
+    "gratings",
     "hermanns",
     "mondrians",
     "mueller_lyers",
@@ -34,6 +37,7 @@ __stimuli__ = [
     "ponzos",
     "sbcs",
     "todorovics",
+    "waves",
     "wedding_cakes",
     "whites",
 ]

@@ -209,12 +209,12 @@ def sine_wave(
                 rectangle_size=rsize,
             )
         sw["img"] = np.where(rect["shape_mask"], sw["img"], intensity_background)
-        sw["mask"] = np.where(rect["shape_mask"], sw["mask"], 0)
+        sw["grating_mask"] = np.where(rect["shape_mask"], sw["grating_mask"], 0)
 
     # Create stimulus dict
     stim = {
         "img": sw["img"],
-        "frame_mask": sw["mask"].astype(int),
+        "frame_mask": sw["grating_mask"].astype(int),
         "visual_size": sw["visual_size"],
         "ppd": sw["ppd"],
         "shape": sw["shape"],

@@ -1,130 +1,27 @@
-import itertools
 import warnings
 
 import numpy as np
 
-from stimupy.components.gratings import sine_wave
-from stimupy.components.gratings import square_wave as square_wave_component
 from stimupy.components.gaussians import gaussian
 from stimupy.components.shapes import parallelogram, rectangle
 from stimupy.utils import pad_dict_to_shape, pad_dict_to_visual_size, resolution
 from stimupy.utils.filters import convolve
+from stimupy.waves import sine_linear as sinewave
+from stimupy.waves import square_linear as squarewave
 
 __all__ = [
-    "square_wave",
-    "uniform",
-    "grating_masked",
-    "grating",
-    "counterphase_induction",
-    "induction",
-    "induction_blur",
+    "sinewave",
+    "squarewave",
+    "on_uniform",
+    "on_grating",
+    "on_grating_masked",
+    "phase_shifted",
+    "grating_induction",
+    "grating_induction_blur",
 ]
 
 
-def square_wave(
-    visual_size=None,
-    ppd=None,
-    shape=None,
-    frequency=None,
-    n_bars=None,
-    bar_width=None,
-    period="ignore",
-    rotation=0,
-    phase_shift=0,
-    intensity_bars=(1.0, 0.0),
-    target_indices=(),
-    intensity_target=0.5,
-    origin="corner",
-    round_phase_width=True,
-):
-    """Spatial square-wave grating (set of bars), with some bar(s) as target(s)
-
-    Parameters
-    ----------
-    visual_size : Sequence[Number, Number], Number, or None (default)
-        visual size [height, width] of image, in degrees
-    ppd : Sequence[Number, Number], Number, or None (default)
-        pixels per degree [vertical, horizontal]
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
-    frequency : Number, or None (default)
-        spatial frequency of grating, in cycles per degree visual angle
-    n_bars : int, or None (default)
-        number of bars in the grating
-    bar_width : Number, or None (default)
-        width of a single bar, in degrees visual angle
-    period : "even", "odd", "either" or "ignore" (default)
-        ensure whether the grating has "even" number of phases, "odd"
-        number of phases, either or whether not to round the number of
-        phases ("ignore")
-    rotation : float
-        rotation of grating in degrees (default: 0 = horizontal)
-    phase_shift : float
-        phase shift of grating in degrees
-    intensity_bars : Sequence[float, ...]
-        intensity value for each bar, by default (1.0, 0.0).
-        Can specify as many intensities as n_bars;
-        If fewer intensities are passed than n_bars, cycles through intensities
-    target_indices : int, or Sequence[int, ...]
-        indices segments where targets will be placed
-    intensity_target : float, or Sequence[float, ...], optional
-        intensity value for each target, by default 0.5.
-        Can specify as many intensities as number of target_indices;
-        If fewer intensities are passed than target_indices, cycles through intensities
-    origin : "corner", "mean" or "center"
-        if "corner": set origin to upper left corner (default)
-        if "mean": set origin to hypothetical image center
-        if "center": set origin to real center (closest existing value to mean)
-    round_phase_width : Bool
-        if True, round width of bars given resolution
-
-    Returns
-    -------
-    dict[str, Any]
-        dict with the stimulus (key: "img"),
-        mask with integer index for each target (key: "target_mask"),
-        and additional keys containing stimulus parameters
-    """
-
-    # Spatial square-wave grating
-    stim = square_wave_component(
-        visual_size=visual_size,
-        ppd=ppd,
-        shape=shape,
-        frequency=frequency,
-        n_bars=n_bars,
-        bar_width=bar_width,
-        rotation=rotation,
-        phase_shift=phase_shift,
-        period=period,
-        intensity_bars=intensity_bars,
-        origin=origin,
-        round_phase_width=round_phase_width,
-    )
-
-    # Resolve target parameters
-    if isinstance(target_indices, (int)):
-        target_indices = [
-            target_indices,
-        ]
-    if isinstance(intensity_target, (int, float)):
-        intensity_target = [
-            intensity_target,
-        ]
-    intensity_target = itertools.cycle(intensity_target)
-
-    # Place target(s)
-    targets_mask = np.zeros_like(stim["grating_mask"])
-    for target_idx, (bar_idx, intensity) in enumerate(zip(target_indices, intensity_target)):
-        targets_mask = np.where(stim["grating_mask"] == bar_idx, target_idx + 1, targets_mask)
-        stim["img"] = np.where(targets_mask == target_idx + 1, intensity, stim["img"])
-
-    # Update and return stimulus
-    stim["target_mask"] = targets_mask.astype(int)
-    return stim
-
-
-def uniform(
+def on_uniform(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -142,7 +39,7 @@ def uniform(
     origin="corner",
     round_phase_width=True,
 ):
-    """Spatial square-wave grating (set of bars), on a background
+    """Spatial square-wave grating (set of bars), on a uniform background
 
     Parameters
     ----------
@@ -207,7 +104,7 @@ def uniform(
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
 
     # Spatial square-wave grating
-    stim = square_wave(
+    stim = squarewave(
         visual_size=grating_size,
         ppd=ppd,
         frequency=frequency,
@@ -240,13 +137,13 @@ def uniform(
     return stim
 
 
-def grating_masked(
+def on_grating_masked(
     small_grating_params,
     large_grating_params,
     mask_size=None,
     mask_rotation=None,
 ):
-    """Grating with a parallelogram-like shape on a grating
+    """Small grating, with a parallelogram-like shape, on a larger grating
 
     Parameters
     ----------
@@ -276,8 +173,8 @@ def grating_masked(
     """
 
     # Create gratings
-    small_grating = square_wave(**small_grating_params)
-    large_grating = square_wave(**large_grating_params)
+    small_grating = squarewave(**small_grating_params)
+    large_grating = squarewave(**large_grating_params)
 
     if small_grating["ppd"] != large_grating["ppd"]:
         raise ValueError("Gratings must have same ppd")
@@ -308,11 +205,11 @@ def grating_masked(
     return stim
 
 
-def grating(
+def on_grating(
     small_grating_params,
     large_grating_params,
 ):
-    """Grating on a grating
+    """Small grating on a larger grating
 
     Parameters
     ----------
@@ -337,14 +234,14 @@ def grating(
         https://doi.org/10.1068/p100215
     """
 
-    stim = grating_masked(
+    stim = on_grating_masked(
         small_grating_params,
         large_grating_params,
     )
     return stim
 
 
-def counterphase_induction(
+def phase_shifted(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -372,7 +269,7 @@ def counterphase_induction(
         raise ValueError("orientation must be horizontal or vertical")
 
     # Spatial square-wave grating
-    stim = square_wave_component(
+    stim = squarewave(
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,
@@ -387,14 +284,14 @@ def counterphase_induction(
         round_phase_width=True,
     )
 
-    stim_target = square_wave_component(
+    stim_target = squarewave(
         visual_size=target_size,
         ppd=stim["ppd"],
         bar_width=stim["bar_width"],
         rotation=rotation,
         phase_shift=0,
         period=period,
-        intensity_bars=(intensity_target, 0),
+        intensity_bars=(0, intensity_target),
         origin=origin,
         round_phase_width=True,
     )
@@ -456,7 +353,7 @@ def counterphase_induction(
     return stim
 
 
-def induction(
+def grating_induction(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -466,12 +363,12 @@ def induction(
     period="ignore",
     rotation=0,
     phase_shift=0,
-    intensity_bars=(1.0, 0.0),
+    intensities=(0.0, 1.0),
     target_width=None,
     intensity_target=0.5,
     origin="corner",
 ):
-    """Grating induction illusion using a sine-wave grating
+    """Grating induction illusion using a sinewave grating
 
     Parameters
     ----------
@@ -501,10 +398,8 @@ def induction(
         If fewer intensities are passed than n_bars, cycles through intensities
     target_width : float
         width of target stripe in degrees visual angle
-    intensity_target : float, or Sequence[float, ...], optional
-        intensity value for each target, by default 0.5.
-        Can specify as many intensities as number of target_indices;
-        If fewer intensities are passed than target_indices, cycles through intensities
+    intensities : Sequence[float, float] or None (default)
+        min and max intensity of sinewave
     origin : "corner", "mean" or "center"
         if "corner": set origin to upper left corner (default)
         if "mean": set origin to hypothetical image center
@@ -528,7 +423,7 @@ def induction(
         raise ValueError("induction() missing argument 'target_width' which is not 'None'")
 
     # Draw grating
-    stim = sine_wave(
+    stim = sinewave(
         shape=shape,
         visual_size=visual_size,
         ppd=ppd,
@@ -538,7 +433,7 @@ def induction(
         period=period,
         rotation=rotation,
         phase_shift=phase_shift,
-        intensity_bars=intensity_bars,
+        intensities=intensities,
         origin=origin,
     )
 
@@ -559,7 +454,7 @@ def induction(
     return stim
 
 
-def induction_blur(
+def grating_induction_blur(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -634,7 +529,7 @@ def induction_blur(
         raise ValueError("induction_blur() missing argument 'target_width' which is not 'None'")
 
     # Draw grating
-    stim = square_wave_component(
+    stim = squarewave(
         shape=shape,
         visual_size=visual_size,
         ppd=ppd,
@@ -675,9 +570,14 @@ def induction_blur(
     return stim
 
 
-if __name__ == "__main__":
-    from stimupy.utils import plot_stimuli
+def overview(**kwargs):
+    """Generate example stimuli from this module
 
+    Returns
+    -------
+    stims : dict
+        dict with all stimuli containing individual stimulus dicts.
+    """
     params = {
         "ppd": 40,
         "n_bars": 8,
@@ -689,7 +589,8 @@ if __name__ == "__main__":
         "bar_width": 1.0,
         "n_bars": 7,
         "intensity_bars": (0.2, 0.8),
-        "target_indices": (0, 1, 3, 5, 7),
+        "target_indices": (0, 2, 4, 6),
+        "rotation": 90,
     }
 
     large_grating = {
@@ -698,20 +599,28 @@ if __name__ == "__main__":
         "n_bars": 21,
     }
 
-    stims = {
-        "square_wave": square_wave(**params, target_indices=(4, 6)),
-        "uniform": uniform(**params, visual_size=20, grating_size=5, target_indices=3),
-        "grating": grating(large_grating_params=large_grating, small_grating_params=small_grating),
-        "grating_masked": grating_masked(
+    # fmt: off
+    stimuli = {
+        "On uniform background": on_uniform(**params, visual_size=20, grating_size=5, target_indices=2),
+        "On grating": on_grating(large_grating_params=large_grating, small_grating_params=small_grating),
+        "On grating, masked": on_grating_masked(
             large_grating_params=large_grating,
-            small_grating_params={**small_grating, "rotation": 90},
+            small_grating_params=small_grating,
             mask_size=(5, 5, 2),
         ),
-        "counterphase_induction": counterphase_induction(
+        "Phase shifted": phase_shifted(
             **params, target_size=4, target_phase_shift=90
         ),
-        "induction": induction(**params, target_width=0.5),
-        "induction_blur": induction_blur(**params, target_width=0.5, sigma=0.1),
+        "Grating Induction (sinewave)": grating_induction(**params, target_width=0.5),
+        "Grating Induction (blurred squarewave)": grating_induction_blur(**params, target_width=0.5, sigma=0.1),
     }
+    # fmt: on
 
+    return stimuli
+
+
+if __name__ == "__main__":
+    from stimupy.utils import plot_stimuli
+
+    stims = overview()
     plot_stimuli(stims, mask=False, save=None)

@@ -1,7 +1,6 @@
 import pytest
 
 from stimupy.components import waves
-from stimupy.components.gratings import square_wave
 
 
 @pytest.mark.parametrize(
@@ -33,4 +32,17 @@ def test_rounding():
     ppd = 36
     visual_size = (1.0, 1.0)
     frequency = 2.80
-    stim = square_wave(ppd=ppd, visual_size=visual_size, frequency=frequency, period="either")
+    stim = waves.square(
+        ppd=ppd,
+        visual_size=visual_size,
+        frequency=frequency,
+        period="either",
+        base_type="horizontal",
+        phase_shift=0,
+        origin="corner",
+        round_phase_width=True,
+    )
+
+
+def test_overview():
+    waves.overview()

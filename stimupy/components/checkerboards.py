@@ -1,7 +1,8 @@
 import warnings
+
 import numpy as np
 
-from stimupy.components.gratings import square_wave
+from stimupy.components import waves
 
 __all__ = [
     "checkerboard",
@@ -45,7 +46,7 @@ def checkerboard(
     intensity_checks : Sequence[float, float]
         intensity values of checks, by default (1.0, 0.0)
     round_phase_width : Bool
-        if True, round width of bars given resolution (default: True)
+        if True, round width of phases given resolution (default: True)
 
     Returns
     -------
@@ -71,34 +72,36 @@ def checkerboard(
     create_twice = visual_size is None and shape is None
 
     # Create checkerboard by treating it as a plaid
-    sw1 = square_wave(
+    sw1 = waves.square(
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,
         frequency=frequency[0],
-        n_bars=board_shape[0],
-        bar_width=check_visual_size[0],
+        n_phases=board_shape[0],
+        phase_width=check_visual_size[0],
         period=period,
         rotation=rotation,
         phase_shift=0,
-        intensity_bars=intensity_checks,
+        intensities=intensity_checks,
         origin="corner",
         round_phase_width=round_phase_width,
+        base_type="rotated",
     )
 
-    sw2 = square_wave(
+    sw2 = waves.square(
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,
         frequency=frequency[1],
-        n_bars=board_shape[1],
-        bar_width=check_visual_size[1],
+        n_phases=board_shape[1],
+        phase_width=check_visual_size[1],
         period=period,
         rotation=rotation + 90,
         phase_shift=0,
-        intensity_bars=intensity_checks,
+        intensities=intensity_checks,
         origin="corner",
         round_phase_width=round_phase_width,
+        base_type="rotated",
     )
 
     # If neither a visual_size nor a shape was given, each square wave
@@ -106,34 +109,36 @@ def checkerboard(
     # both gratings with the resolved parameters
     if create_twice:
         warnings.filterwarnings("ignore")
-        sw1 = square_wave(
+        sw1 = waves.square(
             visual_size=(sw1["visual_size"][0], sw2["visual_size"][1]),
             ppd=sw1["ppd"],
             shape=None,
             frequency=frequency[0],
-            n_bars=board_shape[0],
-            bar_width=check_visual_size[0],
+            n_phases=board_shape[0],
+            phase_width=check_visual_size[0],
             period=period,
             rotation=rotation,
             phase_shift=0,
-            intensity_bars=intensity_checks,
+            intensities=intensity_checks,
             origin="corner",
             round_phase_width=round_phase_width,
+            base_type="rotated",
         )
 
-        sw2 = square_wave(
+        sw2 = waves.square(
             visual_size=(sw1["visual_size"][0], sw2["visual_size"][1]),
             ppd=sw1["ppd"],
             shape=None,
             frequency=frequency[1],
-            n_bars=board_shape[1],
-            bar_width=check_visual_size[1],
+            n_phases=board_shape[1],
+            phase_width=check_visual_size[1],
             period=period,
             rotation=rotation + 90,
             phase_shift=0,
-            intensity_bars=intensity_checks,
+            intensities=intensity_checks,
             origin="corner",
             round_phase_width=round_phase_width,
+            base_type="rotated",
         )
         warnings.filterwarnings("default")
 
@@ -158,8 +163,8 @@ def checkerboard(
         "ppd": sw1["ppd"],
         "shape": sw1["shape"],
         "frequency": (sw2["frequency"], sw1["frequency"]),
-        "board_shape": (sw2["n_bars"], sw1["n_bars"]),
-        "check_visual_size": (sw2["bar_width"], sw1["bar_width"]),
+        "board_shape": (sw2["n_phases"], sw1["n_phases"]),
+        "check_visual_size": (sw2["phase_width"], sw1["phase_width"]),
         "period": period,
         "rotation": rotation,
         "intensity_checks": intensity_checks,
