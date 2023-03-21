@@ -1,7 +1,7 @@
 import numpy as np
 
 from stimupy.components import draw_regions, mask_elements, waves
-from stimupy.components.circulars import ring
+from stimupy.components.radials import ring
 from stimupy.utils import resolution
 
 __all__ = [
