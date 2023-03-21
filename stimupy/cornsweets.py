@@ -84,8 +84,28 @@ def cornsweet(
     return stim
 
 
-if __name__ == "__main__":
-    from stimupy.utils import plot_stim
+def overview(**kwargs):
+    """Generate example stimuli from this module
 
-    stim = cornsweet(visual_size=10, ppd=10, ramp_width=3)
-    plot_stim(stim, stim_name="cornsweet", mask=True, save=None)
+    Returns
+    -------
+    stims : dict
+        dict with all stimuli containing individual stimulus dicts.
+    """
+    default_params = {"visual_size": 15, "ppd": 30}
+    default_params.update(kwargs)
+
+    # fmt: off
+    stimuli = {
+        "(Craik-O'Brien-)Cornsweet edge/illusion": cornsweet(**default_params, ramp_width=3)
+    }
+    # fmt: on
+
+    return stimuli
+
+
+if __name__ == "__main__":
+    from stimupy.utils import plot_stimuli
+
+    stims = overview()
+    plot_stimuli(stims, mask=False, save=None)

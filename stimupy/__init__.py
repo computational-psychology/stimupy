@@ -4,6 +4,7 @@ from . import (
     benarys,
     checkerboards,
     components,
+    cornsweets,
     cubes,
     delboeufs,
     dungeons,
@@ -27,6 +28,7 @@ from . import (
 __stimuli__ = [
     "benarys",
     "checkerboards",
+    "cornsweets",
     "cubes",
     "delboeufs",
     "dungeons",

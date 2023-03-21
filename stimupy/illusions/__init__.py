@@ -1,4 +1,4 @@
-from . import angulars, circulars, cornsweets, frames
+from . import angulars, circulars, frames
 
 
 def create_overview():
@@ -31,8 +31,6 @@ def create_overview():
         "circular_rings_two_sided": circulars.two_sided_rings(**p, frequency=1.0),
         "circular_bullseye": circulars.bullseye(**p, frequency=1.0),
         "circular_bullseye_two_sided": circulars.two_sided_bullseye(**p, frequency=1.0),
-        # Cornsweet
-        "cornsweet": cornsweets.cornsweet(**p, ramp_width=3),
         # Frames
         "frames": frames.rings(**p, frequency=0.5, target_indices=3),
         "frames_general": frames.rings_generalized(**p, radii=(1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5), target_indices=3),
