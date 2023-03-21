@@ -3,6 +3,7 @@ import itertools
 import numpy as np
 
 from stimupy.components import draw_regions, waves
+from stimupy.components.shapes import disc
 
 __all__ = [
     "sine_linear",
@@ -266,6 +267,8 @@ def sine_radial(
     intensity_target=0.5,
     origin="mean",
     round_phase_width=True,
+    clip=False,
+    intensity_background=0.5,
 ):
     """Circular sine-wave grating (set of rings) over the whole image, with some ring(s) as target(s)
 
@@ -305,6 +308,10 @@ def sine_radial(
         if "center": set origin to real center (closest existing value to mean)
     round_phase_width : Bool
         if True, round width of rings given resolution
+    clip : Bool
+        if True, clip stimulus to image size (default: False)
+    intensity_background : float (optional)
+        intensity value of background (if clipped), by default 0.5
 
     Returns
     -------
@@ -345,7 +352,19 @@ def sine_radial(
     stim["ring_width"] = stim.pop("phase_width")
     stim.pop("base_type")
 
-    # Add targets(?)
+    # Clip?
+    if clip:
+        csize = min(stim["visual_size"]) / 2.0
+        circle = disc(
+            visual_size=stim["visual_size"],
+            ppd=stim["ppd"],
+            radius=csize,
+            origin=origin,
+        )
+        stim["img"] = np.where(circle["ring_mask"], stim["img"], intensity_background)
+        stim["grating_mask"] = np.where(circle["ring_mask"], stim["grating_mask"], 0)
+
+    # Resolve target parameters
     if target_indices is not None and target_indices != ():
         stim = add_targets(stim, target_indices=target_indices, intensity_target=intensity_target)
 
@@ -367,6 +386,8 @@ def square_radial(
     intensity_target=0.5,
     origin="mean",
     round_phase_width=True,
+    clip=False,
+    intensity_background=0.5,
 ):
     """Circular square-wave grating (set of rings) over the whole image, with some ring(s) as target(s)
 
@@ -408,6 +429,10 @@ def square_radial(
         if "center": set origin to real center (closest existing value to mean)
     round_phase_width : Bool
         if True, round width of rings given resolution
+    clip : Bool
+        if True, clip stimulus to image size (default: False)
+    intensity_background : float (optional)
+        intensity value of background (if clipped), by default 0.5
 
     Returns
     -------
@@ -448,7 +473,19 @@ def square_radial(
     stim["intensity_rings"] = stim.pop("intensities")
     stim.pop("base_type")
 
-    # Add targets(?)
+    # Clip?
+    if clip:
+        csize = min(stim["visual_size"]) / 2.0
+        circle = disc(
+            visual_size=stim["visual_size"],
+            ppd=stim["ppd"],
+            radius=csize,
+            origin=origin,
+        )
+        stim["img"] = np.where(circle["ring_mask"], stim["img"], intensity_background)
+        stim["grating_mask"] = np.where(circle["ring_mask"], stim["grating_mask"], 0)
+
+    # Resolve target parameters
     if target_indices is not None and target_indices != ():
         stim = add_targets(stim, target_indices=target_indices, intensity_target=intensity_target)
 
@@ -478,12 +515,12 @@ def overview(**kwargs):
         "sine wave - horizontal": sine_linear(**default_params, **grating_params, bar_width=1, rotation=0),
         "sine wave - vertical": sine_linear(**default_params, **grating_params, bar_width=1, rotation=90),
         "sine wave - oblique": sine_linear(**default_params, **grating_params, bar_width=1, rotation=45),
-        "sine wave - radial": sine_radial(**default_params, **grating_params, ring_width=1),
+        "sine wave - radial": sine_radial(**default_params, **grating_params, ring_width=1, clip=True),
 
         "square wave - horizontal": square_linear(**default_params, **grating_params, bar_width=1, rotation=0),
         "square wave - vertical": square_linear(**default_params, **grating_params, bar_width=1, rotation=90),
         "square wave - oblique": square_linear(**default_params, **grating_params, bar_width=1, rotation=45),
-        "square wave - radial": square_radial(**default_params, **grating_params, ring_width=1),
+        "square wave - radial": square_radial(**default_params, **grating_params, ring_width=1, clip=True),
 
         # "sine wave - angular": sine(**default_params, **grating_params, base_type="angular"),
         # "sine wave - cityblock": sine(**default_params, **grating_params, base_type="cityblock"),
