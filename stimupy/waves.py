@@ -89,6 +89,13 @@ def sine_linear(
             "'ppd', 'shape', 'frequency', 'n_bars', 'bar_width'"
         )
 
+    if rotation % 180 == 0.0:
+        base_type = "horizontal"
+    elif rotation % 180 == 90.0:
+        base_type = "vertical"
+    else:
+        base_type = "rotated"
+
     # Spatial square-wave grating
     stim = waves.sine(
         visual_size=visual_size,
@@ -103,7 +110,7 @@ def sine_linear(
         intensities=intensities,
         origin=origin,
         round_phase_width=round_phase_width,
-        base_type="rotated",
+        base_type=base_type,
     )
 
     # Repackage output
