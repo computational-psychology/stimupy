@@ -32,10 +32,6 @@ def mask_from_idx(checkerboard_stim, check_idc):
     ------
     ValueError
         Check index is invalid given the board shape
-
-    See also
-    --------
-    stimupy.components.checkerboard
     """
     board_shape = checkerboard_stim["board_shape"]
     mask = np.zeros(checkerboard_stim["shape"])
@@ -97,10 +93,6 @@ def add_targets(checkerboard_stim, target_indices, extend_targets=False, intensi
         dict with the updated stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
-
-    See also
-    --------
-    stimupy.components.checkerboard
     """
     mask = np.zeros(checkerboard_stim["shape"])
     for i, target in enumerate(target_indices):
@@ -175,10 +167,6 @@ def checkerboard(
         dict with the stimulus (key: "img"),
         mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
-
-    See also
-    --------
-    stimupy.components.checkerboard
 
     References
     ----------

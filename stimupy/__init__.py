@@ -2,6 +2,7 @@ __version__ = "0.99.0"
 
 from . import (
     benarys,
+    checkerboards,
     components,
     cubes,
     delboeufs,
@@ -25,6 +26,7 @@ from . import (
 
 __stimuli__ = [
     "benarys",
+    "checkerboards",
     "cubes",
     "delboeufs",
     "dungeons",

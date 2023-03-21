@@ -849,13 +849,13 @@ def checkerboard_contrast_contrast(
     }
 
     # Large checkerboard, embedded target region
-    stim1 = illusions.checkerboards.contrast_contrast(
+    stim1 = stimupy.checkerboards.contrast_contrast(
         **params,
         board_shape=(8, 8),
     )
 
     # Isolated target region (smaller checkerboard)
-    stim2 = illusions.checkerboards.contrast_contrast(
+    stim2 = stimupy.checkerboards.contrast_contrast(
         **params,
         board_shape=(4, 4),
     )
@@ -938,7 +938,7 @@ def checkerboard(
         "intensity_checks": (v1, v3),
         "intensity_target": v2,
     }
-    stim = illusions.checkerboards.checkerboard(**params)
+    stim = stimupy.checkerboards.checkerboard(**params)
 
     if pad:
         padding = np.array((0.9, 1.1)) * visual_resize
@@ -1011,7 +1011,7 @@ def checkerboard_extended(
         "intensity_checks": (v1, v3),
         "intensity_target": v2,
     }
-    stim = illusions.checkerboards.checkerboard(**params)
+    stim = stimupy.checkerboards.checkerboard(**params)
 
     if pad:
         padding = np.array((0.9, 1.1)) * visual_resize

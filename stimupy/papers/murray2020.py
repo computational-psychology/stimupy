@@ -569,7 +569,7 @@ def checkassim(ppd=PPD, pad=PAD):
         "intensity_checks": (17.5, 70.0),
         "intensity_target": 35.0,
     }
-    stim = illusions.checkerboards.checkerboard(
+    stim = stimupy.checkerboards.checkerboard(
         **params,
     )
 

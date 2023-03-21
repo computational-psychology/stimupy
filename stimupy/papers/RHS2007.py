@@ -1353,7 +1353,7 @@ def checkerboard_016(ppd=PPD, pad=True):
         "intensity_checks": (v3, v1),
         "intensity_target": v2,
     }
-    stim = illusions.checkerboards.checkerboard(**params)
+    stim = stimupy.checkerboards.checkerboard(**params)
 
     if pad:
         stim = pad_dict_to_visual_size(stim, VISEXTENT, ppd, pad_value=v2)
@@ -1411,7 +1411,7 @@ def checkerboard_094(ppd=PPD, pad=True):
         "intensity_checks": (v1, v3),
         "intensity_target": v2,
     }
-    stim = illusions.checkerboards.checkerboard(**params)
+    stim = stimupy.checkerboards.checkerboard(**params)
 
     if pad:
         stim = pad_dict_to_visual_size(stim, VISEXTENT, ppd, pad_value=v2)
@@ -1469,7 +1469,7 @@ def checkerboard_21(ppd=PPD, pad=True):
         "intensity_checks": (v1, v3),
         "intensity_target": v2,
     }
-    stim = illusions.checkerboards.checkerboard(**params)
+    stim = stimupy.checkerboards.checkerboard(**params)
 
     if pad:
         stim = pad_dict_to_visual_size(stim, VISEXTENT, ppd, pad_value=v2)

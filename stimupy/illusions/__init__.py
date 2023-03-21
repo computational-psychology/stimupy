@@ -1,4 +1,4 @@
-from . import angulars, checkerboards, circulars, cornsweets, frames
+from . import angulars, circulars, cornsweets, frames
 
 
 def create_overview():
@@ -26,9 +26,6 @@ def create_overview():
     stims = {
         # Angular
         "pinwheel": angulars.pinwheel(**p, n_segments=8, target_width=1, target_indices=3),
-        # Checkerboards
-        "checkerboard": checkerboards.checkerboard(**p, board_shape=8, target_indices=[(3, 2), (3, 5)]),
-        "contrast-contrast": checkerboards.contrast_contrast(**p, board_shape=8, target_shape=(4, 4)),
         # Circular
         "circular_rings": circulars.rings(**p, frequency=1.0),
         "circular_rings_two_sided": circulars.two_sided_rings(**p, frequency=1.0),

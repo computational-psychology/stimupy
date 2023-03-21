@@ -37,11 +37,11 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from stimupy import checkerboards
 from stimupy.components import gaussians, lines, shapes
 from stimupy.components.edges import gaussian_edge
 from stimupy.components.waves import bessel
 from stimupy.gabors import gabor
-from stimupy.illusions import checkerboards
 from stimupy.noises.binaries import binary as binary_noise
 from stimupy.utils import pad_dict_to_shape, resize_dict, roll_dict, stack_dicts
 
