@@ -1,4 +1,4 @@
-from . import angulars, checkerboards, circulars, cornsweets, delboeufs, frames, gratings
+from . import angulars, checkerboards, circulars, cornsweets, frames, gratings
 
 
 def create_overview():
@@ -36,9 +36,6 @@ def create_overview():
         "circular_bullseye_two_sided": circulars.two_sided_bullseye(**p, frequency=1.0),
         # Cornsweet
         "cornsweet": cornsweets.cornsweet(**p, ramp_width=3),
-        # Delbouef
-        "delboeuf": delboeufs.delboeuf(**p, outer_radius=4, target_radius=1),
-        "2sided_delboeuf": delboeufs.two_sided(**p, outer_radii=(2, 1.1), target_radius=1),
         # Frames
         "frames": frames.rings(**p, frequency=0.5, target_indices=3),
         "frames_general": frames.rings_generalized(**p, radii=(1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5), target_indices=3),

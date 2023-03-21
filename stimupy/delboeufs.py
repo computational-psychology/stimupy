@@ -178,17 +178,32 @@ def two_sided(
     return stim
 
 
+def overview(**kwargs):
+    """Generate example stimuli from this module
+
+    Returns
+    -------
+    stims : dict
+        dict with all stimuli containing individual stimulus dicts.
+    """
+    default_params = {
+        "visual_size": (10, 10),
+        "ppd": 30,
+    }
+    default_params.update(kwargs)
+
+    # fmt: off
+    stimuli = {
+        "Mueller-Lyer illusion": delboeuf(**default_params, target_radius=1, outer_radius=4),
+        "Mueller-Lyer, two-sided": two_sided(**default_params, target_radius=1, outer_radii=(2, 1.1)),
+    }
+    # fmt: on
+
+    return stimuli
+
+
 if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
 
-    p1 = {
-        "visual_size": (10, 20),
-        "ppd": 30,
-        "target_radius": 2,
-    }
-
-    stims = {
-        "single": delboeuf(**p1, outer_radius=4),
-        "two_sided": two_sided(**p1, outer_radii=(4, 2.5)),
-    }
-    plot_stimuli(stims, mask=False, save=None)
+    stims = overview()
+    plot_stimuli(stims, mask=True, save=None)

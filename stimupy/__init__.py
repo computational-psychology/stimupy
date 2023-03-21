@@ -4,6 +4,7 @@ from . import (
     benarys,
     components,
     cubes,
+    delboeufs,
     dungeons,
     gabors,
     hermanns,
