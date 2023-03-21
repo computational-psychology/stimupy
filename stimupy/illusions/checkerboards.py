@@ -1,6 +1,8 @@
+import warnings
+
 import numpy as np
 
-from stimupy.components.checkerboards import checkerboard as board
+from stimupy.components import waves
 from stimupy.utils import resolution
 from stimupy.utils.contrast_conversions import transparency
 
@@ -189,19 +191,120 @@ def checkerboard(
         Spatial Vision. Oxford University Press.
     """
 
-    # Set up basic checkerboard
-    stim = board(
+    lst = [visual_size, ppd, shape, frequency, board_shape, check_visual_size]
+    if len([x for x in lst if x is not None]) < 3:
+        raise ValueError(
+            "'checkerboard()' needs 3 non-None arguments for resolving from 'visual_size', "
+            "'ppd', 'shape', 'frequency', 'board_shape', 'check_visual_size'"
+        )
+
+    if isinstance(frequency, (float, int)) or frequency is None:
+        frequency = (frequency, frequency)
+    if isinstance(board_shape, (float, int)) or board_shape is None:
+        board_shape = (board_shape, board_shape)
+    if isinstance(check_visual_size, (float, int)) or check_visual_size is None:
+        check_visual_size = (check_visual_size, check_visual_size)
+
+    create_twice = visual_size is None and shape is None
+
+    # Create checkerboard by treating it as a plaid
+    sw1 = waves.square(
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,
-        frequency=frequency,
-        board_shape=board_shape,
-        check_visual_size=check_visual_size,
+        frequency=frequency[0],
+        n_phases=board_shape[0],
+        phase_width=check_visual_size[0],
         period=period,
         rotation=rotation,
-        intensity_checks=intensity_checks,
+        phase_shift=0,
+        intensities=intensity_checks,
+        origin="corner",
         round_phase_width=round_phase_width,
+        base_type="rotated",
     )
+
+    sw2 = waves.square(
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        frequency=frequency[1],
+        n_phases=board_shape[1],
+        phase_width=check_visual_size[1],
+        period=period,
+        rotation=rotation + 90,
+        phase_shift=0,
+        intensities=intensity_checks,
+        origin="corner",
+        round_phase_width=round_phase_width,
+        base_type="rotated",
+    )
+
+    # If neither a visual_size nor a shape was given, each square wave
+    # grating is always a square. An easy solution is to just recreate
+    # both gratings with the resolved parameters
+    if create_twice:
+        warnings.filterwarnings("ignore")
+        sw1 = waves.square(
+            visual_size=(sw1["visual_size"][0], sw2["visual_size"][1]),
+            ppd=sw1["ppd"],
+            shape=None,
+            frequency=frequency[0],
+            n_phases=board_shape[0],
+            phase_width=check_visual_size[0],
+            period=period,
+            rotation=rotation,
+            phase_shift=0,
+            intensities=intensity_checks,
+            origin="corner",
+            round_phase_width=round_phase_width,
+            base_type="rotated",
+        )
+
+        sw2 = waves.square(
+            visual_size=(sw1["visual_size"][0], sw2["visual_size"][1]),
+            ppd=sw1["ppd"],
+            shape=None,
+            frequency=frequency[1],
+            n_phases=board_shape[1],
+            phase_width=check_visual_size[1],
+            period=period,
+            rotation=rotation + 90,
+            phase_shift=0,
+            intensities=intensity_checks,
+            origin="corner",
+            round_phase_width=round_phase_width,
+            base_type="rotated",
+        )
+        warnings.filterwarnings("default")
+
+    # Add the two square-wave gratings into a checkerboard
+    img = sw1["img"] + sw2["img"]
+    img = np.where(
+        img == intensity_checks[0] + intensity_checks[1], intensity_checks[1], intensity_checks[0]
+    )
+
+    # Create a mask with target indices for each check
+    mask = sw1["grating_mask"] + sw2["grating_mask"] * sw1["grating_mask"].max() * 10
+    unique_vals = np.unique(mask)
+    for v in range(len(unique_vals)):
+        mask[mask == unique_vals[v]] = v + 1
+
+    stim = {
+        "img": img,
+        "checker_mask": mask.astype(int),
+        "grating_mask": sw1["grating_mask"],
+        "grating_mask2": sw2["grating_mask"],
+        "visual_size": sw1["visual_size"],
+        "ppd": sw1["ppd"],
+        "shape": sw1["shape"],
+        "frequency": (sw2["frequency"], sw1["frequency"]),
+        "board_shape": (sw2["n_phases"], sw1["n_phases"]),
+        "check_visual_size": (sw2["phase_width"], sw1["phase_width"]),
+        "period": period,
+        "rotation": rotation,
+        "intensity_checks": intensity_checks,
+    }
 
     # Add targets
     if target_indices is not None:
@@ -282,7 +385,7 @@ def contrast_contrast(
     """
 
     # Set up basic checkerboard
-    stim = board(
+    stim = checkerboard(
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,
@@ -320,20 +423,38 @@ def contrast_contrast(
     return stim
 
 
-if __name__ == "__main__":
-    from stimupy.utils import plot_stimuli
+def overview(**kwargs):
+    """Generate example stimuli from this module
+
+    Returns
+    -------
+    stims : dict
+        dict with all stimuli containing individual stimulus dicts.
+    """
+    default_params = {"ppd": 30}
+    default_params.update(kwargs)
 
     p = {
-        "ppd": 32,
-        "board_shape": (8, 8),
+        "board_shape": (10, 10),
         "check_visual_size": (2, 2),
     }
 
-    stims = {
-        "checkerboard": checkerboard(
-            **p,
-            target_indices=[(3, 2), (5, 5)],
-        ),
-        "contrast_contrast": contrast_contrast(**p, target_shape=(4, 4)),
+    # fmt: off
+    stimuli = {
+        "checkerboard": checkerboard(**p),
+        "checkerboard rotated": checkerboard(**p, rotation=45),
+        "checkerboard from frequency": checkerboard(**p, frequency=1),
+        "checkerboard from frequency, rotated": checkerboard(**p, frequency=1, rotation=45),
+        "checkerboard with targets": checkerboard(**p, target_indices=[(3, 2), (5, 5)]),
+        "Checkerboard Contrast-Contrast illusion": contrast_contrast(**p, target_shape=(4, 4)),
     }
-    plot_stimuli(stims, mask=True, save=None)
+    # fmt: on
+
+    return stimuli
+
+
+if __name__ == "__main__":
+    from stimupy.utils import plot_stimuli
+
+    stims = overview()
+    plot_stimuli(stims, mask=False, save=None)

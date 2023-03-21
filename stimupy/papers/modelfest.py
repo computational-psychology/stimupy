@@ -37,10 +37,11 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from stimupy.components import checkerboards, gaussians, lines, shapes
+from stimupy.components import gaussians, lines, shapes
 from stimupy.components.circulars import bessel
 from stimupy.components.edges import gaussian_edge
 from stimupy.gabors import gabor
+from stimupy.illusions import checkerboards
 from stimupy.noises.binaries import binary as binary_noise
 from stimupy.utils import pad_dict_to_shape, resize_dict, roll_dict, stack_dicts
 
@@ -2235,6 +2236,7 @@ def Checkerboard42(ppd=PPD):
         "frequency": 2.81,
         "rotation": 45,
         "round_phase_width": False,
+        "intensity_checks": (1.0, 0.0),
     }
 
     stim = checkerboards.checkerboard(**params)

@@ -10,7 +10,6 @@ __all__ = [
     "mask_elements",
     "overview",
     "angulars",
-    "checkerboards",
     "circulars",
     "edges",
     "frames",
@@ -209,7 +208,7 @@ def draw_regions(mask, intensities, intensity_background=0.5):
     return img
 
 
-from . import angulars, checkerboards, circulars, edges, frames, gaussians, lines, shapes, waves
+from . import angulars, circulars, edges, frames, gaussians, lines, shapes, waves
 
 
 def create_overview():
@@ -233,11 +232,6 @@ def create_overview():
         "wedge": angulars.wedge(**p, width=30, radius=3),
         "angular_grating": angulars.grating(**p, n_segments=8),
         "pinwheel": angulars.pinwheel(**p, n_segments=8, radius=3),
-        # checkerboards
-        "checkerboard_v1": checkerboards.checkerboard(**p, board_shape=(10, 10)),
-        "checkerboard_v2": checkerboards.checkerboard(**p, board_shape=(10, 10), rotation=45),
-        "checkerboard_v3": checkerboards.checkerboard(**p, frequency=1),
-        "checkerboard_v4": checkerboards.checkerboard(**p, frequency=1, rotation=45),
         # circulars
         "disc_and_rings": circulars.disc_and_rings(**p, radii=[1, 2, 3]),
         "disc": circulars.disc(**p, radius=3),
