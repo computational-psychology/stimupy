@@ -2,8 +2,9 @@ import itertools
 
 import numpy as np
 
-from stimupy.components import frames as frames_component
+from stimupy.components.frames import frames
 from stimupy.utils import resolution, stack_dicts
+from stimupy.waves import square_cityblock as rings
 
 __all__ = [
     "rings",
@@ -13,112 +14,6 @@ __all__ = [
     "bullseye_generalized",
     "two_sided_bullseye",
 ]
-
-
-def rings(
-    visual_size=None,
-    ppd=None,
-    shape=None,
-    frequency=None,
-    n_frames=None,
-    frame_width=None,
-    phase_shift=0,
-    intensity_frames=(1.0, 0.0),
-    intensity_background=0.5,
-    target_indices=(),
-    intensity_target=0.5,
-    origin="center",
-    clip=True,
-):
-    """Draw set of square frames, with some frame(s) as target
-
-    Parameters
-    ----------
-    visual_size : Sequence[Number, Number], Number, or None (default)
-        visual size [height, width] of image, in degrees
-    ppd : Sequence[Number, Number], Number, or None (default)
-        pixels per degree [vertical, horizontal]
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
-    frequency : Number, or None (default)
-        spatial frequency of grating, in cycles per degree visual angle
-    n_frames : int, or None (default)
-        number of frames in the grating
-    frame_width : Number, or None (default)
-        width of a single frame, in degrees visual angle
-    phase_shift : float
-        phase shift of grating in degrees
-    intensity_frames : Sequence[float, float]
-        min and max intensity of square-wave, by default (0.0, 1.0)
-    intensity_background : float (optional)
-        intensity value of background, by default 0.5
-    target_indices : int, or Sequence[int, ...]
-        indices frames where targets will be placed
-    intensity_target : float, or Sequence[float, ...], optional
-        intensity value for each target, by default 0.5.
-        Can specify as many intensities as number of target_indices;
-        If fewer intensities are passed than target_indices, cycles through intensities
-    origin : "corner", "mean" or "center"
-        if "corner": set origin to upper left corner
-        if "mean": set origin to hypothetical image center (default)
-        if "center": set origin to real center (closest existing value to mean)
-    clip : Bool
-        if True, clip stimulus to image size (default: True)
-
-    Returns
-    -------
-    dict[str, Any]
-        dict with the stimulus (key: "img"),
-        mask with integer index for each target (key: "target_mask"),
-        and additional keys containing stimulus parameters
-
-    References
-    ----------
-    Domijan, D. (2015).
-        A neurocomputational account
-        of the role of contour facilitation in brightness perception.
-        Frontiers in Human Neuroscience, 9, 93.
-        https://doi.org/10.3389/fnhum.2015.00093
-    """
-
-    # Frames component
-    stim = frames_component.square_wave(
-        shape=shape,
-        visual_size=visual_size,
-        ppd=ppd,
-        frequency=frequency,
-        n_frames=n_frames,
-        frame_width=frame_width,
-        phase_shift=phase_shift,
-        period="ignore",
-        intensity_frames=intensity_frames,
-        intensity_background=intensity_background,
-        origin=origin,
-        clip=clip,
-    )
-
-    # Resolve target parameters
-    if isinstance(target_indices, (int)):
-        target_indices = [
-            target_indices,
-        ]
-    if isinstance(intensity_target, (int, float)):
-        intensity_target = [
-            intensity_target,
-        ]
-    intensity_target = itertools.cycle(intensity_target)
-
-    # Place target(s)
-    targets_mask = np.zeros_like(stim["frame_mask"])
-    for target_idx, (bar_idx, intensity) in enumerate(zip(target_indices, intensity_target)):
-        targets_mask = np.where(stim["frame_mask"] == bar_idx, target_idx + 1, targets_mask)
-        stim["img"] = np.where(targets_mask == target_idx + 1, intensity, stim["img"])
-        if bar_idx > stim["frame_mask"].max():
-            raise ValueError("target_idx is outside stimulus")
-
-    # Update and return stimulus
-    stim["target_mask"] = targets_mask.astype(int)
-    return stim
 
 
 def two_sided_rings(
@@ -192,6 +87,8 @@ def two_sided_rings(
         intensity_target=intensity_target,
         intensity_frames=intensity_frames,
         target_indices=target_indices,
+        clip=True,
+        intensity_background=intensity_background,
     )
 
     stim2 = rings(
@@ -204,6 +101,8 @@ def two_sided_rings(
         intensity_target=intensity_target,
         intensity_frames=intensity_frames[::-1],
         target_indices=target_indices,
+        clip=True,
+        intensity_background=intensity_background,
     )
 
     stim = stack_dicts(stim1, stim2)
@@ -259,7 +158,7 @@ def rings_generalized(
     """
 
     # Frames component
-    stim = frames_component.frames(
+    stim = frames(
         radii=radii,
         visual_size=visual_size,
         ppd=ppd,
@@ -303,7 +202,6 @@ def bullseye(
     phase_shift=0,
     intensity_frames=(1.0, 0.0),
     intensity_background=0.5,
-    target_indices=(),
     intensity_target=0.5,
     origin="center",
     clip=True,
@@ -371,6 +269,7 @@ def bullseye(
         intensity_target=intensity_target,
         origin=origin,
         clip=clip,
+        intensity_background=intensity_background,
     )
     return stim
 
@@ -504,6 +403,7 @@ def two_sided_bullseye(
         phase_shift=phase_shift,
         intensity_target=intensity_target,
         intensity_frames=intensity_frames,
+        intensity_background=intensity_background,
     )
 
     stim2 = bullseye(
