@@ -410,28 +410,26 @@ def sine(
     img = adapt_intensity_range(img, intensities[0], intensities[1])
 
     # Create mask
+    dmax = max(distances.max(), -distances.min()) + (phase_width / 2)
     if origin == "corner" or base_type == "radial" or base_type == "cityblock":
-        vals = np.arange(
-            distances.min() + phase_width / 2, distances.max() + phase_width * 2, phase_width
-        )
+        edges = np.arange(distances.min() + (phase_width / 2), dmax, phase_width)
 
         if origin == "mean":
-            vals -= distances.min()
+            edges -= distances.min()
     else:
-        dmin = distances.min()
-        dmax = distances.max() + phase_width * 2
-        vals1 = np.arange(0 + phase_width / 2, dmax, phase_width)
-        vals2 = -np.arange(-phase_width / 2, -dmin + phase_width, phase_width)
-        vals = np.unique(np.append(vals2[::-1], vals1))
+        edges_pos = np.arange(0 + (phase_width / 2), dmax, phase_width) + 1e-5
+        edges_neg = -np.arange(0 + (phase_width / 2), dmax, phase_width) - 1e-5
+        edges = np.unique(np.append(edges_neg[::-1], edges_pos))
 
-    phase_shift_ = (phase_shift % 360) / 180 * phase_width
-    mask = round_to_vals(
-        distances - distances.min(), np.round(vals - phase_shift_, 6) - distances.min()
-    )
+    edges -= (((phase_shift) % 360) / 180) * phase_width
+    # edges = np.round(edges, 8)
+    regions = round_to_vals(distances, edges)
 
-    for i, val in enumerate(np.unique(mask)):
-        mask = np.where(mask == val, i + 1, mask)
+    mask = np.zeros(shape=regions.shape)
+    for idx, val in enumerate(np.unique(regions)):
+        mask = np.where(regions == val, idx + 1, mask)
 
+    # Package and output
     stim = {
         "img": img,
         "grating_mask": mask.astype(int),
@@ -549,8 +547,8 @@ def overview(**kwargs):
 
     grating_params = {
         "phase_width": 3.5,
-        "period": "odd",
-        "phase_shift": 30,
+        "period": "either",
+        "phase_shift": 90,
         "origin": "center",
         "round_phase_width": False,
     }
