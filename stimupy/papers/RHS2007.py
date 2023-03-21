@@ -716,17 +716,18 @@ def WE_circular1(ppd=PPD, pad=True):
         "target_indices": 4,
         "intensity_background": v2,
         "intensity_target": v2,
+        "clip": True,
     }
 
     stim1 = stimupy.whites.circular(
         visual_size=(height, width),
-        intensity_rings=(v1, v3),
+        intensity_rings=(v3, v1),
         **params,
     )
 
     stim2 = stimupy.whites.circular(
         visual_size=(height, width),
-        intensity_rings=(v3, v1),
+        intensity_rings=(v1, v3),
         **params,
     )
     stim = stack_dicts(stim1, stim2)
@@ -776,17 +777,18 @@ def WE_circular05(ppd=PPD, pad=True):
         "target_indices": 10,
         "intensity_background": v2,
         "intensity_target": v2,
+        "clip": True,
     }
 
     stim1 = stimupy.whites.circular(
         visual_size=(height, width),
-        intensity_rings=(v1, v3),
+        intensity_rings=(v3, v1),
         **params,
     )
 
     stim2 = stimupy.whites.circular(
         visual_size=(height, width),
-        intensity_rings=(v3, v1),
+        intensity_rings=(v1, v3),
         **params,
     )
     stim = stack_dicts(stim1, stim2)
@@ -836,17 +838,18 @@ def WE_circular025(ppd=PPD, pad=True):
         "target_indices": 22,
         "intensity_background": v2,
         "intensity_target": v2,
+        "clip": True,
     }
 
     stim1 = stimupy.whites.circular(
         visual_size=(height, width),
-        intensity_rings=(v1, v3),
+        intensity_rings=(v3, v1),
         **params,
     )
 
     stim2 = stimupy.whites.circular(
         visual_size=(height, width),
-        intensity_rings=(v3, v1),
+        intensity_rings=(v1, v3),
         **params,
     )
     stim = stack_dicts(stim1, stim2)

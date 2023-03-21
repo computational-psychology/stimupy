@@ -6,8 +6,8 @@ import numpy as np
 from stimupy.components import image_base
 from stimupy.gratings import squarewave
 from stimupy.illusions.angulars import pinwheel as radial
-from stimupy.illusions.circulars import rings as circular
 from stimupy.utils import resolution
+from stimupy.waves import square_radial as circular
 from stimupy.wedding_cakes import wedding_cake
 
 __all__ = [
