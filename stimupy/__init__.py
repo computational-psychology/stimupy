@@ -9,6 +9,7 @@ from . import (
     hermanns,
     illusions,
     mondrians,
+    mueller_lyers,
     noises,
     plaids,
     ponzos,

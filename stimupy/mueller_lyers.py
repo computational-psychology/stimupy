@@ -251,20 +251,39 @@ def two_sided(
     return stim
 
 
-if __name__ == "__main__":
-    from stimupy.utils import plot_stimuli
+def overview(**kwargs):
+    """Generate example stimuli from this module
 
-    p1 = {
+    Returns
+    -------
+    stims : dict
+        dict with all stimuli containing individual stimulus dicts.
+    """
+    default_params = {
         "visual_size": 10,
-        "ppd": 20,
+        "ppd": 30,
+    }
+    default_params.update(kwargs)
+
+    stim_params = {
         "outer_lines_length": 1,
         "outer_lines_angle": 45,
         "target_length": 3,
         "line_width": 0.1,
     }
 
-    stims = {
-        "single": mueller_lyer(**p1),
-        "two_sided": two_sided(**p1),
+    # fmt: off
+    stimuli = {
+        "Mueller-Lyer illusion": mueller_lyer(**default_params, **stim_params),
+        "Mueller-Lyer, two-sided": two_sided(**default_params, **stim_params),
     }
+    # fmt: on
+
+    return stimuli
+
+
+if __name__ == "__main__":
+    from stimupy.utils import plot_stimuli
+
+    stims = overview()
     plot_stimuli(stims, mask=True, save=None)
