@@ -35,7 +35,6 @@ import warnings
 import numpy as np
 
 import stimupy
-from stimupy import illusions
 
 __all__ = [
     "square_white",

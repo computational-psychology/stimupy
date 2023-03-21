@@ -33,7 +33,6 @@ Robinson, A. E., Hammon, P. S., & de Sa, V. R. (2007).
 import numpy as np
 
 import stimupy
-from stimupy import illusions
 from stimupy.utils import (
     flip_dict,
     pad_dict_by_visual_size,

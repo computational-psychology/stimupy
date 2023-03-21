@@ -39,7 +39,6 @@ Domijan, D. (2015).
 import numpy as np
 
 import stimupy
-from stimupy import illusions
 from stimupy.utils import pad_dict_by_visual_size, pad_dict_to_shape, resolution, stack_dicts
 
 __all__ = [

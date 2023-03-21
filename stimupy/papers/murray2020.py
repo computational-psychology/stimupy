@@ -37,7 +37,6 @@ import numpy as np
 import scipy.io
 
 import stimupy
-from stimupy import illusions
 from stimupy.utils import pad_dict_by_visual_size, rotate_dict
 
 __all__ = [

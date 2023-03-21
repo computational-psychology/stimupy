@@ -12,7 +12,6 @@ from . import (
     gabors,
     gratings,
     hermanns,
-    illusions,
     mondrians,
     mueller_lyers,
     noises,
