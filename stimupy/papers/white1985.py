@@ -33,7 +33,7 @@ import warnings
 
 import numpy as np
 
-from stimupy.illusions import gratings as grating
+from stimupy import gratings
 
 __all__ = [
     "wide_0phase",
@@ -134,7 +134,7 @@ def wide_0phase(ppd=PPD):
         **COMMON_PARAMS,
     }
 
-    stim = grating.phase_shifted(**params)
+    stim = gratings.phase_shifted(**params)
     stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
@@ -175,7 +175,7 @@ def wide_36phase(ppd=PPD):
         **COMMON_PARAMS,
     }
 
-    stim = grating.phase_shifted(**params)
+    stim = gratings.phase_shifted(**params)
     stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
@@ -217,7 +217,7 @@ def wide_72phase(ppd=PPD):
         **COMMON_PARAMS,
     }
 
-    stim = grating.phase_shifted(**params)
+    stim = gratings.phase_shifted(**params)
     stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
@@ -259,7 +259,7 @@ def wide_108phase(ppd=PPD):
         **COMMON_PARAMS,
     }
 
-    stim = grating.phase_shifted(**params)
+    stim = gratings.phase_shifted(**params)
     stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
@@ -301,7 +301,7 @@ def wide_144phase(ppd=PPD):
         **COMMON_PARAMS,
     }
 
-    stim = grating.phase_shifted(**params)
+    stim = gratings.phase_shifted(**params)
     stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
@@ -343,7 +343,7 @@ def wide_180phase(ppd=PPD):
         **COMMON_PARAMS,
     }
 
-    stim = grating.phase_shifted(**params)
+    stim = gratings.phase_shifted(**params)
     stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
@@ -385,7 +385,7 @@ def square_0phase(ppd=PPD):
         **COMMON_PARAMS,
     }
 
-    stim = grating.phase_shifted(**params)
+    stim = gratings.phase_shifted(**params)
     stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
@@ -427,7 +427,7 @@ def square_36phase(ppd=PPD):
         **COMMON_PARAMS,
     }
 
-    stim = grating.phase_shifted(**params)
+    stim = gratings.phase_shifted(**params)
     stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
@@ -469,7 +469,7 @@ def square_72phase(ppd=PPD):
         **COMMON_PARAMS,
     }
 
-    stim = grating.phase_shifted(**params)
+    stim = gratings.phase_shifted(**params)
     stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
@@ -511,7 +511,7 @@ def square_108phase(ppd=PPD):
         **COMMON_PARAMS,
     }
 
-    stim = grating.phase_shifted(**params)
+    stim = gratings.phase_shifted(**params)
     stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
@@ -553,7 +553,7 @@ def square_144phase(ppd=PPD):
         **COMMON_PARAMS,
     }
 
-    stim = grating.phase_shifted(**params)
+    stim = gratings.phase_shifted(**params)
     stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 
@@ -595,7 +595,7 @@ def square_180phase(ppd=PPD):
         **COMMON_PARAMS,
     }
 
-    stim = grating.phase_shifted(**params)
+    stim = gratings.phase_shifted(**params)
     stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
     return stim
 

@@ -368,7 +368,7 @@ def grating_induction(
     intensity_target=0.5,
     origin="corner",
 ):
-    """Grating induction illusion using a sine-wave grating
+    """Grating induction illusion using a sinewave grating
 
     Parameters
     ----------
@@ -399,7 +399,7 @@ def grating_induction(
     target_width : float
         width of target stripe in degrees visual angle
     intensities : Sequence[float, float] or None (default)
-        min and max intensity of sine-wave
+        min and max intensity of sinewave
     origin : "corner", "mean" or "center"
         if "corner": set origin to upper left corner (default)
         if "mean": set origin to hypothetical image center

@@ -1,4 +1,4 @@
-from . import angulars, checkerboards, circulars, cornsweets, frames, gratings
+from . import angulars, checkerboards, circulars, cornsweets, frames
 
 
 def create_overview():
@@ -43,20 +43,6 @@ def create_overview():
         "frames_bullseye": frames.bullseye(**p, frequency=0.5),
         "frames_bullseye_general": frames.bullseye_generalized(**p, radii=(1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5)),
         "2sided_bullseye": frames.two_sided_bullseye(**p, frequency=1),
-        # Grating
-        "grating_uniform": gratings.on_uniform(**p, frequency=1, grating_size=3, target_indices=(3,)),
-        "grating_grating1": gratings.on_grating(large_grating_params={**p, "frequency": 2, "rotation": 45},
-                                             small_grating_params={**p_small_grating, "visual_size": 4, "target_indices": (1, 3, 5, 7),}),
-        "grating_grating2": gratings.on_grating(large_grating_params={**p, "frequency": 1},
-                                             small_grating_params={**p_small_grating, "visual_size": 4,"target_indices": (1, 3, 5, 7),}),
-        "grating_grating3": gratings.on_grating(large_grating_params={**p, "frequency": 1, "intensity_bars": (0, 1),},
-                                             small_grating_params={**p_small_grating, "visual_size": (4, 10), "target_indices": (9, 11, 13),}),
-        "grating_grating_masked": gratings.on_grating_masked(large_grating_params={**p, "frequency": 1, "rotation": 90,},
-                                                          small_grating_params={**p_small_grating, "visual_size": 4, "target_indices": (1, 3, 5, 7),},
-                                                          mask_size=(2, 2, 1)),
-        "counterphase_induction": gratings.phase_shifted(**p, frequency=1, target_size=4, target_phase_shift=90,),
-        "grating_induction": gratings.grating_induction(**p, frequency=0.5, target_width=0.5),
-        "grating_induction_blur": gratings.grating_induction_blur(**p, frequency=0.5, target_width=0.5, sigma=0.1),
     }
     # fmt: on
 
