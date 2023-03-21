@@ -434,7 +434,7 @@ def sine(
 
     stim = {
         "img": img,
-        "mask": mask.astype(int),
+        "grating_mask": mask.astype(int),
         "visual_size": visual_size,
         "ppd": ppd,
         "shape": shape,

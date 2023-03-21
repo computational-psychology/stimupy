@@ -97,7 +97,7 @@ def sine_wave(
     # Create stimulus dict
     stim = {
         "img": sw["img"],
-        "grating_mask": sw["mask"].astype(int),
+        "grating_mask": sw["grating_mask"].astype(int),
         "visual_size": sw["visual_size"],
         "ppd": sw["ppd"],
         "shape": sw["shape"],
