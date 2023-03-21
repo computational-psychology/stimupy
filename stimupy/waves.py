@@ -130,7 +130,7 @@ def sine_linear(
                 stim["grating_mask"] == (bar_idx + 1), target_idx + 1, targets_mask
             )
         targets_mask = targets_mask.astype(int)
-        stim["targets_mask"] = targets_mask
+        stim["target_mask"] = targets_mask
 
         # Place target(s)
         if isinstance(intensity_target, (int, float)):
@@ -250,7 +250,7 @@ def square_linear(
                 stim["grating_mask"] == (bar_idx + 1), target_idx + 1, targets_mask
             )
         targets_mask = targets_mask.astype(int)
-        stim["targets_mask"] = targets_mask
+        stim["target_mask"] = targets_mask
 
         # Place target(s)
         if isinstance(intensity_target, (int, float)):
