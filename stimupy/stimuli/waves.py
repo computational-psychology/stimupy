@@ -13,8 +13,8 @@ __all__ = [
     "square_radial",
     "sine_cityblock",
     "square_cityblock",
-    # "sine_angular",
-    # "square_angular",
+    "sine_angular",
+    "square_angular",
 ]
 
 
@@ -748,6 +748,248 @@ def square_cityblock(
     return stim
 
 
+def sine_angular(
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    frequency=None,
+    n_segments=None,
+    segment_width=None,
+    period="ignore",
+    rotation=0,
+    phase_shift=0,
+    intensities=(0.0, 1.0),
+    target_indices=(),
+    intensity_target=0.5,
+    origin="mean",
+    round_phase_width=True,
+):
+    """Angular sine-wave grating (set of segments) over the whole image, with some segment(s) as target(s)
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    frequency : Number, or None (default)
+        spatial frequency of grating, in cycles per degree visual angle
+    n_segments : int, or None (default)
+        number of segments
+    segment_width : Number, or None (default)
+        width of a single segment, in degrees
+    period : "even", "odd", "either" or "ignore" (default)
+        ensure whether the grating has "even" number of phases, "odd"
+        number of phases, either or whether not to round the number of
+        phases ("ignore")
+    rotation : float
+        rotation of grating in degrees (default: 0 = horizontal)
+    phase_shift : float
+        phase shift of grating in degrees
+    intensities : Sequence[float, float] or None (default)
+        min and max intensity of sine-wave
+    target_indices : int, or Sequence[int, ...]
+        indices segments where targets will be placed
+    intensity_target : float, or Sequence[float, ...], optional
+        intensity value for each target, by default 0.5.
+        Can specify as many intensities as number of target_indices;
+        If fewer intensities are passed than target_indices, cycles through intensities
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner (default)
+        if "mean": set origin to hypothetical image center
+        if "center": set origin to real center (closest existing value to mean)
+    round_phase_width : Bool
+        if True, round width of segments given resolution
+
+    Returns
+    -------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "target_mask"),
+        and additional keys containing stimulus parameters
+    """
+    if len(intensities) != 2:
+        raise ValueError("intensity_segments should be [float, float]")
+
+    lst = [visual_size, ppd, shape, frequency, n_segments, segment_width]
+    if len([x for x in lst if x is not None]) < 3:
+        raise ValueError(
+            "'grating' needs 3 non-None arguments for resolving from 'visual_size', "
+            "'ppd', 'shape', 'frequency', 'n_segments', 'segments_width'"
+        )
+
+    # Spatial square-wave grating
+    stim = waves.sine(
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        frequency=frequency,
+        n_phases=n_segments,
+        phase_width=segment_width,
+        period=period,
+        rotation=rotation,
+        phase_shift=phase_shift,
+        intensities=intensities,
+        origin=origin,
+        round_phase_width=round_phase_width,
+        base_type="angular",
+    )
+
+    # Repackage output
+    stim["n_segments"] = stim.pop("n_phases")
+    stim["segment_width"] = stim.pop("phase_width")
+    stim.pop("base_type")
+
+    # Resolve target parameters
+    if target_indices is not None and target_indices != ():
+        if isinstance(target_indices, (int)):
+            target_indices = [
+                target_indices,
+            ]
+        if isinstance(intensity_target, (int, float)):
+            intensity_target = [
+                intensity_target,
+            ]
+        intensity_target = itertools.cycle(intensity_target)
+
+        # Place target(s)
+        targets_mask = np.zeros_like(stim["grating_mask"])
+        for target_idx, (segment_idx, intensity) in enumerate(
+            zip(target_indices, intensity_target)
+        ):
+            targets_mask = np.where(
+                stim["grating_mask"] == (segment_idx + 1), target_idx + 1, targets_mask
+            )
+            stim["img"] = np.where(targets_mask == (target_idx + 1), intensity, stim["img"])
+        stim["target_mask"] = targets_mask.astype(int)
+
+    return stim
+
+
+def square_angular(
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    frequency=None,
+    n_segments=None,
+    segment_width=None,
+    period="ignore",
+    rotation=0,
+    phase_shift=0,
+    intensity_segments=(1.0, 0.0),
+    target_indices=(),
+    intensity_target=0.5,
+    origin="mean",
+    round_phase_width=True,
+):
+    """Angular square-wave grating (set of segments) over the whole image, with some segment(s) as target(s)
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    frequency : Number, or None (default)
+        spatial frequency of grating, in cycles per degree visual angle
+    n_segments : int, or None (default)
+        number of segments in the grating
+    segment_width : Number, or None (default)
+        width of a single segment, in degrees visual angle
+    period : "even", "odd", "either" or "ignore" (default)
+        ensure whether the grating has "even" number of phases, "odd"
+        number of phases, either or whether not to round the number of
+        phases ("ignore")
+    rotation : float
+        rotation of grating in degrees (default: 0 = horizontal)
+    phase_shift : float
+        phase shift of grating in degrees
+    intensity_segments : Sequence[float, ...]
+        intensity value for each segment, by default (1.0, 0.0).
+        Can specify as many intensities as n_segments;
+        If fewer intensities are passed than n_segments, cycles through intensities
+    target_indices : int, or Sequence[int, ...]
+        indices segments where targets will be placed
+    intensity_target : float, or Sequence[float, ...], optional
+        intensity value for each target, by default 0.5.
+        Can specify as many intensities as number of target_indices;
+        If fewer intensities are passed than target_indices, cycles through intensities
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner (default)
+        if "mean": set origin to hypothetical image center
+        if "center": set origin to real center (closest existing value to mean)
+    round_phase_width : Bool
+        if True, round width of segments given resolution
+
+    Returns
+    -------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "target_mask"),
+        and additional keys containing stimulus parameters
+    """
+    lst = [visual_size, ppd, shape, frequency, n_segments, segment_width]
+    if len([x for x in lst if x is not None]) < 3:
+        raise ValueError(
+            "'grating' needs 3 non-None arguments for resolving from 'visual_size', "
+            "'ppd', 'shape', 'frequency', 'n_segments', 'segment_width'"
+        )
+
+    # Spatial square-wave grating
+    stim = waves.square(
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        frequency=frequency,
+        n_phases=n_segments,
+        phase_width=segment_width,
+        period=period,
+        rotation=rotation,
+        phase_shift=phase_shift,
+        origin=origin,
+        round_phase_width=round_phase_width,
+        base_type="angular",
+    )
+
+    # Adjust intensities to passed-in values
+    stim["img"] = draw_regions(mask=stim["grating_mask"], intensities=intensity_segments)
+
+    # Repackage output
+    stim["n_segments"] = stim.pop("n_phases")
+    stim["segment_width"] = stim.pop("phase_width")
+    stim["intensity_segments"] = stim.pop("intensities")
+    stim.pop("base_type")
+
+    # Resolve target parameters
+    if target_indices is not None and target_indices != ():
+        if isinstance(target_indices, (int)):
+            target_indices = [
+                target_indices,
+            ]
+        if isinstance(intensity_target, (int, float)):
+            intensity_target = [
+                intensity_target,
+            ]
+        intensity_target = itertools.cycle(intensity_target)
+
+        # Place target(s)
+        targets_mask = np.zeros_like(stim["grating_mask"])
+        for target_idx, (segment_idx, intensity) in enumerate(
+            zip(target_indices, intensity_target)
+        ):
+            targets_mask = np.where(
+                stim["grating_mask"] == (segment_idx + 1), target_idx + 1, targets_mask
+            )
+            stim["img"] = np.where(targets_mask == (target_idx + 1), intensity, stim["img"])
+        stim["target_mask"] = targets_mask.astype(int)
+
+    return stim
+
+
 def overview(**kwargs):
     """Generate example stimuli from this module
 
@@ -773,6 +1015,7 @@ def overview(**kwargs):
         "sine wave - oblique": sine_linear(**default_params, **grating_params, bar_width=1, rotation=45),
         "sine wave - radial": sine_radial(**default_params, **grating_params, ring_width=1, clip=True),
         "sine wave - cityblock": sine_cityblock(**default_params, **grating_params, frame_width=1, clip=True),
+        "sine wave - angular": sine_angular(**default_params, **grating_params, segment_width=10),
 
 
         "square wave - horizontal": square_linear(**default_params, **grating_params, bar_width=1, rotation=0),
@@ -780,10 +1023,8 @@ def overview(**kwargs):
         "square wave - oblique": square_linear(**default_params, **grating_params, bar_width=1, rotation=45),
         "square wave - radial": square_radial(**default_params, **grating_params, ring_width=1, clip=True),
         "square wave - cityblock": square_cityblock(**default_params, **grating_params, frame_width=1, clip=True),
+        "square wave - angular": square_angular(**default_params, **grating_params, segment_width=10),
 
-        # "sine wave - angular": sine(**default_params, **grating_params, base_type="angular"),
-
-        # "square wave - angular": square(**default_params, **grating_params, base_type="angular"),
 
         "square wave - multiple intensitites": square_linear(**default_params, **grating_params, bar_width=3.5, rotation=0, intensity_bars=(0, 0.25, 0.75)),
     }
