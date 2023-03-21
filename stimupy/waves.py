@@ -275,8 +275,7 @@ def overview(**kwargs):
 
     grating_params = {
         "period": "ignore",
-        "phase_shift": 90,
-        "origin": "center",
+        "phase_shift": 0,
         "round_phase_width": False,
         "target_indices": (0, 5),
     }
