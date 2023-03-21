@@ -300,8 +300,8 @@ def sine_radial(
         Can specify as many intensities as number of target_indices;
         If fewer intensities are passed than target_indices, cycles through intensities
     origin : "corner", "mean" or "center"
-        if "corner": set origin to upper left corner (default)
-        if "mean": set origin to hypothetical image center
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
         if "center": set origin to real center (closest existing value to mean)
     round_phase_width : Bool
         if True, round width of rings given resolution
@@ -365,7 +365,7 @@ def square_radial(
     intensity_rings=(1.0, 0.0),
     target_indices=(),
     intensity_target=0.5,
-    origin="corner",
+    origin="mean",
     round_phase_width=True,
 ):
     """Circular square-wave grating (set of rings) over the whole image, with some ring(s) as target(s)
@@ -403,8 +403,8 @@ def square_radial(
         Can specify as many intensities as number of target_indices;
         If fewer intensities are passed than target_indices, cycles through intensities
     origin : "corner", "mean" or "center"
-        if "corner": set origin to upper left corner (default)
-        if "mean": set origin to hypothetical image center
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
         if "center": set origin to real center (closest existing value to mean)
     round_phase_width : Bool
         if True, round width of rings given resolution
