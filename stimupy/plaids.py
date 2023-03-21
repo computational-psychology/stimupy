@@ -1,5 +1,5 @@
+from stimupy.components import waves
 from stimupy.components.gaussians import gaussian
-from stimupy.components.gratings import sine_wave
 
 __all__ = [
     "plaid",
@@ -32,15 +32,15 @@ def plaid(
     -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
-        mask with integer index for each bar (key: "grating_mask"),
+        mask with integer index for each phase (key: "grating_mask"),
         and additional keys containing stimulus parameters
     """
     if sigma is None:
         raise ValueError("plaid() missing argument 'sigma' which is not 'None'")
 
     # Create sine-wave gratings
-    grating1 = sine_wave(**grating_parameters1)
-    grating2 = sine_wave(**grating_parameters2)
+    grating1 = waves.sine(**grating_parameters1)
+    grating2 = waves.sine(**grating_parameters2)
 
     if grating1["shape"] != grating2["shape"]:
         raise ValueError("Gratings must have the same shape")
@@ -65,8 +65,8 @@ def plaid(
     grating1["sigma"] = sigma
     grating1["grating_mask2"] = grating2["grating_mask"]
     grating1["frequency2"] = grating2["frequency"]
-    grating1["bar_width2"] = grating2["bar_width"]
-    grating1["n_bars2"] = grating2["n_bars"]
+    grating1["phase_width2"] = grating2["phase_width"]
+    grating1["n_phases2"] = grating2["n_phases"]
     grating1["gaussian_mask"] = window["gaussian_mask"]
     return grating1
 
@@ -84,21 +84,24 @@ def overview(**kwargs):
         "ppd": 10,
         "origin": "center",
         "phase_shift": 30,
+        "base_type": "rotated",
     }
     default_params.update(kwargs)
 
     grating1 = {
         **default_params,
-        "bar_width": 3.5,
+        "phase_width": 3.5,
         "period": "odd",
         "rotation": 0,
+        "round_phase_width": False,
     }
 
     grating2 = {
         **default_params,
-        "bar_width": 3.5,
+        "phase_width": 3.5,
         "period": "ignore",
         "rotation": 90,
+        "round_phase_width": False,
     }
 
     # fmt: off
