@@ -3,13 +3,14 @@ import itertools
 import numpy as np
 
 from stimupy.components import draw_regions, waves
+from stimupy.components.shapes import disc
 
 __all__ = [
     "sine_linear",
     "square_linear",
     # "staircase_linear",
-    # "sine_radial",
-    # "square_radial",
+    "sine_radial",
+    "square_radial",
     # "sine_cityblock",
     # "square_cityblock",
     # "sine_angular",
@@ -251,6 +252,246 @@ def square_linear(
     return stim
 
 
+def sine_radial(
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    frequency=None,
+    n_rings=None,
+    ring_width=None,
+    period="ignore",
+    rotation=0,
+    phase_shift=0,
+    intensities=(0.0, 1.0),
+    target_indices=(),
+    intensity_target=0.5,
+    origin="mean",
+    round_phase_width=True,
+    clip=False,
+    intensity_background=0.5,
+):
+    """Circular sine-wave grating (set of rings) over the whole image, with some ring(s) as target(s)
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    frequency : Number, or None (default)
+        spatial frequency of grating, in cycles per degree visual angle
+    n_rings : int, or None (default)
+        number of rings
+    ring_width : Number, or None (default)
+        width of a single ring, in degrees
+    period : "even", "odd", "either" or "ignore" (default)
+        ensure whether the grating has "even" number of phases, "odd"
+        number of phases, either or whether not to round the number of
+        phases ("ignore")
+    rotation : float
+        rotation of grating in degrees (default: 0 = horizontal)
+    phase_shift : float
+        phase shift of grating in degrees
+    intensities : Sequence[float, float] or None (default)
+        min and max intensity of sine-wave
+    target_indices : int, or Sequence[int, ...]
+        indices segments where targets will be placed
+    intensity_target : float, or Sequence[float, ...], optional
+        intensity value for each target, by default 0.5.
+        Can specify as many intensities as number of target_indices;
+        If fewer intensities are passed than target_indices, cycles through intensities
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
+    round_phase_width : Bool
+        if True, round width of rings given resolution
+    clip : Bool
+        if True, clip stimulus to image size (default: False)
+    intensity_background : float (optional)
+        intensity value of background (if clipped), by default 0.5
+
+    Returns
+    -------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "target_mask"),
+        and additional keys containing stimulus parameters
+    """
+    if len(intensities) != 2:
+        raise ValueError("intensity_rings should be [float, float]")
+
+    lst = [visual_size, ppd, shape, frequency, n_rings, ring_width]
+    if len([x for x in lst if x is not None]) < 3:
+        raise ValueError(
+            "'grating' needs 3 non-None arguments for resolving from 'visual_size', "
+            "'ppd', 'shape', 'frequency', 'n_rings', 'rings_width'"
+        )
+
+    # Spatial square-wave grating
+    stim = waves.sine(
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        frequency=frequency,
+        n_phases=n_rings,
+        phase_width=ring_width,
+        period=period,
+        rotation=rotation,
+        phase_shift=phase_shift,
+        intensities=intensities,
+        origin=origin,
+        round_phase_width=round_phase_width,
+        base_type="radial",
+    )
+
+    # Repackage output
+    stim["n_rings"] = stim.pop("n_phases")
+    stim["ring_width"] = stim.pop("phase_width")
+    stim.pop("base_type")
+
+    # Clip?
+    if clip:
+        csize = min(stim["visual_size"]) / 2.0
+        circle = disc(
+            visual_size=stim["visual_size"],
+            ppd=stim["ppd"],
+            radius=csize,
+            origin=origin,
+        )
+        stim["img"] = np.where(circle["ring_mask"], stim["img"], intensity_background)
+        stim["grating_mask"] = np.where(circle["ring_mask"], stim["grating_mask"], 0)
+
+    # Resolve target parameters
+    if target_indices is not None and target_indices != ():
+        stim = add_targets(stim, target_indices=target_indices, intensity_target=intensity_target)
+
+    return stim
+
+
+def square_radial(
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    frequency=None,
+    n_rings=None,
+    ring_width=None,
+    period="ignore",
+    rotation=0,
+    phase_shift=0,
+    intensity_rings=(1.0, 0.0),
+    target_indices=(),
+    intensity_target=0.5,
+    origin="mean",
+    round_phase_width=True,
+    clip=False,
+    intensity_background=0.5,
+):
+    """Circular square-wave grating (set of rings) over the whole image, with some ring(s) as target(s)
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    frequency : Number, or None (default)
+        spatial frequency of grating, in cycles per degree visual angle
+    n_rings : int, or None (default)
+        number of rings in the grating
+    ring_width : Number, or None (default)
+        width of a single ring, in degrees visual angle
+    period : "even", "odd", "either" or "ignore" (default)
+        ensure whether the grating has "even" number of phases, "odd"
+        number of phases, either or whether not to round the number of
+        phases ("ignore")
+    rotation : float
+        rotation of grating in degrees (default: 0 = horizontal)
+    phase_shift : float
+        phase shift of grating in degrees
+    intensity_rings : Sequence[float, ...]
+        intensity value for each ring, by default (1.0, 0.0).
+        Can specify as many intensities as n_rings;
+        If fewer intensities are passed than n_rings, cycles through intensities
+    target_indices : int, or Sequence[int, ...]
+        indices segments where targets will be placed
+    intensity_target : float, or Sequence[float, ...], optional
+        intensity value for each target, by default 0.5.
+        Can specify as many intensities as number of target_indices;
+        If fewer intensities are passed than target_indices, cycles through intensities
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
+    round_phase_width : Bool
+        if True, round width of rings given resolution
+    clip : Bool
+        if True, clip stimulus to image size (default: False)
+    intensity_background : float (optional)
+        intensity value of background (if clipped), by default 0.5
+
+    Returns
+    -------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "target_mask"),
+        and additional keys containing stimulus parameters
+    """
+    lst = [visual_size, ppd, shape, frequency, n_rings, ring_width]
+    if len([x for x in lst if x is not None]) < 3:
+        raise ValueError(
+            "'grating' needs 3 non-None arguments for resolving from 'visual_size', "
+            "'ppd', 'shape', 'frequency', 'n_rings', 'ring_width'"
+        )
+
+    # Spatial square-wave grating
+    stim = waves.square(
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        frequency=frequency,
+        n_phases=n_rings,
+        phase_width=ring_width,
+        period=period,
+        rotation=rotation,
+        phase_shift=phase_shift,
+        origin=origin,
+        round_phase_width=round_phase_width,
+        base_type="radial",
+    )
+
+    # Adjust intensities to passed-in values
+    stim["img"] = draw_regions(mask=stim["grating_mask"], intensities=intensity_rings)
+
+    # Repackage output
+    stim["n_rings"] = stim.pop("n_phases")
+    stim["ring_width"] = stim.pop("phase_width")
+    stim["intensity_rings"] = stim.pop("intensities")
+    stim.pop("base_type")
+
+    # Clip?
+    if clip:
+        csize = min(stim["visual_size"]) / 2.0
+        circle = disc(
+            visual_size=stim["visual_size"],
+            ppd=stim["ppd"],
+            radius=csize,
+            origin=origin,
+        )
+        stim["img"] = np.where(circle["ring_mask"], stim["img"], intensity_background)
+        stim["grating_mask"] = np.where(circle["ring_mask"], stim["grating_mask"], 0)
+
+    # Resolve target parameters
+    if target_indices is not None and target_indices != ():
+        stim = add_targets(stim, target_indices=target_indices, intensity_target=intensity_target)
+
+    return stim
+
+
 def overview(**kwargs):
     """Generate example stimuli from this module
 
@@ -274,17 +515,16 @@ def overview(**kwargs):
         "sine wave - horizontal": sine_linear(**default_params, **grating_params, bar_width=1, rotation=0),
         "sine wave - vertical": sine_linear(**default_params, **grating_params, bar_width=1, rotation=90),
         "sine wave - oblique": sine_linear(**default_params, **grating_params, bar_width=1, rotation=45),
+        "sine wave - radial": sine_radial(**default_params, **grating_params, ring_width=1, clip=True),
 
         "square wave - horizontal": square_linear(**default_params, **grating_params, bar_width=1, rotation=0),
         "square wave - vertical": square_linear(**default_params, **grating_params, bar_width=1, rotation=90),
         "square wave - oblique": square_linear(**default_params, **grating_params, bar_width=1, rotation=45),
+        "square wave - radial": square_radial(**default_params, **grating_params, ring_width=1, clip=True),
 
-
-        # "sine wave - radial": sine(**default_params, **grating_params, base_type="radial"),
         # "sine wave - angular": sine(**default_params, **grating_params, base_type="angular"),
         # "sine wave - cityblock": sine(**default_params, **grating_params, base_type="cityblock"),
 
-        # "square wave - radial": square(**default_params, **grating_params, base_type="radial"),
         # "square wave - angular": square(**default_params, **grating_params, base_type="angular"),
         # "square wave - cityblock": square(**default_params, **grating_params, base_type="cityblock"),
 

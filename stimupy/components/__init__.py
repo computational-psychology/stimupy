@@ -10,7 +10,7 @@ __all__ = [
     "mask_elements",
     "overview",
     "angulars",
-    "circulars",
+    "radials",
     "edges",
     "frames",
     "gaussians",
@@ -208,7 +208,7 @@ def draw_regions(mask, intensities, intensity_background=0.5):
     return img
 
 
-from . import angulars, circulars, edges, frames, gaussians, lines, shapes, waves
+from . import angulars, edges, frames, gaussians, lines, radials, shapes, waves
 
 
 def create_overview():
@@ -233,12 +233,10 @@ def create_overview():
         "angular_grating": angulars.grating(**p, n_segments=8),
         "pinwheel": angulars.pinwheel(**p, n_segments=8, radius=3),
         # circulars
-        "disc_and_rings": circulars.disc_and_rings(**p, radii=[1, 2, 3]),
-        "disc": circulars.disc(**p, radius=3),
-        "ring": circulars.ring(**p, radii=(1, 3)),
-        "annulus (=ring)": circulars.annulus(**p, radii=(1, 3)),
-        "circular_sine_wave": circulars.sine_wave(**p, frequency=0.5),
-        "circular_square_wave": circulars.square_wave(**p, frequency=0.5),
+        "rings (generalized)": radials.rings(**p, radii=[1, 2, 3]),
+        "disc": radials.disc(**p, radius=3),
+        "ring": radials.ring(**p, radii=(1, 3)),
+        "annulus (=ring)": radials.annulus(**p, radii=(1, 3)),
         # edges
         "step_edge": edges.step_edge(**p),
         "gaussian_edge": edges.gaussian_edge(**p, sigma=1.5),

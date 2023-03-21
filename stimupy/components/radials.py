@@ -2,17 +2,14 @@ import itertools
 
 import numpy as np
 
-from stimupy.components import image_base, mask_elements, waves
+from stimupy.components import image_base, mask_elements
 from stimupy.utils import resolution
-from stimupy.utils.utils import round_to_vals
 
 __all__ = [
-    "disc_and_rings",
     "disc",
     "ring",
     "annulus",
-    "sine_wave",
-    "square_wave",
+    "rings",
 ]
 
 
@@ -74,7 +71,7 @@ def mask_rings(
     return stim
 
 
-def disc_and_rings(
+def rings(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -271,7 +268,7 @@ def ring(
     if radii[1] < radii[0]:
         raise ValueError("first radius needs to be smaller than second radius")
 
-    stim = disc_and_rings(
+    stim = rings(
         radii=radii,
         intensity_rings=[intensity_background, intensity_ring],
         shape=shape,
@@ -287,197 +284,33 @@ def ring(
 annulus = ring
 
 
-def sine_wave(
-    visual_size=None,
-    ppd=None,
-    shape=None,
-    frequency=None,
-    n_rings=None,
-    ring_width=None,
-    phase_shift=0,
-    intensity_rings=(0.0, 1.0),
-    intensity_background=0.5,
-    origin="mean",
-    clip=False,
-):
-    """Draw a circular sine-wave grating over the whole image
-
-    Parameters
-    ----------
-    visual_size : Sequence[Number, Number], Number, or None (default)
-        visual size [height, width] of image, in degrees
-    ppd : Sequence[Number, Number], Number, or None (default)
-        pixels per degree [vertical, horizontal]
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
-    frequency : Number, or None (default)
-        spatial frequency of circular grating, in cycles per degree
-    n_rings : int, or None (default)
-        number of rings
-    ring_width : Number, or None (default)
-        width of a single ring, in degrees
-    phase_shift : float
-        phase shift of grating in degrees
-    intensity_rings : Sequence[float, float]
-        min and max intensity of sine-wave, by default (0.0, 1.0)
-    intensity_background : float (optional)
-        intensity value of background, by default 0.5
-    origin : "corner", "mean" or "center"
-        if "corner": set origin to upper left corner
-        if "mean": set origin to hypothetical image center (default)
-        if "center": set origin to real center (closest existing value to mean)
-    clip : Bool
-        if True, clip stimulus to image size (default: False)
+def overview(**kwargs):
+    """Generate example stimuli from this module
 
     Returns
     -------
-    dict[str, Any]
-        dict with the stimulus (key: "img"),
-        mask with integer index for each ring (key: "ring_mask"),
-        and additional keys containing stimulus parameters
+    stims : dict
+        dict with all stimuli containing individual stimulus dicts.
     """
-    lst = [visual_size, ppd, shape, frequency, n_rings, ring_width]
-    if len([x for x in lst if x is not None]) < 3:
-        raise ValueError(
-            "'grating()' needs 3 non-None arguments for resolving from 'visual_size', "
-            "'ppd', 'shape', 'frequency', 'n_rings', 'ring_width'"
-        )
-
-    sw = waves.sine(
-        visual_size=visual_size,
-        ppd=ppd,
-        shape=shape,
-        frequency=frequency,
-        n_phases=n_rings,
-        phase_width=ring_width,
-        period="ignore",
-        rotation=0,
-        phase_shift=phase_shift,
-        intensities=intensity_rings,
-        origin=origin,
-        round_phase_width=False,
-        base_type="radial",
-    )
-
-    if clip:
-        csize = min(sw["visual_size"]) / 2.0
-        circle = disc(
-            visual_size=sw["visual_size"],
-            ppd=sw["ppd"],
-            radius=csize,
-            origin=origin,
-        )
-        sw["img"] = np.where(circle["ring_mask"], sw["img"], intensity_background)
-        sw["grating_mask"] = np.where(circle["ring_mask"], sw["grating_mask"], 0)
-
-    # Create stimulus dict
-    stim = {
-        "img": sw["img"],
-        "ring_mask": sw["grating_mask"].astype(int),
-        "visual_size": sw["visual_size"],
-        "ppd": sw["ppd"],
-        "shape": sw["shape"],
-        "origin": origin,
-        "frequency": sw["frequency"],
-        "frame_width": sw["phase_width"],
-        "n_frames": sw["n_phases"],
-        "intensity_rings": intensity_rings,
+    default_params = {
+        "visual_size": (10, 10),
+        "ppd": 30,
     }
-    return stim
+    default_params.update(kwargs)
 
+    # fmt: off
+    stimuli = {
+        "disc": disc(**default_params, radius=3),
+        "disc_and_rings": rings(**default_params, radii=(1, 2, 3)),
+        "ring": ring(**default_params, radii=(1, 2)),
+    }
+    # fmt: on
 
-def square_wave(
-    visual_size=None,
-    ppd=None,
-    shape=None,
-    frequency=None,
-    n_rings=None,
-    ring_width=None,
-    phase_shift=0,
-    intensity_rings=(0.0, 1.0),
-    intensity_background=0.5,
-    origin="mean",
-    clip=False,
-):
-    """Draw a circular square-wave grating over the whole image
-
-    Parameters
-    ----------
-    visual_size : Sequence[Number, Number], Number, or None (default)
-        visual size [height, width] of image, in degrees
-    ppd : Sequence[Number, Number], Number, or None (default)
-        pixels per degree [vertical, horizontal]
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
-    frequency : Number, or None (default)
-        spatial frequency of circular grating, in cycles per degree
-    n_rings : int, or None (default)
-        number of rings
-    ring_width : Number, or None (default)
-        width of a single ring, in degrees
-    phase_shift : float
-        phase shift of grating in degrees
-    intensity_rings : Sequence[float, float]
-        min and max intensity of square-wave, by default (0.0, 1.0)
-    intensity_background : float (optional)
-        intensity value of background, by default 0.5
-    origin : "corner", "mean" or "center"
-        if "corner": set origin to upper left corner
-        if "mean": set origin to hypothetical image center (default)
-        if "center": set origin to real center (closest existing value to mean)
-    clip : Bool
-        if True, clip stimulus to image size (default: False)
-
-    Returns
-    -------
-    dict[str, Any]
-        dict with the stimulus (key: "img"),
-        mask with integer index for each ring (key: "ring_mask"),
-        and additional keys containing stimulus parameters
-    """
-    stim = sine_wave(
-        visual_size=visual_size,
-        ppd=ppd,
-        shape=shape,
-        frequency=frequency,
-        n_rings=n_rings,
-        ring_width=ring_width,
-        phase_shift=phase_shift,
-        intensity_rings=intensity_rings,
-        origin=origin,
-        clip=False,
-    )
-
-    # Round sine-wave to create square wave
-    stim["img"] = round_to_vals(stim["img"], intensity_rings)
-
-    if clip:
-        csize = min(stim["visual_size"]) / 2.0
-        circle = disc(
-            visual_size=stim["visual_size"],
-            ppd=stim["ppd"],
-            radius=csize,
-            origin=origin,
-        )
-        stim["img"] = np.where(circle["ring_mask"], stim["img"], intensity_background)
-        stim["ring_mask"] = np.where(circle["ring_mask"], stim["ring_mask"], 0).astype(int)
-    return stim
+    return stimuli
 
 
 if __name__ == "__main__":
-    from stimupy.utils.plotting import plot_stimuli
+    from stimupy.utils import plot_stimuli
 
-    p = {
-        "visual_size": (10, 20),
-        "ppd": 50,
-    }
-
-    stims = {
-        "disc": disc(**p, radius=3),
-        "disc_and_rings": disc_and_rings(**p, radii=(1, 2, 3)),
-        "ring": ring(**p, radii=(1, 2)),
-        "sine_wave": sine_wave(**p, frequency=0.5),
-        "square_wave": square_wave(**p, frequency=0.5),
-    }
-
-    plot_stimuli(stims, mask=True)
+    stims = overview()
+    plot_stimuli(stims, mask=True, save=None)
