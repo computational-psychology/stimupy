@@ -160,13 +160,31 @@ def pinwheel(
     return stim
 
 
+def overview(**kwargs):
+    """Generate example stimuli from this module
+
+    Returns
+    -------
+    stims : dict
+        dict with all stimuli containing individual stimulus dicts.
+    """
+    default_params = {
+        "visual_size": (10, 10),
+        "ppd": 30,
+    }
+    default_params.update(kwargs)
+
+    # fmt: off
+    stimuli = {
+        "pinwheel": pinwheel(**default_params, n_segments=10, target_width=1, target_indices=3),
+    }
+    # fmt: on
+
+    return stimuli
+
+
 if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
 
-    stims = {
-        "pinwheel": pinwheel(
-            visual_size=8, ppd=32, n_segments=10, target_width=1, target_indices=3
-        ),
-    }
-
+    stims = overview()
     plot_stimuli(stims, mask=True, save=None)
