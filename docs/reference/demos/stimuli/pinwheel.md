@@ -13,12 +13,12 @@ kernelspec:
 ---
 
 ```{important}
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/illusions/angulars.md)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/stimuli/angulars.md)
  to get interactivity
 ```
 
-# Illusions - Angulars
-{py:mod}`stimupy.illusions.angulars`
+# Stimuli - Pinwheels
+{py:mod}`stimupy.stimuli.pinwheels`
 
 ```{code-cell} ipython3
 :tags: [remove-cell]
@@ -29,10 +29,10 @@ from stimupy.utils import plot_stim
 ```
 
 ## Pinwheel
-{py:func}`stimupy.illusions.angulars.pinwheel`
+{py:func}`stimupy.stimuli.pinwheels.pinwheel`
 
 ```{code-cell} ipython3
-from stimupy.illusions.angulars import pinwheel
+from stimupy.stimuli.pinwheels import pinwheel
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
