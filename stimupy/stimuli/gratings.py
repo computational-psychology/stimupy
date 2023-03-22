@@ -198,7 +198,11 @@ def on_grating_masked(
 
     stim = {
         "img": img,
+        "visual_size": large_grating["visual_size"],
+        "ppd": large_grating["ppd"],
         "target_mask": mask.astype(int),
+        "small_grating_mask": small_grating["grating_mask"],
+        "large_grating_mask": large_grating["grating_mask"],
         "bar_width_small": small_grating["bar_width"],
         "bar_width_large": large_grating["bar_width"],
     }
