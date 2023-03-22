@@ -9,12 +9,12 @@ def gabor(
     ppd=None,
     shape=None,
     frequency=None,
-    n_phases=None,
-    phase_width=None,
+    n_bars=None,
+    bar_width=None,
     period="ignore",
     rotation=0.0,
     phase_shift=None,
-    intensities=(0.0, 1.0),
+    intensity_bars=(0.0, 1.0),
     origin=None,
     round_phase_width=False,
     sigma=None,
@@ -31,6 +31,8 @@ def gabor(
         shape [height, width] of image, in pixels
     frequency : Number, or None (default)
         spatial frequency of grating, in cycles per degree visual angle
+    n_bars : Number, or None (default)
+        number of bars in the grating
     bar_width : Number, or None (default)
         width of a single bar, in degrees visual angle
     sigma : float or (float, float)
@@ -65,12 +67,12 @@ def gabor(
         ppd=ppd,
         shape=shape,
         frequency=frequency,
-        n_phases=n_phases,
-        phase_width=phase_width,
+        n_phases=n_bars,
+        phase_width=bar_width,
         period=period,
         rotation=rotation,
         phase_shift=phase_shift,
-        intensities=intensities,
+        intensities=intensity_bars,
         origin=origin,
         distance_metric="oblique",
         round_phase_width=round_phase_width,
@@ -82,7 +84,7 @@ def gabor(
         sigma=sigma,
         origin=origin,
     )
-    mean_int = (intensities[0] + intensities[1]) / 2
+    mean_int = (intensity_bars[0] + intensity_bars[1]) / 2
     stim["img"] = (stim["img"] - mean_int) * gaussian_window["img"] + mean_int
 
     return {

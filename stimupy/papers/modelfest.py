@@ -43,6 +43,7 @@ from stimupy.components.edges import gaussian_edge
 from stimupy.components.waves import bessel
 from stimupy.noises.binaries import binary as binary_noise
 from stimupy.stimuli.gabors import gabor
+from stimupy.stimuli.plaids import gabors as plaid
 from stimupy.utils import pad_dict_to_shape, resize_dict, roll_dict, stack_dicts
 
 __all__ = [
@@ -2045,14 +2046,13 @@ def Plaids38(ppd=PPD):
         "sigma": 0.14,
         "phase_shift": 90,
         "origin": "center",
+        "round_phase_width": False,
     }
 
-    stim = gabor(**params, rotation=0)
-    stim2 = gabor(**params, rotation=90)
-
-    stim["img"] = stim["img"] / 2 + stim2["img"] / 2
-    stim["rotation"] = stim2["rotation"]
-    stim["grating_mask2"] = stim2["grating_mask"]
+    stim = plaid(
+        gabor_parameters1={**params, "rotation": 0},
+        gabor_parameters2={**params, "rotation": 90},
+    )
 
     v = 149
     experimental_data = {
@@ -2101,12 +2101,10 @@ def Plaids39(ppd=PPD):
         "origin": "center",
     }
 
-    stim = gabor(**params, rotation=45)
-    stim2 = gabor(**params, rotation=90)
-
-    stim["img"] = stim["img"] / 2 + stim2["img"] / 2
-    stim["rotation"] = stim2["rotation"]
-    stim["grating_mask2"] = stim2["grating_mask"]
+    stim = plaid(
+        gabor_parameters1={**params, "rotation": 45},
+        gabor_parameters2={**params, "rotation": 90},
+    )
 
     v = 153
     experimental_data = {
