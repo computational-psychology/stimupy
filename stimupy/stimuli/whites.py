@@ -710,7 +710,7 @@ def yazdanbakhsh(
     )
     tsize_px = resolution.lengths_from_visual_angles_ppd(target_height, np.unique(ppd)[0])
     cycle_width_px = (
-        resolution.lengths_from_visual_angles_ppd(1.0 / (frequency * 2), np.unique(ppd)[0]) * 2
+        resolution.lengths_from_visual_angles_ppd(1.0 / (stim["frequency"] * 2), np.unique(ppd)[0]) * 2
     )
     phase_width_px = cycle_width_px // 2
     height, width = img.shape
