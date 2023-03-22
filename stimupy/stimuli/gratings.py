@@ -249,7 +249,7 @@ def phase_shifted(
     n_bars=None,
     bar_width=None,
     period="ignore",
-    orientation="horizontal",
+    distance_metric="horizontal",
     phase_shift=0,
     intensity_bars=(1.0, 0.0),
     target_size=None,
@@ -261,12 +261,12 @@ def phase_shifted(
         raise ValueError(
             "counterphase_induction() missing argument 'target_size' which is not 'None'"
         )
-    if orientation == "horizontal":
+    if distance_metric == "horizontal":
         rotation = 0
-    elif orientation == "vertical":
+    elif distance_metric == "vertical":
         rotation = 90
     else:
-        raise ValueError("orientation must be horizontal or vertical")
+        raise ValueError("distance_metric must be horizontal or vertical")
 
     # Spatial square-wave grating
     stim = squarewave(
@@ -313,23 +313,23 @@ def phase_shifted(
     # Shift targets by specified phase
     cy, cx = stim["shape"]
     if target_phase_shift < 0:
-        if orientation == "horizontal":
+        if distance_metric == "horizontal":
             stim_target["img"][:, 0 : cx - target_shifti] = stim_target["img"][:, target_shifti::]
             stim_target["grating_mask"][:, 0 : cx - target_shifti] = stim_target["grating_mask"][
                 :, target_shifti::
             ]
-        elif orientation == "vertical":
+        elif distance_metric == "vertical":
             stim_target["img"][0 : cx - target_shifti, :] = stim_target["img"][target_shifti::, :]
             stim_target["grating_mask"][0 : cx - target_shifti, :] = stim_target["grating_mask"][
                 target_shifti::, :
             ]
     else:
-        if orientation == "horizontal":
+        if distance_metric == "horizontal":
             stim_target["img"][:, target_shifti::] = stim_target["img"][:, 0 : cx - target_shifti]
             stim_target["grating_mask"][:, target_shifti::] = stim_target["grating_mask"][
                 :, 0 : cx - target_shifti
             ]
-        elif orientation == "vertical":
+        elif distance_metric == "vertical":
             stim_target["img"][target_shifti::, :] = stim_target["img"][0 : cx - target_shifti, :]
             stim_target["grating_mask"][target_shifti::, :] = stim_target["grating_mask"][
                 0 : cx - target_shifti, :

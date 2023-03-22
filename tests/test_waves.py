@@ -37,7 +37,7 @@ def test_rounding():
         visual_size=visual_size,
         frequency=frequency,
         period="either",
-        base_type="horizontal",
+        distance_metric="horizontal",
         phase_shift=0,
         origin="corner",
         round_phase_width=True,

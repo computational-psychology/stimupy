@@ -114,11 +114,11 @@ def sine_linear(
         )
 
     if rotation % 180 == 0.0:
-        base_type = "horizontal"
+        distance_metric = "horizontal"
     elif rotation % 180 == 90.0:
-        base_type = "vertical"
+        distance_metric = "vertical"
     else:
-        base_type = "rotated"
+        distance_metric = "rotated"
 
     # Spatial square-wave grating
     stim = waves.sine(
@@ -134,13 +134,13 @@ def sine_linear(
         intensities=intensities,
         origin=origin,
         round_phase_width=round_phase_width,
-        base_type=base_type,
+        distance_metric=distance_metric,
     )
 
     # Repackage output
     stim["n_bars"] = stim.pop("n_phases")
     stim["bar_width"] = stim.pop("phase_width")
-    stim.pop("base_type")
+    stim.pop("distance_metric")
 
     # Add targets(?)
     if target_indices is not None and target_indices != ():
@@ -233,7 +233,7 @@ def square_linear(
         phase_shift=phase_shift,
         origin=origin,
         round_phase_width=round_phase_width,
-        base_type="rotated",
+        distance_metric="rotated",
     )
 
     # Adjust intensities to passed-in values
@@ -243,7 +243,7 @@ def square_linear(
     stim["n_bars"] = stim.pop("n_phases")
     stim["bar_width"] = stim.pop("phase_width")
     stim["intensity_bars"] = stim.pop("intensities")
-    stim.pop("base_type")
+    stim.pop("distance_metric")
 
     # Add targets(?)
     if target_indices is not None and target_indices != ():
@@ -344,13 +344,13 @@ def sine_radial(
         intensities=intensities,
         origin=origin,
         round_phase_width=round_phase_width,
-        base_type="radial",
+        distance_metric="radial",
     )
 
     # Repackage output
     stim["n_rings"] = stim.pop("n_phases")
     stim["ring_width"] = stim.pop("phase_width")
-    stim.pop("base_type")
+    stim.pop("distance_metric")
 
     # Clip?
     if clip:
@@ -461,7 +461,7 @@ def square_radial(
         phase_shift=phase_shift,
         origin=origin,
         round_phase_width=round_phase_width,
-        base_type="radial",
+        distance_metric="radial",
     )
 
     # Adjust intensities to passed-in values
@@ -471,7 +471,7 @@ def square_radial(
     stim["n_rings"] = stim.pop("n_phases")
     stim["ring_width"] = stim.pop("phase_width")
     stim["intensity_rings"] = stim.pop("intensities")
-    stim.pop("base_type")
+    stim.pop("distance_metric")
 
     # Clip?
     if clip:
@@ -584,13 +584,13 @@ def sine_cityblock(
         intensities=intensities,
         origin=origin,
         round_phase_width=round_phase_width,
-        base_type="cityblock",
+        distance_metric="cityblock",
     )
 
     # Repackage output
     stim["n_frames"] = stim.pop("n_phases")
     stim["frame_width"] = stim.pop("phase_width")
-    stim.pop("base_type")
+    stim.pop("distance_metric")
 
     # Clip?
     if clip:
@@ -709,7 +709,7 @@ def square_cityblock(
         phase_shift=phase_shift,
         origin=origin,
         round_phase_width=round_phase_width,
-        base_type="cityblock",
+        distance_metric="cityblock",
     )
 
     # Adjust intensities to passed-in values
@@ -719,7 +719,7 @@ def square_cityblock(
     stim["n_frames"] = stim.pop("n_phases")
     stim["frame_width"] = stim.pop("phase_width")
     stim["intensity_frames"] = stim.pop("intensities")
-    stim.pop("base_type")
+    stim.pop("distance_metric")
 
     # Clip?
     if clip:
@@ -834,13 +834,13 @@ def sine_angular(
         intensities=intensities,
         origin=origin,
         round_phase_width=round_phase_width,
-        base_type="angular",
+        distance_metric="angular",
     )
 
     # Repackage output
     stim["n_segments"] = stim.pop("n_phases")
     stim["segment_width"] = stim.pop("phase_width")
-    stim.pop("base_type")
+    stim.pop("distance_metric")
 
     # Resolve target parameters
     if target_indices is not None and target_indices != ():
@@ -952,7 +952,7 @@ def square_angular(
         phase_shift=phase_shift,
         origin=origin,
         round_phase_width=round_phase_width,
-        base_type="angular",
+        distance_metric="angular",
     )
 
     # Adjust intensities to passed-in values
@@ -962,7 +962,7 @@ def square_angular(
     stim["n_segments"] = stim.pop("n_phases")
     stim["segment_width"] = stim.pop("phase_width")
     stim["intensity_segments"] = stim.pop("intensities")
-    stim.pop("base_type")
+    stim.pop("distance_metric")
 
     # Resolve target parameters
     if target_indices is not None and target_indices != ():

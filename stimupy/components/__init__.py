@@ -112,7 +112,7 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin="mea
 
 
 def mask_elements(
-    orientation,
+    distance_metric,
     edges,
     shape=None,
     visual_size=None,
@@ -124,7 +124,7 @@ def mask_elements(
 
     Parameters
     ----------
-    orientation : any of keys in stimupy.components.image_base()
+    distance_metric : any of keys in stimupy.components.image_base()
         which dimension to mask over
     edges : Sequence[Number]
         upper-limit of each consecutive elements
@@ -152,7 +152,7 @@ def mask_elements(
     base = image_base(
         shape=shape, visual_size=visual_size, ppd=ppd, rotation=rotation, origin=origin
     )
-    distances = base[orientation]
+    distances = base[distance_metric]
     distances = np.round(distances, 8)
 
     # Mark elements with integer idx-value
@@ -164,7 +164,7 @@ def mask_elements(
     return {
         "mask": mask,
         "edges": edges,
-        "orientation": orientation,
+        "distance_metric": distance_metric,
         "rotation": base["rotation"],
         "shape": base["shape"],
         "visual_size": base["visual_size"],

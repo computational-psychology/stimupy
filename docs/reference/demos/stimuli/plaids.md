@@ -107,7 +107,7 @@ def show_plaid(
         "origin": origin,
         "round_phase_width": round_phase_width,
         "period": period,
-        "base_type": "rotated",
+        "distance_metric": "rotated",
     }
     
     p_grating1 = {

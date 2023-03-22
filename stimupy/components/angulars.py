@@ -46,7 +46,7 @@ def mask_angle(
     """
     stim = mask_elements(
         edges=np.deg2rad(angles),
-        orientation="angular",
+        distance_metric="angular",
         rotation=rotation,
         shape=shape,
         visual_size=visual_size,
@@ -178,7 +178,7 @@ def mask_segments(
         and additional keys containing stimulus parameters
     """
     stim = mask_elements(
-        orientation="angular",
+        distance_metric="angular",
         edges=np.deg2rad(edges),
         rotation=rotation,
         shape=shape,
