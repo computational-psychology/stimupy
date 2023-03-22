@@ -265,14 +265,17 @@ def cross_triangles(
         raise ValueError("Target size is larger than cross thickness")
 
     # Calculate target placement for classical Benarys cross
+    theight, twidth = resolution.shape_from_visual_size_ppd(target_size, ppd)
+    cheight, cwidth = resolution.shape_from_visual_size_ppd(cross_thickness, ppd)
+
     target_x = (
-        (visual_size[1] - cross_thickness) / 2.0 - target_size[1],
-        (visual_size[1] + cross_thickness) / 2.0,
+        (shape[1] / 2 - cwidth / 2 - twidth) / ppd[1],
+        (shape[1] / 2 + cwidth / 2) / ppd[1],
     )
 
     target_y = (
-        (visual_size[0] - cross_thickness) / 2.0 - target_size[0],
-        (visual_size[0] - cross_thickness) / 2.0,
+        (shape[0] / 2 - cheight / 2 - theight) / ppd[0],
+        (shape[0] / 2 - cheight / 2) / ppd[0],
     )
 
     stim = cross_generalized(
@@ -695,6 +698,9 @@ def add_targets(
             tpatch = tpatch[:, ~np.all(mpatch == 0, axis=0)]
             mpatch = mpatch[:, ~np.all(mpatch == 0, axis=0)]
             theight_, twidth_ = tpatch.shape
+
+            if ty[i] + theight_ > img.shape[0] or tx[i] + twidth_ > img.shape[1]:
+                raise ValueError("At least one target does not fully fit into stimulus")
 
             # Only change the target parts of the image:
             mlarge = np.zeros(img.shape)
