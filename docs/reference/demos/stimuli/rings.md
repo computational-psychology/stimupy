@@ -13,12 +13,12 @@ kernelspec:
 ---
 
 ```{important}
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/stimuli/circulars.md)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/stimuli/rings.md)
  to get interactivity
 ```
 
-# Stimuli - Circulars
-{py:mod}`stimupy.stimuli.circulars`
+# Stimuli - Rings
+{py:mod}`stimupy.stimuli.rings`
 
 ```{code-cell} ipython3
 :tags: [remove-cell]
@@ -28,11 +28,11 @@ import ipywidgets as iw
 from stimupy.utils import plot_stim
 ```
 
-## Rings
-{py:func}`stimupy.stimuli.circulars.rings`
+## Circular
+{py:func}`stimupy.stimuli.rings.circular`
 
 ```{code-cell} ipython3
-from stimupy.stimuli.circulars import rings
+from stimupy.stimuli.rings import circular
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
@@ -50,7 +50,7 @@ w_ori = iw.Dropdown(value="mean", options=['mean', 'corner', 'center'], descript
 w_clip = iw.ToggleButton(value=False, disabled=False, description="clip")
 w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'ring_mask'], description="add mask")
 
-w_tidx = iw.IntSlider(value=0, min=0, max=10, description="target idx")
+w_tidx = iw.IntSlider(value=2, min=0, max=10, description="target idx")
 w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
 
 # Layout
@@ -62,7 +62,7 @@ b_target = iw.HBox([w_tidx, w_tint])
 ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target, b_add])
 
 # Function for showing stim
-def show_rings(
+def show_circular(
     height=None,
     width=None,
     ppd=None,
@@ -77,7 +77,7 @@ def show_rings(
     target_indices=None,
     intensity_target=None,
 ):
-    stim = rings(
+    stim = circular(
         visual_size=(height, width),
         ppd=ppd,
         frequency=frequency,
@@ -93,7 +93,7 @@ def show_rings(
 
 # Set interactivity
 out = iw.interactive_output(
-    show_rings,
+    show_circular,
     {
         "height": w_height,
         "width": w_width,
@@ -116,10 +116,10 @@ display(ui, out)
 ```
 
 ## Two-sided rings
-{py:func}`stimupy.stimuli.circulars.two_sided_rings`
+{py:func}`stimupy.stimuli.rings.circular_two_sided`
 
 ```{code-cell} ipython3
-from stimupy.stimuli.circulars import two_sided_rings
+from stimupy.stimuli.rings import circular_two_sided
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
@@ -136,7 +136,7 @@ w_int_back = iw.FloatSlider(value=0.5, min=0, max=1, description="int background
 w_ori = iw.Dropdown(value="mean", options=['mean', 'corner', 'center'], description="origin")
 w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'ring_mask'], description="add mask")
 
-w_tidx = iw.IntSlider(value=0, min=0, max=10, description="target idx")
+w_tidx = iw.IntSlider(value=2, min=0, max=10, description="target idx")
 w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
 
 # Layout
@@ -148,7 +148,7 @@ b_target = iw.HBox([w_tidx, w_tint])
 ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target, b_add])
 
 # Function for showing stim
-def show_two_sided_rings(
+def show_circular_two_sided(
     height=None,
     width=None,
     ppd=None,
@@ -162,7 +162,7 @@ def show_two_sided_rings(
     target_indices=None,
     intensity_target=None,
 ):
-    stim = two_sided_rings(
+    stim = circular_two_sided(
         visual_size=(height, width),
         ppd=ppd,
         frequency=frequency,
@@ -177,7 +177,7 @@ def show_two_sided_rings(
 
 # Set interactivity
 out = iw.interactive_output(
-    show_two_sided_rings,
+    show_circular_two_sided,
     {
         "height": w_height,
         "width": w_width,
