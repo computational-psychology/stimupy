@@ -32,7 +32,7 @@ Robinson, A. E., Hammon, P. S., & de Sa, V. R. (2007).
 
 import numpy as np
 
-from stimupy import illusions
+import stimupy
 from stimupy.utils import (
     flip_dict,
     pad_dict_by_visual_size,
@@ -137,14 +137,14 @@ def WE_thick(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "frequency": 4.0 / width,
-        "intensity_bars": (v3, v1),
+        "intensity_bars": (v1, v3),
         "intensity_target": v2,
         "target_indices": (2, 5),
         "target_height": 4.0,
         "period": "even",
     }
 
-    stim = illusions.whites.white(
+    stim = stimupy.whites.white(
         visual_size=(height, width),
         **params,
     )
@@ -198,14 +198,14 @@ def WE_thin_wide(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "frequency": 8.0 / width,
-        "intensity_bars": (v1, v3),
+        "intensity_bars": (v3, v1),
         "intensity_target": v2,
         "target_indices": (3, 12),
         "target_height": 2.0,
         "period": "even",
     }
 
-    stim = illusions.whites.white(
+    stim = stimupy.whites.white(
         visual_size=(height, width),
         **params,
     )
@@ -250,19 +250,19 @@ def WE_dual(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "frequency": 4.0 / width,
-        "intensity_bars": (v3, v1),
+        "intensity_bars": (v1, v3),
         "intensity_target": v2,
         "target_indices": (2, 5),
         "target_height": 2.0,
         "period": "even",
     }
 
-    stim1 = illusions.whites.white(
+    stim1 = stimupy.whites.white(
         visual_size=(height, width),
         **params,
     )
 
-    stim2 = illusions.whites.white(
+    stim2 = stimupy.whites.white(
         visual_size=(height, width),
         **params,
     )
@@ -320,7 +320,7 @@ def WE_anderson(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "frequency": 8.0 / width,
-        "intensity_bars": (v3, v1),
+        "intensity_bars": (v1, v3),
         "intensity_target": v2,
         "target_indices_top": (5,),
         "target_indices_bottom": (10,),
@@ -332,7 +332,7 @@ def WE_anderson(ppd=PPD, pad=True):
         "period": "even",
     }
 
-    stim = illusions.whites.anderson(
+    stim = stimupy.whites.anderson(
         visual_size=(height, width),
         **params,
     )
@@ -389,7 +389,7 @@ def WE_howe(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "frequency": 8.0 / width,
-        "intensity_bars": (v3, v1),
+        "intensity_bars": (v1, v3),
         "intensity_target": v2,
         "target_indices_top": (5,),
         "target_indices_bottom": (10,),
@@ -399,7 +399,7 @@ def WE_howe(ppd=PPD, pad=True):
         "period": "even",
     }
 
-    stim = illusions.whites.howe(
+    stim = stimupy.whites.howe(
         visual_size=(height, width),
         **params,
     )
@@ -445,7 +445,7 @@ def WE_zigzag(ppd=PPD, pad=True):
     """
 
     i1, i2 = 1, 2
-    stim = illusions.wedding_cakes.wedding_cake(
+    stim = stimupy.wedding_cakes.wedding_cake(
         visual_size=(16.0, 17.0),
         ppd=PPD,
         L_size=(4.0, 4, 1.0),
@@ -500,7 +500,7 @@ def WE_radial_thick_small(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim = illusions.whites.radial(
+    stim = stimupy.whites.radial(
         visual_size=(16, 16),
         **params,
     )
@@ -555,7 +555,7 @@ def WE_radial_thick(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim = illusions.whites.radial(
+    stim = stimupy.whites.radial(
         visual_size=(24, 24),
         **params,
     )
@@ -610,7 +610,7 @@ def WE_radial_thin_small(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim = illusions.whites.radial(
+    stim = stimupy.whites.radial(
         visual_size=(16, 16),
         **params,
     )
@@ -665,7 +665,7 @@ def WE_radial_thin(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim = illusions.whites.radial(
+    stim = stimupy.whites.radial(
         visual_size=(24, 24),
         **params,
     )
@@ -715,17 +715,18 @@ def WE_circular1(ppd=PPD, pad=True):
         "target_indices": 4,
         "intensity_background": v2,
         "intensity_target": v2,
+        "clip": True,
     }
 
-    stim1 = illusions.whites.circular(
+    stim1 = stimupy.whites.circular(
         visual_size=(height, width),
-        intensity_rings=(v1, v3),
+        intensity_rings=(v3, v1),
         **params,
     )
 
-    stim2 = illusions.whites.circular(
+    stim2 = stimupy.whites.circular(
         visual_size=(height, width),
-        intensity_rings=(v3, v1),
+        intensity_rings=(v1, v3),
         **params,
     )
     stim = stack_dicts(stim1, stim2)
@@ -775,17 +776,18 @@ def WE_circular05(ppd=PPD, pad=True):
         "target_indices": 10,
         "intensity_background": v2,
         "intensity_target": v2,
+        "clip": True,
     }
 
-    stim1 = illusions.whites.circular(
+    stim1 = stimupy.whites.circular(
         visual_size=(height, width),
-        intensity_rings=(v1, v3),
+        intensity_rings=(v3, v1),
         **params,
     )
 
-    stim2 = illusions.whites.circular(
+    stim2 = stimupy.whites.circular(
         visual_size=(height, width),
-        intensity_rings=(v3, v1),
+        intensity_rings=(v1, v3),
         **params,
     )
     stim = stack_dicts(stim1, stim2)
@@ -835,17 +837,18 @@ def WE_circular025(ppd=PPD, pad=True):
         "target_indices": 22,
         "intensity_background": v2,
         "intensity_target": v2,
+        "clip": True,
     }
 
-    stim1 = illusions.whites.circular(
+    stim1 = stimupy.whites.circular(
         visual_size=(height, width),
-        intensity_rings=(v1, v3),
+        intensity_rings=(v3, v1),
         **params,
     )
 
-    stim2 = illusions.whites.circular(
+    stim2 = stimupy.whites.circular(
         visual_size=(height, width),
-        intensity_rings=(v3, v1),
+        intensity_rings=(v1, v3),
         **params,
     )
     stim = stack_dicts(stim1, stim2)
@@ -897,12 +900,12 @@ def grating_induction(ppd=PPD, pad=True):
         "ppd": ppd,
         "frequency": 4.0 / width,
         "target_width": 1.0,
-        "intensity_bars": (0.0, 1.0),
+        "intensities": (0.0, 1.0),
         "intensity_target": (0.5),
         "period": "ignore",
     }
 
-    stim = illusions.gratings.induction(
+    stim = stimupy.gratings.grating_induction(
         visual_size=(height, width),
         **params,
     )
@@ -958,12 +961,12 @@ def sbc_large(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim1 = illusions.sbcs.basic(
+    stim1 = stimupy.sbcs.basic(
         visual_size=(13.0, 15.5),
         intensity_background=0.0,
         **params,
     )
-    stim2 = illusions.sbcs.basic(
+    stim2 = stimupy.sbcs.basic(
         visual_size=(13.0, 15.5),
         intensity_background=1.0,
         **params,
@@ -1018,12 +1021,12 @@ def sbc_small(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim1 = illusions.sbcs.basic(
+    stim1 = stimupy.sbcs.basic(
         visual_size=(13.0, 15.5),
         intensity_background=0.0,
         **params,
     )
-    stim2 = illusions.sbcs.basic(
+    stim2 = stimupy.sbcs.basic(
         visual_size=(13.0, 15.5),
         intensity_background=1.0,
         **params,
@@ -1083,13 +1086,13 @@ def todorovic_equal(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim1 = illusions.todorovics.equal(
+    stim1 = stimupy.todorovics.equal(
         intensity_background=1.0,
         intensity_covers=0.0,
         **params,
     )
 
-    stim2 = illusions.todorovics.equal(
+    stim2 = stimupy.todorovics.equal(
         intensity_background=0.0,
         intensity_covers=1.0,
         **params,
@@ -1150,12 +1153,12 @@ def todorovic_in_large(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim1 = illusions.todorovics.rectangle(
+    stim1 = stimupy.todorovics.rectangle(
         intensity_background=1.0,
         intensity_covers=0.0,
         **params,
     )
-    stim2 = illusions.todorovics.rectangle(
+    stim2 = stimupy.todorovics.rectangle(
         intensity_background=0.0,
         intensity_covers=1.0,
         **params,
@@ -1216,12 +1219,12 @@ def todorovic_in_small(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim1 = illusions.todorovics.cross(
+    stim1 = stimupy.todorovics.cross(
         intensity_background=1.0,
         intensity_covers=0.0,
         **params,
     )
-    stim2 = illusions.todorovics.cross(
+    stim2 = stimupy.todorovics.cross(
         intensity_background=0.0,
         intensity_covers=1.0,
         **params,
@@ -1284,12 +1287,12 @@ def todorovic_out(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim1 = illusions.todorovics.cross(
+    stim1 = stimupy.todorovics.cross(
         intensity_background=1.0,
         intensity_covers=0.0,
         **params,
     )
-    stim2 = illusions.todorovics.cross(
+    stim2 = stimupy.todorovics.cross(
         intensity_background=0.0,
         intensity_covers=1.0,
         **params,
@@ -1352,7 +1355,7 @@ def checkerboard_016(ppd=PPD, pad=True):
         "intensity_checks": (v3, v1),
         "intensity_target": v2,
     }
-    stim = illusions.checkerboards.checkerboard(**params)
+    stim = stimupy.checkerboards.checkerboard(**params)
 
     if pad:
         stim = pad_dict_to_visual_size(stim, VISEXTENT, ppd, pad_value=v2)
@@ -1410,7 +1413,7 @@ def checkerboard_094(ppd=PPD, pad=True):
         "intensity_checks": (v1, v3),
         "intensity_target": v2,
     }
-    stim = illusions.checkerboards.checkerboard(**params)
+    stim = stimupy.checkerboards.checkerboard(**params)
 
     if pad:
         stim = pad_dict_to_visual_size(stim, VISEXTENT, ppd, pad_value=v2)
@@ -1468,7 +1471,7 @@ def checkerboard_21(ppd=PPD, pad=True):
         "intensity_checks": (v1, v3),
         "intensity_target": v2,
     }
-    stim = illusions.checkerboards.checkerboard(**params)
+    stim = stimupy.checkerboards.checkerboard(**params)
 
     if pad:
         stim = pad_dict_to_visual_size(stim, VISEXTENT, ppd, pad_value=v2)
@@ -1531,7 +1534,7 @@ def corrugated_mondrian(ppd=PPD, pad=True):
         "intensity_background": 0.5,
     }
 
-    stim = illusions.mondrians.corrugated_mondrians(**params)
+    stim = stimupy.mondrians.corrugated_mondrian(**params)
 
     if pad:
         stim = pad_dict_to_visual_size(stim, VISEXTENT, ppd, pad_value=0.5)
@@ -1586,7 +1589,7 @@ def benary_cross(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim = illusions.benarys.cross_triangles(
+    stim = stimupy.benarys.cross_triangles(
         visual_size=(13, 23),
         **params,
     )
@@ -1655,7 +1658,7 @@ def todorovic_benary1_2(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim = illusions.benarys.todorovic_generalized(
+    stim = stimupy.benarys.todorovic_generalized(
         visual_size=(13.0, 31.0),
         **params,
     )
@@ -1717,7 +1720,7 @@ def todorovic_benary3_4(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim = illusions.benarys.todorovic_generalized(
+    stim = stimupy.benarys.todorovic_generalized(
         visual_size=(13.0, 31.0),
         **params,
     )
@@ -1779,7 +1782,7 @@ def todorovic_benary1_2_3_4(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim = illusions.benarys.todorovic_generalized(
+    stim = stimupy.benarys.todorovic_generalized(
         visual_size=(13.0, 31.0),
         **params,
     )
@@ -1831,11 +1834,11 @@ def bullseye_thin(ppd=PPD, pad=True):
         "origin": "mean",
     }
 
-    stim1 = illusions.frames.bullseye_generalized(
+    stim1 = stimupy.bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(v1, v3),
     )
-    stim2 = illusions.frames.bullseye_generalized(
+    stim2 = stimupy.bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(v3, v1),
     )
@@ -1892,11 +1895,11 @@ def bullseye_thick(ppd=PPD, pad=True):
         "origin": "mean",
     }
 
-    stim1 = illusions.frames.bullseye_generalized(
+    stim1 = stimupy.bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(v1, v3),
     )
-    stim2 = illusions.frames.bullseye_generalized(
+    stim2 = stimupy.bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(v3, v1),
     )

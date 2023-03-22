@@ -2,7 +2,7 @@ import numpy as np
 
 from stimupy.components import image_base
 from stimupy.components.angulars import wedge
-from stimupy.components.circulars import annulus, ring, disc
+from stimupy.components.radials import annulus, disc, ring
 from stimupy.utils import resolution
 
 __all__ = [

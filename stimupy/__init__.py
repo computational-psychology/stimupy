@@ -1,3 +1,6 @@
 __version__ = "0.99.0"
 
-from . import components, illusions, noises, utils
+from stimupy import components, noises, stimuli, utils
+from stimupy.stimuli import *
+
+__all__ = ["components", "noises", "utils", *stimuli.__all__]

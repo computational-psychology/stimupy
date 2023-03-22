@@ -36,7 +36,7 @@ import os.path
 import numpy as np
 import scipy.io
 
-from stimupy import illusions
+import stimupy
 from stimupy.utils import pad_dict_by_visual_size, rotate_dict
 
 __all__ = [
@@ -568,7 +568,7 @@ def checkassim(ppd=PPD, pad=PAD):
         "intensity_checks": (17.5, 70.0),
         "intensity_target": 35.0,
     }
-    stim = illusions.checkerboards.checkerboard(
+    stim = stimupy.checkerboards.checkerboard(
         **params,
     )
 
@@ -735,12 +735,12 @@ def white(ppd=PPD):
         "target_indices_bottom": (2, 4, 6),
         "target_center_offset": 2,
         "target_height": 2,
-        "intensity_bars": (17.5, 70),
+        "intensity_bars": (70, 17.5),
         "intensity_target": 35.0,
         "period": "even",
     }
 
-    stim = illusions.whites.white_two_rows(**params)
+    stim = stimupy.whites.white_two_rows(**params)
     stim = rotate_dict(stim)
     reduced_mask = np.where(stim["target_mask"] == 2, 2, 0)
     reduced_mask = np.where(stim["target_mask"] == 5, 1, reduced_mask).astype(int)

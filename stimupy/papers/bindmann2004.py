@@ -28,9 +28,10 @@ Bindmann, D. & Chubb, C. (2004). Brightness assimilation in bullseye displays.
 
 import copy
 import warnings
+
 import numpy as np
 
-from stimupy import illusions
+from stimupy import bullseyes
 from stimupy.utils.contrast_conversions import adapt_intensity_range_dict
 from stimupy.utils.pad import pad_dict_by_visual_size
 
@@ -167,12 +168,12 @@ def bullseye_thin_gw45_gb31(ppd=PPD):
         "origin": ORIGIN,
     }
 
-    stim1 = illusions.frames.bullseye_generalized(
+    stim1 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_BLACK, INTENSITY_WHITE),
         intensity_target=45.0,
     )
-    stim2 = illusions.frames.bullseye_generalized(
+    stim2 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_WHITE, INTENSITY_BLACK),
         intensity_target=31.0,
@@ -229,12 +230,12 @@ def bullseye_thin_gw45_gb38(ppd=PPD):
         "origin": ORIGIN,
     }
 
-    stim1 = illusions.frames.bullseye_generalized(
+    stim1 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_BLACK, INTENSITY_WHITE),
         intensity_target=45.0,
     )
-    stim2 = illusions.frames.bullseye_generalized(
+    stim2 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_WHITE, INTENSITY_BLACK),
         intensity_target=38.0,
@@ -291,12 +292,12 @@ def bullseye_thin_gw45_gb45(ppd=PPD):
         "origin": ORIGIN,
     }
 
-    stim1 = illusions.frames.bullseye_generalized(
+    stim1 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_BLACK, INTENSITY_WHITE),
         intensity_target=45.0,
     )
-    stim2 = illusions.frames.bullseye_generalized(
+    stim2 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_WHITE, INTENSITY_BLACK),
         intensity_target=45.0,
@@ -353,12 +354,12 @@ def bullseye_thin_gw45_gb52(ppd=PPD):
         "origin": ORIGIN,
     }
 
-    stim1 = illusions.frames.bullseye_generalized(
+    stim1 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_BLACK, INTENSITY_WHITE),
         intensity_target=45.0,
     )
-    stim2 = illusions.frames.bullseye_generalized(
+    stim2 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_WHITE, INTENSITY_BLACK),
         intensity_target=52.0,
@@ -415,12 +416,12 @@ def bullseye_thin_gw45_gb59(ppd=PPD):
         "origin": ORIGIN,
     }
 
-    stim1 = illusions.frames.bullseye_generalized(
+    stim1 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_BLACK, INTENSITY_WHITE),
         intensity_target=45.0,
     )
-    stim2 = illusions.frames.bullseye_generalized(
+    stim2 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_WHITE, INTENSITY_BLACK),
         intensity_target=59.0,
@@ -477,12 +478,12 @@ def bullseye_thin_gw60_gb46(ppd=PPD):
         "origin": ORIGIN,
     }
 
-    stim1 = illusions.frames.bullseye_generalized(
+    stim1 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_BLACK, INTENSITY_WHITE),
         intensity_target=60.0,
     )
-    stim2 = illusions.frames.bullseye_generalized(
+    stim2 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_WHITE, INTENSITY_BLACK),
         intensity_target=46.0,
@@ -539,12 +540,12 @@ def bullseye_thin_gw60_gb53(ppd=PPD):
         "origin": ORIGIN,
     }
 
-    stim1 = illusions.frames.bullseye_generalized(
+    stim1 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_BLACK, INTENSITY_WHITE),
         intensity_target=60.0,
     )
-    stim2 = illusions.frames.bullseye_generalized(
+    stim2 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_WHITE, INTENSITY_BLACK),
         intensity_target=53.0,
@@ -601,12 +602,12 @@ def bullseye_thin_gw60_gb60(ppd=PPD):
         "origin": ORIGIN,
     }
 
-    stim1 = illusions.frames.bullseye_generalized(
+    stim1 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_BLACK, INTENSITY_WHITE),
         intensity_target=60.0,
     )
-    stim2 = illusions.frames.bullseye_generalized(
+    stim2 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_WHITE, INTENSITY_BLACK),
         intensity_target=60.0,
@@ -663,12 +664,12 @@ def bullseye_thin_gw60_gb67(ppd=PPD):
         "origin": ORIGIN,
     }
 
-    stim1 = illusions.frames.bullseye_generalized(
+    stim1 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_BLACK, INTENSITY_WHITE),
         intensity_target=60.0,
     )
-    stim2 = illusions.frames.bullseye_generalized(
+    stim2 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_WHITE, INTENSITY_BLACK),
         intensity_target=67.0,
@@ -725,12 +726,12 @@ def bullseye_thin_gw60_gb74(ppd=PPD):
         "origin": ORIGIN,
     }
 
-    stim1 = illusions.frames.bullseye_generalized(
+    stim1 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_BLACK, INTENSITY_WHITE),
         intensity_target=60.0,
     )
-    stim2 = illusions.frames.bullseye_generalized(
+    stim2 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_WHITE, INTENSITY_BLACK),
         intensity_target=74.0,
@@ -787,12 +788,12 @@ def bullseye_thin_gw75_gb61(ppd=PPD):
         "origin": ORIGIN,
     }
 
-    stim1 = illusions.frames.bullseye_generalized(
+    stim1 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_BLACK, INTENSITY_WHITE),
         intensity_target=75.0,
     )
-    stim2 = illusions.frames.bullseye_generalized(
+    stim2 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_WHITE, INTENSITY_BLACK),
         intensity_target=61.0,
@@ -849,12 +850,12 @@ def bullseye_thin_gw75_gb68(ppd=PPD):
         "origin": ORIGIN,
     }
 
-    stim1 = illusions.frames.bullseye_generalized(
+    stim1 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_BLACK, INTENSITY_WHITE),
         intensity_target=75.0,
     )
-    stim2 = illusions.frames.bullseye_generalized(
+    stim2 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_WHITE, INTENSITY_BLACK),
         intensity_target=68.0,
@@ -911,12 +912,12 @@ def bullseye_thin_gw75_gb75(ppd=PPD):
         "origin": ORIGIN,
     }
 
-    stim1 = illusions.frames.bullseye_generalized(
+    stim1 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_BLACK, INTENSITY_WHITE),
         intensity_target=75.0,
     )
-    stim2 = illusions.frames.bullseye_generalized(
+    stim2 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_WHITE, INTENSITY_BLACK),
         intensity_target=75.0,
@@ -973,12 +974,12 @@ def bullseye_thin_gw75_gb82(ppd=PPD):
         "origin": ORIGIN,
     }
 
-    stim1 = illusions.frames.bullseye_generalized(
+    stim1 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_BLACK, INTENSITY_WHITE),
         intensity_target=75.0,
     )
-    stim2 = illusions.frames.bullseye_generalized(
+    stim2 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_WHITE, INTENSITY_BLACK),
         intensity_target=82.0,
@@ -1035,12 +1036,12 @@ def bullseye_thin_gw75_gb89(ppd=PPD):
         "origin": ORIGIN,
     }
 
-    stim1 = illusions.frames.bullseye_generalized(
+    stim1 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_BLACK, INTENSITY_WHITE),
         intensity_target=75.0,
     )
-    stim2 = illusions.frames.bullseye_generalized(
+    stim2 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_WHITE, INTENSITY_BLACK),
         intensity_target=89.0,
@@ -1097,12 +1098,12 @@ def bullseye_thick_gw45_gb31(ppd=PPD):
         "origin": ORIGIN,
     }
 
-    stim1 = illusions.frames.bullseye_generalized(
+    stim1 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_BLACK, INTENSITY_WHITE),
         intensity_target=45.0,
     )
-    stim2 = illusions.frames.bullseye_generalized(
+    stim2 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_WHITE, INTENSITY_BLACK),
         intensity_target=31.0,
@@ -1159,12 +1160,12 @@ def bullseye_thick_gw45_gb38(ppd=PPD):
         "origin": ORIGIN,
     }
 
-    stim1 = illusions.frames.bullseye_generalized(
+    stim1 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_BLACK, INTENSITY_WHITE),
         intensity_target=45.0,
     )
-    stim2 = illusions.frames.bullseye_generalized(
+    stim2 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_WHITE, INTENSITY_BLACK),
         intensity_target=38.0,
@@ -1221,12 +1222,12 @@ def bullseye_thick_gw45_gb45(ppd=PPD):
         "origin": ORIGIN,
     }
 
-    stim1 = illusions.frames.bullseye_generalized(
+    stim1 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_BLACK, INTENSITY_WHITE),
         intensity_target=45.0,
     )
-    stim2 = illusions.frames.bullseye_generalized(
+    stim2 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_WHITE, INTENSITY_BLACK),
         intensity_target=45.0,
@@ -1283,12 +1284,12 @@ def bullseye_thick_gw45_gb52(ppd=PPD):
         "origin": ORIGIN,
     }
 
-    stim1 = illusions.frames.bullseye_generalized(
+    stim1 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_BLACK, INTENSITY_WHITE),
         intensity_target=45.0,
     )
-    stim2 = illusions.frames.bullseye_generalized(
+    stim2 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_WHITE, INTENSITY_BLACK),
         intensity_target=52.0,
@@ -1345,12 +1346,12 @@ def bullseye_thick_gw45_gb59(ppd=PPD):
         "origin": ORIGIN,
     }
 
-    stim1 = illusions.frames.bullseye_generalized(
+    stim1 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_BLACK, INTENSITY_WHITE),
         intensity_target=45.0,
     )
-    stim2 = illusions.frames.bullseye_generalized(
+    stim2 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_WHITE, INTENSITY_BLACK),
         intensity_target=59.0,
@@ -1407,12 +1408,12 @@ def bullseye_thick_gw60_gb46(ppd=PPD):
         "origin": ORIGIN,
     }
 
-    stim1 = illusions.frames.bullseye_generalized(
+    stim1 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_BLACK, INTENSITY_WHITE),
         intensity_target=60.0,
     )
-    stim2 = illusions.frames.bullseye_generalized(
+    stim2 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_WHITE, INTENSITY_BLACK),
         intensity_target=46.0,
@@ -1469,12 +1470,12 @@ def bullseye_thick_gw60_gb53(ppd=PPD):
         "origin": ORIGIN,
     }
 
-    stim1 = illusions.frames.bullseye_generalized(
+    stim1 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_BLACK, INTENSITY_WHITE),
         intensity_target=60.0,
     )
-    stim2 = illusions.frames.bullseye_generalized(
+    stim2 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_WHITE, INTENSITY_BLACK),
         intensity_target=53.0,
@@ -1531,12 +1532,12 @@ def bullseye_thick_gw60_gb60(ppd=PPD):
         "origin": ORIGIN,
     }
 
-    stim1 = illusions.frames.bullseye_generalized(
+    stim1 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_BLACK, INTENSITY_WHITE),
         intensity_target=60.0,
     )
-    stim2 = illusions.frames.bullseye_generalized(
+    stim2 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_WHITE, INTENSITY_BLACK),
         intensity_target=60.0,
@@ -1593,12 +1594,12 @@ def bullseye_thick_gw60_gb67(ppd=PPD):
         "origin": ORIGIN,
     }
 
-    stim1 = illusions.frames.bullseye_generalized(
+    stim1 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_BLACK, INTENSITY_WHITE),
         intensity_target=60.0,
     )
-    stim2 = illusions.frames.bullseye_generalized(
+    stim2 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_WHITE, INTENSITY_BLACK),
         intensity_target=67.0,
@@ -1655,12 +1656,12 @@ def bullseye_thick_gw60_gb74(ppd=PPD):
         "origin": ORIGIN,
     }
 
-    stim1 = illusions.frames.bullseye_generalized(
+    stim1 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_BLACK, INTENSITY_WHITE),
         intensity_target=60.0,
     )
-    stim2 = illusions.frames.bullseye_generalized(
+    stim2 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_WHITE, INTENSITY_BLACK),
         intensity_target=74.0,
@@ -1717,12 +1718,12 @@ def bullseye_thick_gw75_gb61(ppd=PPD):
         "origin": ORIGIN,
     }
 
-    stim1 = illusions.frames.bullseye_generalized(
+    stim1 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_BLACK, INTENSITY_WHITE),
         intensity_target=75.0,
     )
-    stim2 = illusions.frames.bullseye_generalized(
+    stim2 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_WHITE, INTENSITY_BLACK),
         intensity_target=61.0,
@@ -1779,12 +1780,12 @@ def bullseye_thick_gw75_gb68(ppd=PPD):
         "origin": ORIGIN,
     }
 
-    stim1 = illusions.frames.bullseye_generalized(
+    stim1 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_BLACK, INTENSITY_WHITE),
         intensity_target=75.0,
     )
-    stim2 = illusions.frames.bullseye_generalized(
+    stim2 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_WHITE, INTENSITY_BLACK),
         intensity_target=68.0,
@@ -1841,12 +1842,12 @@ def bullseye_thick_gw75_gb75(ppd=PPD):
         "origin": ORIGIN,
     }
 
-    stim1 = illusions.frames.bullseye_generalized(
+    stim1 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_BLACK, INTENSITY_WHITE),
         intensity_target=75.0,
     )
-    stim2 = illusions.frames.bullseye_generalized(
+    stim2 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_WHITE, INTENSITY_BLACK),
         intensity_target=75.0,
@@ -1903,12 +1904,12 @@ def bullseye_thick_gw75_gb82(ppd=PPD):
         "origin": ORIGIN,
     }
 
-    stim1 = illusions.frames.bullseye_generalized(
+    stim1 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_BLACK, INTENSITY_WHITE),
         intensity_target=75.0,
     )
-    stim2 = illusions.frames.bullseye_generalized(
+    stim2 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_WHITE, INTENSITY_BLACK),
         intensity_target=82.0,
@@ -1965,12 +1966,12 @@ def bullseye_thick_gw75_gb89(ppd=PPD):
         "origin": ORIGIN,
     }
 
-    stim1 = illusions.frames.bullseye_generalized(
+    stim1 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_BLACK, INTENSITY_WHITE),
         intensity_target=75.0,
     )
-    stim2 = illusions.frames.bullseye_generalized(
+    stim2 = bullseyes.rectangular_generalized(
         **params,
         intensity_frames=(INTENSITY_WHITE, INTENSITY_BLACK),
         intensity_target=89.0,
