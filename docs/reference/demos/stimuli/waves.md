@@ -126,9 +126,9 @@ display(ui, out)
 
 ## Square, radial
 
-## Sine, cityblock
+## Sine, rectilinear
 
-## Square, cityblock
+## Square, rectilinear
 
 ## Sine, angular
 
