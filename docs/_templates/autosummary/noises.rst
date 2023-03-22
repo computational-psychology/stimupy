@@ -60,7 +60,7 @@
    {% if functions %}
    Demos
    -----
-   :doc:`reference/demos/components/{{name}}`
+   :doc:`../../demos/noises/{{name}}`
 
    Functions
    ---------
