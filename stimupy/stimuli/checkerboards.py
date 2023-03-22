@@ -314,12 +314,12 @@ def contrast_contrast(
     frequency=None,
     board_shape=None,
     check_visual_size=None,
-    target_shape=(2, 3),
+    target_shape=None,
     period="ignore",
     rotation=0,
     intensity_checks=(0.0, 1.0),
     tau=0.5,
-    alpha=0.2,
+    alpha=None,
     round_phase_width=True,
 ):
     """Contrast-contrast effect on checkerboard with square transparency layer
@@ -339,7 +339,7 @@ def contrast_contrast(
         number of checks in [height, width] of checkerboard
     check_visual_size : Sequence[Number, Number], Number, or None (default)
         visual size of a single check [height, width] in degrees
-    targets_shape : (int, int)
+    targets_shape : Sequence[Number, Number], Number, or None (default)
         number of checks with transparency in y, x direction
     intensity_low : float, optional
         intensity value of the dark checks, by default 0.0
@@ -347,8 +347,8 @@ def contrast_contrast(
         intensity value of the light checks, by default 1.0
     tau : Number
         tau of transparency (i.e. value of transparent medium), default 0.5
-    alpha : Number
-        alpha of transparency (i.e. how transparant the medium is), default 0.2
+    alpha : Number or None (default)
+        alpha of transparency (i.e. how transparant the medium is)
     round_phase_width : Bool
         if True, round width of bars given resolution (default: True)
 
@@ -371,6 +371,12 @@ def contrast_contrast(
         Frontiers in Human Neuroscience, 9(February), 1-16.
         https://doi.org/10/gh62x2
     """
+    if target_shape is None:
+        raise ValueError("contrast_contrast() missing argument 'target_shape' which is not 'None'")
+    if alpha is None:
+        raise ValueError("contrast_contrast() missing argument 'alpha' which is not 'None'")
+    if isinstance(target_shape, (int, float)):
+        target_shape = (target_shape, target_shape)
 
     # Set up basic checkerboard
     stim = checkerboard(
@@ -422,10 +428,6 @@ def overview(**kwargs):
     default_params = {"visual_size": (10, 10), "ppd": 30}
     default_params.update(kwargs)
 
-    # p = {
-    #     "board_shape": (10, 10),
-    # }
-
     # fmt: off
     stimuli = {
         "checkerboard": checkerboard(**default_params, check_visual_size=(1, 1)),
@@ -433,7 +435,7 @@ def overview(**kwargs):
         "checkerboard from frequency": checkerboard(**default_params, frequency=1),
         "checkerboard from frequency, rotated": checkerboard(**default_params, frequency=1, rotation=45),
         "checkerboard with targets": checkerboard(**default_params, check_visual_size=(1, 1), target_indices=[(3, 2), (5, 5)]),
-        "Checkerboard Contrast-Contrast illusion": contrast_contrast(**default_params, check_visual_size=(1, 1), target_shape=(4, 4)),
+        "Checkerboard Contrast-Contrast illusion": contrast_contrast(**default_params, check_visual_size=(1, 1), target_shape=4, alpha=0.2),
     }
     # fmt: on
 
