@@ -292,7 +292,7 @@ def sine(
     distance_metric : str or None
         if "horizontal", use distance from origin in x-direction,
         if "vertical", use distance from origin in x-direction;
-        if "rotated", use combined and rotated distance from origin in x-y;
+        if "oblique", use combined and rotated distance from origin in x-y;
         if "radial", use radial distance from origin,
         if "angular", use angular distance from origin,
         if "cityblock", use cityblock distance from origin
@@ -317,7 +317,7 @@ def sine(
     if period is None:
         period = "ignore"
 
-    distance_metrics = ["horizontal", "vertical", "rotated", "radial", "angular", "cityblock"]
+    distance_metrics = ["horizontal", "vertical", "oblique", "radial", "angular", "cityblock"]
     if distance_metric not in distance_metrics:
         raise ValueError(f"distance_metric needs to be one of {distance_metrics}")
 
@@ -505,7 +505,7 @@ def square(
     distance_metric : str or None
         if "horizontal", use distance from origin in x-direction,
         if "vertical", use distance from origin in x-direction;
-        if "rotated", use combined and rotated distance from origin in x-y;
+        if "oblique", use combined and rotated distance from origin in x-y;
         if "radial", use radial distance from origin,
         if "angular", use angular distance from origin,
         if "cityblock", use cityblock distance from origin
@@ -587,7 +587,7 @@ def staircase(
     distance_metric : str or None
         if "horizontal", use distance from origin in x-direction,
         if "vertical", use distance from origin in x-direction;
-        if "rotated", use combined and rotated distance from origin in x-y;
+        if "oblique", use combined and rotated distance from origin in x-y;
         if "radial", use radial distance from origin,
         if "angular", use angular distance from origin,
         if "cityblock", use cityblock distance from origin
@@ -719,21 +719,21 @@ def overview(**kwargs):
     stimuli = {
         "sine wave - horizontal": sine(**default_params, **grating_params, distance_metric="horizontal"),
         "sine wave - vertical": sine(**default_params, **grating_params, distance_metric="vertical"),
-        "sine wave - oblique": sine(**default_params, **grating_params, distance_metric="rotated", rotation=30),
+        "sine wave - oblique": sine(**default_params, **grating_params, distance_metric="oblique", rotation=30),
         "sine wave - radial": sine(**default_params, **grating_params, distance_metric="radial"),
         "sine wave - angular": sine(**default_params, **grating_params, distance_metric="angular"),
         "sine wave - cityblock": sine(**default_params, **grating_params, distance_metric="cityblock"),
 
         "square wave - horizontal": square(**default_params, **grating_params, distance_metric="horizontal"),
         "square wave - vertical": square(**default_params, **grating_params, distance_metric="vertical"),
-        "square wave - oblique": square(**default_params, **grating_params, distance_metric="rotated", rotation=30),
+        "square wave - oblique": square(**default_params, **grating_params, distance_metric="oblique", rotation=30),
         "square wave - radial": square(**default_params, **grating_params, distance_metric="radial"),
         "square wave - angular": square(**default_params, **grating_params, distance_metric="angular"),
         "square wave - cityblock": square(**default_params, **grating_params, distance_metric="cityblock"),
 
         "staircase - horizontal": staircase(**default_params, **grating_params, distance_metric="horizontal"),
         "staircase - vertical": staircase(**default_params, **grating_params, distance_metric="vertical"),
-        "staircase - oblique": staircase(**default_params, **grating_params, distance_metric="rotated", rotation=30),
+        "staircase - oblique": staircase(**default_params, **grating_params, distance_metric="oblique", rotation=30),
         "staircase - radial": staircase(**default_params, **grating_params, distance_metric="radial"),
         "staircase - angular": staircase(**default_params, **grating_params, distance_metric="angular"),
         "staircase - cityblock": staircase(**default_params, **grating_params, distance_metric="cityblock"),

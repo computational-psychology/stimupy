@@ -46,7 +46,7 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin="mea
         "x", "y" : single axes
         "horizontal", "vertical" : numpy.ndarray of shape, with distance from origin,
         in deg. visual angle, at each pixel
-        "rotated" : numpy.ndarray of shape, with rotated distance from origin,
+        "oblique" : numpy.ndarray of shape, with oblique distance from origin,
         in deg. visual angle, at each pixel
         "radial" : numpyn.ndarray of shape, with radius from origin,
         in deg. visual angle, at each pixel
@@ -88,12 +88,12 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin="mea
     angular -= np.deg2rad(rotation + 90)
     angular %= 2 * np.pi
 
-    # Rotated
+    # Oblique
     alpha = [np.cos(np.deg2rad(rotation)), np.sin(np.deg2rad(rotation))]
-    rotated = alpha[0] * xx + alpha[1] * yy
+    oblique = alpha[0] * xx + alpha[1] * yy
 
     if origin == "corner":
-        rotated = rotated - rotated.min()
+        oblique = oblique - oblique.min()
 
     return {
         "visual_size": visual_size,
@@ -104,7 +104,7 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin="mea
         "y": y,
         "horizontal": xx,
         "vertical": yy,
-        "rotated": rotated,
+        "oblique": oblique,
         "cityblock": cityblock,
         "radial": radial,
         "angular": angular,

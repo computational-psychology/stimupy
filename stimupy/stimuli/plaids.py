@@ -84,7 +84,7 @@ def overview(**kwargs):
         "ppd": 10,
         "origin": "center",
         "phase_shift": 30,
-        "distance_metric": "rotated",
+        "distance_metric": "oblique",
     }
     default_params.update(kwargs)
 

@@ -209,7 +209,7 @@ def checkerboard(
         intensities=intensity_checks,
         origin="corner",
         round_phase_width=round_phase_width,
-        distance_metric="rotated",
+        distance_metric="oblique",
     )
 
     sw2 = waves.square(
@@ -225,7 +225,7 @@ def checkerboard(
         intensities=intensity_checks,
         origin="corner",
         round_phase_width=round_phase_width,
-        distance_metric="rotated",
+        distance_metric="oblique",
     )
 
     # If neither a visual_size nor a shape was given, each square wave
@@ -246,7 +246,7 @@ def checkerboard(
             intensities=intensity_checks,
             origin="corner",
             round_phase_width=round_phase_width,
-            distance_metric="rotated",
+            distance_metric="oblique",
         )
 
         sw2 = waves.square(
@@ -262,7 +262,7 @@ def checkerboard(
             intensities=intensity_checks,
             origin="corner",
             round_phase_width=round_phase_width,
-            distance_metric="rotated",
+            distance_metric="oblique",
         )
         warnings.filterwarnings("default")
 

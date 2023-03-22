@@ -72,7 +72,7 @@ def gabor(
         phase_shift=phase_shift,
         intensities=intensities,
         origin=origin,
-        distance_metric="rotated",
+        distance_metric="oblique",
         round_phase_width=round_phase_width,
     )
 

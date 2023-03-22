@@ -118,7 +118,7 @@ def sine_linear(
     elif rotation % 180 == 90.0:
         distance_metric = "vertical"
     else:
-        distance_metric = "rotated"
+        distance_metric = "oblique"
 
     # Spatial square-wave grating
     stim = waves.sine(
@@ -233,7 +233,7 @@ def square_linear(
         phase_shift=phase_shift,
         origin=origin,
         round_phase_width=round_phase_width,
-        distance_metric="rotated",
+        distance_metric="oblique",
     )
 
     # Adjust intensities to passed-in values
