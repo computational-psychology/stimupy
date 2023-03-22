@@ -29,11 +29,11 @@ from stimupy.utils import plot_stim
 ```
 
 
-## Uniform
-{py:func}`stimupy.stimuli.gratings.uniform`
+## On uniform background
+{py:func}`stimupy.stimuli.gratings.on_uniform`
 
 ```{code-cell} ipython3
-from stimupy.stimuli.gratings import uniform
+from stimupy.stimuli.gratings import on_uniform
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
@@ -69,7 +69,7 @@ b_add = iw.HBox([w_ori, w_period, w_round, w_mask])
 ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target, b_add])
 
 # Function for showing stim
-def show_uniform(
+def show_on_uniform(
     height=None,
     width=None,
     ppd=None,
@@ -88,7 +88,7 @@ def show_uniform(
     grating_height=None,
     grating_width=None,
 ):
-    stim = uniform(
+    stim = on_uniform(
         visual_size=(height, width),
         ppd=ppd,
         rotation=rotation,
@@ -107,7 +107,7 @@ def show_uniform(
 
 # Set interactivity
 out = iw.interactive_output(
-    show_uniform,
+    show_on_uniform,
     {
         "height": w_height,
         "width": w_width,
@@ -131,8 +131,4 @@ out = iw.interactive_output(
 
 # Show
 display(ui, out)
-```
-
-```{code-cell} ipython3
-
 ```
