@@ -669,6 +669,8 @@ def bessel(
         empty mask (key: "ring_mask"),
         and additional keys containing stimulus parameters
     """
+    if frequency is None:
+        raise ValueError("bessel() missing argument 'frequency' which is not 'None'")
 
     base = image_base(
         visual_size=visual_size,
