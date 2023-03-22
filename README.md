@@ -5,8 +5,8 @@
 
 Contains submodules for
 - drawing basic visual stimulus components ([components](stimupy/components/))
-- creating different (brightness) illusions ([illusions](stimupy/illusions/))
-- replicating illusions in certain published papers  ([papers](stimupy/papers/))
+- creating different paramaterized stimuli ([stimuli](stimupy/stimuli/))
+- replicating stimuli in certain published papers  ([papers](stimupy/papers/))
 converting pixel values to degrees of visual angle ([utils](stimupy/utils/))
 
 `Stimupy` is a pure-Python package
@@ -21,8 +21,8 @@ so that they are reproducible, flexible, and easy.
   - basic visual stimulus [components](stimupy/components/),
     such as basic shapes, gratings, Gaussians, Gabors
   - visual [noise](stimupy/noises/) textures, of different kinds,
-  - and many different stimuli commonly referred to as [illusions](stimupy/illusions/)
-    with some special regions of interest,
+  - and many different parameterized stimuli [stimuli](stimupy/stimuli/)
+    most with some special regions of interest,
     such as Simultaneous Brightness Contrast, White's illusion,
     but also Hermann Grids, checkerboards, Ponzo illusion, etc.
 
@@ -33,7 +33,7 @@ so that they are reproducible, flexible, and easy.
     which might reveal relations between formerly unconnected stimuli
 
 - Stimuli are also composable/composed:
-`illusions` tend to be composed from several `components`.
+`stimuli` tend to be composed from several `components`.
 
 - Generated stimuli are output as a Python `dict`ionary,
 containing the stimulus-image as a NumPy-array,

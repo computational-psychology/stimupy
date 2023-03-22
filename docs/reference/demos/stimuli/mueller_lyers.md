@@ -13,12 +13,12 @@ kernelspec:
 ---
 
 ```{important}
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/illusions/mueller_lyers.md)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/stimuli/mueller_lyers.md)
  to get interactivity
 ```
 
-# Illusions - Mueller-Lyers
-{py:mod}`stimupy.illusions.mueller_lyers`
+# Stimuli - Mueller-Lyers
+{py:mod}`stimupy.stimuli.mueller_lyers`
 
 ```{code-cell} ipython3
 :tags: [remove-cell]
@@ -29,10 +29,10 @@ from stimupy.utils import plot_stim
 ```
 
 ## Mueller-Lyer
-{py:func}`stimupy.illusions.mueller_lyers.mueller_lyer`
+{py:func}`stimupy.stimuli.mueller_lyers.mueller_lyer`
 
 ```{code-cell} ipython3
-from stimupy.illusions.mueller_lyers import mueller_lyer
+from stimupy.stimuli.mueller_lyers import mueller_lyer
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
@@ -109,10 +109,10 @@ display(ui, out)
 ```
 
 ## Two-sided
-{py:func}`stimupy.illusions.delboeufs.two_sided`
+{py:func}`stimupy.stimuli.delboeufs.two_sided`
 
 ```{code-cell} ipython3
-from stimupy.illusions.mueller_lyers import two_sided
+from stimupy.stimuli.mueller_lyers import two_sided
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")

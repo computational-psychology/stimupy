@@ -13,12 +13,12 @@ kernelspec:
 ---
 
 ```{important}
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/illusions/wedding_cakes.md)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/stimuli/wedding_cakes.md)
  to get interactivity
 ```
 
-# Illusions - Wedding cakes
-{py:mod}`stimupy.illusions.wedding_cakes`
+# Stimuli - Wedding cakes
+{py:mod}`stimupy.stimuli.wedding_cakes`
 
 ```{code-cell} ipython3
 :tags: [remove-cell]
@@ -29,10 +29,10 @@ from stimupy.utils import plot_stim
 ```
 
 ## Wedding cake
-{py:func}`stimupy.illusions.wedding_cakes.wedding_cake`
+{py:func}`stimupy.stimuli.wedding_cakes.wedding_cake`
 
 ```{code-cell} ipython3
-from stimupy.illusions.wedding_cakes import wedding_cake
+from stimupy.stimuli.wedding_cakes import wedding_cake
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")

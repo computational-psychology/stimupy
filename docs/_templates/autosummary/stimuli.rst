@@ -58,7 +58,7 @@
 
    {% block functions %}
    {% if functions %}
-   :doc:`Demos <../../demos/illusions/{{name}}>`
+   :doc:`Demos <../../demos/stimuli/{{name}}>`
    ------------------------------------------------------------------------------
 
    Functions

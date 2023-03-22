@@ -13,12 +13,12 @@ kernelspec:
 ---
 
 ```{important}
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/illusions/benarys.md)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/stimuli/benarys.md)
  to get interactivity
 ```
 
-# Illusions - Benarys
-{py:mod}`stimupy.illusions.benarys`
+# Stimuli - Benary's cross
+{py:mod}`stimupy.stimuli.benarys`
 
 ```{code-cell} ipython3
 :tags: [remove-cell]
@@ -28,11 +28,11 @@ import ipywidgets as iw
 from stimupy.utils import plot_stim
 ```
 
-## Cross generalized
-{py:func}`stimupy.illusions.benarys.cross_generalized`
+## Cross, generalized
+{py:func}`stimupy.stimuli.benarys.cross_generalized`
 
 ```{code-cell} ipython3
-from stimupy.illusions.benarys import cross_generalized
+from stimupy.stimuli.benarys import cross_generalized
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
@@ -121,11 +121,11 @@ out = iw.interactive_output(
 display(ui, out)
 ```
 
-## Cross rectangles
-{py:func}`stimupy.illusions.benarys.cross_rectangles`
+## Cross, rectangles
+{py:func}`stimupy.stimuli.benarys.cross_rectangles`
 
 ```{code-cell} ipython3
-from stimupy.illusions.benarys import cross_rectangles
+from stimupy.stimuli.benarys import cross_rectangles
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
@@ -197,10 +197,10 @@ display(ui, out)
 ```
 
 ## Cross triangles
-{py:func}`stimupy.illusions.benarys.cross_triangles`
+{py:func}`stimupy.stimuli.benarys.cross_triangles`
 
 ```{code-cell} ipython3
-from stimupy.illusions.benarys import cross_triangles
+from stimupy.stimuli.benarys import cross_triangles
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
@@ -269,10 +269,10 @@ display(ui, out)
 ```
 
 ## Todorovic generalized
-{py:func}`stimupy.illusions.benarys.todorovic_generalized`
+{py:func}`stimupy.stimuli.benarys.todorovic_generalized`
 
 ```{code-cell} ipython3
-from stimupy.illusions.benarys import todorovic_generalized
+from stimupy.stimuli.benarys import todorovic_generalized
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
@@ -362,10 +362,10 @@ display(ui, out)
 ```
 
 ## Todorovic rectangles
-{py:func}`stimupy.illusions.benarys.todorovic_rectangles`
+{py:func}`stimupy.stimuli.benarys.todorovic_rectangles`
 
 ```{code-cell} ipython3
-from stimupy.illusions.benarys import todorovic_rectangles
+from stimupy.stimuli.benarys import todorovic_rectangles
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
@@ -437,10 +437,10 @@ display(ui, out)
 ```
 
 ## Todorovic triangles
-{py:func}`stimupy.illusions.benarys.todorovic_triangles`
+{py:func}`stimupy.stimuli.benarys.todorovic_triangles`
 
 ```{code-cell} ipython3
-from stimupy.illusions.benarys import todorovic_triangles
+from stimupy.stimuli.benarys import todorovic_triangles
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")

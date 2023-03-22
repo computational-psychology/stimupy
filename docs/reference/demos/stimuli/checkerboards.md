@@ -13,12 +13,12 @@ kernelspec:
 ---
 
 ```{important}
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/illusions/checkerboards.md)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/stimuli/checkerboards.md)
  to get interactivity
 ```
 
-# Illusions - Checkerboards
-{py:mod}`stimupy.illusions.checkerboards`
+# Stimuli - Checkerboards
+{py:mod}`stimupy.stimuli.checkerboards`
 
 ```{code-cell} ipython3
 :tags: [remove-cell]
@@ -29,10 +29,10 @@ from stimupy.utils import plot_stim
 ```
 
 ## Checkerboard
-{py:func}`stimupy.illusions.checkerboards.checkerboard`
+{py:func}`stimupy.stimuli.checkerboards.checkerboard`
 
 ```{code-cell} ipython3
-from stimupy.illusions.checkerboards import checkerboard
+from stimupy.stimuli.checkerboards import checkerboard
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
@@ -123,10 +123,10 @@ display(ui, out)
 ```
 
 ## Contrast-contrast
-{py:func}`stimupy.illusions.checkerboards.contrast_contrast`
+{py:func}`stimupy.stimuli.checkerboards.contrast_contrast`
 
 ```{code-cell} ipython3
-from stimupy.illusions.checkerboards import contrast_contrast
+from stimupy.stimuli.checkerboards import contrast_contrast
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")

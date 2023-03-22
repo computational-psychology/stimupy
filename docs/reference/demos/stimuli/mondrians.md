@@ -13,26 +13,27 @@ kernelspec:
 ---
 
 ```{important}
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/components/mondrians.md)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/stimuli/mondrians.md)
  to get interactivity
 ```
 
-# Components - Mondrians
-{py:mod}`stimupy.components.mondrians`
+# Stimuli - Mondrians
+{py:mod}`stimupy.stimuli.mondrians`
 
 ```{code-cell} ipython3
 :tags: [remove-cell]
 
+import numpy as np
 import IPython
 import ipywidgets as iw
 from stimupy.utils import plot_stim
 ```
 
-## Mondrians
-{py:func}`stimupy.components.mondrians.mondrians`
+## Mondrian
+{py:func}`stimupy.stimuli.mondrians.mondrian`
 
 ```{code-cell} ipython3
-from stimupy.components.mondrians import mondrians
+from stimupy.stimuli.mondrians import mondrian
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
@@ -74,7 +75,7 @@ b_add = iw.HBox([w_intback, w_mask])
 ui = iw.VBox([b_im_size, b_x, b_y, b_h, b_w, b_int, b_add])
 
 # Function for showing stim
-def show_mondrians(
+def show_mondrian(
     height=None,
     width=None,
     ppd=None,
@@ -97,7 +98,7 @@ def show_mondrians(
     add_mask=False,
 ):
 
-    stim = mondrians(
+    stim = mondrian(
         visual_size=(height, width),
         ppd=ppd,
         mondrian_positions=((y1, x1), (y2, x2), (y3, x3)),
@@ -109,7 +110,7 @@ def show_mondrians(
 
 # Set interactivity
 out = iw.interactive_output(
-    show_mondrians,
+    show_mondrian,
     {
         "height": w_height,
         "width": w_width,
@@ -131,6 +132,85 @@ out = iw.interactive_output(
         "int3": w_int3,
         "intensity_background": w_intback,
         "add_mask": w_mask,
+    },
+)
+
+# Show
+display(ui, out)
+```
+
+
+## Corrugated Mondrian
+{py:func}`stimupy.stimuli.mondrians.corrugated`
+
+```{code-cell} ipython3
+from stimupy.stimuli.mondrians import corrugated_mondrian
+
+# Define widgets
+w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
+w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
+w_ppd = iw.IntSlider(value=30, min=1, max=60, description="ppd")
+
+w_mdepth1 = iw.FloatSlider(value=-2., min=-2, max=2, description="mondrian depth 1")
+w_mdepth2 = iw.FloatSlider(value=0., min=-2, max=2, description="mondrian depth 2")
+w_mdepth3 = iw.FloatSlider(value=2., min=-2, max=2, description="mondrian depth 3")
+
+w_intback = iw.FloatSlider(value=0.5, min=0, max=1, description="intensity_background")
+w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'mondrian_mask'], description="add mask")
+
+w_tidx1 = iw.IntSlider(value=1, min=0, max=10, description="target idx1")
+w_tidx2 = iw.IntSlider(value=1, min=0, max=10, description="target idx2")
+w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
+
+# Layout
+b_im_size = iw.HBox([w_height, w_width, w_ppd])
+b_depths = iw.HBox([w_mdepth1, w_mdepth2, w_mdepth3])
+b_target = iw.HBox([w_tidx1, w_tidx2, w_tint])
+b_add = iw.HBox([w_intback, w_mask])
+ui = iw.VBox([b_im_size, b_depths, b_target, b_add])
+
+# Function for showing stim
+def show_corrugated_mondrian(
+    height=None,
+    width=None,
+    ppd=None,
+    intensity_background=None,
+    add_mask=False,
+    depth1=None,
+    depth2=None,
+    depth3=None,
+    target_idx1=None,
+    target_idx2=None,
+    intensity_target=None,
+):
+    intensities = np.random.rand(3, 4)
+
+    stim = corrugated_mondrian(
+        visual_size=(height, width),
+        ppd=ppd,
+        mondrian_depths=(depth1, depth2, depth3),
+        mondrian_intensities=intensities,
+        intensity_background=intensity_background,
+        intensity_target=intensity_target,
+        target_indices=((target_idx1, target_idx2),),
+    )
+    plot_stim(stim, mask=add_mask)
+
+# Set interactivity
+out = iw.interactive_output(
+    show_corrugated_mondrian,
+    {
+        "height": w_height,
+        "width": w_width,
+        "ppd": w_ppd,
+        "intensity_background": w_intback,
+        "add_mask": w_mask,
+        "depth1": w_mdepth1,
+        "depth2": w_mdepth2,
+        "depth3": w_mdepth3,
+        "target_idx1": w_tidx1,
+        "target_idx2": w_tidx2,
+        "intensity_target": w_tint,
     },
 )
 

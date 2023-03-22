@@ -13,12 +13,12 @@ kernelspec:
 ---
 
 ```{important}
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/illusions/cubes.md)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/stimuli/cubes.md)
  to get interactivity
 ```
 
-# Illusions - Cubes
-{py:mod}`stimupy.illusions.cubes`
+# Stimuli - Cubes
+{py:mod}`stimupy.stimuli.cubes`
 
 ```{code-cell} ipython3
 :tags: [remove-cell]
@@ -29,10 +29,10 @@ from stimupy.utils import plot_stim
 ```
 
 ## Varying cells
-{py:func}`stimupy.illusions.cubes.varying_cells`
+{py:func}`stimupy.stimuli.cubes.varying_cells`
 
 ```{code-cell} ipython3
-from stimupy.illusions.cubes import varying_cells
+from stimupy.stimuli.cubes import varying_cells
 
 # Define widgets
 w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
@@ -113,10 +113,10 @@ display(ui, out)
 ```
 
 ## Cube
-{py:func}`stimupy.illusions.cubes.cube`
+{py:func}`stimupy.stimuli.cubes.cube`
 
 ```{code-cell} ipython3
-from stimupy.illusions.cubes import cube
+from stimupy.stimuli.cubes import cube
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")

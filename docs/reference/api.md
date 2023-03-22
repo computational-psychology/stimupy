@@ -5,7 +5,7 @@
    :recursive:
 
    stimupy.components
-   stimupy.illusions
+   stimupy.stimuli
    stimupy.noises
    stimupy.utils
    stimupy.papers

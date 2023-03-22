@@ -13,12 +13,12 @@ kernelspec:
 ---
 
 ```{important}
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/illusions/cornsweets.md)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/stimuli/cornsweets.md)
  to get interactivity
 ```
 
-# Illusions - Cornsweets
-{py:mod}`stimupy.illusions.cornsweets`
+# Stimuli - Cornsweets
+{py:mod}`stimupy.stimuli.cornsweets`
 
 ```{code-cell} ipython3
 :tags: [remove-cell]
@@ -29,10 +29,10 @@ from stimupy.utils import plot_stim
 ```
 
 ## Cornsweet
-{py:func}`stimupy.illusions.cornsweets.cornsweet`
+{py:func}`stimupy.stimuli.cornsweets.cornsweet`
 
 ```{code-cell} ipython3
-from stimupy.illusions.cornsweets import cornsweet
+from stimupy.stimuli.cornsweets import cornsweet
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
