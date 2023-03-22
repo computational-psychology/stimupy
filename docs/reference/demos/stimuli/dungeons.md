@@ -13,12 +13,12 @@ kernelspec:
 ---
 
 ```{important}
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/illusions/dungeons.md)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/stimuli/dungeons.md)
  to get interactivity
 ```
 
-# Illusions - Dungeons
-{py:mod}`stimupy.illusions.dungeons`
+# Stimuli - Dungeons
+{py:mod}`stimupy.stimuli.dungeons`
 
 ```{code-cell} ipython3
 :tags: [remove-cell]
@@ -29,10 +29,10 @@ from stimupy.utils import plot_stim
 ```
 
 ## Dungeon
-{py:func}`stimupy.illusions.dungeons.dungeon`
+{py:func}`stimupy.stimuli.dungeons.dungeon`
 
 ```{code-cell} ipython3
-from stimupy.illusions.dungeons import dungeon
+from stimupy.stimuli.dungeons import dungeon
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")

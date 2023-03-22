@@ -13,12 +13,12 @@ kernelspec:
 ---
 
 ```{important}
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/illusions/ponzos.md)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/stimuli/ponzos.md)
  to get interactivity
 ```
 
-# Illusions - Ponzos
-{py:mod}`stimupy.illusions.ponzos`
+# Stimuli - Ponzos
+{py:mod}`stimupy.stimuli.ponzos`
 
 ```{code-cell} ipython3
 :tags: [remove-cell]
@@ -29,10 +29,10 @@ from stimupy.utils import plot_stim
 ```
 
 ## Ponzo
-{py:func}`stimupy.illusions.ponzos.ponzo`
+{py:func}`stimupy.stimuli.ponzos.ponzo`
 
 ```{code-cell} ipython3
-from stimupy.illusions.ponzos import ponzo
+from stimupy.stimuli.ponzos import ponzo
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")

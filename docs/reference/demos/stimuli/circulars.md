@@ -13,12 +13,12 @@ kernelspec:
 ---
 
 ```{important}
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/illusions/circulars.md)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/stimuli/circulars.md)
  to get interactivity
 ```
 
-# Illusions - Circulars
-{py:mod}`stimupy.illusions.circulars`
+# Stimuli - Circulars
+{py:mod}`stimupy.stimuli.circulars`
 
 ```{code-cell} ipython3
 :tags: [remove-cell]
@@ -29,10 +29,10 @@ from stimupy.utils import plot_stim
 ```
 
 ## Rings
-{py:func}`stimupy.illusions.circulars.rings`
+{py:func}`stimupy.stimuli.circulars.rings`
 
 ```{code-cell} ipython3
-from stimupy.illusions.circulars import rings
+from stimupy.stimuli.circulars import rings
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
@@ -116,10 +116,10 @@ display(ui, out)
 ```
 
 ## Two-sided rings
-{py:func}`stimupy.illusions.circulars.two_sided_rings`
+{py:func}`stimupy.stimuli.circulars.two_sided_rings`
 
 ```{code-cell} ipython3
-from stimupy.illusions.circulars import two_sided_rings
+from stimupy.stimuli.circulars import two_sided_rings
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
@@ -199,10 +199,10 @@ display(ui, out)
 ```
 
 ## Bullseye
-{py:func}`stimupy.illusions.circulars.bullseye`
+{py:func}`stimupy.stimuli.circulars.bullseye`
 
 ```{code-cell} ipython3
-from stimupy.illusions.circulars import bullseye
+from stimupy.stimuli.circulars import bullseye
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
@@ -282,10 +282,10 @@ display(ui, out)
 ```
 
 ## Two-sided rings
-{py:func}`stimupy.illusions.circulars.two_sided_bullseye`
+{py:func}`stimupy.stimuli.circulars.two_sided_bullseye`
 
 ```{code-cell} ipython3
-from stimupy.illusions.circulars import two_sided_bullseye
+from stimupy.stimuli.circulars import two_sided_bullseye
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")

@@ -13,12 +13,12 @@ kernelspec:
 ---
 
 ```{important}
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/illusions/mondrians.md)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/stimuli/mondrians.md)
  to get interactivity
 ```
 
-# Illusions - Mondrians
-{py:mod}`stimupy.illusions.mondrians`
+# Stimuli - Mondrians
+{py:mod}`stimupy.stimuli.mondrians`
 
 ```{code-cell} ipython3
 :tags: [remove-cell]
@@ -30,10 +30,10 @@ from stimupy.utils import plot_stim
 ```
 
 ## Corrugated Mondrians
-{py:func}`stimupy.illusions.mondrians.corrugated_mondrians`
+{py:func}`stimupy.stimuli.mondrians.corrugated_mondrians`
 
 ```{code-cell} ipython3
-from stimupy.illusions.mondrians import corrugated_mondrians
+from stimupy.stimuli.mondrians import corrugated_mondrians
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")

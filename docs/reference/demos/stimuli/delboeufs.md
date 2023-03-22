@@ -13,12 +13,12 @@ kernelspec:
 ---
 
 ```{important}
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/illusions/delboeufs.md)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/stimuli/delboeufs.md)
  to get interactivity
 ```
 
-# Illusions - Delboeufs
-{py:mod}`stimupy.illusions.delboeufs`
+# Stimuli - Delboeufs
+{py:mod}`stimupy.stimuli.delboeufs`
 
 ```{code-cell} ipython3
 :tags: [remove-cell]
@@ -29,10 +29,10 @@ from stimupy.utils import plot_stim
 ```
 
 ## Delboeuf
-{py:func}`stimupy.illusions.delboeufs.delboeuf`
+{py:func}`stimupy.stimuli.delboeufs.delboeuf`
 
 ```{code-cell} ipython3
-from stimupy.illusions.delboeufs import delboeuf
+from stimupy.stimuli.delboeufs import delboeuf
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
@@ -105,10 +105,10 @@ display(ui, out)
 ```
 
 ## Two-sided
-{py:func}`stimupy.illusions.delboeufs.two_sided`
+{py:func}`stimupy.stimuli.delboeufs.two_sided`
 
 ```{code-cell} ipython3
-from stimupy.illusions.delboeufs import two_sided
+from stimupy.stimuli.delboeufs import two_sided
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")

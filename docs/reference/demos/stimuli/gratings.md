@@ -13,12 +13,12 @@ kernelspec:
 ---
 
 ```{important}
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/illusions/gratings.md)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/stimuli/gratings.md)
  to get interactivity
 ```
 
-# Illusions - Gratings
-{py:mod}`stimupy.illusions.gratings`
+# Stimuli - Gratings
+{py:mod}`stimupy.stimuli.gratings`
 
 ```{code-cell} ipython3
 :tags: [remove-cell]
@@ -29,10 +29,10 @@ from stimupy.utils import plot_stim
 ```
 
 ## Square-wave
-{py:func}`stimupy.illusions.gratings.square_wave`
+{py:func}`stimupy.stimuli.gratings.square_wave`
 
 ```{code-cell} ipython3
-from stimupy.illusions.gratings import square_wave
+from stimupy.stimuli.gratings import square_wave
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
@@ -120,10 +120,10 @@ display(ui, out)
 ```
 
 ## Uniform
-{py:func}`stimupy.illusions.gratings.uniform`
+{py:func}`stimupy.stimuli.gratings.uniform`
 
 ```{code-cell} ipython3
-from stimupy.illusions.gratings import uniform
+from stimupy.stimuli.gratings import uniform
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")

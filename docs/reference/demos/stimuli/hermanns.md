@@ -13,12 +13,12 @@ kernelspec:
 ---
 
 ```{important}
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/illusions/hermanns.md)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/stimuli/hermanns.md)
  to get interactivity
 ```
 
-# Illusions - Hermanns
-{py:mod}`stimupy.illusions.hermanns`
+# Stimuli - Hermanns
+{py:mod}`stimupy.stimuli.hermanns`
 
 ```{code-cell} ipython3
 :tags: [remove-cell]
@@ -29,10 +29,10 @@ from stimupy.utils import plot_stim
 ```
 
 ## Grid
-{py:func}`stimupy.illusions.hermanns.grid`
+{py:func}`stimupy.stimuli.hermanns.grid`
 
 ```{code-cell} ipython3
-from stimupy.illusions.hermanns import grid
+from stimupy.stimuli.hermanns import grid
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")

@@ -13,12 +13,12 @@ kernelspec:
 ---
 
 ```{important}
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/illusions/frames.md)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/stimuli/frames.md)
  to get interactivity
 ```
 
-# Illusions - Frames
-{py:mod}`stimupy.illusions.frames`
+# Stimuli - Frames
+{py:mod}`stimupy.stimuli.frames`
 
 ```{code-cell} ipython3
 :tags: [remove-cell]
@@ -29,10 +29,10 @@ from stimupy.utils import plot_stim
 ```
 
 ## Rings
-{py:func}`stimupy.illusions.frames.rings`
+{py:func}`stimupy.stimuli.frames.rings`
 
 ```{code-cell} ipython3
-from stimupy.illusions.frames import rings
+from stimupy.stimuli.frames import rings
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
@@ -116,10 +116,10 @@ display(ui, out)
 ```
 
 ## Rings-generalized
-{py:func}`stimupy.illusions.frames.rings_generalized`
+{py:func}`stimupy.stimuli.frames.rings_generalized`
 
 ```{code-cell} ipython3
-from stimupy.illusions.frames import rings_generalized
+from stimupy.stimuli.frames import rings_generalized
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
@@ -204,10 +204,10 @@ display(ui, out)
 ```
 
 ## Two-sided-rings
-{py:func}`stimupy.illusions.frames.two_sided_rings`
+{py:func}`stimupy.stimuli.frames.two_sided_rings`
 
 ```{code-cell} ipython3
-from stimupy.illusions.frames import two_sided_rings
+from stimupy.stimuli.frames import two_sided_rings
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
@@ -283,10 +283,10 @@ display(ui, out)
 ```
 
 ## Bullseye
-{py:func}`stimupy.illusions.frames.bullseye`
+{py:func}`stimupy.stimuli.frames.bullseye`
 
 ```{code-cell} ipython3
-from stimupy.illusions.frames import bullseye
+from stimupy.stimuli.frames import bullseye
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
@@ -366,10 +366,10 @@ display(ui, out)
 ```
 
 ## Bullseye-generalized
-{py:func}`stimupy.illusions.frames.bullseye_generalized`
+{py:func}`stimupy.stimuli.frames.bullseye_generalized`
 
 ```{code-cell} ipython3
-from stimupy.illusions.frames import bullseye_generalized
+from stimupy.stimuli.frames import bullseye_generalized
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
@@ -450,10 +450,10 @@ display(ui, out)
 ```
 
 ## Two-sided-bullseye
-{py:func}`stimupy.illusions.frames.two_sided_bullseye`
+{py:func}`stimupy.stimuli.frames.two_sided_bullseye`
 
 ```{code-cell} ipython3
-from stimupy.illusions.frames import two_sided_bullseye
+from stimupy.stimuli.frames import two_sided_bullseye
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
