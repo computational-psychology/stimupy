@@ -295,7 +295,7 @@ def sine(
         if "oblique", use combined and rotated distance from origin in x-y;
         if "radial", use radial distance from origin,
         if "angular", use angular distance from origin,
-        if "cityblock", use cityblock distance from origin
+        if "rectilinear", use rectilinear/cityblock/Manhattan distance from origin
     round_phase_width : Bool or None (default)
         if True, round width of bars given resolution
 
@@ -317,7 +317,7 @@ def sine(
     if period is None:
         period = "ignore"
 
-    distance_metrics = ["horizontal", "vertical", "oblique", "radial", "angular", "cityblock"]
+    distance_metrics = ["horizontal", "vertical", "oblique", "radial", "angular", "rectilinear"]
     if distance_metric not in distance_metrics:
         raise ValueError(f"distance_metric needs to be one of {distance_metrics}")
 
@@ -418,7 +418,7 @@ def sine(
 
     # Create mask
     dmax = max(distances.max(), -distances.min()) + (phase_width / 2)
-    if origin == "corner" or distance_metric == "radial" or distance_metric == "cityblock":
+    if origin == "corner" or distance_metric == "radial" or distance_metric == "rectilinear":
         edges = np.arange(distances.min() + (phase_width / 2), dmax, phase_width)
 
         if origin == "mean":
@@ -508,7 +508,7 @@ def square(
         if "oblique", use combined and rotated distance from origin in x-y;
         if "radial", use radial distance from origin,
         if "angular", use angular distance from origin,
-        if "cityblock", use cityblock distance from origin
+        if "rectilinear", use rectilinear/cityblock/Manhattan distance from origin
     round_phase_width : Bool or None (default)
         if True, round width of bars given resolution
 
@@ -590,7 +590,7 @@ def staircase(
         if "oblique", use combined and rotated distance from origin in x-y;
         if "radial", use radial distance from origin,
         if "angular", use angular distance from origin,
-        if "cityblock", use cityblock distance from origin
+        if "rectilinear", use rectilinear/cityblock/Manhattan distance from origin
     round_phase_width : Bool or None (default)
         if True, round width of bars given resolution
     intensities : Sequence[float, ...]
@@ -724,21 +724,21 @@ def overview(**kwargs):
         "sine wave - oblique": sine(**default_params, **grating_params, distance_metric="oblique", rotation=30),
         "sine wave - radial": sine(**default_params, **grating_params, distance_metric="radial"),
         "sine wave - angular": sine(**default_params, **grating_params, distance_metric="angular"),
-        "sine wave - cityblock": sine(**default_params, **grating_params, distance_metric="cityblock"),
+        "sine wave - rectilinear": sine(**default_params, **grating_params, distance_metric="rectilinear"),
 
         "square wave - horizontal": square(**default_params, **grating_params, distance_metric="horizontal"),
         "square wave - vertical": square(**default_params, **grating_params, distance_metric="vertical"),
         "square wave - oblique": square(**default_params, **grating_params, distance_metric="oblique", rotation=30),
         "square wave - radial": square(**default_params, **grating_params, distance_metric="radial"),
         "square wave - angular": square(**default_params, **grating_params, distance_metric="angular"),
-        "square wave - cityblock": square(**default_params, **grating_params, distance_metric="cityblock"),
+        "square wave - rectilinear": square(**default_params, **grating_params, distance_metric="rectilinear"),
 
         "staircase - horizontal": staircase(**default_params, **grating_params, distance_metric="horizontal"),
         "staircase - vertical": staircase(**default_params, **grating_params, distance_metric="vertical"),
         "staircase - oblique": staircase(**default_params, **grating_params, distance_metric="oblique", rotation=30),
         "staircase - radial": staircase(**default_params, **grating_params, distance_metric="radial"),
         "staircase - angular": staircase(**default_params, **grating_params, distance_metric="angular"),
-        "staircase - cityblock": staircase(**default_params, **grating_params, distance_metric="cityblock"),
+        "staircase - rectilinear": staircase(**default_params, **grating_params, distance_metric="rectilinear"),
 
         "bessel": bessel(**default_params, frequency=0.5),
     }

@@ -52,8 +52,8 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin="mea
         in deg. visual angle, at each pixel
         "angular" : numpy.ndarray of shape, with angle relative to 3 o'clock,
         in rad, at each pixel
-        "cityblock" : numpy.ndarray of shape, with cityblock distance from origin,
-        in deg. visual angle ,at each pixel
+        "rectilinear" : numpy.ndarray of shape, with rectilinear/cityblock/Manhattan distance from origin,
+        in deg. visual angle, at each pixel
     """
 
     # Resolve resolution
@@ -77,8 +77,8 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin="mea
     # Linear distance image bases
     xx, yy = np.meshgrid(x, y)
 
-    # City-block distance (frames)
-    cityblock = np.maximum(np.abs(xx), np.abs(yy))
+    # Rectilinear distance (frames)
+    rectilinear = np.maximum(np.abs(xx), np.abs(yy))
 
     # Radial distance
     radial = np.sqrt(xx**2 + yy**2)
@@ -105,7 +105,7 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin="mea
         "horizontal": xx,
         "vertical": yy,
         "oblique": oblique,
-        "cityblock": cityblock,
+        "rectilinear": rectilinear,
         "radial": radial,
         "angular": angular,
     }

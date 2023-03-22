@@ -11,8 +11,8 @@ __all__ = [
     # "staircase_linear",
     "sine_radial",
     "square_radial",
-    "sine_cityblock",
-    "square_cityblock",
+    "sine_rectilinear",
+    "square_rectilinear",
     "sine_angular",
     "square_angular",
 ]
@@ -492,7 +492,7 @@ def square_radial(
     return stim
 
 
-def sine_cityblock(
+def sine_rectilinear(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -584,7 +584,7 @@ def sine_cityblock(
         intensities=intensities,
         origin=origin,
         round_phase_width=round_phase_width,
-        distance_metric="cityblock",
+        distance_metric="rectilinear",
     )
 
     # Repackage output
@@ -619,7 +619,7 @@ def sine_cityblock(
     return stim
 
 
-def square_cityblock(
+def square_rectilinear(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -709,7 +709,7 @@ def square_cityblock(
         phase_shift=phase_shift,
         origin=origin,
         round_phase_width=round_phase_width,
-        distance_metric="cityblock",
+        distance_metric="rectilinear",
     )
 
     # Adjust intensities to passed-in values
@@ -1014,7 +1014,7 @@ def overview(**kwargs):
         "sine wave - vertical": sine_linear(**default_params, **grating_params, bar_width=1, rotation=90),
         "sine wave - oblique": sine_linear(**default_params, **grating_params, bar_width=1, rotation=45),
         "sine wave - radial": sine_radial(**default_params, **grating_params, ring_width=1, clip=True),
-        "sine wave - cityblock": sine_cityblock(**default_params, **grating_params, frame_width=1, clip=True),
+        "sine wave - rectilinear": sine_rectilinear(**default_params, **grating_params, frame_width=1, clip=True),
         "sine wave - angular": sine_angular(**default_params, **grating_params, segment_width=10),
 
 
@@ -1022,7 +1022,7 @@ def overview(**kwargs):
         "square wave - vertical": square_linear(**default_params, **grating_params, bar_width=1, rotation=90),
         "square wave - oblique": square_linear(**default_params, **grating_params, bar_width=1, rotation=45),
         "square wave - radial": square_radial(**default_params, **grating_params, ring_width=1, clip=True),
-        "square wave - cityblock": square_cityblock(**default_params, **grating_params, frame_width=1, clip=True),
+        "square wave - rectilinear": square_rectilinear(**default_params, **grating_params, frame_width=1, clip=True),
         "square wave - angular": square_angular(**default_params, **grating_params, segment_width=10),
 
 
