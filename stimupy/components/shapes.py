@@ -49,7 +49,7 @@ def rectangle(
     intensity_background : float, optional
         intensity value of background, by default 0.0
     rotation : float
-        orientation of rectangle in degrees visual angle (default 0)
+        rotation of rectangle in degrees visual angle (default 0)
 
     Returns
     -------
@@ -164,7 +164,7 @@ def triangle(
     intensity_background : float, optional
         intensity value of background, by default 0.0
     rotation : float
-        orientation of triangle in degrees visual angle (default 0)
+        rotation of triangle in degrees visual angle (default 0)
 
     Returns
     -------
@@ -256,7 +256,7 @@ def cross(
     intensity_background : float, optional
         intensity value of background, by default 0.0
     rotation : float
-        orientation of triangle in degrees visual angle (default 0)
+        rotation of triangle in degrees visual angle (default 0)
 
     Returns
     -------
@@ -358,7 +358,7 @@ def parallelogram(
     intensity_background : float, optional
         intensity value of background, by default 0.0
     rotation : float
-        orientation of triangle in degrees visual angle (default 0)
+        rotation of triangle in degrees visual angle (default 0)
 
     Returns
     -------
@@ -472,7 +472,7 @@ def ellipse(
     intensity_background : float, optional
         intensity value of background, by default 0.0
     rotation : float
-        orientation of triangle in degrees visual angle (default 0)
+        rotation of triangle in degrees visual angle (default 0)
     origin : "corner", "mean" or "center"
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)

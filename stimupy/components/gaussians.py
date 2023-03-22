@@ -30,7 +30,7 @@ def gaussian(
     sigma : float or (float, float)
         Sigma auf Gaussian in degree visual angle (y, x)
     rotation : float
-        Orientation of Gaussian in degree (default 0)
+        Rotation of Gaussian in degree (default 0)
     intensity_max : float
         Maximal intensity value of Gaussian
     origin : "corner", "mean" or "center"
@@ -61,7 +61,7 @@ def gaussian(
     xx = base["horizontal"]
     yy = base["vertical"]
 
-    # convert orientation parameter to radians
+    # convert rotation parameter to radians
     theta = np.deg2rad(-rotation)
 
     # determine a, b, c coefficients

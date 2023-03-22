@@ -1,9 +1,13 @@
-from stimupy import components, noises
+from stimupy import components, noises, stimuli
 
 
 def test_components():
-    components.create_overview()
+    components.overview()
 
 
 def test_noises():
-    noises.create_overview()
+    noises.overview()
+
+
+def test_stimuli():
+    stimuli.overview()

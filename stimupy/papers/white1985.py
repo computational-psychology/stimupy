@@ -59,7 +59,7 @@ START_PHASE2 = 0
 COMMON_PARAMS = {
     "intensity_bars": (v1, v3),
     "intensity_target": v2,
-    "orientation": "vertical",
+    "distance_metric": "vertical",
 }
 
 

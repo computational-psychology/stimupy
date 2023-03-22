@@ -58,7 +58,7 @@ def mask_rings(
 
     # Mark elements with integer idx-value
     stim = mask_elements(
-        orientation="radial",
+        distance_metric="radial",
         edges=radii,
         rotation=0.0,
         shape=shape,

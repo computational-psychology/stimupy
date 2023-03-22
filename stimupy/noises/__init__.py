@@ -1,20 +1,18 @@
-from .binaries import *
-from .narrowbands import *
-from .naturals import *
-from .utils import *
-from .whites import *
+from stimupy.noises.binaries import *
+from stimupy.noises.narrowbands import *
+from stimupy.noises.naturals import *
+from stimupy.noises.utils import *
+from stimupy.noises.whites import *
 
 
-def create_overview():
-    """
-    Create dictionary with examples from all stimulus-noises
+def overview(skip=False):
+    """Generate example stimuli from this module
 
     Returns
     -------
-    stims : dict
-        dict with all stimuli containing individual stimulus dicts.
+    dict[str, dict]
+        Dict mapping names to individual stimulus dicts
     """
-
     params = {
         "visual_size": 10,
         "ppd": 10,
@@ -22,7 +20,7 @@ def create_overview():
     }
 
     # fmt: off
-    stims = {
+    stimuli = {
         # Binary
         "binary_noise": binary(visual_size=10, ppd=10),
         # White
@@ -37,12 +35,31 @@ def create_overview():
     }
     # fmt: on
 
-    return stims
+    # stimuli = {}
+    # for stimmodule_name in __all__:
+    #     if stimmodule_name in ["overview", "plot_overview"]:
+    #         pass
+
+    #     print(f"Generating stimuli from {stimmodule_name}")
+    #     # Get a reference to the actual module
+    #     stimmodule = globals()[stimmodule_name]
+    #     try:
+    #         stims = stimmodule.overview()
+
+    #         # Accumulate
+    #         stimuli.update(stims)
+    #     except NotImplementedError as e:
+    #         if not skip:
+    #             raise e
+    #         # Skip stimuli that aren't implemented
+    #         print("-- not implemented")
+    #         pass
+
+    return stimuli
 
 
-def overview(mask=False, save=None, extent_key="shape"):
-    """
-    Plot overview with examples from all stimulus-noises
+def plot_overview(mask=False, save=None, extent_key="shape"):
+    """Plot overview of examples in this module (and submodules)
 
     Parameters
     ----------
@@ -59,7 +76,9 @@ def overview(mask=False, save=None, extent_key="shape"):
     """
     from stimupy.utils import plot_stimuli
 
-    stims = create_overview()
+    stims = overview(skip=True)
+    plot_stimuli(stims, mask=mask, extent_key=extent_key, save=save)
 
-    # Plotting
-    plot_stimuli(stims, mask=mask, save=save, extent_key=extent_key)
+
+if __name__ == "__main__":
+    plot_overview()

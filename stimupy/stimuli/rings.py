@@ -3,7 +3,7 @@ import itertools
 import numpy as np
 
 from stimupy.components.frames import frames
-from stimupy.stimuli.waves import square_cityblock as rectangular
+from stimupy.stimuli.waves import square_rectilinear as rectangular
 from stimupy.stimuli.waves import square_radial as circular
 from stimupy.utils import resolution, stack_dicts
 

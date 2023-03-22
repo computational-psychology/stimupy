@@ -39,7 +39,7 @@ w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
 w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
 w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
 
-w_base_type = iw.Dropdown(value="horizontal", options=['horizontal','vertical','rotated','radial','cityblock','angular'], description="base_type")
+w_distance_metric = iw.Dropdown(value="horizontal", options=['horizontal','vertical','oblique','radial','rectilinear','angular'], description="distance_metric")
 w_freq = iw.FloatSlider(value=1, min=0, max=2, description="frequency [cpd]")
 w_phase = iw.FloatSlider(value=0, min=0, max=360, description="phase shift [deg]")
 w_rot = iw.FloatSlider(value=0, min=0, max=360, description="rotation [deg]")
@@ -54,7 +54,7 @@ w_mask = iw.ToggleButton(value=False, disabled=False, description="add mask")
 
 # Layout
 b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_base_type, w_freq, w_phase, w_rot])
+b_geometry = iw.HBox([w_distance_metric, w_freq, w_phase, w_rot])
 b_intensities = iw.HBox([w_int1, w_int2])
 b_add = iw.HBox([w_ori, w_period, w_round, w_mask])
 ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_add])
@@ -64,7 +64,7 @@ def show_sine(
     height=None,
     width=None,
     ppd=None,
-    base_type=None,
+    distance_metric=None,
     rotation=None,
     frequency=None,
     phase_shift=None,
@@ -78,7 +78,7 @@ def show_sine(
     stim = sine(
         visual_size=(height, width),
         ppd=ppd,
-        base_type=base_type,
+        distance_metric=distance_metric,
         rotation=rotation,
         frequency=frequency,
         phase_shift=phase_shift,
@@ -96,7 +96,7 @@ out = iw.interactive_output(
         "height": w_height,
         "width": w_width,
         "ppd": w_ppd,
-        "base_type": w_base_type,
+        "distance_metric": w_distance_metric,
         "rotation": w_rot,
         "frequency": w_freq,
         "phase_shift": w_phase,
@@ -124,7 +124,7 @@ w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
 w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
 w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
 
-w_base_type = iw.Dropdown(value="horizontal", options=['horizontal','vertical','rotated','radial','cityblock','angular'], description="base_type")
+w_distance_metric = iw.Dropdown(value="horizontal", options=['horizontal','vertical','oblique','radial','rectilinear','angular'], description="distance_metric")
 w_freq = iw.FloatSlider(value=1, min=0, max=2, description="frequency [cpd]")
 w_phase = iw.FloatSlider(value=0, min=0, max=360, description="phase shift [deg]")
 w_rot = iw.FloatSlider(value=0, min=0, max=360, description="rotation [deg]")
@@ -139,7 +139,7 @@ w_mask = iw.ToggleButton(value=False, disabled=False, description="add mask")
 
 # Layout
 b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_base_type, w_freq, w_phase, w_rot])
+b_geometry = iw.HBox([w_distance_metric, w_freq, w_phase, w_rot])
 b_intensities = iw.HBox([w_int1, w_int2])
 b_add = iw.HBox([w_ori, w_period, w_round, w_mask])
 ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_add])
@@ -149,7 +149,7 @@ def show_square(
     height=None,
     width=None,
     ppd=None,
-    base_type=None,
+    distance_metric=None,
     rotation=None,
     frequency=None,
     phase_shift=None,
@@ -163,7 +163,7 @@ def show_square(
     stim = square(
         visual_size=(height, width),
         ppd=ppd,
-        base_type=base_type,
+        distance_metric=distance_metric,
         rotation=rotation,
         frequency=frequency,
         phase_shift=phase_shift,
@@ -181,7 +181,7 @@ out = iw.interactive_output(
         "height": w_height,
         "width": w_width,
         "ppd": w_ppd,
-        "base_type": w_base_type,
+        "distance_metric": w_distance_metric,
         "rotation": w_rot,
         "frequency": w_freq,
         "phase_shift": w_phase,
@@ -209,7 +209,7 @@ w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
 w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
 w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
 
-w_base_type = iw.Dropdown(value="horizontal", options=['horizontal','vertical','rotated','radial','cityblock','angular'], description="base_type")
+w_distance_metric = iw.Dropdown(value="horizontal", options=['horizontal','vertical','oblique','radial','rectilinear','angular'], description="distance_metric")
 w_freq = iw.FloatSlider(value=0.5, min=0, max=2, description="frequency [cpd]")
 w_rot = iw.FloatSlider(value=0, min=0, max=360, description="rotation [deg]")
 w_phase = iw.FloatSlider(value=0, min=0, max=360, description="phase shift [deg]")
@@ -224,7 +224,7 @@ w_mask = iw.ToggleButton(value=False, disabled=False, description="add mask")
 
 # Layout
 b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_base_type, w_freq, w_phase, w_rot])
+b_geometry = iw.HBox([w_distance_metric, w_freq, w_phase, w_rot])
 b_intensities = iw.HBox([w_int1, w_int2])
 b_add = iw.HBox([w_ori, w_period, w_round, w_mask])
 ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_add])
@@ -234,7 +234,7 @@ def show_staircase(
     height=None,
     width=None,
     ppd=None,
-    base_type=None,
+    distance_metric=None,
     rotation=None,
     frequency=None,
     phase_shift=None,
@@ -248,7 +248,7 @@ def show_staircase(
     stim = staircase(
         visual_size=(height, width),
         ppd=ppd,
-        base_type=base_type,
+        distance_metric=distance_metric,
         rotation=rotation,
         frequency=frequency,
         phase_shift=phase_shift,
@@ -266,7 +266,7 @@ out = iw.interactive_output(
         "height": w_height,
         "width": w_width,
         "ppd": w_ppd,
-        "base_type": w_base_type,
+        "distance_metric": w_distance_metric,
         "rotation": w_rot,
         "frequency": w_freq,
         "int1": w_int1,

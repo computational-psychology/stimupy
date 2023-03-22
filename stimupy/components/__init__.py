@@ -5,6 +5,8 @@ import numpy as np
 from stimupy.utils import resolution
 
 __all__ = [
+    "overview",
+    "plot_overview",
     "image_base",
     "draw_regions",
     "mask_elements",
@@ -46,14 +48,14 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin="mea
         "x", "y" : single axes
         "horizontal", "vertical" : numpy.ndarray of shape, with distance from origin,
         in deg. visual angle, at each pixel
-        "rotated" : numpy.ndarray of shape, with rotated distance from origin,
+        "oblique" : numpy.ndarray of shape, with oblique distance from origin,
         in deg. visual angle, at each pixel
         "radial" : numpyn.ndarray of shape, with radius from origin,
         in deg. visual angle, at each pixel
         "angular" : numpy.ndarray of shape, with angle relative to 3 o'clock,
         in rad, at each pixel
-        "cityblock" : numpy.ndarray of shape, with cityblock distance from origin,
-        in deg. visual angle ,at each pixel
+        "rectilinear" : numpy.ndarray of shape, with rectilinear/cityblock/Manhattan distance from origin,
+        in deg. visual angle, at each pixel
     """
 
     # Resolve resolution
@@ -77,8 +79,8 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin="mea
     # Linear distance image bases
     xx, yy = np.meshgrid(x, y)
 
-    # City-block distance (frames)
-    cityblock = np.maximum(np.abs(xx), np.abs(yy))
+    # Rectilinear distance (frames)
+    rectilinear = np.maximum(np.abs(xx), np.abs(yy))
 
     # Radial distance
     radial = np.sqrt(xx**2 + yy**2)
@@ -88,12 +90,12 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin="mea
     angular -= np.deg2rad(rotation + 90)
     angular %= 2 * np.pi
 
-    # Rotated
+    # Oblique
     alpha = [np.cos(np.deg2rad(rotation)), np.sin(np.deg2rad(rotation))]
-    rotated = alpha[0] * xx + alpha[1] * yy
+    oblique = alpha[0] * xx + alpha[1] * yy
 
     if origin == "corner":
-        rotated = rotated - rotated.min()
+        oblique = oblique - oblique.min()
 
     return {
         "visual_size": visual_size,
@@ -104,15 +106,15 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin="mea
         "y": y,
         "horizontal": xx,
         "vertical": yy,
-        "rotated": rotated,
-        "cityblock": cityblock,
+        "oblique": oblique,
+        "rectilinear": rectilinear,
         "radial": radial,
         "angular": angular,
     }
 
 
 def mask_elements(
-    orientation,
+    distance_metric,
     edges,
     shape=None,
     visual_size=None,
@@ -124,7 +126,7 @@ def mask_elements(
 
     Parameters
     ----------
-    orientation : any of keys in stimupy.components.image_base()
+    distance_metric : any of keys in stimupy.components.image_base()
         which dimension to mask over
     edges : Sequence[Number]
         upper-limit of each consecutive elements
@@ -152,7 +154,7 @@ def mask_elements(
     base = image_base(
         shape=shape, visual_size=visual_size, ppd=ppd, rotation=rotation, origin=origin
     )
-    distances = base[orientation]
+    distances = base[distance_metric]
     distances = np.round(distances, 8)
 
     # Mark elements with integer idx-value
@@ -164,7 +166,7 @@ def mask_elements(
     return {
         "mask": mask,
         "edges": edges,
-        "orientation": orientation,
+        "distance_metric": distance_metric,
         "rotation": base["rotation"],
         "shape": base["shape"],
         "visual_size": base["visual_size"],
@@ -208,17 +210,16 @@ def draw_regions(mask, intensities, intensity_background=0.5):
     return img
 
 
-from . import angulars, edges, frames, gaussians, lines, radials, shapes, waves
+from stimupy.components import angulars, edges, frames, gaussians, lines, radials, shapes, waves
 
 
-def create_overview():
-    """
-    Create dictionary with examples from all stimulus-components
+def overview(skip=False):
+    """Generate example stimuli from this module
 
     Returns
     -------
-    stims : dict
-        dict with all stimuli containing individual stimulus dicts.
+    dict[str, dict]
+        Dict mapping names to individual stimulus dicts
     """
 
     p = {
@@ -227,7 +228,7 @@ def create_overview():
     }
 
     # fmt: off
-    stims = {
+    stimuli = {
         # angulars
         "wedge": angulars.wedge(**p, width=30, radius=3),
         "angular_grating": angulars.grating(**p, n_segments=8),
@@ -262,12 +263,31 @@ def create_overview():
     }
     # fmt: on
 
-    return stims
+    # stimuli = {}
+    # for stimmodule_name in __all__:
+    #     if stimmodule_name in ["overview", "plot_overview"]:
+    #         pass
+
+    #     print(f"Generating stimuli from {stimmodule_name}")
+    #     # Get a reference to the actual module
+    #     stimmodule = globals()[stimmodule_name]
+    #     try:
+    #         stims = stimmodule.overview()
+
+    #         # Accumulate
+    #         stimuli.update(stims)
+    #     except NotImplementedError as e:
+    #         if not skip:
+    #             raise e
+    #         # Skip stimuli that aren't implemented
+    #         print("-- not implemented")
+    #         pass
+
+    return stimuli
 
 
-def overview(mask=False, save=None, extent_key="shape"):
-    """
-    Plot overview with examples from all stimulus-components
+def plot_overview(mask=False, save=None, extent_key="shape"):
+    """Plot overview of examples in this module (and submodules)
 
     Parameters
     ----------
@@ -284,7 +304,9 @@ def overview(mask=False, save=None, extent_key="shape"):
     """
     from stimupy.utils import plot_stimuli
 
-    stims = create_overview()
+    stims = overview(skip=True)
+    plot_stimuli(stims, mask=mask, extent_key=extent_key, save=save)
 
-    # Plotting
-    plot_stimuli(stims, mask=mask, save=save, extent_key=extent_key)
+
+if __name__ == "__main__":
+    plot_overview()

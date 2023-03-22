@@ -11,8 +11,8 @@ __all__ = [
     # "staircase_linear",
     "sine_radial",
     "square_radial",
-    "sine_cityblock",
-    "square_cityblock",
+    "sine_rectilinear",
+    "square_rectilinear",
     "sine_angular",
     "square_angular",
 ]
@@ -114,11 +114,11 @@ def sine_linear(
         )
 
     if rotation % 180 == 0.0:
-        base_type = "horizontal"
+        distance_metric = "horizontal"
     elif rotation % 180 == 90.0:
-        base_type = "vertical"
+        distance_metric = "vertical"
     else:
-        base_type = "rotated"
+        distance_metric = "oblique"
 
     # Spatial square-wave grating
     stim = waves.sine(
@@ -134,13 +134,13 @@ def sine_linear(
         intensities=intensities,
         origin=origin,
         round_phase_width=round_phase_width,
-        base_type=base_type,
+        distance_metric=distance_metric,
     )
 
     # Repackage output
     stim["n_bars"] = stim.pop("n_phases")
     stim["bar_width"] = stim.pop("phase_width")
-    stim.pop("base_type")
+    stim.pop("distance_metric")
 
     # Add targets(?)
     if target_indices is not None and target_indices != ():
@@ -233,7 +233,7 @@ def square_linear(
         phase_shift=phase_shift,
         origin=origin,
         round_phase_width=round_phase_width,
-        base_type="rotated",
+        distance_metric="oblique",
     )
 
     # Adjust intensities to passed-in values
@@ -243,7 +243,7 @@ def square_linear(
     stim["n_bars"] = stim.pop("n_phases")
     stim["bar_width"] = stim.pop("phase_width")
     stim["intensity_bars"] = stim.pop("intensities")
-    stim.pop("base_type")
+    stim.pop("distance_metric")
 
     # Add targets(?)
     if target_indices is not None and target_indices != ():
@@ -344,13 +344,13 @@ def sine_radial(
         intensities=intensities,
         origin=origin,
         round_phase_width=round_phase_width,
-        base_type="radial",
+        distance_metric="radial",
     )
 
     # Repackage output
     stim["n_rings"] = stim.pop("n_phases")
     stim["ring_width"] = stim.pop("phase_width")
-    stim.pop("base_type")
+    stim.pop("distance_metric")
 
     # Clip?
     if clip:
@@ -461,7 +461,7 @@ def square_radial(
         phase_shift=phase_shift,
         origin=origin,
         round_phase_width=round_phase_width,
-        base_type="radial",
+        distance_metric="radial",
     )
 
     # Adjust intensities to passed-in values
@@ -471,7 +471,7 @@ def square_radial(
     stim["n_rings"] = stim.pop("n_phases")
     stim["ring_width"] = stim.pop("phase_width")
     stim["intensity_rings"] = stim.pop("intensities")
-    stim.pop("base_type")
+    stim.pop("distance_metric")
 
     # Clip?
     if clip:
@@ -492,7 +492,7 @@ def square_radial(
     return stim
 
 
-def sine_cityblock(
+def sine_rectilinear(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -584,13 +584,13 @@ def sine_cityblock(
         intensities=intensities,
         origin=origin,
         round_phase_width=round_phase_width,
-        base_type="cityblock",
+        distance_metric="rectilinear",
     )
 
     # Repackage output
     stim["n_frames"] = stim.pop("n_phases")
     stim["frame_width"] = stim.pop("phase_width")
-    stim.pop("base_type")
+    stim.pop("distance_metric")
 
     # Clip?
     if clip:
@@ -619,7 +619,7 @@ def sine_cityblock(
     return stim
 
 
-def square_cityblock(
+def square_rectilinear(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -709,7 +709,7 @@ def square_cityblock(
         phase_shift=phase_shift,
         origin=origin,
         round_phase_width=round_phase_width,
-        base_type="cityblock",
+        distance_metric="rectilinear",
     )
 
     # Adjust intensities to passed-in values
@@ -719,7 +719,7 @@ def square_cityblock(
     stim["n_frames"] = stim.pop("n_phases")
     stim["frame_width"] = stim.pop("phase_width")
     stim["intensity_frames"] = stim.pop("intensities")
-    stim.pop("base_type")
+    stim.pop("distance_metric")
 
     # Clip?
     if clip:
@@ -834,13 +834,13 @@ def sine_angular(
         intensities=intensities,
         origin=origin,
         round_phase_width=round_phase_width,
-        base_type="angular",
+        distance_metric="angular",
     )
 
     # Repackage output
     stim["n_segments"] = stim.pop("n_phases")
     stim["segment_width"] = stim.pop("phase_width")
-    stim.pop("base_type")
+    stim.pop("distance_metric")
 
     # Resolve target parameters
     if target_indices is not None and target_indices != ():
@@ -952,7 +952,7 @@ def square_angular(
         phase_shift=phase_shift,
         origin=origin,
         round_phase_width=round_phase_width,
-        base_type="angular",
+        distance_metric="angular",
     )
 
     # Adjust intensities to passed-in values
@@ -962,7 +962,7 @@ def square_angular(
     stim["n_segments"] = stim.pop("n_phases")
     stim["segment_width"] = stim.pop("phase_width")
     stim["intensity_segments"] = stim.pop("intensities")
-    stim.pop("base_type")
+    stim.pop("distance_metric")
 
     # Resolve target parameters
     if target_indices is not None and target_indices != ():
@@ -1014,7 +1014,7 @@ def overview(**kwargs):
         "sine wave - vertical": sine_linear(**default_params, **grating_params, bar_width=1, rotation=90),
         "sine wave - oblique": sine_linear(**default_params, **grating_params, bar_width=1, rotation=45),
         "sine wave - radial": sine_radial(**default_params, **grating_params, ring_width=1, clip=True),
-        "sine wave - cityblock": sine_cityblock(**default_params, **grating_params, frame_width=1, clip=True),
+        "sine wave - rectilinear": sine_rectilinear(**default_params, **grating_params, frame_width=1, clip=True),
         "sine wave - angular": sine_angular(**default_params, **grating_params, segment_width=10),
 
 
@@ -1022,7 +1022,7 @@ def overview(**kwargs):
         "square wave - vertical": square_linear(**default_params, **grating_params, bar_width=1, rotation=90),
         "square wave - oblique": square_linear(**default_params, **grating_params, bar_width=1, rotation=45),
         "square wave - radial": square_radial(**default_params, **grating_params, ring_width=1, clip=True),
-        "square wave - cityblock": square_cityblock(**default_params, **grating_params, frame_width=1, clip=True),
+        "square wave - rectilinear": square_rectilinear(**default_params, **grating_params, frame_width=1, clip=True),
         "square wave - angular": square_angular(**default_params, **grating_params, segment_width=10),
 
 

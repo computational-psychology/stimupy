@@ -256,10 +256,10 @@ def sine(
     phase_shift=None,
     intensities=(0.0, 1.0),
     origin=None,
-    base_type=None,
+    distance_metric=None,
     round_phase_width=None,
 ):
-    """Draw a sine-wave grating given a certain base_type
+    """Draw a sine-wave grating given a certain distance_metric
 
     Parameters
     ----------
@@ -289,13 +289,13 @@ def sine(
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center
         if "center": set origin to real center (closest existing value to mean)
-    base_type : str or None
+    distance_metric : str or None
         if "horizontal", use distance from origin in x-direction,
         if "vertical", use distance from origin in x-direction;
-        if "rotated", use combined and rotated distance from origin in x-y;
+        if "oblique", use combined and rotated distance from origin in x-y;
         if "radial", use radial distance from origin,
         if "angular", use angular distance from origin,
-        if "cityblock", use cityblock distance from origin
+        if "rectilinear", use rectilinear/cityblock/Manhattan distance from origin
     round_phase_width : Bool or None (default)
         if True, round width of bars given resolution
 
@@ -317,9 +317,9 @@ def sine(
     if period is None:
         period = "ignore"
 
-    base_types = ["horizontal", "vertical", "rotated", "radial", "angular", "cityblock"]
-    if base_type not in base_types:
-        raise ValueError(f"base_type needs to be one of {base_types}")
+    distance_metrics = ["horizontal", "vertical", "oblique", "radial", "angular", "rectilinear"]
+    if distance_metric not in distance_metrics:
+        raise ValueError(f"distance_metric needs to be one of {distance_metrics}")
 
     lst = [visual_size, ppd, shape, frequency, n_phases, phase_width]
     if len([x for x in lst if x is not None]) < 3:
@@ -401,7 +401,7 @@ def sine(
     base = image_base(
         shape=shape, visual_size=visual_size, ppd=ppd, rotation=rotation, origin=origin
     )
-    distances = base[base_type]
+    distances = base[distance_metric]
     distances = np.round(distances, 6)
 
     # Shift distances minimally to ensure proper behavior
@@ -418,7 +418,7 @@ def sine(
 
     # Create mask
     dmax = max(distances.max(), -distances.min()) + (phase_width / 2)
-    if origin == "corner" or base_type == "radial" or base_type == "cityblock":
+    if origin == "corner" or distance_metric == "radial" or distance_metric == "rectilinear":
         edges = np.arange(distances.min() + (phase_width / 2), dmax, phase_width)
 
         if origin == "mean":
@@ -451,7 +451,7 @@ def sine(
         "phase_shift": phase_shift,
         "round_phase_width": round_phase_width,
         "origin": origin,
-        "base_type": base_type,
+        "distance_metric": distance_metric,
         "intensities": intensities,
     }
     return stim
@@ -469,10 +469,10 @@ def square(
     phase_shift=None,
     intensities=(0.0, 1.0),
     origin=None,
-    base_type=None,
+    distance_metric=None,
     round_phase_width=None,
 ):
-    """Draw a square-wave grating given a certain base_type
+    """Draw a square-wave grating given a certain distance_metric
 
     Parameters
     ----------
@@ -502,13 +502,13 @@ def square(
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center
         if "center": set origin to real center (closest existing value to mean)
-    base_type : str or None
+    distance_metric : str or None
         if "horizontal", use distance from origin in x-direction,
         if "vertical", use distance from origin in x-direction;
-        if "rotated", use combined and rotated distance from origin in x-y;
+        if "oblique", use combined and rotated distance from origin in x-y;
         if "radial", use radial distance from origin,
         if "angular", use angular distance from origin,
-        if "cityblock", use cityblock distance from origin
+        if "rectilinear", use rectilinear/cityblock/Manhattan distance from origin
     round_phase_width : Bool or None (default)
         if True, round width of bars given resolution
 
@@ -533,7 +533,7 @@ def square(
         intensities=intensities,
         origin=origin,
         round_phase_width=round_phase_width,
-        base_type=base_type,
+        distance_metric=distance_metric,
     )
 
     # Round sine-wave to create square wave
@@ -552,7 +552,7 @@ def staircase(
     rotation=0.0,
     phase_shift=None,
     origin=None,
-    base_type=None,
+    distance_metric=None,
     round_phase_width=None,
     intensities=(0.0, 1.0),
 ):
@@ -584,13 +584,13 @@ def staircase(
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center
         if "center": set origin to real center (closest existing value to mean)
-    base_type : str or None
+    distance_metric : str or None
         if "horizontal", use distance from origin in x-direction,
         if "vertical", use distance from origin in x-direction;
-        if "rotated", use combined and rotated distance from origin in x-y;
+        if "oblique", use combined and rotated distance from origin in x-y;
         if "radial", use radial distance from origin,
         if "angular", use angular distance from origin,
-        if "cityblock", use cityblock distance from origin
+        if "rectilinear", use rectilinear/cityblock/Manhattan distance from origin
     round_phase_width : Bool or None (default)
         if True, round width of bars given resolution
     intensities : Sequence[float, ...]
@@ -619,7 +619,7 @@ def staircase(
         phase_shift=phase_shift,
         origin=origin,
         round_phase_width=round_phase_width,
-        base_type=base_type,
+        distance_metric=distance_metric,
     )
 
     if len(intensities) == 2:
@@ -669,6 +669,8 @@ def bessel(
         empty mask (key: "ring_mask"),
         and additional keys containing stimulus parameters
     """
+    if frequency is None:
+        raise ValueError("bessel() missing argument 'frequency' which is not 'None'")
 
     base = image_base(
         visual_size=visual_size,
@@ -717,26 +719,26 @@ def overview(**kwargs):
 
     # fmt: off
     stimuli = {
-        "sine wave - horizontal": sine(**default_params, **grating_params, base_type="horizontal"),
-        "sine wave - vertical": sine(**default_params, **grating_params, base_type="vertical"),
-        "sine wave - oblique": sine(**default_params, **grating_params, base_type="rotated", rotation=30),
-        "sine wave - radial": sine(**default_params, **grating_params, base_type="radial"),
-        "sine wave - angular": sine(**default_params, **grating_params, base_type="angular"),
-        "sine wave - cityblock": sine(**default_params, **grating_params, base_type="cityblock"),
+        "sine wave - horizontal": sine(**default_params, **grating_params, distance_metric="horizontal"),
+        "sine wave - vertical": sine(**default_params, **grating_params, distance_metric="vertical"),
+        "sine wave - oblique": sine(**default_params, **grating_params, distance_metric="oblique", rotation=30),
+        "sine wave - radial": sine(**default_params, **grating_params, distance_metric="radial"),
+        "sine wave - angular": sine(**default_params, **grating_params, distance_metric="angular"),
+        "sine wave - rectilinear": sine(**default_params, **grating_params, distance_metric="rectilinear"),
 
-        "square wave - horizontal": square(**default_params, **grating_params, base_type="horizontal"),
-        "square wave - vertical": square(**default_params, **grating_params, base_type="vertical"),
-        "square wave - oblique": square(**default_params, **grating_params, base_type="rotated", rotation=30),
-        "square wave - radial": square(**default_params, **grating_params, base_type="radial"),
-        "square wave - angular": square(**default_params, **grating_params, base_type="angular"),
-        "square wave - cityblock": square(**default_params, **grating_params, base_type="cityblock"),
+        "square wave - horizontal": square(**default_params, **grating_params, distance_metric="horizontal"),
+        "square wave - vertical": square(**default_params, **grating_params, distance_metric="vertical"),
+        "square wave - oblique": square(**default_params, **grating_params, distance_metric="oblique", rotation=30),
+        "square wave - radial": square(**default_params, **grating_params, distance_metric="radial"),
+        "square wave - angular": square(**default_params, **grating_params, distance_metric="angular"),
+        "square wave - rectilinear": square(**default_params, **grating_params, distance_metric="rectilinear"),
 
-        "staircase - horizontal": staircase(**default_params, **grating_params, base_type="horizontal"),
-        "staircase - vertical": staircase(**default_params, **grating_params, base_type="vertical"),
-        "staircase - oblique": staircase(**default_params, **grating_params, base_type="rotated", rotation=30),
-        "staircase - radial": staircase(**default_params, **grating_params, base_type="radial"),
-        "staircase - angular": staircase(**default_params, **grating_params, base_type="angular"),
-        "staircase - cityblock": staircase(**default_params, **grating_params, base_type="cityblock"),
+        "staircase - horizontal": staircase(**default_params, **grating_params, distance_metric="horizontal"),
+        "staircase - vertical": staircase(**default_params, **grating_params, distance_metric="vertical"),
+        "staircase - oblique": staircase(**default_params, **grating_params, distance_metric="oblique", rotation=30),
+        "staircase - radial": staircase(**default_params, **grating_params, distance_metric="radial"),
+        "staircase - angular": staircase(**default_params, **grating_params, distance_metric="angular"),
+        "staircase - rectilinear": staircase(**default_params, **grating_params, distance_metric="rectilinear"),
 
         "bessel": bessel(**default_params, frequency=0.5),
     }

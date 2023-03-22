@@ -1,4 +1,5 @@
 import copy
+
 import numpy as np
 
 from stimupy.components import gaussians, image_base
@@ -49,9 +50,9 @@ def step_edge(
     )
 
     img = np.ones(shape) * intensity_edges[0]
-    img = np.where(base["rotated"] < base["rotated"].mean(), img, intensity_edges[1])
+    img = np.where(base["oblique"] < base["oblique"].mean(), img, intensity_edges[1])
     mask = np.ones(shape)
-    mask = np.where(base["rotated"] < base["rotated"].mean(), mask, 2)
+    mask = np.where(base["oblique"] < base["oblique"].mean(), mask, 2)
 
     stim = {
         "img": img,
@@ -198,7 +199,7 @@ def cornsweet_edge(
     if ramp_width > max(base["visual_size"]) / 2:
         raise ValueError("ramp_width is too large")
 
-    dist = np.round(base["rotated"] / ramp_width, 6)
+    dist = np.round(base["oblique"] / ramp_width, 6)
     d1 = copy.deepcopy(dist)
     d2 = copy.deepcopy(dist) * (-1)
     d1[d1 < 0] = -1

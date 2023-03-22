@@ -38,7 +38,7 @@ def mask_frames(
         and additional keys containing stimulus parameters
     """
     stim = mask_elements(
-        orientation="cityblock",
+        distance_metric="rectilinear",
         edges=edges,
         rotation=0.0,
         shape=shape,
