@@ -154,7 +154,7 @@ def disc(
     shape=None,
     radius=None,
     intensity_disc=1.0,
-    intensity_background=0.5,
+    intensity_background=0.0,
     origin="mean",
 ):
     """Draw a central disc
@@ -174,7 +174,7 @@ def disc(
     intensity_disc : Number
         intensity value of disc, by default 1.0
     intensity_background : float (optional)
-        intensity value of background, by default 0.5
+        intensity value of background, by default 0.0
     origin : "corner", "mean" or "center"
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)
@@ -216,7 +216,7 @@ def ring(
     shape=None,
     radii=None,
     intensity_ring=1.0,
-    intensity_background=0.5,
+    intensity_background=0.0,
     origin="mean",
 ):
     """Draw a ring (annulus)
@@ -234,7 +234,7 @@ def ring(
     intensity_ring : Number
         intensity value of ring, by default 1.0
     intensity_background : float (optional)
-        intensity value of background, by default 0.5
+        intensity value of background, by default 0.0
     origin : "corner", "mean" or "center"
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)
