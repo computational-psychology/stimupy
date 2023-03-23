@@ -707,9 +707,10 @@ def overview(**kwargs):
     default_params.update(kwargs)
 
     grating_params = {
-        "phase_width": 3.5,
-        "period": "either",
-        "phase_shift": 90,
+        # "phase_width": 3.5,
+        "n_phases": 8,
+        "period": "ignore",
+        "phase_shift": 0,
         "origin": "center",
         "round_phase_width": False,
     }
