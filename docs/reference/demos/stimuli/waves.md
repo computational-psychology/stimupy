@@ -872,5 +872,274 @@ display(ui, out)
 ```
 
 ## Sine, angular
+{py:func}`stimupy.stimuli.waves.sine_angular`
+
+```{code-cell} ipython3
+from stimupy.stimuli.waves import sine_angular
+
+# Define widgets
+w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
+w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
+w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+
+w_freq = iw.FloatSlider(value=1, min=0, max=10, description="frequency [cycles per circle]")
+w_phase = iw.FloatSlider(value=0, min=0, max=360, description="phase shift [deg]")
+w_rot = iw.FloatSlider(value=0, min=0, max=360, description="rotation [deg]")
+
+w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int1")
+w_int2 = iw.FloatSlider(value=0, min=0, max=1, description="int2")
+
+w_ori = iw.Dropdown(value="mean", options=['mean', 'corner', 'center'], description="origin")
+w_period = iw.Dropdown(value="ignore", options=['ignore', 'even', 'odd', 'either'], description="period")
+w_round = iw.ToggleButton(value=False, disabled=False, description="round phase")
+w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'grating_mask'], description="add mask")
+
+w_tidx = iw.IntSlider(value=1, min=1, max=10, description="target idx")
+w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
+
+# Layout
+b_im_size = iw.HBox([w_height, w_width, w_ppd])
+b_geometry = iw.HBox([w_freq, w_phase, w_rot])
+b_intensities = iw.HBox([w_int1, w_int2])
+b_target = iw.HBox([w_tidx, w_tint])
+b_add = iw.HBox([w_ori, w_period, w_round, w_mask])
+ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target, b_add])
+
+# Function for showing stim
+def show_sine_angular(
+    height=None,
+    width=None,
+    ppd=None,
+    rotation=None,
+    frequency=None,
+    phase_shift=None,
+    int1=None,
+    int2=None,
+    origin=None,
+    round_phase_width=False,
+    period=None,
+    add_mask=False,
+    target_indices=None,
+    intensity_target=None,
+):
+    stim = sine_angular(
+        visual_size=(height, width),
+        ppd=ppd,
+        rotation=rotation,
+        frequency=frequency,
+        phase_shift=phase_shift,
+        intensities=(int1, int2),
+        origin=origin,
+        round_phase_width=round_phase_width,
+        period=period,
+        target_indices=target_indices,
+        intensity_target=intensity_target,
+    )
+    plot_stim(stim, mask=add_mask)
+
+# Set interactivity
+out = iw.interactive_output(
+    show_sine_angular,
+    {
+        "height": w_height,
+        "width": w_width,
+        "ppd": w_ppd,
+        "rotation": w_rot,
+        "frequency": w_freq,
+        "phase_shift": w_phase,
+        "int1": w_int1,
+        "int2": w_int2,
+        "origin": w_ori,
+        "round_phase_width": w_round,
+        "period": w_period,
+        "add_mask": w_mask,
+        "target_indices": w_tidx,
+        "intensity_target": w_tint,
+    },
+)
+
+# Show
+display(ui, out)
+```
 
 ## Square, angular
+{py:func}`stimupy.stimuli.waves.square_angular`
+
+```{code-cell} ipython3
+from stimupy.stimuli.waves import square_angular
+
+# Define widgets
+w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
+w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
+w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+
+w_freq = iw.FloatSlider(value=1, min=0, max=10, description="frequency [cycles per circle]")
+w_phase = iw.FloatSlider(value=0, min=0, max=360, description="phase shift [deg]")
+w_rot = iw.FloatSlider(value=0, min=0, max=360, description="rotation [deg]")
+
+w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int1")
+w_int2 = iw.FloatSlider(value=0, min=0, max=1, description="int2")
+
+w_ori = iw.Dropdown(value="mean", options=['mean', 'corner', 'center'], description="origin")
+w_period = iw.Dropdown(value="ignore", options=['ignore', 'even', 'odd', 'either'], description="period")
+w_round = iw.ToggleButton(value=False, disabled=False, description="round phase")
+w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'grating_mask'], description="add mask")
+
+w_tidx = iw.IntSlider(value=1, min=1, max=10, description="target idx")
+w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
+
+# Layout
+b_im_size = iw.HBox([w_height, w_width, w_ppd])
+b_geometry = iw.HBox([w_freq, w_phase, w_rot])
+b_intensities = iw.HBox([w_int1, w_int2])
+b_target = iw.HBox([w_tidx, w_tint])
+b_add = iw.HBox([w_ori, w_period, w_round, w_mask])
+ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target, b_add])
+
+# Function for showing stim
+def show_square_angular(
+    height=None,
+    width=None,
+    ppd=None,
+    rotation=None,
+    frequency=None,
+    phase_shift=None,
+    int1=None,
+    int2=None,
+    origin=None,
+    round_phase_width=False,
+    period=None,
+    add_mask=False,
+    target_indices=None,
+    intensity_target=None,
+):
+    stim = square_angular(
+        visual_size=(height, width),
+        ppd=ppd,
+        rotation=rotation,
+        frequency=frequency,
+        phase_shift=phase_shift,
+        intensity_segments=(int1, int2),
+        origin=origin,
+        round_phase_width=round_phase_width,
+        period=period,
+        target_indices=target_indices,
+        intensity_target=intensity_target,
+    )
+    plot_stim(stim, mask=add_mask)
+
+# Set interactivity
+out = iw.interactive_output(
+    show_square_angular,
+    {
+        "height": w_height,
+        "width": w_width,
+        "ppd": w_ppd,
+        "rotation": w_rot,
+        "frequency": w_freq,
+        "phase_shift": w_phase,
+        "int1": w_int1,
+        "int2": w_int2,
+        "origin": w_ori,
+        "round_phase_width": w_round,
+        "period": w_period,
+        "add_mask": w_mask,
+        "target_indices": w_tidx,
+        "intensity_target": w_tint,
+    },
+)
+
+# Show
+display(ui, out)
+```
+
+## Staircase, angular
+{py:func}`stimupy.stimuli.waves.staircase_angular`
+
+```{code-cell} ipython3
+from stimupy.stimuli.waves import staircase_angular
+
+# Define widgets
+w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
+w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
+w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+
+w_freq = iw.FloatSlider(value=1, min=0, max=10, description="frequency [cycles per circle]")
+w_phase = iw.FloatSlider(value=0, min=0, max=360, description="phase shift [deg]")
+w_rot = iw.FloatSlider(value=0, min=0, max=360, description="rotation [deg]")
+
+w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int1")
+w_int2 = iw.FloatSlider(value=0, min=0, max=1, description="int2")
+
+w_ori = iw.Dropdown(value="mean", options=['mean', 'corner', 'center'], description="origin")
+w_period = iw.Dropdown(value="ignore", options=['ignore', 'even', 'odd', 'either'], description="period")
+w_round = iw.ToggleButton(value=False, disabled=False, description="round phase")
+w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'grating_mask'], description="add mask")
+
+w_tidx = iw.IntSlider(value=1, min=1, max=10, description="target idx")
+w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
+
+# Layout
+b_im_size = iw.HBox([w_height, w_width, w_ppd])
+b_geometry = iw.HBox([w_freq, w_phase, w_rot])
+b_intensities = iw.HBox([w_int1, w_int2])
+b_target = iw.HBox([w_tidx, w_tint])
+b_add = iw.HBox([w_ori, w_period, w_round, w_mask])
+ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target, b_add])
+
+# Function for showing stim
+def show_staircase_angular(
+    height=None,
+    width=None,
+    ppd=None,
+    rotation=None,
+    frequency=None,
+    phase_shift=None,
+    int1=None,
+    int2=None,
+    origin=None,
+    round_phase_width=False,
+    period=None,
+    add_mask=False,
+    target_indices=None,
+    intensity_target=None,
+):
+    stim = staircase_angular(
+        visual_size=(height, width),
+        ppd=ppd,
+        rotation=rotation,
+        frequency=frequency,
+        phase_shift=phase_shift,
+        intensity_segments=(int1, int2),
+        origin=origin,
+        round_phase_width=round_phase_width,
+        period=period,
+        target_indices=target_indices,
+        intensity_target=intensity_target,
+    )
+    plot_stim(stim, mask=add_mask)
+
+# Set interactivity
+out = iw.interactive_output(
+    show_staircase_angular,
+    {
+        "height": w_height,
+        "width": w_width,
+        "ppd": w_ppd,
+        "rotation": w_rot,
+        "frequency": w_freq,
+        "phase_shift": w_phase,
+        "int1": w_int1,
+        "int2": w_int2,
+        "origin": w_ori,
+        "round_phase_width": w_round,
+        "period": w_period,
+        "add_mask": w_mask,
+        "target_indices": w_tidx,
+        "intensity_target": w_tint,
+    },
+)
+
+# Show
+display(ui, out)
+```
