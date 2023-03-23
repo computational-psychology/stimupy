@@ -109,7 +109,7 @@ def overview(**kwargs):
 
     # fmt: off
     stimuli = {
-        "gabor": gabor(**default_params, frequency=1, sigma=2, origin="center"),
+        "gabor": gabor(**default_params, frequency=1, sigma=2, phase_shift=0, round_phase_width=False, origin="center"),
     }
     # fmt: on
 
