@@ -10,13 +10,11 @@ kernelspec:
   name: python3
 ---
 
-# Exploring an illusion
+# Exploring more complex stimuli
 
-The geometric components in [`stimupy.components`](../reference/api/stimupy.components)
+The geometric components in [`stimupy.components`](../reference/_api/stimupy.components)
 form the basic building blocks for all stimuli implement in `stimupy`.
 More complex stimuli can be composed using the functions that generate components.
-Included in `stimupy` is a large set of functionst to generate more complex stimuli,
-which we term [`illusions`](../reference/api/stimupy.illusions).
 
 ## Simultaneous Brightness Contrast (SBC)
 
@@ -26,8 +24,14 @@ import matplotlib.pyplot as plt
 from stimupy.utils import plot_stim
 ```
 
+Included in `stimupy` is a large set of functions
+to generate more complex [`stimuli`](../reference/_api/stimupy.stimuli).
+These are generally subdivided into specifically named submodules.
+All of these can be accessed either through `stimupy.stimuli.<submodule>`,
+or by `from stimupy import <submodule>`:
+
 ```{code-cell}
-from stimupy.illusions import sbcs
+from stimupy import sbcs
 
 stim = sbcs.basic(visual_size=(6,8), ppd=10, target_size=(2,2))
 
@@ -45,8 +49,8 @@ plot_stim(component)
 plt.show()
 ```
 
-However, some of the stimulus parameters have different names in `illusions`.
-In particular, **all** `illusions` have the concept of a `target` region(s):
+However, some of the stimulus parameters have different names in `stimuli`.
+In particular, **all** `stimuli` have the concept of a `target` region(s):
 image regions that are of some particular scientific interest in this stimulus.
 For an SBC stimulus, this would be the rectangular path.
 Thus, the `sbcs.basic` function takes a
@@ -81,9 +85,26 @@ plot_stim(two_sided_stim)
 plt.show()
 ```
 
-## White's illusion
+## Todorovic illusion
 ```{code-cell}
-from stimupy.illusions import whites
+from stimupy import todorovics
+
+stim_tod = todorovics.two_sided_rectangle(
+    visual_size=(10,20),
+    ppd=10,
+    target_size=3,
+    covers_size=1.5,
+    covers_offset=2
+)
+
+plot_stim(stim_tod)
+plt.show()
+
+```
+
+## White's effect stimulus
+```{code-cell}
+from stimupy import whites
 
 stim_whites = whites.white_two_rows(
     visual_size=(10,12),

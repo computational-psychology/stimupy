@@ -18,10 +18,10 @@ Since `stimupy`s functions are highly parameterizable,
 lots of variants of a stimulus can be created,
 and thus specific existing parameterizations can be recreated.
 
-For a large selection of the generic `stimupy.illusions`,
+For a large selection of the generic `stimupy.stimuli`,
 there are specific parameterizations in the published literature.
 Some of these are implement in stimupy as well,
-under the corresponding [`stimupy.papers`](../reference/api/stimupy.papers).
+under the corresponding [`stimupy.papers`](../reference/_api/stimupy.papers).
 
 ```{code-cell}
 :tags: [hide-cell]
