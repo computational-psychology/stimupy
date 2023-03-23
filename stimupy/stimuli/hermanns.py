@@ -99,7 +99,7 @@ def overview(**kwargs):
 
     # fmt: off
     stimuli = {
-        "Hermann grid": grid(**default_params, element_size=(1.5, 1.5, 0.2))
+        "hermann_grid": grid(**default_params, element_size=(1.5, 1.5, 0.2))
     }
     # fmt: on
 
@@ -110,4 +110,4 @@ if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
 
     stims = overview()
-    plot_stimuli(stims, mask=True, save=None)
+    plot_stimuli(stims, mask=False, save=None)

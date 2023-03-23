@@ -55,15 +55,30 @@ def binary(
     return stim
 
 
-if __name__ == "__main__":
-    from stimupy.utils import plot_stimuli
+def overview(**kwargs):
+    """Generate example stimuli from this module
 
-    params = {
+    Returns
+    -------
+    stims : dict
+        dict with all stimuli containing individual stimulus dicts.
+    """
+    default_params = {
         "visual_size": 10,
         "ppd": 10,
     }
+    default_params.update(kwargs)
 
-    stims = {
-        "Binary noise": binary(**params),
-    }
-    plot_stimuli(stims, mask=True, save=None)
+    # fmt: off
+    stimuli = {
+        "binaries_binary": binary(**default_params),}
+    # fmt: on
+
+    return stimuli
+
+
+if __name__ == "__main__":
+    from stimupy.utils import plot_stimuli
+
+    stims = overview()
+    plot_stimuli(stims, mask=False, save=None)

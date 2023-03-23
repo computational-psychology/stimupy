@@ -234,3 +234,35 @@ def cornsweet_edge(
     }
 
     return stim
+
+
+def overview(**kwargs):
+    """Generate example stimuli from this module
+
+    Returns
+    -------
+    stims : dict
+        dict with all stimuli containing individual stimulus dicts.
+    """
+    default_params = {
+        "visual_size": 10,
+        "ppd": 10,
+    }
+    default_params.update(kwargs)
+
+    # fmt: off
+    stimuli = {
+        "edges_step": step(**default_params),
+        "edges_gaussian": gaussian(**default_params, sigma=3),
+        "edges_cornsweet": cornsweet(**default_params, ramp_width=3),
+    }
+    # fmt: on
+
+    return stimuli
+
+
+if __name__ == "__main__":
+    from stimupy.utils import plot_stimuli
+
+    stims = overview()
+    plot_stimuli(stims, mask=False, save=None)

@@ -103,13 +103,21 @@ def overview(**kwargs):
     default_params = {
         "visual_size": 10,
         "ppd": 20,
+        "rotation": 45,
     }
     default_params.update(kwargs)
 
     # fmt: off
     stimuli = {
-        "gabor": gabor(**default_params, frequency=1, sigma=2, phase_shift=0, round_phase_width=False, origin="center"),
+        "gabor": gabor(**default_params, frequency=1, sigma=2, origin="center"),
     }
     # fmt: on
 
     return stimuli
+
+
+if __name__ == "__main__":
+    from stimupy.utils import plot_stimuli
+
+    stims = overview()
+    plot_stimuli(stims, mask=False, save=None)

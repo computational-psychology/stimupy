@@ -300,9 +300,10 @@ def overview(**kwargs):
 
     # fmt: off
     stimuli = {
-        "disc": disc(**default_params, radius=3),
-        "disc_and_rings": rings(**default_params, radii=(1, 2, 3)),
-        "ring": ring(**default_params, radii=(1, 2)),
+        "radials_disc": disc(**default_params, radius=3),
+        "radials_rings": rings(**default_params, radii=(1, 2, 3)),
+        "radials_ring": ring(**default_params, radii=(1, 2)),
+        "radials_annulus": annulus(**default_params, radii=(1, 2)),
     }
     # fmt: on
 
@@ -313,4 +314,4 @@ if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
 
     stims = overview()
-    plot_stimuli(stims, mask=True, save=None)
+    plot_stimuli(stims, mask=False, save=None)

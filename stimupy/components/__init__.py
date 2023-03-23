@@ -221,67 +221,25 @@ def overview(skip=False):
     dict[str, dict]
         Dict mapping names to individual stimulus dicts
     """
+    stimuli = {}
+    for stimmodule_name in __all__:
+        if stimmodule_name in ["overview", "plot_overview"]:
+            continue
 
-    p = {
-        "visual_size": 10,
-        "ppd": 20,
-    }
+        print(f"Generating stimuli from {stimmodule_name}")
+        # Get a reference to the actual module
+        stimmodule = globals()[stimmodule_name]
+        try:
+            stims = stimmodule.overview()
 
-    # fmt: off
-    stimuli = {
-        # angulars
-        "wedge": angulars.wedge(**p, width=30, radius=3),
-        "angular_grating": angulars.grating(**p, n_segments=8),
-        "pinwheel": angulars.pinwheel(**p, n_segments=8, radius=3),
-        # circulars
-        "rings (generalized)": radials.rings(**p, radii=[1, 2, 3]),
-        "disc": radials.disc(**p, radius=3),
-        "ring": radials.ring(**p, radii=(1, 3)),
-        "annulus (=ring)": radials.annulus(**p, radii=(1, 3)),
-        # edges
-        "step_edge": edges.step_edge(**p),
-        "gaussian_edge": edges.gaussian_edge(**p, sigma=1.5),
-        "cornsweet_edge": edges.cornsweet_edge(**p, ramp_width=3),
-        # frames
-        "frames": frames.frames(**p, radii=(1, 2, 3)),
-        # gaussians
-        "gaussian": gaussians.gaussian(**p, sigma=(1, 2)),
-        # lines
-        "line": lines.line(**p, line_length=3),
-        "dipole": lines.dipole(**p, line_length=3, line_gap=0.5),
-        "line_circle": lines.circle(**p, radius=3),
-        # shapes
-        "rectangle": shapes.rectangle(**p, rectangle_size=3),
-        "triangle": shapes.triangle(**p, triangle_size=3),
-        "cross": shapes.cross(**p, cross_size=3, cross_thickness=0.5),
-        "parallelogram": shapes.parallelogram(**p, parallelogram_size=(3, 3, 1)),
-        "ellipse": shapes.ellipse(**p, radius=(2, 3)),
-        "shape_wedge": shapes.wedge(**p, width=30, radius=3),
-        "shape_annulus": shapes.annulus(**p, radii=(1, 3)),
-        "shape_ring": shapes.ring(**p, radii=(1, 3)),
-        "shape_disc": shapes.disc(**p, radius=3),
-    }
-    # fmt: on
-
-    # stimuli = {}
-    # for stimmodule_name in __all__:
-    #     if stimmodule_name in ["overview", "plot_overview"]:
-    #         pass
-
-    #     print(f"Generating stimuli from {stimmodule_name}")
-    #     # Get a reference to the actual module
-    #     stimmodule = globals()[stimmodule_name]
-    #     try:
-    #         stims = stimmodule.overview()
-
-    #         # Accumulate
-    #         stimuli.update(stims)
-    #     except NotImplementedError as e:
-    #         if not skip:
-    #             raise e
-    #         # Skip stimuli that aren't implemented
-    #         print("-- not implemented")
-    #         pass
+            # Accumulate
+            stimuli.update(stims)
+        except NotImplementedError as e:
+            if not skip:
+                raise e
+            # Skip stimuli that aren't implemented
+            print("-- not implemented")
+            pass
 
     return stimuli
 

@@ -187,18 +187,19 @@ def overview(**kwargs):
         dict with all stimuli containing individual stimulus dicts.
     """
     default_params = {
-        "visual_size": 10,
-        "ppd": 30,
+        "visual_size": 15,
+        "ppd": 10,
     }
     default_params.update(kwargs)
 
     # fmt: off
     stimuli = {
-        "Wedding cake": wedding_cake(**default_params,
-                                     L_size= (3, 3, 1),
+        "wedding_cake": wedding_cake(**default_params,
+                                     L_size= (4, 3, 1),
                                      target_height=1,
-                                     target_indices1=None,
-                                     target_indices2=((0, 1), (1, 1)),)
+                                     target_indices1=((2, 2), (2, 1)),
+                                     target_indices2=((2, -1), (2, 0)),
+                                     )
     }
     # fmt: on
 
@@ -209,4 +210,4 @@ if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
 
     stims = overview()
-    plot_stimuli(stims, mask=True, save=None)
+    plot_stimuli(stims, mask=False, save=None)

@@ -90,17 +90,31 @@ def narrowband(
     return stim
 
 
+def overview(**kwargs):
+    """Generate example stimuli from this module
+
+    Returns
+    -------
+    stims : dict
+        dict with all stimuli containing individual stimulus dicts.
+    """
+    default_params = {
+        "visual_size": 10,
+        "ppd": 20,
+    }
+    default_params.update(kwargs)
+
+    # fmt: off
+    stimuli = {
+        "narrowbands_narrowband3": narrowband(**default_params, center_frequency=3, bandwidth=1),
+        "narrowbands_narrowband9": narrowband(**default_params, center_frequency=9, bandwidth=1),}
+    # fmt: on
+
+    return stimuli
+
+
 if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
 
-    params = {
-        "visual_size": 10,
-        "ppd": 20,
-        "pseudo_noise": True,
-    }
-
-    stims = {
-        "Narrowband noise - 3cpd": narrowband(**params, bandwidth=1, center_frequency=3.0),
-        "Narrowband noise - 9cpd": narrowband(**params, bandwidth=1, center_frequency=9.0),
-    }
-    plot_stimuli(stims, mask=True, save=None)
+    stims = overview()
+    plot_stimuli(stims, mask=False, save=None)

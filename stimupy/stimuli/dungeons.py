@@ -193,7 +193,7 @@ def overview(**kwargs):
 
     # fmt: off
     stimuli = {
-        "Dungeon illusion": dungeon(**default_params, n_cells=5)
+        "dungeon": dungeon(**default_params, n_cells=5)
     }
     # fmt: on
 
@@ -204,4 +204,4 @@ if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
 
     stims = overview()
-    plot_stimuli(stims, mask=True, save=None)
+    plot_stimuli(stims, mask=False, save=None)

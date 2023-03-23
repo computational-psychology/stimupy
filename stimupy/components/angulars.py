@@ -439,3 +439,35 @@ def pinwheel(
     stim["radius"] = radius
     stim["intensity_background"] = intensity_background
     return stim
+
+
+def overview(**kwargs):
+    """Generate example stimuli from this module
+
+    Returns
+    -------
+    stims : dict
+        dict with all stimuli containing individual stimulus dicts.
+    """
+    default_params = {
+        "visual_size": 10,
+        "ppd": 20,
+    }
+    default_params.update(kwargs)
+
+    # fmt: off
+    stimuli = {
+        "angulars_wedge": wedge(**default_params, width=30, radius=4),
+        "angulars_grating": grating(**default_params, n_segments=8),
+        "angulars_pinwheel": pinwheel(**default_params, n_segments=8, radius=4),
+    }
+    # fmt: on
+
+    return stimuli
+
+
+if __name__ == "__main__":
+    from stimupy.utils import plot_stimuli
+
+    stims = overview()
+    plot_stimuli(stims, mask=False, save=None)

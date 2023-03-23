@@ -310,26 +310,11 @@ def overview(**kwargs):
 
     # fmt: off
     stimuli = {
-        "mondrian1": mondrian(**default_params,
-                              visual_size=8,
-                              mondrian_positions=((0, 0), (0, 4), (1, 3), (4, 4), (5, 1)),
-                              mondrian_sizes=3,
-                              mondrian_intensities=np.random.rand(5)),
-        "mondrian2": mondrian(**default_params,
-                              visual_size=10,
-                              mondrian_positions=((0, 0), (8, 4), (1, 6), (4, 4), (5, 1)),
-                              mondrian_sizes=((3, 4, 1), (2, 2, 0), (5, 4, -1), (3, 4, 1), (5, 2, 0)),
-                              mondrian_intensities=np.random.rand(5)),
-        "mondrian3": mondrian(**default_params,
-                              visual_size=(2,6),
-                              mondrian_positions=((0, 0), (0, 2)),
-                              mondrian_sizes=((2, 2, 0), (2, 2, 0)),
-                              mondrian_intensities=(0.2, 0.8)),
-        "mondrian4": mondrian(**default_params,
-                              visual_size=(2,6),
-                              mondrian_positions=((0, 0), (0, 2)),
-                              mondrian_sizes=((2, 2, 1), (2, 2, 1)),
-                              mondrian_intensities=(0.2, 0.8)),
+        "mondrian": mondrian(**default_params,
+                             visual_size=10,
+                             mondrian_positions=((0, 0), (8, 4), (1, 6), (4, 4), (5, 1)),
+                             mondrian_sizes=((3, 4, 1), (2, 2, 0), (5, 4, -1), (3, 4, 1), (5, 2, 0)),
+                             mondrian_intensities=np.random.rand(5)),
         "corrugated_mondrian": corrugated_mondrian(**default_params,
                                                    visual_size=10,
                                                    mondrian_depths=(1, 0, -1, 0),
@@ -349,4 +334,4 @@ if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
 
     stims = overview()
-    plot_stimuli(stims, mask=True, save=None)
+    plot_stimuli(stims, mask=False, save=None)

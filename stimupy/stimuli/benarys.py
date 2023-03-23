@@ -755,12 +755,12 @@ def overview(**kwargs):
 
     # fmt: off
     stimuli = {
-        "cross": cross_generalized(**default_params, **params_benary, **target_pos),
-        "rectangles": cross_rectangles(**default_params, **params_benary),
-        "triangles": cross_triangles(**default_params, **params_benary),
-        "todorovic_general": todorovic_generalized(**default_params, **params_todo, **target_pos),
-        "todorovic_rectangles": todorovic_rectangles(**default_params, **params_todo),
-        "todorovic_triangles": todorovic_triangles(**default_params, **params_todo),
+        "benarys_cross_general": cross_generalized(**default_params, **params_benary, **target_pos),
+        "benarys_cross_rectangles": cross_rectangles(**default_params, **params_benary),
+        "benarys_cross_triangles": cross_triangles(**default_params, **params_benary),
+        "benarys_todorovic_general": todorovic_generalized(**default_params, **params_todo, **target_pos),
+        "benarys_todorovic_rectangles": todorovic_rectangles(**default_params, **params_todo),
+        "benarys_todorovic_triangles": todorovic_triangles(**default_params, **params_todo),
     }
     # fmt: on
 
@@ -771,4 +771,4 @@ if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
 
     stims = overview()
-    plot_stimuli(stims, mask=True, save=None)
+    plot_stimuli(stims, mask=False, save=None)
