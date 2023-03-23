@@ -110,7 +110,7 @@ def rings(
         and additional keys containing stimulus parameters
     """
     if radii is None:
-        raise ValueError("disc_and_rings() missing argument 'radii' which is not 'None'")
+        raise ValueError("rings() missing argument 'radii' which is not 'None'")
 
     # Try to resolve resolution;
     try:

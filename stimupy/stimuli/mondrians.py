@@ -1,3 +1,5 @@
+import itertools
+
 import numpy as np
 
 from stimupy.components.shapes import parallelogram
@@ -13,9 +15,9 @@ def mondrian(
     visual_size=None,
     ppd=None,
     shape=None,
-    mondrian_positions=None,
-    mondrian_sizes=None,
-    mondrian_intensities=None,
+    positions=None,
+    sizes=None,
+    intensities=None,
     intensity_background=0.5,
 ):
     """Draw Mondrian of given size and intensity at given position
@@ -28,12 +30,12 @@ def mondrian(
         pixels per degree [vertical, horizontal]
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
-    mondrian_positions : Sequence[tuple, ... ] or None (default)
+    positions : Sequence[tuple, ... ] or None (default)
         position (y, x) of each Mondrian in degrees visual angle
-    mondrian_sizes : Sequence[tuple, ... ] or None (default)
+    sizes : Sequence[tuple, ... ] or None (default)
         size (height, width, depth) of Mondrian parallelograms in degrees visual angle;
         if only one number is given, squares will be drawn
-    mondrian_intensities : Sequence[Number, ... ] or None (default)
+    intensities : Sequence[Number, ... ] or None (default)
         intensity values of each Mondrian, if only one number is given
         all will have the same intensity
     intensity_background : float
@@ -46,12 +48,12 @@ def mondrian(
         mask with integer index for each Mondrian (key: "mondrian_mask"),
         and additional keys containing stimulus parameters
     """
-    if mondrian_positions is None:
-        raise ValueError("mondrians() missing argument 'mondrian_positions' which is not 'None'")
-    if mondrian_sizes is None:
-        raise ValueError("mondrians() missing argument 'mondrian_sizes' which is not 'None'")
-    if mondrian_intensities is None:
-        raise ValueError("mondrians() missing argument 'mondrian_intensities' which is not 'None'")
+    if positions is None:
+        raise ValueError("mondrians() missing argument 'positions' which is not 'None'")
+    if sizes is None:
+        raise ValueError("mondrians() missing argument 'sizes' which is not 'None'")
+    if intensities is None:
+        raise ValueError("mondrians() missing argument 'intensities' which is not 'None'")
 
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
@@ -61,35 +63,27 @@ def mondrian(
     img = np.ones(shape) * intensity_background
     mask = np.zeros(shape)
 
-    n_mondrians = len(mondrian_positions)
+    n_mondrians = len(positions)
+    ints = itertools.cycle(intensities)
 
-    if isinstance(mondrian_intensities, (float, int)):
-        mondrian_intensities = (mondrian_intensities,) * n_mondrians
+    if isinstance(sizes, (float, int)):
+        sizes = ((sizes, sizes),) * n_mondrians
 
-    if isinstance(mondrian_sizes, (float, int)):
-        mondrian_sizes = ((mondrian_sizes, mondrian_sizes),) * n_mondrians
+    if any(len(lst) != n_mondrians for lst in [positions, sizes]):
+        raise Exception("As many positions as sizes required.")
 
-    if any(
-        len(lst) != n_mondrians
-        for lst in [mondrian_positions, mondrian_sizes, mondrian_intensities]
-    ):
-        raise Exception(
-            "There need to be as many mondrian_positions as there are "
-            "mondrian_sizes and mondrian_intensities."
-        )
-
-    mondrian_positions_px = []
-    mondrian_shapes = []
+    epositions_px = []
+    eshapes = []
 
     for m in range(n_mondrians):
         try:
-            if len(mondrian_positions[m]) != 2:
-                raise ValueError("Mondrian position tuples should be (ypos, xpos)")
+            if len(positions[m]) != 2:
+                raise ValueError("Position tuples should be (ypos, xpos)")
         except Exception:
-            raise ValueError("Mondrian position tuples should be (ypos, xpos)")
+            raise ValueError("Position tuples should be (ypos, xpos)")
 
-        ypos, xpos = resolution.lengths_from_visual_angles_ppd(mondrian_positions[m], ppd[0])
-        individual_shapes = resolution.lengths_from_visual_angles_ppd(mondrian_sizes[m], ppd[0])
+        ypos, xpos = resolution.lengths_from_visual_angles_ppd(positions[m], ppd[0])
+        individual_shapes = resolution.lengths_from_visual_angles_ppd(sizes[m], ppd[0])
 
         try:
             if len(individual_shapes) == 2:
@@ -98,7 +92,7 @@ def mondrian(
                     depth,
                 ]
             elif len(individual_shapes) == 3:
-                depth = mondrian_sizes[m][2]
+                depth = sizes[m][2]
             else:
                 raise ValueError(
                     "Mondrian size tuples should be (height, width) for "
@@ -112,16 +106,14 @@ def mondrian(
 
         if depth < 0:
             xpos += int(depth * ppd[0])
-        mondrian_positions_px.append(tuple([ypos, xpos]))
-        mondrian_shapes.append(tuple(individual_shapes))
+        epositions_px.append(tuple([ypos, xpos]))
+        eshapes.append(tuple(individual_shapes))
 
         # Create parallelogram
         patch = parallelogram(
-            visual_size=(mondrian_sizes[m][0], mondrian_sizes[m][1] + np.abs(depth)),
+            visual_size=(sizes[m][0], sizes[m][1] + np.abs(depth)),
             ppd=ppd,
-            parallelogram_size=(mondrian_sizes[m][0], mondrian_sizes[m][1], depth),
-            intensity_background=intensity_background,
-            intensity_parallelogram=mondrian_intensities[m],
+            parallelogram_size=(sizes[m][0], sizes[m][1], depth),
         )
 
         # Place it into Mondrian mosaic
@@ -133,7 +125,7 @@ def mondrian(
         mask_large = np.zeros(shape)
         mask_large[ypos : ypos + yshape, xpos : xpos + xshape] = patch["shape_mask"]
 
-        img[mask_large == 1] = mondrian_intensities[m]
+        img[mask_large == 1] = next(ints)
         mask[mask_large == 1] = m + 1
 
     stim = {
@@ -142,11 +134,9 @@ def mondrian(
         "ppd": ppd,
         "visual_size": visual_size,
         "shape": shape,
-        "mondrian_positions": tuple(mondrian_positions),
-        "mondrian_positions_px": tuple(mondrian_positions_px),
-        "mondrian_sizes": tuple(mondrian_sizes),
-        "mondrian_shapes": tuple(mondrian_shapes),
-        "mondrian_intensities": tuple(mondrian_intensities),
+        "positions": tuple(positions),
+        "sizes": tuple(sizes),
+        "intensities": tuple(intensities),
         "intensity_background": intensity_background,
     }
     return stim
@@ -156,8 +146,10 @@ def corrugated_mondrian(
     visual_size=None,
     ppd=None,
     shape=None,
-    mondrian_depths=None,
-    mondrian_intensities=None,
+    nrows=None,
+    ncols=None,
+    depths=0,
+    intensities=(0, 1),
     target_indices=None,
     intensity_background=0.5,
     intensity_target=None,
@@ -172,17 +164,17 @@ def corrugated_mondrian(
         pixels per degree [vertical, horizontal]
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
-    mondrian_depths : Sequence[Number, ... ], Number, or None (default)
+    depths : Sequence[Number, ... ], Number, or None (default)
         depth of Mondrian parallelograms per row
-    mondrian_intensities : nested tuples
+    intensities : nested tuples
         intensities of mondrians; as many tuples as there are rows and as many
         numbers in each tuple as there are columns
     target_indices : nested tuples
         indices of targets; as many tuples as there are targets with (y, x) indices
     intensity_background : float
         intensity value for background
-    intensity_target : float or None
-            target intensity value. If None, use values defined in mondrian_intensities
+    intensity_target : float
+            target intensity. If None, use values defined in intensities
 
     Returns
     ------
@@ -198,36 +190,35 @@ def corrugated_mondrian(
         Science, 262, 2042-2044.
         https://doi.org/10.1126/science.8266102
     """
-    if mondrian_depths is None:
-        raise ValueError(
-            "corrugated_mondrians() missing argument 'mondrian_depths' which is not 'None'"
-        )
-    if mondrian_intensities is None:
-        raise ValueError(
-            "corrugated_mondrians() missing argument 'mondrian_intensities' which is not 'None'"
-        )
 
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
     if len(np.unique(ppd)) > 1:
         raise ValueError("ppd should be equal in x and y direction")
-    nrows = len(mondrian_intensities)
-    ncols = len(mondrian_intensities[0])
 
-    if isinstance(mondrian_depths, (float, int)):
-        mondrian_depths = (mondrian_depths,) * nrows
+    if nrows is None:
+        nrows = len(intensities)
 
-    if len(mondrian_depths) != nrows:
-        raise ValueError(
-            "Unclear number of Mondrians in y-direction, check elements "
-            "in mondrian_intensities and mondrian_depths"
-        )
+    if ncols is None:
+        ncols = len(intensities[0])
+
+    if isinstance(depths, (float, int)):
+        depths = (depths,) * nrows
+
+    if len(depths) != nrows:
+        raise ValueError("Unclear number of rows. Check nrows, intensities and depths.")
+
+    ints = itertools.cycle(tuple(np.array(intensities).flatten()))
 
     height, width = visual_size
-    mdepths_px = resolution.lengths_from_visual_angles_ppd(mondrian_depths, ppd[0])
-    max_depth = np.abs(np.array(mdepths_px)).max()
-    sum_depth = np.abs(np.array(mdepths_px).sum())
-    red_depth = np.maximum(max_depth, sum_depth + max_depth)
+    mdepths_px = resolution.lengths_from_visual_angles_ppd(depths, ppd[0])
+
+    s1 = sum(i for i in mdepths_px)
+    s2 = sum(-i for i in mdepths_px if i < 0)
+    sum_depth = np.maximum(abs(s1), abs(s2))
+    red_depth = np.cumsum(np.array(mdepths_px)).max()
+    print(sum_depth, red_depth)
+    red_depth = np.maximum(red_depth, sum_depth)
     mheight_px, mwidth_px = int(shape[0] / nrows), int((shape[1] - red_depth) / ncols)
 
     # Initial y coordinates
@@ -242,43 +233,46 @@ def corrugated_mondrian(
 
     sizes = []
     poses = []
-    ints = []
+    intenses = []
     tlist = []
     target_counter = 1
+    counter = 0
 
     for r in range(nrows):
         xst = xstarts[r]
-        if mondrian_depths[r] < 0:
-            xst -= int(mondrian_depths[r] * ppd[0])
+        if depths[r] < 0:
+            xst -= int(depths[r] * ppd[0])
 
         for c in range(ncols):
             if c != ncols - 1:
-                msize = (mheight_px / ppd[0], (mwidth_px + 1) / ppd[1], mondrian_depths[r])
+                msize = (mheight_px / ppd[0], (mwidth_px + 1) / ppd[1], depths[r])
             else:
-                msize = (mheight_px / ppd[0], mwidth_px / ppd[1], mondrian_depths[r])
+                msize = (mheight_px / ppd[0], mwidth_px / ppd[1], depths[r])
             mpos = (yst / ppd[0], xst / ppd[1])
-            mint = mondrian_intensities[r][c]
+            mint = next(ints)
 
             sizes.append(msize)
             poses.append(mpos)
-            ints.append(mint)
+            intenses.append(mint)
 
             if (target_indices is not None) and (r, c) in target_indices:
                 tlist.append(target_counter)
 
             xst += mwidth_px
             target_counter += 1
+            counter += 1
         yst += mheight_px
 
     stim = mondrian(
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,
-        mondrian_positions=poses,
-        mondrian_sizes=sizes,
-        mondrian_intensities=ints,
+        positions=poses,
+        sizes=sizes,
+        intensities=intenses,
         intensity_background=intensity_background,
     )
+
     target_mask = np.zeros(shape)
     for t in range(len(tlist)):
         target_mask[stim["mondrian_mask"] == tlist[t]] = t + 1
@@ -290,8 +284,6 @@ def corrugated_mondrian(
         for t in range(len(tlist)):
             stim["img"] = np.where(target_mask == t + 1, intensity_target, stim["img"])
 
-    if len(np.unique(stim["img"][target_mask != 0])) > 1:
-        raise Exception("targets are not equiluminant.")
     return stim
 
 
@@ -304,6 +296,7 @@ def overview(**kwargs):
         dict with all stimuli containing individual stimulus dicts.
     """
     default_params = {
+        "visual_size": 10,
         "ppd": 30,
     }
     default_params.update(kwargs)
@@ -311,19 +304,18 @@ def overview(**kwargs):
     # fmt: off
     stimuli = {
         "mondrian": mondrian(**default_params,
-                             visual_size=10,
-                             mondrian_positions=((0, 0), (8, 4), (1, 6), (4, 4), (5, 1)),
-                             mondrian_sizes=((3, 4, 1), (2, 2, 0), (5, 4, -1), (3, 4, 1), (5, 2, 0)),
-                             mondrian_intensities=np.random.rand(5)),
+                             positions=((0, 0), (8, 4), (1, 6), (4, 4), (5, 1)),
+                             sizes=((3, 4, 1), (2, 2, 0), (5, 4, -1), (3, 4, 1), (5, 2, 0)),
+                             intensities=np.random.rand(5)),
         "corrugated_mondrian": corrugated_mondrian(**default_params,
-                                                   visual_size=10,
-                                                   mondrian_depths=(1, 0, -1, 0),
-                                                   mondrian_intensities=(
-                                                       (0.4, 0.75, 0.4, 0.75),
-                                                       (0.75, 0.4, 0.75, 1.0),
-                                                       (0.4, 0.75, 0.4, 0.75),
-                                                       (0.0, 0.4, 0.0, 0.4)),
-                                                   target_indices=((1, 1), (3, 1)))
+                                                   depths=(1, 0, -1, 0),
+                                                   intensities=np.random.rand(4, 4),
+                                                   target_indices=((1, 1), (3, 1))),
+        "corrugated_mondrian2": corrugated_mondrian(**default_params,
+                                                    nrows=5,
+                                                    ncols=5,
+                                                    depths=(1, -1, 0, -1, 1),
+                                                    intensities=(0, 1))
     }
     # fmt: on
 
