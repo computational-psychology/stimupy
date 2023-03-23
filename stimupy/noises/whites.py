@@ -1,6 +1,6 @@
 import numpy as np
 
-from stimupy.noises.utils import pseudo_white_spectrum
+from stimupy.noises import pseudo_white_spectrum
 from stimupy.utils import resolution
 from stimupy.utils.contrast_conversions import adapt_intensity_range
 
