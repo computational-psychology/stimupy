@@ -57,7 +57,7 @@ def overview(skip=False):
     return stimuli
 
 
-def plot_overview(mask=False, save=None, extent_key="shape"):
+def plot_overview(mask=False, save=None, units="deg"):
     """Plot overview of examples in this module (and submodules)
 
     Parameters
@@ -68,15 +68,16 @@ def plot_overview(mask=False, save=None, extent_key="shape"):
     save : None or str, optional
         If None (default), do not save the plot.
         If string is provided, save plot under this name.
-    extent_key : str, optional
-        Key to extent which will be used for plotting.
-        Default is "shape", using the image size in pixels as extent.
+    units : "px", "deg" (default), or str
+        what units to put on the axes, by default degrees visual angle ("deg").
+        If a str other than "deg"(/"degrees") or "px"(/"pix"/"pixels") is passed,
+        it must be the key to a tuple in stim
 
     """
     from stimupy.utils import plot_stimuli
 
     stims = overview(skip=True)
-    plot_stimuli(stims, mask=mask, extent_key=extent_key, save=save)
+    plot_stimuli(stims, mask=mask, units=units, save=save)
 
 
 if __name__ == "__main__":

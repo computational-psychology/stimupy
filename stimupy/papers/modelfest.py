@@ -2351,5 +2351,5 @@ if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
 
     stims = gen_all(skip=True)
-    plot_stimuli(stims, mask=False, extent_key="visual_size")
+    plot_stimuli(stims, mask=False, units="visual_size")
     # compare_all()
