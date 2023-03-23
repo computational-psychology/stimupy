@@ -223,7 +223,13 @@ def overview(skip=False):
     """
     stimuli = {}
     for stimmodule_name in __all__:
-        if stimmodule_name in ["overview", "plot_overview"]:
+        if stimmodule_name in [
+            "overview",
+            "plot_overview",
+            "draw_regions",
+            "image_base",
+            "mask_elements",
+        ]:
             continue
 
         print(f"Generating stimuli from {stimmodule_name}")
