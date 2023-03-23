@@ -5,7 +5,7 @@ from stimupy.components.radials import ring
 
 __all__ = [
     "wedge",
-    "angular_segments",
+    "segments",
 ]
 
 
@@ -60,7 +60,7 @@ def wedge(
     visual_size=None,
     ppd=None,
     shape=None,
-    width=None,
+    angle=None,
     radius=None,
     rotation=0.0,
     inner_radius=0.0,
@@ -78,7 +78,7 @@ def wedge(
         pixels per degree [vertical, horizontal]
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
-    width : float
+    angle : float
         angular-width (in degrees) of segment
     radius : float
         radius of disc, in degrees visual angle
@@ -103,13 +103,13 @@ def wedge(
         mask with integer index for each segment (key: "wedge_mask"),
         and additional keys containing stimulus parameters
     """
-    if width is None:
-        raise ValueError("wedge() missing argument 'width' which is not 'None'")
+    if angle is None:
+        raise ValueError("wedge() missing argument 'angle' which is not 'None'")
     if radius is None:
         raise ValueError("wedge() missing argument 'radius' which is not 'None'")
 
     # Convert to inner-, outer-angle
-    angles = [0, width]
+    angles = [0, angle]
 
     # Draw disc
     stim = ring(
@@ -189,37 +189,39 @@ def mask_segments(
     return stim
 
 
-def angular_segments(
-    angles,
-    intensity_segments,
-    rotation=0.0,
+def segments(
     visual_size=None,
     ppd=None,
     shape=None,
+    angles=None,
+    rotation=0.0,
     intensity_background=0.5,
+    intensity_segments=(0, 1),
     origin="mean",
 ):
     """Generate mask with integer indices for sequential angular segments
 
     Parameters
     ----------
-    angles : Sequence[Number]
-        upper-limit of each segment, in angular degrees 0-360
-    intensities : Sequence[Number, ...]
-        intensity value for each segment, from inside to out.
-        If fewer intensities are passed than number of radii, cycles through intensities
-    rotation : float, optional
-        angle of rotation (in degrees) of segments,
-        counterclockwise away from 3 o'clock, by default 0.0
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
+    angles : Sequence[Number] or None (default)
+        upper-limit of each segment, in angular degrees 0-360
+    rotation : float, optional
+        angle of rotation (in degrees) of segments,
+        counterclockwise away from 3 o'clock, by default 0.0angles
+    intensity_background : Number
+        intensity value for background; default is 0.5.
+    intensity_segments : Sequence[Number, ...]
+        intensity value for each segment, from inside to out.
+        If fewer intensities are passed than number of radii, cycles through intensity_segments
     origin : "corner", "mean" or "center"
         if "corner": set origin to upper left corner
-        if "mean": set origin to hypothetical image center (default)
+        if "mean": set origin to hypothetical image center (default)angles
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
@@ -229,6 +231,8 @@ def angular_segments(
         mask with integer index for each segment (key: "wedge_mask"),
         and additional keys containing stimulus parameters
     """
+    if angles is None:
+        raise ValueError("segments() missing argument 'angles' which is not 'None'")
 
     # Get mask
     stim = mask_segments(
@@ -247,3 +251,34 @@ def angular_segments(
         intensity_background=intensity_background,
     )
     return stim
+
+
+def overview(**kwargs):
+    """Generate example stimuli from this module
+
+    Returns
+    -------
+    stims : dict
+        dict with all stimuli containing individual stimulus dicts.
+    """
+    default_params = {
+        "visual_size": (10, 10),
+        "ppd": 20,
+    }
+    default_params.update(kwargs)
+
+    # fmt: off
+    stimuli = {
+        "angulars_wedge": wedge(**default_params, angle=30, radius=4),
+        "angulars_segments": segments(**default_params, angles=(30, 120, 300)),
+    }
+    # fmt: on
+
+    return stimuli
+
+
+if __name__ == "__main__":
+    from stimupy.utils import plot_stimuli
+
+    stims = overview()
+    plot_stimuli(stims, mask=False, save=None)

@@ -2,8 +2,8 @@ import itertools
 
 import numpy as np
 
-from stimupy.components.shapes import circle
 from stimupy.components.shapes import ring as ring_shape
+from stimupy.components.shapes import circle
 from stimupy.stimuli import waves
 
 __all__ = [
@@ -169,7 +169,6 @@ def pinwheel(
 
 def overview(**kwargs):
     """Generate example stimuli from this module
-
     Returns
     -------
     stims : dict
@@ -183,7 +182,8 @@ def overview(**kwargs):
 
     # fmt: off
     stimuli = {
-        "pinwheel": pinwheel(**default_params, n_segments=10, target_width=1, target_indices=3),
+        "pinwheel": pinwheel(**default_params, n_segments=10, target_width=2, target_indices=3),
+
     }
     # fmt: on
 
@@ -194,4 +194,4 @@ if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
 
     stims = overview()
-    plot_stimuli(stims, mask=True, save=None)
+    plot_stimuli(stims, mask=False, save=None)

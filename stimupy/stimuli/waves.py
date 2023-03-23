@@ -1439,34 +1439,34 @@ def overview(**kwargs):
         "sine_wave_linear": sine_linear(**default_params, **grating_params, bar_width=1, rotation=45),
         "sine_wave_radial": sine_radial(**default_params, **grating_params, ring_width=1),
         "sine_wave_rectilinear": sine_rectilinear(**default_params, **grating_params, frame_width=1),
-        "sine_wave_angular": sine_angular(**default_params, **grating_params, segment_width=10),
+        "sine_wave_angular": sine_angular(**default_params, **grating_params, n_segments=10),
 
 
         "square_wave_linear": square_linear(**default_params, **grating_params, bar_width=1, rotation=45),
         "square_wave_radial": square_radial(**default_params, **grating_params, ring_width=1),
         "square_wave_rectilinear": square_rectilinear(**default_params, **grating_params, frame_width=1, clip=True),
-        "square_wave_angular": square_angular(**default_params, **grating_params, segment_width=10),
+        "square_wave_angular": square_angular(**default_params, **grating_params, n_segments=10),
 
         "staircase_linear": staircase_linear(**default_params, **grating_params, frequency=0.4),
         "staircase_radial": staircase_radial(**default_params, **grating_params, frequency=0.4),
         "staircase_rectilinear": staircase_rectilinear(**default_params, **grating_params, frequency=0.4),
-        "staircase_angular": staircase_angular(**default_params, **grating_params, frequency=0.4),
+        "staircase_angular": staircase_angular(**default_params, **grating_params, n_segments=10),
 
         "sine_wave_linear_with_targets": sine_linear(**default_params, **grating_params2, bar_width=1, rotation=45),
         "sine_wave_radial_with_targets": sine_radial(**default_params, **grating_params2, ring_width=1),
         "sine_wave_rectilinear_with_targets": sine_rectilinear(**default_params, **grating_params2, frame_width=1),
-        "sine_wave_angular_with_targets": sine_angular(**default_params, **grating_params2, segment_width=10),
+        "sine_wave_angular_with_targets": sine_angular(**default_params, **grating_params2, n_segments=10),
 
 
         "square_wave_linear_with_targets": square_linear(**default_params, **grating_params2, bar_width=1, rotation=45),
         "square_wave_radial_with_targets": square_radial(**default_params, **grating_params2, ring_width=1),
         "square_wave_rectilinear_with_targets": square_rectilinear(**default_params, **grating_params2, frame_width=1, clip=True),
-        "square_wave_angular_with_targets": square_angular(**default_params, **grating_params2, segment_width=10),
+        "square_wave_angular_with_targets": square_angular(**default_params, **grating_params2, n_segments=10),
 
         "staircase_linear_with_targets": staircase_linear(**default_params, **grating_params2, frequency=0.4),
         "staircase_radial_with_targets": staircase_radial(**default_params, **grating_params2, frequency=0.4),
         "staircase_rectilinear_with_targets": staircase_rectilinear(**default_params, **grating_params2, frequency=0.4),
-        "staircase_angular_with_targets": staircase_angular(**default_params, **grating_params2, frequency=0.4),
+        "staircase_angular_with_targets": staircase_angular(**default_params, **grating_params2, n_segments=10),
     }
     # fmt: on
 

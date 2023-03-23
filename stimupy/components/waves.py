@@ -351,16 +351,27 @@ def sine(
         warnings.warn("Period ignored for oblique gratings")
 
     # Resolve params
-    params = resolve_grating_params(
-        length=length,
-        visual_angle=visual_angle,
-        n_phases=n_phases,
-        phase_width=phase_width,
-        ppd=ppd_1D,
-        frequency=frequency,
-        period=period,
-        round_phase_width=round_phase_width,
-    )
+    if distance_metric == "angular":
+        params = resolve_grating_params(
+            visual_angle=360,
+            n_phases=n_phases,
+            phase_width=phase_width,
+            ppd=1,
+            frequency=frequency,
+            period=period,
+            round_phase_width=round_phase_width,
+        )
+    else:
+        params = resolve_grating_params(
+            length=length,
+            visual_angle=visual_angle,
+            n_phases=n_phases,
+            phase_width=phase_width,
+            ppd=ppd_1D,
+            frequency=frequency,
+            period=period,
+            round_phase_width=round_phase_width,
+        )
     length = params["length"]
     ppd_1D = params["ppd"]
     visual_angle = params["visual_angle"]
@@ -402,7 +413,9 @@ def sine(
         )
 
     if distance_metric == "angular":
-        distances = adapt_intensity_range(distances, 0, n_phases * phase_width)
+        distances = adapt_intensity_range(
+            distances, distances.min() - 1e-05, n_phases * phase_width - 1e-05
+        )
 
     # Draw image
     img = np.sin(frequency * 2 * np.pi * distances + np.deg2rad(phase_shift))
