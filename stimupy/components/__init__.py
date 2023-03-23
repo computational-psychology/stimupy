@@ -2,6 +2,7 @@ import itertools
 
 import numpy as np
 
+from stimupy.components import *  # angulars, edges, frames, gaussians, lines, radials, shapes, waves
 from stimupy.utils import resolution
 
 __all__ = [
@@ -208,9 +209,6 @@ def draw_regions(mask, intensities, intensity_background=0.5):
         img = np.where(mask == frame_idx, intensity, img)
 
     return img
-
-
-from stimupy.components import angulars, edges, frames, gaussians, lines, radials, shapes, waves
 
 
 def overview(skip=False):
