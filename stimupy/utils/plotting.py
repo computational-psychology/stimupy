@@ -7,15 +7,14 @@ import numpy as np
 from stimupy.utils import resolution
 
 __all__ = [
-    "compare_plots",
     "plot_stim",
     "plot_stimuli",
+    "compare_plots",
 ]
 
 
 def compare_plots(plots):
-    """
-    Plot multiple plots in one plot for comparing.
+    """Plot multiple plots in one plot for comparing.
 
     Parameters
     ----------
@@ -41,8 +40,10 @@ def plot_stim(
     save=None,
     units="deg",
 ):
-    """
-    Utility function to plot stimulus array (key: "img") from stim dict and mask (optional)
+    """Plot a stimulus
+
+    Plots the stimulus-array (key: "img") directly from stim dict.
+    Optionally also plots mask.
 
     Parameters
     ----------
@@ -164,8 +165,11 @@ def plot_stimuli(
     save=None,
     units="deg",
 ):
-    """
-    Utility function to plot multuple stimuli (key: "img") from stim dicts and mask (optional)
+    """Plot multiple stimuli
+
+    Plots the stimulus-arrays (keys: "img") directly from stim dicts.
+    Arranges stimuli in a grid.
+    Optionally also plots masks.
 
     Parameters
     ----------
