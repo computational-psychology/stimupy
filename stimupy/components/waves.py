@@ -253,11 +253,11 @@ def sine(
     phase_width=None,
     period="ignore",
     rotation=0.0,
-    phase_shift=None,
+    phase_shift=0.0,
     intensities=(0.0, 1.0),
-    origin=None,
+    origin="center",
     distance_metric=None,
-    round_phase_width=None,
+    round_phase_width=False,
 ):
     """Draw a sine-wave grating given a certain distance_metric
 
@@ -279,13 +279,13 @@ def sine(
         ensure whether the grating has "even" number of phases, "odd"
         number of phases, either or whether not to round the number of
         phases ("ignore")
-    rotation : float or None (default)
-        rotation of grating in degrees
-    phase_shift : float or None (default)
-        phase shift of grating in degrees
+    rotation : float
+        rotation of grating in degrees, by default 0.0
+    phase_shift : float
+        phase shift of grating in degrees, by default 0.0
     intensities : Sequence[float, float]
         min and max intensity of sine-wave, by default (0.0, 1.0).
-    origin : "corner", "mean", "center" or None (default)
+    origin : "corner", "mean", or "center" (default)
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center
         if "center": set origin to real center (closest existing value to mean)
@@ -296,8 +296,8 @@ def sine(
         if "radial", use radial distance from origin,
         if "angular", use angular distance from origin,
         if "rectilinear", use rectilinear/cityblock/Manhattan distance from origin
-    round_phase_width : Bool or None (default)
-        if True, round width of bars given resolution
+    round_phase_width : bool
+        if True, round width of bars given resolution, by default False.
 
     Returns
     ----------
@@ -306,17 +306,6 @@ def sine(
         mask with integer index for each bar (key: "grating_mask"),
         and additional keys containing stimulus parameters
     """
-    if phase_shift is None:
-        raise ValueError("waves.sine() missing argument 'phase_shift' which is not 'None'")
-    if intensities is None:
-        raise ValueError("waves.sine() missing argument 'intensities' which is not 'None'")
-    if origin is None:
-        raise ValueError("waves.sine() missing argument 'origin' which is not 'None'")
-    if round_phase_width is None:
-        raise ValueError("waves.sine() missing argument 'round_phase_width' which is not 'None'")
-    if period is None:
-        period = "ignore"
-
     distance_metrics = ["horizontal", "vertical", "oblique", "radial", "angular", "rectilinear"]
     if distance_metric not in distance_metrics:
         raise ValueError(f"distance_metric needs to be one of {distance_metrics}")
@@ -362,16 +351,27 @@ def sine(
         warnings.warn("Period ignored for oblique gratings")
 
     # Resolve params
-    params = resolve_grating_params(
-        length=length,
-        visual_angle=visual_angle,
-        n_phases=n_phases,
-        phase_width=phase_width,
-        ppd=ppd_1D,
-        frequency=frequency,
-        period=period,
-        round_phase_width=round_phase_width,
-    )
+    if distance_metric == "angular":
+        params = resolve_grating_params(
+            visual_angle=360,
+            n_phases=n_phases,
+            phase_width=phase_width,
+            ppd=1,
+            frequency=frequency,
+            period=period,
+            round_phase_width=round_phase_width,
+        )
+    else:
+        params = resolve_grating_params(
+            length=length,
+            visual_angle=visual_angle,
+            n_phases=n_phases,
+            phase_width=phase_width,
+            ppd=ppd_1D,
+            frequency=frequency,
+            period=period,
+            round_phase_width=round_phase_width,
+        )
     length = params["length"]
     ppd_1D = params["ppd"]
     visual_angle = params["visual_angle"]
@@ -412,13 +412,23 @@ def sine(
             distances, distances.min() - 1e-05, distances.max() - 1e-05
         )
 
+    if distance_metric == "angular":
+        distances = adapt_intensity_range(
+            distances, distances.min() - 1e-05, n_phases * phase_width - 1e-05
+        )
+
     # Draw image
     img = np.sin(frequency * 2 * np.pi * distances + np.deg2rad(phase_shift))
     img = adapt_intensity_range(img, intensities[0], intensities[1])
 
     # Create mask
-    dmax = max(distances.max(), -distances.min()) + (phase_width / 2)
-    if origin == "corner" or distance_metric == "radial" or distance_metric == "rectilinear":
+    dmax = max(distances.max(), -distances.min()) + (phase_width / 1)
+    if (
+        origin == "corner"
+        or distance_metric == "radial"
+        or distance_metric == "rectilinear"
+        or distance_metric == "angular"
+    ):
         edges = np.arange(distances.min() + (phase_width / 2), dmax, phase_width)
 
         if origin == "mean":
@@ -430,8 +440,8 @@ def sine(
 
     edges -= (((phase_shift) % 360) / 180) * phase_width
     # edges = np.round(edges, 8)
-    regions = round_to_vals(distances, edges)
 
+    regions = round_to_vals(distances, edges)
     mask = np.zeros(shape=regions.shape)
     for idx, val in enumerate(np.unique(regions)):
         mask = np.where(regions == val, idx + 1, mask)
@@ -466,11 +476,11 @@ def square(
     phase_width=None,
     period="ignore",
     rotation=0.0,
-    phase_shift=None,
+    phase_shift=0.0,
     intensities=(0.0, 1.0),
-    origin=None,
+    origin="center",
     distance_metric=None,
-    round_phase_width=None,
+    round_phase_width=False,
 ):
     """Draw a square-wave grating given a certain distance_metric
 
@@ -492,13 +502,13 @@ def square(
         ensure whether the grating has "even" number of phases, "odd"
         number of phases, either or whether not to round the number of
         phases ("ignore")
-    rotation : float or None (default)
-        rotation of grating in degrees
-    phase_shift : float or None (default)
-        phase shift of grating in degrees
+    rotation : float
+        rotation of grating in degrees, by default 0.0
+    phase_shift : float
+        phase shift of grating in degrees, by default 0.0
     intensities : Sequence[float, float]
-        min and max intensity of square-wave, by default (0.0, 1.0).
-    origin : "corner", "mean", "center" or None (default)
+        min and max intensity of sine-wave, by default (0.0, 1.0).
+    origin : "corner", "mean", or "center" (default)
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center
         if "center": set origin to real center (closest existing value to mean)
@@ -509,8 +519,8 @@ def square(
         if "radial", use radial distance from origin,
         if "angular", use angular distance from origin,
         if "rectilinear", use rectilinear/cityblock/Manhattan distance from origin
-    round_phase_width : Bool or None (default)
-        if True, round width of bars given resolution
+    round_phase_width : bool
+        if True, round width of bars given resolution, by default False
 
     Returns
     ----------
@@ -550,10 +560,10 @@ def staircase(
     phase_width=None,
     period="ignore",
     rotation=0.0,
-    phase_shift=None,
-    origin=None,
+    phase_shift=0.0,
+    origin="center",
     distance_metric=None,
-    round_phase_width=None,
+    round_phase_width=False,
     intensities=(0.0, 1.0),
 ):
     """Draw a luminance staircase
@@ -576,11 +586,11 @@ def staircase(
         ensure whether the grating has "even" number of phases, "odd"
         number of phases, either or whether not to round the number of
         phases ("ignore")
-    rotation : float or None (default)
-        rotation of grating in degrees
-    phase_shift : float or None (default)
-        phase shift of grating in degrees
-    origin : "corner", "mean", "center" or None (default)
+    rotation : float
+        rotation of grating in degrees, by default 0.0
+    phase_shift : float
+        phase shift of grating in degrees, by default 0.o
+    origin : "corner", "mean", or "center" (default)
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center
         if "center": set origin to real center (closest existing value to mean)
@@ -591,8 +601,8 @@ def staircase(
         if "radial", use radial distance from origin,
         if "angular", use angular distance from origin,
         if "rectilinear", use rectilinear/cityblock/Manhattan distance from origin
-    round_phase_width : Bool or None (default)
-        if True, round width of bars given resolution
+    round_phase_width : bool
+        if True, round width of bars given resolution, by default False
     intensities : Sequence[float, ...]
         if len(intensities)==2, intensity range of staircase (default 0.0, 1.0);
         if len(intensities)>2, intensity value for each phase.
@@ -623,7 +633,7 @@ def staircase(
     )
 
     if len(intensities) == 2:
-        intensities = np.linspace(intensities[0], intensities[1], int(np.ceil(stim["n_phases"])))
+        intensities = np.linspace(intensities[0], intensities[1], stim["grating_mask"].max())
 
     # Use grating_mask to draw staircase
     stim["img"] = draw_regions(mask=stim["grating_mask"], intensities=intensities)
@@ -710,9 +720,10 @@ def overview(**kwargs):
     default_params.update(kwargs)
 
     grating_params = {
-        "phase_width": 3.5,
-        "period": "either",
-        "phase_shift": 90,
+        # "phase_width": 3.5,
+        "n_phases": 8,
+        "period": "ignore",
+        "phase_shift": 0,
         "origin": "center",
         "round_phase_width": False,
     }

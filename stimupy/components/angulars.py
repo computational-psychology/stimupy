@@ -1,13 +1,11 @@
 import numpy as np
 
-from stimupy.components import draw_regions, mask_elements, waves
+from stimupy.components import draw_regions, mask_elements
 from stimupy.components.radials import ring
-from stimupy.utils import resolution
 
 __all__ = [
     "wedge",
-    "grating",
-    "pinwheel",
+    "segments",
 ]
 
 
@@ -62,7 +60,7 @@ def wedge(
     visual_size=None,
     ppd=None,
     shape=None,
-    width=None,
+    angle=None,
     radius=None,
     rotation=0.0,
     inner_radius=0.0,
@@ -80,7 +78,7 @@ def wedge(
         pixels per degree [vertical, horizontal]
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
-    width : float
+    angle : float
         angular-width (in degrees) of segment
     radius : float
         radius of disc, in degrees visual angle
@@ -105,13 +103,13 @@ def wedge(
         mask with integer index for each segment (key: "wedge_mask"),
         and additional keys containing stimulus parameters
     """
-    if width is None:
-        raise ValueError("wedge() missing argument 'width' which is not 'None'")
+    if angle is None:
+        raise ValueError("wedge() missing argument 'angle' which is not 'None'")
     if radius is None:
         raise ValueError("wedge() missing argument 'radius' which is not 'None'")
 
     # Convert to inner-, outer-angle
-    angles = [0, width]
+    angles = [0, angle]
 
     # Draw disc
     stim = ring(
@@ -191,37 +189,39 @@ def mask_segments(
     return stim
 
 
-def angular_segments(
-    angles,
-    intensity_segments,
-    rotation=0.0,
+def segments(
     visual_size=None,
     ppd=None,
     shape=None,
+    angles=None,
+    rotation=0.0,
     intensity_background=0.5,
+    intensity_segments=(0, 1),
     origin="mean",
 ):
     """Generate mask with integer indices for sequential angular segments
 
     Parameters
     ----------
-    angles : Sequence[Number]
-        upper-limit of each segment, in angular degrees 0-360
-    intensities : Sequence[Number, ...]
-        intensity value for each segment, from inside to out.
-        If fewer intensities are passed than number of radii, cycles through intensities
-    rotation : float, optional
-        angle of rotation (in degrees) of segments,
-        counterclockwise away from 3 o'clock, by default 0.0
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
+    angles : Sequence[Number] or None (default)
+        upper-limit of each segment, in angular degrees 0-360
+    rotation : float, optional
+        angle of rotation (in degrees) of segments,
+        counterclockwise away from 3 o'clock, by default 0.0angles
+    intensity_background : Number
+        intensity value for background; default is 0.5.
+    intensity_segments : Sequence[Number, ...]
+        intensity value for each segment, from inside to out.
+        If fewer intensities are passed than number of radii, cycles through intensity_segments
     origin : "corner", "mean" or "center"
         if "corner": set origin to upper left corner
-        if "mean": set origin to hypothetical image center (default)
+        if "mean": set origin to hypothetical image center (default)angles
         if "center": set origin to real center (closest existing value to mean)
 
     Returns
@@ -231,6 +231,8 @@ def angular_segments(
         mask with integer index for each segment (key: "wedge_mask"),
         and additional keys containing stimulus parameters
     """
+    if angles is None:
+        raise ValueError("segments() missing argument 'angles' which is not 'None'")
 
     # Get mask
     stim = mask_segments(
@@ -251,196 +253,6 @@ def angular_segments(
     return stim
 
 
-def grating(
-    visual_size=None,
-    ppd=None,
-    shape=None,
-    frequency=None,
-    n_segments=None,
-    segment_width=None,
-    rotation=0.0,
-    intensity_segments=(1.0, 0.0),
-    origin="mean",
-):
-    """Draw an angular grating, i.e., set of segments
-
-    Parameters
-    ----------
-    visual_size : Sequence[Number, Number], Number, or None (default)
-        visual size [height, width] of image, in degrees
-    ppd : Sequence[Number, Number], Number, or None (default)
-        pixels per degree [vertical, horizontal]
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
-    frequency : Number, or None (default)
-        angular frequency of angular grating, in cycles per angular degree
-    n_segments : int, or None (default)
-        number of segments
-    segment_width : Number, or None (default)
-        angular width of a single segment, in degrees
-    rotation : float, optional
-        angle of rotation (in degrees) grating segments,
-        counterclockwise away from 3 o'clock, by default 0.0
-    intensity_segments : Sequence[Number, ...]
-        intensity value for each segment, from inside to out, by default (1.0, 0.0).
-        If fewer intensities are passed than number of radii, cycles through intensities
-    origin : "corner", "mean" or "center"
-        if "corner": set origin to upper left corner
-        if "mean": set origin to hypothetical image center (default)
-        if "center": set origin to real center (closest existing value to mean)
-
-    Returns
-    -------
-    dict[str, Any]
-        dict with the stimulus (key: "img"),
-        mask with integer index for each segment (key: "wedge_mask"),
-        and additional keys containing stimulus parameters
-    """
-    lst = [visual_size, ppd, shape, frequency, n_segments, segment_width]
-    if len([x for x in lst if x is not None]) < 3:
-        raise ValueError(
-            "'grating()' needs 3 non-None arguments for resolving from 'visual_size', "
-            "'ppd', 'shape', 'frequency', 'n_segments', 'segment_width'"
-        )
-
-    # Resolve resolution
-    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
-
-    if frequency is not None and frequency > 0.5:
-        raise ValueError("'frequency' in angular grating must be smaller than 0.5")
-
-    # Resolve grating
-    params = waves.resolve_grating_params(
-        visual_angle=360,
-        ppd=1,
-        frequency=frequency,
-        n_phases=n_segments,
-        phase_width=segment_width,
-        period="ignore",
-        round_phase_width=False,
-    )
-
-    # Determine angles
-    angles = params["edges"]
-    angles = sorted(np.unique(angles))
-
-    # Draw stim
-    stim = angular_segments(
-        angles=angles,
-        rotation=rotation,
-        visual_size=visual_size,
-        ppd=ppd,
-        shape=shape,
-        intensity_segments=intensity_segments,
-        origin=origin,
-    )
-
-    # Assemble output
-    return {
-        **stim,
-        "n_segments": params["n_phases"],
-        "frequency": params["frequency"],
-    }
-
-
-def pinwheel(
-    visual_size=None,
-    ppd=None,
-    shape=None,
-    radius=None,
-    frequency=None,
-    n_segments=None,
-    segment_width=None,
-    rotation=0.0,
-    inner_radius=0.0,
-    intensity_segments=(1.0, 0.0),
-    intensity_background=0.5,
-    origin="mean",
-):
-    """Pinwheel- / wheel-of-fortune-like angular grating on disc/ring
-
-    Parameters
-    ----------
-    visual_size : Sequence[Number, Number], Number, or None (default)
-        visual size [height, width] of image, in degrees
-    ppd : Sequence[Number, Number], Number, or None (default)
-        pixels per degree [vertical, horizontal]
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
-    radius : float
-        radius of wheel, in degrees visual angle
-    frequency : Number, or None (default)
-        angular frequency of angular grating, in cycles per angular degree
-    n_segments : int, or None (default)
-        number of segments
-    segment_width : Number, or None (default)
-        angular width of a single segment, in degrees
-    rotation : float, optional
-        rotation (in degrees) of pinwheel segments away
-        counterclockwise from 3 o'clock, by default 0.0
-    inner_radius : float, optional
-        inner radius (in degrees visual angle), to turn disc into a ring, by default 0.0
-    intensity_segments : Sequence[Number, ...]
-        intensity value for each segment, from inside to out, by default (1.0, 0.0).
-        If fewer intensities are passed than number of radii, cycles through intensities
-    intensity_background : float (optional)
-        intensity value of background, by default 0.5
-    origin : "corner", "mean" or "center"
-        if "corner": set origin to upper left corner
-        if "mean": set origin to hypothetical image center (default)
-        if "center": set origin to real center (closest existing value to mean)
-
-    Returns
-    -------
-    dict[str, Any]
-        dict with the stimulus (key: "img"),
-        mask with integer index for each segment (key: "wedge_mask"),
-        and additional keys containing stimulus parameters
-    """
-    lst = [visual_size, ppd, shape, frequency, n_segments, segment_width]
-    if len([x for x in lst if x is not None]) < 3:
-        raise ValueError(
-            "'pinwheel()' needs 3 non-None arguments for resolving from 'visual_size', "
-            "'ppd', 'shape', 'frequency', 'n_segments', 'segment_width'"
-        )
-    if radius is None:
-        raise ValueError("pinwheel() missing argument 'radius' which is not 'None'")
-
-    # Get disc
-    disc = ring(
-        radii=[inner_radius, radius],
-        intensity_ring=1.0,
-        intensity_background=0.0,
-        visual_size=visual_size,
-        ppd=ppd,
-        shape=shape,
-        origin=origin,
-    )
-    visual_size = disc["visual_size"]
-    shape = disc["shape"]
-    ppd = disc["ppd"]
-
-    # Draw segments
-    stim = grating(
-        frequency=frequency,
-        n_segments=n_segments,
-        segment_width=segment_width,
-        rotation=rotation,
-        intensity_segments=intensity_segments,
-        visual_size=visual_size,
-        shape=shape,
-        ppd=ppd,
-        origin=origin,
-    )
-
-    # Mask out everything but the disc
-    stim["img"] = np.where(disc["ring_mask"], stim["img"], intensity_background)
-    stim["wedge_mask"] = np.where(disc["ring_mask"], stim["wedge_mask"], 0).astype(int)
-    stim["radius"] = radius
-    stim["intensity_background"] = intensity_background
-    return stim
-
-
 def overview(**kwargs):
     """Generate example stimuli from this module
 
@@ -450,16 +262,15 @@ def overview(**kwargs):
         dict with all stimuli containing individual stimulus dicts.
     """
     default_params = {
-        "visual_size": 10,
+        "visual_size": (10, 10),
         "ppd": 20,
     }
     default_params.update(kwargs)
 
     # fmt: off
     stimuli = {
-        "angulars_wedge": wedge(**default_params, width=30, radius=4),
-        "angulars_grating": grating(**default_params, n_segments=8),
-        "angulars_pinwheel": pinwheel(**default_params, n_segments=8, radius=4),
+        "angulars_wedge": wedge(**default_params, angle=30, radius=4),
+        "angulars_segments": segments(**default_params, angles=(30, 120, 300)),
     }
     # fmt: on
 
