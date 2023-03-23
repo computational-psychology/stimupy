@@ -401,13 +401,21 @@ def sine(
             distances, distances.min() - 1e-05, distances.max() - 1e-05
         )
 
+    if distance_metric == "angular":
+        distances = adapt_intensity_range(distances, 0, n_phases * phase_width)
+
     # Draw image
     img = np.sin(frequency * 2 * np.pi * distances + np.deg2rad(phase_shift))
     img = adapt_intensity_range(img, intensities[0], intensities[1])
 
     # Create mask
-    dmax = max(distances.max(), -distances.min()) + (phase_width / 2)
-    if origin == "corner" or distance_metric == "radial" or distance_metric == "rectilinear":
+    dmax = max(distances.max(), -distances.min()) + (phase_width / 1)
+    if (
+        origin == "corner"
+        or distance_metric == "radial"
+        or distance_metric == "rectilinear"
+        or distance_metric == "angular"
+    ):
         edges = np.arange(distances.min() + (phase_width / 2), dmax, phase_width)
 
         if origin == "mean":
@@ -419,8 +427,8 @@ def sine(
 
     edges -= (((phase_shift) % 360) / 180) * phase_width
     # edges = np.round(edges, 8)
-    regions = round_to_vals(distances, edges)
 
+    regions = round_to_vals(distances, edges)
     mask = np.zeros(shape=regions.shape)
     for idx, val in enumerate(np.unique(regions)):
         mask = np.where(regions == val, idx + 1, mask)
