@@ -2,9 +2,9 @@ import itertools
 
 import numpy as np
 
-from stimupy.components.angulars import pinwheel as pinwheel_shape
+from stimupy.components.shapes import circle
 from stimupy.components.shapes import ring as ring_shape
-from stimupy.utils import resolution
+from stimupy.stimuli import waves
 
 __all__ = [
     "pinwheel",
@@ -87,26 +87,33 @@ def pinwheel(
         Vision Research, 47(12), 1631-1644.
         https://doi.org/10.1016/j.visres.2007.02.017
     """
-    # Resolve resolution
-    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
 
-    # Radial grating
-    stim = pinwheel_shape(
-        radius=np.min(visual_size) / 2,
-        frequency=frequency,
-        n_segments=n_segments,
-        segment_width=segment_width,
-        rotation=rotation,
-        intensity_segments=intensity_segments,
-        intensity_background=intensity_background,
+    stim = waves.square_angular(
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,
+        frequency=frequency,
+        segment_width=segment_width,
+        n_segments=n_segments,
+        period="ignore",
+        rotation=rotation,
         origin=origin,
-        inner_radius=0,
+        intensity_segments=intensity_segments,
     )
+    radius = min(stim["visual_size"]) / 2
+
+    circle_mask = circle(
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        radius=radius,
+        origin=origin,
+    )["shape_mask"]
+
+    stim["img"] = np.where(circle_mask, stim["img"], intensity_background)
+
     if target_center is None:
-        target_center = stim["radius"] / 2
+        target_center = radius / 2
 
     # Place target(s)
     if isinstance(target_indices, (int)):
@@ -127,7 +134,7 @@ def pinwheel(
         ]
 
     # Initiate target mask
-    target_mask = np.zeros_like(stim["wedge_mask"])
+    target_mask = np.zeros_like(stim["grating_mask"])
 
     if target_indices is not None:
         if target_width is None:
@@ -144,7 +151,7 @@ def pinwheel(
             inner_radius = center - (width / 2)
             outer_radius = center + (width / 2)
             if inner_radius < 0 or outer_radius > np.min(visual_size) / 2:
-                raise ValueError("target does not fully with into pinwheel")
+                raise ValueError("target does not fully fit into pinwheel")
             ring_stim = ring_shape(
                 radii=[inner_radius, outer_radius],
                 intensity_ring=intensity,
@@ -152,7 +159,7 @@ def pinwheel(
                 ppd=stim["ppd"],
                 shape=stim["shape"],
             )
-            condition1 = stim["wedge_mask"] == segment_idx
+            condition1 = stim["grating_mask"] == segment_idx
             condition2 = ring_stim["ring_mask"] == 1
             target_mask = np.where(condition1 & condition2, target_idx + 1, target_mask)
             stim["img"] = np.where(target_mask == (target_idx + 1), intensity, stim["img"])
