@@ -5,13 +5,13 @@ import numpy as np
 from stimupy.components import gaussians, image_base
 
 __all__ = [
-    "step_edge",
-    "gaussian_edge",
-    "cornsweet_edge",
+    "step",
+    "gaussian",
+    "cornsweet",
 ]
 
 
-def step_edge(
+def step(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -67,7 +67,7 @@ def step_edge(
     return stim
 
 
-def gaussian_edge(
+def gaussian(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -105,7 +105,7 @@ def gaussian_edge(
     if sigma is None:
         raise ValueError("gaussian_edge() missing argument 'sigma' which is not 'None'")
 
-    stim = step_edge(
+    stim = step(
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,
@@ -129,7 +129,7 @@ def gaussian_edge(
     return stim
 
 
-def cornsweet_edge(
+def cornsweet(
     visual_size=None,
     ppd=None,
     shape=None,

@@ -39,7 +39,7 @@ import pandas as pd
 
 from stimupy import checkerboards
 from stimupy.components import gaussians, lines, shapes
-from stimupy.components.edges import gaussian_edge
+from stimupy.components.edges import gaussian as gaussian_edge
 from stimupy.components.waves import bessel
 from stimupy.noises.binaries import binary as binary_noise
 from stimupy.stimuli.gabors import gabor

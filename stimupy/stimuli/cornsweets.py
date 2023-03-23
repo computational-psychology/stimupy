@@ -1,6 +1,6 @@
 import numpy as np
 
-from stimupy.components.edges import cornsweet_edge
+from stimupy.components.edges import cornsweet as cornsweet_edge
 
 __all__ = [
     "cornsweet",
