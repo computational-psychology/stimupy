@@ -1,6 +1,6 @@
 import numpy as np
 
-from stimupy.components.edges import cornsweet_edge
+from stimupy.components.edges import cornsweet as cornsweet_edge
 
 __all__ = [
     "cornsweet",
@@ -97,7 +97,7 @@ def overview(**kwargs):
 
     # fmt: off
     stimuli = {
-        "(Craik-O'Brien-)Cornsweet edge/illusion": cornsweet(**default_params, ramp_width=3)
+        "cornsweet": cornsweet(**default_params, ramp_width=3)
     }
     # fmt: on
 

@@ -183,7 +183,6 @@ def overview(**kwargs):
     # fmt: off
     stimuli = {
         "pinwheel": pinwheel(**default_params, n_segments=10, target_width=2, target_indices=3),
-
     }
     # fmt: on
 

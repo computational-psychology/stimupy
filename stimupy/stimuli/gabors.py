@@ -105,6 +105,7 @@ def overview(**kwargs):
     default_params = {
         "visual_size": 10,
         "ppd": 20,
+        "rotation": 45,
     }
     default_params.update(kwargs)
 
@@ -115,3 +116,10 @@ def overview(**kwargs):
     # fmt: on
 
     return stimuli
+
+
+if __name__ == "__main__":
+    from stimupy.utils import plot_stimuli
+
+    stims = overview()
+    plot_stimuli(stims, mask=False, save=None)

@@ -769,23 +769,24 @@ def overview(**kwargs):
         "visual_size": 10,
         "ppd": 30,
         "frequency": 0.5,
+        "intensity_bars": (1, 0),
     }
     default_params.update(kwargs)
 
     # fmt: off
     stimuli = {
-        "White's stimulus": white(**default_params, target_indices=(2, -3), target_height=2),
-        "White's, generalized": generalized(
+        "white": white(**default_params, target_indices=(2, -3), target_height=2),
+        "white_general": generalized(
             **default_params, target_indices=(1, 3, 5), target_center_offsets=(-1, -3, -1), target_heights=(2, 3, 2)
         ),
-        "White's, two rows": white_two_rows(
+        "white_two_rows": white_two_rows(
             **default_params,
             target_indices_top=(2, 4),
             target_indices_bottom=(-2, -4),
             target_height=1,
             target_center_offset=2,
         ),
-        "White's - Anderson": anderson(
+        "white_anderson": anderson(
             **default_params,
             target_indices_top=3,
             target_indices_bottom=-2,
@@ -794,14 +795,14 @@ def overview(**kwargs):
             stripe_center_offset=1.5,
             stripe_height=2,
         ),
-        "White's - Howe": howe(
+        "white_howe": howe(
             **default_params,
             target_indices_top=3,
             target_indices_bottom=-2,
             target_center_offset=2,
             target_height=2,
         ),
-        "White's - Yazdanbakhsh": yazdanbakhsh(
+        "white_yazdanbakhsh": yazdanbakhsh(
             **default_params,
             target_indices_top=3,
             target_indices_bottom=-2,

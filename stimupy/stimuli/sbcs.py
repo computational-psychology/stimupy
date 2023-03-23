@@ -669,13 +669,13 @@ def overview(**kwargs):
 
     # fmt: off
     stimuli = {
-        "generalized": generalized(**default_params, visual_size=10, target_size=3, target_position=(0, 2)),
-        "basic": basic(**default_params, visual_size=10, target_size=3),
-        "two_sided": two_sided(**default_params, visual_size=10, target_size=2),
-        "with_dots": with_dots(**default_params, n_dots=5, dot_radius=2, distance=0.5, target_shape=3),
-        "dotted": dotted(**default_params, n_dots=5, dot_radius=2, distance=0.5, target_shape=3),
-        "2sided_with_dots": two_sided_with_dots(**default_params, n_dots=5, dot_radius=2, distance=0.5, target_shape=3),
-        "2sided_dotted": two_sided_dotted(**default_params, n_dots=5, dot_radius=2, distance=0.5, target_shape=3),
+        "sbc_generalized": generalized(**default_params, visual_size=10, target_size=(3,4), target_position=(1, 2)),
+        "sbc_basic": basic(**default_params, visual_size=10, target_size=3),
+        "sbc_2sided": two_sided(**default_params, visual_size=10, target_size=2),
+        "sbc_with_dots": with_dots(**default_params, n_dots=5, dot_radius=2, distance=0.5, target_shape=3),
+        "sbc_dotted": dotted(**default_params, n_dots=5, dot_radius=2, distance=0.5, target_shape=3),
+        "sbc_2sided_with_dots": two_sided_with_dots(**default_params, n_dots=5, dot_radius=2, distance=0.5, target_shape=3),
+        "sbc_2sided_dotted": two_sided_dotted(**default_params, n_dots=5, dot_radius=2, distance=0.5, target_shape=3),
     }
     # fmt: on
 

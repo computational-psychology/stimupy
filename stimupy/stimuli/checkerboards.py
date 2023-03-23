@@ -431,11 +431,9 @@ def overview(**kwargs):
     # fmt: off
     stimuli = {
         "checkerboard": checkerboard(**default_params, check_visual_size=(1, 1)),
-        "checkerboard rotated": checkerboard(**default_params, check_visual_size=(1, 1), rotation=45),
-        "checkerboard from frequency": checkerboard(**default_params, frequency=1),
-        "checkerboard from frequency, rotated": checkerboard(**default_params, frequency=1, rotation=45),
-        "checkerboard with targets": checkerboard(**default_params, check_visual_size=(1, 1), target_indices=[(3, 2), (5, 5)]),
-        "Checkerboard Contrast-Contrast illusion": contrast_contrast(**default_params, check_visual_size=(1, 1), target_shape=4, alpha=0.2),
+        "checkerboard_from_frequency": checkerboard(**default_params, frequency=1, rotation=45),
+        "checkerboard_with_targets": checkerboard(**default_params, check_visual_size=(1, 1), target_indices=[(3, 2), (5, 5)]),
+        "checkerboard_contrast_contrast": contrast_contrast(**default_params, check_visual_size=(1, 1), target_shape=4, alpha=0.2),
     }
     # fmt: on
 

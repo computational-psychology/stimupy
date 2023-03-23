@@ -730,28 +730,28 @@ def overview(**kwargs):
 
     # fmt: off
     stimuli = {
-        "sine wave - horizontal": sine(**default_params, **grating_params, distance_metric="horizontal"),
-        "sine wave - vertical": sine(**default_params, **grating_params, distance_metric="vertical"),
-        "sine wave - oblique": sine(**default_params, **grating_params, distance_metric="oblique", rotation=30),
-        "sine wave - radial": sine(**default_params, **grating_params, distance_metric="radial"),
-        "sine wave - angular": sine(**default_params, **grating_params, distance_metric="angular"),
-        "sine wave - rectilinear": sine(**default_params, **grating_params, distance_metric="rectilinear"),
+        "waves_sine_horizontal": sine(**default_params, **grating_params, distance_metric="horizontal"),
+        "waves_sine_vertical": sine(**default_params, **grating_params, distance_metric="vertical"),
+        "waves_sine_oblique": sine(**default_params, **grating_params, distance_metric="oblique", rotation=30),
+        "waves_sine_radial": sine(**default_params, **grating_params, distance_metric="radial"),
+        "waves_sine_angular": sine(**default_params, **grating_params, distance_metric="angular"),
+        "waves_sine_rectilinear": sine(**default_params, **grating_params, distance_metric="rectilinear"),
 
-        "square wave - horizontal": square(**default_params, **grating_params, distance_metric="horizontal"),
-        "square wave - vertical": square(**default_params, **grating_params, distance_metric="vertical"),
-        "square wave - oblique": square(**default_params, **grating_params, distance_metric="oblique", rotation=30),
-        "square wave - radial": square(**default_params, **grating_params, distance_metric="radial"),
-        "square wave - angular": square(**default_params, **grating_params, distance_metric="angular"),
-        "square wave - rectilinear": square(**default_params, **grating_params, distance_metric="rectilinear"),
+        "waves_square_horizontal": square(**default_params, **grating_params, distance_metric="horizontal"),
+        "waves_square_vertical": square(**default_params, **grating_params, distance_metric="vertical"),
+        "waves_square_oblique": square(**default_params, **grating_params, distance_metric="oblique", rotation=30),
+        "waves_square_radial": square(**default_params, **grating_params, distance_metric="radial"),
+        "waves_square_angular": square(**default_params, **grating_params, distance_metric="angular"),
+        "waves_square_rectilinear": square(**default_params, **grating_params, distance_metric="rectilinear"),
 
-        "staircase - horizontal": staircase(**default_params, **grating_params, distance_metric="horizontal"),
-        "staircase - vertical": staircase(**default_params, **grating_params, distance_metric="vertical"),
-        "staircase - oblique": staircase(**default_params, **grating_params, distance_metric="oblique", rotation=30),
-        "staircase - radial": staircase(**default_params, **grating_params, distance_metric="radial"),
-        "staircase - angular": staircase(**default_params, **grating_params, distance_metric="angular"),
-        "staircase - rectilinear": staircase(**default_params, **grating_params, distance_metric="rectilinear"),
+        "waves_staircase_horizontal": staircase(**default_params, **grating_params, distance_metric="horizontal"),
+        "waves_staircase_vertical": staircase(**default_params, **grating_params, distance_metric="vertical"),
+        "waves_staircase_oblique": staircase(**default_params, **grating_params, distance_metric="oblique", rotation=30),
+        "waves_staircase_radial": staircase(**default_params, **grating_params, distance_metric="radial"),
+        "waves_staircase_angular": staircase(**default_params, **grating_params, distance_metric="angular"),
+        "waves_staircase_rectilinear": staircase(**default_params, **grating_params, distance_metric="rectilinear"),
 
-        "bessel": bessel(**default_params, frequency=0.5),
+        "waves_bessel": bessel(**default_params, frequency=0.5),
     }
     # fmt: on
 

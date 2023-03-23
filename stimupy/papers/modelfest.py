@@ -39,7 +39,7 @@ import pandas as pd
 
 from stimupy import checkerboards
 from stimupy.components import gaussians, lines, shapes
-from stimupy.components.edges import gaussian_edge
+from stimupy.components.edges import gaussian as gaussian_edge
 from stimupy.components.waves import bessel
 from stimupy.noises.binaries import binary as binary_noise
 from stimupy.stimuli.gabors import gabor
@@ -2142,7 +2142,9 @@ def Disk40(ppd=PPD):
         https://doi.org/10.1117/12.348473
     """
 
-    stim = shapes.disc(visual_size=256 / PPD, ppd=ppd, radius=0.125, origin="center")
+    stim = shapes.disc(
+        visual_size=256 / PPD, ppd=ppd, radius=0.125, origin="center", intensity_background=0.5
+    )
     stim = roll_dict(stim, (-2, -2), axes=(0, 1))
 
     v = 157
@@ -2347,5 +2349,5 @@ if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
 
     stims = gen_all(skip=True)
-    plot_stimuli(stims, mask=False, extent_key="visual_size")
+    plot_stimuli(stims, mask=False, units="visual_size")
     # compare_all()
