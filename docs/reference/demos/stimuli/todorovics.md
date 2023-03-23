@@ -228,10 +228,10 @@ display(ui, out)
 ```
 
 ## Rectangle, two-sided
-{py:func}`stimupy.stimuli.todorovics.two_sided_rectangle`
+{py:func}`stimupy.stimuli.todorovics.rectangle_two_sided`
 
 ```{code-cell} ipython3
-from stimupy.stimuli.todorovics import two_sided_rectangle
+from stimupy.stimuli.todorovics import rectangle_two_sided
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
@@ -281,7 +281,7 @@ def show_two_sided_rectangle(
     intback2=None,
     add_mask=False,
 ):
-    stim = two_sided_rectangle(
+    stim = rectangle_two_sided(
         visual_size=(height, width),
         ppd=ppd,
         target_size=(theight, twidth),
@@ -500,10 +500,10 @@ display(ui, out)
 ```
 
 ## Cross, two-sided
-{py:func}`stimupy.stimuli.todorovics.two_sided_cross`
+{py:func}`stimupy.stimuli.todorovics.cross_two_sided`
 
 ```{code-cell} ipython3
-from stimupy.stimuli.todorovics import two_sided_cross
+from stimupy.stimuli.todorovics import cross_two_sided
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
@@ -549,7 +549,7 @@ def show_two_sided_cross(
     intback2=None,
     add_mask=False,
 ):
-    stim = two_sided_cross(
+    stim = cross_two_sided(
         visual_size=(height, width),
         ppd=ppd,
         cross_size=(theight, twidth),
@@ -661,10 +661,10 @@ display(ui, out)
 ```
 
 ## Equal, two-sided
-{py:func}`stimupy.stimuli.todorovics.two_sided_equal`
+{py:func}`stimupy.stimuli.todorovics.equal_two_sided`
 
 ```{code-cell} ipython3
-from stimupy.stimuli.todorovics import two_sided_equal
+from stimupy.stimuli.todorovics import equal_two_sided
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
@@ -706,7 +706,7 @@ def show_two_sided_equal(
     intback2=None,
     add_mask=False,
 ):
-    stim = two_sided_equal(
+    stim = equal_two_sided(
         visual_size=(height, width),
         ppd=ppd,
         cross_size=(theight, twidth),
