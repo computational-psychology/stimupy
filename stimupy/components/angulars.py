@@ -67,7 +67,7 @@ def wedge(
     rotation=0.0,
     inner_radius=0.0,
     intensity_wedge=1.0,
-    intensity_background=0.5,
+    intensity_background=0.0,
     origin="mean",
 ):
     """Draw a wedge, i.e., segment of a disc
@@ -92,7 +92,7 @@ def wedge(
     intensity_wedge : float, optional
         intensity value of wedge, by default 1.0
     intensity_background : float, optional
-        intensity value of background, by default 0.5
+        intensity value of background, by default 0.0
     origin : "corner", "mean" or "center"
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)
@@ -439,3 +439,35 @@ def pinwheel(
     stim["radius"] = radius
     stim["intensity_background"] = intensity_background
     return stim
+
+
+def overview(**kwargs):
+    """Generate example stimuli from this module
+
+    Returns
+    -------
+    stims : dict
+        dict with all stimuli containing individual stimulus dicts.
+    """
+    default_params = {
+        "visual_size": 10,
+        "ppd": 20,
+    }
+    default_params.update(kwargs)
+
+    # fmt: off
+    stimuli = {
+        "angulars_wedge": wedge(**default_params, width=30, radius=4),
+        "angulars_grating": grating(**default_params, n_segments=8),
+        "angulars_pinwheel": pinwheel(**default_params, n_segments=8, radius=4),
+    }
+    # fmt: on
+
+    return stimuli
+
+
+if __name__ == "__main__":
+    from stimupy.utils import plot_stimuli
+
+    stims = overview()
+    plot_stimuli(stims, mask=False, save=None)

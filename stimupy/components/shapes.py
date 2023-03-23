@@ -595,23 +595,39 @@ def circle(
     return stim
 
 
+def overview(**kwargs):
+    """Generate example stimuli from this module
+
+    Returns
+    -------
+    stims : dict
+        dict with all stimuli containing individual stimulus dicts.
+    """
+    default_params = {
+        "visual_size": (10, 10),
+        "ppd": 20,
+    }
+    default_params.update(kwargs)
+
+    # fmt: off
+    stimuli = {
+        "shapes_rectangle": rectangle(**default_params, rectangle_size=(4, 2.5)),
+        "shapes_triangle": triangle(**default_params, triangle_size=(4, 2.5)),
+        "shapes_cross": cross(**default_params, cross_size=(4, 2.5), cross_thickness=1, cross_arm_ratios=(1, 1)),
+        "shapes_parallelogram": parallelogram(**default_params, parallelogram_size=(5.2, 3.1, 0.9)),
+        "shapes_ellipse": ellipse(**default_params, radius=(4, 3)),
+        "shapes_circle": circle(**default_params, radius=3),
+        "shapes_disc": disc(**default_params, radius=3),
+        "shapes_ring": ring(**default_params, radii=(1, 2)),
+        "shapes_annulus": annulus(**default_params, radii=(1, 2)),
+        "shapes_wedge": wedge(**default_params, width=30, radius=4),}
+    # fmt: on
+
+    return stimuli
+
+
 if __name__ == "__main__":
-    from stimupy.utils.plotting import plot_stimuli
+    from stimupy.utils import plot_stimuli
 
-    p = {
-        "visual_size": (10, 8),
-        "ppd": 50,
-        "rotation": 90,
-    }
-
-    stims = {
-        "rectangle": rectangle(**p, rectangle_size=(4, 2.5)),
-        "triangle": triangle(**p, triangle_size=(4, 2.5)),
-        "cross": cross(**p, cross_size=(4, 2.5), cross_thickness=1, cross_arm_ratios=(1, 1)),
-        "parallelogram": parallelogram(**p, parallelogram_size=(5.2, 3.1, 0.9)),
-        "parallelogram2": parallelogram(shape=(100, 100), ppd=10, parallelogram_size=(10, 9, -1)),
-        "ellipse": ellipse(**p, radius=(4, 3)),
-        "circle": circle(visual_size=(10, 8), ppd=50, radius=3),
-    }
-
-    plot_stimuli(stims, mask=False)
+    stims = overview()
+    plot_stimuli(stims, mask=False, save=None)

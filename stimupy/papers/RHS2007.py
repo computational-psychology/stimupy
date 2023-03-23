@@ -1528,8 +1528,8 @@ def corrugated_mondrian(ppd=PPD, pad=True):
     params = {
         "visual_size": (5 * 2, 5 * 2 + 1),
         "ppd": ppd,
-        "mondrian_depths": (0.0, -1.0, 0.0, 1.0, 0.0),
-        "mondrian_intensities": values,
+        "depths": (0.0, -1.0, 0.0, 1.0, 0.0),
+        "intensities": values,
         "target_indices": ((1, 2), (3, 2)),
         "intensity_background": 0.5,
     }

@@ -605,18 +605,18 @@ def overview(**kwargs):
 
     # fmt: off
     stimuli = {
-        "On uniform background": on_uniform(**params, visual_size=20, grating_size=5, target_indices=2),
-        "On grating": on_grating(large_grating_params=large_grating, small_grating_params=small_grating),
-        "On grating, masked": on_grating_masked(
+        "grating_on_uniform": on_uniform(**params, visual_size=20, grating_size=5, target_indices=2),
+        "grating_on_grating": on_grating(large_grating_params=large_grating, small_grating_params=small_grating),
+        "grating_on_grating-masked": on_grating_masked(
             large_grating_params=large_grating,
             small_grating_params=small_grating,
             mask_size=(5, 5, 2),
         ),
-        "Phase shifted": phase_shifted(
+        "grating_phase_shifted": phase_shifted(
             **params, target_size=4, target_phase_shift=90
         ),
-        "Grating Induction (sinewave)": grating_induction(**params, target_width=0.5),
-        "Grating Induction (blurred squarewave)": grating_induction_blur(**params, target_width=0.5, sigma=0.1),
+        "grating_induction": grating_induction(**params, target_width=0.5),
+        "grating_induction_blurred-squarewave": grating_induction_blur(**params, target_width=0.5, sigma=0.1),
     }
     # fmt: on
 

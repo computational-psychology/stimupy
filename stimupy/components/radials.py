@@ -110,7 +110,7 @@ def rings(
         and additional keys containing stimulus parameters
     """
     if radii is None:
-        raise ValueError("disc_and_rings() missing argument 'radii' which is not 'None'")
+        raise ValueError("rings() missing argument 'radii' which is not 'None'")
 
     # Try to resolve resolution;
     try:
@@ -154,7 +154,7 @@ def disc(
     shape=None,
     radius=None,
     intensity_disc=1.0,
-    intensity_background=0.5,
+    intensity_background=0.0,
     origin="mean",
 ):
     """Draw a central disc
@@ -174,7 +174,7 @@ def disc(
     intensity_disc : Number
         intensity value of disc, by default 1.0
     intensity_background : float (optional)
-        intensity value of background, by default 0.5
+        intensity value of background, by default 0.0
     origin : "corner", "mean" or "center"
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)
@@ -216,7 +216,7 @@ def ring(
     shape=None,
     radii=None,
     intensity_ring=1.0,
-    intensity_background=0.5,
+    intensity_background=0.0,
     origin="mean",
 ):
     """Draw a ring (annulus)
@@ -234,7 +234,7 @@ def ring(
     intensity_ring : Number
         intensity value of ring, by default 1.0
     intensity_background : float (optional)
-        intensity value of background, by default 0.5
+        intensity value of background, by default 0.0
     origin : "corner", "mean" or "center"
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)
@@ -300,9 +300,10 @@ def overview(**kwargs):
 
     # fmt: off
     stimuli = {
-        "disc": disc(**default_params, radius=3),
-        "disc_and_rings": rings(**default_params, radii=(1, 2, 3)),
-        "ring": ring(**default_params, radii=(1, 2)),
+        "radials_disc": disc(**default_params, radius=3),
+        "radials_rings": rings(**default_params, radii=(1, 2, 3)),
+        "radials_ring": ring(**default_params, radii=(1, 2)),
+        "radials_annulus": annulus(**default_params, radii=(1, 2)),
     }
     # fmt: on
 
@@ -313,4 +314,4 @@ if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
 
     stims = overview()
-    plot_stimuli(stims, mask=True, save=None)
+    plot_stimuli(stims, mask=False, save=None)

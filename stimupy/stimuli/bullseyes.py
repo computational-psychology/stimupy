@@ -450,10 +450,10 @@ def overview(**kwargs):
 
     # fmt: off
     stimuli = {
-        "circular": circular(**default_params, frequency=1.0, clip=True),
-        "circular, two sided": circular_two_sided(**default_params, frequency=1.0),
-        "rectangular": rectangular(**default_params, frequency=1.0, clip=True),
-        "rectangular, two sided": rectangular_two_sided(**default_params, frequency=1.0),
+        "bullseyes_circular": circular(**default_params, frequency=1.0, clip=True),
+        "bullseyes_circular_2sided": circular_two_sided(**default_params, frequency=1.0),
+        "bullseyes_rectangular": rectangular(**default_params, frequency=1.0, clip=True),
+        "bullseyes_rectangular_2sided": rectangular_two_sided(**default_params, frequency=1.0),
     }
     # fmt: on
 
@@ -464,4 +464,4 @@ if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
 
     stims = overview()
-    plot_stimuli(stims, mask=True, save=None)
+    plot_stimuli(stims, mask=False, save=None)

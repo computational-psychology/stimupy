@@ -333,10 +333,15 @@ def overview(**kwargs):
 
     # fmt: off
     stimuli = {
-        "circular": circular(**default_params, frequency=1.0, clip=True),
-        "circular, two sided": circular_two_sided(**default_params, frequency=1.0),
-        "rectangular": rectangular(**default_params, frequency=1.0, clip=True),
-        "rectangular, two sided": rectangular_two_sided(**default_params, frequency=1.0),
+        "rings_circular": circular(**default_params, frequency=1.0),
+        "rings_circular_with_targets": circular(**default_params, frequency=1.0, target_indices=3),
+        "rings_circular_clipped": circular(**default_params, frequency=1.0, clip=True),
+        "rings_circular_2sided": circular_two_sided(**default_params, frequency=1.0),
+
+        "rings_rectangular": rectangular(**default_params, frequency=1.0),
+        "rings_rectangular_with_targets": rectangular(**default_params, frequency=1.0, target_indices=3),
+        "rings_rectangular_clipped": rectangular(**default_params, frequency=1.0, clip=True),
+        "rings_rectangular_2sided": rectangular_two_sided(**default_params, frequency=1.0),
     }
     # fmt: on
 
@@ -347,4 +352,4 @@ if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
 
     stims = overview()
-    plot_stimuli(stims, mask=True, save=None)
+    plot_stimuli(stims, mask=False, save=None)

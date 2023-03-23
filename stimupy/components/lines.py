@@ -349,21 +349,39 @@ def circle(
     return stim
 
 
-if __name__ == "__main__":
-    from stimupy.utils.plotting import plot_stimuli
+def overview(**kwargs):
+    """Generate example stimuli from this module
 
-    p1 = {
-        "visual_size": (10, 5),
+    Returns
+    -------
+    stims : dict
+        dict with all stimuli containing individual stimulus dicts.
+    """
+    default_params = {
+        "visual_size": (10, 10),
         "ppd": 10,
+    }
+    default_params.update(kwargs)
+
+    p = {
         "line_length": 2,
         "line_width": 0.01,
         "rotation": 30,
     }
 
-    stims = {
-        "line": line(**p1, origin="center", line_position=(-1, -1)),
-        "dipole": dipole(**p1, line_gap=1),
-        "circle": circle(visual_size=10, ppd=10, radius=3),
-        "ellipse": ellipse(visual_size=10, ppd=10, radius=(3, 4)),
-    }
-    plot_stimuli(stims, mask=True)
+    # fmt: off
+    stimuli = {
+        "lines_line": line(**default_params, **p, origin="center"),
+        "lines_dipole": dipole(**default_params, **p, line_gap=1),
+        "lines_circle": circle(**default_params, radius=3),
+        "lines_ellipse": ellipse(**default_params, radius=(3, 4)),}
+    # fmt: on
+
+    return stimuli
+
+
+if __name__ == "__main__":
+    from stimupy.utils import plot_stimuli
+
+    stims = overview()
+    plot_stimuli(stims, mask=False, save=None)

@@ -274,8 +274,8 @@ def overview(**kwargs):
 
     # fmt: off
     stimuli = {
-        "Mueller-Lyer illusion": mueller_lyer(**default_params, **stim_params),
-        "Mueller-Lyer, two-sided": two_sided(**default_params, **stim_params),
+        "mueller_lyer": mueller_lyer(**default_params, **stim_params),
+        "mueller_lyer_2sided": two_sided(**default_params, **stim_params),
     }
     # fmt: on
 
@@ -286,4 +286,4 @@ if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
 
     stims = overview()
-    plot_stimuli(stims, mask=True, save=None)
+    plot_stimuli(stims, mask=False, save=None)

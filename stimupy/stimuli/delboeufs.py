@@ -194,8 +194,8 @@ def overview(**kwargs):
 
     # fmt: off
     stimuli = {
-        "Mueller-Lyer illusion": delboeuf(**default_params, target_radius=1, outer_radius=4),
-        "Mueller-Lyer, two-sided": two_sided(**default_params, target_radius=1, outer_radii=(2, 1.1)),
+        "delboeuf": delboeuf(**default_params, target_radius=1, outer_radius=4),
+        "delboeuf_2sided": two_sided(**default_params, target_radius=1, outer_radii=(2, 1.1)),
     }
     # fmt: on
 
@@ -206,4 +206,4 @@ if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
 
     stims = overview()
-    plot_stimuli(stims, mask=True, save=None)
+    plot_stimuli(stims, mask=False, save=None)

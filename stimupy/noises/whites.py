@@ -67,16 +67,30 @@ def white(
     return stim
 
 
+def overview(**kwargs):
+    """Generate example stimuli from this module
+
+    Returns
+    -------
+    stims : dict
+        dict with all stimuli containing individual stimulus dicts.
+    """
+    default_params = {
+        "visual_size": 10,
+        "ppd": 10,
+    }
+    default_params.update(kwargs)
+
+    # fmt: off
+    stimuli = {
+        "whites_white": white(**default_params),}
+    # fmt: on
+
+    return stimuli
+
+
 if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
 
-    params = {
-        "visual_size": 10,
-        "ppd": 20,
-        "pseudo_noise": True,
-    }
-
-    stims = {
-        "White noise": white(**params),
-    }
-    plot_stimuli(stims, mask=True, save=None)
+    stims = overview()
+    plot_stimuli(stims, mask=False, save=None)

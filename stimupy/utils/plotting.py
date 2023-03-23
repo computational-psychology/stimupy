@@ -4,16 +4,17 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 
+from stimupy.utils import resolution
+
 __all__ = [
-    "compare_plots",
     "plot_stim",
     "plot_stimuli",
+    "compare_plots",
 ]
 
 
 def compare_plots(plots):
-    """
-    Plot multiple plots in one plot for comparing.
+    """Plot multiple plots in one plot for comparing.
 
     Parameters
     ----------
@@ -37,10 +38,12 @@ def plot_stim(
     vmin=0,
     vmax=1,
     save=None,
-    extent_key="shape",
+    units="deg",
 ):
-    """
-    Utility function to plot stimulus array (key: "img") from stim dict and mask (optional)
+    """Plot a stimulus
+
+    Plots the stimulus-array (key: "img") directly from stim dict.
+    Optionally also plots mask.
 
     Parameters
     ----------
@@ -60,9 +63,10 @@ def plot_stim(
     save : None or str, optional
         If None (default), do not save the plot.
         If string is provided, save plot under this name.
-    extent_key : str, optional
-        Key to extent which will be used for plotting.
-        Default is "shape", using the image size in pixels as extent.
+    units : "px", "deg" (default), or str
+        what units to put on the axes, by default degrees visual angle ("deg").
+        If a str other than "deg"(/"degrees") or "px"(/"pix"/"pixels") is passed,
+        it must be the key to a tuple in stim
 
     Returns
     -------
@@ -70,22 +74,26 @@ def plot_stim(
         If ax was passed and plotting is None, returns updated Axis object.
 
     """
-    print("Plotting:", stim_name)
-
     single_plot = False
     if ax is None:
         ax = plt.gca()
         single_plot = True
 
-    if extent_key in stim.keys():
-        if len(stim[extent_key]) == 2:
-            extent = [0, stim[extent_key][1], 0, stim[extent_key][0]]
-        elif len(stim[extent_key]) == 4:
-            extent = stim[extent_key]
+    # Figure out what units need to go on axes
+    if units in ["px", "pix", "pixels"]:
+        extent = [0, stim["img"].shape[1], 0, stim["img"].shape[0]]
+    elif units in ["deg", "degrees"]:
+        visual_size = resolution.validate_visual_size(stim["visual_size"])
+        extent = [0, visual_size.width, 0, visual_size.height]
+    elif units in stim.keys():
+        if len(stim[units]) == 2:
+            extent = [0, stim[units][1], 0, stim[units][0]]
+        elif len(stim[units]) == 4:
+            extent = stim[units]
         else:
             raise ValueError("extent should either contain 2 or 4 values")
     else:
-        warnings.warn("extent_key does not exist in dict, using pixel-extent")
+        warnings.warn("units does not exist in dict, using pixel-extent")
         extent = [0, stim["img"].shape[1], 0, stim["img"].shape[0]]
 
     if not mask:
@@ -155,10 +163,13 @@ def plot_stimuli(
     vmin=0,
     vmax=1,
     save=None,
-    extent_key="shape",
+    units="deg",
 ):
-    """
-    Utility function to plot multuple stimuli (key: "img") from stim dicts and mask (optional)
+    """Plot multiple stimuli
+
+    Plots the stimulus-arrays (keys: "img") directly from stim dicts.
+    Arranges stimuli in a grid.
+    Optionally also plots masks.
 
     Parameters
     ----------
@@ -174,10 +185,10 @@ def plot_stimuli(
     save : None or str, optional
         If None (default), do not save the plot.
         If string is provided, save plot under this name.
-    extent_key : str, optional
-        Key to extent which will be used for plotting.
-        Default is "shape", using the image size in pixels as extent.
-
+    units : "px", "deg" (default), or str
+        what units to put on the axes, by default degrees visual angle ("deg").
+        If a str other than "deg"(/"degrees") or "px"(/"pix"/"pixels") is passed,
+        it must be the key to a tuple in stim
     """
 
     # Plot each stimulus+mask
@@ -193,7 +204,7 @@ def plot_stimuli(
             vmin=vmin,
             vmax=vmax,
             save=None,
-            extent_key=extent_key,
+            units=units,
         )
 
     plt.tight_layout()

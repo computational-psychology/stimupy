@@ -128,7 +128,7 @@ def overview(**kwargs):
 
     # fmt: off
     stimuli = {
-        "frames": frames(**default_params, radii=(1, 2, 3)),
+        "frames_frames": frames(**default_params, radii=(1, 2, 3)),
     }
     # fmt: on
 

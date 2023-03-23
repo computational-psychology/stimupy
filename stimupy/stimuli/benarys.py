@@ -265,14 +265,17 @@ def cross_triangles(
         raise ValueError("Target size is larger than cross thickness")
 
     # Calculate target placement for classical Benarys cross
+    theight, twidth = resolution.shape_from_visual_size_ppd(target_size, ppd)
+    cheight, cwidth = resolution.shape_from_visual_size_ppd(cross_thickness, ppd)
+
     target_x = (
-        (visual_size[1] - cross_thickness) / 2.0 - target_size[1],
-        (visual_size[1] + cross_thickness) / 2.0,
+        (shape[1] / 2 - cwidth / 2 - twidth) / ppd[1],
+        (shape[1] / 2 + cwidth / 2) / ppd[1],
     )
 
     target_y = (
-        (visual_size[0] - cross_thickness) / 2.0 - target_size[0],
-        (visual_size[0] - cross_thickness) / 2.0,
+        (shape[0] / 2 - cheight / 2 - theight) / ppd[0],
+        (shape[0] / 2 - cheight / 2) / ppd[0],
     )
 
     stim = cross_generalized(
@@ -696,6 +699,9 @@ def add_targets(
             mpatch = mpatch[:, ~np.all(mpatch == 0, axis=0)]
             theight_, twidth_ = tpatch.shape
 
+            if ty[i] + theight_ > img.shape[0] or tx[i] + twidth_ > img.shape[1]:
+                raise ValueError("At least one target does not fully fit into stimulus")
+
             # Only change the target parts of the image:
             mlarge = np.zeros(img.shape)
             mlarge[ty[i] : ty[i] + theight_, tx[i] : tx[i] + twidth_] = mpatch
@@ -749,12 +755,12 @@ def overview(**kwargs):
 
     # fmt: off
     stimuli = {
-        "cross": cross_generalized(**default_params, **params_benary, **target_pos),
-        "rectangles": cross_rectangles(**default_params, **params_benary),
-        "triangles": cross_triangles(**default_params, **params_benary),
-        "todorovic_general": todorovic_generalized(**default_params, **params_todo, **target_pos),
-        "todorovic_rectangles": todorovic_rectangles(**default_params, **params_todo),
-        "todorovic_triangles": todorovic_triangles(**default_params, **params_todo),
+        "benarys_cross_general": cross_generalized(**default_params, **params_benary, **target_pos),
+        "benarys_cross_rectangles": cross_rectangles(**default_params, **params_benary),
+        "benarys_cross_triangles": cross_triangles(**default_params, **params_benary),
+        "benarys_todorovic_general": todorovic_generalized(**default_params, **params_todo, **target_pos),
+        "benarys_todorovic_rectangles": todorovic_rectangles(**default_params, **params_todo),
+        "benarys_todorovic_triangles": todorovic_triangles(**default_params, **params_todo),
     }
     # fmt: on
 
@@ -765,4 +771,4 @@ if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
 
     stims = overview()
-    plot_stimuli(stims, mask=True, save=None)
+    plot_stimuli(stims, mask=False, save=None)

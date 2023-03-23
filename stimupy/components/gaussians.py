@@ -96,18 +96,30 @@ def gaussian(
     return stim
 
 
+def overview(**kwargs):
+    """Generate example stimuli from this module
+
+    Returns
+    -------
+    stims : dict
+        dict with all stimuli containing individual stimulus dicts.
+    """
+    default_params = {
+        "visual_size": 10,
+        "ppd": 10,
+    }
+    default_params.update(kwargs)
+
+    # fmt: off
+    stimuli = {
+        "gaussians_gaussian": gaussian(**default_params, sigma=(3, 1.5), rotation=70),}
+    # fmt: on
+
+    return stimuli
+
+
 if __name__ == "__main__":
-    from stimupy.utils.plotting import plot_stimuli
+    from stimupy.utils import plot_stimuli
 
-    p = {
-        "visual_size": (10, 8),
-        "ppd": 50,
-        "rotation": 90,
-    }
-
-    stims = {
-        "gaussian1": gaussian(**p, sigma=2),
-        "gaussian2": gaussian(**p, sigma=(3, 2)),
-    }
-
-    plot_stimuli(stims, mask=True)
+    stims = overview()
+    plot_stimuli(stims, mask=False, save=None)
