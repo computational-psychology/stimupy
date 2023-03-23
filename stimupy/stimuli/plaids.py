@@ -2,6 +2,7 @@ from stimupy.stimuli import gabors as gabors_stim
 from stimupy.stimuli import waves
 
 __all__ = [
+    "gabors",
     "sine_waves",
     "square_waves",
 ]
