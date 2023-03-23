@@ -253,11 +253,11 @@ def sine(
     phase_width=None,
     period="ignore",
     rotation=0.0,
-    phase_shift=None,
+    phase_shift=0.0,
     intensities=(0.0, 1.0),
-    origin=None,
+    origin="center",
     distance_metric=None,
-    round_phase_width=None,
+    round_phase_width=False,
 ):
     """Draw a sine-wave grating given a certain distance_metric
 
@@ -279,13 +279,13 @@ def sine(
         ensure whether the grating has "even" number of phases, "odd"
         number of phases, either or whether not to round the number of
         phases ("ignore")
-    rotation : float or None (default)
-        rotation of grating in degrees
-    phase_shift : float or None (default)
-        phase shift of grating in degrees
+    rotation : float
+        rotation of grating in degrees, by default 0.0
+    phase_shift : float
+        phase shift of grating in degrees, by default 0.0
     intensities : Sequence[float, float]
         min and max intensity of sine-wave, by default (0.0, 1.0).
-    origin : "corner", "mean", "center" or None (default)
+    origin : "corner", "mean", or "center" (default)
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center
         if "center": set origin to real center (closest existing value to mean)
@@ -296,8 +296,8 @@ def sine(
         if "radial", use radial distance from origin,
         if "angular", use angular distance from origin,
         if "rectilinear", use rectilinear/cityblock/Manhattan distance from origin
-    round_phase_width : Bool or None (default)
-        if True, round width of bars given resolution
+    round_phase_width : bool
+        if True, round width of bars given resolution, by default False.
 
     Returns
     ----------
@@ -306,17 +306,6 @@ def sine(
         mask with integer index for each bar (key: "grating_mask"),
         and additional keys containing stimulus parameters
     """
-    if phase_shift is None:
-        raise ValueError("waves.sine() missing argument 'phase_shift' which is not 'None'")
-    if intensities is None:
-        raise ValueError("waves.sine() missing argument 'intensities' which is not 'None'")
-    if origin is None:
-        raise ValueError("waves.sine() missing argument 'origin' which is not 'None'")
-    if round_phase_width is None:
-        raise ValueError("waves.sine() missing argument 'round_phase_width' which is not 'None'")
-    if period is None:
-        period = "ignore"
-
     distance_metrics = ["horizontal", "vertical", "oblique", "radial", "angular", "rectilinear"]
     if distance_metric not in distance_metrics:
         raise ValueError(f"distance_metric needs to be one of {distance_metrics}")
@@ -466,11 +455,11 @@ def square(
     phase_width=None,
     period="ignore",
     rotation=0.0,
-    phase_shift=None,
+    phase_shift=0.0,
     intensities=(0.0, 1.0),
-    origin=None,
+    origin="center",
     distance_metric=None,
-    round_phase_width=None,
+    round_phase_width=False,
 ):
     """Draw a square-wave grating given a certain distance_metric
 
@@ -492,13 +481,13 @@ def square(
         ensure whether the grating has "even" number of phases, "odd"
         number of phases, either or whether not to round the number of
         phases ("ignore")
-    rotation : float or None (default)
-        rotation of grating in degrees
-    phase_shift : float or None (default)
-        phase shift of grating in degrees
+    rotation : float
+        rotation of grating in degrees, by default 0.0
+    phase_shift : float
+        phase shift of grating in degrees, by default 0.0
     intensities : Sequence[float, float]
-        min and max intensity of square-wave, by default (0.0, 1.0).
-    origin : "corner", "mean", "center" or None (default)
+        min and max intensity of sine-wave, by default (0.0, 1.0).
+    origin : "corner", "mean", or "center" (default)
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center
         if "center": set origin to real center (closest existing value to mean)
@@ -509,8 +498,8 @@ def square(
         if "radial", use radial distance from origin,
         if "angular", use angular distance from origin,
         if "rectilinear", use rectilinear/cityblock/Manhattan distance from origin
-    round_phase_width : Bool or None (default)
-        if True, round width of bars given resolution
+    round_phase_width : bool
+        if True, round width of bars given resolution, by default False
 
     Returns
     ----------
@@ -550,10 +539,10 @@ def staircase(
     phase_width=None,
     period="ignore",
     rotation=0.0,
-    phase_shift=None,
-    origin=None,
+    phase_shift=0.0,
+    origin="center",
     distance_metric=None,
-    round_phase_width=None,
+    round_phase_width=False,
     intensities=(0.0, 1.0),
 ):
     """Draw a luminance staircase
@@ -576,11 +565,11 @@ def staircase(
         ensure whether the grating has "even" number of phases, "odd"
         number of phases, either or whether not to round the number of
         phases ("ignore")
-    rotation : float or None (default)
-        rotation of grating in degrees
-    phase_shift : float or None (default)
-        phase shift of grating in degrees
-    origin : "corner", "mean", "center" or None (default)
+    rotation : float
+        rotation of grating in degrees, by default 0.0
+    phase_shift : float
+        phase shift of grating in degrees, by default 0.o
+    origin : "corner", "mean", or "center" (default)
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center
         if "center": set origin to real center (closest existing value to mean)
@@ -591,8 +580,8 @@ def staircase(
         if "radial", use radial distance from origin,
         if "angular", use angular distance from origin,
         if "rectilinear", use rectilinear/cityblock/Manhattan distance from origin
-    round_phase_width : Bool or None (default)
-        if True, round width of bars given resolution
+    round_phase_width : bool
+        if True, round width of bars given resolution, by default False
     intensities : Sequence[float, ...]
         if len(intensities)==2, intensity range of staircase (default 0.0, 1.0);
         if len(intensities)>2, intensity value for each phase.
