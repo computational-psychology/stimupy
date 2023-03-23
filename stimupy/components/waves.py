@@ -620,7 +620,7 @@ def staircase(
     )
 
     if len(intensities) == 2:
-        intensities = np.linspace(intensities[0], intensities[1], int(np.ceil(stim["n_phases"])))
+        intensities = np.linspace(intensities[0], intensities[1], stim["grating_mask"].max())
 
     # Use grating_mask to draw staircase
     stim["img"] = draw_regions(mask=stim["grating_mask"], intensities=intensities)
