@@ -8,13 +8,16 @@ from stimupy.components.shapes import disc, rectangle
 __all__ = [
     "sine_linear",
     "square_linear",
-    # "staircase_linear",
+    "staircase_linear",
     "sine_radial",
     "square_radial",
+    "staircase_radial",
     "sine_rectilinear",
     "square_rectilinear",
+    "staircase_rectilinear",
     "sine_angular",
     "square_angular",
+    "staircase_angular",
 ]
 
 
@@ -238,6 +241,112 @@ def square_linear(
 
     # Adjust intensities to passed-in values
     stim["img"] = draw_regions(mask=stim["grating_mask"], intensities=intensity_bars)
+
+    # Repackage output
+    stim["n_bars"] = stim.pop("n_phases")
+    stim["bar_width"] = stim.pop("phase_width")
+    stim["intensity_bars"] = stim.pop("intensities")
+    stim.pop("distance_metric")
+
+    # Add targets(?)
+    if target_indices is not None and target_indices != ():
+        stim = add_targets(stim, target_indices=target_indices, intensity_target=intensity_target)
+
+    return stim
+
+
+def staircase_linear(
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    frequency=None,
+    n_bars=None,
+    bar_width=None,
+    period="ignore",
+    rotation=0,
+    phase_shift=0,
+    intensity_bars=(0.0, 1.0),
+    target_indices=(),
+    intensity_target=0.5,
+    origin="corner",
+    round_phase_width=True,
+):
+    """Linear staircase, with some bar(s) as target(s)
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    frequency : Number, or None (default)
+        spatial frequency of grating, in cycles per degree visual angle
+    n_bars : int, or None (default)
+        number of bars in the grating
+    bar_width : Number, or None (default)
+        width of a single bar, in degrees visual angle
+    period : "even", "odd", "either" or "ignore" (default)
+        ensure whether the grating has "even" number of phases, "odd"
+        number of phases, either or whether not to round the number of
+        phases ("ignore")
+    rotation : float
+        rotation of grating in degrees (default: 0 = horizontal)
+    phase_shift : float
+        phase shift of grating in degrees
+    intensity_bars : Sequence[float, float] or Sequence[float, ...]
+        min and max intensity of sine-wave, by default (0.0, 1.0).
+        Can also specify as many intensities as n_bars
+    target_indices : int, or Sequence[int, ...]
+        indices segments where targets will be placed
+    intensity_target : float, or Sequence[float, ...], optional
+        intensity value for each target, by default 0.5.
+        Can specify as many intensities as number of target_indices;
+        If fewer intensities are passed than target_indices, cycles through intensities
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner (default)
+        if "mean": set origin to hypothetical image center
+        if "center": set origin to real center (closest existing value to mean)
+    round_phase_width : Bool
+        if True, round width of bars given resolution
+    intensity_bars : Sequence[float, ...]
+        if len(intensity_bars)==2, intensity range of staircase (default 0.0, 1.0);
+        if len(intensity_bars)>2, intensity value for each bar.
+        Can specify as many intensity_bars as n_bars.
+        If fewer intensity_bars are passed than n_bars, cycles through intensities.
+
+
+    Returns
+    -------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "target_mask"),
+        and additional keys containing stimulus parameters
+    """
+    lst = [visual_size, ppd, shape, frequency, n_bars, bar_width]
+    if len([x for x in lst if x is not None]) < 3:
+        raise ValueError(
+            "'grating' needs 3 non-None arguments for resolving from 'visual_size', "
+            "'ppd', 'shape', 'frequency', 'n_bars', 'bar_width'"
+        )
+
+    # Spatial square-wave grating
+    stim = waves.staircase(
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        frequency=frequency,
+        n_phases=n_bars,
+        phase_width=bar_width,
+        period=period,
+        rotation=rotation,
+        phase_shift=phase_shift,
+        origin=origin,
+        round_phase_width=round_phase_width,
+        distance_metric="oblique",
+        intensities=intensity_bars,
+    )
 
     # Repackage output
     stim["n_bars"] = stim.pop("n_phases")
@@ -486,6 +595,111 @@ def square_radial(
         stim["grating_mask"] = np.where(circle["ring_mask"], stim["grating_mask"], 0)
 
     # Resolve target parameters
+    if target_indices is not None and target_indices != ():
+        stim = add_targets(stim, target_indices=target_indices, intensity_target=intensity_target)
+
+    return stim
+
+
+def staircase_radial(
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    frequency=None,
+    n_rings=None,
+    ring_width=None,
+    period="ignore",
+    rotation=0,
+    phase_shift=0,
+    intensity_rings=(0.0, 1.0),
+    target_indices=(),
+    intensity_target=0.5,
+    origin="center",
+    round_phase_width=True,
+):
+    """Radial staircase, with some ring(s) as target(s)
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    frequency : Number, or None (default)
+        spatial frequency of grating, in cycles per degree visual angle
+    n_rings : int, or None (default)
+        number of rings in the grating
+    ring_width : Number, or None (default)
+        width of a single ring, in degrees visual angle
+    period : "even", "odd", "either" or "ignore" (default)
+        ensure whether the grating has "even" number of phases, "odd"
+        number of phases, either or whether not to round the number of
+        phases ("ignore")
+    rotation : float
+        rotation of grating in degrees (default: 0 = horizontal)
+    phase_shift : float
+        phase shift of grating in degrees
+    intensity_rings : Sequence[float, float] or Sequence[float, ...]
+        min and max intensity of sine-wave, by default (0.0, 1.0).
+        Can also specify as many intensities as n_rings
+    target_indices : int, or Sequence[int, ...]
+        indices segments where targets will be placed
+    intensity_target : float, or Sequence[float, ...], optional
+        intensity value for each target, by default 0.5.
+        Can specify as many intensities as number of target_indices;
+        If fewer intensities are passed than target_indices, cycles through intensities
+    origin : "corner", "mean" or "center" (default)
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center
+        if "center": set origin to real center (closest existing value to mean)
+    round_phase_width : Bool
+        if True, round width of rings given resolution
+    intensity_rings : Sequence[float, ...]
+        if len(intensity_rings)==2, intensity range of staircase (default 0.0, 1.0);
+        if len(intensity_rings)>2, intensity value for each ring.
+        Can specify as many intensity_rings as n_rings.
+        If fewer intensity_rings are passed than n_rings, cycles through intensities.
+
+    Returns
+    -------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "target_mask"),
+        and additional keys containing stimulus parameters
+    """
+    lst = [visual_size, ppd, shape, frequency, n_rings, ring_width]
+    if len([x for x in lst if x is not None]) < 3:
+        raise ValueError(
+            "'grating' needs 3 non-None arguments for resolving from 'visual_size', "
+            "'ppd', 'shape', 'frequency', 'n_rings', 'ring_width'"
+        )
+
+    # Spatial square-wave grating
+    stim = waves.staircase(
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        frequency=frequency,
+        n_phases=n_rings,
+        phase_width=ring_width,
+        period=period,
+        rotation=rotation,
+        phase_shift=phase_shift,
+        origin=origin,
+        round_phase_width=round_phase_width,
+        distance_metric="radial",
+        intensities=intensity_rings,
+    )
+
+    # Repackage output
+    stim["n_rings"] = stim.pop("n_phases")
+    stim["ring_width"] = stim.pop("phase_width")
+    stim["intensity_rings"] = stim.pop("intensities")
+    stim.pop("distance_metric")
+
+    # Add targets(?)
     if target_indices is not None and target_indices != ():
         stim = add_targets(stim, target_indices=target_indices, intensity_target=intensity_target)
 
@@ -748,6 +962,111 @@ def square_rectilinear(
     return stim
 
 
+def staircase_rectilinear(
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    frequency=None,
+    n_frames=None,
+    frame_width=None,
+    period="ignore",
+    rotation=0,
+    phase_shift=0,
+    intensity_frames=(0.0, 1.0),
+    target_indices=(),
+    intensity_target=0.5,
+    origin="center",
+    round_phase_width=True,
+):
+    """Rectiinear staircase, with some frame(s) as target(s)
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    frequency : Number, or None (default)
+        spatial frequency of grating, in cycles per degree visual angle
+    n_frames : int, or None (default)
+        number of frames in the grating
+    frame_width : Number, or None (default)
+        width of a single frame, in degrees visual angle
+    period : "even", "odd", "either" or "ignore" (default)
+        ensure whether the grating has "even" number of phases, "odd"
+        number of phases, either or whether not to round the number of
+        phases ("ignore")
+    rotation : float
+        rotation of grating in degrees (default: 0 = horizontal)
+    phase_shift : float
+        phase shift of grating in degrees
+    intensity_frames : Sequence[float, float] or Sequence[float, ...]
+        min and max intensity of sine-wave, by default (0.0, 1.0).
+        Can also specify as many intensities as n_frames
+    target_indices : int, or Sequence[int, ...]
+        indices segments where targets will be placed
+    intensity_target : float, or Sequence[float, ...], optional
+        intensity value for each target, by default 0.5.
+        Can specify as many intensities as number of target_indices;
+        If fewer intensities are passed than target_indices, cycles through intensities
+    origin : "corner", "mean" or "center" (default)
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center
+        if "center": set origin to real center (closest existing value to mean)
+    round_phase_width : Bool
+        if True, round width of frames given resolution
+    intensity_frames : Sequence[float, ...]
+        if len(intensity_frames)==2, intensity range of staircase (default 0.0, 1.0);
+        if len(intensity_frames)>2, intensity value for each frame.
+        Can specify as many intensity_frames as n_frames.
+        If fewer intensity_frames are passed than n_frames, cycles through intensities.
+
+    Returns
+    -------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "target_mask"),
+        and additional keys containing stimulus parameters
+    """
+    lst = [visual_size, ppd, shape, frequency, n_frames, frame_width]
+    if len([x for x in lst if x is not None]) < 3:
+        raise ValueError(
+            "'grating' needs 3 non-None arguments for resolving from 'visual_size', "
+            "'ppd', 'shape', 'frequency', 'n_frames', 'frame_width'"
+        )
+
+    # Spatial square-wave grating
+    stim = waves.staircase(
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        frequency=frequency,
+        n_phases=n_frames,
+        phase_width=frame_width,
+        period=period,
+        rotation=rotation,
+        phase_shift=phase_shift,
+        origin=origin,
+        round_phase_width=round_phase_width,
+        distance_metric="rectilinear",
+        intensities=intensity_frames,
+    )
+
+    # Repackage output
+    stim["n_frames"] = stim.pop("n_phases")
+    stim["frame_width"] = stim.pop("phase_width")
+    stim["intensity_frames"] = stim.pop("intensities")
+    stim.pop("distance_metric")
+
+    # Add targets(?)
+    if target_indices is not None and target_indices != ():
+        stim = add_targets(stim, target_indices=target_indices, intensity_target=intensity_target)
+
+    return stim
+
+
 def sine_angular(
     visual_size=None,
     ppd=None,
@@ -990,6 +1309,107 @@ def square_angular(
     return stim
 
 
+def staircase_angular(
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    frequency=None,
+    n_segments=None,
+    segment_width=None,
+    period="ignore",
+    rotation=0,
+    phase_shift=0,
+    intensity_segments=(0.0, 1.0),
+    target_indices=(),
+    intensity_target=0.5,
+    origin="center",
+    round_phase_width=True,
+):
+    """Angular staircase, with some segment(s) as target(s)
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    frequency : Number, or None (default)
+        spatial frequency of grating, in cycles per degree visual angle
+    n_segments : int, or None (default)
+        number of segments in the grating
+    segment_width : Number, or None (default)
+        width of a single segment, in degrees visual angle
+    period : "even", "odd", "either" or "ignore" (default)
+        ensure whether the grating has "even" number of phases, "odd"
+        number of phases, either or whether not to round the number of
+        phases ("ignore")
+    rotation : float
+        rotation of grating in degrees (default: 0 = horizontal)
+    phase_shift : float
+        phase shift of grating in degrees
+    intensity_segments : Sequence[float, ...]
+        if len(intensity_segments)==2, intensity range of staircase (default 0.0, 1.0);
+        if len(intensity_segments)>2, intensity value for each segment.
+        Can specify as many intensity_segments as n_segments.
+        If fewer intensity_segments are passed than n_segments, cycles through intensities.
+    target_indices : int, or Sequence[int, ...]
+        indices segments where targets will be placed
+    intensity_target : float, or Sequence[float, ...], optional
+        intensity value for each target, by default 0.5.
+        Can specify as many intensities as number of target_indices;
+        If fewer intensities are passed than target_indices, cycles through intensities
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner (default)
+        if "mean": set origin to hypothetical image center
+        if "center": set origin to real center (closest existing value to mean)
+    round_phase_width : Bool
+        if True, round width of segments given resolution
+
+    Returns
+    -------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each target (key: "target_mask"),
+        and additional keys containing stimulus parameters
+    """
+    lst = [visual_size, ppd, shape, frequency, n_segments, segment_width]
+    if len([x for x in lst if x is not None]) < 3:
+        raise ValueError(
+            "'grating' needs 3 non-None arguments for resolving from 'visual_size', "
+            "'ppd', 'shape', 'frequency', 'n_segments', 'segment_width'"
+        )
+
+    # Spatial square-wave grating
+    stim = waves.staircase(
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        frequency=frequency,
+        n_phases=n_segments,
+        phase_width=segment_width,
+        period=period,
+        rotation=rotation,
+        phase_shift=phase_shift,
+        origin=origin,
+        round_phase_width=round_phase_width,
+        distance_metric="angular",
+    )
+
+    # Repackage output
+    stim["n_segments"] = stim.pop("n_phases")
+    stim["segment_width"] = stim.pop("phase_width")
+    stim["intensity_segments"] = stim.pop("intensities")
+    stim.pop("distance_metric")
+
+    # Add targets(?)
+    if target_indices is not None and target_indices != ():
+        stim = add_targets(stim, target_indices=target_indices, intensity_target=intensity_target)
+
+    return stim
+
+
 def overview(**kwargs):
     """Generate example stimuli from this module
 
@@ -1005,28 +1425,48 @@ def overview(**kwargs):
         "period": "ignore",
         "phase_shift": 0,
         "round_phase_width": False,
-        "target_indices": (0, 5),
+    }
+
+    grating_params2 = {
+        "period": "ignore",
+        "phase_shift": 0,
+        "round_phase_width": False,
+        "target_indices": (2, 5),
     }
 
     # fmt: off
     stimuli = {
-        "sine wave - horizontal": sine_linear(**default_params, **grating_params, bar_width=1, rotation=0),
-        "sine wave - vertical": sine_linear(**default_params, **grating_params, bar_width=1, rotation=90),
-        "sine wave - oblique": sine_linear(**default_params, **grating_params, bar_width=1, rotation=45),
-        "sine wave - radial": sine_radial(**default_params, **grating_params, ring_width=1, clip=True),
-        "sine wave - rectilinear": sine_rectilinear(**default_params, **grating_params, frame_width=1, clip=True),
-        "sine wave - angular": sine_angular(**default_params, **grating_params, segment_width=10),
+        "sine_wave_linear": sine_linear(**default_params, **grating_params, bar_width=1, rotation=45),
+        "sine_wave_radial": sine_radial(**default_params, **grating_params, ring_width=1),
+        "sine_wave_rectilinear": sine_rectilinear(**default_params, **grating_params, frame_width=1),
+        "sine_wave_angular": sine_angular(**default_params, **grating_params, n_segments=10),
 
 
-        "square wave - horizontal": square_linear(**default_params, **grating_params, bar_width=1, rotation=0),
-        "square wave - vertical": square_linear(**default_params, **grating_params, bar_width=1, rotation=90),
-        "square wave - oblique": square_linear(**default_params, **grating_params, bar_width=1, rotation=45),
-        "square wave - radial": square_radial(**default_params, **grating_params, ring_width=1, clip=True),
-        "square wave - rectilinear": square_rectilinear(**default_params, **grating_params, frame_width=1, clip=True),
-        "square wave - angular": square_angular(**default_params, **grating_params, segment_width=10),
+        "square_wave_linear": square_linear(**default_params, **grating_params, bar_width=1, rotation=45),
+        "square_wave_radial": square_radial(**default_params, **grating_params, ring_width=1),
+        "square_wave_rectilinear": square_rectilinear(**default_params, **grating_params, frame_width=1, clip=True),
+        "square_wave_angular": square_angular(**default_params, **grating_params, n_segments=10),
+
+        "staircase_linear": staircase_linear(**default_params, **grating_params, frequency=0.4),
+        "staircase_radial": staircase_radial(**default_params, **grating_params, frequency=0.4),
+        "staircase_rectilinear": staircase_rectilinear(**default_params, **grating_params, frequency=0.4),
+        "staircase_angular": staircase_angular(**default_params, **grating_params, n_segments=10),
+
+        "sine_wave_linear_with_targets": sine_linear(**default_params, **grating_params2, bar_width=1, rotation=45),
+        "sine_wave_radial_with_targets": sine_radial(**default_params, **grating_params2, ring_width=1),
+        "sine_wave_rectilinear_with_targets": sine_rectilinear(**default_params, **grating_params2, frame_width=1),
+        "sine_wave_angular_with_targets": sine_angular(**default_params, **grating_params2, n_segments=10),
 
 
-        "square wave - multiple intensitites": square_linear(**default_params, **grating_params, bar_width=3.5, rotation=0, intensity_bars=(0, 0.25, 0.75)),
+        "square_wave_linear_with_targets": square_linear(**default_params, **grating_params2, bar_width=1, rotation=45),
+        "square_wave_radial_with_targets": square_radial(**default_params, **grating_params2, ring_width=1),
+        "square_wave_rectilinear_with_targets": square_rectilinear(**default_params, **grating_params2, frame_width=1, clip=True),
+        "square_wave_angular_with_targets": square_angular(**default_params, **grating_params2, n_segments=10),
+
+        "staircase_linear_with_targets": staircase_linear(**default_params, **grating_params2, frequency=0.4),
+        "staircase_radial_with_targets": staircase_radial(**default_params, **grating_params2, frequency=0.4),
+        "staircase_rectilinear_with_targets": staircase_rectilinear(**default_params, **grating_params2, frequency=0.4),
+        "staircase_angular_with_targets": staircase_angular(**default_params, **grating_params2, n_segments=10),
     }
     # fmt: on
 
