@@ -1094,7 +1094,7 @@ def sine_angular(
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
     frequency : Number, or None (default)
-        spatial frequency of grating, in cycles per degree visual angle
+        spatial frequency of grating, in cycles per image
     n_segments : int, or None (default)
         number of segments
     segment_width : Number, or None (default)
@@ -1214,7 +1214,7 @@ def square_angular(
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
     frequency : Number, or None (default)
-        spatial frequency of grating, in cycles per degree visual angle
+        spatial frequency of grating, in cycles per image
     n_segments : int, or None (default)
         number of segments in the grating
     segment_width : Number, or None (default)
@@ -1336,7 +1336,7 @@ def staircase_angular(
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
     frequency : Number, or None (default)
-        spatial frequency of grating, in cycles per degree visual angle
+        spatial frequency of grating, in cycles per image
     n_segments : int, or None (default)
         number of segments in the grating
     segment_width : Number, or None (default)
