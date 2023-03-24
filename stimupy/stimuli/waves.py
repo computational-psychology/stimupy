@@ -823,8 +823,8 @@ def sine_rectilinear(
                 ppd=stim["ppd"],
                 rectangle_size=rsize,
             )
-        stim["img"] = np.where(rect["shape_mask"], stim["img"], intensity_background)
-        stim["grating_mask"] = np.where(rect["shape_mask"], stim["grating_mask"], 0)
+        stim["img"] = np.where(rect["rectangle_mask"], stim["img"], intensity_background)
+        stim["grating_mask"] = np.where(rect["rectangle_mask"], stim["grating_mask"], 0)
 
     # Add targets(?)
     if target_indices is not None and target_indices != ():
@@ -952,8 +952,8 @@ def square_rectilinear(
                 ppd=stim["ppd"],
                 rectangle_size=rsize,
             )
-        stim["img"] = np.where(rect["shape_mask"], stim["img"], intensity_background)
-        stim["grating_mask"] = np.where(rect["shape_mask"], stim["grating_mask"], 0)
+        stim["img"] = np.where(rect["rectangle_mask"], stim["img"], intensity_background)
+        stim["grating_mask"] = np.where(rect["rectangle_mask"], stim["grating_mask"], 0)
 
     # Add targets(?)
     if target_indices is not None and target_indices != ():

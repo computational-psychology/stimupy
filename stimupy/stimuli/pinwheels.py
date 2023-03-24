@@ -108,7 +108,7 @@ def pinwheel(
         shape=shape,
         radius=radius,
         origin=origin,
-    )["shape_mask"]
+    )["circle_mask"]
 
     stim["img"] = np.where(circle_mask, stim["img"], intensity_background)
 

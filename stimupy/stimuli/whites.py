@@ -152,7 +152,7 @@ def generalized(
         # Find where strip intersects with the target bar
         if bar_idx < 0:
             bar_idx = int(stim["n_bars"]) + bar_idx
-        mask = (stim["grating_mask"] == bar_idx + 1) & rect["shape_mask"]
+        mask = (stim["grating_mask"] == bar_idx + 1) & rect["rectangle_mask"]
         targets_mask = np.where(mask, target_idx + 1, targets_mask)
 
         # Draw target
@@ -489,8 +489,8 @@ def anderson(
     for bar_idx in stim["target_indices_top"]:
         if bar_idx < 0:
             bar_idx = int(stim["n_bars"]) + bar_idx
-        stripe_top["shape_mask"] = np.where(
-            stim["grating_mask"] == bar_idx + 1, 0, stripe_top["shape_mask"]
+        stripe_top["rectangle_mask"] = np.where(
+            stim["grating_mask"] == bar_idx + 1, 0, stripe_top["rectangle_mask"]
         )
 
     stripe_bottom = rectangle(
@@ -503,12 +503,12 @@ def anderson(
     for bar_idx in stim["target_indices_bottom"]:
         if bar_idx < 0:
             bar_idx = int(stim["n_bars"]) + bar_idx
-        stripe_bottom["shape_mask"] = np.where(
-            stim["grating_mask"] == bar_idx + 1, 0, stripe_bottom["shape_mask"]
+        stripe_bottom["rectangle_mask"] = np.where(
+            stim["grating_mask"] == bar_idx + 1, 0, stripe_bottom["rectangle_mask"]
         )
 
     try:
-        stripes_mask = combine_masks(stripe_top["shape_mask"], stripe_bottom["shape_mask"])
+        stripes_mask = combine_masks(stripe_top["rectangle_mask"], stripe_bottom["rectangle_mask"])
     except ValueError:
         raise ValueError("Stripes overlap. Increase stripe offset or decrease stripe size.")
 
@@ -734,7 +734,7 @@ def yazdanbakhsh(
         # Reduce to just this bar: intersection between rect mask and bar mask
         if bar_idx < 0:
             bar_idx = int(stim["n_bars"]) + bar_idx
-        stim["gap_mask"] = (stim["grating_mask"] == bar_idx + 1) & rect["shape_mask"]
+        stim["gap_mask"] = (stim["grating_mask"] == bar_idx + 1) & rect["rectangle_mask"]
 
         # Remove everywhere it intersects with target mask
         stim["gap_mask"] = np.where(stim["target_mask"] == t_idx + 1, 0, stim["gap_mask"])
@@ -758,7 +758,7 @@ def yazdanbakhsh(
         # Reduce to just this bar: intersection between rect mask and bar mask
         if bar_idx < 0:
             bar_idx = int(stim["n_bars"]) + bar_idx
-        stim["gap_mask"] = (stim["grating_mask"] == bar_idx + 1) & rect["shape_mask"]
+        stim["gap_mask"] = (stim["grating_mask"] == bar_idx + 1) & rect["rectangle_mask"]
 
         # Remove everywhere it intersects with target mask
         stim["gap_mask"] = np.where(stim["target_mask"] == t_idx + 1, 0, stim["gap_mask"])

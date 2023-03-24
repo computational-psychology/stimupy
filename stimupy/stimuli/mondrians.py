@@ -123,7 +123,7 @@ def mondrian(
         if (ypos + yshape > shape[0]) or (xpos + xshape > shape[1]):
             raise ValueError("Not all Mondrians fit into the stimulus")
         mask_large = np.zeros(shape)
-        mask_large[ypos : ypos + yshape, xpos : xpos + xshape] = patch["shape_mask"]
+        mask_large[ypos : ypos + yshape, xpos : xpos + xshape] = patch["parallelogram_mask"]
 
         img[mask_large == 1] = next(ints)
         mask[mask_large == 1] = m + 1

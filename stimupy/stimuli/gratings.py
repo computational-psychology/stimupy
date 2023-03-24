@@ -453,8 +453,8 @@ def grating_induction(
     )
 
     # Superimpose
-    stim["img"] = np.where(target_mask["shape_mask"], intensity_target, stim["img"])
-    stim["target_mask"] = np.where(target_mask["shape_mask"], stim["grating_mask"], 0)
+    stim["img"] = np.where(target_mask["rectangle_mask"], intensity_target, stim["img"])
+    stim["target_mask"] = np.where(target_mask["rectangle_mask"], stim["grating_mask"], 0)
     return stim
 
 
@@ -569,8 +569,8 @@ def grating_induction_blur(
     )
 
     # Superimpose
-    stim["img"] = np.where(target_mask["shape_mask"], intensity_target, stim["img"])
-    stim["target_mask"] = np.where(target_mask["shape_mask"], stim["grating_mask"], 0)
+    stim["img"] = np.where(target_mask["rectangle_mask"], intensity_target, stim["img"])
+    stim["target_mask"] = np.where(target_mask["rectangle_mask"], stim["grating_mask"], 0)
     return stim
 
 

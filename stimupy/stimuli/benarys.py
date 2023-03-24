@@ -393,7 +393,7 @@ def todorovic_generalized(
     stim["L_width"] = L_width
     stim["intensity_background"] = intensity_background
     stim["intensity_cross"] = intensity_cross
-    stim["shape_mask"] = mask
+    stim["L_mask"] = mask
     return stim
 
 
@@ -677,6 +677,8 @@ def add_targets(
                     intensity_background=0,
                     rotation=target_rotation[i],
                 )
+                mpatch = target["rectangle_mask"][~np.all(target["rectangle_mask"] == 0, axis=1)]
+                tpatch = target["img"][~np.all(target["rectangle_mask"] == 0, axis=1)]
 
             elif target_type[i] == "t":
                 target = triangle(
@@ -688,13 +690,13 @@ def add_targets(
                     rotation=target_rotation[i],
                     include_corners=True,
                 )
+                mpatch = target["triangle_mask"][~np.all(target["triangle_mask"] == 0, axis=1)]
+                tpatch = target["img"][~np.all(target["triangle_mask"] == 0, axis=1)]
 
             else:
                 raise Exception("You can only use r or t as shapes")
 
             # Remove zero-rows and -columns
-            mpatch = target["shape_mask"][~np.all(target["shape_mask"] == 0, axis=1)]
-            tpatch = target["img"][~np.all(target["shape_mask"] == 0, axis=1)]
             tpatch = tpatch[:, ~np.all(mpatch == 0, axis=0)]
             mpatch = mpatch[:, ~np.all(mpatch == 0, axis=0)]
             theight_, twidth_ = tpatch.shape

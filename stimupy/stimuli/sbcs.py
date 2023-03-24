@@ -68,12 +68,12 @@ def generalized(
         intensity_rectangle=intensity_target,
     )
 
-    stim["target_mask"] = stim["shape_mask"]
+    stim["target_mask"] = stim["rectangle_mask"]
     stim["target_size"] = stim["rectangle_size"]
     stim["target_position"] = stim["rectangle_position"]
     stim["intensity_target"] = stim["intensity_rectangle"]
     del (
-        stim["shape_mask"],
+        stim["rectangle_mask"],
         stim["rectangle_size"],
         stim["rectangle_position"],
         stim["intensity_rectangle"],
@@ -308,11 +308,11 @@ def with_dots(
         intensity_rectangle=intensity_target,
     )
     img = sbc["img"]
-    mask = sbc["shape_mask"]
+    mask = sbc["rectangle_mask"]
 
     patch = np.tile(patch, (int(n_dots[0]), int(n_dots[1])))
     img = np.where(patch == 1, intensity_dots, sbc["img"])
-    mask = np.where(patch == 1, 0, sbc["shape_mask"])
+    mask = np.where(patch == 1, 0, sbc["rectangle_mask"])
 
     try:
         img = pad_to_shape(img, shape, intensity_background)
@@ -537,8 +537,8 @@ def dotted(
 
     patch = np.tile(patch, (int(n_dots[0]), int(n_dots[1])))
     img = np.where(patch, intensity_dots, intensity_background)
-    img = np.where(patch + sbc["shape_mask"] == 2, intensity_target, img)
-    mask = np.where(patch + sbc["shape_mask"] == 2, 1, 0)
+    img = np.where(patch + sbc["rectangle_mask"] == 2, intensity_target, img)
+    mask = np.where(patch + sbc["rectangle_mask"] == 2, 1, 0)
 
     try:
         img = pad_to_shape(img, shape, intensity_background)
