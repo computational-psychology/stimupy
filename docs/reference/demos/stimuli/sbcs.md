@@ -104,7 +104,6 @@ out = iw.interactive_output(
 display(ui, out)
 ```
 
-
 ## Basic
 {py:func}`stimupy.stimuli.sbcs.basic`
 
@@ -327,11 +326,12 @@ out = iw.interactive_output(
 # Show
 display(ui, out)
 ```
+
 ## With dots, two sided
-{py:func}`stimupy.stimuli.sbcs.two_sided_with_dots`
+{py:func}`stimupy.stimuli.sbcs.with_dots_two_sided`
 
 ```{code-cell} ipython3
-from stimupy.stimuli.sbcs import two_sided_with_dots
+from stimupy.stimuli.sbcs import with_dots_two_sided
 
 # Define widgets
 w_height = iw.IntSlider(value=15, min=1, max=20, description="height [deg]")
@@ -381,7 +381,7 @@ def show_two_sided_with_dots(
     intensity_dots_r=None,
     add_mask=False,
 ):
-    stim = two_sided_with_dots(
+    stim = with_dots_two_sided(
         visual_size=(height, width),
         ppd=ppd,
         target_shape=(target_height, target_width),
@@ -507,12 +507,11 @@ out = iw.interactive_output(
 display(ui, out)
 ```
 
-
 ## Dotted, two sided
-{py:func}`stimupy.stimuli.sbcs.two_sided_dotted`
+{py:func}`stimupy.stimuli.sbcs.dotted_two_sided`
 
 ```{code-cell} ipython3
-from stimupy.stimuli.sbcs import two_sided_dotted
+from stimupy.stimuli.sbcs import dotted_two_sided
 
 # Define widgets
 w_height = iw.IntSlider(value=15, min=1, max=20, description="height [deg]")
@@ -562,7 +561,7 @@ def show_two_sided_dotted(
     intensity_dots_r=None,
     add_mask=False,
 ):
-    stim = two_sided_dotted(
+    stim = dotted_two_sided(
         visual_size=(height, width),
         ppd=ppd,
         target_shape=(target_height, target_width),
