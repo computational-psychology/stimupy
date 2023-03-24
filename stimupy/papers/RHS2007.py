@@ -140,7 +140,7 @@ def WE_thick(ppd=PPD, pad=True):
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
         "target_indices": (2, 5),
-        "target_height": 4.0,
+        "target_heights": 4.0,
         "period": "even",
     }
 
@@ -201,7 +201,7 @@ def WE_thin_wide(ppd=PPD, pad=True):
         "intensity_bars": (v3, v1),
         "intensity_target": v2,
         "target_indices": (3, 12),
-        "target_height": 2.0,
+        "target_heights": 2.0,
         "period": "even",
     }
 
@@ -253,7 +253,7 @@ def WE_dual(ppd=PPD, pad=True):
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
         "target_indices": (2, 5),
-        "target_height": 2.0,
+        "target_heights": 2.0,
         "period": "even",
     }
 
@@ -500,7 +500,7 @@ def WE_radial_thick_small(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim = stimupy.whites.radial(
+    stim = stimupy.whites.angular(
         visual_size=(16, 16),
         **params,
     )
@@ -555,7 +555,7 @@ def WE_radial_thick(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim = stimupy.whites.radial(
+    stim = stimupy.whites.angular(
         visual_size=(24, 24),
         **params,
     )
@@ -610,7 +610,7 @@ def WE_radial_thin_small(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim = stimupy.whites.radial(
+    stim = stimupy.whites.angular(
         visual_size=(16, 16),
         **params,
     )
@@ -665,7 +665,7 @@ def WE_radial_thin(ppd=PPD, pad=True):
         "intensity_target": v2,
     }
 
-    stim = stimupy.whites.radial(
+    stim = stimupy.whites.angular(
         visual_size=(24, 24),
         **params,
     )
@@ -718,13 +718,13 @@ def WE_circular1(ppd=PPD, pad=True):
         "clip": True,
     }
 
-    stim1 = stimupy.whites.circular(
+    stim1 = stimupy.whites.radial(
         visual_size=(height, width),
         intensity_rings=(v3, v1),
         **params,
     )
 
-    stim2 = stimupy.whites.circular(
+    stim2 = stimupy.whites.radial(
         visual_size=(height, width),
         intensity_rings=(v1, v3),
         **params,
@@ -779,13 +779,13 @@ def WE_circular05(ppd=PPD, pad=True):
         "clip": True,
     }
 
-    stim1 = stimupy.whites.circular(
+    stim1 = stimupy.whites.radial(
         visual_size=(height, width),
         intensity_rings=(v3, v1),
         **params,
     )
 
-    stim2 = stimupy.whites.circular(
+    stim2 = stimupy.whites.radial(
         visual_size=(height, width),
         intensity_rings=(v1, v3),
         **params,
@@ -840,13 +840,13 @@ def WE_circular025(ppd=PPD, pad=True):
         "clip": True,
     }
 
-    stim1 = stimupy.whites.circular(
+    stim1 = stimupy.whites.radial(
         visual_size=(height, width),
         intensity_rings=(v3, v1),
         **params,
     )
 
-    stim2 = stimupy.whites.circular(
+    stim2 = stimupy.whites.radial(
         visual_size=(height, width),
         intensity_rings=(v1, v3),
         **params,
