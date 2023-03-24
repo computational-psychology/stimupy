@@ -129,6 +129,7 @@ while at the same time allowing the flexibility
 to create entirely new stimuli and build stimulus benchmarks.
 
 As far as we know `stimupy` is the only package that:
+
 - contains a wide variety of visual stimuli, from simple geometric shapes to complex illusions
 - includes ready-to-use replications of existing stimulus sets (e.g. ModelFest)
 - makes it easy to create new stimuli because
