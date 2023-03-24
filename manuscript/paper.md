@@ -43,7 +43,7 @@ of different complexity as they are commonly used in the study of visual percept
 
 - basic [components](https://stimupy.readthedocs.io/en/latest/reference/_api/stimupy.components.html),
   including shapes, lines, gratings, checkerboards, and Gaussians
-- different types of [visual noise textures](https://stimupy.readthedocs.io/en/latest/reference/_api/stimupy.noises.html)
+- different types of visual [noise](https://stimupy.readthedocs.io/en/latest/reference/_api/stimupy.noises.html) textures
 - visual [stimuli](https://stimupy.readthedocs.io/en/latest/reference/_api/stimupy.stimuli.html)
   such as Gabors, plaids, edges, and a variety of so-called illusions
   (e.g. Simultaneous Brightness Contrast, White's illusion, Hermann grid, Ponzo illusion), and many more
