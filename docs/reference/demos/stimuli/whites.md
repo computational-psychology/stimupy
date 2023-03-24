@@ -40,7 +40,6 @@ w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
 w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
 
 w_freq = iw.FloatSlider(value=1, min=0, max=2, description="frequency [cpd]")
-w_phase = iw.FloatSlider(value=0, min=0, max=360, description="phase shift [deg]")
 w_rot = iw.FloatSlider(value=0, min=0, max=360, description="rotation [deg]")
 
 w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int1")
@@ -62,7 +61,7 @@ w_mask = iw.ToggleButton(value=False, disabled=False, description="add mask")
 
 # Layout
 b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_freq, w_phase, w_rot])
+b_geometry = iw.HBox([w_freq, w_rot])
 b_intensities = iw.HBox([w_int1, w_int2])
 b_target = iw.HBox([w_tidx, w_tint, w_toff, w_theights])
 b_target2 = iw.HBox([w_tidx2, w_tint2, w_toff2, w_theights2])
@@ -76,7 +75,6 @@ def show_generalized(
     ppd=None,
     rotation=None,
     frequency=None,
-    phase_shift=None,
     sigma=None,
     int1=None,
     int2=None,
@@ -97,7 +95,6 @@ def show_generalized(
         ppd=ppd,
         rotation=rotation,
         frequency=frequency,
-        phase_shift=phase_shift,
         intensity_bars=(int1, int2),
         origin=origin,
         period=period,
@@ -117,7 +114,6 @@ out = iw.interactive_output(
         "ppd": w_ppd,
         "rotation": w_rot,
         "frequency": w_freq,
-        "phase_shift": w_phase,
         "int1": w_int1,
         "int2": w_int2,
         "origin": w_ori,
@@ -150,7 +146,6 @@ w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
 w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
 
 w_freq = iw.FloatSlider(value=1, min=0, max=2, description="frequency [cpd]")
-w_phase = iw.FloatSlider(value=0, min=0, max=360, description="phase shift [deg]")
 w_rot = iw.FloatSlider(value=0, min=0, max=360, description="rotation [deg]")
 
 w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int1")
@@ -170,7 +165,7 @@ w_mask = iw.ToggleButton(value=False, disabled=False, description="add mask")
 
 # Layout
 b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_freq, w_phase, w_rot])
+b_geometry = iw.HBox([w_freq, w_rot])
 b_intensities = iw.HBox([w_int1, w_int2])
 b_target = iw.HBox([w_tidx, w_tint, w_theights])
 b_target2 = iw.HBox([w_tidx2, w_tint2, w_theights2])
@@ -184,7 +179,6 @@ def show_white(
     ppd=None,
     rotation=None,
     frequency=None,
-    phase_shift=None,
     sigma=None,
     int1=None,
     int2=None,
@@ -203,13 +197,12 @@ def show_white(
         ppd=ppd,
         rotation=rotation,
         frequency=frequency,
-        phase_shift=phase_shift,
         intensity_bars=(int1, int2),
         origin=origin,
         period=period,
         target_indices=(target_idx, target_idx2),
         intensity_target=(intensity_target, intensity_target2),
-        target_height=(target_heights, target_heights2),
+        target_heights=(target_heights, target_heights2),
     )
     plot_stim(stim, mask=add_mask)
 
@@ -222,7 +215,6 @@ out = iw.interactive_output(
         "ppd": w_ppd,
         "rotation": w_rot,
         "frequency": w_freq,
-        "phase_shift": w_phase,
         "int1": w_int1,
         "int2": w_int2,
         "origin": w_ori,
@@ -253,7 +245,6 @@ w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
 w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
 
 w_freq = iw.FloatSlider(value=1, min=0, max=2, description="frequency [cpd]")
-w_phase = iw.FloatSlider(value=0, min=0, max=360, description="phase shift [deg]")
 w_rot = iw.FloatSlider(value=0, min=0, max=360, description="rotation [deg]")
 
 w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int1")
@@ -275,7 +266,7 @@ w_mask = iw.ToggleButton(value=False, disabled=False, description="add mask")
 
 # Layout
 b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_freq, w_phase, w_rot])
+b_geometry = iw.HBox([w_freq, w_rot])
 b_intensities = iw.HBox([w_int1, w_int2])
 b_toff = w_toff
 b_target = iw.HBox([w_tidx, w_tint, w_theights])
@@ -290,7 +281,6 @@ def show_white_two_rows(
     ppd=None,
     rotation=None,
     frequency=None,
-    phase_shift=None,
     sigma=None,
     int1=None,
     int2=None,
@@ -310,7 +300,6 @@ def show_white_two_rows(
         ppd=ppd,
         rotation=rotation,
         frequency=frequency,
-        phase_shift=phase_shift,
         intensity_bars=(int1, int2),
         origin=origin,
         period=period,
@@ -318,7 +307,7 @@ def show_white_two_rows(
         target_indices_bottom=target_idx2,
         intensity_target=(intensity_target, intensity_target2),
         target_center_offset=target_center_offsets,
-        target_height=(target_heights, target_heights2),
+        target_heights=(target_heights, target_heights2),
     )
     plot_stim(stim, mask=add_mask)
 
@@ -331,7 +320,6 @@ out = iw.interactive_output(
         "ppd": w_ppd,
         "rotation": w_rot,
         "frequency": w_freq,
-        "phase_shift": w_phase,
         "int1": w_int1,
         "int2": w_int2,
         "origin": w_ori,
@@ -363,8 +351,6 @@ w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
 w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
 
 w_freq = iw.FloatSlider(value=1, min=0, max=2, description="frequency [cpd]")
-w_phase = iw.FloatSlider(value=0, min=0, max=360, description="phase shift [deg]")
-w_rot = iw.FloatSlider(value=0, min=0, max=360, description="rotation [deg]")
 
 w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int1")
 w_int2 = iw.FloatSlider(value=0, min=0, max=1, description="int2")
@@ -384,19 +370,18 @@ w_soff = iw.FloatSlider(value=2, min=0, max=5, description="stripe center offset
 w_sint1 = iw.FloatSlider(value=1.0, min=0, max=1, description="stripe1 int")
 w_sint2 = iw.FloatSlider(value=0.0, min=0, max=1, description="stripe2 int")
 
-w_ori = iw.Dropdown(value="mean", options=['mean', 'corner', 'center'], description="origin")
 w_period = iw.Dropdown(value="ignore", options=['ignore', 'even', 'odd', 'either'], description="period")
 w_mask = iw.ToggleButton(value=False, disabled=False, description="add mask")
 
 # Layout
 b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_freq, w_phase, w_rot])
+b_geometry = iw.HBox([w_freq])
 b_intensities = iw.HBox([w_int1, w_int2])
 b_toff = w_toff
 b_target = iw.HBox([w_tidx, w_tint, w_theights])
 b_target2 = iw.HBox([w_tidx2, w_tint2, w_theights2])
 b_stripe = iw.HBox([w_sheight, w_soff, w_sint1, w_sint2])
-b_add = iw.HBox([w_ori, w_period, w_mask])
+b_add = iw.HBox([w_period, w_mask])
 ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_toff, b_target, b_target2, b_stripe, b_add])
 
 # Function for showing stim
@@ -404,13 +389,9 @@ def show_anderson(
     height=None,
     width=None,
     ppd=None,
-    rotation=None,
     frequency=None,
-    phase_shift=None,
-    sigma=None,
     int1=None,
     int2=None,
-    origin=None,
     period=None,
     add_mask=False,
     target_idx=None,
@@ -428,17 +409,14 @@ def show_anderson(
     stim = anderson(
         visual_size=(height, width),
         ppd=ppd,
-#        rotation=rotation,
         frequency=frequency,
-#        phase_shift=phase_shift,
         intensity_bars=(int1, int2),
-#        origin=origin,
         period=period,
         target_indices_top=target_idx,
         target_indices_bottom=target_idx2,
         intensity_target=(intensity_target, intensity_target2),
         target_center_offset=target_center_offsets,
-        target_height=target_heights,
+        target_height=(target_heights, target_heights2),
         stripe_height=stripe_height,
         stripe_center_offset=stripe_center_offset,
         intensity_stripes=(stripe_int1, stripe_int2),
@@ -452,12 +430,9 @@ out = iw.interactive_output(
         "height": w_height,
         "width": w_width,
         "ppd": w_ppd,
-        "rotation": w_rot,
         "frequency": w_freq,
-        "phase_shift": w_phase,
         "int1": w_int1,
         "int2": w_int2,
-        "origin": w_ori,
         "period": w_period,
         "add_mask": w_mask,
         "target_idx": w_tidx,
@@ -490,8 +465,6 @@ w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
 w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
 
 w_freq = iw.FloatSlider(value=1, min=0, max=2, description="frequency [cpd]")
-w_phase = iw.FloatSlider(value=0, min=0, max=360, description="phase shift [deg]")
-w_rot = iw.FloatSlider(value=0, min=0, max=360, description="rotation [deg]")
 
 w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int1")
 w_int2 = iw.FloatSlider(value=0, min=0, max=1, description="int2")
@@ -509,13 +482,12 @@ w_theights2 = iw.FloatSlider(value=1, min=0, max=5, description="target2 heights
 w_sint1 = iw.FloatSlider(value=1.0, min=0, max=1, description="stripe1 int")
 w_sint2 = iw.FloatSlider(value=0.0, min=0, max=1, description="stripe2 int")
 
-w_ori = iw.Dropdown(value="mean", options=['mean', 'corner', 'center'], description="origin")
 w_period = iw.Dropdown(value="ignore", options=['ignore', 'even', 'odd', 'either'], description="period")
 w_mask = iw.ToggleButton(value=False, disabled=False, description="add mask")
 
 # Layout
 b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_freq, w_phase, w_rot])
+b_geometry = iw.HBox([w_freq, w_rot])
 b_intensities = iw.HBox([w_int1, w_int2])
 b_toff = w_toff
 b_target = iw.HBox([w_tidx, w_tint, w_theights])
@@ -529,13 +501,9 @@ def show_howe(
     height=None,
     width=None,
     ppd=None,
-    rotation=None,
     frequency=None,
-    phase_shift=None,
-    sigma=None,
     int1=None,
     int2=None,
-    origin=None,
     period=None,
     add_mask=False,
     target_idx=None,
@@ -551,17 +519,14 @@ def show_howe(
     stim = howe(
         visual_size=(height, width),
         ppd=ppd,
-#        rotation=rotation,
         frequency=frequency,
-#        phase_shift=phase_shift,
         intensity_bars=(int1, int2),
-#        origin=origin,
         period=period,
         target_indices_top=target_idx,
         target_indices_bottom=target_idx2,
         intensity_target=(intensity_target, intensity_target2),
         target_center_offset=target_center_offsets,
-        target_height=target_heights,
+        target_height=(target_heights, target_heights2),
         intensity_stripes=(stripe_int1, stripe_int2),
     )
     plot_stim(stim, mask=add_mask)
@@ -573,12 +538,9 @@ out = iw.interactive_output(
         "height": w_height,
         "width": w_width,
         "ppd": w_ppd,
-        "rotation": w_rot,
         "frequency": w_freq,
-        "phase_shift": w_phase,
         "int1": w_int1,
         "int2": w_int2,
-        "origin": w_ori,
         "period": w_period,
         "add_mask": w_mask,
         "target_idx": w_tidx,
@@ -609,8 +571,6 @@ w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
 w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
 
 w_freq = iw.FloatSlider(value=1, min=0, max=2, description="frequency [cpd]")
-w_phase = iw.FloatSlider(value=0, min=0, max=360, description="phase shift [deg]")
-w_rot = iw.FloatSlider(value=0, min=0, max=360, description="rotation [deg]")
 
 w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int1")
 w_int2 = iw.FloatSlider(value=0, min=0, max=1, description="int2")
@@ -629,19 +589,18 @@ w_theights2 = iw.FloatSlider(value=1, min=0, max=5, description="target2 heights
 w_sint1 = iw.FloatSlider(value=1.0, min=0, max=1, description="stripe1 int")
 w_sint2 = iw.FloatSlider(value=0.0, min=0, max=1, description="stripe2 int")
 
-w_ori = iw.Dropdown(value="mean", options=['mean', 'corner', 'center'], description="origin")
 w_period = iw.Dropdown(value="ignore", options=['ignore', 'even', 'odd', 'either'], description="period")
 w_mask = iw.ToggleButton(value=False, disabled=False, description="add mask")
 
 # Layout
 b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_freq, w_phase, w_rot])
+b_geometry = iw.HBox([w_freq])
 b_intensities = iw.HBox([w_int1, w_int2])
 b_toff = iw.HBox([w_toff, w_gap])
 b_target = iw.HBox([w_tidx, w_tint, w_theights])
 b_target2 = iw.HBox([w_tidx2, w_tint2, w_theights2])
 b_stripe = iw.HBox([w_sint1, w_sint2])
-b_add = iw.HBox([w_ori, w_period, w_mask])
+b_add = iw.HBox([w_period, w_mask])
 ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_toff, b_target, b_target2, b_stripe, b_add])
 
 # Function for showing stim
@@ -649,13 +608,9 @@ def show_yazdanbakhsh(
     height=None,
     width=None,
     ppd=None,
-    rotation=None,
     frequency=None,
-    phase_shift=None,
-    sigma=None,
     int1=None,
     int2=None,
-    origin=None,
     period=None,
     add_mask=False,
     target_idx=None,
@@ -672,11 +627,8 @@ def show_yazdanbakhsh(
     stim = yazdanbakhsh(
         visual_size=(height, width),
         ppd=ppd,
-#        rotation=rotation,
         frequency=frequency,
-#        phase_shift=phase_shift,
         intensity_bars=(int1, int2),
-#        origin=origin,
         period=period,
         target_indices_top=target_idx,
         target_indices_bottom=target_idx2,
@@ -695,12 +647,9 @@ out = iw.interactive_output(
         "height": w_height,
         "width": w_width,
         "ppd": w_ppd,
-        "rotation": w_rot,
         "frequency": w_freq,
-        "phase_shift": w_phase,
         "int1": w_int1,
         "int2": w_int2,
-        "origin": w_ori,
         "period": w_period,
         "add_mask": w_mask,
         "target_idx": w_tidx,
@@ -720,11 +669,11 @@ out = iw.interactive_output(
 display(ui, out)
 ```
 
-## Circular
-{py:func}`stimupy.stimuli.whites.circular`
+## Radial
+{py:func}`stimupy.stimuli.whites.radial`
 
 ```{code-cell} ipython3
-from stimupy.stimuli.whites import circular
+from stimupy.stimuli.whites import radial
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
@@ -756,7 +705,7 @@ b_add = iw.HBox([w_ori, w_period, w_round, w_clip, w_mask])
 ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target, b_add])
 
 # Function for showing stim
-def show_circular(
+def show_radial(
     height=None,
     width=None,
     ppd=None,
@@ -773,7 +722,7 @@ def show_circular(
     intensity_target=None,
     clip=True,
 ):
-    stim = circular(
+    stim = radial(
         visual_size=(height, width),
         ppd=ppd,
         rotation=rotation,
@@ -791,7 +740,7 @@ def show_circular(
 
 # Set interactivity
 out = iw.interactive_output(
-    show_circular,
+    show_radial,
     {
         "height": w_height,
         "width": w_width,
@@ -815,11 +764,11 @@ out = iw.interactive_output(
 display(ui, out)
 ```
 
-## Radial
-{py:func}`stimupy.stimuli.whites.radial`
+## Angular
+{py:func}`stimupy.stimuli.whites.angular`
 
 ```{code-cell} ipython3
-from stimupy.stimuli.whites import radial
+from stimupy.stimuli.whites import angular
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
@@ -850,7 +799,7 @@ b_add = iw.HBox([w_ori, w_mask])
 ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target, b_add])
 
 # Function for showing stim
-def show_radial(
+def show_angular(
     height=None,
     width=None,
     ppd=None,
@@ -866,7 +815,7 @@ def show_radial(
     origin=None,
     add_mask=False,
 ):
-    stim = radial(
+    stim = angular(
         visual_size=(height, width),
         ppd=ppd,
         rotation=rotation,
@@ -883,7 +832,7 @@ def show_radial(
 
 # Set interactivity
 out = iw.interactive_output(
-    show_radial,
+    show_angular,
     {
         "height": w_height,
         "width": w_width,
