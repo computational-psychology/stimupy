@@ -3,7 +3,8 @@ import warnings
 
 import numpy as np
 
-from stimupy.components import image_base
+from stimupy.components import draw_regions, image_base
+from stimupy.components.shapes import rectangle
 from stimupy.stimuli.gratings import squarewave
 from stimupy.stimuli.pinwheels import pinwheel as angular
 from stimupy.stimuli.waves import square_radial as radial
@@ -150,17 +151,28 @@ def generalized(
     theta = np.deg2rad(rotation)
     x = np.round(np.cos(theta) * yy - np.sin(theta) * xx, 8)
 
-    target_zip = zip(target_indices, intensity_target, target_heights, target_center_offsets)
-
     # Place target(s)
+    stim_center = stim["visual_size"].height / 2
+    target_zip = zip(target_indices, intensity_target, target_heights, target_center_offsets)
     targets_mask = np.zeros_like(stim["grating_mask"])
     for target_idx, (bar_idx, intensity, height, offset) in enumerate(target_zip):
-        mask1 = np.where(x >= offset + height / 2, 0, 1)
-        mask2 = np.where(x < offset - height / 2, 0, 1)
+        # Draw a stripe of target_height x stim_width, at center + offset
+        rect = rectangle(
+            visual_size=stim["visual_size"],
+            ppd=stim["ppd"],
+            shape=stim["shape"],
+            rectangle_size=(height, stim["visual_size"].width),
+            rectangle_position=(stim_center + offset - (height / 2), 0),
+            intensity_rectangle=intensity,
+        )
+
+        # Find where strip intersects with the target bar
         if bar_idx < 0:
             bar_idx = int(stim["n_bars"]) + bar_idx
-        mask3 = np.where(stim["grating_mask"] == bar_idx + 1, target_idx + 1, 0)
-        targets_mask += mask1 * mask2 * mask3
+        mask = (stim["grating_mask"] == bar_idx + 1) & rect["shape_mask"]
+        targets_mask = np.where(mask, target_idx + 1, targets_mask)
+
+        # Draw target
         stim["img"] = np.where(targets_mask == target_idx + 1, intensity, stim["img"])
 
     # Update and return stimulus
