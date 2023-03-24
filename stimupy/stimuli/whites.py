@@ -833,7 +833,8 @@ def overview(**kwargs):
         "white_radial": radial(
             **default_params,
             frequency=0.5,
-            target_indices=(1, 4),),
+            target_indices=(1, 4),
+            clip=True),
         "white_wedding_cake": wedding_cake(
             **default_params,
             L_size=(4, 2.5, 0.5),
