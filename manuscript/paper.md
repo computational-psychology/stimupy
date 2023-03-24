@@ -1,5 +1,5 @@
 ---
-title: 'Stimupy: A Python stimulus creation package for vision science'
+title: '`stimupy`: A Python stimulus creation package for vision science'
 tags:
   - Python package
   - vision science
@@ -17,172 +17,240 @@ authors:
     orcid: 0000-0001-6882-5584
     affiliation: 2
 affiliations:
- - name: Science of Intelligence, Technische Universitaet Berlin, Germany
+ - name: Science of Intelligence, Technische Universität Berlin, Germany
    index: 1
- - name: Computational Psychology, Technische Universitaet Berlin, Germany
+ - name: Computational Psychology, Technische Universität Berlin, Germany
    index: 2
-date: 25 December 2022
+date: 24 March 2023
 bibliography: bibliography.bib
 ---
 
 
 # Summary
 
-Stimupy is a Python package for creating visual stimuli which are commonly used to study the human visual system.
-These include basic shapes, a variety of gratings, different noises and other relevant visual phenomena
-(e.g. checkerboards, Cornsweet stimulus, White stimulus).
+Visual stimuli are at the heart of perception research.
+They may come as visual illusions which demonstrate the striking differences
+between the perceptual and physical world,
+they may involve minuscule stimulus changes
+which are used to probe the limits of visual sensitivity,
+or they may be used to probe any other aspect of visual processing.
+`stimupy` is a free and open-source Python package
+which allows the user to create visual stimuli
+of different complexity as they are commonly used in the study of visual perception
+(\autoref{fig:overview}).
 
-The main purpose of Stimupy is to support vision science by providing a large,
-openly-available and flexible battery of relevant visual stimuli.
-Its key feature is that all stimulus-functions are highly parameterized
-with parameters that vision scientists care about,
-such as visual angle, spatial frequency, or target placements to name a few.
-Stimupy is designed in a modular fashion,
-i.e. more complex stimuli are composed of less complex stimuli.
-The output of all stimulus functions is a dictionary which contains the stimulus-array
-but also other potentially useful information such as (target) masks, sizes and other stimulus-specificities.
-Using dictionaries is useful because it allows for any additional information to be added
-(including stimulus specificities or experimental data).
+`stimupy` provides functions to generate:
 
-Given the flexibility of the stimulus functions,
-Stimupy can be used to re-create many stimuli
-that have been used in prior vision research or create entirely new stimuli.
-This is particularly useful to built stimulus benchmarks which can be easily accessed by the community.
-As a second key feature, Stimupy therefore provides a selection of stimulus sets
-(e.g. ModelFest)
-as they have been used in the original manuscripts including their experimental findings.
-Given the modular nature of the package,
-any stimulus or stimulus set that is currently not available can be easily added in the future.
+- basic [components](https://stimupy.readthedocs.io/en/latest/reference/_api/stimupy.components.html),
+  including shapes, lines, gratings, checkerboards, and Gaussians
+- different types of visual [noise](https://stimupy.readthedocs.io/en/latest/reference/_api/stimupy.noises.html) textures
+- visual [stimuli](https://stimupy.readthedocs.io/en/latest/reference/_api/stimupy.stimuli.html)
+  such as Gabors, plaids, edges, and a variety of so-called illusions
+  (e.g. Simultaneous Brightness Contrast, White's illusion, Hermann grid, Ponzo illusion), and many more
+- stimulus sets from prior research papers, providing exact stimulus recreations (e.g. ModelFest)
+- [utility functions](https://stimupy.readthedocs.io/en/latest/reference/_api/stimupy.utils.html)
+  for stimulus import, export, manipulation (e.g. contrast, size), or plotting
+- [documentation](https://stimupy.readthedocs.io/en/latest/index.html),
+  including [interactive demonstrations](https://stimupy.readthedocs.io/en/latest/reference/demos.html) of stimulus functions
+- unit and integration [tests](https://github.com/computational-psychology/stimupy/actions/workflows/test.yml)
 
-Finally, Stimupy allows for exploration of parameter spaces underlying the individual stimulus functions.
-This can support both experimental as well as theoretical work in vision science.
-As such, exploring parameter spaces can in itself provide insights
-into the kind of stimuli we use in vision science,
-e.g. by revealing how certain stimuli are connected or by exploring their edge cases.
-On the other hand, the exploration of certain parameter spaces along a single or multiple dimensions
-can be directly mapped to research questions that we want to study in our field.
+`stimupy` has been designed to:
 
-Building blocks of Stimupy:
+- generate (novel) visual stimuli in a reproducible, flexible, and easy way
+- recreate exact stimuli as they have been used in prior vision research 
+- explore large parameter spaces to reveal relations between formerly unconnected stimuli
+- provide classic stimulus sets (e.g. ModelFest),
+  exactly as described in the original manuscripts (including experimental data)
+- build new stimulus sets or benchmarks (e.g. for testing computational models),
+  and easily add them to `stimupy`
+- support vision science by providing a large,openly-available and flexible battery of relevant stimulus functions
+- unify and automate stimulus creation
 
-- Stimulus components containing basic shapes, gratings, and Gaussians ([components](link))
-- Different kinds of noise which are commonly used for noise-masking experiments ([noise](link))
-- Visual illusions containing a variety of stimuli commonly referred to as illusions such as White's stimulus, the Hermann grid and many more ([illusions](link))
-- Stimulus sets as used in the original research, including ModelFest and stimuli from lightness research ([papers](link))
-- Many utility functions, e.g. for manipulating (e.g. contrast, size), importing, exporting or plotting stimuli ([utils](link))
-- Demonstrations of all stimulus functions using (interactive) Jupyter Notebooks ([demos](link))
-- Elaborate test cases ([tests](link))
+![A small fraction of the stimulus variety that ``stimupy`` can produce \label{fig:overview}](overview.png)
 
 
-# Statement of Need
+# State of the field
+Creating visual stimuli is a central task in vision research.
+To generate stimuli, it is common practice to
+either write your own stimulus functions from scratch;
+reuse existing code;
+or import a static stimulus version from an image or data file
+(see e.g. @carney1999, @murray2020).
+The alternative to these idiosyncratic approaches
+is to use existing software which provides more flexible stimulus functions.
 
-Visual stimuli are one of the core concepts to elucidate the mechanisms underlying visual processing.
-Though not complete, there are types of stimuli which are commonly used.
-Despite their relevance, there is little software (but see related software)
-which supports the creation of many stimuli parameterized in a way which is targeted towards vision science.
-Hence, most vision research requires to implement stimuli from scratch.
-Depending on the complexity of these stimuli, this endeavor can be time-consuming,
-prone to error and can make comparison with other research harder.
-This is where Stimupy comes into place.
-
-Stimupy is an openly-available Python package for creating a multitude of visual stimuli
-in a parameterized way and is targeted towards the needs of vision science.
-It can be easily downloaded and installed via github and pip.
-Using Stimupy can improve the consistency and accessibility of visual stimuli in the field, while helping to avoid bugs.
-Given its modular and application-oriented nature, Stimupy supports the use and design of visual stimuli for studying visual perception.
-This is particularly useful because varying stimuli along one or multiple of the provided dimensions can be directly mapped to certain experimental designs.
-
-Another challenge in some vision disciplines is the need for benchmark datasets [@carney1999, @murray2021].
-These are particularly relevant to test the validity of vision models,
-hence support the understanding of visual mechanisms.
-The usefulness of benchmarks have been shown
-in spatial vision with the ModelFest dataset [@carney1999, @carney2000]
-but also in various applications of computer vision
-including object recognition [@deng2009] or object segmentation [@martin2001].
-However, visual stimuli from previous vision research are not always accessible
-and the creation of visual stimuli can be challenging.
-Therefore, creating and agreeing on a benchmark dataset is not trivial.
-To support this process and facilitate the accessibility of previously used stimuli,
-Stimupy provides a collection of stimulus sets (including ModelFest) as they have been used in the original manuscripts.
-Hence, entire stimulus sets (including experimental findings) can be accessed via a single line of code.
-
-Finally, due to its high degree of parameterizability,
-Stimupy allows for extensive explorations of stimulus parameter spaces.
-This can be useful for vision experiments because varying stimuli along one or multiple dimensions can be mapped to certain experimental designs.
-Moreover, this feature can also guide theoretical work because it allows to find so-called maximally-differentiable stimuli [@wang2008].
-The basic idea of maximum differentiation is to analyze model predictions for systematically varied stimuli to find the ones which differentiate best between models.
-Like this, the number of stimuli tested experimentally can be reduced to the most relevant stimuli.
-Since collecting (human) data is resourceful,
-maximal differentiation is a useful method to reduce theoretically large stimulus parameter spaces to a testable number of stimuli.
-
-Key features of Stimupy:
-
-- modular, open-source and unifying software for creating many visual stimuli,
-- functions tailored towards the needs of vision science,
-- highly parameterized stimulus functions with many use-cases,
-- easily accessible stimulus sets from previous vision research,
-- application-oriented documentation using (interactive) Jupyter Notebooks,
-- flexible design which facilitates future development.
-
-
-# Projects Using the Software
-
-As stimulus creation is relevant for many vision science projects,
-stimulus functions which are part of Stimupy or a pre-release version of the software
-have been used in almost all of the work of our laboratory within the last two years.
-Some of Stimupy's noise functions have been used to generate the narrowband noise masks of varying center frequency in [@schmittwilken2022b].
-A pre-release version was used in multiple conference contributions
-in which we ... (joris vss 2021) [@vincent2021],
-in which we compared existing models of human brightness perception on a large battery of brightness stimuli [@schmittwilken2022a],
-in which we (joris ecvp 2022) [@vincent2022],
-and in which we studied human edge processing with Cornsweet stimuli in various kinds of noise
-(white, pink, brown, several narrowband noises) [@schmittwilken2022c].
-All these stimuli were created with Stimupy or functions that are included in the software.
-Moreover, we are using Stimupy in ongoing work in our laboratory and in many student projects.
-
-
-# Related Software
-
-Since the creation of visual stimuli is a central topic in vision sciences,
-there exist some software which fulfills partial or related needs as Stimupy.
-These are
+We are currently aware of
 
 - Psychtoolbox [@brainard1997],
 - Psychopy [@peirce2019],
 - Pyllusion [@makowski2021].
 
-Vision experiments require profound control over the hardware at hand for precise stimulus display.
-In their essence, Psychtoolbox and Psychopy support this process
-by interfacing between the computer hardware and Matlab (Psychtoolbox) and Python (Psychopy).
-Hence, Pychtoolbox and Psychopy facilitate hardware control for vision experimentation via Matlab and Python.
-Though their main focus is on hardware control, Psychtoolbox and Psychopy also provide functions for generating stimuli.
-These include lines, basic shapes, gratings and Gaussian noise, as well as some dynamic displays and sound.
+Psychtoolbox and Psychopy both provide functions to generate a number of visual stimuli. 
+However, stimulus generation is integrated into their main purpose
+which is to run psychophysical experiments.
+The design focus of both Psychtoolbox and Psychopy has therefore been
+to support the user to interface between computer hardware and Matlab and Python,
+respectively, 
+to enable temporal precision and high dynamic range stimulus delivery.
 
-Other recent software which recognized the need for unified and automatized stimulus creation is Pyllusion.
-Pyllusion is a framework to generate optical illusions systematically using parameters
-which are relevant for vision experimentation (e.g. illusion strength).
-This parametric approach of Pyllusion is in spirit very similar to Stimupy.
+The design focus of `stimupy` is on stimulus creation.
+This allows `stimupy` to include many more stimuli
+than included in Psychtoolbox or Psychopy.
+It also allows the user to interact with the stimulus arrays directly.
+This makes it easy to manipulate the stimulus and use it
+for other purposes than psychophysical experimentation
+(e.g. computational modeling, visualization).
+This also means that in order to present the stimuli on a computer monitor,
+the user may still want to use Psychopy, Psychtoolbox
+or another delivery system for hardware control.
 
-Besides, there exist no software to access existing stimulus sets in vision science.
-The two most common practices are to re-implement the stimuli in an idiosyncratic fashion
-or to import static stimulus files (image or data files; see e.g. @carney1999, @murray2020).
+Pyllusion is a Python package to generate a number of well-known illusions
+such as the Müller-Lyer, Ponzo or Zöllner illusions, and more.
+Pyllusion provides functions for each of these illusions using high-level parameters
+(e.g. illusion strength).
+The parametric approach of Pyllusion is similar in spirit to `stimupy`.
+However, in Pyllusion each illusion-function stands alone:
+it produces only that stimulus, and its arguments are unique to that stimulus.
+In contrast, `stimupy` provides a unified interface to stimulus creation,
+where many functions share the same - intuitive - parameters.
+This makes it easier to explore parameters and to create novel stimuli.
 
-Within Stimupy, we combined and extended these software features and practices
-to unify and support stimulus creation and accessibility.
-Compared to existing software, it contains a wide variety of visual stimuli
-which are all highly parameterizable and tailored towards vision science,
-and it can be used to access whole stimulus sets from previous vision research within a single line of code.
-On top of that, the output dictionaries of the stimulus functions can store useful stimulus information,
-such as (target) masks and experimental data if applicable.
-This is useful for comparing experimental findings and for developing and testing models of human vision.
+# Statement of Need
+
+Many visual stimuli are used time and again.
+Despite their relevance, there is no standard way of implementing stimuli
+which considers function parameters in a way that is targeted towards vision science.
+Hence, in practice, researchers implement their own stimuli from scratch
+or are lucky enough to find some existing implementation online,
+from colleagues or in the above mentioned software packages.
+Depending on the complexity or specificity of the desired stimulus manipulation,
+this endeavor is (1) time-consuming, (2) prone to error,
+and (3) makes comparisons with other research difficult.
+Hence, we developed `stimupy` to simplify, unify and automate visual stimulus generation 
+while at the same time allowing the flexibility
+to create entirely new stimuli and build stimulus benchmarks.
+
+As far as we know `stimupy` is the only package that:
+
+- contains a wide variety of visual stimuli, from simple geometric shapes to complex illusions
+- includes ready-to-use replications of existing stimulus sets (e.g. ModelFest)
+- makes it easy to create new stimuli because (1) stimulus functions
+  use parameters which are familiar to vision scientists,
+  and (2) it provides building blocks and masks which can be used to assemble more complicated geometries
+- uses flexible output structures (NumPy arrays, and Python dictionaries)
+  and hence makes it easy to interact with the stimulus arrays
+  and store additional information
+  (e.g. stimulus descriptions, stimulus masks, experimental data)
+- is modular and therefore easy to extend with new stimulus functions,
+  and new stimulus sets
+- is hierarchical in a sense that more complex stimulus functions
+  (e.g. visual illusions) use more basic stimulus functions (e.g. components)
+- comes with application-oriented documentation, including interactive Jupyter Notebooks
+
+`stimupy` is a free and open-source Python package
+which can be easily downloaded and installed via standard package managers,
+or directly from its GitHub source.
+We think that using `stimupy` will improve the consistency
+and accessibility of visual stimuli while helping to avoid bugs.
+A key feature in `stimupy` is that its functions are parameterized
+with parameters that are relevant to vision scientists
+(e.g. visual angle, spatial frequency, target placements).
+Moreover, `stimupy` is designed in a modular fashion,
+i.e. more complex stimuli are composed of less complex stimuli,
+which supports the understanding of existing stimuli,
+makes connections between stimuli explicit,
+and facilitates the creation of novel stimuli.
+The output of all stimulus functions is a dictionary
+which contains the stimulus-image as a NumPy-array
+together with other useful stimulus information
+(e.g. masks, stimulus parameters, and experimental data).
+Having the stimulus-image as a NumPy-array makes it easy to work
+and interact with the stimulus,
+e.g. using common NumPy tooling and/or utility functions provided by `stimupy`.
+This is useful for manipulating the stimulus as well as for using the stimulus
+for other purposes than psychophysical experimentation on a computer screen
+(e.g. for visualizations or for computational modeling).
+The main advantage of using dictionaries as function outputs is that
+Python dictionaries are mutable data structures
+which allow you to add additional information easily.
+Taken together,
+these design choices make `stimupy` a flexible and versatile Python package
+which facilitates the (re)creation and use of visual stimuli for a variety of purposes.
+
+Another important use case for `stimupy` is the evaluation of computational vision models.
+A common strategy to validate computational vision models
+is to test them with benchmark datasets
+(e.g. @carney1999 in spatial vision,
+@murray2021 in lightness perception,
+@deng2009 in object recognition, or
+@martin2001 in object segmentation).
+However, visual stimuli from prior research are not always publicly available
+and it is thus difficult and time-consuming
+to test model performance on stimuli from prior research.
+On top of that, creating and agreeing on benchmark datasets is a challenging task.
+Hence, to support the accessibility of previously used stimuli
+and encourage the creation of stimulus benchmarks,
+`stimupy` provides a collection of existing stimulus sets (including ModelFest)
+as they have been used in the original manuscripts.
+Due to `stimupy`’s versatility, entire stimulus sets (including experimental findings)
+can be accessed via a single line of code,
+and more stimulus sets can be added at any point in time.
+
+![Samples from a parameter space of a single ``stimupy`` stimulus function: \label{fig:stimspace}](stimspace.png)
+
+`stimupy`'s high degree of parameterizability allows for extensive explorations
+of stimulus parameter spaces (\autoref{fig:stimspace}).
+On the one hand, this can be useful for vision experimentation
+because varying stimuli along one or multiple dimensions
+can be directly mapped to certain experimental designs and research questions.
+On the other hand, this feature can also guide theoretical work because
+among other things it allows to find so-called
+maximally-differentiable stimuli [@wang2008].
+The basic idea of maximum differentiation is to analyze model predictions
+for systematically varied stimuli
+to find the ones which differentiate best (maximally) between models.
+Like this, the number of stimuli tested experimentally can be reduced to the most relevant stimuli.
+Since collecting (human) data is resourceful,
+maximal differentiation is a useful method
+to reduce theoretically large stimulus parameter spaces to a testable number of stimuli.
+
+Last but not least,
+`stimupy` can be a useful aid in teaching contexts
+because it provides students with a basic framework
+in which they can design and interact with stimuli in a playful way.
+Since `stimupy` is focused on stimulus creation rather than stimulus presentation,
+a user can quickly generate complex and innovative stimuli
+– even with beginner knowledge of Python.
+The parameterized functions and the interactive documentation
+allow for easy teaching and communication
+of how various stimulus parameters affect perception.
+
+
+# Projects Using the Software
+
+As stimulus creation is relevant for many vision science projects,
+stimulus functions which are part of `stimupy` or a pre-release version of the software
+have been used in almost all of the work of our laboratory within the last two years.
+Some of `stimupy`'s noise functions have been used to generate the narrowband noise masks of varying center frequency in [@schmittwilken2022b].
+A pre-release version was used in multiple conference contributions
+in which we compared structural elements between existing models of brightness perception [@vincent.maertens2021a];
+in which we compared existing models of human brightness perception on a large battery of brightness stimuli [@schmittwilken2022a];
+in which we evaluated how to quantitatively link output of computational models to human brightness perception data [@vincent.maertens2021];
+in which we demonstrate that a family of computational models
+fails to account for novel brightenss perception data [@vincent.maertens.ea2021; @aguilar.maertens.ea2022; @vincent.maertens.ea2022]
+and in which we studied human edge processing with Cornsweet stimuli in various kinds of noise
+(white, pink, brown, several narrowband noises) [@schmittwilken2022c].
+All these stimuli were created with `stimupy` or functions that are included in the software.
+Moreover, we are using `stimupy` in ongoing work in our laboratory and in many student projects.
 
 
 # Future Work
 
 In theory, there is an infinite number of stimuli which are or could be interesting in the future of vision research.
-Hence, Stimupy will by default remain under active development.
+Hence, `stimupy` will by default remain under active development.
 In future versions, we want to add more visual stimuli and more stimulus sets
 -- particularly dynamic stimuli which are currently not included.
-Finally, we want to foster the development of stimulus benchmarks in vision science which will be added to Stimupy.
+Finally, we want to foster the development of stimulus benchmarks in vision science which will be added to `stimupy`.
 
 
 # Acknowledgements
