@@ -8,9 +8,9 @@ __all__ = [
     "basic",
     "two_sided",
     "with_dots",
+    "with_dots_two_sided",
     "dotted",
-    "two_sided_with_dots",
-    "two_sided_dotted",
+    "dotted_two_sided",
 ]
 
 
@@ -338,6 +338,96 @@ def with_dots(
     return stim
 
 
+def with_dots_two_sided(
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    n_dots=None,
+    dot_radius=None,
+    distance=None,
+    target_shape=None,
+    intensity_backgrounds=(0.0, 1.0),
+    intensity_dots=(1.0, 0.0),
+    intensity_target=0.5,
+):
+    """Two-sided simultaneous contrast stimulus with dots
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of grating, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of grating, in pixels
+    n_dots : int or (int, int)
+        stimulus size defined as the number of dots in y and x-directions
+    dot_radius : float
+        radius of dots
+    distance : float
+        distance between dots in degree visual angle
+    target_shape : int or (int, int)
+        target shape defined as the number of dots that fit into the target
+    intensity_backgrounds : Sequence[Number, Number]
+        intensity values for background
+    intensity_dots : Sequence[Number, Number]
+        intensity values for dots
+    intensity_target : float
+        intensity value for target
+
+    Returns
+    -------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for the target (key: "target_mask"),
+        and additional keys containing stimulus parameters
+
+    References
+    ----------
+    Bressan, P., & Kramer, P. (2008).
+        Gating of remote effects on lightness.
+        Journal of Vision, 8(2), 16-16.
+        https://doi.org/10.1167/8.2.16
+    """
+
+    # Resolve resolution
+    try:
+        shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
+        visual_size_ = (visual_size[0], visual_size[1] / 2)
+    except resolution.TooManyUnknownsError:
+        visual_size_ = None
+
+    stim1 = with_dots(
+        visual_size=visual_size_,
+        ppd=ppd,
+        n_dots=n_dots,
+        dot_radius=dot_radius,
+        distance=distance,
+        target_shape=target_shape,
+        intensity_background=intensity_backgrounds[0],
+        intensity_dots=intensity_dots[0],
+        intensity_target=intensity_target,
+    )
+
+    stim2 = with_dots(
+        visual_size=visual_size_,
+        ppd=ppd,
+        n_dots=n_dots,
+        dot_radius=dot_radius,
+        distance=distance,
+        target_shape=target_shape,
+        intensity_background=intensity_backgrounds[1],
+        intensity_dots=intensity_dots[1],
+        intensity_target=intensity_target,
+    )
+
+    stim = stack_dicts(stim1, stim2)
+    del stim["intensity_background"]
+    stim["intensity_backgrounds"] = intensity_backgrounds
+    stim["intensity_dots"] = intensity_dots
+    return stim
+
+
 def dotted(
     visual_size=None,
     ppd=None,
@@ -474,97 +564,7 @@ def dotted(
     return stim
 
 
-def two_sided_with_dots(
-    visual_size=None,
-    ppd=None,
-    shape=None,
-    n_dots=None,
-    dot_radius=None,
-    distance=None,
-    target_shape=None,
-    intensity_backgrounds=(0.0, 1.0),
-    intensity_dots=(1.0, 0.0),
-    intensity_target=0.5,
-):
-    """Two-sided simultaneous contrast stimulus with dots
-
-    Parameters
-    ----------
-    visual_size : Sequence[Number, Number], Number, or None (default)
-        visual size [height, width] of grating, in degrees
-    ppd : Sequence[Number, Number], Number, or None (default)
-        pixels per degree [vertical, horizontal]
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of grating, in pixels
-    n_dots : int or (int, int)
-        stimulus size defined as the number of dots in y and x-directions
-    dot_radius : float
-        radius of dots
-    distance : float
-        distance between dots in degree visual angle
-    target_shape : int or (int, int)
-        target shape defined as the number of dots that fit into the target
-    intensity_backgrounds : Sequence[Number, Number]
-        intensity values for background
-    intensity_dots : Sequence[Number, Number]
-        intensity values for dots
-    intensity_target : float
-        intensity value for target
-
-    Returns
-    -------
-    dict[str, Any]
-        dict with the stimulus (key: "img"),
-        mask with integer index for the target (key: "target_mask"),
-        and additional keys containing stimulus parameters
-
-    References
-    ----------
-    Bressan, P., & Kramer, P. (2008).
-        Gating of remote effects on lightness.
-        Journal of Vision, 8(2), 16-16.
-        https://doi.org/10.1167/8.2.16
-    """
-
-    # Resolve resolution
-    try:
-        shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
-        visual_size_ = (visual_size[0], visual_size[1] / 2)
-    except resolution.TooManyUnknownsError:
-        visual_size_ = None
-
-    stim1 = with_dots(
-        visual_size=visual_size_,
-        ppd=ppd,
-        n_dots=n_dots,
-        dot_radius=dot_radius,
-        distance=distance,
-        target_shape=target_shape,
-        intensity_background=intensity_backgrounds[0],
-        intensity_dots=intensity_dots[0],
-        intensity_target=intensity_target,
-    )
-
-    stim2 = with_dots(
-        visual_size=visual_size_,
-        ppd=ppd,
-        n_dots=n_dots,
-        dot_radius=dot_radius,
-        distance=distance,
-        target_shape=target_shape,
-        intensity_background=intensity_backgrounds[1],
-        intensity_dots=intensity_dots[1],
-        intensity_target=intensity_target,
-    )
-
-    stim = stack_dicts(stim1, stim2)
-    del stim["intensity_background"]
-    stim["intensity_backgrounds"] = intensity_backgrounds
-    stim["intensity_dots"] = intensity_dots
-    return stim
-
-
-def two_sided_dotted(
+def dotted_two_sided(
     visual_size=None,
     ppd=None,
     shape=None,
@@ -673,9 +673,9 @@ def overview(**kwargs):
         "sbc_basic": basic(**default_params, visual_size=10, target_size=3),
         "sbc_2sided": two_sided(**default_params, visual_size=10, target_size=2),
         "sbc_with_dots": with_dots(**default_params, n_dots=5, dot_radius=2, distance=0.5, target_shape=3),
+        "sbc_with_dots_2sided": with_dots_two_sided(**default_params, n_dots=5, dot_radius=2, distance=0.5, target_shape=3),
         "sbc_dotted": dotted(**default_params, n_dots=5, dot_radius=2, distance=0.5, target_shape=3),
-        "sbc_2sided_with_dots": two_sided_with_dots(**default_params, n_dots=5, dot_radius=2, distance=0.5, target_shape=3),
-        "sbc_2sided_dotted": two_sided_dotted(**default_params, n_dots=5, dot_radius=2, distance=0.5, target_shape=3),
+        "sbc_dotted_2sided": dotted_two_sided(**default_params, n_dots=5, dot_radius=2, distance=0.5, target_shape=3),
     }
     # fmt: on
 
