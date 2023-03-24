@@ -2,7 +2,7 @@ name: Draft JOSS PDF
 
 on:
   push:
-    branches: [manuscript]
+    branches: [main, manuscript]
 
 jobs:
   paper:
