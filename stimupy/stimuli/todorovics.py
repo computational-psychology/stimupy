@@ -758,6 +758,7 @@ def equal(
     )
 
     stim["img"] = np.where(window["shape_mask"], stim["img"], intensity_background)
+    stim["target_mask"] = np.where(window["shape_mask"], stim["target_mask"], 0).astype(int)
     return stim
 
 
