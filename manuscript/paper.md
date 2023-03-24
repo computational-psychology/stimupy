@@ -17,9 +17,9 @@ authors:
     orcid: 0000-0001-6882-5584
     affiliation: 2
 affiliations:
- - name: Science of Intelligence, Technische Universitaet Berlin, Germany
+ - name: Science of Intelligence, Technische Universität Berlin, Germany
    index: 1
- - name: Computational Psychology, Technische Universitaet Berlin, Germany
+ - name: Computational Psychology, Technische Universität Berlin, Germany
    index: 2
 date: 25 December 2022
 bibliography: bibliography.bib
