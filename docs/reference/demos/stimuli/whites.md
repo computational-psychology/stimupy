@@ -634,7 +634,7 @@ def show_yazdanbakhsh(
         target_indices_bottom=target_idx2,
         intensity_target=(intensity_target, intensity_target2),
         target_center_offset=target_center_offsets,
-        target_height=target_heights,
+        target_heights=(target_heights, target_heights2),
         intensity_stripes=(stripe_int1, stripe_int2),
         gap_size=gap_size,
     )
