@@ -522,10 +522,8 @@ def square_radial(
         rotation of grating in degrees (default: 0 = horizontal)
     phase_shift : float
         phase shift of grating in degrees
-    intensity_rings : Sequence[float, ...]
+    intensity_rings : Sequence[float, float]
         intensity value for each ring, by default (1.0, 0.0).
-        Can specify as many intensities as n_rings;
-        If fewer intensities are passed than n_rings, cycles through intensities
     target_indices : int, or Sequence[int, ...]
         indices segments where targets will be placed
     intensity_target : float, or Sequence[float, ...], optional
@@ -611,11 +609,13 @@ def staircase_radial(
     period="ignore",
     rotation=0,
     phase_shift=0,
-    intensity_rings=(0.0, 1.0),
+    intensity_rings=(1.0, 0.0),
     target_indices=(),
     intensity_target=0.5,
-    origin="center",
+    origin="mean",
     round_phase_width=True,
+    clip=False,
+    intensity_background=0.5,
 ):
     """Radial staircase, with some ring(s) as target(s)
 
@@ -641,26 +641,27 @@ def staircase_radial(
         rotation of grating in degrees (default: 0 = horizontal)
     phase_shift : float
         phase shift of grating in degrees
-    intensity_rings : Sequence[float, float] or Sequence[float, ...]
-        min and max intensity of sine-wave, by default (0.0, 1.0).
-        Can also specify as many intensities as n_rings
+    intensity_rings : Sequence[float, ...]
+        if len(intensity_rings)==2, intensity range of staircase (default 0.0, 1.0);
+        if len(intensity_rings)>2, intensity value for each ring.
+        Can specify as many intensity_rings as n_rings.
+        If fewer intensity_bars are passed than n_rings, cycles through intensities.
     target_indices : int, or Sequence[int, ...]
         indices segments where targets will be placed
     intensity_target : float, or Sequence[float, ...], optional
         intensity value for each target, by default 0.5.
         Can specify as many intensities as number of target_indices;
         If fewer intensities are passed than target_indices, cycles through intensities
-    origin : "corner", "mean" or "center" (default)
+    origin : "corner", "mean" or "center"
         if "corner": set origin to upper left corner
-        if "mean": set origin to hypothetical image center
+        if "mean": set origin to hypothetical image center (default)
         if "center": set origin to real center (closest existing value to mean)
     round_phase_width : Bool
         if True, round width of rings given resolution
-    intensity_rings : Sequence[float, ...]
-        if len(intensity_rings)==2, intensity range of staircase (default 0.0, 1.0);
-        if len(intensity_rings)>2, intensity value for each ring.
-        Can specify as many intensity_rings as n_rings.
-        If fewer intensity_rings are passed than n_rings, cycles through intensities.
+    clip : Bool
+        if True, clip stimulus to image size (default: False)
+    intensity_background : float (optional)
+        intensity value of background (if clipped), by default 0.5
 
     Returns
     -------
@@ -699,7 +700,19 @@ def staircase_radial(
     stim["intensity_rings"] = stim.pop("intensities")
     stim.pop("distance_metric")
 
-    # Add targets(?)
+    # Clip?
+    if clip:
+        csize = min(stim["visual_size"]) / 2.0
+        circle = disc(
+            visual_size=stim["visual_size"],
+            ppd=stim["ppd"],
+            radius=csize,
+            origin=origin,
+        )
+        stim["img"] = np.where(circle["ring_mask"], stim["img"], intensity_background)
+        stim["grating_mask"] = np.where(circle["ring_mask"], stim["grating_mask"], 0)
+
+    # Resolve target parameters
     if target_indices is not None and target_indices != ():
         stim = add_targets(stim, target_indices=target_indices, intensity_target=intensity_target)
 
@@ -851,7 +864,8 @@ def square_rectilinear(
     clip=False,
     intensity_background=0.5,
 ):
-    """Rectilinear square-wave grating (set of frames) over the whole image, with some frame(s) as target(s)
+    """Rectilinear square-wave grating (set of frames) over the whole image, with
+    some frame(s) as target(s)
 
     Parameters
     ----------
@@ -875,10 +889,8 @@ def square_rectilinear(
         rotation of grating in degrees (default: 0 = horizontal)
     phase_shift : float
         phase shift of grating in degrees
-    intensity_frames : Sequence[float, ...]
+    intensity_frames : Sequence[float, float]
         intensity value for each frame, by default (1.0, 0.0).
-        Can specify as many intensities as n_frames;
-        If fewer intensities are passed than n_frames, cycles through intensities
     target_indices : int, or Sequence[int, ...]
         indices segments where targets will be placed
     intensity_target : float, or Sequence[float, ...], optional
@@ -975,11 +987,15 @@ def staircase_rectilinear(
     intensity_frames=(0.0, 1.0),
     target_indices=(),
     intensity_target=0.5,
-    origin="center",
+    origin="mean",
     round_phase_width=True,
+    clip=False,
+    intensity_background=0.5,
 ):
     """Rectiinear staircase, with some frame(s) as target(s)
 
+    Parameters
+    ----------
     Parameters
     ----------
     visual_size : Sequence[Number, Number], Number, or None (default)
@@ -1002,26 +1018,27 @@ def staircase_rectilinear(
         rotation of grating in degrees (default: 0 = horizontal)
     phase_shift : float
         phase shift of grating in degrees
-    intensity_frames : Sequence[float, float] or Sequence[float, ...]
-        min and max intensity of sine-wave, by default (0.0, 1.0).
-        Can also specify as many intensities as n_frames
+    intensity_frames : Sequence[float, ...]
+        if len(intensity_frames)==2, intensity range of staircase (default 0.0, 1.0);
+        if len(intensity_frames)>2, intensity value for each frame.
+        Can specify as many intensity_frames as n_frames.
+        If fewer intensity_frames are passed than n_frames, cycles through intensities.
     target_indices : int, or Sequence[int, ...]
         indices segments where targets will be placed
     intensity_target : float, or Sequence[float, ...], optional
         intensity value for each target, by default 0.5.
         Can specify as many intensities as number of target_indices;
         If fewer intensities are passed than target_indices, cycles through intensities
-    origin : "corner", "mean" or "center" (default)
+    origin : "corner", "mean" or "center"
         if "corner": set origin to upper left corner
-        if "mean": set origin to hypothetical image center
+        if "mean": set origin to hypothetical image center (default)
         if "center": set origin to real center (closest existing value to mean)
     round_phase_width : Bool
         if True, round width of frames given resolution
-    intensity_frames : Sequence[float, ...]
-        if len(intensity_frames)==2, intensity range of staircase (default 0.0, 1.0);
-        if len(intensity_frames)>2, intensity value for each frame.
-        Can specify as many intensity_frames as n_frames.
-        If fewer intensity_frames are passed than n_frames, cycles through intensities.
+    clip : Bool
+        if True, clip stimulus to image size (default: False)
+    intensity_background : float (optional)
+        intensity value of background (if clipped), by default 0.5
 
     Returns
     -------
@@ -1059,6 +1076,26 @@ def staircase_rectilinear(
     stim["frame_width"] = stim.pop("phase_width")
     stim["intensity_frames"] = stim.pop("intensities")
     stim.pop("distance_metric")
+
+    # Clip?
+    if clip:
+        if origin == "corner":
+            rsize = min(stim["visual_size"]) / 2
+            rect = rectangle(
+                visual_size=stim["visual_size"],
+                ppd=stim["ppd"],
+                rectangle_size=rsize,
+                rectangle_position=(0, 0),
+            )
+        else:
+            rsize = min(stim["visual_size"])
+            rect = rectangle(
+                visual_size=stim["visual_size"],
+                ppd=stim["ppd"],
+                rectangle_size=rsize,
+            )
+        stim["img"] = np.where(rect["rectangle_mask"], stim["img"], intensity_background)
+        stim["grating_mask"] = np.where(rect["rectangle_mask"], stim["grating_mask"], 0)
 
     # Add targets(?)
     if target_indices is not None and target_indices != ():
