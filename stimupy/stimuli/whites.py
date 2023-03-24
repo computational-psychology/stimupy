@@ -120,24 +120,21 @@ def generalized(
 
     # Resolve target parameters
     if isinstance(target_indices, (int)):
-        target_indices = [
-            target_indices,
-        ]
+        target_indices = (target_indices,)
     if isinstance(intensity_target, (int, float)):
-        intensity_target = [
-            intensity_target,
-        ]
+        intensity_target = (intensity_target,)
     if isinstance(target_heights, (int, float)):
-        target_heights = [
-            target_heights,
-        ]
+        target_heights = (target_heights,)
     if isinstance(target_center_offsets, (int, float)):
-        target_center_offsets = [
-            target_center_offsets,
-        ]
-    intensity_target = itertools.cycle(intensity_target)
-    target_heights = itertools.cycle(target_heights)
-    target_center_offsets = itertools.cycle(target_center_offsets)
+        target_center_offsets = (target_center_offsets,)
+
+    intensity_target = tuple(
+        itertools.islice(itertools.cycle(intensity_target), len(target_indices))
+    )
+    target_heights = tuple(itertools.islice(itertools.cycle(target_heights), len(target_indices)))
+    target_center_offsets = tuple(
+        itertools.islice(itertools.cycle(target_center_offsets), len(target_indices))
+    )
 
     # Resolve resolutions and get distances
     base = image_base(
