@@ -37,7 +37,7 @@ or they may be used to probe any other aspect of visual processing.
 `stimupy` is a free and open-source Python package
 which allows the user to create visual stimuli
 of different complexity as they are commonly used in the study of visual perception
-(\autoref{fig:example}).
+(\autoref{fig:overview}).
 
 `stimupy` provides functions to generate:
 
@@ -67,6 +67,8 @@ of different complexity as they are commonly used in the study of visual percept
 - unify and automate stimulus creation
 
 ![A small fraction of the stimulus variety that ``stimupy`` can produce \label{fig:overview}](overview.png)
+
+
 # State of the field
 Creating visual stimuli is a central task in vision research.
 To generate stimuli, it is common practice to
