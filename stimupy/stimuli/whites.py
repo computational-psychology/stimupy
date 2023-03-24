@@ -819,8 +819,8 @@ def overview(**kwargs):
             frequency=0.5,),
         "white_yazdanbakhsh": yazdanbakhsh(
             **default_params,
-            target_indices_top=3,
-            target_indices_bottom=-4,
+            target_indices_top=2,
+            target_indices_bottom=-3,
             target_center_offset=2,
             target_height=2,
             gap_size=0.5,
