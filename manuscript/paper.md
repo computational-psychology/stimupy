@@ -27,9 +27,8 @@ bibliography: bibliography.bib
 
 
 # Summary
-![A small fraction of the variety of stimuli that `stimupy` can produce \label{fig:overview}](overview.png)
 
-Visual stimuli are at the heart of perception research (Fig. \autoref{fig:example}).
+Visual stimuli are at the heart of perception research.
 They may come as visual illusions which demonstrate the striking differences
 between the perceptual and physical world,
 they may involve minuscule stimulus changes
@@ -37,7 +36,8 @@ which are used to probe the limits of visual sensitivity,
 or they may be used to probe any other aspect of visual processing.
 Stimupy is a free and open-source Python package
 which allows the user to create visual stimuli
-of different complexity as they are commonly used in the study of visual perception.
+of different complexity as they are commonly used in the study of visual perception
+(\autoref{fig:example}).
 
 Stimupy provides functions to generate:
 
@@ -62,6 +62,7 @@ Stimupy has been designed to:
 - support vision science by providing a large,openly-available and flexible battery of relevant stimulus functions
 - unify and automate stimulus creation
 
+![A small fraction of the stimulus variety that `stimupy` can produce \label{fig:overview}](overview.png)
 # State of the field
 Creating visual stimuli is a central task in vision research.
 To generate stimuli, it is common practice to
@@ -190,7 +191,7 @@ and more stimulus sets can be added at any point in time.
 ![Samples from a parameter space of a single `stimupy` stimulus function: \label{fig:stimspace}](stimspace.png)
 
 Stimupy's high degree of parameterizability allows for extensive explorations
-of stimulus parameter spaces (Fig. \autoref{fig:stimspace}).
+of stimulus parameter spaces (\autoref{fig:stimspace}).
 On the one hand, this can be useful for vision experimentation
 because varying stimuli along one or multiple dimensions
 can be directly mapped to certain experimental designs and research questions.
