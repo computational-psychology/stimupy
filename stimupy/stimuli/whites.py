@@ -383,6 +383,9 @@ def white_two_rows(
         origin=origin,
         round_phase_width=round_phase_width,
     )
+
+    stim["target_indices_top"] = target_indices_top
+    stim["target_indices_bottom"] = target_indices_bottom
     return stim
 
 
