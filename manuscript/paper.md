@@ -1,5 +1,5 @@
 ---
-title: 'Stimupy: A Python stimulus creation package for vision science'
+title: 'stimupy: A Python stimulus creation package for vision science'
 tags:
   - Python package
   - vision science
