@@ -586,9 +586,6 @@ w_tidx2 = iw.IntSlider(value=-4, min=-20, max=0, description="target2 idx")
 w_tint2 = iw.FloatSlider(value=0.5, min=0, max=1, description="target2 int")
 w_theights2 = iw.FloatSlider(value=1, min=0, max=5, description="target2 heights [deg]")
 
-w_sint1 = iw.FloatSlider(value=1.0, min=0, max=1, description="stripe1 int")
-w_sint2 = iw.FloatSlider(value=0.0, min=0, max=1, description="stripe2 int")
-
 w_period = iw.Dropdown(value="ignore", options=['ignore', 'even', 'odd', 'either'], description="period")
 w_mask = iw.ToggleButton(value=False, disabled=False, description="add mask")
 
@@ -599,9 +596,8 @@ b_intensities = iw.HBox([w_int1, w_int2])
 b_toff = iw.HBox([w_toff, w_gap])
 b_target = iw.HBox([w_tidx, w_tint, w_theights])
 b_target2 = iw.HBox([w_tidx2, w_tint2, w_theights2])
-b_stripe = iw.HBox([w_sint1, w_sint2])
 b_add = iw.HBox([w_period, w_mask])
-ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_toff, b_target, b_target2, b_stripe, b_add])
+ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_toff, b_target, b_target2, b_add])
 
 # Function for showing stim
 def show_yazdanbakhsh(
@@ -621,8 +617,6 @@ def show_yazdanbakhsh(
     intensity_target2=None,
     target_heights2=None,
     gap_size=None,
-    stripe_int1=None,
-    stripe_int2=None,
 ):
     stim = yazdanbakhsh(
         visual_size=(height, width),
@@ -635,7 +629,6 @@ def show_yazdanbakhsh(
         intensity_target=(intensity_target, intensity_target2),
         target_center_offset=target_center_offsets,
         target_heights=(target_heights, target_heights2),
-        intensity_stripes=(stripe_int1, stripe_int2),
         gap_size=gap_size,
     )
     plot_stim(stim, mask=add_mask)
@@ -659,8 +652,6 @@ out = iw.interactive_output(
         "target_idx2": w_tidx2,
         "intensity_target2": w_tint2,
         "target_heights2": w_theights2,
-        "stripe_int1": w_sint1,
-        "stripe_int2": w_sint2,
         "gap_size": w_gap,
     },
 )

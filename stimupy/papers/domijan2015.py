@@ -1092,7 +1092,6 @@ def white_yazdanbakhsh(
         **params,
         intensity_bars=(v1, v3),
         intensity_target=v2,
-        intensity_stripes=(v3, v1),
     )
 
     if pad:
