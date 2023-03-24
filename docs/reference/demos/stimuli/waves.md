@@ -389,6 +389,7 @@ out = iw.interactive_output(
         "add_mask": w_mask,
         "target_indices": w_tidx,
         "intensity_target": w_tint,
+        "clip": w_clip,
     },
 )
 
@@ -542,7 +543,7 @@ def show_staircase_radial(
     add_mask=False,
     target_indices=None,
     intensity_target=None,
-#    clip=True,
+    clip=True,
 ):
     stim = staircase_radial(
         visual_size=(height, width),
@@ -556,7 +557,7 @@ def show_staircase_radial(
         period=period,
         target_indices=target_indices,
         intensity_target=intensity_target,
-#        clip=clip,
+        clip=clip,
     )
     plot_stim(stim, mask=add_mask)
 
@@ -578,7 +579,7 @@ out = iw.interactive_output(
         "add_mask": w_mask,
         "target_indices": w_tidx,
         "intensity_target": w_tint,
-#        "clip": w_clip,
+        "clip": w_clip,
     },
 )
 
@@ -841,7 +842,7 @@ def show_staircase_rectilinear(
         period=period,
         target_indices=target_indices,
         intensity_target=intensity_target,
-#        clip=clip,
+        clip=clip,
     )
     plot_stim(stim, mask=add_mask)
 
@@ -863,7 +864,7 @@ out = iw.interactive_output(
         "add_mask": w_mask,
         "target_indices": w_tidx,
         "intensity_target": w_tint,
-#        "clip": w_clip,
+        "clip": w_clip,
     },
 )
 
@@ -882,7 +883,7 @@ w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
 w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
 w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
 
-w_freq = iw.FloatSlider(value=1, min=0, max=10, description="frequency [cycles per circle]")
+w_freq = iw.IntSlider(value=4, min=0, max=10, description="frequency [cycles per circle]")
 w_phase = iw.FloatSlider(value=0, min=0, max=360, description="phase shift [deg]")
 w_rot = iw.FloatSlider(value=0, min=0, max=360, description="rotation [deg]")
 
@@ -973,7 +974,7 @@ w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
 w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
 w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
 
-w_freq = iw.FloatSlider(value=1, min=0, max=10, description="frequency [cycles per circle]")
+w_freq = iw.IntSlider(value=4, min=0, max=10, description="frequency [cycles per circle]")
 w_phase = iw.FloatSlider(value=0, min=0, max=360, description="phase shift [deg]")
 w_rot = iw.FloatSlider(value=0, min=0, max=360, description="rotation [deg]")
 
@@ -1064,7 +1065,7 @@ w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
 w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
 w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
 
-w_freq = iw.FloatSlider(value=1, min=0, max=10, description="frequency [cycles per circle]")
+w_freq = iw.IntSlider(value=4, min=0, max=10, description="frequency [cycles per circle]")
 w_phase = iw.FloatSlider(value=0, min=0, max=360, description="phase shift [deg]")
 w_rot = iw.FloatSlider(value=0, min=0, max=360, description="rotation [deg]")
 
