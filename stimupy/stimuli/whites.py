@@ -649,7 +649,7 @@ def yazdanbakhsh(
     target_indices_top=None,
     target_indices_bottom=None,
     target_center_offset=0,
-    target_height=None,
+    target_heights=None,
     intensity_stripes=(1.0, 0.0),
     gap_size=None,
     round_phase_width=True,
@@ -684,7 +684,7 @@ def yazdanbakhsh(
         bar indices where bottom target(s) will be placed. As many targets as ints.
     target_center_offset : float
         offset from target centers to image center in degree visual angle.
-    target_height : float, or Sequence[float, ...]
+    target_heights : float, or Sequence[float, ...]
         height of targets in degrees visual angle
     intensity_stripes : (float, float)
         intensity values of horizontal stripes
@@ -706,11 +706,12 @@ def yazdanbakhsh(
         Munker-White-like illusions without T-junctions.
         Perception 31, 711-715. https://doi.org/10.1068/p3348
     """
-    if target_height is None:
-        raise ValueError("yazdanbakhsh() missing argument 'target_height' which is not 'None'")
+    if target_heights is None:
+        raise ValueError("yazdanbakhsh() missing argument 'target_heights' which is not 'None'")
     if gap_size is None:
         raise ValueError("yazdanbakhsh() missing argument 'gap_size' which is not 'None'")
 
+    # Generate White's stimulus with two rows of targets
     stim = white_two_rows(
         visual_size=visual_size,
         ppd=ppd,
@@ -725,60 +726,71 @@ def yazdanbakhsh(
         target_indices_top=target_indices_top,
         target_indices_bottom=target_indices_bottom,
         target_center_offset=target_center_offset,
-        target_heights=target_height,
+        target_heights=target_heights,
         origin="corner",
         round_phase_width=round_phase_width,
     )
 
-    img = stim["img"]
-    mask = stim["target_mask"]
-    gap_size_px = resolution.lengths_from_visual_angles_ppd(gap_size, np.unique(ppd)[0])
-    target_offset_px = resolution.lengths_from_visual_angles_ppd(
-        target_center_offset, np.unique(ppd)[0]
+    # Masks for top gaps
+    stim_center = stim["visual_size"].height / 2
+    gap_top_masks = []
+    for t_idx, bar_idx in enumerate(stim["target_indices_top"]):
+        height = stim["target_heights"][t_idx]
+
+        # Mask for rectangle
+        rect = rectangle(
+            visual_size=stim["visual_size"],
+            ppd=stim["ppd"],
+            shape=stim["shape"],
+            rectangle_size=(height + 2 * gap_size, stim["visual_size"].width),
+            rectangle_position=(stim_center - target_center_offset - (height / 2) - gap_size, 0),
+        )
+
+        # Reduce to just this bar: intersection between rect mask and bar mask
+        if bar_idx < 0:
+            bar_idx = int(stim["n_bars"]) + bar_idx
+        stim["gap_mask"] = (stim["grating_mask"] == bar_idx + 1) & rect["shape_mask"]
+
+        # Remove everywhere it intersects with target mask
+        stim["gap_mask"] = np.where(stim["target_mask"] == t_idx + 1, 0, stim["gap_mask"])
+        gap_top_masks.append(stim["gap_mask"])
+
+    # Masks for bottom gaps
+    gap_bottom_masks = []
+    for idx, bar_idx in enumerate(stim["target_indices_bottom"]):
+        t_idx = idx + len(stim["target_indices_top"])
+        height = stim["target_heights"][t_idx]
+
+        # Mask for rectangle
+        rect = rectangle(
+            visual_size=stim["visual_size"],
+            ppd=stim["ppd"],
+            shape=stim["shape"],
+            rectangle_size=(height + 2 * gap_size, stim["visual_size"].width),
+            rectangle_position=(stim_center + target_center_offset - (height / 2) - gap_size, 0),
+        )
+
+        # Reduce to just this bar: intersection between rect mask and bar mask
+        if bar_idx < 0:
+            bar_idx = int(stim["n_bars"]) + bar_idx
+        stim["gap_mask"] = (stim["grating_mask"] == bar_idx + 1) & rect["shape_mask"]
+
+        # Remove everywhere it intersects with target mask
+        stim["gap_mask"] = np.where(stim["target_mask"] == t_idx + 1, 0, stim["gap_mask"])
+        gap_bottom_masks.append(stim["gap_mask"])
+
+    stim["gap_mask"] = combine_masks(*gap_top_masks, *gap_bottom_masks)
+
+    # Draw gaps
+    intensity_stripes = tuple(
+        itertools.islice(itertools.cycle(intensity_stripes), len(np.unique(stim["gap_mask"])))
     )
-    tsize_px = resolution.lengths_from_visual_angles_ppd(target_height, np.unique(ppd)[0])
-    cycle_width_px = (
-        resolution.lengths_from_visual_angles_ppd(1.0 / (stim["frequency"] * 2), np.unique(ppd)[0])
-        * 2
-    )
-    phase_width_px = cycle_width_px // 2
-    height, width = img.shape
-    nbars = width // phase_width_px
-    ttop, tbot = np.array(target_indices_top), np.array(target_indices_bottom)
-    ttop[ttop < 0] = nbars + ttop[ttop < 0]
-    tbot[tbot < 0] = nbars + tbot[tbot < 0]
+    gaps_img = draw_regions(stim["gap_mask"], intensity_stripes)
 
-    if isinstance(target_indices_top, (float, int)):
-        ttop = (ttop,)
-    if isinstance(target_indices_bottom, (float, int)):
-        tbot = (tbot,)
+    # Combine images
+    stim["img"] = np.where(stim["gap_mask"], gaps_img, stim["img"])
 
-    if any(t in ttop for t in tbot) and (target_offset_px - tsize_px // 2 - gap_size_px) < 0:
-        raise ValueError("Stripes overlap! Replace or decrease targets or decrease stripe size.")
-
-    # Add stripe at top
-    ystart = height // 2 - target_offset_px - gap_size_px - tsize_px // 2
-    ystart2 = height // 2 - target_offset_px + tsize_px // 2
-    stripe_mask_top = np.zeros(stim["shape"])
-    stripe_mask_top[ystart : ystart + gap_size_px, :] = 1
-    stripe_mask_top[ystart2 : ystart2 + gap_size_px, :] = 1
-    for t in ttop:
-        stripe_mask_top = np.where(stim["grating_mask"] == t + 1, stripe_mask_top * 1, 0)
-
-    # Add stripes at bottom
-    ystart = height // 2 + target_offset_px - tsize_px // 2 - gap_size_px
-    ystart2 = height // 2 + target_offset_px + tsize_px // 2
-    stripe_mask_bot = np.zeros(stim["shape"])
-    stripe_mask_bot[ystart : ystart + gap_size_px, :] = 1
-    stripe_mask_bot[ystart2 : ystart2 + gap_size_px, :] = 1
-    for t in tbot:
-        stripe_mask_bot = np.where(stim["grating_mask"] == t + 1, stripe_mask_bot * 1, 0)
-
-    img = np.where(stripe_mask_top, intensity_stripes[0], img)
-    img = np.where(stripe_mask_bot, intensity_stripes[1], img)
-
-    stim["img"] = img
-    stim["target_mask"] = mask.astype(int)
+    # Output
     stim["intensity_stripes"] = intensity_stripes
     stim["gap_size"] = gap_size
     return stim
@@ -835,7 +847,7 @@ def overview(**kwargs):
             target_indices_top=2,
             target_indices_bottom=-3,
             target_center_offset=2,
-            target_height=2,
+            target_heights=2,
             gap_size=0.5,
             frequency=0.5,),
         "white_angular": angular(

@@ -1083,7 +1083,7 @@ def white_yazdanbakhsh(
         "target_indices_top": (2,),
         "target_indices_bottom": (5,),
         "target_center_offset": 0.0,
-        "target_height": visual_size[0] / 4.0,
+        "target_heights": visual_size[0] / 4.0,
         "gap_size": visual_size[0] / 10.0,
         "period": "even",
     }
