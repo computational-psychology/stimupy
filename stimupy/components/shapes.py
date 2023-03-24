@@ -55,7 +55,7 @@ def rectangle(
     -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
-        mask with integer index for the shape (key: "shape_mask"),
+        mask with integer index for the shape (key: "rectangle_mask"),
         and additional keys containing stimulus parameters
     """
     if rectangle_size is None:
@@ -125,7 +125,7 @@ def rectangle(
 
     return {
         "img": img * (intensity_rectangle - intensity_background) + intensity_background,
-        "shape_mask": img.astype(int),
+        "rectangle_mask": img.astype(int),
         "visual_size": base["visual_size"],
         "ppd": base["ppd"],
         "shape": base["shape"],
@@ -170,7 +170,7 @@ def triangle(
     -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
-        mask with integer index for the shape (key: "shape_mask"),
+        mask with integer index for the shape (key: "triangle_mask"),
         and additional keys containing stimulus parameters
     """
     if triangle_size is None:
@@ -209,11 +209,11 @@ def triangle(
         rectangle_size=triangle_size,
         rotation=rotation,
     )
-    img = img * rect["shape_mask"]
+    img = img * rect["rectangle_mask"]
 
     return {
         "img": img * (intensity_triangle - intensity_background) + intensity_background,
-        "shape_mask": img.astype(int),
+        "triangle_mask": img.astype(int),
         "visual_size": base["visual_size"],
         "ppd": base["ppd"],
         "shape": base["shape"],
@@ -262,7 +262,7 @@ def cross(
     -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
-        mask with integer index for the shape (key: "shape_mask"),
+        mask with integer index for the shape (key: "cross_mask"),
         and additional keys containing stimulus parameters
     """
     if cross_size is None:
@@ -319,7 +319,7 @@ def cross(
 
     return {
         "img": img * (intensity_cross - intensity_background) + intensity_background,
-        "shape_mask": img.astype(int),
+        "cross_mask": img.astype(int),
         "shape": shape,
         "visual_size": visual_size,
         "ppd": ppd,
@@ -364,7 +364,7 @@ def parallelogram(
     -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
-        mask with integer index for the shape (key: "shape_mask"),
+        mask with integer index for the shape (key: "parallelogram_mask"),
         and additional keys containing stimulus parameters
     """
     if parallelogram_size is None:
@@ -433,7 +433,7 @@ def parallelogram(
 
     return {
         "img": img * (intensity_parallelogram - intensity_background) + intensity_background,
-        "shape_mask": img.astype(int),
+        "parallelogram_mask": img.astype(int),
         "shape": base["shape"],
         "visual_size": base["visual_size"],
         "ppd": base["ppd"],
@@ -484,7 +484,7 @@ def ellipse(
     -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
-        mask with integer index for the shape (key: "shape_mask"),
+        mask with integer index for the shape (key: "ellipse_mask"),
         and additional keys containing stimulus parameters
     """
     if radius is None:
@@ -525,7 +525,7 @@ def ellipse(
 
     return {
         "img": img * (intensity_ellipse - intensity_background) + intensity_background,
-        "shape_mask": img.astype(int),
+        "ellipse_mask": img.astype(int),
         "shape": base["shape"],
         "visual_size": base["visual_size"],
         "ppd": base["ppd"],
@@ -573,7 +573,7 @@ def circle(
     ----------
     dict[str, Any]
         dict with the stimulus (key: "img"),
-        mask with integer index for the shape (key: "shape_mask"),
+        mask with integer index for the shape (key: "circle_mask"),
         and additional keys containing stimulus parameters
     """
     if radius is None:
@@ -592,6 +592,8 @@ def circle(
         origin=origin,
         restrict_size=restrict_size,
     )
+    stim["circle_mask"] = stim["ellipse_mask"]
+    stim.pop("ellipse_mask")
     return stim
 
 

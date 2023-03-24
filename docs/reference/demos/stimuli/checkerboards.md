@@ -48,7 +48,7 @@ w_int2 = iw.FloatSlider(value=0., min=0, max=1, description="int2")
 
 w_period = iw.Dropdown(value="ignore", options=['ignore', 'even', 'odd', 'either'], description="period")
 w_round = iw.ToggleButton(value=False, disabled=False, description="round check width")
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'checker_mask', 'grating_mask', 'grating_mask2'], description="add mask")
+w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'checker_mask', 'row_mask', 'col_mask'], description="add mask")
 
 w_tidxx = iw.IntSlider(value=0, min=0, max=10, description="target x-idx")
 w_tidxy = iw.IntSlider(value=0, min=0, max=10, description="target y-idx")
@@ -142,7 +142,7 @@ w_int2 = iw.FloatSlider(value=0., min=0, max=1, description="int2")
 
 w_period = iw.Dropdown(value="ignore", options=['ignore', 'even', 'odd', 'either'], description="period")
 w_round = iw.ToggleButton(value=False, disabled=False, description="round check width")
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'checker_mask', 'grating_mask', 'grating_mask2'], description="add mask")
+w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'checker_mask', 'row_mask', 'col_mask'], description="add mask")
 
 w_tidxy = iw.IntSlider(value=5, min=0, max=10, description="target height")
 w_tidxx = iw.IntSlider(value=5, min=0, max=10, description="target width")

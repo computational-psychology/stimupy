@@ -38,8 +38,8 @@ def mask_from_idx(checkerboard_stim, check_idc):
     for i, coords in enumerate(check_idc):
         if coords[0] < 0 or coords[0] > coords[0] or coords[1] < 0 or coords[1] > board_shape[1]:
             raise ValueError(f"Cannot provide mask for check {coords} outside board {board_shape}")
-        m1 = np.where(checkerboard_stim["grating_mask"] == coords[1] + 1, 1, 0)
-        m2 = np.where(checkerboard_stim["grating_mask2"] == coords[0] + 1, 1, 0)
+        m1 = np.where(checkerboard_stim["col_mask"] == coords[1] + 1, 1, 0)
+        m2 = np.where(checkerboard_stim["row_mask"] == coords[0] + 1, 1, 0)
         mask = np.where(m1 + m2 == 2, i + 1, mask)
 
         if len(np.unique(mask)) == 1:
@@ -281,8 +281,8 @@ def checkerboard(
     stim = {
         "img": img,
         "checker_mask": mask.astype(int),
-        "grating_mask": sw1["grating_mask"],
-        "grating_mask2": sw2["grating_mask"],
+        "col_mask": sw1["grating_mask"],
+        "row_mask": sw2["grating_mask"],
         "visual_size": sw1["visual_size"],
         "ppd": sw1["ppd"],
         "shape": sw1["shape"],

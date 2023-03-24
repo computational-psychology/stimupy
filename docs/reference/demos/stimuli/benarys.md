@@ -53,7 +53,7 @@ w_trot = iw.IntSlider(value=0, min=0, max=360, description="target rotation [deg
 w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int cross")
 w_int_back = iw.FloatSlider(value=0, min=0, max=1, description="int background")
 
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'shape_mask'], description="add mask")
+w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'cross_mask'], description="add mask")
 
 # Layout
 b_im_size = iw.HBox([w_height, w_width, w_ppd])
@@ -141,7 +141,7 @@ w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
 w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int cross")
 w_int_back = iw.FloatSlider(value=0, min=0, max=1, description="int background")
 
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'shape_mask'], description="add mask")
+w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'cross_mask'], description="add mask")
 
 # Layout
 b_im_size = iw.HBox([w_height, w_width, w_ppd])
@@ -215,7 +215,7 @@ w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
 w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int cross")
 w_int_back = iw.FloatSlider(value=0, min=0, max=1, description="int background")
 
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'shape_mask'], description="add mask")
+w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'cross_mask'], description="add mask")
 
 # Layout
 b_im_size = iw.HBox([w_height, w_width, w_ppd])
@@ -293,7 +293,7 @@ w_trot = iw.IntSlider(value=0, min=0, max=360, description="target rotation [deg
 w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int cross")
 w_int_back = iw.FloatSlider(value=0, min=0, max=1, description="int background")
 
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'shape_mask'], description="add mask")
+w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'L_mask'], description="add mask")
 
 # Layout
 b_im_size = iw.HBox([w_height, w_width, w_ppd])
@@ -381,7 +381,7 @@ w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
 w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int cross")
 w_int_back = iw.FloatSlider(value=0, min=0, max=1, description="int background")
 
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'shape_mask'], description="add mask")
+w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'L_mask'], description="add mask")
 
 # Layout
 b_im_size = iw.HBox([w_height, w_width, w_ppd])
@@ -455,7 +455,7 @@ w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
 w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int cross")
 w_int_back = iw.FloatSlider(value=0, min=0, max=1, description="int background")
 
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'shape_mask'], description="add mask")
+w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'L_mask'], description="add mask")
 
 # Layout
 b_im_size = iw.HBox([w_height, w_width, w_ppd])

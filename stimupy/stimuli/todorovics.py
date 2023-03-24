@@ -110,7 +110,7 @@ def rectangle_generalized(
         intensity_rectangle=intensity_target,
     )
     img = stim["img"]
-    mask = stim["shape_mask"]
+    mask = stim["rectangle_mask"]
 
     # Add covers
     cheight, cwidth = resolution.lengths_from_visual_angles_ppd(
@@ -442,7 +442,7 @@ def cross_generalized(
 
     stim = pad_dict_to_shape(stim, shape=shape, pad_value=intensity_background)
     img = stim["img"]
-    mask = stim["shape_mask"]
+    mask = stim["cross_mask"]
 
     cheight, cwidth = resolution.lengths_from_visual_angles_ppd(
         covers_size, np.unique(ppd), round=False
@@ -480,7 +480,7 @@ def cross_generalized(
     stim["visual_size"] = visual_size
     stim["ppd"] = ppd
     stim["shape"] = shape
-    del (stim["cross_size"], stim["intensity_cross"], stim["shape_mask"])
+    del (stim["cross_size"], stim["intensity_cross"], stim["cross_mask"])
     return stim
 
 
@@ -757,8 +757,8 @@ def equal(
         rectangle_size=cross_size,
     )
 
-    stim["img"] = np.where(window["shape_mask"], stim["img"], intensity_background)
-    stim["target_mask"] = np.where(window["shape_mask"], stim["target_mask"], 0).astype(int)
+    stim["img"] = np.where(window["rectangle_mask"], stim["img"], intensity_background)
+    stim["target_mask"] = np.where(window["rectangle_mask"], stim["target_mask"], 0).astype(int)
     return stim
 
 

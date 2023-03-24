@@ -82,7 +82,7 @@ def gaussian(
         rotation=rotation,
         origin=origin,
         restrict_size=False,
-    )["shape_mask"]
+    )["ellipse_mask"]
 
     stim = {
         "img": gaussian,

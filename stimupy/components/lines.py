@@ -290,9 +290,9 @@ def ellipse(
         origin="mean",
     )
 
-    stim["img"] = np.where(stim2["shape_mask"] == 1, intensity_background, stim["img"])
-    stim["line_mask"] = np.where(stim2["shape_mask"] == 1, 0, stim["shape_mask"])
-    del stim["shape_mask"]
+    stim["img"] = np.where(stim2["ellipse_mask"] == 1, intensity_background, stim["img"])
+    stim["line_mask"] = np.where(stim2["ellipse_mask"] == 1, 0, stim["ellipse_mask"])
+    del stim["ellipse_mask"]
     return stim
 
 
