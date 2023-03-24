@@ -41,14 +41,18 @@ of different complexity as they are commonly used in the study of visual percept
 
 Stimupy provides functions to generate:
 
-- Basic components, including shapes, lines, gratings, checkerboards, and Gaussians
-- Different types of visual noise textures
-- Visual stimuli such as Gabors, plaids, edges, and a variety of so-called illusions
+- basic [components](https://stimupy.readthedocs.io/en/latest/reference/_api/stimupy.components.html),
+  including shapes, lines, gratings, checkerboards, and Gaussians
+- different types of [visual noise textures](https://stimupy.readthedocs.io/en/latest/reference/_api/stimupy.noises.html)
+- visual [stimuli](https://stimupy.readthedocs.io/en/latest/reference/_api/stimupy.stimuli.html)
+  such as Gabors, plaids, edges, and a variety of so-called illusions
   (e.g. Simultaneous Brightness Contrast, White's illusion, Hermann grid, Ponzo illusion), and many more
-- Stimulus sets from prior research papers, providing exact stimulus recreations (e.g. ModelFest)
-- Utility functions (utils) for stimulus import, export, manipulation (e.g. contrast, size), or plotting
-- Documentation (docs), including interactive demonstrations of stimulus functions
-- Unit and integration tests
+- stimulus sets from prior research papers, providing exact stimulus recreations (e.g. ModelFest)
+- [utility functions](https://stimupy.readthedocs.io/en/latest/reference/_api/stimupy.utils.html)
+  for stimulus import, export, manipulation (e.g. contrast, size), or plotting
+- [documentation](https://stimupy.readthedocs.io/en/latest/index.html),
+  including [interactive demonstrations](https://stimupy.readthedocs.io/en/latest/reference/demos.html) of stimulus functions
+- unit and integration [tests](https://github.com/computational-psychology/stimupy/actions/workflows/test.yml)
 
 Stimupy has been designed to:
 
