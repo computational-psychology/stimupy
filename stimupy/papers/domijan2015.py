@@ -637,7 +637,7 @@ def white(visual_size=VSIZES["white"], ppd=PPD, pad=PAD, shape=SHAPES["white"]):
         "ppd": ppd,
         "frequency": 4.0 / visual_size[1],
         "target_indices": (2, 5),
-        "target_height": 2.1 * visual_resize,
+        "target_heights": 2.1 * visual_resize,
         "period": "even",
     }
 

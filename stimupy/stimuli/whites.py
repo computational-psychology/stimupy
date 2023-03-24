@@ -5,8 +5,8 @@ import numpy as np
 
 from stimupy.components import image_base
 from stimupy.stimuli.gratings import squarewave
-from stimupy.stimuli.pinwheels import pinwheel as radial
-from stimupy.stimuli.waves import square_radial as circular
+from stimupy.stimuli.pinwheels import pinwheel as angular
+from stimupy.stimuli.waves import square_radial as radial
 from stimupy.stimuli.wedding_cakes import wedding_cake
 from stimupy.utils import resolution
 
@@ -17,7 +17,7 @@ __all__ = [
     "anderson",
     "howe",
     "yazdanbakhsh",
-    "circular",
+    "angular",
     "radial",
     "wedding_cake",
 ]
@@ -32,13 +32,13 @@ def generalized(
     bar_width=None,
     period="ignore",
     rotation=0,
-    phase_shift=0,
     intensity_bars=(0.0, 1.0),
     target_indices=(),
     intensity_target=0.5,
     target_center_offsets=0,
     target_heights=None,
     origin="corner",
+    round_phase_width=True,
 ):
     """General function to create White's stimulus
 
@@ -62,8 +62,6 @@ def generalized(
         phases ("ignore")
     rotation : float
         rotation of grating in degrees (default: 0 = horizontal)
-    phase_shift : float
-        phase shift of grating in degrees
     intensity_bars : Sequence[float, ...]
         intensity value for each bar, by default (1.0, 0.0).
         Can specify as many intensities as n_bars;
@@ -74,14 +72,16 @@ def generalized(
         intensity value for each target, by default 0.5.
         Can specify as many intensities as number of target_indices;
         If fewer intensities are passed than target_indices, cycles through intensities
-    target_height : float, or Sequence[float, ...]
+    target_center_offsets : float, or Sequence[float, ...]
         center offset of targets in degrees visual angle (default: 0)
-    target_height : float, or Sequence[float, ...]
+    target_heights : float, or Sequence[float, ...]
         height of targets in degrees visual angle
     origin : "corner", "mean" or "center"
         if "corner": set origin to upper left corner (default)
         if "mean": set origin to hypothetical image center
         if "center": set origin to real center (closest existing value to mean)
+    round_phase_width : Bool
+        if True (default), round phase width of grating
 
     Returns
     -------
@@ -109,11 +109,11 @@ def generalized(
         n_bars=n_bars,
         bar_width=bar_width,
         rotation=rotation,
-        phase_shift=phase_shift,
+        phase_shift=0,
         period=period,
         intensity_bars=intensity_bars,
         origin=origin,
-        round_phase_width=True,
+        round_phase_width=round_phase_width,
     )
 
     # Resolve target parameters
@@ -181,12 +181,12 @@ def white(
     bar_width=None,
     period="ignore",
     rotation=0,
-    phase_shift=0,
     intensity_bars=(1.0, 0.0),
     target_indices=(),
     intensity_target=0.5,
-    target_height=None,
+    target_heights=None,
     origin="corner",
+    round_phase_width=True,
 ):
     """White's stimulus where all targets are vertically aligned at half the stimulus height
 
@@ -222,12 +222,14 @@ def white(
         intensity value for each target, by default 0.5.
         Can specify as many intensities as number of target_indices;
         If fewer intensities are passed than target_indices, cycles through intensities
-    target_height : float, or Sequence[float, ...]
+    target_heights : float, or Sequence[float, ...]
         height of targets in degrees visual angle
     origin : "corner", "mean" or "center"
         if "corner": set origin to upper left corner (default)
         if "mean": set origin to hypothetical image center
         if "center": set origin to real center (closest existing value to mean)
+    round_phase_width : Bool
+        if True (default), round phase width of grating
 
     Returns
     -------
@@ -253,13 +255,13 @@ def white(
         bar_width=bar_width,
         period=period,
         rotation=rotation,
-        phase_shift=phase_shift,
         intensity_bars=intensity_bars,
         target_indices=target_indices,
         intensity_target=intensity_target,
         target_center_offsets=0,
-        target_heights=target_height,
+        target_heights=target_heights,
         origin=origin,
+        round_phase_width=round_phase_width,
     )
     return stim
 
@@ -273,14 +275,14 @@ def white_two_rows(
     bar_width=None,
     period="ignore",
     rotation=0,
-    phase_shift=0,
     intensity_bars=(1.0, 0.0),
     intensity_target=0.5,
     target_indices_top=None,
     target_indices_bottom=None,
     target_center_offset=None,
-    target_height=None,
+    target_heights=None,
     origin="corner",
+    round_phase_width=True,
 ):
     """White's stimulus where targets are placed in two rows (top, bottom) that have the same
     distance from the center.
@@ -305,8 +307,6 @@ def white_two_rows(
         phases ("ignore")
     rotation : float
         rotation of grating in degrees (default: 0 = horizontal)
-    phase_shift : float
-        phase shift of grating in degrees
     intensity_bars : Sequence[float, ...]
         intensity value for each bar, by default (1.0, 0.0).
         Can specify as many intensities as n_bars;
@@ -319,12 +319,14 @@ def white_two_rows(
         bar indices where bottom target(s) will be placed. As many targets as ints.
     target_center_offset : float
         offset from target centers to image center in degree visual angle.
-    target_height : float, or Sequence[float, ...]
+    target_heights : float, or Sequence[float, ...]
         height of targets in degrees visual angle
     origin : "corner", "mean" or "center"
         if "corner": set origin to upper left corner (default)
         if "mean": set origin to hypothetical image center
         if "center": set origin to real center (closest existing value to mean)
+    round_phase_width : Bool
+        if True (default), round phase width of grating
 
     Returns
     -------
@@ -361,13 +363,13 @@ def white_two_rows(
         bar_width=bar_width,
         period=period,
         rotation=rotation,
-        phase_shift=phase_shift,
         intensity_bars=intensity_bars,
         target_indices=target_indices,
         intensity_target=intensity_target,
         target_center_offsets=target_center_offsets,
-        target_heights=target_height,
+        target_heights=target_heights,
         origin=origin,
+        round_phase_width=round_phase_width,
     )
     return stim
 
@@ -389,6 +391,7 @@ def anderson(
     intensity_stripes=(1.0, 0.0),
     stripe_center_offset=0,
     stripe_height=None,
+    round_phase_width=True,
 ):
     """Anderson variation of White's stimulus
 
@@ -428,6 +431,8 @@ def anderson(
         offset from stripe centers to image center in degree visual angle.
     stripe_height = float
         stripe height in degrees visual angle
+    round_phase_width : Bool
+        if True (default), round phase width of grating
 
     Returns
     -------
@@ -461,30 +466,26 @@ def anderson(
         bar_width=bar_width,
         period=period,
         rotation=0,
-        phase_shift=0,
         intensity_bars=intensity_bars,
         intensity_target=intensity_target,
         target_indices_top=target_indices_top,
         target_indices_bottom=target_indices_bottom,
         target_center_offset=target_center_offset,
-        target_height=target_height,
+        target_heights=target_height,
         origin="corner",
+        round_phase_width=round_phase_width,
     )
 
     img = stim["img"]
     mask = stim["target_mask"]
     soffset = resolution.lengths_from_visual_angles_ppd(stripe_center_offset, np.unique(ppd)[0])
     sheight = resolution.lengths_from_visual_angles_ppd(stripe_height, np.unique(ppd)[0])
-    cycle_width = (
-        resolution.lengths_from_visual_angles_ppd(1.0 / (frequency * 2), np.unique(ppd)[0]) * 2
-    )
-
-    phase_width_px = cycle_width // 2
     height, width = img.shape
-    nbars = width // phase_width_px
-    ttop, tbot = np.array(target_indices_top), np.array(target_indices_bottom)
-    ttop[ttop < 0] = nbars + ttop[ttop < 0]
-    tbot[tbot < 0] = nbars + tbot[tbot < 0]
+
+    if isinstance(target_indices_top, (float, int)):
+        target_indices_top = (target_indices_top,)
+    if isinstance(target_indices_bottom, (float, int)):
+        target_indices_bottom = (target_indices_bottom,)
 
     if sheight / 2.0 > soffset:
         raise ValueError("Stripes overlap! Increase stripe offset or decrease stripe size.")
@@ -501,17 +502,24 @@ def anderson(
 
     # Add stripe at top
     ystart = height // 2 - soffset - sheight // 2
-    img[ystart : ystart + sheight, 0 : phase_width_px * np.min(ttop)] = intensity_stripes[0]
-    img[ystart : ystart + sheight, phase_width_px * (np.max(ttop) + 1) : :] = intensity_stripes[0]
-    if (ystart < 0) or (ystart + sheight > height):
-        raise ValueError("Anderson stripes do not fully fit into stimulus")
+    stripe_mask_top = np.zeros(stim["shape"])
+    stripe_mask_top[ystart : ystart + sheight, :] = 1
+    for t in target_indices_top:
+        if t < 0:
+            t = int(stim["n_bars"] + t)
+        stripe_mask_top = np.where(stim["grating_mask"] == t + 1, 0, stripe_mask_top)
 
-    # Add stripe at bottom
+    # Add stripes at bottom
     ystart = height // 2 + soffset - sheight // 2
-    img[ystart : ystart + sheight, 0 : phase_width_px * np.min(tbot)] = intensity_stripes[1]
-    img[ystart : ystart + sheight, phase_width_px * (np.max(tbot) + 1) : :] = intensity_stripes[1]
-    if (ystart < 0) or (ystart + sheight > height):
-        raise ValueError("Anderson stripes do not fully fit into stimulus")
+    stripe_mask_bot = np.zeros(stim["shape"])
+    stripe_mask_bot[ystart : ystart + sheight, :] = 1
+    for t in target_indices_bottom:
+        if t < 0:
+            t = int(stim["n_bars"] + t)
+        stripe_mask_bot = np.where(stim["grating_mask"] == t + 1, 0, stripe_mask_bot)
+
+    img = np.where(stripe_mask_top, intensity_stripes[0], img)
+    img = np.where(stripe_mask_bot, intensity_stripes[1], img)
 
     stim["img"] = img
     stim["target_mask"] = mask
@@ -536,6 +544,7 @@ def howe(
     target_center_offset=0,
     target_height=None,
     intensity_stripes=(1.0, 0.0),
+    round_phase_width=True,
 ):
     """Howe variation of White's stimulus
 
@@ -571,6 +580,8 @@ def howe(
         height of targets in degrees visual angle
     intensity_stripes : (float, float)
         intensity values of horizontal stripes
+    round_phase_width : Bool
+        if True (default), round phase width of grating
 
     Returns
     -------
@@ -608,6 +619,7 @@ def howe(
         intensity_stripes=intensity_stripes,
         stripe_center_offset=target_center_offset,
         stripe_height=target_height,
+        round_phase_width=round_phase_width,
     )
 
 
@@ -627,6 +639,7 @@ def yazdanbakhsh(
     target_height=None,
     intensity_stripes=(1.0, 0.0),
     gap_size=None,
+    round_phase_width=True,
 ):
     """Yazsdanbakhsh variation of White's stimulus
 
@@ -664,6 +677,8 @@ def yazdanbakhsh(
         intensity values of horizontal stripes
     gap_size : float
         size of gap between target and grating bar
+    round_phase_width : Bool
+        if True (default), round phase width of grating
 
     Returns
     -------
@@ -692,14 +707,14 @@ def yazdanbakhsh(
         bar_width=bar_width,
         period=period,
         rotation=0,
-        phase_shift=0,
         intensity_bars=intensity_bars,
         intensity_target=intensity_target,
         target_indices_top=target_indices_top,
         target_indices_bottom=target_indices_bottom,
         target_center_offset=target_center_offset,
-        target_height=target_height,
+        target_heights=target_height,
         origin="corner",
+        round_phase_width=round_phase_width,
     )
 
     img = stim["img"]
@@ -728,27 +743,26 @@ def yazdanbakhsh(
     if any(t in ttop for t in tbot) and (target_offset_px - tsize_px // 2 - gap_size_px) < 0:
         raise ValueError("Stripes overlap! Replace or decrease targets or decrease stripe size.")
 
-    # Add stripes at top
+    # Add stripe at top
     ystart = height // 2 - target_offset_px - gap_size_px - tsize_px // 2
     ystart2 = height // 2 - target_offset_px + tsize_px // 2
+    stripe_mask_top = np.zeros(stim["shape"])
+    stripe_mask_top[ystart : ystart + gap_size_px, :] = 1
+    stripe_mask_top[ystart2 : ystart2 + gap_size_px, :] = 1
     for t in ttop:
-        img[
-            ystart : ystart + gap_size_px, t * phase_width_px : (t + 1) * phase_width_px
-        ] = intensity_stripes[0]
-        img[
-            ystart2 : ystart2 + gap_size_px, t * phase_width_px : (t + 1) * phase_width_px
-        ] = intensity_stripes[0]
+        stripe_mask_top = np.where(stim["grating_mask"] == t + 1, stripe_mask_top * 1, 0)
 
     # Add stripes at bottom
     ystart = height // 2 + target_offset_px - tsize_px // 2 - gap_size_px
     ystart2 = height // 2 + target_offset_px + tsize_px // 2
+    stripe_mask_bot = np.zeros(stim["shape"])
+    stripe_mask_bot[ystart : ystart + gap_size_px, :] = 1
+    stripe_mask_bot[ystart2 : ystart2 + gap_size_px, :] = 1
     for t in tbot:
-        img[
-            ystart : ystart + gap_size_px, t * phase_width_px : (t + 1) * phase_width_px
-        ] = intensity_stripes[1]
-        img[
-            ystart2 : ystart2 + gap_size_px, t * phase_width_px : (t + 1) * phase_width_px
-        ] = intensity_stripes[1]
+        stripe_mask_bot = np.where(stim["grating_mask"] == t + 1, stripe_mask_bot * 1, 0)
+
+    img = np.where(stripe_mask_top, intensity_stripes[0], img)
+    img = np.where(stripe_mask_bot, intensity_stripes[1], img)
 
     stim["img"] = img
     stim["target_mask"] = mask.astype(int)
@@ -768,48 +782,64 @@ def overview(**kwargs):
     default_params = {
         "visual_size": 10,
         "ppd": 30,
-        "frequency": 0.5,
-        "intensity_bars": (1, 0),
     }
     default_params.update(kwargs)
 
     # fmt: off
     stimuli = {
-        "white": white(**default_params, target_indices=(2, -3), target_height=2),
+        "white": white(**default_params, target_indices=(2, -3), target_heights=2, frequency=0.5,),
         "white_general": generalized(
-            **default_params, target_indices=(1, 3, 5), target_center_offsets=(-1, -3, -1), target_heights=(2, 3, 2)
-        ),
+            **default_params,
+            target_indices=(1, 3, 5),
+            target_center_offsets=(-1, -3, -1),
+            target_heights=(2, 3, 2),
+            frequency=0.5,),
         "white_two_rows": white_two_rows(
             **default_params,
             target_indices_top=(2, 4),
             target_indices_bottom=(-2, -4),
-            target_height=1,
+            target_heights=1,
             target_center_offset=2,
-        ),
+            frequency=0.5,),
         "white_anderson": anderson(
             **default_params,
             target_indices_top=3,
-            target_indices_bottom=-2,
+            target_indices_bottom=-4,
             target_center_offset=2,
             target_height=2,
             stripe_center_offset=1.5,
             stripe_height=2,
-        ),
+            frequency=0.5,),
         "white_howe": howe(
             **default_params,
             target_indices_top=3,
-            target_indices_bottom=-2,
+            target_indices_bottom=-4,
             target_center_offset=2,
             target_height=2,
-        ),
+            frequency=0.5,),
         "white_yazdanbakhsh": yazdanbakhsh(
             **default_params,
             target_indices_top=3,
-            target_indices_bottom=-2,
+            target_indices_bottom=-4,
             target_center_offset=2,
             target_height=2,
             gap_size=0.5,
-        ),
+            frequency=0.5,),
+        "white_angular": angular(
+            **default_params,
+            n_segments=10,
+            target_indices=(1, 6),
+            target_width=1,),
+        "white_radial": radial(
+            **default_params,
+            frequency=0.5,
+            target_indices=(1, 4),),
+        "white_wedding_cake": wedding_cake(
+            **default_params,
+            L_size=(4, 2.5, 0.5),
+            target_height=2,
+            target_indices1=((1, 4), (1, 3)),
+            target_indices2=((1, 0), (1, 1)),)
     }
     # fmt: on
 
@@ -820,4 +850,4 @@ if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
 
     stims = overview()
-    plot_stimuli(stims, mask=True, save=None)
+    plot_stimuli(stims, mask=False, save=None)
