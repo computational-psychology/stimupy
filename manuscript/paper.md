@@ -78,6 +78,7 @@ The alternative to these idiosyncratic approaches
 is to use existing software which provides more flexible stimulus functions.
 
 We are currently aware of
+
 - Psychtoolbox [@brainard1997],
 - Psychopy [@peirce2019],
 - Pyllusion [@makowski2021].
