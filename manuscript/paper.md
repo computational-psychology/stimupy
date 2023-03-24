@@ -224,9 +224,11 @@ stimulus functions which are part of Stimupy or a pre-release version of the sof
 have been used in almost all of the work of our laboratory within the last two years.
 Some of Stimupy's noise functions have been used to generate the narrowband noise masks of varying center frequency in [@schmittwilken2022b].
 A pre-release version was used in multiple conference contributions
-in which we ... (joris vss 2021) [@vincent2021],
-in which we compared existing models of human brightness perception on a large battery of brightness stimuli [@schmittwilken2022a],
-in which we (joris ecvp 2022) [@vincent2022],
+in which we compared structural elements between existing models of brightness perception [@vincent.maertens2021a];
+in which we compared existing models of human brightness perception on a large battery of brightness stimuli [@schmittwilken2022a];
+in which we evaluated how to quantitatively link output of computational models to human brightness perception data [@vincent.maertens2021];
+in which we demonstrate that a family of computational models
+fails to account for novel brightenss perception data [@vincent.maertens.ea2021; @aguilar.maertens.ea2022; @vincent.maertens.ea2022]
 and in which we studied human edge processing with Cornsweet stimuli in various kinds of noise
 (white, pink, brown, several narrowband noises) [@schmittwilken2022c].
 All these stimuli were created with Stimupy or functions that are included in the software.
