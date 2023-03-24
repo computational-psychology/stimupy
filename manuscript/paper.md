@@ -134,8 +134,8 @@ As far as we know `stimupy` is the only package that:
 
 - contains a wide variety of visual stimuli, from simple geometric shapes to complex illusions
 - includes ready-to-use replications of existing stimulus sets (e.g. ModelFest)
-- makes it easy to create new stimuli because
-  (1) stimulus functions use parameters which are familiar to vision scientists,
+- makes it easy to create new stimuli because (1) stimulus functions
+  use parameters which are familiar to vision scientists,
   and (2) it provides building blocks and masks which can be used to assemble more complicated geometries
 - uses flexible output structures (NumPy arrays, and Python dictionaries)
   and hence makes it easy to interact with the stimulus arrays
