@@ -272,8 +272,8 @@ def white_two_rows(
     rotation=0,
     intensity_bars=(1.0, 0.0),
     intensity_target=0.5,
-    target_indices_top=None,
-    target_indices_bottom=None,
+    target_indices_top=(),
+    target_indices_bottom=(),
     target_center_offset=None,
     target_heights=None,
     origin="corner",
@@ -635,7 +635,7 @@ def yazdanbakhsh(
     target_indices_bottom=None,
     target_center_offset=0,
     target_heights=None,
-    intensity_stripes=(1.0, 0.0),
+    # intensity_stripes=(1.0, 0.0),
     gap_size=None,
     round_phase_width=True,
 ):
@@ -671,8 +671,6 @@ def yazdanbakhsh(
         offset from target centers to image center in degree visual angle.
     target_heights : float, or Sequence[float, ...]
         height of targets in degrees visual angle
-    intensity_stripes : (float, float)
-        intensity values of horizontal stripes
     gap_size : float
         size of gap between target and grating bar
     round_phase_width : Bool
@@ -766,17 +764,28 @@ def yazdanbakhsh(
 
     stim["gap_mask"] = combine_masks(*gap_top_masks, *gap_bottom_masks)
 
-    # Draw gaps
-    intensity_stripes = tuple(
-        itertools.islice(itertools.cycle(intensity_stripes), len(np.unique(stim["gap_mask"])))
+    # Create stim without targets
+    stim_wo = white_two_rows(
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        frequency=frequency,
+        n_bars=n_bars,
+        bar_width=bar_width,
+        period=period,
+        rotation=0,
+        intensity_bars=(intensity_bars[1], intensity_bars[0]),
+        intensity_target=intensity_target,
+        target_center_offset=target_center_offset,
+        target_heights=target_heights,
+        origin="corner",
+        round_phase_width=round_phase_width,
     )
-    gaps_img = draw_regions(stim["gap_mask"], intensity_stripes)
 
-    # Combine images
-    stim["img"] = np.where(stim["gap_mask"], gaps_img, stim["img"])
+    # Remove information at gaps:
+    stim["img"] = np.where(stim["gap_mask"], stim_wo["img"], stim["img"])
 
     # Output
-    stim["intensity_stripes"] = intensity_stripes
     stim["gap_size"] = gap_size
     return stim
 
