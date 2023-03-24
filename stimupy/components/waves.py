@@ -270,7 +270,8 @@ def sine(
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
     frequency : Number, or None (default)
-        spatial frequency of grating, in cycles per degree visual angle
+        spatial frequency of grating, in cycles per degree visual angle.
+        For `distance_metric="angular"`, this is used as cycles-per-image.
     n_phases : int, or None (default)
         number of phases in the grating
     phase_width : Number, or None (default)
@@ -357,7 +358,7 @@ def sine(
             n_phases=n_phases,
             phase_width=phase_width,
             ppd=1,
-            frequency=frequency,
+            frequency=frequency / 360 if frequency is not None else None,
             period=period,
             round_phase_width=round_phase_width,
         )
