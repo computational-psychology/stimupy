@@ -61,6 +61,8 @@ target/
 .vscode/
 
 *.png
+!manuscript/overview.png
+!manuscript/stimspace.png
 .pytest_cache/
 
 **/.ipynb_checkpoints/

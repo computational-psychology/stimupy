@@ -27,12 +27,13 @@ bibliography: bibliography.bib
 
 
 # Summary
+![A small fraction of the variety of stimuli that `stimupy` can produce \label{fig:overview}](overview.png)
 
-Visual stimuli are at the heart of perception research.
+Visual stimuli are at the heart of perception research (Fig. \autoref{fig:example}).
 They may come as visual illusions which demonstrate the striking differences
-between the perceptual and physical world (Fig. EXAMPLE),
+between the perceptual and physical world,
 they may involve minuscule stimulus changes
-which are used to probe the limits of visual sensitivity (Fig. EXAMPLE),
+which are used to probe the limits of visual sensitivity,
 or they may be used to probe any other aspect of visual processing.
 Stimupy is a free and open-source Python package
 which allows the user to create visual stimuli
@@ -186,8 +187,10 @@ Due to stimupy’s versatility, entire stimulus sets (including experimental fin
 can be accessed via a single line of code,
 and more stimulus sets can be added at any point in time.
 
+![Samples from a parameter space of a single `stimupy` stimulus function: \label{fig:stimspace}](stimspace.png)
+
 Stimupy's high degree of parameterizability allows for extensive explorations
-of stimulus parameter spaces (Fig [EXAMPLE]).
+of stimulus parameter spaces (Fig. \autoref{fig:stimspace}).
 On the one hand, this can be useful for vision experimentation
 because varying stimuli along one or multiple dimensions
 can be directly mapped to certain experimental designs and research questions.
