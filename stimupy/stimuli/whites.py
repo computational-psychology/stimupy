@@ -1,15 +1,13 @@
 import itertools
-import warnings
 
 import numpy as np
 
-from stimupy.components import draw_regions, image_base
+from stimupy.components import draw_regions
 from stimupy.components.shapes import rectangle
 from stimupy.stimuli.gratings import squarewave
 from stimupy.stimuli.pinwheels import pinwheel as angular
 from stimupy.stimuli.waves import square_radial as radial
 from stimupy.stimuli.wedding_cakes import wedding_cake
-from stimupy.utils import resolution
 from stimupy.utils.utils import combine_masks
 
 __all__ = [
@@ -135,19 +133,6 @@ def generalized(
     target_center_offsets = tuple(
         itertools.islice(itertools.cycle(target_center_offsets), len(target_indices))
     )
-
-    # Resolve resolutions and get distances
-    base = image_base(
-        visual_size=visual_size,
-        ppd=ppd,
-        shape=shape,
-        rotation=rotation,
-        origin="center",
-    )
-    xx = base["horizontal"]
-    yy = base["vertical"]
-    theta = np.deg2rad(rotation)
-    x = np.round(np.cos(theta) * yy - np.sin(theta) * xx, 8)
 
     # Place target(s)
     stim_center = stim["visual_size"].height / 2
