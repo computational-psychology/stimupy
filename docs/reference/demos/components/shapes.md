@@ -23,7 +23,6 @@ kernelspec:
 ```{code-cell} ipython3
 :tags: [remove-cell]
 
-
 import IPython
 import ipywidgets as iw
 from stimupy.utils import plot_stim
@@ -523,7 +522,7 @@ def show_wedge(
     stim = wedge(
         visual_size=(height, width),
         ppd=ppd,
-        width=wwidth,
+        angle=wwidth,
         radius=radius,
         rotation=rotation,
         inner_radius=inner_radius,

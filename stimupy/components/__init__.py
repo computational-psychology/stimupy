@@ -158,6 +158,9 @@ def mask_elements(
     distances = base[distance_metric]
     distances = np.round(distances, 8)
 
+    if isinstance(edges, (int, float)):
+        edges = (edges,)
+
     # Mark elements with integer idx-value
     mask = np.zeros(base["shape"], dtype=int)
     for idx, edge in zip(reversed(range(len(edges))), reversed(edges)):
@@ -202,6 +205,9 @@ def draw_regions(mask, intensities, intensity_background=0.5):
 
     # Get mask indices
     mask_idcs = np.unique(mask[mask > 0])
+
+    if isinstance(intensities, (float, int)):
+        intensities = (intensities,)
 
     # Assign intensities to masked regions
     ints = [*itertools.islice(itertools.cycle(intensities), len(mask_idcs))]

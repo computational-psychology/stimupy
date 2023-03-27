@@ -28,7 +28,6 @@ import ipywidgets as iw
 from stimupy.utils import plot_stim
 ```
 
-
 ## Gabor
 {py:func}`stimupy.stimuli.gabors.gabor`
 
@@ -81,7 +80,7 @@ def show_gabor(
         frequency=frequency,
         phase_shift=phase_shift,
         sigma=sigma,
-        intensities=(int1, int2),
+        intensity_bars=(int1, int2),
         origin=origin,
         period=period,
     )
