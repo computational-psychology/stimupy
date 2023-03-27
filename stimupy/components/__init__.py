@@ -157,7 +157,7 @@ def mask_elements(
     )
     distances = base[distance_metric]
     distances = np.round(distances, 8)
-    
+
     if isinstance(edges, (int, float)):
         edges = (edges,)
 
@@ -205,7 +205,7 @@ def draw_regions(mask, intensities, intensity_background=0.5):
 
     # Get mask indices
     mask_idcs = np.unique(mask[mask > 0])
-    
+
     if isinstance(intensities, (float, int)):
         intensities = (intensities,)
 
