@@ -92,9 +92,10 @@ def frames(
     """
     if radii is None:
         raise ValueError("frames() missing argument 'radii' which is not 'None'")
-
-    if np.diff(radii).min() < 0:
-        raise ValueError("radii need to monotonically increase")
+    
+    if not isinstance(radii, (int, float)):
+        if np.diff(radii).min() < 0:
+            raise ValueError("radii need to monotonically increase")
 
     # Get frames mask
     stim = mask_frames(
