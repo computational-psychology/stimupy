@@ -300,7 +300,7 @@ def with_dots(
         patch = pad_to_shape(patch, shape, 0)
     except Exception:
         raise ValueError("visual_size or shape_argument are too small. Advice: set to None")
-    
+
     # Create the sbc in the background:
     img_shape = patch.shape
 
@@ -517,7 +517,7 @@ def dotted(
         visual_size=target_shape, ppd=pixels_per_dot
     )
     rect_visual_size = resolution.visual_size_from_shape_ppd(shape=rect_shape, ppd=ppd)
-    
+
     try:
         patch = pad_to_shape(patch, shape, 0)
     except Exception:
@@ -532,7 +532,6 @@ def dotted(
         intensity_background=intensity_background,
         intensity_rectangle=intensity_target,
     )
-
 
     img = np.where(patch, intensity_dots, intensity_background)
     img = np.where(patch + sbc["rectangle_mask"] == 2, intensity_target, img)
