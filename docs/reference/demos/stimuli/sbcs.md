@@ -251,8 +251,8 @@ w_height = iw.IntSlider(value=15, min=1, max=20, description="height [deg]")
 w_width = iw.IntSlider(value=15, min=1, max=20, description="width [deg]")
 w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
 
-w_t_height = iw.IntSlider(value=3, min=1, max=6, description="target height [deg]")
-w_t_width = iw.IntSlider(value=3, min=1, max=6, description="target width [deg]")
+w_t_height = iw.FloatSlider(value=3, min=1, max=6, description="target height [deg]")
+w_t_width = iw.FloatSlider(value=3, min=1, max=6, description="target width [deg]")
 
 w_ndotsy = iw.IntSlider(value=5, min=1, max=10, description="n dots y")
 w_ndotsx = iw.IntSlider(value=5, min=1, max=10, description="n dots x")
@@ -338,8 +338,8 @@ w_height = iw.IntSlider(value=15, min=1, max=20, description="height [deg]")
 w_width = iw.IntSlider(value=15, min=1, max=20, description="width [deg]")
 w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
 
-w_t_height = iw.IntSlider(value=3, min=1, max=6, description="target height [deg]")
-w_t_width = iw.IntSlider(value=3, min=1, max=6, description="target width [deg]")
+w_t_height = iw.FloatSlider(value=3, min=1, max=6, description="target height [deg]")
+w_t_width = iw.FloatSlider(value=3, min=1, max=6, description="target width [deg]")
 
 w_ndotsy = iw.IntSlider(value=5, min=1, max=10, description="n dots y")
 w_ndotsx = iw.IntSlider(value=5, min=1, max=10, description="n dots x")
@@ -431,8 +431,8 @@ w_height = iw.IntSlider(value=15, min=1, max=20, description="height [deg]")
 w_width = iw.IntSlider(value=15, min=1, max=20, description="width [deg]")
 w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
 
-w_t_height = iw.IntSlider(value=3, min=1, max=6, description="target height [deg]")
-w_t_width = iw.IntSlider(value=3, min=1, max=6, description="target width [deg]")
+w_t_height = iw.FloatSlider(value=3, min=1, max=6, description="target height [deg]")
+w_t_width = iw.FloatSlider(value=3, min=1, max=6, description="target width [deg]")
 
 w_ndotsy = iw.IntSlider(value=5, min=1, max=10, description="n dots y")
 w_ndotsx = iw.IntSlider(value=5, min=1, max=10, description="n dots x")

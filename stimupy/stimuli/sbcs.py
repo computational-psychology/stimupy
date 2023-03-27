@@ -288,10 +288,7 @@ def with_dots(
     )["img"]
     patch = pad_by_visual_size(img=patch, padding=padding, ppd=ppd, pad_value=0.0)
     pixels_per_dot = patch.shape
-
-    # Img total shape = n_dots * pixels_per_dot
-    img_shape = resolution.shape_from_visual_size_ppd(visual_size=n_dots, ppd=pixels_per_dot)
-    img_visual_size = resolution.visual_size_from_shape_ppd(shape=img_shape, ppd=ppd)
+    patch = np.tile(patch, (int(n_dots[0]), int(n_dots[1])))
 
     # Target shape = target n_dots * pixels_per_dot
     rect_shape = resolution.shape_from_visual_size_ppd(
@@ -299,26 +296,24 @@ def with_dots(
     )
     rect_visual_size = resolution.visual_size_from_shape_ppd(shape=rect_shape, ppd=ppd)
 
+    try:
+        patch = pad_to_shape(patch, shape, 0)
+    except Exception:
+        raise ValueError("visual_size or shape_argument are too small. Advice: set to None")
+    
     # Create the sbc in the background:
+    img_shape = patch.shape
+
     sbc = rectangle(
-        visual_size=img_visual_size,
+        shape=img_shape,
         ppd=ppd,
         rectangle_size=rect_visual_size,
         intensity_background=intensity_background,
         intensity_rectangle=intensity_target,
     )
-    img = sbc["img"]
-    mask = sbc["rectangle_mask"]
 
-    patch = np.tile(patch, (int(n_dots[0]), int(n_dots[1])))
     img = np.where(patch == 1, intensity_dots, sbc["img"])
     mask = np.where(patch == 1, 0, sbc["rectangle_mask"])
-
-    try:
-        img = pad_to_shape(img, shape, intensity_background)
-        mask = pad_to_shape(mask, shape, 0)
-    except Exception:
-        raise ValueError("visual_size or shape_argument are too small. Advice: set to None")
 
     stim = {
         "img": img,
@@ -515,36 +510,33 @@ def dotted(
     )["img"]
     patch = pad_by_visual_size(img=patch, padding=padding, ppd=ppd, pad_value=0.0)
     pixels_per_dot = patch.shape
-
-    # Img total shape = n_dots * pixels_per_dot
-    img_shape = resolution.shape_from_visual_size_ppd(visual_size=n_dots, ppd=pixels_per_dot)
-    img_visual_size = resolution.visual_size_from_shape_ppd(shape=img_shape, ppd=ppd)
+    patch = np.tile(patch, (int(n_dots[0]), int(n_dots[1])))
 
     # Target shape = target n_dots * pixels_per_dot
     rect_shape = resolution.shape_from_visual_size_ppd(
         visual_size=target_shape, ppd=pixels_per_dot
     )
     rect_visual_size = resolution.visual_size_from_shape_ppd(shape=rect_shape, ppd=ppd)
+    
+    try:
+        patch = pad_to_shape(patch, shape, 0)
+    except Exception:
+        raise ValueError("visual_size or shape_argument are too small. Advice: set to None")
 
     # Create the sbc and img:
+    img_shape = patch.shape
     sbc = rectangle(
-        visual_size=img_visual_size,
+        shape=img_shape,
         ppd=ppd,
         rectangle_size=rect_visual_size,
         intensity_background=intensity_background,
         intensity_rectangle=intensity_target,
     )
 
-    patch = np.tile(patch, (int(n_dots[0]), int(n_dots[1])))
+
     img = np.where(patch, intensity_dots, intensity_background)
     img = np.where(patch + sbc["rectangle_mask"] == 2, intensity_target, img)
     mask = np.where(patch + sbc["rectangle_mask"] == 2, 1, 0)
-
-    try:
-        img = pad_to_shape(img, shape, intensity_background)
-        mask = pad_to_shape(mask, shape, 0)
-    except Exception:
-        raise ValueError("visual_size or shape_argument are too small. Advice: set to None")
 
     stim = {
         "img": img,
