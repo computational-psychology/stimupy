@@ -210,7 +210,7 @@ w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
 w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
 
 w_distance_metric = iw.Dropdown(value="horizontal", options=['horizontal','vertical','oblique','radial','rectilinear','angular'], description="distance_metric")
-w_freq = iw.FloatSlider(value=0.5, min=0, max=2, description="frequency [cpd]")
+w_freq = iw.FloatSlider(value=1, min=0, max=4, description="frequency [cpd / cpc]")
 w_rot = iw.FloatSlider(value=0, min=0, max=360, description="rotation [deg]")
 w_phase = iw.FloatSlider(value=0, min=0, max=360, description="phase shift [deg]")
 
@@ -282,7 +282,6 @@ out = iw.interactive_output(
 # Show
 display(ui, out)
 ```
-
 
 ## Bessel
 {py:func}`stimupy.components.waves.bessel`
