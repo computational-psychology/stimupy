@@ -48,15 +48,15 @@ w_w1 = iw.FloatSlider(value=3, min=0, max=6, description="width1")
 w_int1 = iw.FloatSlider(value=0.2, min=0, max=1, description="int1")
 
 # Mondrian 2
-w_x2 = iw.FloatSlider(value=4, min=0, max=10, description="x2")
-w_y2 = iw.FloatSlider(value=4, min=0, max=10, description="y2")
+w_x2 = iw.FloatSlider(value=2, min=0, max=10, description="x2")
+w_y2 = iw.FloatSlider(value=2, min=0, max=10, description="y2")
 w_h2 = iw.FloatSlider(value=3, min=0, max=6, description="height2")
 w_w2 = iw.FloatSlider(value=3, min=0, max=6, description="width2")
 w_int2 = iw.FloatSlider(value=0.6, min=0, max=1, description="int2")
 
 # Mondrian 3
-w_x3 = iw.FloatSlider(value=4, min=0, max=10, description="x3")
-w_y3 = iw.FloatSlider(value=4, min=0, max=10, description="y3")
+w_x3 = iw.FloatSlider(value=6, min=0, max=10, description="x3")
+w_y3 = iw.FloatSlider(value=6, min=0, max=10, description="y3")
 w_h3 = iw.FloatSlider(value=3, min=0, max=6, description="height3")
 w_w3 = iw.FloatSlider(value=3, min=0, max=6, description="width3")
 w_int3 = iw.FloatSlider(value=0.9, min=0, max=1, description="int3")
@@ -101,9 +101,9 @@ def show_mondrian(
     stim = mondrian(
         visual_size=(height, width),
         ppd=ppd,
-        mondrian_positions=((y1, x1), (y2, x2), (y3, x3)),
-        mondrian_sizes=((h1, w1), (h2, w2), (h3, w3)),
-        mondrian_intensities=(int1, int2, int3),
+        positions=((y1, x1), (y2, x2), (y3, x3)),
+        sizes=((h1, w1), (h2, w2), (h3, w3)),
+        intensities=(int1, int2, int3),
         intensity_background=intensity_background,
     )
     plot_stim(stim, mask=add_mask)
@@ -139,7 +139,6 @@ out = iw.interactive_output(
 display(ui, out)
 ```
 
-
 ## Corrugated Mondrian
 {py:func}`stimupy.stimuli.mondrians.corrugated`
 
@@ -151,11 +150,11 @@ w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
 w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
 w_ppd = iw.IntSlider(value=30, min=1, max=60, description="ppd")
 
-w_mdepth1 = iw.FloatSlider(value=-2., min=-2, max=2, description="mondrian depth 1")
-w_mdepth2 = iw.FloatSlider(value=0., min=-2, max=2, description="mondrian depth 2")
-w_mdepth3 = iw.FloatSlider(value=2., min=-2, max=2, description="mondrian depth 3")
+w_mdepth1 = iw.FloatSlider(value=-2., min=-2, max=2, description="depth 1")
+w_mdepth2 = iw.FloatSlider(value=0., min=-2, max=2, description="depth 2")
+w_mdepth3 = iw.FloatSlider(value=2., min=-2, max=2, description="depth 3")
 
-w_intback = iw.FloatSlider(value=0.5, min=0, max=1, description="intensity_background")
+w_intback = iw.FloatSlider(value=0.5, min=0, max=1, description="int back")
 w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'mondrian_mask'], description="add mask")
 
 w_tidx1 = iw.IntSlider(value=1, min=0, max=10, description="target idx1")
@@ -188,8 +187,8 @@ def show_corrugated_mondrian(
     stim = corrugated_mondrian(
         visual_size=(height, width),
         ppd=ppd,
-        mondrian_depths=(depth1, depth2, depth3),
-        mondrian_intensities=intensities,
+        depths=(depth1, depth2, depth3),
+        intensities=intensities,
         intensity_background=intensity_background,
         intensity_target=intensity_target,
         target_indices=((target_idx1, target_idx2),),

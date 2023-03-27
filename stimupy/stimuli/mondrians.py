@@ -213,11 +213,12 @@ def corrugated_mondrian(
     height, width = visual_size
     mdepths_px = resolution.lengths_from_visual_angles_ppd(depths, ppd[0])
 
-    s1 = sum(i for i in mdepths_px)
+    s1 = sum(i for i in mdepths_px if i > 0)
     s2 = sum(-i for i in mdepths_px if i < 0)
     sum_depth = np.maximum(abs(s1), abs(s2))
-    red_depth = np.cumsum(np.array(mdepths_px)).max()
-    print(sum_depth, red_depth)
+    r1 = np.cumsum(np.array(mdepths_px)).max()
+    r2 = np.cumsum(np.array(mdepths_px)).min()
+    red_depth = np.maximum(abs(r1), abs(r2))
     red_depth = np.maximum(red_depth, sum_depth)
     mheight_px, mwidth_px = int(shape[0] / nrows), int((shape[1] - red_depth) / ncols)
 
