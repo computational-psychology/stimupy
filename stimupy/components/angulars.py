@@ -233,6 +233,9 @@ def segments(
     """
     if angles is None:
         raise ValueError("segments() missing argument 'angles' which is not 'None'")
+    if not isinstance(angles, (int, float)):
+        if np.diff(angles).min() < 0:
+            raise ValueError("angles need to monotonically increase")
 
     # Get mask
     stim = mask_segments(
