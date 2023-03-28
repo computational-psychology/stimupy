@@ -61,12 +61,12 @@ Surely this must also be possible...
     :class: dropdown
 
 ```python
-pip install -e .
+pip install -e .[dev,docs]
 ```
 
-for an editable install;
-this makes changes to files immediately usable,
-rather than having to reinstall the package after every change.
+for an editable install (`-e`) which makes changes to files immediately usable,
+rather than having to reinstall the package after every change;
+and to install the development and documentation dependencies.
 :::
 ::::
 
