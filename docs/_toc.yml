@@ -20,7 +20,8 @@ parts:
     chapters:
     - file: reference/api.md
     - file: reference/demos.md
-  - caption: Contributing
+  - caption: Get in touch
     chapters:
+    - file: contributing/get_in_touch
     - file: contributing/contribute
 

@@ -20,8 +20,8 @@ Welcome to `stimupy`
 :link-type: doc
 :::
 
-:::{grid-item-card} Contribute 🎁
-:link: contributing/contribute
+:::{grid-item-card} Get in touch 📨, contribute 🎁 
+:link: contributing/get_in_touch
 :link-type: doc
 :::
 
