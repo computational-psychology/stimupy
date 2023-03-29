@@ -4,8 +4,9 @@
 format: jb-book
 root: index
 parts:
-  - caption: Getting started (Tutorial)
+  - caption: Getting started with stimupy
     chapters:
+    - file: getting_started/installation
     - file: getting_started/getting_started
   - caption: Topic guides
     chapters:
