@@ -10,6 +10,7 @@ which have more in-depth explanation on various concepts and design decisions.
 :numbered:
 installation
 first_stim
+composition
 stimulus
 replicate
 ```
