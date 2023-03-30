@@ -27,3 +27,9 @@ jobs:
       - name: Run Semantic Release
         run: |
           pipx run python-semantic-release version -v DEBUG
+
+      - name: Bump version
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "build: version bump"
+          skip_fetch: true
