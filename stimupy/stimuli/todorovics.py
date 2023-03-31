@@ -559,8 +559,8 @@ def cross(
     ct = (ct + (ct % 2)) / ppd
     ct_half = ct / 2
 
-    y1 = cy - ct_half - covers_size[0] + (cy * ppd % 2) / ppd
-    x1 = cx - ct_half - covers_size[1] + (cx * ppd % 2) / ppd
+    y1 = cy - cross_thickness / 2 - covers_size[0]
+    x1 = cx - cross_thickness / 2 - covers_size[1]
     y2 = cy + ct_half
     x2 = cx + ct_half
 
