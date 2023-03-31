@@ -73,6 +73,7 @@ version_variable = [                    # version location(s)
   "pyproject.toml:version",             # in this pyproject.toml
   "stimupy/__init__.py:__version__"     # in the init.py, so that stimupy.__version__ works
 ]
+major_on_zero = false                   # don't auto-bump to v1.0.0 yet
 patch_without_tag = false               # if nothing triggers a patch, bump?
 commit_version_number = true            # commit changes to version number?
 commit_subject = "v{version}"
