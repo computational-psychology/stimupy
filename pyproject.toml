@@ -68,7 +68,7 @@ profile = "black"
 line_length = 99
 
 [tool.semantic_release]
-version_source = "tag"                  # source for version
+version_source = "commit"               # source for version
 version_variable = [                    # version location(s)
   "pyproject.toml:version",             # in this pyproject.toml
   "stimupy/__init__.py:__version__"     # in the init.py, so that stimupy.__version__ works
