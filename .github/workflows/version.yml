@@ -1,0 +1,38 @@
+name: Bump version (if necessary)
+
+on:
+  pull_request_target:
+    types:
+      - closed
+  workflow_dispatch:
+
+jobs:
+  bump-version:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository 
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # checkout full commit history
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Configure git to be able to push to repo
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+
+      - name: Bump version using Semantic Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          pipx run python-semantic-release version -v DEBUG
+          VERSION="v"$(pipx run python-semantic-release print-version --current)
+          git push --atomic origin HEAD $VERSION

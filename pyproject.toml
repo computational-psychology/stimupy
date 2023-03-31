@@ -22,8 +22,7 @@ maintainers = [
   {name = "Lynn Schmittwilken", email = "l.schmittwilken@tu-berlin.de"},
   {name = "Joris Vincent", email = "j.vincent@tu-berlin.de"},
 ]
-
-dynamic = ["version"]
+version = "0.99.1"
 
 requires-python = ">=3.6"
 dependencies = [
@@ -57,8 +56,8 @@ where = ["."]  # list of folders that contain the packages (["."] by default)
 include = ["stimupy*"]  # package names should match these glob patterns (["*"] by default)
 namespaces = false  # to disable scanning PEP 420 namespaces (true by default)
 
-[tool.setuptools.dynamic]
-version = {attr = "stimupy.__version__"}
+# [tool.setuptools.dynamic]
+# version = {attr = "stimupy.__version__"}
 
 [tool.black]
 line-length = 99
@@ -67,3 +66,14 @@ target-version = ["py311"]
 [tool.isort]
 profile = "black"
 line_length = 99
+
+[tool.semantic_release]
+version_source = "commit"               # source for version
+version_variable = [                    # version location(s)
+  "pyproject.toml:version",             # in this pyproject.toml
+  "stimupy/__init__.py:__version__"     # in the init.py, so that stimupy.__version__ works
+]
+major_on_zero = false                   # don't auto-bump to v1.0.0 yet
+patch_without_tag = false               # if nothing triggers a patch, bump?
+commit_version_number = true            # commit changes to version number?
+commit_subject = "v{version}"
