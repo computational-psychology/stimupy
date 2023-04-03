@@ -2,13 +2,12 @@ import itertools
 
 import numpy as np
 
-from stimupy.components import draw_regions
+from stimupy.components import combine_masks, draw_regions
 from stimupy.components.shapes import rectangle
 from stimupy.stimuli.gratings import squarewave
 from stimupy.stimuli.pinwheels import pinwheel as angular
 from stimupy.stimuli.waves import square_radial as radial
 from stimupy.stimuli.wedding_cakes import wedding_cake
-from stimupy.utils.utils import combine_masks
 
 __all__ = [
     "generalized",
