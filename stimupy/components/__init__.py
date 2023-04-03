@@ -123,14 +123,18 @@ def mask_regions(
     rotation=0.0,
     origin=None,
 ):
-    """Generate mask with integer indices for consecutive elements
+    """Generate mask for regions in image
+
+    Regions are defined by `edges` along a `distance_metric`.
+    Regions will be masked consecutively, from `origin` outwards,
+    such that each `edge` is the upper-limit of a region.
 
     Parameters
     ----------
     distance_metric : any of keys in stimupy.components.image_base()
-        which dimension to mask over
+        which distance metric to mask over
     edges : Sequence[Number]
-        upper-limit of each consecutive elements
+        upper-limit of each consecutive region
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
@@ -138,11 +142,11 @@ def mask_regions(
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
     rotation : float, optional
-        angle of rotation (in degrees) of segments,
-        counterclockwise away from 3 o'clock, by default 0.0
-    origin : Sequence[Number, Number], Number, or None (default)
-        placement of origin [height,width from topleft] to calculate distances from.
-        If None, set to center of visual_size
+        rotation (in degrees) counterclockwise from 3 o'clock, by default 0.0
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
 
     Returns
     -------
