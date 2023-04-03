@@ -185,6 +185,29 @@ def mask_regions(
 
 
 def combine_masks(*masks):
+    """Combines several masks into a singular mask
+
+    Increments mask-indices, such that the resulting mask contains consecutive integer
+    indices.
+    Masks are combined in order.
+
+    Parameters
+    ----------
+    mask_1, mask_2, ... : numpy.ndarray
+        Masks to be combined
+
+    Returns
+    -------
+    numpy.ndarray
+        Combined mask, where integer indices are in order of the input masks.
+
+    Raises
+    ------
+    ValueError
+        if masks do not all have the same shape (in pixels)
+    ValueError
+        if multiple masks index the same pixel
+    """
     # Initialize
     combined_mask = np.zeros_like(masks[0])
     for mask in masks:
