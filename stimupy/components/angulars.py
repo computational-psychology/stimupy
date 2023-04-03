@@ -1,6 +1,6 @@
 import numpy as np
 
-from stimupy.components import draw_regions, mask_elements
+from stimupy.components import draw_regions, mask_regions
 from stimupy.components.radials import ring
 
 __all__ = [
@@ -42,7 +42,7 @@ def mask_angle(
         dict with boolean mask (key: bool_mask) for pixels falling in given angle,
         and additional params
     """
-    stim = mask_elements(
+    stim = mask_regions(
         edges=np.deg2rad(angles),
         distance_metric="angular",
         rotation=rotation,
@@ -175,7 +175,7 @@ def mask_segments(
         mask with integer index for each segment (key: "wedge_mask"),
         and additional keys containing stimulus parameters
     """
-    stim = mask_elements(
+    stim = mask_regions(
         distance_metric="angular",
         edges=np.deg2rad(edges),
         rotation=rotation,

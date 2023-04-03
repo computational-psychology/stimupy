@@ -10,7 +10,7 @@ __all__ = [
     "plot_overview",
     "image_base",
     "draw_regions",
-    "mask_elements",
+    "mask_regions",
     "overview",
     "angulars",
     "radials",
@@ -114,7 +114,7 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin="mea
     }
 
 
-def mask_elements(
+def mask_regions(
     distance_metric,
     edges,
     shape=None,
@@ -232,7 +232,7 @@ def overview(skip=False):
             "plot_overview",
             "draw_regions",
             "image_base",
-            "mask_elements",
+            "mask_regions",
         ]:
             continue
 

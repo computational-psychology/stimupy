@@ -1,6 +1,6 @@
 import numpy as np
 
-from stimupy.components import draw_regions, mask_elements
+from stimupy.components import draw_regions, mask_regions
 
 __all__ = [
     "frames",
@@ -37,7 +37,7 @@ def mask_frames(
         mask with integer index for each frame (key: "frame_mask"),
         and additional keys containing stimulus parameters
     """
-    stim = mask_elements(
+    stim = mask_regions(
         distance_metric="rectilinear",
         edges=edges,
         rotation=0.0,
