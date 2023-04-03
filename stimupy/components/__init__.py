@@ -185,7 +185,7 @@ def mask_regions(
 
 
 def draw_regions(mask, intensities, intensity_background=0.5):
-    """Draw image with intensities for components in mask
+    """Draw regions defined by mask, with given intensities
 
     Parameters
     ----------
