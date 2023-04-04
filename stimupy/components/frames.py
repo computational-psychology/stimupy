@@ -13,6 +13,7 @@ def mask_frames(
     visual_size=None,
     ppd=None,
     origin="mean",
+    rotation=0.0,
 ):
     """Generate mask with integer indices for sequential square frames
 
@@ -30,6 +31,8 @@ def mask_frames(
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)
         if "center": set origin to real center (closest existing value to mean)
+    rotation : float, optional
+        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
 
     Returns
     -------
@@ -40,7 +43,7 @@ def mask_frames(
     stim = mask_regions(
         distance_metric="rectilinear",
         edges=edges,
-        rotation=0.0,
+        rotation=rotation,
         shape=shape,
         visual_size=visual_size,
         ppd=ppd,
@@ -56,6 +59,7 @@ def frames(
     ppd=None,
     shape=None,
     radii=None,
+    rotation=0.0,
     intensity_frames=(1.0, 0.0),
     intensity_background=0.5,
     origin="mean",
@@ -72,6 +76,8 @@ def frames(
         shape [height, width] of image, in pixels
     radii : Sequence[Number]
         radii of each frame, in degrees visual angle
+    rotation : float, optional
+        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
     intensity_frames : Sequence[float, ...]
         intensity value for each frame, by default (1.0, 0.0).
         Can specify as many intensities as number of frame_widths;
@@ -104,6 +110,7 @@ def frames(
         visual_size=visual_size,
         ppd=ppd,
         origin=origin,
+        rotation=rotation,
     )
 
     # Draw image

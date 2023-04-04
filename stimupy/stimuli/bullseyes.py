@@ -219,6 +219,7 @@ def rectangular(
     frequency=None,
     n_frames=None,
     frame_width=None,
+    rotation=0.0,
     phase_shift=0,
     intensity_frames=(1.0, 0.0),
     intensity_background=0.5,
@@ -244,6 +245,8 @@ def rectangular(
         number of frames in the grating
     frame_width : Number, or None (default)
         width of a single frame, in degrees visual angle
+    rotation : float, optional
+        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
     phase_shift : float
         phase shift of grating in degrees
     intensity_frames : Sequence[float, float]
@@ -283,6 +286,7 @@ def rectangular(
         frequency=frequency,
         n_frames=n_frames,
         frame_width=frame_width,
+        rotation=rotation,
         phase_shift=phase_shift,
         intensity_frames=intensity_frames,
         target_indices=0,
@@ -299,6 +303,7 @@ def rectangular_generalized(
     ppd=None,
     shape=None,
     radii=None,
+    rotation=0.0,
     intensity_frames=(1.0, 0.0),
     intensity_background=0.5,
     intensity_target=0.5,
@@ -318,6 +323,8 @@ def rectangular_generalized(
         shape [height, width] of image, in pixels
     radii : Sequence[Number] or None (default)
         radii of each frame, in degrees visual angle
+    rotation : float, optional
+        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
     intensity_frames : Sequence[float, float]
         min and max intensity of square-wave, by default (0.0, 1.0)
     intensity_background : float (optional)
@@ -343,6 +350,7 @@ def rectangular_generalized(
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,
+        rotation=rotation,
         intensity_frames=intensity_frames,
         intensity_background=intensity_background,
         target_indices=1,
@@ -359,6 +367,7 @@ def rectangular_two_sided(
     frequency=None,
     n_frames=None,
     frame_width=None,
+    rotation=0.0,
     phase_shift=0,
     intensity_target=0.5,
     intensity_frames=(1.0, 0.0),
@@ -383,6 +392,8 @@ def rectangular_two_sided(
         number of frames in the grating
     frame_width : Number, or None (default)
         width of a single frame, in degrees visual angle
+    rotation : float, optional
+        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
     phase_shift : float
         phase shift of grating in degrees
     period : "full", "half", "ignore" (default)
@@ -424,6 +435,7 @@ def rectangular_two_sided(
         frequency=frequency,
         n_frames=n_frames,
         frame_width=frame_width,
+        rotation=rotation,
         phase_shift=phase_shift,
         intensity_frames=intensity_frames,
         intensity_background=intensity_background,
