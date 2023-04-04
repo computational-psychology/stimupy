@@ -119,7 +119,7 @@ def checkerboard(
     target_indices=None,
     extend_targets=False,
     period="ignore",
-    rotation=0,
+    rotation=0.0,
     intensity_checks=(0.0, 1.0),
     intensity_target=0.5,
     round_phase_width=True,
@@ -154,8 +154,8 @@ def checkerboard(
         ensure whether the grating has "even" number of phases, "odd"
         number of phases, either or whether not to round the number of
         phases ("ignore")
-    rotation : float
-        rotation of grating in degrees (default: 0 = horizontal)
+    rotation : float, optional
+        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
     intensity_checks : Sequence[float, float]
         intensity values of checks, by default (0.0, 1.0)
     round_phase_width : Bool
@@ -316,7 +316,7 @@ def contrast_contrast(
     check_visual_size=None,
     target_shape=None,
     period="ignore",
-    rotation=0,
+    rotation=0.0,
     intensity_checks=(0.0, 1.0),
     tau=0.5,
     alpha=None,

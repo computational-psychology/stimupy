@@ -22,7 +22,7 @@ def cross_generalized(
     cross_thickness=None,
     target_size=None,
     target_type="r",
-    target_rotation=0,
+    target_rotation=0.0,
     target_x=None,
     target_y=None,
     intensity_background=1.0,
@@ -45,8 +45,8 @@ def cross_generalized(
         size of all target(s) in degrees visual angle
     target_type : tuple of strings
         type of targets to use; option: r (rectangle), t (triangle); as many targets as types
-    target_rotation : tuple of floats
-        tuple with rotation of targets in deg, as many targets as rotations
+    target_rotation : tuple of floats, or float
+        tuple with rotation of targets in deg, counterclockwise, as many targets as rotations
     target_x : tuple of floats
         tuple with x coordinates of targets in degrees, as many targets as coordinates
     target_y : tuple of floats
@@ -302,7 +302,7 @@ def todorovic_generalized(
     L_width=None,
     target_size=None,
     target_type="r",
-    target_rotation=0,
+    target_rotation=0.0,
     target_x=None,
     target_y=None,
     intensity_background=1.0,
@@ -326,8 +326,8 @@ def todorovic_generalized(
         size of all target(s) in degrees visual angle
     target_type : tuple of strings
         type of targets to use; option: r (rectangle), t (triangle); as many targets as types
-    target_rotation : tuple of floats
-        tuple with rotation of targets in deg, as many targets as rotations
+    target_rotation : tuple of floats, or float
+        tuple with rotation of targets in deg, counterclockwise, as many targets as rotations
     target_x : tuple of floats
         tuple with x coordinates of targets in degrees, as many targets as coordinates
     target_y : tuple of floats
@@ -467,7 +467,7 @@ def todorovic_rectangles(
         L_width=L_width,
         target_size=target_size,
         target_type=("r",) * 2,
-        target_rotation=0,
+        target_rotation=0.0,
         target_x=np.round(np.array(target_x) * ppd) / ppd,
         target_y=np.round(np.array(target_y) * ppd) / ppd,
         intensity_background=intensity_background,
@@ -581,8 +581,8 @@ def add_targets(
         size of all target(s) in degrees visual angle
     target_type : tuple of strings
         type of targets to use; option: r (rectangle), t (triangle); as many targets as types
-    target_rotation : tuple of floats
-        tuple with rotation of targets in deg, as many targets as rotations
+    target_rotation : tuple of floats, or float
+        tuple with rotation of targets in deg, counterclockwise, as many targets as rotations
     target_x : tuple of floats
         tuple with x coordinates of targets in degrees, as many targets as coordinates
     target_y : tuple of floats

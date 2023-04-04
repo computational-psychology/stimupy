@@ -22,7 +22,7 @@ def line(
     line_position=None,
     line_length=None,
     line_width=0,
-    rotation=0,
+    rotation=0.0,
     intensity_line=1,
     intensity_background=0,
     origin="corner",
@@ -45,8 +45,8 @@ def line(
     line_width : Number
         width of the line, in degrees visual angle;
         if line_width=0 (default), line will be one pixel wide
-    rotation : float
-        rotation of grating in degrees (default: 0 = horizontal)
+    rotation : float, optional
+        rotation (in degrees), counterclockwise, by default 0.0 (horizontal)
     intensity_line : Number
         intensity value of the line (default: 1)
     intensity_background : Number
@@ -137,7 +137,7 @@ def dipole(
     line_length=None,
     line_width=0,
     line_gap=None,
-    rotation=0,
+    rotation=0.0,
     intensity_lines=(0, 1),
 ):
     """Draw a two centered parallel lines
@@ -157,8 +157,8 @@ def dipole(
         if line_width=0 (default), line will be one pixel wide
     line_gap : Number
         distance between line centers, in degrees visual angle
-    rotation : float
-        rotation of grating in degrees (default: 0 = horizontal)
+    rotation : float, optional
+        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
     intensity_lines : (Number, Number)
         intensity value of the line (default: (0, 1));
         background intensity is the mean of these two values

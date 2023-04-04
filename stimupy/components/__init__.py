@@ -35,7 +35,7 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin="mea
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
     rotation : float, optional
-        rotation (in degrees) counterclockwise from 3 o'clock, by default 0.0
+        rotation (in degrees) from 3 o'clock, counterclockwise, by default 0.0
     origin : "corner", "mean" or "center"
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)
@@ -145,7 +145,7 @@ def mask_regions(
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
     rotation : float, optional
-        rotation (in degrees) counterclockwise from 3 o'clock, by default 0.0
+        rotation (in degrees) from 3 o'clock, counterclockwise, by default 0.0
     origin : "corner", "mean" or "center"
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)

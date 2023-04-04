@@ -83,8 +83,7 @@ def wedge(
     radius : float
         radius of disc, in degrees visual angle
     rotation : float, optional
-        angle of rotation (in degrees) of segment,
-        counterclockwise from 3 o'clock, by default 0.0
+        rotation (in degrees) from 3 o'clock, counterclockwise, by default 0.0
     inner_radius : float, optional
         inner radius (in degrees visual angle), to turn disc into a ring, by default 0
     intensity_wedge : float, optional
@@ -155,8 +154,7 @@ def mask_segments(
     edges : Sequence[Number]
         upper-limit of each consecutive segment, in angular degrees 0-360
     rotation : float, optional
-        angle of rotation (in degrees) of segments,
-        counterclockwise away from 3 o'clock, by default 0.0
+        rotation (in degrees) from 3 o'clock, counterclockwise, by default 0.0
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
@@ -212,8 +210,7 @@ def segments(
     angles : Sequence[Number] or None (default)
         upper-limit of each segment, in angular degrees 0-360
     rotation : float, optional
-        angle of rotation (in degrees) of segments,
-        counterclockwise away from 3 o'clock, by default 0.0angles
+        rotation (in degrees) from 3 o'clock, counterclockwise, by default 0.0
     intensity_background : Number
         intensity value for background; default is 0.5.
     intensity_segments : Sequence[Number, ...]

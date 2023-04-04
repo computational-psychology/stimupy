@@ -30,7 +30,7 @@ def generalized(
     n_bars=None,
     bar_width=None,
     period="ignore",
-    rotation=0,
+    rotation=0.0,
     intensity_bars=(0.0, 1.0),
     target_indices=(),
     intensity_target=0.5,
@@ -59,8 +59,8 @@ def generalized(
         ensure whether the grating has "even" number of phases, "odd"
         number of phases, either or whether not to round the number of
         phases ("ignore")
-    rotation : float
-        rotation of grating in degrees (default: 0 = horizontal)
+    rotation : float, optional
+        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
     intensity_bars : Sequence[float, ...]
         intensity value for each bar, by default (1.0, 0.0).
         Can specify as many intensities as n_bars;
@@ -174,7 +174,7 @@ def white(
     n_bars=None,
     bar_width=None,
     period="ignore",
-    rotation=0,
+    rotation=0.0,
     intensity_bars=(1.0, 0.0),
     target_indices=(),
     intensity_target=0.5,
@@ -202,8 +202,8 @@ def white(
         ensure whether the grating has "even" number of phases, "odd"
         number of phases, either or whether not to round the number of
         phases ("ignore")
-    rotation : float
-        rotation of grating in degrees (default: 0 = horizontal)
+    rotation : float, optional
+        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
     phase_shift : float
         phase shift of grating in degrees
     intensity_bars : Sequence[float, ...]
@@ -268,7 +268,7 @@ def white_two_rows(
     n_bars=None,
     bar_width=None,
     period="ignore",
-    rotation=0,
+    rotation=0.0,
     intensity_bars=(1.0, 0.0),
     intensity_target=0.5,
     target_indices_top=(),
@@ -299,8 +299,8 @@ def white_two_rows(
         ensure whether the grating has "even" number of phases, "odd"
         number of phases, either or whether not to round the number of
         phases ("ignore")
-    rotation : float
-        rotation of grating in degrees (default: 0 = horizontal)
+    rotation : float, optional
+        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
     intensity_bars : Sequence[float, ...]
         intensity value for each bar, by default (1.0, 0.0).
         Can specify as many intensities as n_bars;
@@ -465,7 +465,7 @@ def anderson(
         n_bars=n_bars,
         bar_width=bar_width,
         period=period,
-        rotation=0,
+        rotation=0.0,
         intensity_bars=intensity_bars,
         intensity_target=intensity_target,
         target_indices_top=target_indices_top,
@@ -702,7 +702,7 @@ def yazdanbakhsh(
         n_bars=n_bars,
         bar_width=bar_width,
         period=period,
-        rotation=0,
+        rotation=0.0,
         intensity_bars=intensity_bars,
         intensity_target=intensity_target,
         target_indices_top=target_indices_top,
@@ -772,7 +772,7 @@ def yazdanbakhsh(
         n_bars=n_bars,
         bar_width=bar_width,
         period=period,
-        rotation=0,
+        rotation=0.0,
         intensity_bars=(intensity_bars[1], intensity_bars[0]),
         intensity_target=intensity_target,
         target_center_offset=target_center_offset,
