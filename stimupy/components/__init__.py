@@ -90,7 +90,7 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin="mea
         oblique_y = oblique_y - oblique_y.min()
 
     # Rectilinear distance (frames)
-    rectilinear = np.maximum(np.abs(xx), np.abs(yy))
+    rectilinear = np.maximum(np.abs(oblique_x), np.abs(oblique_y))
 
     # Radial distance
     radial = np.sqrt(xx**2 + yy**2)
