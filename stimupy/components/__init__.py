@@ -49,7 +49,7 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin="mea
         "x", "y" : single axes
         "horizontal", "vertical" : numpy.ndarray of shape, with distance from origin,
         in deg. visual angle, at each pixel
-        "oblique" : numpy.ndarray of shape, with oblique distance from origin,
+        "oblique", "oblique_y" : numpy.ndarray of shape, with oblique distances from origin,
         in deg. visual angle, at each pixel
         "radial" : numpyn.ndarray of shape, with radius from origin,
         in deg. visual angle, at each pixel
@@ -80,6 +80,15 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin="mea
     # Linear distance image bases
     xx, yy = np.meshgrid(x, y)
 
+    # Rotate to get obliques
+    alpha = [np.cos(np.deg2rad(-rotation)), np.sin(np.deg2rad(-rotation))]
+    beta = [np.cos(np.deg2rad(rotation)), np.sin(np.deg2rad(rotation))]
+    oblique_x = alpha[0] * xx + alpha[1] * yy
+    oblique_y = beta[1] * xx + beta[0] * yy
+    if origin == "corner":
+        oblique_x = oblique_x - oblique_x.min()
+        oblique_y = oblique_y - oblique_y.min()
+
     # Rectilinear distance (frames)
     rectilinear = np.maximum(np.abs(xx), np.abs(yy))
 
@@ -91,13 +100,6 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin="mea
     angular -= np.deg2rad(rotation + 90)
     angular %= 2 * np.pi
 
-    # Oblique
-    alpha = [np.cos(np.deg2rad(rotation)), np.sin(np.deg2rad(rotation))]
-    oblique = alpha[0] * xx + alpha[1] * yy
-
-    if origin == "corner":
-        oblique = oblique - oblique.min()
-
     return {
         "visual_size": visual_size,
         "ppd": ppd,
@@ -107,7 +109,8 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin="mea
         "y": y,
         "horizontal": xx,
         "vertical": yy,
-        "oblique": oblique,
+        "oblique": oblique_x,
+        "oblique_y": oblique_y,
         "rectilinear": rectilinear,
         "radial": radial,
         "angular": angular,
