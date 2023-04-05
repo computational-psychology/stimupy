@@ -10,12 +10,6 @@ kernelspec:
   name: python3
 ---
 
-```{code-cell}
-:tags: [remove-cell]
-from myst_nb import glue
-import numpy as np
-```
-
 # A first stimulus
 
 Here you will be introduced to the basics of `stimupy`,
