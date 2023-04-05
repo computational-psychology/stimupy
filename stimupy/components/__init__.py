@@ -11,6 +11,7 @@ __all__ = [
     "image_base",
     "draw_regions",
     "mask_regions",
+    "combine_masks",
     "overview",
     "angulars",
     "radials",
@@ -281,6 +282,7 @@ def overview(skip=False):
             "draw_regions",
             "image_base",
             "mask_regions",
+            "combine_masks",
         ]:
             continue
 
