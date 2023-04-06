@@ -15,7 +15,7 @@ kernelspec:
 Here you will be introduced to the basics of `stimupy`,
 and create your first stimulus through this package.
 At its core, `stimupy` provides a large number of *functions*
-that each draw some kind of (visual) component in a `numpy.ndarray`.
+that each draw some kind of (visual) component in a {py:class}`numpy.ndarray`.
 
 ```{tip} Launch on Binder
 This page can also be launched as an interactive Jupyter Notebook on Binder -- see icon at top
@@ -24,7 +24,7 @@ This page can also be launched as an interactive Jupyter Notebook on Binder -- s
 ## Drawing a basic shape
 
 The most basic stimuli that `stimupy` provides, are basic geometric shapes.
-These functions be found in the `stimupy.components.shapes` *module*.
+These functions be found in the {py:mod}`stimupy.components.shapes` *module*.
 To be able to access these,
 we first have to *import* this module
 into our current Python session:
@@ -58,18 +58,18 @@ stim = shapes.rectangle(visual_size=(6,8), ppd=10, rectangle_size=(4,4))
 
 This function creates an image, and draws a rectangle inside it.
 Everywhere the rectangle isn't, is considered the "background".
-It returns a `dict`ionary,
+It returns a {py:class}`dict`ionary,
 mapping `str`ings as *keys*, to all kinds of *values*.
 
-One of these values in in this output `dict`,
+One of these values in in this output {py:class}`dict`,
 is the generated stimulus image is under the key `"img"`.
-This `"img"` is a `numpy.ndarray`,
+This `"img"` is a {py:class}`numpy.ndarray`,
 where each entry in this array corresponds to a pixel in the image.
 
 To visualize the stimulus,
-you can use your preferred way of showing a `numpy.ndarray`
+you can use your preferred way of showing a {py:class}`numpy.ndarray`
 on the `stim["img"]` array,
-e.g. `matplotlib.pyplot.imshow()`:
+e.g. {py:func}`matplotlib.pyplot.imshow()`:
 ```{code-cell}
 :tags: [hide-input]
 import matplotlib.pyplot as plt
@@ -77,7 +77,7 @@ plt.imshow(stim["img"])
 plt.show()
 ```
 
-For convenience, however, `stimupy` provides a `.utils.plot_stim()` function:
+For convenience, however, `stimupy` provides a {py:func}`.utils.plot_stim <stimupy.utils.plotting.plot_stim>` function:
 
 ```{code-cell}
 from stimupy.utils import plot_stim
@@ -86,7 +86,7 @@ plot_stim(stim)
 plt.show()
 ```
 
-The values of the entries in the `"img"` `numpy.ndarray` represent the pixel intensities,
+The values of the entries in the `"img"` {py:class}`numpy.ndarray` represent the pixel intensities,
 by default in range $[0,1]$.
 
 ## Stimulus parameters
@@ -114,7 +114,7 @@ The arguments consist of three main categories:
   - all `stimupy` stimuli by default are in the range [0, 1]
 
 For these simple shapes, the arguments should be quite intuitive.
-To change the geometry of the rectangle,
+To change the geometry of the {py:func}`rectangle <stimupy.components.shapes.rectangle>`,
 for example make it half its width,
 we call the function with `rectangle_size=(4,2)`
 (changed from `(4,4)`):
@@ -126,7 +126,8 @@ plot_stim(stim)
 plt.show()
 ```
 
-We can also change the `intensity` of our rectangle,
+We can also change the `intensity` of the
+{py:func}`rectangle <stimupy.components.shapes.rectangle>` that gets drawn:
 ```{code-cell}
 stim = shapes.rectangle(visual_size=(6,8), ppd=10,
                         rectangle_size=(4,2), rectangle_position=(1,2),
@@ -138,7 +139,7 @@ plt.show()
 
 
 ## Another shape
-Let's look at another example shape -- `disc`:
+Let's look at another example shape -- {py:func}`disc <stimupy.components.shapes.disc>`:
 ```{code-cell}
 help(shapes.disc)
 ```
@@ -159,7 +160,7 @@ plt.show()
 ```
 
 ## Stimulus parameters are part of output
-When we take a closer look at the whole output `dict`ionary,
+When we take a closer look at the whole output {py:class}`dict`ionary,
 we see that all of the input parameters to the function
 are also there:
 ```
@@ -171,7 +172,7 @@ but also those for which default values were used (e.g., `intensity_background`)
 Thus, this output is self-documenting:
 all the necessary information to produce this stimulus are in the stimulus-`dict`.
 
-A nice feature of these `dict`s is that you, the user,
+A nice feature of these {py:class}`dict`s is that you, the user,
 can add any arbitray (meta)data to them, after creating the stimulus.
 For instance, we can add some label,
 or a creation date:
@@ -186,19 +187,19 @@ print(stim)
 This tutorial highlights the core design principles of `stimupy`-stimuli.
 At its simplest, a `stimupy`-stimulus is:
 
-1. a plain Python `dict`,
-2. containing a `numpy.ndarray` as the `"img"` key.
+1. a plain Python {py:class}`dict`,
+2. containing a {py:class}`numpy.ndarray` as the `"img"` key.
 3. (produced by a stimulus or component function)
 
 The advantages of this are:
 1. the actual image can easily be integrated in existing codebases:
-   - save to file using `numpy.save()`, `matplotlib.save()`, or `Pillow`
-   - manipulate using any `numpy`-based code
+   - save to file using {py:func}`numpy.save`, {py:func}`matplotlib.pyplot.imsave`, or {py:mod}`PIL`
+   - manipulate using any {py:mod}`numpy`-based code
    % TODO: import in PsychoPy (?)
 2. anything that is compliant with this basic structure
    can use (some of) `stimupy` tooling,
-   e.g., `plot_stim()`
-3. since Python `dict`s are *mutable*, you as user can add, create, remove, rename
+   e.g., {py:func}`plot_stim <stimupy.utils.plotting.plot_stim>`
+3. since Python {py:class}`dict`s are *mutable*, you as user can add, create, remove, rename
    any of the keys and values.
 
 The main disadvantages, is that there are no controls or guarantees
