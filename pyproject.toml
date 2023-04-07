@@ -46,6 +46,7 @@ docs = [
   "jupyterlab_myst",
   "myst_nb",
   "ipywidgets",
+  "sphinx-hoverxref",
 ]
 
 [project.urls]

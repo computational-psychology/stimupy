@@ -18,10 +18,10 @@ Since `stimupy`s functions are highly parameterizable,
 lots of variants of a stimulus can be created,
 and thus specific existing parameterizations can be recreated.
 
-For a large selection of the generic `stimupy.stimuli`,
+For a large selection of the generic {py:mod}`stimupy.stimuli`,
 there are specific parameterizations in the published literature.
 Some of these are implement in stimupy as well,
-under the corresponding [`stimupy.papers`](../reference/_api/stimupy.papers).
+under the corresponding {py:mod}`stimupy.papers`.
 
 ```{code-cell}
 :tags: [hide-cell]
@@ -44,7 +44,7 @@ this will create the pixel-exact image as described in the original source.
 
 The default version of the stimulus
 may not be the right aspect ratio or resolution for your use.
-For example, the RHS2007 stimuli
+For example, the {py:mod}`RHS2007 <stimupy.papers.RHS2007>` stimuli
 are 32x32 degrees, at 32 pixels-per-degree, resulting in 1024x1024 pixels.
 However, lets say your observer is seated at a distance that gives 24 pixels-per-degree.
 These resolution parameters can be changed for the paper stimuli, keep the visual elements at the same *visual* size.

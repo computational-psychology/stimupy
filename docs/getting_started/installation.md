@@ -3,13 +3,7 @@
 :::::{tab-set}
 
 ::::{tab-item} pip {fab}`python`
-`stimupy` is not (yet) available on PyPI
--- but if it was, one could:
-
-```python
-pip install stimupy
-```
-For now, `pip` can install directly from GitHub (the `main` branch)
+`pip` can install `stimupy` directly from GitHub (the `main` branch)
 
 ```python
 pip install https://github.com/computational-psychology/stimupy/zipball/main
@@ -35,10 +29,6 @@ pip install https://github.com/computational-psychology/stimupy/archive/9e37617.
 :::
 ::::
 
-::::{tab-item} conda
-Surely this must also be possible...
-::::
-
 
 ::::{tab-item} source {fab}`github`
 
@@ -61,12 +51,12 @@ Surely this must also be possible...
     :class: dropdown
 
 ```python
-pip install -e .
+pip install -e .[dev,docs]
 ```
 
-for an editable install;
-this makes changes to files immediately usable,
-rather than having to reinstall the package after every change.
+for an editable install (`-e`) which makes changes to files immediately usable,
+rather than having to reinstall the package after every change;
+and to install the development and documentation dependencies.
 :::
 ::::
 
