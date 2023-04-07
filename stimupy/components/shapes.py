@@ -27,7 +27,7 @@ def rectangle(
     rectangle_position=None,
     intensity_rectangle=1.0,
     intensity_background=0.0,
-    rotation=0,
+    rotation=0.0,
 ):
     """Draw a rectangle
 
@@ -48,8 +48,8 @@ def rectangle(
         intensity value for rectangle, by default 1.0
     intensity_background : float, optional
         intensity value of background, by default 0.0
-    rotation : float
-        rotation of rectangle in degrees visual angle (default 0)
+    rotation : float, optional
+        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
 
     Returns
     -------
@@ -145,7 +145,7 @@ def triangle(
     intensity_triangle=1.0,
     intensity_background=0.0,
     include_corners=True,
-    rotation=0,
+    rotation=0.0,
 ):
     """Draw a triangle
 
@@ -163,8 +163,8 @@ def triangle(
         intensity value for triangle, by default 1.0
     intensity_background : float, optional
         intensity value of background, by default 0.0
-    rotation : float
-        rotation of triangle in degrees visual angle (default 0)
+    rotation : float, optional
+        rotation (in degrees), counterclockwise, by default 0.0
 
     Returns
     -------
@@ -233,7 +233,7 @@ def cross(
     cross_arm_ratios=(1.0, 1.0),
     intensity_cross=1.0,
     intensity_background=0.0,
-    rotation=0,
+    rotation=0.0,
 ):
     """Draw a cross
 
@@ -255,8 +255,8 @@ def cross(
         intensity value for cross, by default 1.0
     intensity_background : float, optional
         intensity value of background, by default 0.0
-    rotation : float
-        rotation of triangle in degrees visual angle (default 0)
+    rotation : float, optional
+        rotation (in degrees), counterclockwise, by default 0.0
 
     Returns
     -------
@@ -339,7 +339,7 @@ def parallelogram(
     parallelogram_size=None,
     intensity_parallelogram=1.0,
     intensity_background=0.0,
-    rotation=0,
+    rotation=0.0,
 ):
     """Draw a parallelogram
 
@@ -357,8 +357,8 @@ def parallelogram(
         intensity value for parallelogram, by default 1.0
     intensity_background : float, optional
         intensity value of background, by default 0.0
-    rotation : float
-        rotation of triangle in degrees visual angle (default 0)
+    rotation : float, optional
+        rotation (in degrees), counterclockwise, by default 0.0
 
     Returns
     -------
@@ -451,7 +451,7 @@ def ellipse(
     radius=None,
     intensity_ellipse=1.0,
     intensity_background=0.0,
-    rotation=0,
+    rotation=0.0,
     origin="mean",
     restrict_size=True,
 ):
@@ -471,8 +471,8 @@ def ellipse(
         intensity value for ellipse, by default 1.0
     intensity_background : float, optional
         intensity value of background, by default 0.0
-    rotation : float
-        rotation of triangle in degrees visual angle (default 0)
+    rotation : float, optional
+        rotation (in degrees), counterclockwise, by default 0.0
     origin : "corner", "mean" or "center"
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)
@@ -588,7 +588,7 @@ def circle(
         radius=radius,
         intensity_ellipse=intensity_circle,
         intensity_background=intensity_background,
-        rotation=0,
+        rotation=0.0,
         origin=origin,
         restrict_size=restrict_size,
     )

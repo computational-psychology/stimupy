@@ -1,4 +1,5 @@
 import copy
+
 import numpy as np
 import scipy.special as sp
 
@@ -434,21 +435,3 @@ def strip_dict(
         if name in dct.keys():
             new_dict[name] = dct[name]
     return new_dict
-
-
-def combine_masks(*masks):
-    # Initialize
-    combined_mask = np.zeros_like(masks[0])
-    for mask in masks:
-        # Check that masks have the same shape
-        if not mask.shape == combined_mask.shape:
-            raise ValueError("Not all masks have the same shape")
-
-        # Check that masks don't overlap
-        if (combined_mask & mask).any():
-            raise ValueError("Masks overlap")
-
-        # Combine: increase `mask`-idc by adding the current highest idx in combined_mask
-        combined_mask = np.where(mask, mask + combined_mask.max(), combined_mask)
-
-    return combined_mask

@@ -280,8 +280,8 @@ def sine(
         ensure whether the grating has "even" number of phases, "odd"
         number of phases, either or whether not to round the number of
         phases ("ignore")
-    rotation : float
-        rotation of grating in degrees, by default 0.0
+    rotation : float, optional
+        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
     phase_shift : float
         phase shift of grating in degrees, by default 0.0
     intensities : Sequence[float, float]
@@ -503,8 +503,8 @@ def square(
         ensure whether the grating has "even" number of phases, "odd"
         number of phases, either or whether not to round the number of
         phases ("ignore")
-    rotation : float
-        rotation of grating in degrees, by default 0.0
+    rotation : float, optional
+        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
     phase_shift : float
         phase shift of grating in degrees, by default 0.0
     intensities : Sequence[float, float]
@@ -587,8 +587,8 @@ def staircase(
         ensure whether the grating has "even" number of phases, "odd"
         number of phases, either or whether not to round the number of
         phases ("ignore")
-    rotation : float
-        rotation of grating in degrees, by default 0.0
+    rotation : float, optional
+        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
     phase_shift : float
         phase shift of grating in degrees, by default 0.o
     origin : "corner", "mean", or "center" (default)
@@ -687,7 +687,7 @@ def bessel(
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,
-        rotation=0,
+        rotation=0.0,
         origin=origin,
     )
 

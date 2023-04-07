@@ -10,7 +10,8 @@ __all__ = [
     "plot_overview",
     "image_base",
     "draw_regions",
-    "mask_elements",
+    "mask_regions",
+    "combine_masks",
     "overview",
     "angulars",
     "radials",
@@ -35,7 +36,7 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin="mea
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
     rotation : float, optional
-        rotation (in degrees) counterclockwise from 3 o'clock, by default 0.0
+        rotation (in degrees) from 3 o'clock, counterclockwise, by default 0.0
     origin : "corner", "mean" or "center"
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)
@@ -49,7 +50,7 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin="mea
         "x", "y" : single axes
         "horizontal", "vertical" : numpy.ndarray of shape, with distance from origin,
         in deg. visual angle, at each pixel
-        "oblique" : numpy.ndarray of shape, with oblique distance from origin,
+        "oblique", "oblique_y" : numpy.ndarray of shape, with oblique distances from origin,
         in deg. visual angle, at each pixel
         "radial" : numpyn.ndarray of shape, with radius from origin,
         in deg. visual angle, at each pixel
@@ -62,26 +63,23 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin="mea
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
 
-    # Set origin
-    if origin == "corner":
-        x = np.linspace(0, visual_size.width, shape.width)
-        y = np.linspace(0, visual_size.height, shape.height)
-    elif origin == "mean":
-        vrange = (visual_size.height / 2, visual_size.width / 2)
-        x = np.linspace(-vrange[1], vrange[1], shape.width)
-        y = np.linspace(-vrange[0], vrange[0], shape.height)
-    elif origin == "center":
-        vrange = (visual_size.height / 2, visual_size.width / 2)
-        x = np.linspace(-vrange[1], vrange[1], shape.width, endpoint=False)
-        y = np.linspace(-vrange[0], vrange[0], shape.height, endpoint=False)
-    else:
-        raise ValueError("origin can only be be corner, mean or center")
+    # Get single axes
+    x, y = resolution.visual_size_to_axes(visual_size=visual_size, shape=shape, origin=origin)
 
     # Linear distance image bases
     xx, yy = np.meshgrid(x, y)
 
+    # Rotate to get obliques
+    alpha = [np.cos(np.deg2rad(-rotation)), np.sin(np.deg2rad(-rotation))]
+    beta = [np.cos(np.deg2rad(rotation)), np.sin(np.deg2rad(rotation))]
+    oblique_x = alpha[0] * xx + alpha[1] * yy
+    oblique_y = beta[1] * xx + beta[0] * yy
+    if origin == "corner":
+        oblique_x = oblique_x - oblique_x.min()
+        oblique_y = oblique_y - oblique_y.min()
+
     # Rectilinear distance (frames)
-    rectilinear = np.maximum(np.abs(xx), np.abs(yy))
+    rectilinear = np.maximum(np.abs(oblique_x), np.abs(oblique_y))
 
     # Radial distance
     radial = np.sqrt(xx**2 + yy**2)
@@ -90,13 +88,6 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin="mea
     angular = np.arctan2(xx, yy)
     angular -= np.deg2rad(rotation + 90)
     angular %= 2 * np.pi
-
-    # Oblique
-    alpha = [np.cos(np.deg2rad(rotation)), np.sin(np.deg2rad(rotation))]
-    oblique = alpha[0] * xx + alpha[1] * yy
-
-    if origin == "corner":
-        oblique = oblique - oblique.min()
 
     return {
         "visual_size": visual_size,
@@ -107,14 +98,15 @@ def image_base(visual_size=None, shape=None, ppd=None, rotation=0.0, origin="mea
         "y": y,
         "horizontal": xx,
         "vertical": yy,
-        "oblique": oblique,
+        "oblique": oblique_x,
+        "oblique_y": oblique_y,
         "rectilinear": rectilinear,
         "radial": radial,
         "angular": angular,
     }
 
 
-def mask_elements(
+def mask_regions(
     distance_metric,
     edges,
     shape=None,
@@ -123,14 +115,18 @@ def mask_elements(
     rotation=0.0,
     origin=None,
 ):
-    """Generate mask with integer indices for consecutive elements
+    """Generate mask for regions in image
+
+    Regions are defined by `edges` along a `distance_metric`.
+    Regions will be masked consecutively, from `origin` outwards,
+    such that each `edge` is the upper-limit of a region.
 
     Parameters
     ----------
     distance_metric : any of keys in stimupy.components.image_base()
-        which dimension to mask over
+        which distance metric to mask over
     edges : Sequence[Number]
-        upper-limit of each consecutive elements
+        upper-limit of each consecutive region
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
@@ -138,11 +134,11 @@ def mask_elements(
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
     rotation : float, optional
-        angle of rotation (in degrees) of segments,
-        counterclockwise away from 3 o'clock, by default 0.0
-    origin : Sequence[Number, Number], Number, or None (default)
-        placement of origin [height,width from topleft] to calculate distances from.
-        If None, set to center of visual_size
+        rotation (in degrees) from 3 o'clock, counterclockwise, by default 0.0
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
 
     Returns
     -------
@@ -180,8 +176,49 @@ def mask_elements(
     }
 
 
+def combine_masks(*masks):
+    """Combines several masks into a singular mask
+
+    Increments mask-indices, such that the resulting mask contains consecutive integer
+    indices.
+    Masks are combined in order.
+
+    Parameters
+    ----------
+    mask_1, mask_2, ... : numpy.ndarray
+        Masks to be combined
+
+    Returns
+    -------
+    numpy.ndarray
+        Combined mask, where integer indices are in order of the input masks.
+
+    Raises
+    ------
+    ValueError
+        if masks do not all have the same shape (in pixels)
+    ValueError
+        if multiple masks index the same pixel
+    """
+    # Initialize
+    combined_mask = np.zeros_like(masks[0])
+    for mask in masks:
+        # Check that masks have the same shape
+        if not mask.shape == combined_mask.shape:
+            raise ValueError("Not all masks have the same shape")
+
+        # Check that masks don't overlap
+        if (combined_mask & mask).any():
+            raise ValueError("Masks overlap")
+
+        # Combine: increase `mask`-idc by adding the current highest idx in combined_mask
+        combined_mask = np.where(mask, mask + combined_mask.max(), combined_mask)
+
+    return combined_mask
+
+
 def draw_regions(mask, intensities, intensity_background=0.5):
-    """Draw image with intensities for components in mask
+    """Draw regions defined by mask, with given intensities
 
     Parameters
     ----------
@@ -232,7 +269,8 @@ def overview(skip=False):
             "plot_overview",
             "draw_regions",
             "image_base",
-            "mask_elements",
+            "mask_regions",
+            "combine_masks",
         ]:
             continue
 

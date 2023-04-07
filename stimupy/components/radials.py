@@ -2,7 +2,7 @@ import itertools
 
 import numpy as np
 
-from stimupy.components import image_base, mask_elements
+from stimupy.components import image_base, mask_regions
 from stimupy.utils import resolution
 
 __all__ = [
@@ -57,7 +57,7 @@ def mask_rings(
         )
 
     # Mark elements with integer idx-value
-    stim = mask_elements(
+    stim = mask_regions(
         distance_metric="radial",
         edges=radii,
         rotation=0.0,

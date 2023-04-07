@@ -155,7 +155,7 @@ def GaborPatch1(ppd=PPD):
         "ppd": ppd,
         "frequency": 1.12,
         "sigma": 0.5,
-        "rotation": 90,
+        "rotation": -90,
         "phase_shift": 90,
         "origin": "center",
     }
@@ -204,7 +204,7 @@ def GaborPatch2(ppd=PPD):
         "ppd": ppd,
         "frequency": 2,
         "sigma": 0.5,
-        "rotation": 90,
+        "rotation": -90,
         "phase_shift": 90,
         "origin": "center",
     }
@@ -253,7 +253,7 @@ def GaborPatch3(ppd=PPD):
         "ppd": ppd,
         "frequency": 2.83,
         "sigma": 0.5,
-        "rotation": 90,
+        "rotation": -90,
         "phase_shift": 90,
         "origin": "center",
     }
@@ -302,7 +302,7 @@ def GaborPatch4(ppd=PPD):
         "ppd": ppd,
         "frequency": 4,
         "sigma": 0.5,
-        "rotation": 90,
+        "rotation": -90,
         "phase_shift": 90,
         "origin": "center",
     }
@@ -351,7 +351,7 @@ def GaborPatch5(ppd=PPD):
         "ppd": ppd,
         "frequency": 5.66,
         "sigma": 0.5,
-        "rotation": 90,
+        "rotation": -90,
         "phase_shift": 90,
         "origin": "center",
     }
@@ -400,7 +400,7 @@ def GaborPatch6(ppd=PPD):
         "ppd": ppd,
         "frequency": 8,
         "sigma": 0.5,
-        "rotation": 90,
+        "rotation": -90,
         "phase_shift": 90,
         "origin": "center",
     }
@@ -449,7 +449,7 @@ def GaborPatch7(ppd=PPD):
         "ppd": ppd,
         "frequency": 11.3,
         "sigma": 0.5,
-        "rotation": 90,
+        "rotation": -90,
         "phase_shift": 90,
         "origin": "center",
     }
@@ -498,7 +498,7 @@ def GaborPatch8(ppd=PPD):
         "ppd": ppd,
         "frequency": 16,
         "sigma": 0.5,
-        "rotation": 90,
+        "rotation": -90,
         "phase_shift": 90,
         "origin": "center",
     }
@@ -547,7 +547,7 @@ def GaborPatch9(ppd=PPD):
         "ppd": ppd,
         "frequency": 22.6,
         "sigma": 0.5,
-        "rotation": 90,
+        "rotation": -90,
         "phase_shift": 90,
         "origin": "center",
     }
@@ -596,7 +596,7 @@ def GaborPatch10(ppd=PPD):
         "ppd": ppd,
         "frequency": 30,
         "sigma": 0.5,
-        "rotation": 90,
+        "rotation": -90,
         "phase_shift": 90,
         "origin": "center",
     }
@@ -645,7 +645,7 @@ def GaborPatch11(ppd=PPD):
         "ppd": ppd,
         "frequency": 2,
         "sigma": 0.28,
-        "rotation": 90,
+        "rotation": -90,
         "phase_shift": 90,
         "origin": "center",
     }
@@ -694,7 +694,7 @@ def GaborPatch12(ppd=PPD):
         "ppd": ppd,
         "frequency": 4,
         "sigma": 0.14,
-        "rotation": 90,
+        "rotation": -90,
         "phase_shift": 90,
         "origin": "center",
     }
@@ -743,7 +743,7 @@ def GaborPatch13(ppd=PPD):
         "ppd": ppd,
         "frequency": 8,
         "sigma": 0.07,
-        "rotation": 90,
+        "rotation": -90,
         "phase_shift": 90,
         "origin": "center",
     }
@@ -792,7 +792,7 @@ def GaborPatch14(ppd=PPD):
         "ppd": ppd,
         "frequency": 16,
         "sigma": 0.035,
-        "rotation": 90,
+        "rotation": -90,
         "phase_shift": 90,
         "origin": "center",
     }
@@ -841,7 +841,7 @@ def ElongatedGabor15(ppd=PPD):
         "ppd": ppd,
         "frequency": 4,
         "sigma": (0.28, 0.5),
-        "rotation": 90,
+        "rotation": -90,
         "phase_shift": 90,
         "origin": "center",
     }
@@ -890,7 +890,7 @@ def ElongatedGabor16(ppd=PPD):
         "ppd": ppd,
         "frequency": 8,
         "sigma": (0.14, 0.5),
-        "rotation": 90,
+        "rotation": -90,
         "phase_shift": 90,
         "origin": "center",
     }
@@ -939,7 +939,7 @@ def ElongatedGabor17(ppd=PPD):
         "ppd": ppd,
         "frequency": 16,
         "sigma": (0.07, 0.5),
-        "rotation": 90,
+        "rotation": -90,
         "phase_shift": 90,
         "origin": "center",
     }
@@ -988,7 +988,7 @@ def Baguette18(ppd=PPD):
         "ppd": ppd,
         "frequency": 4,
         "sigma": (0.14, 0.28),
-        "rotation": 90,
+        "rotation": -90,
         "phase_shift": 90,
         "origin": "center",
     }
@@ -1037,7 +1037,7 @@ def Baguette19(ppd=PPD):
         "ppd": ppd,
         "frequency": 4,
         "sigma": (0.14, 0.5),
-        "rotation": 90,
+        "rotation": -90,
         "phase_shift": 90,
         "origin": "center",
     }
@@ -1086,7 +1086,7 @@ def Baguette20(ppd=PPD):
         "ppd": ppd,
         "frequency": 4,
         "sigma": (0.28, 0.14),
-        "rotation": 90,
+        "rotation": -90,
         "phase_shift": 90,
         "origin": "center",
     }
@@ -1135,7 +1135,7 @@ def Baguette21(ppd=PPD):
         "ppd": ppd,
         "frequency": 4,
         "sigma": (0.5, 0.14),
-        "rotation": 90,
+        "rotation": -90,
         "phase_shift": 90,
         "origin": "center",
     }
@@ -1183,7 +1183,7 @@ def Subthreshold22(ppd=PPD):
         "visual_size": 256 / PPD,
         "ppd": ppd,
         "sigma": 0.5,
-        "rotation": 90,
+        "rotation": -90,
         "phase_shift": 90,
         "origin": "center",
     }
@@ -1238,7 +1238,7 @@ def Subthreshold23(ppd=PPD):
         "visual_size": 256 / PPD,
         "ppd": ppd,
         "sigma": 0.5,
-        "rotation": 90,
+        "rotation": -90,
         "phase_shift": 90,
         "origin": "center",
     }
@@ -1293,7 +1293,7 @@ def Subthreshold24(ppd=PPD):
         "visual_size": 256 / PPD,
         "ppd": ppd,
         "sigma": 0.5,
-        "rotation": 90,
+        "rotation": -90,
         "phase_shift": 90,
         "origin": "center",
     }
@@ -1348,7 +1348,7 @@ def Subthreshold25(ppd=PPD):
         "visual_size": 256 / PPD,
         "ppd": ppd,
         "sigma": 0.5,
-        "rotation": 90,
+        "rotation": -90,
         "phase_shift": 90,
         "origin": "center",
     }
@@ -1586,7 +1586,7 @@ def Edge30(ppd=PPD):
         https://doi.org/10.1117/12.348473
     """
 
-    stim = gaussian_edge(visual_size=256 / PPD, ppd=ppd, rotation=90, sigma=0.5)
+    stim = gaussian_edge(visual_size=256 / PPD, ppd=ppd, rotation=-90, sigma=0.5)
 
     v = 117
     experimental_data = {
@@ -1735,7 +1735,7 @@ def GaborString33(ppd=PPD):
         "ppd": ppd,
         "frequency": 8,
         "sigma": 0.07,
-        "rotation": 90,
+        "rotation": -90,
         "phase_shift": 90,
         "origin": "center",
     }
@@ -1797,7 +1797,7 @@ def GaborString34(ppd=PPD):
         "ppd": ppd,
         "frequency": 8,
         "sigma": 0.07,
-        "rotation": 90,
+        "rotation": -90,
         "origin": "center",
     }
 
@@ -1944,7 +1944,7 @@ def Orientation36(ppd=PPD):
         "ppd": ppd,
         "frequency": 4,
         "sigma": 0.14,
-        "rotation": 45,
+        "rotation": -45,
         "phase_shift": 90,
         "origin": "center",
     }
@@ -2051,7 +2051,7 @@ def Plaids38(ppd=PPD):
 
     stim = plaid(
         gabor_parameters1={**params, "rotation": 0},
-        gabor_parameters2={**params, "rotation": 90},
+        gabor_parameters2={**params, "rotation": -90},
     )
 
     v = 149
@@ -2102,8 +2102,8 @@ def Plaids39(ppd=PPD):
     }
 
     stim = plaid(
-        gabor_parameters1={**params, "rotation": 45},
-        gabor_parameters2={**params, "rotation": 90},
+        gabor_parameters1={**params, "rotation": -45},
+        gabor_parameters2={**params, "rotation": -90},
     )
 
     v = 153
@@ -2234,7 +2234,7 @@ def Checkerboard42(ppd=PPD):
         "visual_size": 256 / PPD,
         "ppd": ppd,
         "frequency": 2.81,
-        "rotation": 45,
+        "rotation": -45,
         "round_phase_width": False,
         "intensity_checks": (1.0, 0.0),
     }

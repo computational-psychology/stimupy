@@ -13,7 +13,7 @@ def gaussian(
     ppd=None,
     shape=None,
     sigma=None,
-    rotation=0,
+    rotation=0.0,
     intensity_max=1.0,
     origin="mean",
 ):
@@ -29,8 +29,8 @@ def gaussian(
         shape [height, width] of image, in pixels
     sigma : float or (float, float)
         Sigma auf Gaussian in degree visual angle (y, x)
-    rotation : float
-        Rotation of Gaussian in degree (default 0)
+    rotation : float, optional
+        rotation (in degrees), counterclockwise, by default 0.0
     intensity_max : float
         Maximal intensity value of Gaussian
     origin : "corner", "mean" or "center"

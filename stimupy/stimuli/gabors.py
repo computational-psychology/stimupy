@@ -41,8 +41,8 @@ def gabor(
         ensure whether the grating has "even" number of phases, "odd"
         number of phases, either or whether not to round the number of
         phases ("ignore")
-    rotation : float
-        rotation of grating in degrees (default: 0 = horizontal)
+    rotation : float, optional
+        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
     phase_shift : float
         phase shift of grating in degrees
     intensity_bars : Sequence[float, ...]
