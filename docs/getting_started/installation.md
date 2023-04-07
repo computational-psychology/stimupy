@@ -71,3 +71,11 @@ Dependencies should be automatically installed (at least using `pip`).
 - [MatPlotLib](matplotlib)
 - [Pillow](pillow)
 - [Pandas](pandas)
+
+This documentation contains [interactive demos](../reference/demos),
+in the form of Jupyter Notebooks.
+To run this, additional dependencies are required:
+  - Jupyter Notebook (or JupyterLab)
+  - ipywidgets
+These demo notebooks can also be opened on Binder,
+which should install all the necessary dependencies automatically.
