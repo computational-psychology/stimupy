@@ -1,10 +1,11 @@
 name: Release to PyPI
 
-on: [release, worfklow_dispatch]
+on:
+  release:
+  workflow_dispatch:
 
 jobs:
   test_publish:
-    needs: build_dist
     runs-on: ubuntu-latest
 
     steps:
