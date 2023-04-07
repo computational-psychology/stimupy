@@ -8,7 +8,7 @@ on:
 
 jobs:
   bump-version:
-    if: github.event.pull_request.merged == true
+    if: (github.event.pull_request.merged == true) || (github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
 
     steps:
@@ -29,10 +29,8 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
 
-      - name: Bump version using Semantic Release
+      - name: Bump version, build & upload release assets using Semantic Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          pipx run python-semantic-release version -v DEBUG
-          VERSION="v"$(pipx run python-semantic-release print-version --current)
-          git push --atomic origin HEAD $VERSION
+          pipx run python-semantic-release publish -v DEBUG
