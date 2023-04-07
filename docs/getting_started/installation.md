@@ -3,13 +3,7 @@
 :::::{tab-set}
 
 ::::{tab-item} pip {fab}`python`
-`stimupy` is not (yet) available on PyPI
--- but if it was, one could:
-
-```python
-pip install stimupy
-```
-For now, `pip` can install directly from GitHub (the `main` branch)
+`pip` can install `stimupy` directly from GitHub (the `main` branch)
 
 ```python
 pip install https://github.com/computational-psychology/stimupy/zipball/main
@@ -33,10 +27,6 @@ From a specific commit, e.g., (`9e37617`)[https://github.com/computational-psych
 pip install https://github.com/computational-psychology/stimupy/archive/9e37617.zip
 ```
 :::
-::::
-
-::::{tab-item} conda
-Surely this must also be possible...
 ::::
 
 
