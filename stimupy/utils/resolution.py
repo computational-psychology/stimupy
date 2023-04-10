@@ -193,6 +193,49 @@ def resolve_dict(dct):
     return
 
 
+def visual_size_to_axes(visual_size, shape, origin="mean"):
+    """Generate axes from visual size, shape and origin
+
+    Parameters
+    ----------
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] in pixels
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] in degrees
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
+
+    Returns
+    -------
+    (x, y):
+        x and y axes, linearly spacing visual size in intervals defined by shape,
+        and with the origin set in the right place.
+    """
+
+    # Validate params
+    visual_size = validate_visual_size(visual_size=visual_size)
+    shape = validate_shape(shape)
+
+    # Set origin
+    if origin == "corner":
+        x = np.linspace(0, visual_size.width, shape.width)
+        y = np.linspace(0, visual_size.height, shape.height)
+    elif origin == "mean":
+        vrange = (visual_size.height / 2, visual_size.width / 2)
+        x = np.linspace(-vrange[1], vrange[1], shape.width)
+        y = np.linspace(-vrange[0], vrange[0], shape.height)
+    elif origin == "center":
+        vrange = (visual_size.height / 2, visual_size.width / 2)
+        x = np.linspace(-vrange[1], vrange[1], shape.width, endpoint=False)
+        y = np.linspace(-vrange[0], vrange[0], shape.height, endpoint=False)
+    else:
+        raise ValueError('origin can only be be "corner", "mean" or "center"')
+
+    return x, y
+
+
 #############################
 #    Resolve components     #
 #############################

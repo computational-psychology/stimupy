@@ -1,57 +1,91 @@
 # Stimupy
 
+<p align=center>
+A pure-Python package
+for creating new and existing visual stimuli
+commonly used in the sudy of contrast, brightness/lightness,
+and other aspects of visual perception.
+</p>
+
 [![Tests](https://github.com/computational-psychology/stimupy/actions/workflows/test.yml/badge.svg)](https://github.com/computational-psychology/stimupy/actions/workflows/test.yml) [![](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![Documentation Status](https://readthedocs.org/projects/stimupy/badge/?version=latest)](https://stimupy.readthedocs.io/en/latest/?badge=latest)
 
-Contains submodules for
-- drawing basic visual stimulus components ([components](stimupy/components/))
-- creating different paramaterized stimuli ([stimuli](stimupy/stimuli/))
-- replicating stimuli in certain published papers  ([papers](stimupy/papers/))
-converting pixel values to degrees of visual angle ([utils](stimupy/utils/))
+---
+- documentation: https://stimupy.readthedocs.io/en/latest/
+- source code: https://github.com/computational-psychology/stimupy
+---
 
-`Stimupy` is a pure-Python package
-for creating new and exiting visual stimuli
-commonly used in the sudy of contrast, brightness/lightness,
-and other aspects of visual perception.
+`stimupy` has been designed to:
 
+- *generate* (novel) visual stimuli in a reproducible, flexible, and easy way
+- *recreate* exact stimuli as they have been used in prior vision research 
+- *explore* large parameter spaces to reveal relations between formerly unconnected stimuli
+- *provide* classic stimulus sets (e.g. ModelFest),
+  exactly as described in the original manuscripts (including experimental data)
+- *build* new stimulus sets or benchmarks (e.g. for testing computational models),
+  and easily add them to `stimupy`
+- *support* vision science by providing a large,openly-available and flexible battery of relevant stimulus functions
+- *unify and automate* stimulus creation
+- be [**FAIR**](https://doi.org/10.1038/s41597-022-01710-x):
+  **F**indable, **A**ccessible, **I**nteroperable, and **R**eusable
+
+---
 ## Core features:
 Stimupy has been designed to generate stimuli from code,
 so that they are reproducible, flexible, and easy.
-- Stimuli available through stimupy are:
-  - basic visual stimulus [components](stimupy/components/),
-    such as basic shapes, gratings, Gaussians, Gabors
-  - visual [noise](stimupy/noises/) textures, of different kinds,
-  - and many different parameterized stimuli [stimuli](stimupy/stimuli/)
-    most with some special regions of interest,
-    such as Simultaneous Brightness Contrast, White's illusion,
-    but also Hermann Grids, checkerboards, Ponzo illusion, etc.
 
-- All these stimuli are fully parameterizable
-  with interpretable parameters that are relevant to vision scientists
-  (e.g. visual angle, spatial frequency, target placements).
+- basic visual stimulus [components](https://stimupy.readthedocs.io/en/latest/reference/_api/stimupy.components.html),
+  such as basic shapes, wave gratings, Gaussians
+- visual [noise](https://stimupy.readthedocs.io/en/latest/reference/_api/stimupy.noises.html) textures, of different kinds,
+- many different parameterized visual [stimuli](https://stimupy.readthedocs.io/en/latest/reference/_api/stimupy.stimuli.html)
+  - Gabors, plaids, edges,
+  - a variety of so-called illusions 
+   (e.g. Simultaneous Brightness Contrast, White's illusion, Hermann grid, Ponzo illusion), and many more
+
+- exact replications of stimuli previously published (e.g. ModelFest)
+  as described in their respecive [papers](stimupy/papers/)
+
+- all stimuli are fully parameterizable
+  - with interpretable parameters that are familiar and relevant to vision scientists
+    (e.g. visual angle, spatial frequency, target placements).
   - This also makes it possible to explore stimulus parameter spaces
     which might reveal relations between formerly unconnected stimuli
 
-- Stimuli are also composable/composed:
-`stimuli` tend to be composed from several `components`.
+- stimuli are composable/composed:
+  - `stimuli` tend to be composed from several `components`,
+  and these provided building blocks and masks
+  can be used to assemble more complicated geometries
 
-- Generated stimuli are output as a Python `dict`ionary,
-containing the stimulus-image as a NumPy-array,
-together with other useful stimulus-specific information
-(e.g. (target) masks, sizes etc.).
-    - Since Python dictionaries are mutable data structures (compared to objects),
-      they allow the user to add additional information easily.
-    - The image as NumPy-array (rather than, e.g., an OpenGL texture),
-      makes these stimuli fully interoperablye using common NumPy tooling.
+- flexible output structures
+  - generated stimuli are Python `dict`ionary
+    - mutable data structures (compared to objects),
+      so they allow the user to add additional information easily
+      (e.g. stimulus descriptions, stimulus masks, experimental data).
+  - containing the stimulus-image as a NumPy-array,
+    - makes images fully interoperable using common NumPy tooling
+      (rather than, e.g., an OpenGL texture),
+  - together with other useful stimulus-specific information
+    (e.g. (target) masks, sizes etc.).
 
-- In addition, we provide many [utils](stimupy/utils/) functions
-  to apply common operations to either the images, or the full stimulus-`dict`s.
+- modular and therefore easy to extend with new stimulus functions,
+  and new stimulus sets
+ 
+- [utility functions](https://stimupy.readthedocs.io/en/latest/reference/_api/stimupy.utils.html)
+  for stimulus import, export, manipulation (e.g. contrast, size), or plotting
 
-- Reuse of existing stimuli and stimulus sets should be a key aim,
-  so also included are exact replications of stimuli previously published (e.g. ModelFest)
-  as described in their respecive [papers](stimupy/papers/)
+- application-oriented documentation [documentation](https://stimupy.readthedocs.io/en/latest/index.html),
+  including [interactive demonstrations](https://stimupy.readthedocs.io/en/latest/reference/demos.html) of stimulus functions
+
+- unit and integration [tests](https://github.com/computational-psychology/stimupy/actions/workflows/test.yml)
+
 
 See the [documentation](https://stimupy.readthedocs.io/en/latest/) for more details
+
+![A small fraction of the stimulus variety that ``stimupy`` can produce \label{fig:overview}](manuscript/overview.png)
+
+---
+
+## Citing stimupy
 
 ## Your stimulus (set) is not here?
 Given the modular nature of the package,
@@ -59,10 +93,10 @@ any stimulus or stimulus set not currently available, can be easily added.
 Open an [issue](https://github.com/computational-psychology/stimupy/issues/new)
 and let us know what you'd like to see added.
 
-If you want to contribute yourself, see [contributing](#contributing-to-stimupy)
+If you want to contribute yourself, see [contributing](https://stimupy.readthedocs.io/en/latest/contributing/contributing.html)
 
 
-
+---
 ## Installation
 
 For now, `pip` can install directly from GitHub (the `main` branch)
@@ -100,14 +134,3 @@ Dependencies should be automatically installed (at least using `pip`).
 - [Pillow](https://pillow.readthedocs.io/)
 - [pandas](https://pandas.pydata.org/)
 
-## Citing stimupy
-
-## Contributing to stimupy
-1. *Fork* the [GitHub repository](https://github.com/computational-psychology/stimupy/)
-2. *Clone* the repository to your local machine
-3. *Install* `stimupy` using the developer install: `pip install -e ".[dev]"`
-4. *Edit* the code:
-    - To contribute a stimulus set, add it to `stimupy/papers/`
-    - To contribute a stimulus function, add it to the relevant directory
-5. *Commit & Push* to your fork
-6. *Pull request* from your fork to our repository

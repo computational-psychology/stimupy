@@ -3,8 +3,8 @@ import itertools
 import numpy as np
 
 from stimupy.components.frames import frames
-from stimupy.stimuli.waves import square_rectilinear as rectangular
 from stimupy.stimuli.waves import square_radial as circular
+from stimupy.stimuli.waves import square_rectilinear as rectangular
 from stimupy.utils import resolution, stack_dicts
 
 __all__ = [
@@ -144,6 +144,7 @@ def rectangular_generalized(
     target_indices=(),
     intensity_target=0.5,
     origin="mean",
+    rotation=0.0,
 ):
     """Draw sequential set of square frames with specified radii and targets
 
@@ -171,6 +172,9 @@ def rectangular_generalized(
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)
         if "center": set origin to real center (closest existing value to mean)
+    rotation : float, optional
+        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+
 
     Returns
     -------
@@ -189,6 +193,7 @@ def rectangular_generalized(
         intensity_frames=intensity_frames,
         intensity_background=intensity_background,
         origin=origin,
+        rotation=rotation,
     )
 
     # Resolve target parameters
@@ -228,6 +233,7 @@ def rectangular_two_sided(
     target_indices=(),
     intensity_target=0.5,
     origin="mean",
+    rotation=0.0,
 ):
     """Draw set of square frames, with some frame(s) as target
 
@@ -261,6 +267,9 @@ def rectangular_two_sided(
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)
         if "center": set origin to real center (closest existing value to mean)
+    rotation : float, optional
+        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+
 
     Returns
     -------
@@ -294,6 +303,7 @@ def rectangular_two_sided(
         origin=origin,
         clip=True,
         intensity_background=intensity_background,
+        rotation=rotation,
     )
 
     stim2 = rectangular(
@@ -309,6 +319,7 @@ def rectangular_two_sided(
         origin=origin,
         clip=True,
         intensity_background=intensity_background,
+        rotation=rotation,
     )
 
     stim = stack_dicts(stim1, stim2)

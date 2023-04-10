@@ -39,6 +39,7 @@ def plot_stim(
     vmax=1,
     save=None,
     units="deg",
+    origin="mean",
 ):
     """Plot a stimulus
 
@@ -81,14 +82,25 @@ def plot_stim(
 
     # Figure out what units need to go on axes
     if units in ["px", "pix", "pixels"]:
-        extent = [0, stim["img"].shape[1], 0, stim["img"].shape[0]]
+        extent = [0, stim["img"].shape[1], stim["img"].shape[0], 0]
     elif units in ["deg", "degrees"]:
-        visual_size = resolution.validate_visual_size(stim["visual_size"])
-        extent = [0, visual_size.width, 0, visual_size.height]
+        if "visual_size" in stim:
+            x, y = resolution.visual_size_to_axes(
+                stim["visual_size"], shape=stim["img"].shape, origin=origin
+            )
+            extent = [x.min(), x.max(), y.max(), y.min()]
+        else:
+            warnings.warn("no visual_size provided")
+            extent = [0, stim["img"].shape[1], stim["img"].shape[0], 0]
     elif units in stim.keys():
         if len(stim[units]) == 2:
-            extent = [0, stim[units][1], 0, stim[units][0]]
+            # provided 2 values for units, so assume formatted like visual_size
+            x, y = resolution.visual_size_to_axes(
+                stim[units], shape=stim["img"].shape, origin=origin
+            )
+            extent = [x.min(), x.max(), y.max(), y.max()]
         elif len(stim[units]) == 4:
+            # provided 4 values for units, so assume proper formatting
             extent = stim[units]
         else:
             raise ValueError("extent should either contain 2 or 4 values")

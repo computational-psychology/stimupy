@@ -28,8 +28,8 @@ def step(
         pixels per degree [vertical, horizontal]
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of image, in pixels
-    rotation : float
-        rotation of stimulus in degrees (default: 0)
+    rotation : float, optional
+        rotation (in degrees), counterclockwise, by default 0.0
     intensity_edges : (float, float)
         intensity values of edges (default: (0., 1.))
 
@@ -88,8 +88,8 @@ def gaussian(
         shape [height, width] of image, in pixels
     sigma : float or (float, float)
         sigma of Gaussian in degree visual angle (y, x)
-    rotation : float
-        rotation of stimulus in degrees (default: 0)
+    rotation : float, optional
+        rotation (in degrees), counterclockwise, by default 0.0
     intensity_edges : (float, float)
         intensity values of edges (default: (0., 1.))
     intensity_background : float
@@ -134,7 +134,7 @@ def cornsweet(
     ppd=None,
     shape=None,
     ramp_width=None,
-    rotation=0,
+    rotation=0.0,
     intensity_edges=(0.0, 1.0),
     intensity_plateau=0.5,
     exponent=2.75,
@@ -159,8 +159,8 @@ def cornsweet(
         shape [height, width] of grating, in pixels
     ramp_width : float
         width of luminance ramp in degrees of visual angle
-    rotation : float
-        rotation of stimulus in degrees (default: 0)
+    rotation : float, optional
+        rotation (in degrees), counterclockwise, by default 0.0
     intensity_edges : (float, float)
         intensity of edges
     intensity_plateau : float

@@ -475,7 +475,7 @@ def grating_white_out(ppd=PPD):
         "bar_width": bar_width,
         "visual_size": (50 * bar_width, 9 * bar_width),
         "ppd": ppd,
-        "rotation": ROTATION,
+        "rotation": -ROTATION,
         "intensity_bars": (v3, v1),
         "intensity_target": v2,
         "target_indices": (23, 25, 27, 29),
@@ -484,7 +484,7 @@ def grating_white_out(ppd=PPD):
         "bar_width": bar_width,
         "visual_size": 50 * bar_width,
         "ppd": ppd,
-        "rotation": ROTATION,
+        "rotation": -ROTATION,
         "intensity_bars": (v1, v3),
     }
     stim = stimupy.gratings.on_grating(
@@ -527,7 +527,7 @@ def grating_black_out(ppd=PPD):
         "bar_width": bar_width,
         "visual_size": (50 * bar_width, 9 * bar_width),
         "ppd": ppd,
-        "rotation": ROTATION,
+        "rotation": -ROTATION,
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
         "target_indices": (23, 25, 27, 29),
@@ -536,7 +536,7 @@ def grating_black_out(ppd=PPD):
         "bar_width": bar_width,
         "visual_size": 50 * bar_width,
         "ppd": ppd,
-        "rotation": ROTATION,
+        "rotation": -ROTATION,
         "intensity_bars": (v3, v1),
     }
     stim = stimupy.gratings.on_grating(

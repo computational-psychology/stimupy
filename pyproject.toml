@@ -46,10 +46,17 @@ docs = [
   "jupyterlab_myst",
   "myst_nb",
   "ipywidgets",
+  "sphinx-hoverxref",
 ]
 
 [project.urls]
 repository = "https://github.com/computational-psychology/stimupy.git"
+
+[build-system]
+requires = [
+  "setuptools >= 40.9.0",
+]
+build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 where = ["."]  # list of folders that contain the packages (["."] by default)
@@ -77,3 +84,9 @@ major_on_zero = false                   # don't auto-bump to v1.0.0 yet
 patch_without_tag = false               # if nothing triggers a patch, bump?
 commit_version_number = true            # commit changes to version number?
 commit_subject = "v{version}"
+
+branch = "main"                         # build dists (only) from "main" branch
+build_command = "pipx run build"        # use PyPAs build to generate distribution packages (sdist, wheel)
+upload_to_release = true                # upload sdist, wheel to release-tag
+upload_to_pypi = false                  # don't auto-upload to PyPI, we'll separately
+remove_dist = false                     # don't remove dist packages -- need those to upload

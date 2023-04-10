@@ -41,6 +41,7 @@ sphinx:
     - sphinx.ext.autosummary        # generate summary tables of functions in modules
     - sphinx.ext.napoleon           # recognize NumPy style docstrings
     - sphinx.ext.viewcode           # add links to source code in API reference
+    - hoverxref.extension
 
   config:
     #autosummary_generate: True      # autosummary generates module-level .rst files?
@@ -54,6 +55,9 @@ sphinx:
     templates_path: ['_templates']  # Path(s) that contain templates, relative to this config
     exclude_patterns: ['_build', '_templates']
     intersphinx_mapping:
+        python:
+          - 'https://docs.python.org/3/'
+          - null
         numpy [stable]:
           - 'https://numpy.org/doc/stable/'
           - null
@@ -70,3 +74,20 @@ sphinx:
           - 'https://pillow.readthedocs.io/en/latest/'
           - null
     suppress_warnings: ["etoc.toctree"]
+
+    # Hoverxref Extension
+    hoverxref_auto_ref: True
+    hoverxref_intersphinx: [
+        "python",
+        "numpy",
+        "matplotlib",
+        "scipy",
+    ]
+    hoverxref_domains: ["py", "numpy", "matplotlib", "scipy"]
+    hoverxref_role_types: {
+        "hoverxref": "modal",
+        "ref": "modal",  # for hoverxref_auto_ref config
+        "mod": "tooltip",
+        "class": "tooltip",
+        "func": "tooltip",
+    }

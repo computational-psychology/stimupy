@@ -30,7 +30,7 @@ def on_uniform(
     n_bars=None,
     bar_width=None,
     period="ignore",
-    rotation=0,
+    rotation=0.0,
     phase_shift=0,
     intensity_bars=(1.0, 0.0),
     target_indices=(),
@@ -61,8 +61,8 @@ def on_uniform(
         ensure whether the grating has "even" number of phases, "odd"
         number of phases, either or whether not to round the number of
         phases ("ignore")
-    rotation : float
-        rotation of grating in degrees (default: 0 = horizontal)
+    rotation : float, optional
+        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
     phase_shift : float
         phase shift of grating in degrees
     intensity_bars : Sequence[float, ...]
@@ -365,7 +365,7 @@ def grating_induction(
     n_bars=None,
     bar_width=None,
     period="ignore",
-    rotation=0,
+    rotation=0.0,
     phase_shift=0,
     intensities=(0.0, 1.0),
     target_width=None,
@@ -392,8 +392,8 @@ def grating_induction(
         ensure whether the grating has "even" number of phases, "odd"
         number of phases, either or whether not to round the number of
         phases ("ignore")
-    rotation : float
-        rotation of grating in degrees (default: 0 = horizontal)
+    rotation : float, optional
+        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
     phase_shift : float
         phase shift of grating in degrees
     intensity_bars : Sequence[float, ...]
@@ -466,7 +466,7 @@ def grating_induction_blur(
     n_bars=None,
     bar_width=None,
     period="ignore",
-    rotation=0,
+    rotation=0.0,
     phase_shift=0,
     intensity_bars=(1.0, 0.0),
     target_width=None,
@@ -494,8 +494,8 @@ def grating_induction_blur(
         ensure whether the grating has "even" number of phases, "odd"
         number of phases, either or whether not to round the number of
         phases ("ignore")
-    rotation : float
-        rotation of grating in degrees (default: 0 = horizontal)
+    rotation : float, optional
+        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
     phase_shift : float
         phase shift of grating in degrees
     intensity_bars : Sequence[float, ...]

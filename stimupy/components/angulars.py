@@ -1,6 +1,6 @@
 import numpy as np
 
-from stimupy.components import draw_regions, mask_elements
+from stimupy.components import draw_regions, mask_regions
 from stimupy.components.radials import ring
 
 __all__ = [
@@ -42,7 +42,7 @@ def mask_angle(
         dict with boolean mask (key: bool_mask) for pixels falling in given angle,
         and additional params
     """
-    stim = mask_elements(
+    stim = mask_regions(
         edges=np.deg2rad(angles),
         distance_metric="angular",
         rotation=rotation,
@@ -83,8 +83,7 @@ def wedge(
     radius : float
         radius of disc, in degrees visual angle
     rotation : float, optional
-        angle of rotation (in degrees) of segment,
-        counterclockwise from 3 o'clock, by default 0.0
+        rotation (in degrees) from 3 o'clock, counterclockwise, by default 0.0
     inner_radius : float, optional
         inner radius (in degrees visual angle), to turn disc into a ring, by default 0
     intensity_wedge : float, optional
@@ -155,8 +154,7 @@ def mask_segments(
     edges : Sequence[Number]
         upper-limit of each consecutive segment, in angular degrees 0-360
     rotation : float, optional
-        angle of rotation (in degrees) of segments,
-        counterclockwise away from 3 o'clock, by default 0.0
+        rotation (in degrees) from 3 o'clock, counterclockwise, by default 0.0
     visual_size : Sequence[Number, Number], Number, or None (default)
         visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
@@ -175,7 +173,7 @@ def mask_segments(
         mask with integer index for each segment (key: "wedge_mask"),
         and additional keys containing stimulus parameters
     """
-    stim = mask_elements(
+    stim = mask_regions(
         distance_metric="angular",
         edges=np.deg2rad(edges),
         rotation=rotation,
@@ -212,8 +210,7 @@ def segments(
     angles : Sequence[Number] or None (default)
         upper-limit of each segment, in angular degrees 0-360
     rotation : float, optional
-        angle of rotation (in degrees) of segments,
-        counterclockwise away from 3 o'clock, by default 0.0angles
+        rotation (in degrees) from 3 o'clock, counterclockwise, by default 0.0
     intensity_background : Number
         intensity value for background; default is 0.5.
     intensity_segments : Sequence[Number, ...]

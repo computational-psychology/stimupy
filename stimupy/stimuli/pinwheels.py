@@ -2,8 +2,8 @@ import itertools
 
 import numpy as np
 
-from stimupy.components.shapes import ring as ring_shape
 from stimupy.components.shapes import circle
+from stimupy.components.shapes import ring as ring_shape
 from stimupy.stimuli import waves
 
 __all__ = [
@@ -44,8 +44,7 @@ def pinwheel(
     segment_width : Number, or None (default)
         angular width of a single segment, in degrees
     rotation : float, optional
-        rotation (in degrees) of pinwheel segments away
-        counterclockwise from 3 o'clock, by default 0.0
+        rotation (in degrees), counterclockwise, by default 0.0
     target_indices : int, or Sequence[int, ...]
         indices segments where targets will be placed
     target_width : float, or Sequence[float, ...], optional

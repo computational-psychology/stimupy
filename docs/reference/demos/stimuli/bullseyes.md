@@ -210,6 +210,7 @@ w_int2 = iw.FloatSlider(value=0, min=0, max=1, description="int-ring2")
 w_int_back = iw.FloatSlider(value=0.5, min=0, max=1, description="intensity background")
 
 w_ori = iw.Dropdown(value="center", options=['mean', 'corner', 'center'], description="origin")
+w_rot = iw.FloatSlider(value=0, min=0, max=360, description="rotation [deg]")
 w_clip = iw.ToggleButton(value=False, disabled=False, description="clip")
 w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'frame_mask'], description="add mask")
 
@@ -220,7 +221,7 @@ b_im_size = iw.HBox([w_height, w_width, w_ppd])
 b_geometry = iw.HBox([w_freq, w_phase])
 b_intensities = iw.HBox([w_int1, w_int2, w_int_back])
 b_target = iw.HBox([w_tint])
-b_add = iw.HBox([w_ori, w_clip, w_mask])
+b_add = iw.HBox([w_ori, w_rot, w_clip, w_mask])
 ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target, b_add])
 
 # Function for showing stim
@@ -237,6 +238,7 @@ def show_rectangular(
     clip=False,
     add_mask=False,
     intensity_target=None,
+    rotation=0.0,
 ):
     stim = rectangular(
         visual_size=(height, width),
@@ -248,6 +250,7 @@ def show_rectangular(
         origin=origin,
         clip=clip,
         intensity_target=intensity_target,
+        rotation=rotation,
     )
     plot_stim(stim, mask=add_mask)
 
@@ -267,6 +270,7 @@ out = iw.interactive_output(
         "clip": w_clip,
         "add_mask": w_mask,
         "intensity_target": w_tint,
+        "rotation": w_rot,
     },
 )
 
@@ -295,6 +299,7 @@ w_int3 = iw.FloatSlider(value=0.8, min=0, max=1, description="int-ring3")
 w_int_back = iw.FloatSlider(value=0., min=0, max=1, description="intensity background")
 
 w_ori = iw.Dropdown(value="center", options=['mean', 'corner', 'center'], description="origin")
+w_rot = iw.FloatSlider(value=0, min=0, max=360, description="rotation [deg]")
 w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'frame_mask'], description="add mask")
 
 w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
@@ -304,7 +309,7 @@ b_im_size = iw.HBox([w_height, w_width, w_ppd])
 b_geometry = iw.HBox([w_radius1, w_radius2, w_radius3])
 b_intensities = iw.HBox([w_int1, w_int2, w_int3, w_int_back])
 b_target = iw.HBox([w_tint])
-b_add = iw.HBox([w_ori, w_mask])
+b_add = iw.HBox([w_ori, w_rot, w_mask])
 ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target, b_add])
 
 # Function for showing stim
@@ -322,6 +327,7 @@ def show_rectangular_generalized(
     origin=None,
     add_mask=False,
     intensity_target=None,
+    rotation=0.0,
 ):
     stim = rectangular_generalized(
         visual_size=(height, width),
@@ -331,6 +337,7 @@ def show_rectangular_generalized(
         intensity_background=intensity_background,
         origin=origin,
         intensity_target=intensity_target,
+        rotation=rotation,
     )
     plot_stim(stim, mask=add_mask)
 
@@ -351,6 +358,7 @@ out = iw.interactive_output(
         "origin": w_ori,
         "add_mask": w_mask,
         "intensity_target": w_tint,
+        "rotation": w_rot,
     },
 )
 
@@ -376,6 +384,8 @@ w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int-ring1")
 w_int2 = iw.FloatSlider(value=0, min=0, max=1, description="int-ring2")
 w_int_back = iw.FloatSlider(value=0.5, min=0, max=1, description="intensity background")
 
+w_rot = iw.FloatSlider(value=0, min=0, max=360, description="rotation [deg]")
+
 w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'frame_mask'], description="add mask")
 
 w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
@@ -385,7 +395,7 @@ b_im_size = iw.HBox([w_height, w_width, w_ppd])
 b_geometry = iw.HBox([w_freq, w_phase])
 b_intensities = iw.HBox([w_int1, w_int2, w_int_back])
 b_target = iw.HBox([w_tint])
-b_add = iw.HBox([w_mask])
+b_add = iw.HBox([w_rot, w_mask])
 ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target, b_add])
 
 # Function for showing stim
@@ -400,6 +410,7 @@ def show_rectangular_two_sided(
     intensity_background=None,
     add_mask=False,
     intensity_target=None,
+    rotation=0.0,
 ):
     stim = rectangular_two_sided(
         visual_size=(height, width),
@@ -409,6 +420,7 @@ def show_rectangular_two_sided(
         intensity_frames=(int1, int2),
         intensity_background=intensity_background,
         intensity_target=intensity_target,
+        rotation=rotation,
     )
     plot_stim(stim, mask=add_mask)
 
@@ -426,6 +438,7 @@ out = iw.interactive_output(
         "intensity_background": w_int_back,
         "add_mask": w_mask,
         "intensity_target": w_tint,
+        "rotation": w_rot,
     },
 )
 
