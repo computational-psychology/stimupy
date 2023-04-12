@@ -3,7 +3,7 @@
 <p align=center>
 A pure-Python package
 for creating new and existing visual stimuli
-commonly used in the sudy of contrast, brightness/lightness,
+commonly used in the study of contrast, brightness, lightness,
 and other aspects of visual perception.
 </p>
 
@@ -24,8 +24,8 @@ and other aspects of visual perception.
   exactly as described in the original manuscripts (including experimental data)
 - *build* new stimulus sets or benchmarks (e.g. for testing computational models),
   and easily add them to `stimupy`
-- *support* vision science by providing a large,openly-available and flexible battery of relevant stimulus functions
-- *unify and automate* stimulus creation
+- *support* vision science by providing a large, openly-available and flexible battery of relevant stimulus functions
+- *unify* and *automate* stimulus creation
 - be [**FAIR**](https://doi.org/10.1038/s41597-022-01710-x):
   **F**indable, **A**ccessible, **I**nteroperable, and **R**eusable
 
