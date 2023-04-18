@@ -12,26 +12,27 @@ kernelspec:
   name: python3
 ---
 
-```{important}
+```{tip}
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/components/lines.md)
  to get interactivity
+```
+```{attention}
+To run locally, the code for these interactive demos requires
+a [Jupyter Notebook](https://jupyter.org/) environment,
+and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
 ```
 
 # Components - Lines
 {py:mod}`stimupy.components.lines`
 
-```{code-cell} ipython3
-:tags: [remove-cell]
 
-import IPython
-import ipywidgets as iw
-from stimupy.utils import plot_stim
-```
 
 ## Line
 {py:func}`stimupy.components.lines.line`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.components.lines import line
 
 # Define widgets
@@ -116,6 +117,8 @@ display(ui, out)
 {py:func}`stimupy.components.lines.dipole`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.components.lines import dipole
 
 # Define widgets
@@ -189,6 +192,8 @@ display(ui, out)
 {py:func}`stimupy.components.lines.ellipse`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.components.lines import ellipse
 
 # Define widgets
@@ -258,6 +263,8 @@ display(ui, out)
 {py:func}`stimupy.components.lines.circle`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.components.lines import circle
 
 # Define widgets

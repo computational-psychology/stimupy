@@ -12,27 +12,26 @@ kernelspec:
   name: python3
 ---
 
-```{important}
+```{tip}
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/stimuli/waves.md)
  to get interactivity
+```
+```{attention}
+To run locally, the code for these interactive demos requires
+a [Jupyter Notebook](https://jupyter.org/) environment,
+and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
 ```
 
 # Stimuli - Waves
 {py:mod}`stimupy.stimuli.waves`
 
-```{code-cell} ipython3
-:tags: [remove-cell]
-
-import numpy as np
-import IPython
-import ipywidgets as iw
-from stimupy.utils import plot_stim
-```
 
 ## Sine, linear
 {py:func}`stimupy.stimuli.waves.sine_linear`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.waves import sine_linear
 
 # Define widgets
@@ -124,6 +123,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.waves.square_linear`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.waves import square_linear
 
 # Define widgets
@@ -215,6 +216,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.waves.staircase_linear`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.waves import staircase_linear
 
 # Define widgets
@@ -306,6 +309,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.waves.sine_radial`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.waves import sine_radial
 
 # Define widgets
@@ -401,6 +406,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.waves.square_radial`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.waves import square_radial
 
 # Define widgets
@@ -496,6 +503,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.waves.staircase_radial`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.waves import staircase_radial
 
 # Define widgets
@@ -591,6 +600,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.waves.sine_rectilinear`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.waves import sine_rectilinear
 
 # Define widgets
@@ -686,6 +697,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.waves.square_rectilinear`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.waves import square_rectilinear
 
 # Define widgets
@@ -781,6 +794,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.waves.staircase_rectilinear`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.waves import staircase_rectilinear
 
 # Define widgets
@@ -876,6 +891,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.waves.sine_angular`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.waves import sine_angular
 
 # Define widgets
@@ -967,6 +984,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.waves.square_angular`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.waves import square_angular
 
 # Define widgets
@@ -1058,6 +1077,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.waves.staircase_angular`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.waves import staircase_angular
 
 # Define widgets

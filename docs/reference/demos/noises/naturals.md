@@ -12,26 +12,27 @@ kernelspec:
   name: python3
 ---
 
-```{important}
+```{tip}
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/noises/naturals.md)
  to get interactivity
+```
+```{attention}
+To run locally, the code for these interactive demos requires
+a [Jupyter Notebook](https://jupyter.org/) environment,
+and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
 ```
 
 # Noises - Naturals
 {py:mod}`stimupy.noises.naturals`
 
-```{code-cell} ipython3
-:tags: [remove-cell]
 
-import IPython
-import ipywidgets as iw
-from stimupy.utils import plot_stim
-```
 
 ## One over f
 {py:func}`stimupy.noises.naturals.one_over_f`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.noises.naturals import one_over_f
 
 # Define widgets
@@ -93,6 +94,8 @@ display(ui, out)
 {py:func}`stimupy.noises.naturals.pink`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.noises.naturals import pink
 
 # Define widgets
@@ -149,6 +152,8 @@ display(ui, out)
 {py:func}`stimupy.noises.naturals.brown`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.noises.naturals import brown
 
 # Define widgets

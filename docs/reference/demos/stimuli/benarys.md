@@ -12,26 +12,27 @@ kernelspec:
   name: python3
 ---
 
-```{important}
+```{tip}
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/stimuli/benarys.md)
  to get interactivity
+```
+```{attention}
+To run locally, the code for these interactive demos requires
+a [Jupyter Notebook](https://jupyter.org/) environment,
+and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
 ```
 
 # Stimuli - Benary's cross
 {py:mod}`stimupy.stimuli.benarys`
 
-```{code-cell} ipython3
-:tags: [remove-cell]
 
-import IPython
-import ipywidgets as iw
-from stimupy.utils import plot_stim
-```
 
 ## Cross, generalized
 {py:func}`stimupy.stimuli.benarys.cross_generalized`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.benarys import cross_generalized
 
 # Define widgets
@@ -125,6 +126,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.benarys.cross_rectangles`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.benarys import cross_rectangles
 
 # Define widgets
@@ -200,6 +203,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.benarys.cross_triangles`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.benarys import cross_triangles
 
 # Define widgets
@@ -272,6 +277,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.benarys.todorovic_generalized`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.benarys import todorovic_generalized
 
 # Define widgets
@@ -365,6 +372,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.benarys.todorovic_rectangles`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.benarys import todorovic_rectangles
 
 # Define widgets
@@ -440,6 +449,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.benarys.todorovic_triangles`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.benarys import todorovic_triangles
 
 # Define widgets

@@ -12,27 +12,28 @@ kernelspec:
   name: python3
 ---
 
-```{important}
+```{tip}
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/components/shapes.md)
  to get interactivity
+```
+```{attention}
+To run locally, the code for these interactive demos requires
+a [Jupyter Notebook](https://jupyter.org/) environment,
+and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
 ```
 
 # Components - Shapes
 {py:mod}`stimupy.components.shapes`
 
-```{code-cell} ipython3
-:tags: [remove-cell]
 
-import IPython
-import ipywidgets as iw
-from stimupy.utils import plot_stim
-```
 
 ## Rectangle
 {py:func}`stimupy.components.shapes.rectangle`
 
 ```{code-cell} ipython3
-:tags: [hide-input]
+import ipywidgets as iw
+from stimupy.utils import plot_stim
+
 
 from stimupy.components.shapes import rectangle
 
@@ -111,7 +112,9 @@ display(ui, out)
 {py:func}`stimupy.components.shapes.triangle`
 
 ```{code-cell} ipython3
-:tags: [hide-input]
+import ipywidgets as iw
+from stimupy.utils import plot_stim
+
 
 from stimupy.components.shapes import triangle
 
@@ -186,7 +189,9 @@ display(ui, out)
 {py:func}`stimupy.components.shapes.cross`
 
 ```{code-cell} ipython3
-:tags: [hide-input]
+import ipywidgets as iw
+from stimupy.utils import plot_stim
+
 
 from stimupy.components.shapes import cross
 
@@ -269,7 +274,9 @@ display(ui, out)
 {py:func}`stimupy.components.shapes.parallelogram`
 
 ```{code-cell} ipython3
-:tags: [hide-input]
+import ipywidgets as iw
+from stimupy.utils import plot_stim
+
 
 from stimupy.components.shapes import parallelogram
 
@@ -342,6 +349,8 @@ display(ui, out)
 {py:func}`stimupy.components.shapes.ellipse`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.components.shapes import ellipse
 
 # Define widgets
@@ -415,6 +424,8 @@ display(ui, out)
 {py:func}`stimupy.components.shapes.circle`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.components.shapes import circle
 
 # Define widgets
@@ -480,6 +491,8 @@ display(ui, out)
 {py:func}`stimupy.components.shapes.wedge`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.components.shapes import wedge
 
 # Define widgets
@@ -558,6 +571,8 @@ display(ui, out)
 {py:func}`stimupy.components.shapes.disc`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.components.shapes import disc
 
 # Define widgets
@@ -622,6 +637,8 @@ display(ui, out)
 {py:func}`stimupy.components.shapes.annulus`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.components.shapes import annulus
 
 # Define widgets
@@ -691,6 +708,8 @@ display(ui, out)
 {py:func}`stimupy.components.shapes.ring`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.components.shapes import ring
 
 # Define widgets

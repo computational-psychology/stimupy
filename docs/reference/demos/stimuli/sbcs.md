@@ -12,26 +12,27 @@ kernelspec:
   name: python3
 ---
 
-```{important}
+```{tip}
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/stimuli/sbcs.md)
  to get interactivity
+```
+```{attention}
+To run locally, the code for these interactive demos requires
+a [Jupyter Notebook](https://jupyter.org/) environment,
+and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
 ```
 
 # Stimuli - SBCs (Simultaneous Brightness Contrast)
 {py:mod}`stimupy.stimuli.sbcs`
 
-```{code-cell} ipython3
-:tags: [remove-cell]
 
-import IPython
-import ipywidgets as iw
-from stimupy.utils import plot_stim
-```
 
 ## Generalized
 {py:func}`stimupy.stimuli.sbcs.generalized`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.sbcs import generalized
 
 # Define widgets
@@ -108,6 +109,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.sbcs.basic`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.sbcs import basic
 
 # Define widgets
@@ -174,6 +177,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.sbcs.two_sided`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.sbcs import two_sided
 
 # Define widgets
@@ -244,6 +249,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.sbcs.with_dots`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.sbcs import with_dots
 
 # Define widgets
@@ -331,6 +338,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.sbcs.with_dots_two_sided`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.sbcs import with_dots_two_sided
 
 # Define widgets
@@ -424,6 +433,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.sbcs.dotted`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.sbcs import dotted
 
 # Define widgets
@@ -511,6 +522,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.sbcs.dotted_two_sided`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.sbcs import dotted_two_sided
 
 # Define widgets

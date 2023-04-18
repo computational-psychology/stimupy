@@ -12,16 +12,23 @@ kernelspec:
   name: python3
 ---
 
-```{important}
+```{tip}
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/stimuli/mondrians.md)
  to get interactivity
+```
+```{attention}
+To run locally, the code for these interactive demos requires
+a [Jupyter Notebook](https://jupyter.org/) environment,
+and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
 ```
 
 # Stimuli - Mondrians
 {py:mod}`stimupy.stimuli.mondrians`
 
 ```{code-cell} ipython3
-:tags: [remove-cell]
+import ipywidgets as iw
+from stimupy.utils import plot_stim
+
 
 import numpy as np
 import IPython
@@ -33,6 +40,8 @@ from stimupy.utils import plot_stim
 {py:func}`stimupy.stimuli.mondrians.mondrian`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.mondrians import mondrian
 
 # Define widgets
@@ -143,6 +152,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.mondrians.corrugated`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.mondrians import corrugated_mondrian
 
 # Define widgets

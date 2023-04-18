@@ -12,26 +12,27 @@ kernelspec:
   name: python3
 ---
 
-```{important}
+```{tip}
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/stimuli/whites.md)
  to get interactivity
+```
+```{attention}
+To run locally, the code for these interactive demos requires
+a [Jupyter Notebook](https://jupyter.org/) environment,
+and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
 ```
 
 # Stimuli - Whites
 {py:mod}`stimupy.stimuli.whites`
 
-```{code-cell} ipython3
-:tags: [remove-cell]
 
-import IPython
-import ipywidgets as iw
-from stimupy.utils import plot_stim
-```
 
 ## Generalized
 {py:func}`stimupy.stimuli.whites.generalized`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.whites import generalized
 
 # Define widgets
@@ -138,6 +139,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.whites.white`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.whites import white
 
 # Define widgets
@@ -237,6 +240,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.whites.white_two_rows`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.whites import white_two_rows
 
 # Define widgets
@@ -343,6 +348,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.whites.anderson`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.whites import anderson
 
 # Define widgets
@@ -457,6 +464,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.whites.howe`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.whites import howe
 
 # Define widgets
@@ -563,6 +572,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.whites.yazdanbakhsh`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.whites import yazdanbakhsh
 
 # Define widgets
@@ -664,6 +675,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.whites.radial`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.whites import radial
 
 # Define widgets
@@ -759,6 +772,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.whites.angular`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.whites import angular
 
 # Define widgets
@@ -850,6 +865,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.whites.wedding_cake`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.whites import wedding_cake
 
 # Define widgets
