@@ -90,4 +90,5 @@ sphinx:
         "mod": "tooltip",
         "class": "tooltip",
         "func": "tooltip",
+        "obj": "tooltip"
     }
