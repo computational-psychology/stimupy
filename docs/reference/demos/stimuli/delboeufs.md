@@ -72,17 +72,20 @@ def show_delboeuf(
     intensity_target=None,
     add_mask=False,
 ):
-    stim = delboeuf(
-        visual_size=(height, width),
-        ppd=ppd,
-        outer_radius=outer_radius,
-        outer_line_width=outer_line_width,
-        target_radius=target_radius,
-        intensity_outer_line=intensity_outer_line,
-        intensity_background=intensity_background,
-        intensity_target=intensity_target,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = delboeuf(
+            visual_size=(height, width),
+            ppd=ppd,
+            outer_radius=outer_radius,
+            outer_line_width=outer_line_width,
+            target_radius=target_radius,
+            intensity_outer_line=intensity_outer_line,
+            intensity_background=intensity_background,
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -152,17 +155,20 @@ def show_two_sided(
     intensity_target=None,
     add_mask=False,
 ):
-    stim = two_sided(
-        visual_size=(height, width),
-        ppd=ppd,
-        outer_radii=(outer_radius1, outer_radius2),
-        outer_line_width=outer_line_width,
-        target_radius=target_radius,
-        intensity_outer_line=intensity_outer_line,
-        intensity_background=intensity_background,
-        intensity_target=intensity_target,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = two_sided(
+            visual_size=(height, width),
+            ppd=ppd,
+            outer_radii=(outer_radius1, outer_radius2),
+            outer_line_width=outer_line_width,
+            target_radius=target_radius,
+            intensity_outer_line=intensity_outer_line,
+            intensity_background=intensity_background,
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

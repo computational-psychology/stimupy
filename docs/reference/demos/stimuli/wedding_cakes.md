@@ -84,17 +84,20 @@ def show_wedding_cake(
     theight=None,
     int_target=None,
 ):
-    stim = wedding_cake(
-        visual_size=(height, width),
-        ppd=ppd,
-        L_size=(L_height, L_width, L_thick),
-        target_height=theight,
-        intensity_target=int_target,
-        target_indices1=((tidx11, tidx12),),
-        target_indices2=((tidx21, tidx22),),
-        intensity_bars=(int1, int2),
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = wedding_cake(
+            visual_size=(height, width),
+            ppd=ppd,
+            L_size=(L_height, L_width, L_thick),
+            target_height=theight,
+            intensity_target=int_target,
+            target_indices1=((tidx11, tidx12),),
+            target_indices2=((tidx21, tidx22),),
+            intensity_bars=(int1, int2),
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

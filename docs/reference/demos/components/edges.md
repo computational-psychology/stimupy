@@ -62,14 +62,16 @@ def show_step_edge(
     intensity2=None,
     add_mask=False,
 ):
-
-    stim = step(
-        visual_size=(height, width),
-        ppd=ppd,
-        rotation=rotation,
-        intensity_edges=(intensity1, intensity2),
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = step(
+            visual_size=(height, width),
+            ppd=ppd,
+            rotation=rotation,
+            intensity_edges=(intensity1, intensity2),
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -129,16 +131,18 @@ def show_gaussian_edge(
     intensity_background=None,
     add_mask=False,
 ):
-
-    stim = gaussian(
-        visual_size=(height, width),
-        ppd=ppd,
-        sigma=sigma,
-        rotation=rotation,
-        intensity_edges=(intensity1, intensity2),
-        intensity_background=intensity_background,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = gaussian(
+            visual_size=(height, width),
+            ppd=ppd,
+            sigma=sigma,
+            rotation=rotation,
+            intensity_edges=(intensity1, intensity2),
+            intensity_background=intensity_background,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -202,17 +206,19 @@ def show_cornsweet_edge(
     intensity_plateau=None,
     add_mask=False,
 ):
-
-    stim = cornsweet(
-        visual_size=(height, width),
-        ppd=ppd,
-        ramp_width=ramp_width,
-        exponent=exponent,
-        rotation=rotation,
-        intensity_edges=(intensity1, intensity2),
-        intensity_plateau=intensity_plateau,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = cornsweet(
+            visual_size=(height, width),
+            ppd=ppd,
+            ramp_width=ramp_width,
+            exponent=exponent,
+            rotation=rotation,
+            intensity_edges=(intensity1, intensity2),
+            intensity_plateau=intensity_plateau,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

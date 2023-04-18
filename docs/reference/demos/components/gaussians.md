@@ -67,16 +67,18 @@ def show_gaussian(
     intensity_max=None,
     add_mask=False,
 ):
-
-    stim = gaussian(
-        visual_size=(height, width),
-        ppd=ppd,
-        sigma=(sigma1, sigma2),
-        origin=origin,
-        rotation=rotation,
-        intensity_max=intensity_max,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = gaussian(
+            visual_size=(height, width),
+            ppd=ppd,
+            sigma=(sigma1, sigma2),
+            origin=origin,
+            rotation=rotation,
+            intensity_max=intensity_max,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

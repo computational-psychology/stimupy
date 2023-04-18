@@ -91,19 +91,22 @@ def show_rectangle_generalized(
     intback=None,
     add_mask=False,
 ):
-    stim = rectangle_generalized(
-        visual_size=(height, width),
-        ppd=ppd,
-        target_size=(theight, twidth),
-        target_position=(ty, tx),
-        covers_size=(cheight, cwidth),
-        covers_x=(c1x, c2x),
-        covers_y=(c1y, c2y),
-        intensity_background=intback,
-        intensity_target=tint,
-        intensity_covers=cint,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = rectangle_generalized(
+            visual_size=(height, width),
+            ppd=ppd,
+            target_size=(theight, twidth),
+            target_position=(ty, tx),
+            covers_size=(cheight, cwidth),
+            covers_x=(c1x, c2x),
+            covers_y=(c1y, c2y),
+            intensity_background=intback,
+            intensity_target=tint,
+            intensity_covers=cint,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -191,18 +194,21 @@ def show_rectangle(
     intback=None,
     add_mask=False,
 ):
-    stim = rectangle(
-        visual_size=(height, width),
-        ppd=ppd,
-        target_size=(theight, twidth),
-        target_position=(ty, tx),
-        covers_size=(cheight, cwidth),
-        covers_offset=(coffy, coffx),
-        intensity_background=intback,
-        intensity_target=tint,
-        intensity_covers=cint,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = rectangle(
+            visual_size=(height, width),
+            ppd=ppd,
+            target_size=(theight, twidth),
+            target_position=(ty, tx),
+            covers_size=(cheight, cwidth),
+            covers_offset=(coffy, coffx),
+            intensity_background=intback,
+            intensity_target=tint,
+            intensity_covers=cint,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -286,17 +292,20 @@ def show_two_sided_rectangle(
     intback2=None,
     add_mask=False,
 ):
-    stim = rectangle_two_sided(
-        visual_size=(height, width),
-        ppd=ppd,
-        target_size=(theight, twidth),
-        covers_size=(cheight, cwidth),
-        covers_offset=(coffy, coffx),
-        intensity_backgrounds=(intback1, intback2),
-        intensity_target=tint,
-        intensity_covers=(cint1, cint2),
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = rectangle_two_sided(
+            visual_size=(height, width),
+            ppd=ppd,
+            target_size=(theight, twidth),
+            covers_size=(cheight, cwidth),
+            covers_offset=(coffy, coffx),
+            intensity_backgrounds=(intback1, intback2),
+            intensity_target=tint,
+            intensity_covers=(cint1, cint2),
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -384,19 +393,22 @@ def show_cross_generalized(
     intback=None,
     add_mask=False,
 ):
-    stim = cross_generalized(
-        visual_size=(height, width),
-        ppd=ppd,
-        cross_size=(theight, twidth),
-        cross_thickness=tthick,
-        covers_size=(cheight, cwidth),
-        covers_x=(c1x, c2x),
-        covers_y=(c1y, c2y),
-        intensity_background=intback,
-        intensity_target=tint,
-        intensity_covers=cint,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = cross_generalized(
+            visual_size=(height, width),
+            ppd=ppd,
+            cross_size=(theight, twidth),
+            cross_thickness=tthick,
+            covers_size=(cheight, cwidth),
+            covers_x=(c1x, c2x),
+            covers_y=(c1y, c2y),
+            intensity_background=intback,
+            intensity_target=tint,
+            intensity_covers=cint,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -473,17 +485,20 @@ def show_cross(
     intback=None,
     add_mask=False,
 ):
-    stim = cross(
-        visual_size=(height, width),
-        ppd=ppd,
-        cross_size=(theight, twidth),
-        cross_thickness=tthick,
-        covers_size=(cheight, cwidth),
-        intensity_background=intback,
-        intensity_target=tint,
-        intensity_covers=cint,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = cross(
+            visual_size=(height, width),
+            ppd=ppd,
+            cross_size=(theight, twidth),
+            cross_thickness=tthick,
+            covers_size=(cheight, cwidth),
+            intensity_background=intback,
+            intensity_target=tint,
+            intensity_covers=cint,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -560,17 +575,20 @@ def show_two_sided_cross(
     intback2=None,
     add_mask=False,
 ):
-    stim = cross_two_sided(
-        visual_size=(height, width),
-        ppd=ppd,
-        cross_size=(theight, twidth),
-        cross_thickness=tthick,
-        covers_size=(cheight, cwidth),
-        intensity_backgrounds=(intback1, intback2),
-        intensity_target=tint,
-        intensity_covers=(cint1, cint2),
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = cross_two_sided(
+            visual_size=(height, width),
+            ppd=ppd,
+            cross_size=(theight, twidth),
+            cross_thickness=tthick,
+            covers_size=(cheight, cwidth),
+            intensity_backgrounds=(intback1, intback2),
+            intensity_target=tint,
+            intensity_covers=(cint1, cint2),
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -641,16 +659,19 @@ def show_equal(
     intback=None,
     add_mask=False,
 ):
-    stim = equal(
-        visual_size=(height, width),
-        ppd=ppd,
-        cross_size=(theight, twidth),
-        cross_thickness=tthick,
-        intensity_background=intback,
-        intensity_target=tint,
-        intensity_covers=cint,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = equal(
+            visual_size=(height, width),
+            ppd=ppd,
+            cross_size=(theight, twidth),
+            cross_thickness=tthick,
+            intensity_background=intback,
+            intensity_target=tint,
+            intensity_covers=cint,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -721,16 +742,19 @@ def show_two_sided_equal(
     intback2=None,
     add_mask=False,
 ):
-    stim = equal_two_sided(
-        visual_size=(height, width),
-        ppd=ppd,
-        cross_size=(theight, twidth),
-        cross_thickness=tthick,
-        intensity_backgrounds=(intback1, intback2),
-        intensity_target=tint,
-        intensity_covers=(cint1, cint2),
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = equal_two_sided(
+            visual_size=(height, width),
+            ppd=ppd,
+            cross_size=(theight, twidth),
+            cross_thickness=tthick,
+            intensity_backgrounds=(intback1, intback2),
+            intensity_target=tint,
+            intensity_covers=(cint1, cint2),
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

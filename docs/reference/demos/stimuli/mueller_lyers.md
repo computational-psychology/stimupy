@@ -74,18 +74,21 @@ def show_mueller_lyer(
     intensity_target=None,
     add_mask=False,
 ):
-    stim = mueller_lyer(
-        visual_size=(height, width),
-        ppd=ppd,
-        outer_lines_length=outer_lines_length,
-        outer_lines_angle=outer_lines_angle,
-        line_width=line_width,
-        target_length=target_length,
-        intensity_outer_lines=intensity_outer_line,
-        intensity_background=intensity_background,
-        intensity_target=intensity_target,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = mueller_lyer(
+            visual_size=(height, width),
+            ppd=ppd,
+            outer_lines_length=outer_lines_length,
+            outer_lines_angle=outer_lines_angle,
+            line_width=line_width,
+            target_length=target_length,
+            intensity_outer_lines=intensity_outer_line,
+            intensity_background=intensity_background,
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -156,18 +159,21 @@ def show_two_sided(
     intensity_target=None,
     add_mask=False,
 ):
-    stim = two_sided(
-        visual_size=(height, width),
-        ppd=ppd,
-        outer_lines_length=outer_lines_length,
-        outer_lines_angle=outer_lines_angle,
-        line_width=line_width,
-        target_length=target_length,
-        intensity_outer_lines=intensity_outer_line,
-        intensity_background=intensity_background,
-        intensity_target=intensity_target,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = two_sided(
+            visual_size=(height, width),
+            ppd=ppd,
+            outer_lines_length=outer_lines_length,
+            outer_lines_angle=outer_lines_angle,
+            line_width=line_width,
+            target_length=target_length,
+            intensity_outer_lines=intensity_outer_line,
+            intensity_background=intensity_background,
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

@@ -65,16 +65,18 @@ def show_narrowband(
     intensity2=None,
     pseudo_noise=False,
 ):
-
-    stim = narrowband(
-        visual_size=(height, width),
-        ppd=ppd,
-        intensity_range=(intensity1, intensity2),
-        center_frequency=frequency,
-        bandwidth=bandwidth,
-        pseudo_noise=pseudo_noise,
-    )
-    plot_stim(stim, mask=False)
+    try:
+        stim = narrowband(
+            visual_size=(height, width),
+            ppd=ppd,
+            intensity_range=(intensity1, intensity2),
+            center_frequency=frequency,
+            bandwidth=bandwidth,
+            pseudo_noise=pseudo_noise,
+        )
+        plot_stim(stim, mask=False)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

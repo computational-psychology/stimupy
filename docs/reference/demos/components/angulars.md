@@ -74,18 +74,21 @@ def show_wedge(
     origin=None,
     add_mask=False,
 ):
-    stim = wedge(
-        visual_size=(height, width),
-        ppd=ppd,
-        angle=wwidth,
-        radius=radius,
-        rotation=rotation,
-        inner_radius=inner_radius,
-        intensity_wedge=intensity_wedge,
-        intensity_background=intensity_background,
-        origin=origin,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = wedge(
+            visual_size=(height, width),
+            ppd=ppd,
+            angle=wwidth,
+            radius=radius,
+            rotation=rotation,
+            inner_radius=inner_radius,
+            intensity_wedge=intensity_wedge,
+            intensity_background=intensity_background,
+            origin=origin,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -161,16 +164,19 @@ def show_segments(
     origin=None,
     add_mask=False,
 ):
-    stim = segments(
-        visual_size=(height, width),
-        ppd=ppd,
-        angles=(wwidth1, wwidth2, wwidth3),
-        rotation=rotation,
-        intensity_segments=(int1, int2, int3),
-        intensity_background=intensity_background,
-        origin=origin,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = segments(
+            visual_size=(height, width),
+            ppd=ppd,
+            angles=(wwidth1, wwidth2, wwidth3),
+            rotation=rotation,
+            intensity_segments=(int1, int2, int3),
+            intensity_background=intensity_background,
+            origin=origin,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

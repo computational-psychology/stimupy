@@ -64,14 +64,17 @@ def show_grid(
     int_grid=None,
     int_back=None,
 ):
-    stim = grid(
-        visual_size=(height, width),
-        ppd=ppd,
-        element_size=(eheight, ewidth, ethick),
-        intensity_background=int_back,
-        intensity_grid=int_grid,
-    )
-    plot_stim(stim, mask=False)
+    try:
+        stim = grid(
+            visual_size=(height, width),
+            ppd=ppd,
+            element_size=(eheight, ewidth, ethick),
+            intensity_background=int_back,
+            intensity_grid=int_grid,
+        )
+        plot_stim(stim, mask=False)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

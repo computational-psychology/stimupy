@@ -80,20 +80,23 @@ def show_pinwheel(
     origin=None,
     add_mask=False,
 ):
-    stim = pinwheel(
-        visual_size=(height, width),
-        ppd=ppd,
-        rotation=rotation,
-        n_segments=n_segments,
-        intensity_segments=(intensity1, intensity2),
-        intensity_background=intensity_background,
-        origin=origin,
-        target_indices=target_indices,
-        target_width=target_width,
-        target_center=target_center,
-        intensity_target=intensity_target,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = pinwheel(
+            visual_size=(height, width),
+            ppd=ppd,
+            rotation=rotation,
+            n_segments=n_segments,
+            intensity_segments=(intensity1, intensity2),
+            intensity_background=intensity_background,
+            origin=origin,
+            target_indices=target_indices,
+            target_width=target_width,
+            target_center=target_center,
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

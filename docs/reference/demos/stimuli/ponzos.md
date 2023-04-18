@@ -78,20 +78,23 @@ def show_ponzo(
     intensity_target_lines=None,
     add_mask=False,
 ):
-    stim = ponzo(
-        visual_size=(height, width),
-        ppd=ppd,
-        outer_lines_length=outer_lines_length,
-        outer_lines_width=outer_lines_width,
-        outer_lines_angle=outer_lines_angle,
-        target_lines_length=target_lines_length,
-        target_lines_width=target_lines_width,
-        target_distance=target_distance,
-        intensity_outer_lines=intensity_outer_lines,
-        intensity_background=intensity_background,
-        intensity_target_lines=intensity_target_lines,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = ponzo(
+            visual_size=(height, width),
+            ppd=ppd,
+            outer_lines_length=outer_lines_length,
+            outer_lines_width=outer_lines_width,
+            outer_lines_angle=outer_lines_angle,
+            target_lines_length=target_lines_length,
+            target_lines_width=target_lines_width,
+            target_distance=target_distance,
+            intensity_outer_lines=intensity_outer_lines,
+            intensity_background=intensity_background,
+            intensity_target_lines=intensity_target_lines,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

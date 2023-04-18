@@ -102,36 +102,39 @@ def show_gabors(
     period=None,
     add_mask=False,
 ):
-    p_common = {
-        "visual_size": (height, width),
-        "ppd": ppd,
-        "origin": origin,
-        "round_phase_width": round_phase_width,
-        "period": period,
-        "sigma": sigma,
-    }
-    
-    p_grating1 = {
-        "frequency": frequency1,
-        "rotation": rotation1,
-        "phase_shift": phase_shift1,
-        "intensity_bars": (int11, int12),
-    }
-    
-    p_grating2 = {
-        "frequency": frequency2,
-        "rotation": rotation2,
-        "phase_shift": phase_shift2,
-        "intensity_bars": (int21, int22),
-    }
+    try:
+        p_common = {
+            "visual_size": (height, width),
+            "ppd": ppd,
+            "origin": origin,
+            "round_phase_width": round_phase_width,
+            "period": period,
+            "sigma": sigma,
+        }
+        
+        p_grating1 = {
+            "frequency": frequency1,
+            "rotation": rotation1,
+            "phase_shift": phase_shift1,
+            "intensity_bars": (int11, int12),
+        }
+        
+        p_grating2 = {
+            "frequency": frequency2,
+            "rotation": rotation2,
+            "phase_shift": phase_shift2,
+            "intensity_bars": (int21, int22),
+        }
 
-    stim = gabors(
-        gabor_parameters1={**p_common, **p_grating1},
-        gabor_parameters2={**p_common, **p_grating2},
-        weight1=weight1,
-        weight2=weight2,
-    )
-    plot_stim(stim, mask=add_mask)
+        stim = gabors(
+            gabor_parameters1={**p_common, **p_grating1},
+            gabor_parameters2={**p_common, **p_grating2},
+            weight1=weight1,
+            weight2=weight2,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -238,35 +241,38 @@ def show_sine_waves(
     period=None,
     add_mask=False,
 ):
-    p_common = {
-        "visual_size": (height, width),
-        "ppd": ppd,
-        "origin": origin,
-        "round_phase_width": round_phase_width,
-        "period": period,
-    }
-    
-    p_grating1 = {
-        "frequency": frequency1,
-        "rotation": rotation1,
-        "phase_shift": phase_shift1,
-        "intensities": (int11, int12),
-    }
-    
-    p_grating2 = {
-        "frequency": frequency2,
-        "rotation": rotation2,
-        "phase_shift": phase_shift2,
-        "intensities": (int21, int22),
-    }
+    try:
+        p_common = {
+            "visual_size": (height, width),
+            "ppd": ppd,
+            "origin": origin,
+            "round_phase_width": round_phase_width,
+            "period": period,
+        }
+        
+        p_grating1 = {
+            "frequency": frequency1,
+            "rotation": rotation1,
+            "phase_shift": phase_shift1,
+            "intensities": (int11, int12),
+        }
+        
+        p_grating2 = {
+            "frequency": frequency2,
+            "rotation": rotation2,
+            "phase_shift": phase_shift2,
+            "intensities": (int21, int22),
+        }
 
-    stim = sine_waves(
-        grating_parameters1={**p_common, **p_grating1},
-        grating_parameters2={**p_common, **p_grating2},
-        weight1=weight1,
-        weight2=weight2,
-    )
-    plot_stim(stim, mask=add_mask)
+        stim = sine_waves(
+            grating_parameters1={**p_common, **p_grating1},
+            grating_parameters2={**p_common, **p_grating2},
+            weight1=weight1,
+            weight2=weight2,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -373,35 +379,38 @@ def show_square_waves(
     period=None,
     add_mask=False,
 ):
-    p_common = {
-        "visual_size": (height, width),
-        "ppd": ppd,
-        "origin": origin,
-        "round_phase_width": round_phase_width,
-        "period": period,
-    }
-    
-    p_grating1 = {
-        "frequency": frequency1,
-        "rotation": rotation1,
-        "phase_shift": phase_shift1,
-        "intensity_bars": (int11, int12),
-    }
-    
-    p_grating2 = {
-        "frequency": frequency2,
-        "rotation": rotation2,
-        "phase_shift": phase_shift2,
-        "intensity_bars": (int21, int22),
-    }
+    try:
+        p_common = {
+            "visual_size": (height, width),
+            "ppd": ppd,
+            "origin": origin,
+            "round_phase_width": round_phase_width,
+            "period": period,
+        }
+        
+        p_grating1 = {
+            "frequency": frequency1,
+            "rotation": rotation1,
+            "phase_shift": phase_shift1,
+            "intensity_bars": (int11, int12),
+        }
+        
+        p_grating2 = {
+            "frequency": frequency2,
+            "rotation": rotation2,
+            "phase_shift": phase_shift2,
+            "intensity_bars": (int21, int22),
+        }
 
-    stim = square_waves(
-        grating_parameters1={**p_common, **p_grating1},
-        grating_parameters2={**p_common, **p_grating2},
-        weight1=weight1,
-        weight2=weight2,
-    )
-    plot_stim(stim, mask=add_mask)
+        stim = square_waves(
+            grating_parameters1={**p_common, **p_grating1},
+            grating_parameters2={**p_common, **p_grating2},
+            weight1=weight1,
+            weight2=weight2,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

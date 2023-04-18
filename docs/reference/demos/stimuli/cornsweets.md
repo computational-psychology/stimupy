@@ -70,16 +70,19 @@ def show_cornsweet(
     exponent=None,
     add_mask=False,
 ):
-    stim = cornsweet(
-        visual_size=(height, width),
-        ppd=ppd,
-        rotation=rotation,
-        intensity_edges=(intensity1, intensity2),
-        intensity_plateau=intensity_plateau,
-        ramp_width=ramp_width,
-        exponent=exponent,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = cornsweet(
+            visual_size=(height, width),
+            ppd=ppd,
+            rotation=rotation,
+            intensity_edges=(intensity1, intensity2),
+            intensity_plateau=intensity_plateau,
+            ramp_width=ramp_width,
+            exponent=exponent,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

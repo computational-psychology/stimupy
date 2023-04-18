@@ -76,19 +76,22 @@ def show_sine(
     period=None,
     add_mask=False,
 ):
-    stim = sine(
-        visual_size=(height, width),
-        ppd=ppd,
-        distance_metric=distance_metric,
-        rotation=rotation,
-        frequency=frequency,
-        phase_shift=phase_shift,
-        intensities=(int1, int2),
-        origin=origin,
-        round_phase_width=round_phase_width,
-        period=period,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = sine(
+            visual_size=(height, width),
+            ppd=ppd,
+            distance_metric=distance_metric,
+            rotation=rotation,
+            frequency=frequency,
+            phase_shift=phase_shift,
+            intensities=(int1, int2),
+            origin=origin,
+            round_phase_width=round_phase_width,
+            period=period,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -163,19 +166,22 @@ def show_square(
     period=None,
     add_mask=False,
 ):
-    stim = square(
-        visual_size=(height, width),
-        ppd=ppd,
-        distance_metric=distance_metric,
-        rotation=rotation,
-        frequency=frequency,
-        phase_shift=phase_shift,
-        intensities=(int1, int2),
-        origin=origin,
-        round_phase_width=round_phase_width,
-        period=period,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = square(
+            visual_size=(height, width),
+            ppd=ppd,
+            distance_metric=distance_metric,
+            rotation=rotation,
+            frequency=frequency,
+            phase_shift=phase_shift,
+            intensities=(int1, int2),
+            origin=origin,
+            round_phase_width=round_phase_width,
+            period=period,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -250,19 +256,22 @@ def show_staircase(
     add_mask=False,
     origin=None,
 ):
-    stim = staircase(
-        visual_size=(height, width),
-        ppd=ppd,
-        distance_metric=distance_metric,
-        rotation=rotation,
-        frequency=frequency,
-        phase_shift=phase_shift,
-        intensities=(int1, int2),
-        round_phase_width=round_phase_width,
-        period=period,
-        origin=origin,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = staircase(
+            visual_size=(height, width),
+            ppd=ppd,
+            distance_metric=distance_metric,
+            rotation=rotation,
+            frequency=frequency,
+            phase_shift=phase_shift,
+            intensities=(int1, int2),
+            round_phase_width=round_phase_width,
+            period=period,
+            origin=origin,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -329,15 +338,18 @@ def show_bessel(
     origin=None,
     add_mask=False,
 ):
-    stim = bessel(
-        visual_size=(height, width),
-        ppd=ppd,
-        frequency=frequency,
-        order=order,
-        intensities=(int1, int2),
-        origin=origin,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = bessel(
+            visual_size=(height, width),
+            ppd=ppd,
+            frequency=frequency,
+            order=order,
+            intensities=(int1, int2),
+            origin=origin,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

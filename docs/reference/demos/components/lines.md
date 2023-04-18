@@ -76,19 +76,21 @@ def show_line(
     add_mask=False,
     origin=None,
 ):
-
-    stim = line(
-        visual_size=(height, width),
-        ppd=ppd,
-        line_position=(ypos, xpos),
-        line_length=line_length,
-        line_width=line_width,
-        rotation=rotation,
-        intensity_line=intensity_line,
-        intensity_background=intensity_background,
-        origin=origin,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = line(
+            visual_size=(height, width),
+            ppd=ppd,
+            line_position=(ypos, xpos),
+            line_length=line_length,
+            line_width=line_width,
+            rotation=rotation,
+            intensity_line=intensity_line,
+            intensity_background=intensity_background,
+            origin=origin,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None    
 
 # Set interactivity
 out = iw.interactive_output(
@@ -155,17 +157,19 @@ def show_dipole(
     int2=None,
     add_mask=False,
 ):
-
-    stim = dipole(
-        visual_size=(height, width),
-        ppd=ppd,
-        line_length=line_length,
-        line_width=line_width,
-        line_gap=line_gap,
-        rotation=rotation,
-        intensity_lines=(int1, int2),
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = dipole(
+            visual_size=(height, width),
+            ppd=ppd,
+            line_length=line_length,
+            line_width=line_width,
+            line_gap=line_gap,
+            rotation=rotation,
+            intensity_lines=(int1, int2),
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -228,16 +232,18 @@ def show_ellipse(
     intensity_background=None,
     add_mask=False,
 ):
-
-    stim = ellipse(
-        visual_size=(height, width),
-        ppd=ppd,
-        radius=(rad1, rad2),
-        line_width=line_width,
-        intensity_line=intensity_line,
-        intensity_background=intensity_background,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = ellipse(
+            visual_size=(height, width),
+            ppd=ppd,
+            radius=(rad1, rad2),
+            line_width=line_width,
+            intensity_line=intensity_line,
+            intensity_background=intensity_background,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -297,16 +303,18 @@ def show_circle(
     intensity_background=None,
     add_mask=False,
 ):
-
-    stim = circle(
-        visual_size=(height, width),
-        ppd=ppd,
-        radius=radius,
-        line_width=line_width,
-        intensity_line=intensity_line,
-        intensity_background=intensity_background,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = circle(
+            visual_size=(height, width),
+            ppd=ppd,
+            radius=radius,
+            line_width=line_width,
+            intensity_line=intensity_line,
+            intensity_background=intensity_background,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

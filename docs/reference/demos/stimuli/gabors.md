@@ -74,18 +74,21 @@ def show_gabor(
     period=None,
     add_mask=False,
 ):
-    stim = gabor(
-        visual_size=(height, width),
-        ppd=ppd,
-        rotation=rotation,
-        frequency=frequency,
-        phase_shift=phase_shift,
-        sigma=sigma,
-        intensity_bars=(int1, int2),
-        origin=origin,
-        period=period,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = gabor(
+            visual_size=(height, width),
+            ppd=ppd,
+            rotation=rotation,
+            frequency=frequency,
+            phase_shift=phase_shift,
+            sigma=sigma,
+            intensity_bars=(int1, int2),
+            origin=origin,
+            period=period,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

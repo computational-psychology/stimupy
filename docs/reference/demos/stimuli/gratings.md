@@ -89,22 +89,25 @@ def show_on_uniform(
     grating_height=None,
     grating_width=None,
 ):
-    stim = on_uniform(
-        visual_size=(height, width),
-        ppd=ppd,
-        rotation=rotation,
-        frequency=frequency,
-        phase_shift=phase_shift,
-        intensity_bars=(int1, int2),
-        origin=origin,
-        round_phase_width=round_phase_width,
-        period=period,
-        target_indices=target_indices,
-        intensity_target=intensity_target,
-        intensity_background=intensity_background,
-        grating_size=(grating_height, grating_width),
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = on_uniform(
+            visual_size=(height, width),
+            ppd=ppd,
+            rotation=rotation,
+            frequency=frequency,
+            phase_shift=phase_shift,
+            intensity_bars=(int1, int2),
+            origin=origin,
+            round_phase_width=round_phase_width,
+            period=period,
+            target_indices=target_indices,
+            intensity_target=intensity_target,
+            intensity_background=intensity_background,
+            grating_size=(grating_height, grating_width),
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

@@ -82,20 +82,23 @@ def show_cross_generalized(
     target_rotation=None,
     add_mask=False,
 ):
-    stim = cross_generalized(
-        visual_size=(height, width),
-        ppd=ppd,
-        cross_thickness=cross_thickness,
-        intensity_cross=intensity1,
-        intensity_background=intensity_background,
-        target_size=(target_height, target_width),
-        target_type=target_type,
-        intensity_target=intensity_target,
-        target_x=target_x,
-        target_y=target_y,
-        target_rotation=target_rotation,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = cross_generalized(
+            visual_size=(height, width),
+            ppd=ppd,
+            cross_thickness=cross_thickness,
+            intensity_cross=intensity1,
+            intensity_background=intensity_background,
+            target_size=(target_height, target_width),
+            target_type=target_type,
+            intensity_target=intensity_target,
+            target_x=target_x,
+            target_y=target_y,
+            target_rotation=target_rotation,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -167,16 +170,19 @@ def show_cross_rectangles(
     intensity_target=None,
     add_mask=False,
 ):
-    stim = cross_rectangles(
-        visual_size=(height, width),
-        ppd=ppd,
-        cross_thickness=cross_thickness,
-        intensity_cross=intensity1,
-        intensity_background=intensity_background,
-        target_size=(target_height, target_width),
-        intensity_target=intensity_target,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = cross_rectangles(
+            visual_size=(height, width),
+            ppd=ppd,
+            cross_thickness=cross_thickness,
+            intensity_cross=intensity1,
+            intensity_background=intensity_background,
+            target_size=(target_height, target_width),
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -242,16 +248,19 @@ def show_cross_triangles(
     intensity_target=None,
     add_mask=False,
 ):
-    stim = cross_triangles(
-        visual_size=(height, width),
-        ppd=ppd,
-        cross_thickness=cross_thickness,
-        intensity_cross=intensity1,
-        intensity_background=intensity_background,
-        target_size=target_size,
-        intensity_target=intensity_target,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = cross_triangles(
+            visual_size=(height, width),
+            ppd=ppd,
+            cross_thickness=cross_thickness,
+            intensity_cross=intensity1,
+            intensity_background=intensity_background,
+            target_size=target_size,
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -328,20 +337,23 @@ def show_todorovic_generalized(
     target_rotation=None,
     add_mask=False,
 ):
-    stim = todorovic_generalized(
-        visual_size=(height, width),
-        ppd=ppd,
-        L_width=cross_thickness,
-        intensity_cross=intensity1,
-        intensity_background=intensity_background,
-        target_size=(target_height, target_width),
-        target_type=target_type,
-        intensity_target=intensity_target,
-        target_x=target_x,
-        target_y=target_y,
-        target_rotation=target_rotation,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = todorovic_generalized(
+            visual_size=(height, width),
+            ppd=ppd,
+            L_width=cross_thickness,
+            intensity_cross=intensity1,
+            intensity_background=intensity_background,
+            target_size=(target_height, target_width),
+            target_type=target_type,
+            intensity_target=intensity_target,
+            target_x=target_x,
+            target_y=target_y,
+            target_rotation=target_rotation,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -413,16 +425,19 @@ def show_todorovic_rectangles(
     intensity_target=None,
     add_mask=False,
 ):
-    stim = todorovic_rectangles(
-        visual_size=(height, width),
-        ppd=ppd,
-        L_width=cross_thickness,
-        intensity_cross=intensity1,
-        intensity_background=intensity_background,
-        target_size=(target_height, target_width),
-        intensity_target=intensity_target,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = todorovic_rectangles(
+            visual_size=(height, width),
+            ppd=ppd,
+            L_width=cross_thickness,
+            intensity_cross=intensity1,
+            intensity_background=intensity_background,
+            target_size=(target_height, target_width),
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -488,16 +503,19 @@ def show_todorovic_triangles(
     intensity_target=None,
     add_mask=False,
 ):
-    stim = todorovic_triangles(
-        visual_size=(height, width),
-        ppd=ppd,
-        L_width=cross_thickness,
-        intensity_cross=intensity1,
-        intensity_background=intensity_background,
-        target_size=target_size,
-        intensity_target=intensity_target,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = todorovic_triangles(
+            visual_size=(height, width),
+            ppd=ppd,
+            L_width=cross_thickness,
+            intensity_cross=intensity1,
+            intensity_background=intensity_background,
+            target_size=target_size,
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

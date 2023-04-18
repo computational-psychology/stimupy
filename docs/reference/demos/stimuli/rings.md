@@ -78,19 +78,22 @@ def show_circular(
     target_indices=None,
     intensity_target=None,
 ):
-    stim = circular(
-        visual_size=(height, width),
-        ppd=ppd,
-        frequency=frequency,
-        phase_shift=phase_shift,
-        intensity_rings=(int1, int2),
-        intensity_background=intensity_background,
-        origin=origin,
-        clip=clip,
-        target_indices=target_indices,
-        intensity_target=intensity_target,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = circular(
+            visual_size=(height, width),
+            ppd=ppd,
+            frequency=frequency,
+            phase_shift=phase_shift,
+            intensity_rings=(int1, int2),
+            intensity_background=intensity_background,
+            origin=origin,
+            clip=clip,
+            target_indices=target_indices,
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -165,18 +168,21 @@ def show_circular_two_sided(
     target_indices=None,
     intensity_target=None,
 ):
-    stim = circular_two_sided(
-        visual_size=(height, width),
-        ppd=ppd,
-        frequency=frequency,
-        phase_shift=phase_shift,
-        intensity_rings=(int1, int2),
-        intensity_background=intensity_background,
-        origin=origin,
-        target_indices=target_indices,
-        intensity_target=intensity_target,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = circular_two_sided(
+            visual_size=(height, width),
+            ppd=ppd,
+            frequency=frequency,
+            phase_shift=phase_shift,
+            intensity_rings=(int1, int2),
+            intensity_background=intensity_background,
+            origin=origin,
+            target_indices=target_indices,
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -252,19 +258,22 @@ def show_rectangular(
     target_indices=None,
     intensity_target=None,
 ):
-    stim = rectangular(
-        visual_size=(height, width),
-        ppd=ppd,
-        frequency=frequency,
-        phase_shift=phase_shift,
-        intensity_frames=(int1, int2),
-        intensity_background=intensity_background,
-        origin=origin,
-        clip=clip,
-        target_indices=target_indices,
-        intensity_target=intensity_target,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = rectangular(
+            visual_size=(height, width),
+            ppd=ppd,
+            frequency=frequency,
+            phase_shift=phase_shift,
+            intensity_frames=(int1, int2),
+            intensity_background=intensity_background,
+            origin=origin,
+            clip=clip,
+            target_indices=target_indices,
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -343,17 +352,20 @@ def show_rectangular_generalized(
     intensity_target=None,
     target_indices=None,
 ):
-    stim = rectangular_generalized(
-        visual_size=(height, width),
-        ppd=ppd,
-        radii=(radius1, radius2, radius3),
-        intensity_frames=(int1, int2, int3),
-        intensity_background=intensity_background,
-        origin=origin,
-        intensity_target=intensity_target,
-        target_indices=target_indices,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = rectangular_generalized(
+            visual_size=(height, width),
+            ppd=ppd,
+            radii=(radius1, radius2, radius3),
+            intensity_frames=(int1, int2, int3),
+            intensity_background=intensity_background,
+            origin=origin,
+            intensity_target=intensity_target,
+            target_indices=target_indices,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -427,17 +439,20 @@ def show_rectangular_two_sided(
     target_indices=None,
     intensity_target=None,
 ):
-    stim = rectangular_two_sided(
-        visual_size=(height, width),
-        ppd=ppd,
-        frequency=frequency,
-        phase_shift=phase_shift,
-        intensity_frames=(int1, int2),
-        intensity_background=intensity_background,
-        target_indices=target_indices,
-        intensity_target=intensity_target,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = rectangular_two_sided(
+            visual_size=(height, width),
+            ppd=ppd,
+            frequency=frequency,
+            phase_shift=phase_shift,
+            intensity_frames=(int1, int2),
+            intensity_background=intensity_background,
+            target_indices=target_indices,
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

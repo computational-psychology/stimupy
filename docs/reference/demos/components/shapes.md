@@ -75,16 +75,19 @@ def show_rect(
     intensity_background=None,
     add_mask=False,
 ):
-    stim = rectangle(
-        visual_size=(height, width),
-        ppd=ppd,
-        rectangle_size=(rect_height, rect_width),
-        rectangle_position=(pos_y, pos_x),
-        rotation=rotation,
-        intensity_rectangle=intensity_rectangle,
-        intensity_background=intensity_background,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = rectangle(
+            visual_size=(height, width),
+            ppd=ppd,
+            rectangle_size=(rect_height, rect_width),
+            rectangle_position=(pos_y, pos_x),
+            rotation=rotation,
+            intensity_rectangle=intensity_rectangle,
+            intensity_background=intensity_background,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -153,16 +156,19 @@ def show_triangle(
     include_corners=None,
     add_mask=False,
 ):
-    stim = triangle(
-        visual_size=(height, width),
-        ppd=ppd,
-        rotation=rotation,
-        triangle_size=(triangle_height, triangle_width),
-        intensity_triangle=intensity_triangle,
-        intensity_background=intensity_background,
-        include_corners=include_corners,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = triangle(
+            visual_size=(height, width),
+            ppd=ppd,
+            rotation=rotation,
+            triangle_size=(triangle_height, triangle_width),
+            intensity_triangle=intensity_triangle,
+            intensity_background=intensity_background,
+            include_corners=include_corners,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -235,17 +241,20 @@ def show_cross(
     intensity_background=None,
     add_mask=False,
 ):
-    stim = cross(
-        visual_size=(height, width),
-        ppd=ppd,
-        rotation=rotation,
-        cross_size=(cross_height, cross_width),
-        cross_thickness=thickness,
-        cross_arm_ratios=(ratio1, ratio2),
-        intensity_cross=intensity_cross,
-        intensity_background=intensity_background,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = cross(
+            visual_size=(height, width),
+            ppd=ppd,
+            rotation=rotation,
+            cross_size=(cross_height, cross_width),
+            cross_thickness=thickness,
+            cross_arm_ratios=(ratio1, ratio2),
+            intensity_cross=intensity_cross,
+            intensity_background=intensity_background,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -314,15 +323,18 @@ def show_parallelogram(
     intensity_background=None,
     add_mask=False,
 ):
-    stim = parallelogram(
-        visual_size=(height, width),
-        ppd=ppd,
-        rotation=rotation,
-        parallelogram_size=(p_height, p_width, p_depth),
-        intensity_parallelogram=intensity_parallelogram,
-        intensity_background=intensity_background,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = parallelogram(
+            visual_size=(height, width),
+            ppd=ppd,
+            rotation=rotation,
+            parallelogram_size=(p_height, p_width, p_depth),
+            intensity_parallelogram=intensity_parallelogram,
+            intensity_background=intensity_background,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -388,16 +400,19 @@ def show_ellipse(
     origin=None,
     add_mask=False,
 ):
-    stim = ellipse(
-        visual_size=(height, width),
-        ppd=ppd,
-        rotation=rotation,
-        radius=(radius1, radius2),
-        intensity_ellipse=intensity_ellipse,
-        intensity_background=intensity_background,
-        origin=origin,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = ellipse(
+            visual_size=(height, width),
+            ppd=ppd,
+            rotation=rotation,
+            radius=(radius1, radius2),
+            intensity_ellipse=intensity_ellipse,
+            intensity_background=intensity_background,
+            origin=origin,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -458,15 +473,18 @@ def show_circle(
     origin=None,
     add_mask=False,
 ):
-    stim = circle(
-        visual_size=(height, width),
-        ppd=ppd,
-        radius=radius,
-        intensity_circle=intensity_circle,
-        intensity_background=intensity_background,
-        origin=origin,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = circle(
+            visual_size=(height, width),
+            ppd=ppd,
+            radius=radius,
+            intensity_circle=intensity_circle,
+            intensity_background=intensity_background,
+            origin=origin,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -532,18 +550,21 @@ def show_wedge(
     origin=None,
     add_mask=False,
 ):
-    stim = wedge(
-        visual_size=(height, width),
-        ppd=ppd,
-        angle=wwidth,
-        radius=radius,
-        rotation=rotation,
-        inner_radius=inner_radius,
-        intensity_wedge=intensity_wedge,
-        intensity_background=intensity_background,
-        origin=origin,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = wedge(
+            visual_size=(height, width),
+            ppd=ppd,
+            angle=wwidth,
+            radius=radius,
+            rotation=rotation,
+            inner_radius=inner_radius,
+            intensity_wedge=intensity_wedge,
+            intensity_background=intensity_background,
+            origin=origin,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -604,15 +625,18 @@ def show_disc(
     origin=None,
     add_mask=False,
 ):
-    stim = disc(
-        visual_size=(height, width),
-        ppd=ppd,
-        radius=radius,
-        intensity_disc=intensity_disc,
-        intensity_background=intensity_background,
-        origin=origin,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = disc(
+            visual_size=(height, width),
+            ppd=ppd,
+            radius=radius,
+            intensity_disc=intensity_disc,
+            intensity_background=intensity_background,
+            origin=origin,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -674,15 +698,18 @@ def show_annulus(
     origin=None,
     add_mask=False,
 ):
-    stim = annulus(
-        visual_size=(height, width),
-        ppd=ppd,
-        radii=(radius1, radius2),
-        intensity_ring=intensity_ring,
-        intensity_background=intensity_background,
-        origin=origin,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = annulus(
+            visual_size=(height, width),
+            ppd=ppd,
+            radii=(radius1, radius2),
+            intensity_ring=intensity_ring,
+            intensity_background=intensity_background,
+            origin=origin,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -745,15 +772,18 @@ def show_ring(
     origin=None,
     add_mask=False,
 ):
-    stim = annulus(
-        visual_size=(height, width),
-        ppd=ppd,
-        radii=(radius1, radius2),
-        intensity_ring=intensity_ring,
-        intensity_background=intensity_background,
-        origin=origin,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = annulus(
+            visual_size=(height, width),
+            ppd=ppd,
+            radii=(radius1, radius2),
+            intensity_ring=intensity_ring,
+            intensity_background=intensity_background,
+            origin=origin,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

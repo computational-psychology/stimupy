@@ -74,15 +74,18 @@ def show_generalized(
     intensity_target=None,
     add_mask=False,
 ):
-    stim = generalized(
-        visual_size=(height, width),
-        ppd=ppd,
-        target_size=(target_height,target_width),
-        target_position=(target_y,target_x),
-        intensity_background=intensity_background,
-        intensity_target=intensity_target,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = generalized(
+            visual_size=(height, width),
+            ppd=ppd,
+            target_size=(target_height,target_width),
+            target_position=(target_y,target_x),
+            intensity_background=intensity_background,
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -145,14 +148,17 @@ def show_basic(
     intensity_target=None,
     add_mask=False,
 ):
-    stim = basic(
-        visual_size=(height, width),
-        ppd=ppd,
-        target_size=(target_height,target_width),
-        intensity_background=intensity_background,
-        intensity_target=intensity_target,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = basic(
+            visual_size=(height, width),
+            ppd=ppd,
+            target_size=(target_height,target_width),
+            intensity_background=intensity_background,
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -216,14 +222,17 @@ def show_two_sided(
     intensity_target=None,
     add_mask=False,
 ):
-    stim = two_sided(
-        visual_size=(height, width),
-        ppd=ppd,
-        target_size=(target_height,target_width),
-        intensity_backgrounds=(intensity_background_l, intensity_background_r),
-        intensity_target=intensity_target,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = two_sided(
+            visual_size=(height, width),
+            ppd=ppd,
+            target_size=(target_height,target_width),
+            intensity_backgrounds=(intensity_background_l, intensity_background_r),
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -297,18 +306,21 @@ def show_with_dots(
     intensity_dots=None,
     add_mask=False,
 ):
-    stim = with_dots(
-        visual_size=(height, width),
-        ppd=ppd,
-        target_shape=(target_height, target_width),
-        n_dots=(ndotsy, ndotsx),
-        dot_radius=dot_radius,
-        distance=dot_distance,
-        intensity_background=intensity_background,
-        intensity_target=intensity_target,
-        intensity_dots=intensity_dots,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = with_dots(
+            visual_size=(height, width),
+            ppd=ppd,
+            target_shape=(target_height, target_width),
+            n_dots=(ndotsy, ndotsx),
+            dot_radius=dot_radius,
+            distance=dot_distance,
+            intensity_background=intensity_background,
+            intensity_target=intensity_target,
+            intensity_dots=intensity_dots,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -390,18 +402,21 @@ def show_two_sided_with_dots(
     intensity_dots_r=None,
     add_mask=False,
 ):
-    stim = with_dots_two_sided(
-        visual_size=(height, width),
-        ppd=ppd,
-        target_shape=(target_height, target_width),
-        n_dots=(ndotsy, ndotsx),
-        dot_radius=dot_radius,
-        distance=dot_distance,
-        intensity_backgrounds=(intensity_background_l, intensity_background_r),
-        intensity_target=intensity_target,
-        intensity_dots=(intensity_dots_l, intensity_dots_r),
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = with_dots_two_sided(
+            visual_size=(height, width),
+            ppd=ppd,
+            target_shape=(target_height, target_width),
+            n_dots=(ndotsy, ndotsx),
+            dot_radius=dot_radius,
+            distance=dot_distance,
+            intensity_backgrounds=(intensity_background_l, intensity_background_r),
+            intensity_target=intensity_target,
+            intensity_dots=(intensity_dots_l, intensity_dots_r),
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -481,18 +496,21 @@ def show_dotted(
     intensity_dots=None,
     add_mask=False,
 ):
-    stim = dotted(
-        visual_size=(height, width),
-        ppd=ppd,
-        target_shape=(target_height, target_width),
-        n_dots=(ndotsy, ndotsx),
-        dot_radius=dot_radius,
-        distance=dot_distance,
-        intensity_background=intensity_background,
-        intensity_target=intensity_target,
-        intensity_dots=intensity_dots,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = dotted(
+            visual_size=(height, width),
+            ppd=ppd,
+            target_shape=(target_height, target_width),
+            n_dots=(ndotsy, ndotsx),
+            dot_radius=dot_radius,
+            distance=dot_distance,
+            intensity_background=intensity_background,
+            intensity_target=intensity_target,
+            intensity_dots=intensity_dots,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -574,18 +592,21 @@ def show_two_sided_dotted(
     intensity_dots_r=None,
     add_mask=False,
 ):
-    stim = dotted_two_sided(
-        visual_size=(height, width),
-        ppd=ppd,
-        target_shape=(target_height, target_width),
-        n_dots=(ndotsy, ndotsx),
-        dot_radius=dot_radius,
-        distance=dot_distance,
-        intensity_backgrounds=(intensity_background_l, intensity_background_r),
-        intensity_target=intensity_target,
-        intensity_dots=(intensity_dots_l, intensity_dots_r),
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = dotted_two_sided(
+            visual_size=(height, width),
+            ppd=ppd,
+            target_shape=(target_height, target_width),
+            n_dots=(ndotsy, ndotsx),
+            dot_radius=dot_radius,
+            distance=dot_distance,
+            intensity_backgrounds=(intensity_background_l, intensity_background_r),
+            intensity_target=intensity_target,
+            intensity_dots=(intensity_dots_l, intensity_dots_r),
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

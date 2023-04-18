@@ -106,16 +106,18 @@ def show_mondrian(
     int3=None,
     add_mask=False,
 ):
-
-    stim = mondrian(
-        visual_size=(height, width),
-        ppd=ppd,
-        positions=((y1, x1), (y2, x2), (y3, x3)),
-        sizes=((h1, w1), (h2, w2), (h3, w3)),
-        intensities=(int1, int2, int3),
-        intensity_background=intensity_background,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = mondrian(
+            visual_size=(height, width),
+            ppd=ppd,
+            positions=((y1, x1), (y2, x2), (y3, x3)),
+            sizes=((h1, w1), (h2, w2), (h3, w3)),
+            intensities=(int1, int2, int3),
+            intensity_background=intensity_background,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -193,18 +195,20 @@ def show_corrugated_mondrian(
     target_idx2=None,
     intensity_target=None,
 ):
-    intensities = np.random.rand(3, 4)
-
-    stim = corrugated_mondrian(
-        visual_size=(height, width),
-        ppd=ppd,
-        depths=(depth1, depth2, depth3),
-        intensities=intensities,
-        intensity_background=intensity_background,
-        intensity_target=intensity_target,
-        target_indices=((target_idx1, target_idx2),),
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        intensities = np.random.rand(3, 4)
+        stim = corrugated_mondrian(
+            visual_size=(height, width),
+            ppd=ppd,
+            depths=(depth1, depth2, depth3),
+            intensities=intensities,
+            intensity_background=intensity_background,
+            intensity_target=intensity_target,
+            target_indices=((target_idx1, target_idx2),),
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

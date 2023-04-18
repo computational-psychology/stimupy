@@ -82,20 +82,22 @@ def show_checkerboard(
     intensity_target=None,
     extend_targets=False,
 ):
-
-    stim = checkerboard(
-        visual_size=(height, width),
-        ppd=ppd,
-        frequency=(frequency1, frequency2),
-        period=period,
-        rotation=rotation,
-        intensity_checks=(intensity1, intensity2),
-        round_phase_width=round_phase_width,
-        target_indices=((target_y, target_x),),
-        intensity_target=intensity_target,
-        extend_targets=extend_targets,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = checkerboard(
+            visual_size=(height, width),
+            ppd=ppd,
+            frequency=(frequency1, frequency2),
+            period=period,
+            rotation=rotation,
+            intensity_checks=(intensity1, intensity2),
+            round_phase_width=round_phase_width,
+            target_indices=((target_y, target_x),),
+            intensity_target=intensity_target,
+            extend_targets=extend_targets,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -178,20 +180,22 @@ def show_contrast_contrast(
     alpha=None,
     tau=False,
 ):
-
-    stim = contrast_contrast(
-        visual_size=(height, width),
-        ppd=ppd,
-        frequency=(frequency1, frequency2),
-        period=period,
-        rotation=rotation,
-        intensity_checks=(intensity1, intensity2),
-        round_phase_width=round_phase_width,
-        target_shape=(target_y, target_x),
-        alpha=alpha,
-        tau=tau,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = contrast_contrast(
+            visual_size=(height, width),
+            ppd=ppd,
+            frequency=(frequency1, frequency2),
+            period=period,
+            rotation=rotation,
+            intensity_checks=(intensity1, intensity2),
+            round_phase_width=round_phase_width,
+            target_shape=(target_y, target_x),
+            alpha=alpha,
+            tau=tau,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

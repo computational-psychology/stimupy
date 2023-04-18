@@ -62,15 +62,17 @@ def show_one_over_f(
     intensity2=None,
     pseudo_noise=False,
 ):
-
-    stim = one_over_f(
-        visual_size=(height, width),
-        ppd=ppd,
-        intensity_range=(intensity1, intensity2),
-        exponent=exponent,
-        pseudo_noise=pseudo_noise,
-    )
-    plot_stim(stim, mask=False)
+    try:
+        stim = one_over_f(
+            visual_size=(height, width),
+            ppd=ppd,
+            intensity_range=(intensity1, intensity2),
+            exponent=exponent,
+            pseudo_noise=pseudo_noise,
+        )
+        plot_stim(stim, mask=False)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -122,14 +124,16 @@ def show_pink(
     intensity2=None,
     pseudo_noise=False,
 ):
-
-    stim = pink(
-        visual_size=(height, width),
-        ppd=ppd,
-        intensity_range=(intensity1, intensity2),
-        pseudo_noise=pseudo_noise,
-    )
-    plot_stim(stim, mask=False)
+    try:
+        stim = pink(
+            visual_size=(height, width),
+            ppd=ppd,
+            intensity_range=(intensity1, intensity2),
+            pseudo_noise=pseudo_noise,
+        )
+        plot_stim(stim, mask=False)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -180,14 +184,16 @@ def show_brown(
     intensity2=None,
     pseudo_noise=False,
 ):
-
-    stim = brown(
-        visual_size=(height, width),
-        ppd=ppd,
-        intensity_range=(intensity1, intensity2),
-        pseudo_noise=pseudo_noise,
-    )
-    plot_stim(stim, mask=False)
+    try:
+        stim = brown(
+            visual_size=(height, width),
+            ppd=ppd,
+            intensity_range=(intensity1, intensity2),
+            pseudo_noise=pseudo_noise,
+        )
+        plot_stim(stim, mask=False)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

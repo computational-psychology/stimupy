@@ -74,15 +74,18 @@ def show_frames(
     origin=None,
     add_mask=False,
 ):
-    stim = frames(
-        visual_size=(height, width),
-        ppd=ppd,
-        radii=(radius1, radius2, radius3),
-        intensity_frames=(int1, int2, int3),
-        intensity_background=intensity_background,
-        origin=origin,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = frames(
+            visual_size=(height, width),
+            ppd=ppd,
+            radii=(radius1, radius2, radius3),
+            intensity_frames=(int1, int2, int3),
+            intensity_background=intensity_background,
+            origin=origin,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

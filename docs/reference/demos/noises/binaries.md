@@ -56,13 +56,15 @@ def show_binary(
     intensity1=None,
     intensity2=None,
 ):
-
-    stim = binary(
-        visual_size=(height, width),
-        ppd=ppd,
-        intensity_range=(intensity1, intensity2),
-    )
-    plot_stim(stim, mask=False)
+    try:
+        stim = binary(
+            visual_size=(height, width),
+            ppd=ppd,
+            intensity_range=(intensity1, intensity2),
+        )
+        plot_stim(stim, mask=False)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

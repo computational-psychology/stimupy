@@ -64,15 +64,18 @@ def show_disc(
     origin=None,
     add_mask=False,
 ):
-    stim = disc(
-        visual_size=(height, width),
-        ppd=ppd,
-        radius=radius,
-        intensity_disc=intensity_disc,
-        intensity_background=intensity_background,
-        origin=origin,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = disc(
+            visual_size=(height, width),
+            ppd=ppd,
+            radius=radius,
+            intensity_disc=intensity_disc,
+            intensity_background=intensity_background,
+            origin=origin,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -134,15 +137,18 @@ def show_annulus(
     origin=None,
     add_mask=False,
 ):
-    stim = annulus(
-        visual_size=(height, width),
-        ppd=ppd,
-        radii=(radius1, radius2),
-        intensity_ring=intensity_ring,
-        intensity_background=intensity_background,
-        origin=origin,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = annulus(
+            visual_size=(height, width),
+            ppd=ppd,
+            radii=(radius1, radius2),
+            intensity_ring=intensity_ring,
+            intensity_background=intensity_background,
+            origin=origin,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -212,15 +218,18 @@ def show_rings(
     origin=None,
     add_mask=False,
 ):
-    stim = rings(
-        visual_size=(height, width),
-        ppd=ppd,
-        radii=(radius1, radius2, radius3),
-        intensity_rings=(int1, int2, int3),
-        intensity_background=intensity_background,
-        origin=origin,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = rings(
+            visual_size=(height, width),
+            ppd=ppd,
+            radii=(radius1, radius2, radius3),
+            intensity_rings=(int1, int2, int3),
+            intensity_background=intensity_background,
+            origin=origin,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

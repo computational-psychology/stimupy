@@ -59,14 +59,16 @@ def show_white(
     intensity2=None,
     pseudo_noise=False,
 ):
-
-    stim = white(
-        visual_size=(height, width),
-        ppd=ppd,
-        intensity_range=(intensity1, intensity2),
-        pseudo_noise=pseudo_noise,
-    )
-    plot_stim(stim, mask=False)
+    try:
+        stim = white(
+            visual_size=(height, width),
+            ppd=ppd,
+            intensity_range=(intensity1, intensity2),
+            pseudo_noise=pseudo_noise,
+        )
+        plot_stim(stim, mask=False)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
