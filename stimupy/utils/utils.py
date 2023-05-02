@@ -18,7 +18,8 @@ __all__ = [
     "flip_dict",
     "roll_dict",
     "strip_dict",
-    "generate_stimspace",
+    "permutate_params",
+    "create_stimspace_stimuli",
 ]
 
 
@@ -439,16 +440,20 @@ def strip_dict(
     return new_dict
 
 
-def generate_stimspace(stimulus_function, params, title_params=None):
-    if not callable(stimulus_function):
-        raise ValueError("stimulus_function needs to be a function")
+def permutate_params(params):
     if not isinstance(params, dict):
         raise ValueError("params needs to be a dict with all stimulus parameters")
-    if isinstance(title_params, str):
-        title_params = [title_params, ]
 
     keys, values = zip(*params.items())
     permutations_dicts = [dict(zip(keys, v)) for v in itertools.product(*values)]
+    return permutations_dicts
+
+
+def create_stimspace_stimuli(stimulus_function, permutations_dicts, title_params=None):
+    if not callable(stimulus_function):
+        raise ValueError("stimulus_function needs to be a function")
+    if isinstance(title_params, str):
+        title_params = [title_params, ]
 
     stimuli = {}
     for i, p in enumerate(permutations_dicts):
