@@ -202,7 +202,7 @@ def corrugated_mondrian(
     try:
         if ncols is None:
             ncols = len(intensities[0])
-    except:
+    except Exception():
         ncols = nrows
 
     if isinstance(depths, (float, int)):
