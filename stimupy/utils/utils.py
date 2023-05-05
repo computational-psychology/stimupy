@@ -453,7 +453,9 @@ def create_stimspace_stimuli(stimulus_function, permutations_dicts, title_params
     if not callable(stimulus_function):
         raise ValueError("stimulus_function needs to be a function")
     if isinstance(title_params, str):
-        title_params = [title_params, ]
+        title_params = [
+            title_params,
+        ]
 
     stimuli = {}
     for i, p in enumerate(permutations_dicts):
@@ -467,5 +469,7 @@ def create_stimspace_stimuli(stimulus_function, permutations_dicts, title_params
                     key += f"{tname}={ptname} "
                 else:
                     key += f"{tname}={p[tname]} "
-        stimuli[key] = stimulus_function(**p, )
+        stimuli[key] = stimulus_function(
+            **p,
+        )
     return stimuli
