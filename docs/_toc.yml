@@ -12,10 +12,9 @@ parts:
   - caption: Topic guides
     chapters:
     - file: topic_guides/organization
-#    - file: topic_guides/sets_papers
     - file: topic_guides/resolution
+    - file: topic_guides/waves
 #    - file: topic_guides/dimensions
-#    - file: topic_guides/gratings
 #    - file: topic_guides/visual_noise
   - caption: Reference
     chapters:
