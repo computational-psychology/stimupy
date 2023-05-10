@@ -8,6 +8,7 @@ parts:
     chapters:
     - file: getting_started/installation
     - file: getting_started/getting_started
+    - file: howtos/howtos
   - caption: Topic guides
     chapters:
     - file: topic_guides/organization
