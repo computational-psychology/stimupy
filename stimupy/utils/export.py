@@ -1,11 +1,11 @@
+import copy
 import json
+import pickle
 from hashlib import md5
 
-import copy
 import numpy as np
 from PIL import Image
 from scipy.io import savemat
-import pickle
 
 __all__ = [
     "array_to_checksum",
@@ -21,8 +21,7 @@ __all__ = [
 
 
 def array_to_checksum(arr):
-    """
-    Hash (md5) values, and save only the hex
+    """Hash (md5) values, and save only the hex
 
     Parameters
     ----------
@@ -37,8 +36,7 @@ def array_to_checksum(arr):
 
 
 def array_to_image(arr, filename, norm=True):
-    """
-    Save a 2D numpy array as a grayscale image file.
+    """Save a 2D numpy array as a grayscale image file.
 
     Parameters
     ----------
@@ -68,8 +66,7 @@ def array_to_image(arr, filename, norm=True):
 
 
 def array_to_npy(arr, filename):
-    """
-    Save a numpy array to npy-file.
+    """Save a numpy array to npy-file.
 
     Parameters
     ----------
@@ -85,8 +82,7 @@ def array_to_npy(arr, filename):
 
 
 def array_to_mat(arr, filename):
-    """
-    Save a numpy array to a mat-file.
+    """Save a numpy array to a mat-file.
 
     Parameters
     ----------
@@ -105,8 +101,7 @@ def array_to_mat(arr, filename):
 
 
 def array_to_pickle(arr, filename):
-    """
-    Save a numpy array to a pickle-file.
+    """Save a numpy array to a pickle-file.
 
     Parameters
     ----------
@@ -119,15 +114,14 @@ def array_to_pickle(arr, filename):
         filename += ".pickle"
 
     if isinstance(arr, (np.ndarray, list)):
-        with open(filename, 'wb') as handle:
+        with open(filename, "wb") as handle:
             pickle.dump({"arr": arr}, handle, protocol=pickle.HIGHEST_PROTOCOL)
     else:
         raise ValueError("arr should be a np.ndarray")
 
 
 def array_to_json(arr, filename):
-    """
-    Save a numpy array to a (pretty) JSON.
+    """Save a numpy array to a (pretty) JSON.
 
     Parameters
     ----------
@@ -150,8 +144,7 @@ def array_to_json(arr, filename):
 
 
 def arrays_to_checksum(stim, keys=["img", "mask"]):
-    """
-    Hash (md5) values of arrays specified in keys, and save only the hex
+    """Hash (md5) values of arrays specified in keys, and save only the hex
 
     Parameters
     ----------
@@ -177,8 +170,7 @@ def arrays_to_checksum(stim, keys=["img", "mask"]):
 
 
 def to_json(stim, filename):
-    """
-    Save stimulus-dict(s) as (pretty) JSON
+    """Save stimulus-dict(s) as (pretty) JSON
 
     Parameters
     ----------
@@ -207,8 +199,7 @@ def to_json(stim, filename):
 
 
 def to_mat(stim, filename):
-    """
-    Save stimulus-dict(s) as mat-file
+    """Save stimulus-dict(s) as mat-file
 
     Parameters
     ----------
@@ -228,8 +219,7 @@ def to_mat(stim, filename):
 
 
 def to_pickle(stim, filename):
-    """
-    Save stimulus-dict(s) as pickle-file
+    """Save stimulus-dict(s) as pickle-file
 
     Parameters
     ----------
@@ -250,7 +240,7 @@ def to_pickle(stim, filename):
             if key in ["visual_size", "ppd", "shape"]:
                 stim2[key] = list(stim2[key])
 
-        with open(filename, 'wb') as handle:
+        with open(filename, "wb") as handle:
             pickle.dump(stim2, handle, protocol=pickle.HIGHEST_PROTOCOL)
     else:
         raise ValueError("stim should be a dict")
