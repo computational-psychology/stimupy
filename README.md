@@ -93,7 +93,7 @@ any stimulus or stimulus set not currently available, can be easily added.
 Open an [issue](https://github.com/computational-psychology/stimupy/issues/new)
 and let us know what you'd like to see added.
 
-If you want to contribute yourself, see [contributing](https://stimupy.readthedocs.io/en/latest/contributing/contributing.html)
+If you want to contribute yourself, see [contributing](https://stimupy.readthedocs.io/en/latest/contributing/contribute.html)
 
 
 ---
