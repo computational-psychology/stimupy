@@ -13,10 +13,10 @@ kernelspec:
 # Composing stimuli, composed stimuli
 
 Most stimuli consist not just of one shape or element,
-but as a composition of multiple components.
+but they consists of a composition of multiple components.
 The geometric {py:mod}`components <stimupy.components>`
 form the basic building blocks for all stimuli implemented in `stimupy`.
-In this tutorial, we will explore how stimulus consisting of multiple geometric elements,
+In this tutorial, we will explore how a simple example stimulus consisting of multiple geometric elements,
 can be composed using the functions that generate components.
 
 ```{code-cell}
@@ -27,7 +27,7 @@ from stimupy.utils import plot_stim, plot_stimuli
 from stimupy.components import shapes
 ```
 
-First we will create our two components that we want to combine in some way;
+First, we will create the two components that we want to combine in our example;
 here we will use the {py:func}`rectangle <stimupy.components.shapes.rectangle>`
 and {py:func}`disc <stimupy.components.shapes.disc>`
 (from our [previous tutorial](first_stim))
@@ -46,16 +46,16 @@ plt.show()
 ```
 
 Since the `"img"`s of the two stimuli are {py:class}`numpy.ndarray`s,
-we can simple manipulate these to combine our stimuli:
+the simplest manipulation that we can perform to combine our components is to add or subtract them:
 ```{code-cell}
 new_img = disc["img"] - rectangle["img"]
 
 plt.imshow(new_img, cmap="gray")
 ```
 
-We can even turn this into a something resembling more of a `stimupy` stimulus
--- and use the `stimupy` tooling
-like {py:func}`plot_stimuli <stimupy.utils.plot_stimuli>` on it --
+We can even turn this new stimulus-array into something that resembles a `stimupy` stimulus more
+-- in order to use `stimupy` tooling
+like {py:func}`plot_stimuli <stimupy.utils.plotting.plot_stimuli>` on it --
 simply by wrapping it in a {py:class}`dict`,
 and optionally adding some additional metadata:
 ```{code-cell}
@@ -70,19 +70,19 @@ plot_stimuli({"rect": rectangle, "disc": disc, "composed": new_stim})
 ## Masked regions
 
 The downside of this, is that such an operation (`-`) on the `"img"`s
-uses the *whole* `imgs`s, including the background.
+uses the *whole* `"img"`s, including the background.
 In other words, these operations aren't *content aware*;
 they treat all pixels the same, rather than restricting operations
 to the regions that we care about (e.g., the geometric shapes).
-We'd like to be to have a bit more control,
-for instance subtracting just a where the shapes overlap.
+In many cases, however, we might want to have more control,
+for instance only subtracting stimulus regions in which the two shapes overlap.
 
-One key in the stimulus-{py:class}`dict`s not addressed yet, is the `mask`.
-Just like `"img"`, this too is a {py:class}`numpy.ndarray`
-where each entry corresponds to a pixel in `"img"`
+For this, we would like to introduce one key feature of `stimupy`: stimulus `"mask"`s.
+Just like the `"img"`, the stimulus `"mask"` is a {py:class}`numpy.ndarray` which can be found in the stimulus-{py:class}`dict`.
+Each entry of the stimulus `"mask"` corresponds to a pixel in `"img"`
 (i.e., it has the same shape as `"img"`).
 
-However, rather the `"mask"` contains only integer-values
+Importantly, the `"mask"` contains only integer-values
 (compared to the floating point pixel-intensities in `"img"`).
 Each integer-value in the mask,
 corresponds to a geometric region of interest,
@@ -251,9 +251,9 @@ plt.show()
 
 ## Using masks to alter the simulus after creation
 
-An advantage of having these kinds of `mask`s that index regions
+One advantage of having these kinds of `"mask"`s that index regions
 (rather than just binary masks)
-is that we can the `mask` to selectively alter one region in an existing stimulus
+is that we can use the `"mask"` to selectively alter one region in an existing stimulus
 without having to recreate the whole image:
 
 ```{code-cell}

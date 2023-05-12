@@ -12,11 +12,11 @@ kernelspec:
 # How stimupy is organized
 
 Broadly, `stimupy` functions currently fall into the following categories, which are also the toplevel submodules of `stimupy`:
-- basic visual stimulus [components](../reference/_api/stimupy.components),
-  such as basic shapes, wave gratings, Gaussians
+- visual stimulus [components](../reference/_api/stimupy.components),
+  such as shapes, wave / gratings, Gaussians, lines
 - visual [noise](../reference/_api/stimupy.noises) textures, of different kinds,
 - parameterized visual [stimuli](../reference/_api/stimupy.stimuli)
-  - Gabors, plaids, edges,
+  - Gabors, plaids, edges, Mondrians,
   - a variety of so-called illusions 
    (e.g. Simultaneous Brightness Contrast, White's illusion, Hermann grid, Ponzo illusion), and many more
 - exact replications of stimuli previously published (e.g. ModelFest)
@@ -35,23 +35,21 @@ from stimupy.stimuli import ponzos, shapes
 will work easily.
 :::
 ::::
-In principle, every component can also be considered a stimulus:
-it is some visual feature that can be drawn as an image.
+There is no objective way to differentiate components from stimuli.
+In principle, every component could be considered a stimulus.
 The distinctions we make in `stimupy` are:
-firstly, that the `components` underly (many) different stimuli,
-and are "atomic" in a sense;
-secondly, most/all `stimuli` have some concept of one or more *target*(s)
--- a region of special scientific interest.
-Thus, most/all `stimuli` come with a `target_mask`
-that indicate these targets.
+firstly, that the `components` are "atomic" in a sense and hence underlie multiple different stimuli;
+secondly, most `stimuli` contain *target*(s)
+-- a region of special scientific interest --, and come with a `target_mask`
+that indicates these targets.
 
 ## Submodules
-Further subdividing the overall structure are lots of submodules.
+The overall structure of `stimupy` is further subdivided into many submodules.
 These submodules are organized along scientific interest,
 history, convention, etc., rather than engineering.
-Thus, a you should find a stimulus in a submodule
-with those stimuli *that is looks like* or *is related to*,
-rather than with those stimuli that it shares components or code with
+Thus, you will find a stimulus in a submodule
+with stimuli that either *look similar* or that are *related to each other*,
+rather than with stimuli that it shares components or code with
 (although these two criteria can overlap, of course).
 
 Moreover, the submodules all have pluralized names,
@@ -67,11 +65,10 @@ there may be multiple functions, see next section.
 
 All roads lead to Rome,
 and many ways lead to the same stimulus.
-For lots of the stimuli provided by `stimupy`,
-there are numerous different ways one can draw it.
-Often, these different ways of drawing
-are informed by the visual and geometric interpretation
-of who is doing the drawing.
+For some stimuli provided by `stimupy`,
+there are multiple ways to generate a specific stimulus.
+Typically, these different ways are
+informed by visual and geometric interpretations.
 
 A good example of this is the Todorovic Illusion, which one can interpret as
 having a [rectangular target](todorovics.rectangle) that is partially occluded by some "covers"

@@ -38,8 +38,8 @@ since JSON syntax is very similar to Python syntax for lists and dicts.
 as the whole stimulus-dict ({py:func}`stimupy.utils.export.to_json`)
 
 ### MATLAB `.mat`
-To use stimuli to a MATLAB environment,
-e.g., to use them in a PsychToolBox-based experiment,
+For using stimuli in a MATLAB environment,
+e.g., in a PsychToolBox-based experiment,
 or a computational model that is (only) implemented in MATLAB,
 the stimuli have to be exported to a format that MATLAB can interpret.
 MATLAB does provide (some) support for JSON files
@@ -49,11 +49,12 @@ either the whole stimulus-dict ({py:func}`stimupy.utils.export.to_mat`)
 or just the bare image-array ({py:func}`stimupy.utils.export.array_to_mat`).
 
 ### Image formats
-To save/export to other image formats (`.png`, `.jpeg`, etc.)
-is not covered by `stimupy` itself.
-Instead, one of several image-processing libraries for Python should be used,
+For many uses, it can be convenient to just save the stimulus-array (or the mask) as an image.
+Hence, `stimupy` provides a function to save/export bare image-arrays to common image formats (`.png`, `.jpeg`, etc).
+Alternatively, there exist multiple image-processing libraries for Python which allow for further image processing and exporting,
 e.g., [Pillow/PIL](https://pillow.readthedocs.io/en/stable/)
 or [OpenCV](https://github.com/opencv/opencv-python)
+
 
 ## Exporting only parameters
 In some cases, you may wish to save/export only the stimulus parameters

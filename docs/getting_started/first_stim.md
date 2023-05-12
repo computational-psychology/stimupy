@@ -24,7 +24,7 @@ This page can also be launched as an interactive Jupyter Notebook on Binder -- s
 ## Drawing a basic shape
 
 The most basic stimuli that `stimupy` provides, are basic geometric shapes.
-These functions be found in the {py:mod}`stimupy.components.shapes` *module*.
+These functions can be found in the {py:mod}`stimupy.components.shapes` *module*.
 To be able to access these,
 we first have to *import* this module
 into our current Python session:
@@ -50,14 +50,14 @@ This module contains the following functions:
 print(f"Available basic shapes: {shapes.__all__}")
 ```
 
-Each of these is a separate function.
-Let's take a look at one of these:
+Each of these `str`ings represents a separate function.
+Let's take a look at one of them:
 ```{code-cell}
 stim = shapes.rectangle(visual_size=(6,8), ppd=10, rectangle_size=(4,4))
 ```
 
 This function creates an image, and draws a rectangle inside it.
-Everywhere the rectangle isn't, is considered the "background".
+Every pixel which is not part of the rectangle, is considered the "background".
 It returns a {py:class}`dict`ionary,
 mapping `str`ings as *keys*, to all kinds of *values*.
 
@@ -90,7 +90,7 @@ The values of the entries in the `"img"` {py:class}`numpy.ndarray` represent the
 by default in range $[0,1]$.
 
 ## Stimulus parameters
-All `stimupy` stimulus-functions require and take a bunch of arguments.
+All `stimupy` stimulus-functions require and take multiple arguments.
 To see what arguments a given function takes,
 and what each of these arguments controls,
 you can look at the (online) [function reference](../reference/api.md)
@@ -198,11 +198,11 @@ The advantages of this are:
    % TODO: import in PsychoPy (?)
 2. anything that is compliant with this basic structure
    can use (some of) `stimupy` tooling,
-   e.g., {py:func}`plot_stim <stimupy.utils.plotting.plot_stim>`
+   e.g., {py:func}`plot_stim <stimupy.utils.plotting.plot_stim>`, {py:mod}`exports <stimupy.utils.export>`, or  {py:mod}`contrast manipulations <stimupy.utils.contrast_conversions>` to name a few
 3. since Python {py:class}`dict`s are *mutable*, you as user can add, create, remove, rename
    any of the keys and values.
 
-The main disadvantages, is that there are no controls or guarantees
-*after* a stimulus is created,
+The main disadvantage is that there are no controls or guarantees
+*after* a stimulus is created
 for the accuracy of any of its fields,
-since the user can change values.
+since the user can manually change values at any point in time.

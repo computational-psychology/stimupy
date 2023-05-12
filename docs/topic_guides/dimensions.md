@@ -98,9 +98,9 @@ plot_stim(stim)
 ```
 
 ## Distance metric
-We term these axes a _`distance_metric`_,
+We term these above described axes a _`distance_metric`_,
 as they measure distance from some point of origin.
-This way of thinking is especially import
+This way of thinking is especially important
 for wave specifications in {py:mod}`stimupy.components.waves`
 and their use in wave-like stimuli in {py:mod}`stimupy.stimuli.waves`.
 For the linear metrics (`horizontal`, `vertical`, `oblique`),

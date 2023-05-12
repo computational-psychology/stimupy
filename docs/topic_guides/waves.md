@@ -34,8 +34,6 @@ from stimupy.utils import plot_stimuli
 ## Interdependence of parameters
 Periodic stimuli (e.g., `waves`)
 consist of repetitions of some _elements_ or _phases_.
-Periodic stimuli (e.g., `waves`)
-consist of repetitions of some _elements_ or _phases_.
 In a sinewave grating, these are the light and dark phases.
 in a squarewave grating, those same phases visually appears as white and black `bars`:
 ```{code-cell}
@@ -127,15 +125,15 @@ plot_stimuli({'Sine': sinewave, 'Square': squarewave})
 ```
 
 ## Even, odd or integer number of elements
-For some gratings, you want an integer number of phases,
-i.e., only "full" bars
--- often this is how think of squarewaves
-For other stimuli, you may be fine with an "incomplete" phase at the end.
-In some cases, you may be even more specific, and want an _even_ number of phases,
-(i.e. a full number of _periods_),
+Particularly for gratings, the requirements on the number of elements can be very different depending on the use-case.
+In some cases, you may want to ensure that your grating has an integer number of phases,
+e.g., if you want to avoid partial bars in a squarewave grating.
+For other stimuli, you may be fine with an "incomplete" phase at the end, e.g. if your sinewave grating consists of 7.1 cycles.
+In yet other situations, you may want to be even more specific and may want to make sure that you have an _even_ number of phases in your grating,
+(i.e. a full number of _periods_, as many bright as dark bars),
 or an _odd_ number of phases.
 The `period` argument controls this behavior
-when `stimupy` resolves the periodity for you.
+when `stimupy` resolves the periodicity for you.
 it can be `"even"`, `"odd"`, `"either"` (ensures only complete phases), or `"ignore"`:
 ```{code-cell}
 sinewave = waves.sine_linear(visual_size=(10, 10), ppd=10, n_bars=5)
@@ -162,9 +160,9 @@ for a given sampling rate ($\sim$ ppd)
 ```
 ````
 
-`stimupy` tries to handle this gracefully in cases where the given parameter values
+If desired (i.e. if _`round_phase_width=True`_, `stimupy` supports the user in cases where the given parameter values
 result in a poor periodicity $\times$ resolution combination.
-Specifically, it will adjust/round the _periodicty_ parameters to try and accomplish
+Specifically, it will adjust/round the _periodicity_ parameters to try and accomplish
 the closest possible version of the stimulus, and warn you about this change.
 Which way it rounds to, can be determined by the `period` argument:
 ```{code-cell}

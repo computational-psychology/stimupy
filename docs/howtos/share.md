@@ -1,11 +1,9 @@
 # Share & distribute stimuli
 A core principle of `stimupy` is sharing and reusing stimuli.
-One part of this is the large number of existing stimuli already implement,
+One part of this endeavor is the large number of stimuli that are already implemented,
 such that you can generate various parameterizations of these
 without having to write any custom code.
-The other part is that, hopefully, you will share the `stimupy`-stimuli
-that you use in your work.
-
+Besides this, we are hoping that people who are using `stimupy` for their stimulus generation want to add and hence share their stimulus implementations with other `stimupy`-users.
 
 ## What to share?
 To accurately reproduce a stimulus,
@@ -77,9 +75,9 @@ Thus, you'll need to:
   and reproduce the exact stimulus from the provide parameter values.
 
 - provide all parameter-values for this stimulus, ideally by [exporting them](export.md).
-  For just sharing paramter-values, we recommend sharing the stimulus-`dict`
+  For just sharing parameter-values, we recommend exporting the stimulus-`dict`
   without the `img` and `masks` to a [JSON file](./export.md).
-  This because JSON files are both human-readable -- so that a non-stimupy / non-Python
+  The reason for this is because JSON files are both human-readable -- so that a non-stimupy / non-Python
   recipient can still evaluate the parameter values -- and safely machine-readable
   -- so that a Python / stimupy user can easily load and recreate the stimulus.
 

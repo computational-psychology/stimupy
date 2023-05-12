@@ -20,7 +20,7 @@ and thus specific existing parameterizations can be recreated.
 
 For a large selection of the generic {py:mod}`stimupy.stimuli`,
 there are specific parameterizations in the published literature.
-Some of these are implement in stimupy as well,
+In order to make it easier for the community to access and work with these stimuli, we have re-implemented some existing stimulus sets in stimupy,
 under the corresponding {py:mod}`stimupy.papers`.
 
 ```{code-cell}

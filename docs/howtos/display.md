@@ -1,17 +1,17 @@
 # Display stimuli / integrate in experiments
-`stimupy` is a package for stimulus generation,
+`stimupy` is a package which is focused on generating stimuli,
 separate from stimulus display, use, experimentation, etc.
-Instead, `stimupy` is designed agnostic how stimuli are used,
-and flexible for a range of uses.
-Principally, the actual stimulus image is stored
+Hence, `stimupy` is designed agnostic to how stimuli are used after stimulus generation,
+which allows for a broad range of uses.
+Principally, the stimulus image is stored
 as a matrix of intensity values, in a bare {py:obj}`numpy.ndarray`.
-Thus, to use a `stimupy` stimulus in an application
-just requires being able to input a `numpy.ndarray`.
+Thus, using a `stimupy` stimulus in an application
+just requires the possibility to input a `numpy.ndarray`.
 
 
 ## PsychoPy-based display
 [PsychoPy](https://psychopy.org/) is a leading stimulus display
-and experiment development package for the python ecosystem.
+and experiment development package for the Python ecosystem.
 It provides lots of functionality for running experiments, interfacing with hardware
 and some stimulus-drawing capabilities.
 Most of the stimulus-drawing is done using an OpenGL backend
@@ -66,7 +66,7 @@ Screen('DrawTexture', my_window, stim_texture);
 ```
 
 To use `stimupy` stimuli in PyschoPy experiments then
-requires creating the stimuli in, and exporting them from, Python,
+requires creating the stimuli in, and exporting them from Python,
 and importing them into MATLAB for display:
 
 1. Generate the `stim` using `stimupy` code (Python)
