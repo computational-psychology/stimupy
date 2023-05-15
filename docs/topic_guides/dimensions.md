@@ -98,7 +98,7 @@ plot_stim(stim)
 ```
 
 ## Distance metric
-We term these above described axes a _`distance_metric`_,
+We term these aforementioned axes a _`distance_metric`_,
 as they measure distance from some point of origin.
 This way of thinking is especially important
 for wave specifications in {py:mod}`stimupy.components.waves`

@@ -11,9 +11,8 @@ kernelspec:
 ---
 
 # Composing stimuli, composed stimuli
-
 Most stimuli consist not just of one shape or element,
-but they consists of a composition of multiple components.
+but consist of a composition of multiple components.
 The geometric {py:mod}`components <stimupy.components>`
 form the basic building blocks for all stimuli implemented in `stimupy`.
 In this tutorial, we will explore how a simple example stimulus consisting of multiple geometric elements,

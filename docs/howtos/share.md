@@ -3,7 +3,8 @@ A core principle of `stimupy` is sharing and reusing stimuli.
 One part of this endeavor is the large number of stimuli that are already implemented,
 such that you can generate various parameterizations of these
 without having to write any custom code.
-Besides this, we are hoping that people who are using `stimupy` for their stimulus generation want to add and hence share their stimulus implementations with other `stimupy`-users.
+Besides this, we are hoping that people who use `stimupy` for their stimulus generation
+want to share their stimulus implementations with other `stimupy`-users.
 
 ## What to share?
 To accurately reproduce a stimulus,
@@ -77,9 +78,9 @@ Thus, you'll need to:
 - provide all parameter-values for this stimulus, ideally by [exporting them](export.md).
   For just sharing parameter-values, we recommend exporting the stimulus-`dict`
   without the `img` and `masks` to a [JSON file](./export.md).
-  The reason for this is because JSON files are both human-readable -- so that a non-stimupy / non-Python
-  recipient can still evaluate the parameter values -- and safely machine-readable
-  -- so that a Python / stimupy user can easily load and recreate the stimulus.
+  The reason for this is that JSON files are both human-readable --
+  so that a non-stimupy / non-Python recipient can still evaluate the parameter values --
+  and safely machine-readable -- so that a Python / stimupy user can easily load and recreate the stimulus.
 
 %% SOMETHING ABOUT HASHING
 

@@ -160,7 +160,7 @@ for a given sampling rate ($\sim$ ppd)
 ```
 ````
 
-If desired (i.e. if _`round_phase_width=True`_, `stimupy` supports the user in cases where the given parameter values
+If desired (i.e. if _`round_phase_width=True`_), `stimupy` supports the user in cases where the given parameter values
 result in a poor periodicity $\times$ resolution combination.
 Specifically, it will adjust/round the _periodicity_ parameters to try and accomplish
 the closest possible version of the stimulus, and warn you about this change.

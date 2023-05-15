@@ -38,7 +38,7 @@ since JSON syntax is very similar to Python syntax for lists and dicts.
 as the whole stimulus-dict ({py:func}`stimupy.utils.export.to_json`)
 
 ### MATLAB `.mat`
-For using stimuli in a MATLAB environment,
+To use stimuli in a MATLAB environment,
 e.g., in a PsychToolBox-based experiment,
 or a computational model that is (only) implemented in MATLAB,
 the stimuli have to be exported to a format that MATLAB can interpret.
