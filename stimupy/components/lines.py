@@ -274,6 +274,8 @@ def ellipse(
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
     if line_width * ppd[0] == 0:
         line_width_ = 1 / ppd[0]
+    else:
+        line_width_ = line_width
 
     stim = ellipse_shape(
         radius=np.array(radius),
