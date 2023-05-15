@@ -712,7 +712,8 @@ def bessel(
         "shape": base["shape"],
         "order": order,
         "frequency": frequency,
-        "intensity_rings": intensities,
+        "intensities": intensities,
+        "origin": origin,
     }
     return stim
 

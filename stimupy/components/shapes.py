@@ -217,6 +217,7 @@ def triangle(
         "visual_size": base["visual_size"],
         "ppd": base["ppd"],
         "shape": base["shape"],
+        "triangle_size": triangle_size,
         "intensity_background": intensity_background,
         "intensity_triangle": intensity_triangle,
         "rotation": rotation,
@@ -593,7 +594,8 @@ def circle(
         restrict_size=restrict_size,
     )
     stim["circle_mask"] = stim["ellipse_mask"]
-    stim.pop("ellipse_mask")
+    stim["intensity_circle"] = intensity_circle
+    stim.pop("ellipse_mask", "intensity_ellipse")
     return stim
 
 

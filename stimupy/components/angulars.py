@@ -131,10 +131,15 @@ def wedge(
         origin=origin,
     )
 
-    # Remove everything but wedge
+    # Remove everything but wedge, and add additional args
     stim["img"] = np.where(mask["wedge_mask"], stim["img"], intensity_background)
     stim["wedge_mask"] = stim["ring_mask"] * mask["wedge_mask"]
     stim["wedge_mask"] = np.where(stim["wedge_mask"] != 0, 1, 0).astype(int)
+    stim["angle"] = angle
+    stim["radius"] = radius
+    stim["inner_radius"] = inner_radius
+    stim["intensity_wedge"] = intensity_wedge
+    stim["intensity_background"] = intensity_background
     del stim["ring_mask"]
     return stim
 
@@ -250,6 +255,12 @@ def segments(
         intensities=intensity_segments,
         intensity_background=intensity_background,
     )
+    
+    # Update args
+    stim["angles"] = angles
+    stim["intensity_background"] = intensity_background
+    stim["intensity_segments"] = intensity_segments
+    
     return stim
 
 

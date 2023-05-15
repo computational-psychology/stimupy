@@ -92,6 +92,8 @@ def gaussian(
         "visual_size": base["visual_size"],
         "shape": base["shape"],
         "ppd": base["ppd"],
+        "intensity_max": intensity_max,
+        "origin": origin,
     }
     return stim
 
