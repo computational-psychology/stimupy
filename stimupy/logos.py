@@ -1,6 +1,8 @@
-import stimupy
 import copy
+
 import numpy as np
+
+import stimupy
 
 np.random.seed(1)
 
@@ -9,6 +11,7 @@ __all__ = ["logo"]
 
 def logo(
     ppd=128,
+    intensity_background=0.5,
 ):
     """Generate stimupy logo
 
@@ -33,7 +36,7 @@ def logo(
     pie = copy.deepcopy(segments)
 
     pie.update(
-        img=np.where(circle["circle_mask"], segments["img"], 0.5),
+        img=np.where(circle["circle_mask"], segments["img"], intensity_background),
         mask=np.where(circle["circle_mask"], segments["grating_mask"], 0),
         radius=circle["radius"],
     )
@@ -56,7 +59,7 @@ def logo(
     noise = stimupy.noises.naturals.pink(**res)
 
     # Fill segments
-    pie["img"] = np.where(pie["mask"] == 1, 0.5, pie["img"])
+    pie["img"] = np.where(pie["mask"] == 1, intensity_background, pie["img"])
     pie["img"] = np.where(pie["mask"] == 2, grating["img"], pie["img"])
     pie["img"] = np.where(pie["mask"] == 3, dotted["img"], pie["img"])
     pie["img"] = np.where(pie["mask"] == 4, grid["img"], pie["img"])
@@ -84,6 +87,54 @@ def logo(
     pie["img"] = np.where(pupil["ellipse_mask"] == 1, 0, pie["img"])
 
     return pie
+
+
+def qrcode(ppd=128):
+    import qrcode
+    from PIL import Image, ImageDraw
+    from qrcode.image.styledpil import StyledPilImage
+
+    arr = np.array(logo(ppd, intensity_background=1)["img"])
+    arr *= 255
+
+    imsize = arr.shape
+    im_logo = Image.new("L", (imsize[1], imsize[0]))
+    im_logo.putdata(arr.flatten())
+
+    qr = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_H)
+    qr.add_data('https://stimupy.readthedocs.io/')
+    img = qr.make_image(image_factory=StyledPilImage,
+                module_drawer=qrcode.image.styles.moduledrawers.CircleModuleDrawer(),
+                #eye_drawer=qrcode.image.styles.moduledrawers.CircleModuleDrawer(),
+                embeded_image=im_logo)
+
+    ## Make "eyes" circular
+    eye_size = 70 #default
+    quiet_zone = 40 #default
+
+    eyes_mask = Image.new('L', img.size, 0)
+
+    eye_border = quiet_zone+eye_size
+
+    draw = ImageDraw.Draw(eyes_mask)
+    draw.rectangle((quiet_zone, quiet_zone, eye_border, eye_border), fill=255)
+    draw.rectangle((img.size[0]-eye_border, quiet_zone, img.size[0]-quiet_zone, eye_border), fill=255)
+    draw.rectangle((quiet_zone, img.size[0]-eye_border, eye_border, img.size[0]-quiet_zone), fill=255)
+
+    draw.rectangle((58, 58, 92, 92), fill=0)
+    draw.rectangle((img.size[0]-58, 92, img.size[0]-92, 58), fill=0)
+    draw.rectangle((55, img.size[0]-92, 92, img.size[0]-58), fill=0)
+
+    round_eyes = Image.new('L', img.size, 255)
+
+    draw = ImageDraw.Draw(round_eyes)
+    draw.ellipse((quiet_zone, quiet_zone, eye_border, eye_border), fill=None, outline=0, width=8)
+    draw.ellipse((img.size[0]-eye_border, quiet_zone, img.size[0]-quiet_zone, eye_border), fill=None, outline=0, width=8)
+    draw.ellipse((quiet_zone, img.size[0]-eye_border, eye_border, img.size[0]-quiet_zone), fill=None, outline=0, width=8)
+
+    final = Image.composite(round_eyes, img, eyes_mask)
+
+    return final
 
 
 def overview(**kwargs):
