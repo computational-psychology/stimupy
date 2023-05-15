@@ -12,26 +12,27 @@ kernelspec:
   name: python3
 ---
 
-```{important}
+```{tip}
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/components/waves.md)
  to get interactivity
+```
+```{attention}
+To run locally, the code for these interactive demos requires
+a [Jupyter Notebook](https://jupyter.org/) environment,
+and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
 ```
 
 # Components - Waves
 {py:mod}`stimupy.components.waves`
 
-```{code-cell} ipython3
-:tags: [remove-cell]
 
-import IPython
-import ipywidgets as iw
-from stimupy.utils import plot_stim
-```
 
 ## Sinewave
 {py:func}`stimupy.components.waves.sine`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.components.waves import sine
 
 # Define widgets
@@ -75,19 +76,22 @@ def show_sine(
     period=None,
     add_mask=False,
 ):
-    stim = sine(
-        visual_size=(height, width),
-        ppd=ppd,
-        distance_metric=distance_metric,
-        rotation=rotation,
-        frequency=frequency,
-        phase_shift=phase_shift,
-        intensities=(int1, int2),
-        origin=origin,
-        round_phase_width=round_phase_width,
-        period=period,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = sine(
+            visual_size=(height, width),
+            ppd=ppd,
+            distance_metric=distance_metric,
+            rotation=rotation,
+            frequency=frequency,
+            phase_shift=phase_shift,
+            intensities=(int1, int2),
+            origin=origin,
+            round_phase_width=round_phase_width,
+            period=period,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -117,6 +121,8 @@ display(ui, out)
 {py:func}`stimupy.components.waves.square`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.components.waves import square
 
 # Define widgets
@@ -160,19 +166,22 @@ def show_square(
     period=None,
     add_mask=False,
 ):
-    stim = square(
-        visual_size=(height, width),
-        ppd=ppd,
-        distance_metric=distance_metric,
-        rotation=rotation,
-        frequency=frequency,
-        phase_shift=phase_shift,
-        intensities=(int1, int2),
-        origin=origin,
-        round_phase_width=round_phase_width,
-        period=period,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = square(
+            visual_size=(height, width),
+            ppd=ppd,
+            distance_metric=distance_metric,
+            rotation=rotation,
+            frequency=frequency,
+            phase_shift=phase_shift,
+            intensities=(int1, int2),
+            origin=origin,
+            round_phase_width=round_phase_width,
+            period=period,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -202,6 +211,8 @@ display(ui, out)
 {py:func}`stimupy.components.waves.staircase`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.components.waves import staircase
 
 # Define widgets
@@ -245,19 +256,22 @@ def show_staircase(
     add_mask=False,
     origin=None,
 ):
-    stim = staircase(
-        visual_size=(height, width),
-        ppd=ppd,
-        distance_metric=distance_metric,
-        rotation=rotation,
-        frequency=frequency,
-        phase_shift=phase_shift,
-        intensities=(int1, int2),
-        round_phase_width=round_phase_width,
-        period=period,
-        origin=origin,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = staircase(
+            visual_size=(height, width),
+            ppd=ppd,
+            distance_metric=distance_metric,
+            rotation=rotation,
+            frequency=frequency,
+            phase_shift=phase_shift,
+            intensities=(int1, int2),
+            round_phase_width=round_phase_width,
+            period=period,
+            origin=origin,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -287,6 +301,8 @@ display(ui, out)
 {py:func}`stimupy.components.waves.bessel`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.components.waves import bessel
 
 # Define widgets
@@ -322,15 +338,18 @@ def show_bessel(
     origin=None,
     add_mask=False,
 ):
-    stim = bessel(
-        visual_size=(height, width),
-        ppd=ppd,
-        frequency=frequency,
-        order=order,
-        intensities=(int1, int2),
-        origin=origin,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = bessel(
+            visual_size=(height, width),
+            ppd=ppd,
+            frequency=frequency,
+            order=order,
+            intensities=(int1, int2),
+            origin=origin,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

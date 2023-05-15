@@ -12,26 +12,27 @@ kernelspec:
   name: python3
 ---
 
-```{important}
+```{tip}
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/noises/whites.md)
  to get interactivity
+```
+```{attention}
+To run locally, the code for these interactive demos requires
+a [Jupyter Notebook](https://jupyter.org/) environment,
+and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
 ```
 
 # Noises - Whites
 {py:mod}`stimupy.noises.whites`
 
-```{code-cell} ipython3
-:tags: [remove-cell]
 
-import IPython
-import ipywidgets as iw
-from stimupy.utils import plot_stim
-```
 
 ## White
 {py:func}`stimupy.noises.whites.white`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.noises.whites import white
 
 # Define widgets
@@ -58,14 +59,16 @@ def show_white(
     intensity2=None,
     pseudo_noise=False,
 ):
-
-    stim = white(
-        visual_size=(height, width),
-        ppd=ppd,
-        intensity_range=(intensity1, intensity2),
-        pseudo_noise=pseudo_noise,
-    )
-    plot_stim(stim, mask=False)
+    try:
+        stim = white(
+            visual_size=(height, width),
+            ppd=ppd,
+            intensity_range=(intensity1, intensity2),
+            pseudo_noise=pseudo_noise,
+        )
+        plot_stim(stim, mask=False)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

@@ -12,16 +12,23 @@ kernelspec:
   name: python3
 ---
 
-```{important}
+```{tip}
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/stimuli/mondrians.md)
  to get interactivity
+```
+```{attention}
+To run locally, the code for these interactive demos requires
+a [Jupyter Notebook](https://jupyter.org/) environment,
+and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
 ```
 
 # Stimuli - Mondrians
 {py:mod}`stimupy.stimuli.mondrians`
 
 ```{code-cell} ipython3
-:tags: [remove-cell]
+import ipywidgets as iw
+from stimupy.utils import plot_stim
+
 
 import numpy as np
 import IPython
@@ -33,6 +40,8 @@ from stimupy.utils import plot_stim
 {py:func}`stimupy.stimuli.mondrians.mondrian`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.mondrians import mondrian
 
 # Define widgets
@@ -97,16 +106,18 @@ def show_mondrian(
     int3=None,
     add_mask=False,
 ):
-
-    stim = mondrian(
-        visual_size=(height, width),
-        ppd=ppd,
-        positions=((y1, x1), (y2, x2), (y3, x3)),
-        sizes=((h1, w1), (h2, w2), (h3, w3)),
-        intensities=(int1, int2, int3),
-        intensity_background=intensity_background,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = mondrian(
+            visual_size=(height, width),
+            ppd=ppd,
+            positions=((y1, x1), (y2, x2), (y3, x3)),
+            sizes=((h1, w1), (h2, w2), (h3, w3)),
+            intensities=(int1, int2, int3),
+            intensity_background=intensity_background,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -143,6 +154,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.mondrians.corrugated`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.mondrians import corrugated_mondrian
 
 # Define widgets
@@ -182,18 +195,20 @@ def show_corrugated_mondrian(
     target_idx2=None,
     intensity_target=None,
 ):
-    intensities = np.random.rand(3, 4)
-
-    stim = corrugated_mondrian(
-        visual_size=(height, width),
-        ppd=ppd,
-        depths=(depth1, depth2, depth3),
-        intensities=intensities,
-        intensity_background=intensity_background,
-        intensity_target=intensity_target,
-        target_indices=((target_idx1, target_idx2),),
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        intensities = np.random.rand(3, 4)
+        stim = corrugated_mondrian(
+            visual_size=(height, width),
+            ppd=ppd,
+            depths=(depth1, depth2, depth3),
+            intensities=intensities,
+            intensity_background=intensity_background,
+            intensity_target=intensity_target,
+            target_indices=((target_idx1, target_idx2),),
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

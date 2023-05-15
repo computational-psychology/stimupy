@@ -28,7 +28,7 @@ for paper in papers:
         stim.clear()
         stim["img"] = img
         stim["mask"] = mask
-        export.arrs_to_checksum(stim, ["img", "mask"])
+        export.arrays_to_checksum(stim, ["img", "mask"])
 
     # Save all as .JSON
     export.to_json(stims, f"{d}/{paper}.json")

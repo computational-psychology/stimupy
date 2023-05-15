@@ -98,7 +98,7 @@ def plot_stim(
             x, y = resolution.visual_size_to_axes(
                 stim[units], shape=stim["img"].shape, origin=origin
             )
-            extent = [x.min(), x.max(), y.max(), y.max()]
+            extent = [x.min(), x.max(), y.min(), y.max()]
         elif len(stim[units]) == 4:
             # provided 4 values for units, so assume proper formatting
             extent = stim[units]

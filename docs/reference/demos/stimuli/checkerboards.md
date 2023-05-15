@@ -12,26 +12,27 @@ kernelspec:
   name: python3
 ---
 
-```{important}
+```{tip}
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/stimuli/checkerboards.md)
  to get interactivity
+```
+```{attention}
+To run locally, the code for these interactive demos requires
+a [Jupyter Notebook](https://jupyter.org/) environment,
+and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
 ```
 
 # Stimuli - Checkerboards
 {py:mod}`stimupy.stimuli.checkerboards`
 
-```{code-cell} ipython3
-:tags: [remove-cell]
 
-import IPython
-import ipywidgets as iw
-from stimupy.utils import plot_stim
-```
 
 ## Checkerboard
 {py:func}`stimupy.stimuli.checkerboards.checkerboard`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.checkerboards import checkerboard
 
 # Define widgets
@@ -81,20 +82,22 @@ def show_checkerboard(
     intensity_target=None,
     extend_targets=False,
 ):
-
-    stim = checkerboard(
-        visual_size=(height, width),
-        ppd=ppd,
-        frequency=(frequency1, frequency2),
-        period=period,
-        rotation=rotation,
-        intensity_checks=(intensity1, intensity2),
-        round_phase_width=round_phase_width,
-        target_indices=((target_y, target_x),),
-        intensity_target=intensity_target,
-        extend_targets=extend_targets,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = checkerboard(
+            visual_size=(height, width),
+            ppd=ppd,
+            frequency=(frequency1, frequency2),
+            period=period,
+            rotation=rotation,
+            intensity_checks=(intensity1, intensity2),
+            round_phase_width=round_phase_width,
+            target_indices=((target_y, target_x),),
+            intensity_target=intensity_target,
+            extend_targets=extend_targets,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -126,6 +129,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.checkerboards.contrast_contrast`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.checkerboards import contrast_contrast
 
 # Define widgets
@@ -175,20 +180,22 @@ def show_contrast_contrast(
     alpha=None,
     tau=False,
 ):
-
-    stim = contrast_contrast(
-        visual_size=(height, width),
-        ppd=ppd,
-        frequency=(frequency1, frequency2),
-        period=period,
-        rotation=rotation,
-        intensity_checks=(intensity1, intensity2),
-        round_phase_width=round_phase_width,
-        target_shape=(target_y, target_x),
-        alpha=alpha,
-        tau=tau,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = contrast_contrast(
+            visual_size=(height, width),
+            ppd=ppd,
+            frequency=(frequency1, frequency2),
+            period=period,
+            rotation=rotation,
+            intensity_checks=(intensity1, intensity2),
+            round_phase_width=round_phase_width,
+            target_shape=(target_y, target_x),
+            alpha=alpha,
+            tau=tau,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

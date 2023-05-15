@@ -12,26 +12,27 @@ kernelspec:
   name: python3
 ---
 
-```{important}
+```{tip}
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/stimuli/sbcs.md)
  to get interactivity
+```
+```{attention}
+To run locally, the code for these interactive demos requires
+a [Jupyter Notebook](https://jupyter.org/) environment,
+and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
 ```
 
 # Stimuli - SBCs (Simultaneous Brightness Contrast)
 {py:mod}`stimupy.stimuli.sbcs`
 
-```{code-cell} ipython3
-:tags: [remove-cell]
 
-import IPython
-import ipywidgets as iw
-from stimupy.utils import plot_stim
-```
 
 ## Generalized
 {py:func}`stimupy.stimuli.sbcs.generalized`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.sbcs import generalized
 
 # Define widgets
@@ -73,15 +74,18 @@ def show_generalized(
     intensity_target=None,
     add_mask=False,
 ):
-    stim = generalized(
-        visual_size=(height, width),
-        ppd=ppd,
-        target_size=(target_height,target_width),
-        target_position=(target_y,target_x),
-        intensity_background=intensity_background,
-        intensity_target=intensity_target,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = generalized(
+            visual_size=(height, width),
+            ppd=ppd,
+            target_size=(target_height,target_width),
+            target_position=(target_y,target_x),
+            intensity_background=intensity_background,
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -108,6 +112,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.sbcs.basic`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.sbcs import basic
 
 # Define widgets
@@ -142,14 +148,17 @@ def show_basic(
     intensity_target=None,
     add_mask=False,
 ):
-    stim = basic(
-        visual_size=(height, width),
-        ppd=ppd,
-        target_size=(target_height,target_width),
-        intensity_background=intensity_background,
-        intensity_target=intensity_target,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = basic(
+            visual_size=(height, width),
+            ppd=ppd,
+            target_size=(target_height,target_width),
+            intensity_background=intensity_background,
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -174,6 +183,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.sbcs.two_sided`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.sbcs import two_sided
 
 # Define widgets
@@ -211,14 +222,17 @@ def show_two_sided(
     intensity_target=None,
     add_mask=False,
 ):
-    stim = two_sided(
-        visual_size=(height, width),
-        ppd=ppd,
-        target_size=(target_height,target_width),
-        intensity_backgrounds=(intensity_background_l, intensity_background_r),
-        intensity_target=intensity_target,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = two_sided(
+            visual_size=(height, width),
+            ppd=ppd,
+            target_size=(target_height,target_width),
+            intensity_backgrounds=(intensity_background_l, intensity_background_r),
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -244,6 +258,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.sbcs.with_dots`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.sbcs import with_dots
 
 # Define widgets
@@ -290,18 +306,21 @@ def show_with_dots(
     intensity_dots=None,
     add_mask=False,
 ):
-    stim = with_dots(
-        visual_size=(height, width),
-        ppd=ppd,
-        target_shape=(target_height, target_width),
-        n_dots=(ndotsy, ndotsx),
-        dot_radius=dot_radius,
-        distance=dot_distance,
-        intensity_background=intensity_background,
-        intensity_target=intensity_target,
-        intensity_dots=intensity_dots,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = with_dots(
+            visual_size=(height, width),
+            ppd=ppd,
+            target_shape=(target_height, target_width),
+            n_dots=(ndotsy, ndotsx),
+            dot_radius=dot_radius,
+            distance=dot_distance,
+            intensity_background=intensity_background,
+            intensity_target=intensity_target,
+            intensity_dots=intensity_dots,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -331,6 +350,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.sbcs.with_dots_two_sided`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.sbcs import with_dots_two_sided
 
 # Define widgets
@@ -381,18 +402,21 @@ def show_two_sided_with_dots(
     intensity_dots_r=None,
     add_mask=False,
 ):
-    stim = with_dots_two_sided(
-        visual_size=(height, width),
-        ppd=ppd,
-        target_shape=(target_height, target_width),
-        n_dots=(ndotsy, ndotsx),
-        dot_radius=dot_radius,
-        distance=dot_distance,
-        intensity_backgrounds=(intensity_background_l, intensity_background_r),
-        intensity_target=intensity_target,
-        intensity_dots=(intensity_dots_l, intensity_dots_r),
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = with_dots_two_sided(
+            visual_size=(height, width),
+            ppd=ppd,
+            target_shape=(target_height, target_width),
+            n_dots=(ndotsy, ndotsx),
+            dot_radius=dot_radius,
+            distance=dot_distance,
+            intensity_backgrounds=(intensity_background_l, intensity_background_r),
+            intensity_target=intensity_target,
+            intensity_dots=(intensity_dots_l, intensity_dots_r),
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -424,6 +448,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.sbcs.dotted`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.sbcs import dotted
 
 # Define widgets
@@ -470,18 +496,21 @@ def show_dotted(
     intensity_dots=None,
     add_mask=False,
 ):
-    stim = dotted(
-        visual_size=(height, width),
-        ppd=ppd,
-        target_shape=(target_height, target_width),
-        n_dots=(ndotsy, ndotsx),
-        dot_radius=dot_radius,
-        distance=dot_distance,
-        intensity_background=intensity_background,
-        intensity_target=intensity_target,
-        intensity_dots=intensity_dots,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = dotted(
+            visual_size=(height, width),
+            ppd=ppd,
+            target_shape=(target_height, target_width),
+            n_dots=(ndotsy, ndotsx),
+            dot_radius=dot_radius,
+            distance=dot_distance,
+            intensity_background=intensity_background,
+            intensity_target=intensity_target,
+            intensity_dots=intensity_dots,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -511,6 +540,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.sbcs.dotted_two_sided`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.sbcs import dotted_two_sided
 
 # Define widgets
@@ -561,18 +592,21 @@ def show_two_sided_dotted(
     intensity_dots_r=None,
     add_mask=False,
 ):
-    stim = dotted_two_sided(
-        visual_size=(height, width),
-        ppd=ppd,
-        target_shape=(target_height, target_width),
-        n_dots=(ndotsy, ndotsx),
-        dot_radius=dot_radius,
-        distance=dot_distance,
-        intensity_backgrounds=(intensity_background_l, intensity_background_r),
-        intensity_target=intensity_target,
-        intensity_dots=(intensity_dots_l, intensity_dots_r),
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = dotted_two_sided(
+            visual_size=(height, width),
+            ppd=ppd,
+            target_shape=(target_height, target_width),
+            n_dots=(ndotsy, ndotsx),
+            dot_radius=dot_radius,
+            distance=dot_distance,
+            intensity_backgrounds=(intensity_background_l, intensity_background_r),
+            intensity_target=intensity_target,
+            intensity_dots=(intensity_dots_l, intensity_dots_r),
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

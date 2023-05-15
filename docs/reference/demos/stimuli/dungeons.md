@@ -12,26 +12,27 @@ kernelspec:
   name: python3
 ---
 
-```{important}
+```{tip}
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/stimuli/dungeons.md)
  to get interactivity
+```
+```{attention}
+To run locally, the code for these interactive demos requires
+a [Jupyter Notebook](https://jupyter.org/) environment,
+and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
 ```
 
 # Stimuli - Dungeons
 {py:mod}`stimupy.stimuli.dungeons`
 
-```{code-cell} ipython3
-:tags: [remove-cell]
 
-import IPython
-import ipywidgets as iw
-from stimupy.utils import plot_stim
-```
 
 ## Dungeon
 {py:func}`stimupy.stimuli.dungeons.dungeon`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.dungeons import dungeon
 
 # Define widgets
@@ -71,16 +72,19 @@ def show_dungeon(
     intensity_target=None,
     add_mask=False,
 ):
-    stim = dungeon(
-        visual_size=(height, width),
-        ppd=ppd,
-        n_cells=(n_cells1, n_cells2),
-        intensity_grid=intensity1,
-        intensity_background=intensity_background,
-        target_radius=target_radius,
-        intensity_target=intensity_target,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = dungeon(
+            visual_size=(height, width),
+            ppd=ppd,
+            n_cells=(n_cells1, n_cells2),
+            intensity_grid=intensity1,
+            intensity_background=intensity_background,
+            target_radius=target_radius,
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

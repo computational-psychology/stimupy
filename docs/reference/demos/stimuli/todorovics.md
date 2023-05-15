@@ -12,26 +12,27 @@ kernelspec:
   name: python3
 ---
 
-```{important}
+```{tip}
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/stimuli/todorovics.md)
  to get interactivity
+```
+```{attention}
+To run locally, the code for these interactive demos requires
+a [Jupyter Notebook](https://jupyter.org/) environment,
+and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
 ```
 
 # Stimuli - Todorovics
 {py:mod}`stimupy.stimuli.todorovics`
 
-```{code-cell} ipython3
-:tags: [remove-cell]
 
-import IPython
-import ipywidgets as iw
-from stimupy.utils import plot_stim
-```
 
 ## Rectangle generalized
 {py:func}`stimupy.stimuli.todorovics.rectangle_generalized`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.todorovics import rectangle_generalized
 
 # Define widgets
@@ -90,19 +91,22 @@ def show_rectangle_generalized(
     intback=None,
     add_mask=False,
 ):
-    stim = rectangle_generalized(
-        visual_size=(height, width),
-        ppd=ppd,
-        target_size=(theight, twidth),
-        target_position=(ty, tx),
-        covers_size=(cheight, cwidth),
-        covers_x=(c1x, c2x),
-        covers_y=(c1y, c2y),
-        intensity_background=intback,
-        intensity_target=tint,
-        intensity_covers=cint,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = rectangle_generalized(
+            visual_size=(height, width),
+            ppd=ppd,
+            target_size=(theight, twidth),
+            target_position=(ty, tx),
+            covers_size=(cheight, cwidth),
+            covers_x=(c1x, c2x),
+            covers_y=(c1y, c2y),
+            intensity_background=intback,
+            intensity_target=tint,
+            intensity_covers=cint,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -136,6 +140,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.todorovics.rectangle`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.todorovics import rectangle
 
 # Define widgets
@@ -188,18 +194,21 @@ def show_rectangle(
     intback=None,
     add_mask=False,
 ):
-    stim = rectangle(
-        visual_size=(height, width),
-        ppd=ppd,
-        target_size=(theight, twidth),
-        target_position=(ty, tx),
-        covers_size=(cheight, cwidth),
-        covers_offset=(coffy, coffx),
-        intensity_background=intback,
-        intensity_target=tint,
-        intensity_covers=cint,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = rectangle(
+            visual_size=(height, width),
+            ppd=ppd,
+            target_size=(theight, twidth),
+            target_position=(ty, tx),
+            covers_size=(cheight, cwidth),
+            covers_offset=(coffy, coffx),
+            intensity_background=intback,
+            intensity_target=tint,
+            intensity_covers=cint,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -231,6 +240,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.todorovics.rectangle_two_sided`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.todorovics import rectangle_two_sided
 
 # Define widgets
@@ -281,17 +292,20 @@ def show_two_sided_rectangle(
     intback2=None,
     add_mask=False,
 ):
-    stim = rectangle_two_sided(
-        visual_size=(height, width),
-        ppd=ppd,
-        target_size=(theight, twidth),
-        covers_size=(cheight, cwidth),
-        covers_offset=(coffy, coffx),
-        intensity_backgrounds=(intback1, intback2),
-        intensity_target=tint,
-        intensity_covers=(cint1, cint2),
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = rectangle_two_sided(
+            visual_size=(height, width),
+            ppd=ppd,
+            target_size=(theight, twidth),
+            covers_size=(cheight, cwidth),
+            covers_offset=(coffy, coffx),
+            intensity_backgrounds=(intback1, intback2),
+            intensity_target=tint,
+            intensity_covers=(cint1, cint2),
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -323,6 +337,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.todorovics.cross_generalized`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.todorovics import cross_generalized
 
 # Define widgets
@@ -377,19 +393,22 @@ def show_cross_generalized(
     intback=None,
     add_mask=False,
 ):
-    stim = cross_generalized(
-        visual_size=(height, width),
-        ppd=ppd,
-        cross_size=(theight, twidth),
-        cross_thickness=tthick,
-        covers_size=(cheight, cwidth),
-        covers_x=(c1x, c2x),
-        covers_y=(c1y, c2y),
-        intensity_background=intback,
-        intensity_target=tint,
-        intensity_covers=cint,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = cross_generalized(
+            visual_size=(height, width),
+            ppd=ppd,
+            cross_size=(theight, twidth),
+            cross_thickness=tthick,
+            covers_size=(cheight, cwidth),
+            covers_x=(c1x, c2x),
+            covers_y=(c1y, c2y),
+            intensity_background=intback,
+            intensity_target=tint,
+            intensity_covers=cint,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -422,6 +441,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.todorovics.cross`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.todorovics import cross
 
 # Define widgets
@@ -464,17 +485,20 @@ def show_cross(
     intback=None,
     add_mask=False,
 ):
-    stim = cross(
-        visual_size=(height, width),
-        ppd=ppd,
-        cross_size=(theight, twidth),
-        cross_thickness=tthick,
-        covers_size=(cheight, cwidth),
-        intensity_background=intback,
-        intensity_target=tint,
-        intensity_covers=cint,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = cross(
+            visual_size=(height, width),
+            ppd=ppd,
+            cross_size=(theight, twidth),
+            cross_thickness=tthick,
+            covers_size=(cheight, cwidth),
+            intensity_background=intback,
+            intensity_target=tint,
+            intensity_covers=cint,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -503,6 +527,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.todorovics.cross_two_sided`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.todorovics import cross_two_sided
 
 # Define widgets
@@ -549,17 +575,20 @@ def show_two_sided_cross(
     intback2=None,
     add_mask=False,
 ):
-    stim = cross_two_sided(
-        visual_size=(height, width),
-        ppd=ppd,
-        cross_size=(theight, twidth),
-        cross_thickness=tthick,
-        covers_size=(cheight, cwidth),
-        intensity_backgrounds=(intback1, intback2),
-        intensity_target=tint,
-        intensity_covers=(cint1, cint2),
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = cross_two_sided(
+            visual_size=(height, width),
+            ppd=ppd,
+            cross_size=(theight, twidth),
+            cross_thickness=tthick,
+            covers_size=(cheight, cwidth),
+            intensity_backgrounds=(intback1, intback2),
+            intensity_target=tint,
+            intensity_covers=(cint1, cint2),
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -590,6 +619,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.todorovics.equal`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.todorovics import equal
 
 # Define widgets
@@ -628,16 +659,19 @@ def show_equal(
     intback=None,
     add_mask=False,
 ):
-    stim = equal(
-        visual_size=(height, width),
-        ppd=ppd,
-        cross_size=(theight, twidth),
-        cross_thickness=tthick,
-        intensity_background=intback,
-        intensity_target=tint,
-        intensity_covers=cint,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = equal(
+            visual_size=(height, width),
+            ppd=ppd,
+            cross_size=(theight, twidth),
+            cross_thickness=tthick,
+            intensity_background=intback,
+            intensity_target=tint,
+            intensity_covers=cint,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -664,6 +698,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.todorovics.equal_two_sided`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.todorovics import equal_two_sided
 
 # Define widgets
@@ -706,16 +742,19 @@ def show_two_sided_equal(
     intback2=None,
     add_mask=False,
 ):
-    stim = equal_two_sided(
-        visual_size=(height, width),
-        ppd=ppd,
-        cross_size=(theight, twidth),
-        cross_thickness=tthick,
-        intensity_backgrounds=(intback1, intback2),
-        intensity_target=tint,
-        intensity_covers=(cint1, cint2),
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = equal_two_sided(
+            visual_size=(height, width),
+            ppd=ppd,
+            cross_size=(theight, twidth),
+            cross_thickness=tthick,
+            intensity_backgrounds=(intback1, intback2),
+            intensity_target=tint,
+            intensity_covers=(cint1, cint2),
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

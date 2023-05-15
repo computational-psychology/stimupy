@@ -1,4 +1,5 @@
 import copy
+import itertools
 
 import numpy as np
 import scipy.special as sp
@@ -17,6 +18,8 @@ __all__ = [
     "flip_dict",
     "roll_dict",
     "strip_dict",
+    "permutate_params",
+    "create_stimspace_stimuli",
 ]
 
 
@@ -435,3 +438,38 @@ def strip_dict(
         if name in dct.keys():
             new_dict[name] = dct[name]
     return new_dict
+
+
+def permutate_params(params):
+    if not isinstance(params, dict):
+        raise ValueError("params needs to be a dict with all stimulus parameters")
+
+    keys, values = zip(*params.items())
+    permutations_dicts = [dict(zip(keys, v)) for v in itertools.product(*values)]
+    return permutations_dicts
+
+
+def create_stimspace_stimuli(stimulus_function, permutations_dicts, title_params=None):
+    if not callable(stimulus_function):
+        raise ValueError("stimulus_function needs to be a function")
+    if isinstance(title_params, str):
+        title_params = [
+            title_params,
+        ]
+
+    stimuli = {}
+    for i, p in enumerate(permutations_dicts):
+        if title_params is None:
+            key = str(i)
+        else:
+            key = ""
+            for tname in title_params:
+                if isinstance(p[tname], (float, int)):
+                    ptname = np.round(p[tname], 3)
+                    key += f"{tname}={ptname} "
+                else:
+                    key += f"{tname}={p[tname]} "
+        stimuli[key] = stimulus_function(
+            **p,
+        )
+    return stimuli

@@ -292,6 +292,9 @@ def checkerboard(
         "period": period,
         "rotation": rotation,
         "intensity_checks": intensity_checks,
+        "target_indices": target_indices,
+        "extend_targets": extend_targets,
+        "round_phase_width": round_phase_width,
     }
 
     # Add targets
@@ -414,6 +417,10 @@ def contrast_contrast(
 
     stim["img"] = img
     stim["target_mask"] = mask.astype(int)
+    stim["target_shape"] = target_shape
+    stim["alpha"] = alpha
+    stim["tau"] = tau
+    stim["round_phase_width"] = round_phase_width
     return stim
 
 

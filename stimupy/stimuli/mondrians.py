@@ -199,8 +199,11 @@ def corrugated_mondrian(
     if nrows is None:
         nrows = len(intensities)
 
-    if ncols is None:
-        ncols = len(intensities[0])
+    try:
+        if ncols is None:
+            ncols = len(intensities[0])
+    except Exception():
+        ncols = nrows
 
     if isinstance(depths, (float, int)):
         depths = (depths,) * nrows

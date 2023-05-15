@@ -12,26 +12,27 @@ kernelspec:
   name: python3
 ---
 
-```{important}
+```{tip}
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/components/frames.md)
  to get interactivity
+```
+```{attention}
+To run locally, the code for these interactive demos requires
+a [Jupyter Notebook](https://jupyter.org/) environment,
+and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
 ```
 
 # Components - Frames
 {py:mod}`stimupy.components.frames`
 
-```{code-cell} ipython3
-:tags: [remove-cell]
 
-import IPython
-import ipywidgets as iw
-from stimupy.utils import plot_stim
-```
 
 ## Frames
 {py:func}`stimupy.components.frames.frames`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.components.frames import frames
 
 # Define widgets
@@ -73,15 +74,18 @@ def show_frames(
     origin=None,
     add_mask=False,
 ):
-    stim = frames(
-        visual_size=(height, width),
-        ppd=ppd,
-        radii=(radius1, radius2, radius3),
-        intensity_frames=(int1, int2, int3),
-        intensity_background=intensity_background,
-        origin=origin,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = frames(
+            visual_size=(height, width),
+            ppd=ppd,
+            radii=(radius1, radius2, radius3),
+            intensity_frames=(int1, int2, int3),
+            intensity_background=intensity_background,
+            origin=origin,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

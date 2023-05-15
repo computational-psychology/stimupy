@@ -12,26 +12,27 @@ kernelspec:
   name: python3
 ---
 
-```{important}
+```{tip}
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/stimuli/whites.md)
  to get interactivity
+```
+```{attention}
+To run locally, the code for these interactive demos requires
+a [Jupyter Notebook](https://jupyter.org/) environment,
+and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
 ```
 
 # Stimuli - Whites
 {py:mod}`stimupy.stimuli.whites`
 
-```{code-cell} ipython3
-:tags: [remove-cell]
 
-import IPython
-import ipywidgets as iw
-from stimupy.utils import plot_stim
-```
 
 ## Generalized
 {py:func}`stimupy.stimuli.whites.generalized`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.whites import generalized
 
 # Define widgets
@@ -90,20 +91,23 @@ def show_generalized(
     target_center_offsets2=None,
     target_heights2=None,
 ):
-    stim = generalized(
-        visual_size=(height, width),
-        ppd=ppd,
-        rotation=rotation,
-        frequency=frequency,
-        intensity_bars=(int1, int2),
-        origin=origin,
-        period=period,
-        target_indices=(target_idx, target_idx2),
-        intensity_target=(intensity_target, intensity_target2),
-        target_center_offsets=(target_center_offsets, target_center_offsets2),
-        target_heights=(target_heights, target_heights2),
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = generalized(
+            visual_size=(height, width),
+            ppd=ppd,
+            rotation=rotation,
+            frequency=frequency,
+            intensity_bars=(int1, int2),
+            origin=origin,
+            period=period,
+            target_indices=(target_idx, target_idx2),
+            intensity_target=(intensity_target, intensity_target2),
+            target_center_offsets=(target_center_offsets, target_center_offsets2),
+            target_heights=(target_heights, target_heights2),
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -138,6 +142,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.whites.white`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.whites import white
 
 # Define widgets
@@ -192,19 +198,22 @@ def show_white(
     target_heights=None,
     target_heights2=None,
 ):
-    stim = white(
-        visual_size=(height, width),
-        ppd=ppd,
-        rotation=rotation,
-        frequency=frequency,
-        intensity_bars=(int1, int2),
-        origin=origin,
-        period=period,
-        target_indices=(target_idx, target_idx2),
-        intensity_target=(intensity_target, intensity_target2),
-        target_heights=(target_heights, target_heights2),
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = white(
+            visual_size=(height, width),
+            ppd=ppd,
+            rotation=rotation,
+            frequency=frequency,
+            intensity_bars=(int1, int2),
+            origin=origin,
+            period=period,
+            target_indices=(target_idx, target_idx2),
+            intensity_target=(intensity_target, intensity_target2),
+            target_heights=(target_heights, target_heights2),
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -237,6 +246,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.whites.white_two_rows`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.whites import white_two_rows
 
 # Define widgets
@@ -295,21 +306,24 @@ def show_white_two_rows(
     intensity_target2=None,
     target_heights2=None,
 ):
-    stim = white_two_rows(
-        visual_size=(height, width),
-        ppd=ppd,
-        rotation=rotation,
-        frequency=frequency,
-        intensity_bars=(int1, int2),
-        origin=origin,
-        period=period,
-        target_indices_top=target_idx,
-        target_indices_bottom=target_idx2,
-        intensity_target=(intensity_target, intensity_target2),
-        target_center_offset=target_center_offsets,
-        target_heights=(target_heights, target_heights2),
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = white_two_rows(
+            visual_size=(height, width),
+            ppd=ppd,
+            rotation=rotation,
+            frequency=frequency,
+            intensity_bars=(int1, int2),
+            origin=origin,
+            period=period,
+            target_indices_top=target_idx,
+            target_indices_bottom=target_idx2,
+            intensity_target=(intensity_target, intensity_target2),
+            target_center_offset=target_center_offsets,
+            target_heights=(target_heights, target_heights2),
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -343,6 +357,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.whites.anderson`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.whites import anderson
 
 # Define widgets
@@ -406,22 +422,25 @@ def show_anderson(
     stripe_int1=None,
     stripe_int2=None,
 ):
-    stim = anderson(
-        visual_size=(height, width),
-        ppd=ppd,
-        frequency=frequency,
-        intensity_bars=(int1, int2),
-        period=period,
-        target_indices_top=target_idx,
-        target_indices_bottom=target_idx2,
-        intensity_target=(intensity_target, intensity_target2),
-        target_center_offset=target_center_offsets,
-        target_height=(target_heights, target_heights2),
-        stripe_height=stripe_height,
-        stripe_center_offset=stripe_center_offset,
-        intensity_stripes=(stripe_int1, stripe_int2),
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = anderson(
+            visual_size=(height, width),
+            ppd=ppd,
+            frequency=frequency,
+            intensity_bars=(int1, int2),
+            period=period,
+            target_indices_top=target_idx,
+            target_indices_bottom=target_idx2,
+            intensity_target=(intensity_target, intensity_target2),
+            target_center_offset=target_center_offsets,
+            target_height=(target_heights, target_heights2),
+            stripe_height=stripe_height,
+            stripe_center_offset=stripe_center_offset,
+            intensity_stripes=(stripe_int1, stripe_int2),
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -457,6 +476,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.whites.howe`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.whites import howe
 
 # Define widgets
@@ -516,20 +537,23 @@ def show_howe(
     stripe_int1=None,
     stripe_int2=None,
 ):
-    stim = howe(
-        visual_size=(height, width),
-        ppd=ppd,
-        frequency=frequency,
-        intensity_bars=(int1, int2),
-        period=period,
-        target_indices_top=target_idx,
-        target_indices_bottom=target_idx2,
-        intensity_target=(intensity_target, intensity_target2),
-        target_center_offset=target_center_offsets,
-        target_height=(target_heights, target_heights2),
-        intensity_stripes=(stripe_int1, stripe_int2),
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = howe(
+            visual_size=(height, width),
+            ppd=ppd,
+            frequency=frequency,
+            intensity_bars=(int1, int2),
+            period=period,
+            target_indices_top=target_idx,
+            target_indices_bottom=target_idx2,
+            intensity_target=(intensity_target, intensity_target2),
+            target_center_offset=target_center_offsets,
+            target_height=(target_heights, target_heights2),
+            intensity_stripes=(stripe_int1, stripe_int2),
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -563,6 +587,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.whites.yazdanbakhsh`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.whites import yazdanbakhsh
 
 # Define widgets
@@ -618,20 +644,23 @@ def show_yazdanbakhsh(
     target_heights2=None,
     gap_size=None,
 ):
-    stim = yazdanbakhsh(
-        visual_size=(height, width),
-        ppd=ppd,
-        frequency=frequency,
-        intensity_bars=(int1, int2),
-        period=period,
-        target_indices_top=target_idx,
-        target_indices_bottom=target_idx2,
-        intensity_target=(intensity_target, intensity_target2),
-        target_center_offset=target_center_offsets,
-        target_heights=(target_heights, target_heights2),
-        gap_size=gap_size,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = yazdanbakhsh(
+            visual_size=(height, width),
+            ppd=ppd,
+            frequency=frequency,
+            intensity_bars=(int1, int2),
+            period=period,
+            target_indices_top=target_idx,
+            target_indices_bottom=target_idx2,
+            intensity_target=(intensity_target, intensity_target2),
+            target_center_offset=target_center_offsets,
+            target_heights=(target_heights, target_heights2),
+            gap_size=gap_size,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -664,6 +693,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.whites.radial`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.whites import radial
 
 # Define widgets
@@ -713,21 +744,24 @@ def show_radial(
     intensity_target=None,
     clip=True,
 ):
-    stim = radial(
-        visual_size=(height, width),
-        ppd=ppd,
-        rotation=rotation,
-        frequency=frequency,
-        phase_shift=phase_shift,
-        intensity_rings=(int1, int2),
-        origin=origin,
-        round_phase_width=round_phase_width,
-        period=period,
-        target_indices=target_indices,
-        intensity_target=intensity_target,
-        clip=clip,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = radial(
+            visual_size=(height, width),
+            ppd=ppd,
+            rotation=rotation,
+            frequency=frequency,
+            phase_shift=phase_shift,
+            intensity_rings=(int1, int2),
+            origin=origin,
+            round_phase_width=round_phase_width,
+            period=period,
+            target_indices=target_indices,
+            intensity_target=intensity_target,
+            clip=clip,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -759,6 +793,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.whites.angular`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.whites import angular
 
 # Define widgets
@@ -806,20 +842,23 @@ def show_angular(
     origin=None,
     add_mask=False,
 ):
-    stim = angular(
-        visual_size=(height, width),
-        ppd=ppd,
-        rotation=rotation,
-        n_segments=n_segments,
-        intensity_segments=(intensity1, intensity2),
-        intensity_background=intensity_background,
-        origin=origin,
-        target_indices=target_indices,
-        target_width=target_width,
-        target_center=target_center,
-        intensity_target=intensity_target,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = angular(
+            visual_size=(height, width),
+            ppd=ppd,
+            rotation=rotation,
+            n_segments=n_segments,
+            intensity_segments=(intensity1, intensity2),
+            intensity_background=intensity_background,
+            origin=origin,
+            target_indices=target_indices,
+            target_width=target_width,
+            target_center=target_center,
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -850,6 +889,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.whites.wedding_cake`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.whites import wedding_cake
 
 # Define widgets
@@ -901,17 +942,20 @@ def show_wedding_cake(
     theight=None,
     int_target=None,
 ):
-    stim = wedding_cake(
-        visual_size=(height, width),
-        ppd=ppd,
-        L_size=(L_height, L_width, L_thick),
-        target_height=theight,
-        intensity_target=int_target,
-        target_indices1=((tidx11, tidx12),),
-        target_indices2=((tidx21, tidx22),),
-        intensity_bars=(int1, int2),
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = wedding_cake(
+            visual_size=(height, width),
+            ppd=ppd,
+            L_size=(L_height, L_width, L_thick),
+            target_height=theight,
+            intensity_target=int_target,
+            target_indices1=((tidx11, tidx12),),
+            target_indices2=((tidx21, tidx22),),
+            intensity_bars=(int1, int2),
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

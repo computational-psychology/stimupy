@@ -352,6 +352,10 @@ def sine(
         warnings.warn("Period ignored for oblique gratings")
 
     # Resolve params
+    if distance_metric == "radial" or distance_metric == "rectilinear":
+        if n_phases is not None:
+            n_phases = n_phases * 2
+
     if distance_metric == "angular":
         params = resolve_grating_params(
             visual_angle=360,
@@ -373,12 +377,16 @@ def sine(
             period=period,
             round_phase_width=round_phase_width,
         )
+
     length = params["length"]
     ppd_1D = params["ppd"]
     visual_angle = params["visual_angle"]
     frequency = params["frequency"]
     phase_width = params["phase_width"]
     n_phases = params["n_phases"]
+
+    if distance_metric == "radial" or distance_metric == "rectilinear":
+        n_phases = n_phases / 2
 
     # Determine size/shape of whole image
     if None in shape:
@@ -704,7 +712,8 @@ def bessel(
         "shape": base["shape"],
         "order": order,
         "frequency": frequency,
-        "intensity_rings": intensities,
+        "intensities": intensities,
+        "origin": origin,
     }
     return stim
 

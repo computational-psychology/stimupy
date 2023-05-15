@@ -12,27 +12,26 @@ kernelspec:
   name: python3
 ---
 
-```{important}
+```{tip}
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/stimuli/waves.md)
  to get interactivity
+```
+```{attention}
+To run locally, the code for these interactive demos requires
+a [Jupyter Notebook](https://jupyter.org/) environment,
+and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
 ```
 
 # Stimuli - Waves
 {py:mod}`stimupy.stimuli.waves`
 
-```{code-cell} ipython3
-:tags: [remove-cell]
-
-import numpy as np
-import IPython
-import ipywidgets as iw
-from stimupy.utils import plot_stim
-```
 
 ## Sine, linear
 {py:func}`stimupy.stimuli.waves.sine_linear`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.waves import sine_linear
 
 # Define widgets
@@ -80,20 +79,23 @@ def show_sine_linear(
     target_indices=None,
     intensity_target=None,
 ):
-    stim = sine_linear(
-        visual_size=(height, width),
-        ppd=ppd,
-        rotation=rotation,
-        frequency=frequency,
-        phase_shift=phase_shift,
-        intensities=(int1, int2),
-        origin=origin,
-        round_phase_width=round_phase_width,
-        period=period,
-        target_indices=target_indices,
-        intensity_target=intensity_target,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = sine_linear(
+            visual_size=(height, width),
+            ppd=ppd,
+            rotation=rotation,
+            frequency=frequency,
+            phase_shift=phase_shift,
+            intensities=(int1, int2),
+            origin=origin,
+            round_phase_width=round_phase_width,
+            period=period,
+            target_indices=target_indices,
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -124,6 +126,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.waves.square_linear`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.waves import square_linear
 
 # Define widgets
@@ -171,20 +175,23 @@ def show_square_linear(
     target_indices=None,
     intensity_target=None,
 ):
-    stim = square_linear(
-        visual_size=(height, width),
-        ppd=ppd,
-        rotation=rotation,
-        frequency=frequency,
-        phase_shift=phase_shift,
-        intensity_bars=(int1, int2),
-        origin=origin,
-        round_phase_width=round_phase_width,
-        period=period,
-        target_indices=target_indices,
-        intensity_target=intensity_target,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = square_linear(
+            visual_size=(height, width),
+            ppd=ppd,
+            rotation=rotation,
+            frequency=frequency,
+            phase_shift=phase_shift,
+            intensity_bars=(int1, int2),
+            origin=origin,
+            round_phase_width=round_phase_width,
+            period=period,
+            target_indices=target_indices,
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -215,6 +222,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.waves.staircase_linear`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.waves import staircase_linear
 
 # Define widgets
@@ -262,20 +271,23 @@ def show_staircase_linear(
     target_indices=None,
     intensity_target=None,
 ):
-    stim = staircase_linear(
-        visual_size=(height, width),
-        ppd=ppd,
-        rotation=rotation,
-        frequency=frequency,
-        phase_shift=phase_shift,
-        intensity_bars=(int1, int2),
-        origin=origin,
-        round_phase_width=round_phase_width,
-        period=period,
-        target_indices=target_indices,
-        intensity_target=intensity_target,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = staircase_linear(
+            visual_size=(height, width),
+            ppd=ppd,
+            rotation=rotation,
+            frequency=frequency,
+            phase_shift=phase_shift,
+            intensity_bars=(int1, int2),
+            origin=origin,
+            round_phase_width=round_phase_width,
+            period=period,
+            target_indices=target_indices,
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -306,6 +318,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.waves.sine_radial`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.waves import sine_radial
 
 # Define widgets
@@ -355,21 +369,24 @@ def show_sine_radial(
     intensity_target=None,
     clip=True,
 ):
-    stim = sine_radial(
-        visual_size=(height, width),
-        ppd=ppd,
-        rotation=rotation,
-        frequency=frequency,
-        phase_shift=phase_shift,
-        intensities=(int1, int2),
-        origin=origin,
-        round_phase_width=round_phase_width,
-        period=period,
-        target_indices=target_indices,
-        intensity_target=intensity_target,
-        clip=clip,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = sine_radial(
+            visual_size=(height, width),
+            ppd=ppd,
+            rotation=rotation,
+            frequency=frequency,
+            phase_shift=phase_shift,
+            intensities=(int1, int2),
+            origin=origin,
+            round_phase_width=round_phase_width,
+            period=period,
+            target_indices=target_indices,
+            intensity_target=intensity_target,
+            clip=clip,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -401,6 +418,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.waves.square_radial`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.waves import square_radial
 
 # Define widgets
@@ -449,22 +468,25 @@ def show_square_radial(
     target_indices=None,
     intensity_target=None,
     clip=True,
-):
-    stim = square_radial(
-        visual_size=(height, width),
-        ppd=ppd,
-        rotation=rotation,
-        frequency=frequency,
-        phase_shift=phase_shift,
-        intensity_rings=(int1, int2),
-        origin=origin,
-        round_phase_width=round_phase_width,
-        period=period,
-        target_indices=target_indices,
-        intensity_target=intensity_target,
-        clip=clip,
-    )
-    plot_stim(stim, mask=add_mask)
+): 
+    try:
+        stim = square_radial(
+            visual_size=(height, width),
+            ppd=ppd,
+            rotation=rotation,
+            frequency=frequency,
+            phase_shift=phase_shift,
+            intensity_rings=(int1, int2),
+            origin=origin,
+            round_phase_width=round_phase_width,
+            period=period,
+            target_indices=target_indices,
+            intensity_target=intensity_target,
+            clip=clip,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -496,6 +518,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.waves.staircase_radial`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.waves import staircase_radial
 
 # Define widgets
@@ -545,21 +569,24 @@ def show_staircase_radial(
     intensity_target=None,
     clip=True,
 ):
-    stim = staircase_radial(
-        visual_size=(height, width),
-        ppd=ppd,
-        rotation=rotation,
-        frequency=frequency,
-        phase_shift=phase_shift,
-        intensity_rings=(int1, int2),
-        origin=origin,
-        round_phase_width=round_phase_width,
-        period=period,
-        target_indices=target_indices,
-        intensity_target=intensity_target,
-        clip=clip,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = staircase_radial(
+            visual_size=(height, width),
+            ppd=ppd,
+            rotation=rotation,
+            frequency=frequency,
+            phase_shift=phase_shift,
+            intensity_rings=(int1, int2),
+            origin=origin,
+            round_phase_width=round_phase_width,
+            period=period,
+            target_indices=target_indices,
+            intensity_target=intensity_target,
+            clip=clip,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -591,6 +618,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.waves.sine_rectilinear`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.waves import sine_rectilinear
 
 # Define widgets
@@ -640,21 +669,24 @@ def show_sine_rectilinear(
     intensity_target=None,
     clip=True,
 ):
-    stim = sine_rectilinear(
-        visual_size=(height, width),
-        ppd=ppd,
-        rotation=rotation,
-        frequency=frequency,
-        phase_shift=phase_shift,
-        intensities=(int1, int2),
-        origin=origin,
-        round_phase_width=round_phase_width,
-        period=period,
-        target_indices=target_indices,
-        intensity_target=intensity_target,
-        clip=clip,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = sine_rectilinear(
+            visual_size=(height, width),
+            ppd=ppd,
+            rotation=rotation,
+            frequency=frequency,
+            phase_shift=phase_shift,
+            intensities=(int1, int2),
+            origin=origin,
+            round_phase_width=round_phase_width,
+            period=period,
+            target_indices=target_indices,
+            intensity_target=intensity_target,
+            clip=clip,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -686,6 +718,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.waves.square_rectilinear`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.waves import square_rectilinear
 
 # Define widgets
@@ -735,21 +769,24 @@ def show_square_rectilinear(
     intensity_target=None,
     clip=True,
 ):
-    stim = square_rectilinear(
-        visual_size=(height, width),
-        ppd=ppd,
-        rotation=rotation,
-        frequency=frequency,
-        phase_shift=phase_shift,
-        intensity_frames=(int1, int2),
-        origin=origin,
-        round_phase_width=round_phase_width,
-        period=period,
-        target_indices=target_indices,
-        intensity_target=intensity_target,
-        clip=clip,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = square_rectilinear(
+            visual_size=(height, width),
+            ppd=ppd,
+            rotation=rotation,
+            frequency=frequency,
+            phase_shift=phase_shift,
+            intensity_frames=(int1, int2),
+            origin=origin,
+            round_phase_width=round_phase_width,
+            period=period,
+            target_indices=target_indices,
+            intensity_target=intensity_target,
+            clip=clip,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -781,6 +818,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.waves.staircase_rectilinear`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.waves import staircase_rectilinear
 
 # Define widgets
@@ -830,21 +869,24 @@ def show_staircase_rectilinear(
     intensity_target=None,
     clip=True,
 ):
-    stim = staircase_rectilinear(
-        visual_size=(height, width),
-        ppd=ppd,
-        rotation=rotation,
-        frequency=frequency,
-        phase_shift=phase_shift,
-        intensity_frames=(int1, int2),
-        origin=origin,
-        round_phase_width=round_phase_width,
-        period=period,
-        target_indices=target_indices,
-        intensity_target=intensity_target,
-        clip=clip,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = staircase_rectilinear(
+            visual_size=(height, width),
+            ppd=ppd,
+            rotation=rotation,
+            frequency=frequency,
+            phase_shift=phase_shift,
+            intensity_frames=(int1, int2),
+            origin=origin,
+            round_phase_width=round_phase_width,
+            period=period,
+            target_indices=target_indices,
+            intensity_target=intensity_target,
+            clip=clip,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -876,6 +918,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.waves.sine_angular`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.waves import sine_angular
 
 # Define widgets
@@ -923,20 +967,23 @@ def show_sine_angular(
     target_indices=None,
     intensity_target=None,
 ):
-    stim = sine_angular(
-        visual_size=(height, width),
-        ppd=ppd,
-        rotation=rotation,
-        frequency=frequency,
-        phase_shift=phase_shift,
-        intensities=(int1, int2),
-        origin=origin,
-        round_phase_width=round_phase_width,
-        period=period,
-        target_indices=target_indices,
-        intensity_target=intensity_target,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = sine_angular(
+            visual_size=(height, width),
+            ppd=ppd,
+            rotation=rotation,
+            frequency=frequency,
+            phase_shift=phase_shift,
+            intensities=(int1, int2),
+            origin=origin,
+            round_phase_width=round_phase_width,
+            period=period,
+            target_indices=target_indices,
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -967,6 +1014,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.waves.square_angular`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.waves import square_angular
 
 # Define widgets
@@ -1014,20 +1063,23 @@ def show_square_angular(
     target_indices=None,
     intensity_target=None,
 ):
-    stim = square_angular(
-        visual_size=(height, width),
-        ppd=ppd,
-        rotation=rotation,
-        frequency=frequency,
-        phase_shift=phase_shift,
-        intensity_segments=(int1, int2),
-        origin=origin,
-        round_phase_width=round_phase_width,
-        period=period,
-        target_indices=target_indices,
-        intensity_target=intensity_target,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = square_angular(
+            visual_size=(height, width),
+            ppd=ppd,
+            rotation=rotation,
+            frequency=frequency,
+            phase_shift=phase_shift,
+            intensity_segments=(int1, int2),
+            origin=origin,
+            round_phase_width=round_phase_width,
+            period=period,
+            target_indices=target_indices,
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -1058,6 +1110,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.waves.staircase_angular`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.waves import staircase_angular
 
 # Define widgets
@@ -1105,20 +1159,23 @@ def show_staircase_angular(
     target_indices=None,
     intensity_target=None,
 ):
-    stim = staircase_angular(
-        visual_size=(height, width),
-        ppd=ppd,
-        rotation=rotation,
-        frequency=frequency,
-        phase_shift=phase_shift,
-        intensity_segments=(int1, int2),
-        origin=origin,
-        round_phase_width=round_phase_width,
-        period=period,
-        target_indices=target_indices,
-        intensity_target=intensity_target,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = staircase_angular(
+            visual_size=(height, width),
+            ppd=ppd,
+            rotation=rotation,
+            frequency=frequency,
+            phase_shift=phase_shift,
+            intensity_segments=(int1, int2),
+            origin=origin,
+            round_phase_width=round_phase_width,
+            period=period,
+            target_indices=target_indices,
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

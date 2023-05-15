@@ -12,26 +12,27 @@ kernelspec:
   name: python3
 ---
 
-```{important}
+```{tip}
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/components/angulars.md)
  to get interactivity
+```
+```{attention}
+To run locally, the code for these interactive demos requires
+a [Jupyter Notebook](https://jupyter.org/) environment,
+and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
 ```
 
 # Components - Angulars
 {py:mod}`stimupy.components.angulars`
 
-```{code-cell} ipython3
-:tags: [remove-cell]
 
-import IPython
-import ipywidgets as iw
-from stimupy.utils import plot_stim
-```
 
 ## Wedge
 {py:func}`stimupy.components.angulars.wedge`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.components.angulars import wedge
 
 # Define widgets
@@ -73,18 +74,21 @@ def show_wedge(
     origin=None,
     add_mask=False,
 ):
-    stim = wedge(
-        visual_size=(height, width),
-        ppd=ppd,
-        angle=wwidth,
-        radius=radius,
-        rotation=rotation,
-        inner_radius=inner_radius,
-        intensity_wedge=intensity_wedge,
-        intensity_background=intensity_background,
-        origin=origin,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = wedge(
+            visual_size=(height, width),
+            ppd=ppd,
+            angle=wwidth,
+            radius=radius,
+            rotation=rotation,
+            inner_radius=inner_radius,
+            intensity_wedge=intensity_wedge,
+            intensity_background=intensity_background,
+            origin=origin,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -112,6 +116,8 @@ display(ui, out)
 {py:func}`stimupy.components.angulars.segments`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.components.angulars import segments
 
 # Define widgets
@@ -158,16 +164,19 @@ def show_segments(
     origin=None,
     add_mask=False,
 ):
-    stim = segments(
-        visual_size=(height, width),
-        ppd=ppd,
-        angles=(wwidth1, wwidth2, wwidth3),
-        rotation=rotation,
-        intensity_segments=(int1, int2, int3),
-        intensity_background=intensity_background,
-        origin=origin,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = segments(
+            visual_size=(height, width),
+            ppd=ppd,
+            angles=(wwidth1, wwidth2, wwidth3),
+            rotation=rotation,
+            intensity_segments=(int1, int2, int3),
+            intensity_background=intensity_background,
+            origin=origin,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

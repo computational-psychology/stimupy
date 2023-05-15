@@ -12,26 +12,27 @@ kernelspec:
   name: python3
 ---
 
-```{important}
+```{tip}
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/components/gaussians.md)
  to get interactivity
+```
+```{attention}
+To run locally, the code for these interactive demos requires
+a [Jupyter Notebook](https://jupyter.org/) environment,
+and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
 ```
 
 # Components - Gaussians
 {py:mod}`stimupy.components.gaussians`
 
-```{code-cell} ipython3
-:tags: [remove-cell]
 
-import IPython
-import ipywidgets as iw
-from stimupy.utils import plot_stim
-```
 
 ## Gaussian
 {py:func}`stimupy.components.gaussians.gaussian`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.components.gaussians import gaussian
 
 # Define widgets
@@ -66,16 +67,18 @@ def show_gaussian(
     intensity_max=None,
     add_mask=False,
 ):
-
-    stim = gaussian(
-        visual_size=(height, width),
-        ppd=ppd,
-        sigma=(sigma1, sigma2),
-        origin=origin,
-        rotation=rotation,
-        intensity_max=intensity_max,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = gaussian(
+            visual_size=(height, width),
+            ppd=ppd,
+            sigma=(sigma1, sigma2),
+            origin=origin,
+            rotation=rotation,
+            intensity_max=intensity_max,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

@@ -15,5 +15,5 @@ loaded = json.load(open(jsonfile))
 @pytest.mark.parametrize("stim_name", stimlist)
 def test_stim(stim_name):
     func = getattr(stimupy.papers.modelfest, stim_name)
-    stim = export.arrs_to_checksum(func(), keys=["img"])
+    stim = export.arrays_to_checksum(func(), keys=["img"])
     assert stim["img"] == loaded[stim_name]["img"], "imgs are different"

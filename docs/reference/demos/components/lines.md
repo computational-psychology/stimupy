@@ -12,26 +12,27 @@ kernelspec:
   name: python3
 ---
 
-```{important}
+```{tip}
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/components/lines.md)
  to get interactivity
+```
+```{attention}
+To run locally, the code for these interactive demos requires
+a [Jupyter Notebook](https://jupyter.org/) environment,
+and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
 ```
 
 # Components - Lines
 {py:mod}`stimupy.components.lines`
 
-```{code-cell} ipython3
-:tags: [remove-cell]
 
-import IPython
-import ipywidgets as iw
-from stimupy.utils import plot_stim
-```
 
 ## Line
 {py:func}`stimupy.components.lines.line`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.components.lines import line
 
 # Define widgets
@@ -75,19 +76,21 @@ def show_line(
     add_mask=False,
     origin=None,
 ):
-
-    stim = line(
-        visual_size=(height, width),
-        ppd=ppd,
-        line_position=(ypos, xpos),
-        line_length=line_length,
-        line_width=line_width,
-        rotation=rotation,
-        intensity_line=intensity_line,
-        intensity_background=intensity_background,
-        origin=origin,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = line(
+            visual_size=(height, width),
+            ppd=ppd,
+            line_position=(ypos, xpos),
+            line_length=line_length,
+            line_width=line_width,
+            rotation=rotation,
+            intensity_line=intensity_line,
+            intensity_background=intensity_background,
+            origin=origin,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None    
 
 # Set interactivity
 out = iw.interactive_output(
@@ -116,6 +119,8 @@ display(ui, out)
 {py:func}`stimupy.components.lines.dipole`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.components.lines import dipole
 
 # Define widgets
@@ -152,17 +157,19 @@ def show_dipole(
     int2=None,
     add_mask=False,
 ):
-
-    stim = dipole(
-        visual_size=(height, width),
-        ppd=ppd,
-        line_length=line_length,
-        line_width=line_width,
-        line_gap=line_gap,
-        rotation=rotation,
-        intensity_lines=(int1, int2),
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = dipole(
+            visual_size=(height, width),
+            ppd=ppd,
+            line_length=line_length,
+            line_width=line_width,
+            line_gap=line_gap,
+            rotation=rotation,
+            intensity_lines=(int1, int2),
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -189,6 +196,8 @@ display(ui, out)
 {py:func}`stimupy.components.lines.ellipse`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.components.lines import ellipse
 
 # Define widgets
@@ -223,16 +232,18 @@ def show_ellipse(
     intensity_background=None,
     add_mask=False,
 ):
-
-    stim = ellipse(
-        visual_size=(height, width),
-        ppd=ppd,
-        radius=(rad1, rad2),
-        line_width=line_width,
-        intensity_line=intensity_line,
-        intensity_background=intensity_background,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = ellipse(
+            visual_size=(height, width),
+            ppd=ppd,
+            radius=(rad1, rad2),
+            line_width=line_width,
+            intensity_line=intensity_line,
+            intensity_background=intensity_background,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -258,6 +269,8 @@ display(ui, out)
 {py:func}`stimupy.components.lines.circle`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.components.lines import circle
 
 # Define widgets
@@ -290,16 +303,18 @@ def show_circle(
     intensity_background=None,
     add_mask=False,
 ):
-
-    stim = circle(
-        visual_size=(height, width),
-        ppd=ppd,
-        radius=radius,
-        line_width=line_width,
-        intensity_line=intensity_line,
-        intensity_background=intensity_background,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = circle(
+            visual_size=(height, width),
+            ppd=ppd,
+            radius=radius,
+            line_width=line_width,
+            intensity_line=intensity_line,
+            intensity_background=intensity_background,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

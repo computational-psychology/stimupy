@@ -12,26 +12,27 @@ kernelspec:
   name: python3
 ---
 
-```{important}
+```{tip}
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/stimuli/benarys.md)
  to get interactivity
+```
+```{attention}
+To run locally, the code for these interactive demos requires
+a [Jupyter Notebook](https://jupyter.org/) environment,
+and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
 ```
 
 # Stimuli - Benary's cross
 {py:mod}`stimupy.stimuli.benarys`
 
-```{code-cell} ipython3
-:tags: [remove-cell]
 
-import IPython
-import ipywidgets as iw
-from stimupy.utils import plot_stim
-```
 
 ## Cross, generalized
 {py:func}`stimupy.stimuli.benarys.cross_generalized`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.benarys import cross_generalized
 
 # Define widgets
@@ -81,20 +82,23 @@ def show_cross_generalized(
     target_rotation=None,
     add_mask=False,
 ):
-    stim = cross_generalized(
-        visual_size=(height, width),
-        ppd=ppd,
-        cross_thickness=cross_thickness,
-        intensity_cross=intensity1,
-        intensity_background=intensity_background,
-        target_size=(target_height, target_width),
-        target_type=target_type,
-        intensity_target=intensity_target,
-        target_x=target_x,
-        target_y=target_y,
-        target_rotation=target_rotation,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = cross_generalized(
+            visual_size=(height, width),
+            ppd=ppd,
+            cross_thickness=cross_thickness,
+            intensity_cross=intensity1,
+            intensity_background=intensity_background,
+            target_size=(target_height, target_width),
+            target_type=target_type,
+            intensity_target=intensity_target,
+            target_x=target_x,
+            target_y=target_y,
+            target_rotation=target_rotation,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -125,6 +129,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.benarys.cross_rectangles`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.benarys import cross_rectangles
 
 # Define widgets
@@ -164,16 +170,19 @@ def show_cross_rectangles(
     intensity_target=None,
     add_mask=False,
 ):
-    stim = cross_rectangles(
-        visual_size=(height, width),
-        ppd=ppd,
-        cross_thickness=cross_thickness,
-        intensity_cross=intensity1,
-        intensity_background=intensity_background,
-        target_size=(target_height, target_width),
-        intensity_target=intensity_target,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = cross_rectangles(
+            visual_size=(height, width),
+            ppd=ppd,
+            cross_thickness=cross_thickness,
+            intensity_cross=intensity1,
+            intensity_background=intensity_background,
+            target_size=(target_height, target_width),
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -200,6 +209,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.benarys.cross_triangles`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.benarys import cross_triangles
 
 # Define widgets
@@ -237,16 +248,19 @@ def show_cross_triangles(
     intensity_target=None,
     add_mask=False,
 ):
-    stim = cross_triangles(
-        visual_size=(height, width),
-        ppd=ppd,
-        cross_thickness=cross_thickness,
-        intensity_cross=intensity1,
-        intensity_background=intensity_background,
-        target_size=target_size,
-        intensity_target=intensity_target,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = cross_triangles(
+            visual_size=(height, width),
+            ppd=ppd,
+            cross_thickness=cross_thickness,
+            intensity_cross=intensity1,
+            intensity_background=intensity_background,
+            target_size=target_size,
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -272,6 +286,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.benarys.todorovic_generalized`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.benarys import todorovic_generalized
 
 # Define widgets
@@ -321,20 +337,23 @@ def show_todorovic_generalized(
     target_rotation=None,
     add_mask=False,
 ):
-    stim = todorovic_generalized(
-        visual_size=(height, width),
-        ppd=ppd,
-        L_width=cross_thickness,
-        intensity_cross=intensity1,
-        intensity_background=intensity_background,
-        target_size=(target_height, target_width),
-        target_type=target_type,
-        intensity_target=intensity_target,
-        target_x=target_x,
-        target_y=target_y,
-        target_rotation=target_rotation,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = todorovic_generalized(
+            visual_size=(height, width),
+            ppd=ppd,
+            L_width=cross_thickness,
+            intensity_cross=intensity1,
+            intensity_background=intensity_background,
+            target_size=(target_height, target_width),
+            target_type=target_type,
+            intensity_target=intensity_target,
+            target_x=target_x,
+            target_y=target_y,
+            target_rotation=target_rotation,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -365,6 +384,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.benarys.todorovic_rectangles`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.benarys import todorovic_rectangles
 
 # Define widgets
@@ -404,16 +425,19 @@ def show_todorovic_rectangles(
     intensity_target=None,
     add_mask=False,
 ):
-    stim = todorovic_rectangles(
-        visual_size=(height, width),
-        ppd=ppd,
-        L_width=cross_thickness,
-        intensity_cross=intensity1,
-        intensity_background=intensity_background,
-        target_size=(target_height, target_width),
-        intensity_target=intensity_target,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = todorovic_rectangles(
+            visual_size=(height, width),
+            ppd=ppd,
+            L_width=cross_thickness,
+            intensity_cross=intensity1,
+            intensity_background=intensity_background,
+            target_size=(target_height, target_width),
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -440,6 +464,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.benarys.todorovic_triangles`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.benarys import todorovic_triangles
 
 # Define widgets
@@ -477,16 +503,19 @@ def show_todorovic_triangles(
     intensity_target=None,
     add_mask=False,
 ):
-    stim = todorovic_triangles(
-        visual_size=(height, width),
-        ppd=ppd,
-        L_width=cross_thickness,
-        intensity_cross=intensity1,
-        intensity_background=intensity_background,
-        target_size=target_size,
-        intensity_target=intensity_target,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = todorovic_triangles(
+            visual_size=(height, width),
+            ppd=ppd,
+            L_width=cross_thickness,
+            intensity_cross=intensity1,
+            intensity_background=intensity_background,
+            target_size=target_size,
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

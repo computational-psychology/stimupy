@@ -13,9 +13,9 @@ def gabor(
     bar_width=None,
     period="ignore",
     rotation=0.0,
-    phase_shift=None,
+    phase_shift=0,
     intensity_bars=(0.0, 1.0),
-    origin=None,
+    origin="center",
     round_phase_width=False,
     sigma=None,
 ):

@@ -12,26 +12,27 @@ kernelspec:
   name: python3
 ---
 
-```{important}
+```{tip}
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/stimuli/delboeufs.md)
  to get interactivity
+```
+```{attention}
+To run locally, the code for these interactive demos requires
+a [Jupyter Notebook](https://jupyter.org/) environment,
+and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
 ```
 
 # Stimuli - Delboeufs
 {py:mod}`stimupy.stimuli.delboeufs`
 
-```{code-cell} ipython3
-:tags: [remove-cell]
 
-import IPython
-import ipywidgets as iw
-from stimupy.utils import plot_stim
-```
 
 ## Delboeuf
 {py:func}`stimupy.stimuli.delboeufs.delboeuf`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.delboeufs import delboeuf
 
 # Define widgets
@@ -71,17 +72,20 @@ def show_delboeuf(
     intensity_target=None,
     add_mask=False,
 ):
-    stim = delboeuf(
-        visual_size=(height, width),
-        ppd=ppd,
-        outer_radius=outer_radius,
-        outer_line_width=outer_line_width,
-        target_radius=target_radius,
-        intensity_outer_line=intensity_outer_line,
-        intensity_background=intensity_background,
-        intensity_target=intensity_target,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = delboeuf(
+            visual_size=(height, width),
+            ppd=ppd,
+            outer_radius=outer_radius,
+            outer_line_width=outer_line_width,
+            target_radius=target_radius,
+            intensity_outer_line=intensity_outer_line,
+            intensity_background=intensity_background,
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -108,6 +112,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.delboeufs.two_sided`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.delboeufs import two_sided
 
 # Define widgets
@@ -149,17 +155,20 @@ def show_two_sided(
     intensity_target=None,
     add_mask=False,
 ):
-    stim = two_sided(
-        visual_size=(height, width),
-        ppd=ppd,
-        outer_radii=(outer_radius1, outer_radius2),
-        outer_line_width=outer_line_width,
-        target_radius=target_radius,
-        intensity_outer_line=intensity_outer_line,
-        intensity_background=intensity_background,
-        intensity_target=intensity_target,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = two_sided(
+            visual_size=(height, width),
+            ppd=ppd,
+            outer_radii=(outer_radius1, outer_radius2),
+            outer_line_width=outer_line_width,
+            target_radius=target_radius,
+            intensity_outer_line=intensity_outer_line,
+            intensity_background=intensity_background,
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

@@ -149,7 +149,7 @@ def resolve_dungeon_params(
         "visual_size": visual_size,
         "ppd": ppd,
         "shape": shape,
-        "n_cells": (n_cells1 + 1, n_cells2 + 1),
+        "n_cells": (n_cells1 + 0.5, n_cells2 + 0.5),
         "cell_size": (cell_size1 / 2, cell_size2 / 2),
     }
 

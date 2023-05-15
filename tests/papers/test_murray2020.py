@@ -15,7 +15,7 @@ loaded = json.load(open(jsonfile))
 @pytest.mark.parametrize("stim_name", stimlist)
 def test_checksum(stim_name):
     func = getattr(stimupy.papers.murray2020, stim_name)
-    stim = export.arrs_to_checksum(func(), keys=["img", "target_mask"])
+    stim = export.arrays_to_checksum(func(), keys=["img", "target_mask"])
     assert stim["img"] == loaded[stim_name]["img"], "imgs are different"
     assert stim["target_mask"] == loaded[stim_name]["mask"], "masks are different"
 

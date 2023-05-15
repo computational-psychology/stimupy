@@ -12,26 +12,27 @@ kernelspec:
   name: python3
 ---
 
-```{important}
+```{tip}
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/stimuli/cubes.md)
  to get interactivity
+```
+```{attention}
+To run locally, the code for these interactive demos requires
+a [Jupyter Notebook](https://jupyter.org/) environment,
+and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
 ```
 
 # Stimuli - Cubes
 {py:mod}`stimupy.stimuli.cubes`
 
-```{code-cell} ipython3
-:tags: [remove-cell]
 
-import IPython
-import ipywidgets as iw
-from stimupy.utils import plot_stim
-```
 
 ## Varying cells
 {py:func}`stimupy.stimuli.cubes.varying_cells`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.cubes import varying_cells
 
 # Define widgets
@@ -77,17 +78,20 @@ def show_varying_cells(
     cell_t=None,
     cell_s=None,
 ):
-    stim = varying_cells(
-        ppd=ppd,
-        cell_lengths=(cell_l1, cell_l2, cell_l3, cell_l4),
-        cell_thickness=cell_t,
-        cell_spacing=cell_s,
-        target_indices=target_indices,
-        intensity_background=intensity_background,
-        intensity_cells=intensity1,
-        intensity_target=intensity_target,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = varying_cells(
+            ppd=ppd,
+            cell_lengths=(cell_l1, cell_l2, cell_l3, cell_l4),
+            cell_thickness=cell_t,
+            cell_spacing=cell_s,
+            target_indices=target_indices,
+            intensity_background=intensity_background,
+            intensity_cells=intensity1,
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -116,6 +120,8 @@ display(ui, out)
 {py:func}`stimupy.stimuli.cubes.cube`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.cubes import cube
 
 # Define widgets
@@ -157,18 +163,21 @@ def show_cube(
     cell_t=None,
     cell_s=None,
 ):
-    stim = cube(
-        visual_size=(height, width),
-        ppd=ppd,
-        n_cells=n_cells,
-        cell_thickness=cell_t,
-        cell_spacing=cell_s,
-        target_indices=target_indices,
-        intensity_background=intensity_background,
-        intensity_cells=intensity1,
-        intensity_target=intensity_target,
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = cube(
+            visual_size=(height, width),
+            ppd=ppd,
+            n_cells=n_cells,
+            cell_thickness=cell_t,
+            cell_spacing=cell_s,
+            target_indices=target_indices,
+            intensity_background=intensity_background,
+            intensity_cells=intensity1,
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

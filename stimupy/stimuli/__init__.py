@@ -10,6 +10,7 @@ __all__ = [
     "cubes",
     "delboeufs",
     "dungeons",
+    "edges",
     "gabors",
     "gratings",
     "hermanns",

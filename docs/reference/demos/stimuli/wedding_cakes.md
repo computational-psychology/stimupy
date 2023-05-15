@@ -12,26 +12,27 @@ kernelspec:
   name: python3
 ---
 
-```{important}
+```{tip}
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/stimuli/wedding_cakes.md)
  to get interactivity
+```
+```{attention}
+To run locally, the code for these interactive demos requires
+a [Jupyter Notebook](https://jupyter.org/) environment,
+and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
 ```
 
 # Stimuli - Wedding cakes
 {py:mod}`stimupy.stimuli.wedding_cakes`
 
-```{code-cell} ipython3
-:tags: [remove-cell]
 
-import IPython
-import ipywidgets as iw
-from stimupy.utils import plot_stim
-```
 
 ## Wedding cake
 {py:func}`stimupy.stimuli.wedding_cakes.wedding_cake`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.stimuli.wedding_cakes import wedding_cake
 
 # Define widgets
@@ -83,17 +84,20 @@ def show_wedding_cake(
     theight=None,
     int_target=None,
 ):
-    stim = wedding_cake(
-        visual_size=(height, width),
-        ppd=ppd,
-        L_size=(L_height, L_width, L_thick),
-        target_height=theight,
-        intensity_target=int_target,
-        target_indices1=((tidx11, tidx12),),
-        target_indices2=((tidx21, tidx22),),
-        intensity_bars=(int1, int2),
-    )
-    plot_stim(stim, mask=add_mask)
+    try:
+        stim = wedding_cake(
+            visual_size=(height, width),
+            ppd=ppd,
+            L_size=(L_height, L_width, L_thick),
+            target_height=theight,
+            intensity_target=int_target,
+            target_indices1=((tidx11, tidx12),),
+            target_indices2=((tidx21, tidx22),),
+            intensity_bars=(int1, int2),
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(

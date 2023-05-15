@@ -13,7 +13,7 @@ kernelspec:
 ---
 
 ```{tip}
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/components/edges.md)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/stimuli/edges.md)
  to get interactivity
 ```
 ```{attention}
@@ -22,18 +22,18 @@ a [Jupyter Notebook](https://jupyter.org/) environment,
 and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
 ```
 
-# Components - Edges
-{py:mod}`stimupy.components.edges`
+# Stimuli - Edges
+{py:mod}`stimupy.stimuli.edges`
 
 
 
 ## Step edge
-{py:func}`stimupy.components.edges.step`
+{py:func}`stimupy.stimuli.edges.step`
 
 ```{code-cell} ipython3
 import ipywidgets as iw
 from stimupy.utils import plot_stim
-from stimupy.components.edges import step
+from stimupy.stimuli.edges import step
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
@@ -92,12 +92,12 @@ display(ui, out)
 ```
 
 ## Gaussian edge
-{py:func}`stimupy.components.edges.gaussian`
+{py:func}`stimupy.stimuli.edges.gaussian`
 
 ```{code-cell} ipython3
 import ipywidgets as iw
 from stimupy.utils import plot_stim
-from stimupy.components.edges import gaussian
+from stimupy.stimuli.edges import gaussian
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
@@ -165,12 +165,12 @@ display(ui, out)
 ```
 
 ## Cornsweet edge
-{py:func}`stimupy.components.edges.cornsweet`
+{py:func}`stimupy.stimuli.edges.cornsweet`
 
 ```{code-cell} ipython3
 import ipywidgets as iw
 from stimupy.utils import plot_stim
-from stimupy.components.edges import cornsweet
+from stimupy.stimuli.edges import cornsweet
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")

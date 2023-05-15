@@ -1,1 +1,0 @@
-# Sets of stimuli, papers

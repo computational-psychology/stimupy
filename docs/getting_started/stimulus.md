@@ -66,23 +66,21 @@ also have 3 overall categories of parameters:
 
 However, some of the stimulus parameters
 have different names in {py:mod}`stimuli <stimupy.stimuli>`.
-In particular, **all** {py:mod}`stimuli <stimupy.stimuli>`
+In particular, many {py:mod}`stimuli <stimupy.stimuli>`
 have the concept of a `target` region(s):
 image regions that are of some particular scientific interest in this stimulus.
-For an SBC stimulus, this would be the rectangular path.
+For an SBC stimulus, this would be the rectangle.
 Thus, the {py:func}`sbcs.basic <stimupy.stimuli.sbcs.basic>` function takes a
 - `target_size`, compared to `rectangle_size`
 - `intensity_target`, rather than an `intensity_rectangle`
   (with a default intermediate value of `0.5`)
-In addition, the output stimulus contains a `target_mask`,
-which masks the pixels of the target region.
+- In addition, the output stimulus contains a `target_mask`, which masks the pixels of the target region.
 
 For this specific stimulus,
 the {py:func}`sbcs.basic <stimupy.stimuli.sbcs.basic>` provides little use over
 the base component.
-But, realistically, we would show not just this one part of an SBC display.
-Instead, this would likely be only half
-of a {py:func}`two-sided <stimupy.stimuli.sbsc.two_sized>` display:
+But, realistically, we would not show just this one part of a SBC display, but rather
+show both sides of the SBC displays as implemented in {py:func}`two_sided <stimupy.stimuli.sbcs.two_sided>`:
 ```{code-cell}
 two_sided_stim = sbcs.two_sided(visual_size=(6,8), ppd=10,
                                 target_size=(2,2))
@@ -179,7 +177,7 @@ OR as having a [cross-shaped target](todorovics.cross) with adjoining squares.
 For a single stimulus parameterization,
 these two conceptions may produce perfectly identical images ([see fig, top](fig_todorovics)).
 However, when changing parameters,
-you would expect different *behavior* from the stimulus fuction
+you would expect different *behavior* from the stimulus function
 dependent on your conception/interpretation of the stimulus ([see fig, bottom](fig_todorovics)).
 
 ```{code-cell}

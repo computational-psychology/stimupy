@@ -3,12 +3,19 @@
 <p align=center>
 A pure-Python package
 for creating new and existing visual stimuli
-commonly used in the sudy of contrast, brightness/lightness,
+commonly used in the study of contrast, brightness, lightness,
 and other aspects of visual perception.
 </p>
 
+<p align=center>
+
 [![Tests](https://github.com/computational-psychology/stimupy/actions/workflows/test.yml/badge.svg)](https://github.com/computational-psychology/stimupy/actions/workflows/test.yml) [![](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![Documentation Status](https://readthedocs.org/projects/stimupy/badge/?version=latest)](https://stimupy.readthedocs.io/en/latest/?badge=latest)
+</p>
+
+<p align=center>
+<img src=docs/logo.png width=400>
+</p>
 
 ---
 - documentation: https://stimupy.readthedocs.io/en/latest/
@@ -24,8 +31,8 @@ and other aspects of visual perception.
   exactly as described in the original manuscripts (including experimental data)
 - *build* new stimulus sets or benchmarks (e.g. for testing computational models),
   and easily add them to `stimupy`
-- *support* vision science by providing a large,openly-available and flexible battery of relevant stimulus functions
-- *unify and automate* stimulus creation
+- *support* vision science by providing a large, openly-available and flexible battery of relevant stimulus functions
+- *unify* and *automate* stimulus creation
 - be [**FAIR**](https://doi.org/10.1038/s41597-022-01710-x):
   **F**indable, **A**ccessible, **I**nteroperable, and **R**eusable
 
@@ -93,7 +100,7 @@ any stimulus or stimulus set not currently available, can be easily added.
 Open an [issue](https://github.com/computational-psychology/stimupy/issues/new)
 and let us know what you'd like to see added.
 
-If you want to contribute yourself, see [contributing](https://stimupy.readthedocs.io/en/latest/contributing/contributing.html)
+If you want to contribute yourself, see [contributing](https://stimupy.readthedocs.io/en/latest/contributing/contribute.html)
 
 
 ---

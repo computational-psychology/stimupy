@@ -113,10 +113,13 @@ def frames(
         rotation=rotation,
     )
 
-    # Draw image
+    # Draw image and update args
     stim["img"] = draw_regions(
         stim["frame_mask"], intensities=intensity_frames, intensity_background=intensity_background
     )
+    stim["radii"] = radii
+    stim["intensity_frames"] = intensity_frames
+    stim["intensity_background"] = intensity_background
     return stim
 
 

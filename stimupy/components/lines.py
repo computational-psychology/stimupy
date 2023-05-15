@@ -219,6 +219,9 @@ def dipole(
 
     stim1["img"] = stim1["img"] + stim2["img"]
     stim1["line_mask"] = (stim1["line_mask"] + stim2["line_mask"] * 2).astype(int)
+    stim1["line_gap"] = line_gap
+    stim1["intensity_lines"] = intensity_lines
+    del stim1["intensity_line"]
 
     if line_width == 0:
         line_width = 1 / np.unique(stim1["ppd"])
@@ -270,7 +273,9 @@ def ellipse(
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
     if line_width * ppd[0] == 0:
-        line_width = 1 / ppd[0]
+        line_width_ = 1 / ppd[0]
+    else:
+        line_width_ = line_width
 
     stim = ellipse_shape(
         radius=np.array(radius),
@@ -283,7 +288,7 @@ def ellipse(
     )
 
     stim2 = ellipse_shape(
-        radius=np.array(radius) - line_width,
+        radius=np.array(radius) - line_width_,
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,
@@ -292,7 +297,9 @@ def ellipse(
 
     stim["img"] = np.where(stim2["ellipse_mask"] == 1, intensity_background, stim["img"])
     stim["line_mask"] = np.where(stim2["ellipse_mask"] == 1, 0, stim["ellipse_mask"])
-    del stim["ellipse_mask"]
+    stim["intensity_line"] = intensity_line
+    stim["line_width"] = line_width
+    del stim["ellipse_mask"], stim["intensity_ellipse"]
     return stim
 
 

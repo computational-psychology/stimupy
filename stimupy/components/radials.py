@@ -152,6 +152,8 @@ def rings(
 
     # Assemble output
     params["intensity_rings"] = intensity_rings
+    params["radii"] = radii
+    params["intensity_background"] = intensity_background
     return {"img": img, **params}
 
 
@@ -214,6 +216,9 @@ def disc(
         shape=shape,
         origin=origin,
     )
+    stim["radius"] = radius
+    stim["intensity_disc"] = intensity_disc
+    del stim["radii"], stim["intensity_rings"]
     return stim
 
 
@@ -285,6 +290,7 @@ def ring(
         origin=origin,
     )
     stim["ring_mask"] = np.where(stim["ring_mask"] == 2, 1, 0)
+    stim["intensity_ring"] = intensity_ring
     return stim
 
 

@@ -12,26 +12,27 @@ kernelspec:
   name: python3
 ---
 
-```{important}
+```{tip}
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/computational-psychology/stimupy/HEAD?urlpath=lab/tree/docs/reference/demos/noises/naturals.md)
  to get interactivity
+```
+```{attention}
+To run locally, the code for these interactive demos requires
+a [Jupyter Notebook](https://jupyter.org/) environment,
+and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
 ```
 
 # Noises - Naturals
 {py:mod}`stimupy.noises.naturals`
 
-```{code-cell} ipython3
-:tags: [remove-cell]
 
-import IPython
-import ipywidgets as iw
-from stimupy.utils import plot_stim
-```
 
 ## One over f
 {py:func}`stimupy.noises.naturals.one_over_f`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.noises.naturals import one_over_f
 
 # Define widgets
@@ -61,15 +62,17 @@ def show_one_over_f(
     intensity2=None,
     pseudo_noise=False,
 ):
-
-    stim = one_over_f(
-        visual_size=(height, width),
-        ppd=ppd,
-        intensity_range=(intensity1, intensity2),
-        exponent=exponent,
-        pseudo_noise=pseudo_noise,
-    )
-    plot_stim(stim, mask=False)
+    try:
+        stim = one_over_f(
+            visual_size=(height, width),
+            ppd=ppd,
+            intensity_range=(intensity1, intensity2),
+            exponent=exponent,
+            pseudo_noise=pseudo_noise,
+        )
+        plot_stim(stim, mask=False)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -93,6 +96,8 @@ display(ui, out)
 {py:func}`stimupy.noises.naturals.pink`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.noises.naturals import pink
 
 # Define widgets
@@ -119,14 +124,16 @@ def show_pink(
     intensity2=None,
     pseudo_noise=False,
 ):
-
-    stim = pink(
-        visual_size=(height, width),
-        ppd=ppd,
-        intensity_range=(intensity1, intensity2),
-        pseudo_noise=pseudo_noise,
-    )
-    plot_stim(stim, mask=False)
+    try:
+        stim = pink(
+            visual_size=(height, width),
+            ppd=ppd,
+            intensity_range=(intensity1, intensity2),
+            pseudo_noise=pseudo_noise,
+        )
+        plot_stim(stim, mask=False)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
@@ -149,6 +156,8 @@ display(ui, out)
 {py:func}`stimupy.noises.naturals.brown`
 
 ```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
 from stimupy.noises.naturals import brown
 
 # Define widgets
@@ -175,14 +184,16 @@ def show_brown(
     intensity2=None,
     pseudo_noise=False,
 ):
-
-    stim = brown(
-        visual_size=(height, width),
-        ppd=ppd,
-        intensity_range=(intensity1, intensity2),
-        pseudo_noise=pseudo_noise,
-    )
-    plot_stim(stim, mask=False)
+    try:
+        stim = brown(
+            visual_size=(height, width),
+            ppd=ppd,
+            intensity_range=(intensity1, intensity2),
+            pseudo_noise=pseudo_noise,
+        )
+        plot_stim(stim, mask=False)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
 
 # Set interactivity
 out = iw.interactive_output(
