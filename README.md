@@ -7,8 +7,15 @@ commonly used in the study of contrast, brightness, lightness,
 and other aspects of visual perception.
 </p>
 
+<p align=center>
+
 [![Tests](https://github.com/computational-psychology/stimupy/actions/workflows/test.yml/badge.svg)](https://github.com/computational-psychology/stimupy/actions/workflows/test.yml) [![](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![Documentation Status](https://readthedocs.org/projects/stimupy/badge/?version=latest)](https://stimupy.readthedocs.io/en/latest/?badge=latest)
+</p>
+
+<p align=center>
+<img src=docs/logo.png width=400>
+</p>
 
 ---
 - documentation: https://stimupy.readthedocs.io/en/latest/
