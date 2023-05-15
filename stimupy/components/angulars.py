@@ -255,12 +255,12 @@ def segments(
         intensities=intensity_segments,
         intensity_background=intensity_background,
     )
-    
+
     # Update args
     stim["angles"] = angles
     stim["intensity_background"] = intensity_background
     stim["intensity_segments"] = intensity_segments
-    
+
     return stim
 
 
