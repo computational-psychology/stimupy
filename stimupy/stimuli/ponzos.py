@@ -137,7 +137,7 @@ def ponzo(
     line1["img"] += line3["img"] + line4["img"] + intensity_background
     line1["line_mask"] += line3["line_mask"] * 3 + line4["line_mask"] * 4
     line1["target_mask"] = line3["line_mask"] + line4["line_mask"] * 2
-    
+
     stim = {}
     stim["img"] = line1["img"]
     stim["line_mask"] = line1["line_mask"]

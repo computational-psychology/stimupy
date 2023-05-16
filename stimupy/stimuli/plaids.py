@@ -86,7 +86,7 @@ def gabors(
     grating1 = gabors_stim.gabor(**gabor_parameters1)
     grating2 = gabors_stim.gabor(**gabor_parameters2)
     plaid = add_waves(grating1, grating2, weight1, weight2)
-    
+
     out = {
         "img": plaid["img"],
         "grating_mask1": plaid["grating_mask"],
@@ -98,7 +98,7 @@ def gabors(
         "visual_size": plaid["visual_size"],
         "shape": plaid["shape"],
         "ppd": plaid["ppd"],
-        }
+    }
     return out
 
 
@@ -145,7 +145,7 @@ def sine_waves(
         "visual_size": plaid["visual_size"],
         "shape": plaid["shape"],
         "ppd": plaid["ppd"],
-        }
+    }
     return out
 
 
@@ -192,7 +192,7 @@ def square_waves(
         "visual_size": plaid["visual_size"],
         "shape": plaid["shape"],
         "ppd": plaid["ppd"],
-        }
+    }
     return out
 
 

@@ -100,7 +100,7 @@ def pinwheel(
         intensity_segments=intensity_segments,
     )
     radius = min(stim["visual_size"]) / 2
-    
+
     stim["target_indices"] = target_indices
     stim["target_center"] = target_center
     stim["target_width"] = target_width

@@ -148,7 +148,7 @@ def sine_linear(
     # Add targets(?)
     if target_indices is not None and target_indices != ():
         stim = add_targets(stim, target_indices=target_indices, intensity_target=intensity_target)
-    
+
     stim["target_indices"] = target_indices
     stim["intensity_target"] = intensity_target
     return stim
