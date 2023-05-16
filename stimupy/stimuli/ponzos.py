@@ -137,7 +137,24 @@ def ponzo(
     line1["img"] += line3["img"] + line4["img"] + intensity_background
     line1["line_mask"] += line3["line_mask"] * 3 + line4["line_mask"] * 4
     line1["target_mask"] = line3["line_mask"] + line4["line_mask"] * 2
-    return line1
+    
+    stim = {}
+    stim["img"] = line1["img"]
+    stim["line_mask"] = line1["line_mask"]
+    stim["target_mask"] = line1["target_mask"]
+    stim["visual_size"] = line1["visual_size"]
+    stim["shape"] = line1["shape"]
+    stim["ppd"] = line1["ppd"]
+    stim["outer_lines_length"] = outer_lines_length
+    stim["outer_lines_width"] = outer_lines_width
+    stim["outer_lines_angle"] = outer_lines_angle
+    stim["target_lines_length"] = target_lines_length
+    stim["target_lines_width"] = target_lines_width
+    stim["target_distance"] = target_distance
+    stim["intensity_outer_lines"] = intensity_outer_lines
+    stim["intensity_target_lines"] = intensity_target_lines
+    stim["intensity_background"] = intensity_background
+    return stim
 
 
 def overview(**kwargs):

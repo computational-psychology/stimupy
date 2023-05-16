@@ -86,11 +86,13 @@ def gabor(
     )
     mean_int = (intensity_bars[0] + intensity_bars[1]) / 2
     stim["img"] = (stim["img"] - mean_int) * gaussian_window["img"] + mean_int
+    del stim["intensities"]
 
     return {
         **stim,
         "sigma": sigma,
         "gaussian_mask": gaussian_window["gaussian_mask"],
+        "intensity_bars": intensity_bars,
     }
 
 

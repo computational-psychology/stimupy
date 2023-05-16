@@ -86,7 +86,20 @@ def gabors(
     grating1 = gabors_stim.gabor(**gabor_parameters1)
     grating2 = gabors_stim.gabor(**gabor_parameters2)
     plaid = add_waves(grating1, grating2, weight1, weight2)
-    return plaid
+    
+    out = {
+        "img": plaid["img"],
+        "grating_mask1": plaid["grating_mask"],
+        "grating_mask2": plaid["grating_mask2"],
+        "gabor_parameters1": gabor_parameters1,
+        "gabor_parameters2": gabor_parameters2,
+        "weight1": weight1,
+        "weight2": weight2,
+        "visual_size": plaid["visual_size"],
+        "shape": plaid["shape"],
+        "ppd": plaid["ppd"],
+        }
+    return out
 
 
 def sine_waves(
@@ -120,7 +133,20 @@ def sine_waves(
     grating1 = waves.sine_linear(**grating_parameters1)
     grating2 = waves.sine_linear(**grating_parameters2)
     plaid = add_waves(grating1, grating2, weight1, weight2)
-    return plaid
+
+    out = {
+        "img": plaid["img"],
+        "grating_mask1": plaid["grating_mask"],
+        "grating_mask2": plaid["grating_mask2"],
+        "grating_parameters1": grating_parameters1,
+        "grating_parameters2": grating_parameters2,
+        "weight1": weight1,
+        "weight2": weight2,
+        "visual_size": plaid["visual_size"],
+        "shape": plaid["shape"],
+        "ppd": plaid["ppd"],
+        }
+    return out
 
 
 def square_waves(
@@ -154,7 +180,20 @@ def square_waves(
     grating1 = waves.square_linear(**grating_parameters1)
     grating2 = waves.square_linear(**grating_parameters2)
     plaid = add_waves(grating1, grating2, weight1, weight2)
-    return plaid
+
+    out = {
+        "img": plaid["img"],
+        "grating_mask1": plaid["grating_mask"],
+        "grating_mask2": plaid["grating_mask2"],
+        "grating_parameters1": grating_parameters1,
+        "grating_parameters2": grating_parameters2,
+        "weight1": weight1,
+        "weight2": weight2,
+        "visual_size": plaid["visual_size"],
+        "shape": plaid["shape"],
+        "ppd": plaid["ppd"],
+        }
+    return out
 
 
 def overview(**kwargs):

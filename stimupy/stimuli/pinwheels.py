@@ -100,6 +100,11 @@ def pinwheel(
         intensity_segments=intensity_segments,
     )
     radius = min(stim["visual_size"]) / 2
+    
+    stim["target_indices"] = target_indices
+    stim["target_center"] = target_center
+    stim["target_width"] = target_width
+    stim["intensity_target"] = intensity_target
 
     circle_mask = circle(
         visual_size=visual_size,
@@ -163,6 +168,7 @@ def pinwheel(
             target_mask = np.where(condition1 & condition2, target_idx + 1, target_mask)
             stim["img"] = np.where(target_mask == (target_idx + 1), intensity, stim["img"])
     stim["target_mask"] = target_mask
+    stim["intensity_background"] = intensity_background
     return stim
 
 

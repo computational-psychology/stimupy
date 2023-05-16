@@ -148,7 +148,9 @@ def sine_linear(
     # Add targets(?)
     if target_indices is not None and target_indices != ():
         stim = add_targets(stim, target_indices=target_indices, intensity_target=intensity_target)
-
+    
+    stim["target_indices"] = target_indices
+    stim["intensity_target"] = intensity_target
     return stim
 
 
@@ -252,6 +254,8 @@ def square_linear(
     if target_indices is not None and target_indices != ():
         stim = add_targets(stim, target_indices=target_indices, intensity_target=intensity_target)
 
+    stim["target_indices"] = target_indices
+    stim["intensity_target"] = intensity_target
     return stim
 
 
@@ -358,6 +362,8 @@ def staircase_linear(
     if target_indices is not None and target_indices != ():
         stim = add_targets(stim, target_indices=target_indices, intensity_target=intensity_target)
 
+    stim["target_indices"] = target_indices
+    stim["intensity_target"] = intensity_target
     return stim
 
 
@@ -477,6 +483,10 @@ def sine_radial(
     if target_indices is not None and target_indices != ():
         stim = add_targets(stim, target_indices=target_indices, intensity_target=intensity_target)
 
+    stim["target_indices"] = target_indices
+    stim["intensity_target"] = intensity_target
+    stim["clip"] = clip
+    stim["intensity_background"] = intensity_background
     return stim
 
 
@@ -596,6 +606,10 @@ def square_radial(
     if target_indices is not None and target_indices != ():
         stim = add_targets(stim, target_indices=target_indices, intensity_target=intensity_target)
 
+    stim["target_indices"] = target_indices
+    stim["intensity_target"] = intensity_target
+    stim["clip"] = clip
+    stim["intensity_background"] = intensity_background
     return stim
 
 
@@ -716,6 +730,10 @@ def staircase_radial(
     if target_indices is not None and target_indices != ():
         stim = add_targets(stim, target_indices=target_indices, intensity_target=intensity_target)
 
+    stim["target_indices"] = target_indices
+    stim["intensity_target"] = intensity_target
+    stim["clip"] = clip
+    stim["intensity_background"] = intensity_background
     return stim
 
 
@@ -843,6 +861,10 @@ def sine_rectilinear(
     if target_indices is not None and target_indices != ():
         stim = add_targets(stim, target_indices=target_indices, intensity_target=intensity_target)
 
+    stim["target_indices"] = target_indices
+    stim["intensity_target"] = intensity_target
+    stim["clip"] = clip
+    stim["intensity_background"] = intensity_background
     return stim
 
 
@@ -971,6 +993,10 @@ def square_rectilinear(
     if target_indices is not None and target_indices != ():
         stim = add_targets(stim, target_indices=target_indices, intensity_target=intensity_target)
 
+    stim["target_indices"] = target_indices
+    stim["intensity_target"] = intensity_target
+    stim["clip"] = clip
+    stim["intensity_background"] = intensity_background
     return stim
 
 
@@ -1101,6 +1127,10 @@ def staircase_rectilinear(
     if target_indices is not None and target_indices != ():
         stim = add_targets(stim, target_indices=target_indices, intensity_target=intensity_target)
 
+    stim["target_indices"] = target_indices
+    stim["intensity_target"] = intensity_target
+    stim["clip"] = clip
+    stim["intensity_background"] = intensity_background
     return stim
 
 
@@ -1197,6 +1227,8 @@ def sine_angular(
     stim["n_segments"] = stim.pop("n_phases")
     stim["segment_width"] = stim.pop("phase_width")
     stim.pop("distance_metric")
+    stim["target_indices"] = target_indices
+    stim["intensity_target"] = intensity_target
 
     # Resolve target parameters
     if target_indices is not None and target_indices != ():
@@ -1319,6 +1351,8 @@ def square_angular(
     stim["segment_width"] = stim.pop("phase_width")
     stim["intensity_segments"] = stim.pop("intensities")
     stim.pop("distance_metric")
+    stim["target_indices"] = target_indices
+    stim["intensity_target"] = intensity_target
 
     # Resolve target parameters
     if target_indices is not None and target_indices != ():
@@ -1444,6 +1478,8 @@ def staircase_angular(
     if target_indices is not None and target_indices != ():
         stim = add_targets(stim, target_indices=target_indices, intensity_target=intensity_target)
 
+    stim["target_indices"] = target_indices
+    stim["intensity_target"] = intensity_target
     return stim
 
 

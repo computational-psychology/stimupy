@@ -164,6 +164,13 @@ def mueller_lyer(
     target_line["line_mask"] = np.where(target_line["line_mask"] > 5, 5, target_line["line_mask"])
 
     target_line["target_mask"] = np.where(target_line["line_mask"] == 1, 1, 0).astype(int)
+    target_line["outer_lines_length"] = outer_lines_length
+    target_line["outer_lines_angle"] = outer_lines_angle
+    target_line["target_length"] = target_length
+    target_line["line_width"] = line_width
+    target_line["intensity_outer_lines"] = intensity_outer_lines
+    target_line["intensity_target"] = intensity_target
+    target_line["intensity_background"] = intensity_background
     return target_line
 
 
