@@ -19,6 +19,8 @@ def logo(
     ----------
     ppd : Number (default: 128)
         pixels per degree along the axis of grating
+    intensity_background : Number
+        intensity value of background (default: 0.5)
 
     Returns
     -------

@@ -83,7 +83,8 @@ We are currently aware of
 
 - Psychtoolbox [@brainard1997],
 - Psychopy [@peirce2019],
-- Pyllusion [@makowski2021].
+- Pyllusion [@makowski2021],
+- OCTA [@OCTA].
 
 Psychtoolbox and Psychopy both provide functions to generate a number of visual stimuli. 
 However, stimulus generation is integrated into their main purpose
@@ -114,6 +115,27 @@ it produces only that stimulus, and its arguments are unique to that stimulus.
 In contrast, `stimupy` provides a unified interface to stimulus creation,
 where many functions share the same - intuitive - parameters.
 This makes it easier to explore parameters and to create novel stimuli.
+
+OCTA is also a Python package to generate stimuli,
+specifically grids of multiple elements that can be show regularity and variety
+along various stimulus dimensions.
+These stimuli are of particular use to studies on Gestalt vision,
+aesthetics and complexity.
+The parametric variation of stimulus dimensions
+as well as the compositionality of displays
+are features found in both OCTA and `stimupy`.
+Both packages also have a strong focus on ease-of-use, replicability, and Open Science.
+`stimupy` currently focuses on a different class of stimuli:
+mainly displays used to study early and low-level visual processes,
+as well as visual features such as brightness, contrast, and orientation.
+Thus, OCTA and `stimupy` cover complementary usecases.
+
+Another design decision that sets `stimupy` apart from existing software such as OCTA and Pyllusion,
+is that all `stimupy` stimuli are generated as `numpy`-arrays
+representing pixel-based raster-graphics.
+This has several advantages over existing, vector-graphics or custom object-based approaches,
+mainly that any standard array-manipulation tooling can be used to further process
+a stimulus.
 
 # Statement of Need
 

@@ -131,6 +131,7 @@ def circular_two_sided(
     stim = stack_dicts(stim1, stim2)
     stim["shape"] = shape
     stim["visual_size"] = visual_size
+    stim["intensity_background"] = intensity_background
     return stim
 
 
@@ -195,6 +196,7 @@ def rectangular_generalized(
         origin=origin,
         rotation=rotation,
     )
+    stim["intensity_target"] = intensity_target
 
     # Resolve target parameters
     if isinstance(target_indices, (int)):
@@ -217,6 +219,7 @@ def rectangular_generalized(
 
     # Update and return stimulus
     stim["target_mask"] = targets_mask
+    stim["target_indices"] = target_indices
     return stim
 
 

@@ -6,7 +6,7 @@ from stimupy.components.gaussians import gaussian
 from stimupy.components.shapes import parallelogram, rectangle
 from stimupy.stimuli.waves import sine_linear as sinewave
 from stimupy.stimuli.waves import square_linear as squarewave
-from stimupy.utils import pad_dict_to_shape, pad_dict_to_visual_size, resolution
+from stimupy.utils import pad_dict_to_shape, pad_dict_to_visual_size, resolution, strip_dict
 from stimupy.utils.filters import convolve
 
 __all__ = [
@@ -132,6 +132,8 @@ def on_uniform(
         grating_shape=stim["shape"],
         shape=stim["img"].shape,
         visual_size=visual_size,
+        target_indices=target_indices,
+        intensity_target=intensity_target,
     )
 
     return stim
@@ -203,8 +205,10 @@ def on_grating_masked(
         "target_mask": mask.astype(int),
         "small_grating_mask": small_grating["grating_mask"],
         "large_grating_mask": large_grating["grating_mask"],
-        "bar_width_small": small_grating["bar_width"],
-        "bar_width_large": large_grating["bar_width"],
+        "small_grating_params": strip_dict(small_grating, squarewave),
+        "large_grating_params": strip_dict(large_grating, squarewave),
+        "mask_size": mask_size,
+        "mask_rotation": mask_rotation,
     }
     return stim
 
@@ -354,6 +358,7 @@ def phase_shifted(
     stim["target_mask"] = mask.astype(int)
     stim["target_phase_shift"] = target_phasei
     stim["target_size"] = stim_target["visual_size"]
+    stim["intensity_target"] = intensity_target
     return stim
 
 

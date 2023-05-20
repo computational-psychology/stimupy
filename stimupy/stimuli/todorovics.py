@@ -429,6 +429,11 @@ def cross_generalized(
         raise ValueError("Need as many x- as y-coordinates")
     if isinstance(covers_size, (float, int)):
         covers_size = (covers_size, covers_size)
+    if isinstance(cross_size, (float, int)):
+        cross_size = (cross_size, cross_size)
+
+    if cross_size[0] < cross_thickness or cross_size[1] < cross_thickness:
+        raise ValueError("cross_size needs to be larger than cross_thickness")
 
     stim = cross_shape(
         visual_size=cross_size,
