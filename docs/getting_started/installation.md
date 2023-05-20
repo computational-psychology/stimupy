@@ -1,31 +1,43 @@
 # Installing
 
+`stimupy` can be installed in several ways.
+For most usecases, i.e., to _use_ the functions in `stimupy`,
+we recommend installing from PyPI using `pip`.
+
+To adapt or contribute code, you will have to get the _source_ code from GitHub.
+
 :::::{tab-set}
 
 ::::{tab-item} pip {fab}`python`
-`pip` can install `stimupy` directly from GitHub (the `main` branch)
+`pip` can install the latest version of `stimupy` directly from PyPI
 
 ```python
-pip install https://github.com/computational-psychology/stimupy/zipball/main
+pip install stimupy
 ```
 
 :::{admonition} Install a different version
     :class: dropdown
 
-From a specific branch, e.g. (`main`)[https://github.com/computational-psychology/stimupy/tree/main]:
+`pip` by default install the latest version of package.
+To install a different version, simply specify the version number,
+either an exact version:
 ```python
-pip install https://github.com/computational-psychology/stimupy/archive/refs/heads/main.zip
+pip install "stimupy==1.0.0"
 ```
+or a conditional version:
+```python
+pip install "stimupy<=1.0.0"
+```
+(for any version before `1.0.0`).
 
-From a specific tag, e.g. `v1.0.0`:
-```python
-pip install https://github.com/computational-psychology/stimupy/archive/tags/v1.0.0.zip
-```
+`stimupy` uses approximately [Semantic Versioning](https://semver.org/) /
+[PEP440](https://peps.python.org/pep-0440/).
+This means that versions with the same MAJOR version number are backwards compatible:
+code written using version `1.N.x` will work under `1.N+1.x`
+but is not guaranteed to work under version `2.x.x`.
+Versions with higher MINOR version number (`x.N+1.x`) introduce new features.
+Versions with higher PATCH number (`x.x.N+1`) fix bugs.
 
-From a specific commit, e.g., (`9e37617`)[https://github.com/computational-psychology/stimupy/tree/9e37617]:
-```python
-pip install https://github.com/computational-psychology/stimupy/archive/9e37617.zip
-```
 :::
 ::::
 

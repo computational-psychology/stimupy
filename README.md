@@ -106,10 +106,9 @@ If you want to contribute yourself, see [contributing](https://stimupy.readthedo
 ---
 ## Installation
 
-For now, `pip` can install directly from GitHub (the `main` branch)
-GitHub repository
+`pip` can install `stimupy` directly PyPI:
 ```python
-pip install https://github.com/computational-psychology/stimupy/zipball/main
+pip install stimupy
 ```
 
 OR (for developers), install from source:
