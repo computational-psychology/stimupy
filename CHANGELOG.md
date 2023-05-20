@@ -2,6 +2,18 @@
 
 <!--next-version-placeholder-->
 
+## v0.101.1 (2023-05-20)
+### Fix
+* Added relevant error message in todorovic ([`0cb7f88`](https://github.com/computational-psychology/stimupy/commit/0cb7f88a75d78e5ae8d94df3c7363c899b0baaa6))
+* Aligned functions args and output_dictionary keys for stimuli-gratings ([`fba7785`](https://github.com/computational-psychology/stimupy/commit/fba77855e4bcea8a6f766c2198e4f4e06ad5b39d))
+* Aligned function args and output_dict keys ([`6981318`](https://github.com/computational-psychology/stimupy/commit/6981318e76f1d9bb594aa94a50b07f4639efe804))
+
+### Documentation
+* **manuscript:** Add comparison to OCTA ([`551f80d`](https://github.com/computational-psychology/stimupy/commit/551f80d8bde4aa217d7a52a8c1e07cbe9adaef08))
+* Added missing arg-information to logo-function ([`73e5a27`](https://github.com/computational-psychology/stimupy/commit/73e5a2750d96772fe47add14a97a3a2803f25c07))
+* Minor fix landing page ([`fc8deb4`](https://github.com/computational-psychology/stimupy/commit/fc8deb4dee9c1fc09c7495691feb49beb38225f0))
+* Add logo ([`1fce581`](https://github.com/computational-psychology/stimupy/commit/1fce58114fe5888f0c3381b16e49f771684e49b7))
+
 ## v0.101.0 (2023-05-15)
 ### Feature
 * Qr-code with logo embedded ([`a14648e`](https://github.com/computational-psychology/stimupy/commit/a14648eb05f8469e9780aedf2db6d90f3c551722))
