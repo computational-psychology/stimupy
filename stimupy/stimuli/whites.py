@@ -96,8 +96,6 @@ def generalized(
         Perception, 8(4), 413-416.
         https://doi.org/10.1068/p080413
     """
-    if target_heights is None:
-        raise ValueError("generalized() missing argument 'target_heights' which is not 'None'")
 
     # Spatial square-wave grating
     stim = squarewave(
@@ -124,6 +122,11 @@ def generalized(
         target_heights = (target_heights,)
     if isinstance(target_center_offsets, (int, float)):
         target_center_offsets = (target_center_offsets,)
+    
+    if len(target_indices) != 0 and target_heights is None:
+        raise ValueError("generalized() missing argument 'target_heights' which is not 'None'")
+    if len(target_indices) == 0 and target_heights is None:
+        target_heights = (0,)
 
     intensity_target = tuple(
         itertools.islice(itertools.cycle(intensity_target), len(target_indices))
