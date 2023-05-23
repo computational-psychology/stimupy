@@ -2,6 +2,17 @@
 
 <!--next-version-placeholder-->
 
+## v1.0.0 (2023-05-23)
+### Fix
+* Build GHA ([`db12dda`](https://github.com/computational-psychology/stimupy/commit/db12dda349df0ce2e98b0f715d04aed242d3d9dd))
+
+### Breaking
+* bump to v1.0.0 ([`4ac4aee`](https://github.com/computational-psychology/stimupy/commit/4ac4aee80bb9529bd28c8c5be05d3d725572feea))
+
+### Documentation
+* **README:** Add badges ([`e8f54f9`](https://github.com/computational-psychology/stimupy/commit/e8f54f9ab4c4772e3433388caa7c62506efc883a))
+* Update installation instructions to use PyPI ([`4c3c492`](https://github.com/computational-psychology/stimupy/commit/4c3c49227dadabb7ef1950702f0e05079982f2d1))
+
 ## v0.101.1 (2023-05-20)
 ### Fix
 * Added relevant error message in todorovic ([`0cb7f88`](https://github.com/computational-psychology/stimupy/commit/0cb7f88a75d78e5ae8d94df3c7363c899b0baaa6))
