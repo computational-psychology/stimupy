@@ -9,7 +9,10 @@ and other aspects of visual perception.
 
 <p align=center>
 
-[![Tests](https://github.com/computational-psychology/stimupy/actions/workflows/test.yml/badge.svg)](https://github.com/computational-psychology/stimupy/actions/workflows/test.yml) [![](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![JOSS Status](https://joss.theoj.org/papers/af54c793f6f4c02a4af6a8b5f6f57e9d/status.svg)](https://joss.theoj.org/papers/af54c793f6f4c02a4af6a8b5f6f57e9d)
+[![PyPI version](https://img.shields.io/pypi/v/stimupy)](https://pypi.org/project/stimupy/)
+[![Tests](https://github.com/computational-psychology/stimupy/actions/workflows/test.yml/badge.svg)](https://github.com/computational-psychology/stimupy/actions/workflows/test.yml)
+[![Py versions](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![Documentation Status](https://readthedocs.org/projects/stimupy/badge/?version=latest)](https://stimupy.readthedocs.io/en/latest/?badge=latest)
 </p>
 
