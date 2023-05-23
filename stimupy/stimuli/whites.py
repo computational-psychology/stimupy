@@ -122,7 +122,7 @@ def generalized(
         target_heights = (target_heights,)
     if isinstance(target_center_offsets, (int, float)):
         target_center_offsets = (target_center_offsets,)
-    
+
     if len(target_indices) != 0 and target_heights is None:
         raise ValueError("generalized() missing argument 'target_heights' which is not 'None'")
     if len(target_indices) == 0 and target_heights is None:
