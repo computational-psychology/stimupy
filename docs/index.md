@@ -6,8 +6,8 @@
 ```
 
 ```{include} ../README.md
-:start-line: 24
-:end-line: 38
+:start-line: 28
+:end-line: 42
 ```
 
 ::::{grid} 2
