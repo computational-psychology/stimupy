@@ -117,7 +117,7 @@ where many functions share the same —intuitive— parameters.
 This makes it easier to explore parameters and to create novel stimuli.
 
 OCTA is also a Python package to generate stimuli,
-specifically grids of multiple elements that can be show regularity and variety
+specifically grids of multiple elements that show regularity and variety
 along various stimulus dimensions.
 These stimuli are of particular use to studies on Gestalt vision,
 aesthetics and complexity.
