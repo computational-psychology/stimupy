@@ -3,6 +3,7 @@ name: Draft JOSS PDF
 on:
   push:
     branches: [main, manuscript]
+  workflow_dispatch:
 
 jobs:
   paper:
