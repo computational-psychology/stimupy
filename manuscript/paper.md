@@ -47,7 +47,7 @@ of different complexity as they are commonly used in the study of visual percept
 - visual [stimuli](https://stimupy.readthedocs.io/en/latest/reference/_api/stimupy.stimuli.html)
   such as Gabors, plaids, edges, and a variety of so-called illusions
   (e.g., Simultaneous Brightness Contrast, White's illusion, Hermann grid, Ponzo illusion), and many more
-- stimulus sets from prior research papers, providing exact stimulus recreations (e.g., ModelFest, @carney1999)
+- stimulus sets from prior research [papers](https://stimupy.readthedocs.io/en/latest/reference/_api/stimupy.papers.html), providing exact stimulus recreations (e.g., ModelFest, @carney1999)
 - [utility functions](https://stimupy.readthedocs.io/en/latest/reference/_api/stimupy.utils.html)
   for stimulus import, export, manipulation (e.g., contrast, size), or plotting
 - [documentation](https://stimupy.readthedocs.io/en/latest/index.html),
@@ -128,7 +128,7 @@ Both packages also have a strong focus on ease-of-use, replicability, and open s
 `stimupy` currently focuses on a different class of stimuli:
 mainly displays used to study early and low-level visual processes,
 as well as visual features such as brightness, contrast, and orientation.
-Thus, OCTA and `stimupy` cover complementary usecases.
+Thus, OCTA and `stimupy` cover complementary use cases.
 
 Another design decision that sets `stimupy` apart from existing software such as OCTA and Pyllusion,
 is that all `stimupy` stimuli are generated as `NumPy`-arrays
@@ -171,7 +171,7 @@ As far as we know `stimupy` is the only package that:
 
 `stimupy` is a free and open-source Python package
 which can be easily downloaded and installed via standard package managers,
-or directly from its GitHub source.
+or directly from its [GitHub source](https://github.com/computational-psychology/stimupy).
 We think that using `stimupy` will improve the consistency
 and accessibility of visual stimuli while helping to avoid bugs.
 A key feature in `stimupy` is that its functions are parameterized
@@ -195,6 +195,15 @@ for other purposes than psychophysical experimentation on a computer screen
 The main advantage of using dictionaries as function outputs is that
 Python dictionaries are mutable data structures
 which allow you to add additional information easily.
+Moreover, the stimulus dictionaries contain all parameter information
+relevant for describing a stimulus (e.g., size, resolution, spatial
+frequency, orientation, phase, etc), and hence help to report
+stimulus parameters, e.g. in a research paper.
+`stimupy` also provides utility-functions to strip the stimulus dictionaries down
+to just the raw parameters that the original stimulus function expects.
+Hence, it is sufficient to share only the stimulus dictionaries to recreate
+exact stimulus replications, which makes it easy to create slight variations of
+this stimulus.
 Taken together,
 these design choices make `stimupy` a flexible and versatile Python package
 which facilitates the (re)creation and use of visual stimuli for a variety of purposes.
