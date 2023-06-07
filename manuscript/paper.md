@@ -128,7 +128,7 @@ Both packages also have a strong focus on ease-of-use, replicability, and open s
 `stimupy` currently focuses on a different class of stimuli:
 mainly displays used to study early and low-level visual processes,
 as well as visual features such as brightness, contrast, and orientation.
-Thus, OCTA and `stimupy` cover complementary usecases.
+Thus, OCTA and `stimupy` cover complementary use cases.
 
 Another design decision that sets `stimupy` apart from existing software such as OCTA and Pyllusion,
 is that all `stimupy` stimuli are generated as `NumPy`-arrays
@@ -208,7 +208,7 @@ Taken together,
 these design choices make `stimupy` a flexible and versatile Python package
 which facilitates the (re)creation and use of visual stimuli for a variety of purposes.
 
-Another important usecase for `stimupy` is the evaluation of computational vision models.
+Another important use case for `stimupy` is the evaluation of computational vision models.
 A common strategy to validate computational vision models
 is to test them with benchmark datasets; e.g. in spatial vision [@carney1999],
 lightness perception [@murray2021], object recognition [@deng2009], or object segmentation [@martin2001].
