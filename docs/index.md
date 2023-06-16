@@ -10,6 +10,11 @@
 :end-line: 42
 ```
 
+```{include} ../README.md
+:start-line: 98
+:end-line: 121
+```
+
 ::::{grid} 2
 :gutter: 3
 
