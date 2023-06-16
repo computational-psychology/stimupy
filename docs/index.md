@@ -7,13 +7,10 @@
 
 ```{include} ../README.md
 :start-line: 28
-:end-line: 42
+:end-line: 41
 ```
 
-```{include} ../README.md
-:start-line: 98
-:end-line: 121
-```
+---
 
 ::::{grid} 2
 :gutter: 3
@@ -65,3 +62,10 @@ request a feature,
 or contribute.
 :::
 ::::
+
+---
+
+```{include} ../README.md
+:start-line: 98
+:end-line: 121
+```
