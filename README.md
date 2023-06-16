@@ -99,11 +99,13 @@ See the [documentation](https://stimupy.readthedocs.io/en/latest/) for more deta
 
 If you use `stimupy` for your scientific work, please cite the [paper](https://doi.org/10.21105/joss.05321) as:
 
-```
-Schmittwilken, L., Maertens, M., & Vincent, J. (2023). stimupy: A Python package for creating stimuli in vision science. Journal of Open Source Software, 8(86), 5321, https://doi.org/10.21105/joss.05321
-```
+> Schmittwilken, L., Maertens, M., & Vincent, J. (2023). 
+>   stimupy: A Python package for creating stimuli in vision science.
+>   Journal of Open Source Software, 8(86), 5321.
+>   https://doi.org/10.21105/joss.05321
 
-Here is a bibtex formatted reference:
+
+Here is a BibTeX entry for this reference:
 
 ```
 @article{Schmittwilken2023,
