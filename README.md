@@ -79,7 +79,7 @@ so that they are reproducible, flexible, and easy.
 
 - modular and therefore easy to extend with new stimulus functions,
   and new stimulus sets
- 
+
 - [utility functions](https://stimupy.readthedocs.io/en/latest/reference/_api/stimupy.utils.html)
   for stimulus import, export, manipulation (e.g. contrast, size), or plotting
 
@@ -96,6 +96,32 @@ See the [documentation](https://stimupy.readthedocs.io/en/latest/) for more deta
 ---
 
 ## Citing stimupy
+
+If you use `stimupy` for your scientific work, please cite the [paper](https://doi.org/10.21105/joss.05321) as:
+
+> Schmittwilken, L., Maertens, M., & Vincent, J. (2023). 
+>   stimupy: A Python package for creating stimuli in vision science.
+>   Journal of Open Source Software, 8(86), 5321.
+>   https://doi.org/10.21105/joss.05321
+
+
+Here is a BibTeX entry for this reference:
+
+```
+@article{Schmittwilken2023,
+    doi = {10.21105/joss.05321},
+    url = {https://doi.org/10.21105/joss.05321},
+    year = {2023},
+    publisher = {The Open Journal},
+    volume = {8},
+    number = {86},
+    pages = {5321},
+    author = {Lynn Schmittwilken and Marianne Maertens and Joris Vincent},
+    title = {stimupy: A Python package for creating stimuli in vision science},
+    journal = {Journal of Open Source Software}
+}
+```
+
 
 ## Your stimulus (set) is not here?
 Given the modular nature of the package,

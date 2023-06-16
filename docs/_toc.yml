@@ -22,6 +22,7 @@ parts:
     - file: reference/demos.md
   - caption: Get in touch
     chapters:
+    - file: contributing/cite
     - file: contributing/get_in_touch
     - file: contributing/contribute
 
