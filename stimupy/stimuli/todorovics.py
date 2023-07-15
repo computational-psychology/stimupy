@@ -282,8 +282,8 @@ def rectangle_two_sided(
         distance from cover center to target center in (y, x)
     intensity_background : Sequence[Number, Number]
         intensity values for backgrounds
-    intensity_target : float
-        intensity value for target
+    intensity_target : Sequence[float, float], or float (optional)
+        intensity value of targets, by default 0.5
     intensity_covers : Sequence[Number, Number]
         intensity values for covers
 
@@ -307,6 +307,11 @@ def rectangle_two_sided(
         Lightness and junctions. Perception, 26, 379-395.
     """
 
+    try:
+        len(intensity_target)
+    except:
+        intensity_target = (intensity_target, intensity_target)
+
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
 
@@ -317,7 +322,7 @@ def rectangle_two_sided(
         covers_size=covers_size,
         covers_offset=covers_offset,
         intensity_background=intensity_backgrounds[0],
-        intensity_target=intensity_target,
+        intensity_target=intensity_target[0],
         intensity_covers=intensity_covers[0],
     )
 
@@ -328,7 +333,7 @@ def rectangle_two_sided(
         covers_size=covers_size,
         covers_offset=covers_offset,
         intensity_background=intensity_backgrounds[1],
-        intensity_target=intensity_target,
+        intensity_target=intensity_target[1],
         intensity_covers=intensity_covers[1],
     )
 
@@ -613,8 +618,8 @@ def cross_two_sided(
         size of covers in degrees of visual angle (height, width)
     intensity_backgrounds : Sequence[Number, Number]
         intensity values for backgrounds
-    intensity_target : float
-        intensity value for target
+    intensity_target : Sequence[float, float], or float (optional)
+        intensity value of targets, by default 0.5
     intensity_covers : Sequence[Number, Number]
         intensity values for covers
 
@@ -638,6 +643,11 @@ def cross_two_sided(
         Lightness and junctions. Perception, 26, 379-395.
     """
 
+    try:
+        len(intensity_target)
+    except:
+        intensity_target = (intensity_target, intensity_target)
+
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
 
@@ -648,7 +658,7 @@ def cross_two_sided(
         cross_thickness=cross_thickness,
         covers_size=covers_size,
         intensity_background=intensity_backgrounds[0],
-        intensity_target=intensity_target,
+        intensity_target=intensity_target[0],
         intensity_covers=intensity_covers[0],
     )
 
@@ -659,7 +669,7 @@ def cross_two_sided(
         cross_thickness=cross_thickness,
         covers_size=covers_size,
         intensity_background=intensity_backgrounds[1],
-        intensity_target=intensity_target,
+        intensity_target=intensity_target[1],
         intensity_covers=intensity_covers[1],
     )
 
@@ -793,8 +803,8 @@ def equal_two_sided(
         thickness of target cross in visual angle
     intensity_background : float
         intensity value for background
-    intensity_target : float
-        intensity value for target
+    intensity_target : Sequence[float, float], or float (optional)
+        intensity value of targets, by default 0.5
     intensity_covers : float
         intensity value for covers
 
@@ -817,6 +827,10 @@ def equal_two_sided(
     Todorovic, D. (1997).
         Lightness and junctions. Perception, 26, 379-395.
     """
+    try:
+        len(intensity_target)
+    except:
+        intensity_target = (intensity_target, intensity_target)
 
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
@@ -827,7 +841,7 @@ def equal_two_sided(
         cross_size=cross_size,
         cross_thickness=cross_thickness,
         intensity_background=intensity_backgrounds[0],
-        intensity_target=intensity_target,
+        intensity_target=intensity_target[0],
         intensity_covers=intensity_covers[0],
     )
 
@@ -837,7 +851,7 @@ def equal_two_sided(
         cross_size=cross_size,
         cross_thickness=cross_thickness,
         intensity_background=intensity_backgrounds[1],
-        intensity_target=intensity_target,
+        intensity_target=intensity_target[1],
         intensity_covers=intensity_covers[1],
     )
 
