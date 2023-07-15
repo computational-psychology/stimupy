@@ -159,8 +159,8 @@ def circular_two_sided(
         width of a single ring, in degrees
     phase_shift : float
         phase shift of grating in degrees
-    intensity_target : float (optional)
-        intensity value of target ring(s), by default 0.5
+    intensity_target : Sequence[float, float], or float (optional)
+        intensity value of targets, by default 0.5
     intensity_rings : Sequence[Number, ...]
         intensity value for each ring, from inside to out, by default [1,0]
         If fewer intensities are passed than number of radii, cycles through intensities
@@ -399,10 +399,8 @@ def rectangular_two_sided(
     period : "full", "half", "ignore" (default)
         whether to ensure the grating only has "full" periods,
         half "periods", or no guarantees ("ignore")
-    intensity_target : float, or Sequence[float, ...], optional
-        intensity value for each target, by default 0.5.
-        Can specify as many intensities as number of target_indices;
-        If fewer intensities are passed than target_indices, cycles through intensities
+    intensity_target : Sequence[float, float], or float (optional)
+        intensity value of targets, by default 0.5
     intensity_frames : Sequence[float, float]
         min and max intensity of square-wave, by default (0.0, 1.0)
     intensity_background : float (optional)

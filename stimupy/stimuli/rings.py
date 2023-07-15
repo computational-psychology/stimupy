@@ -63,7 +63,7 @@ def circular_two_sided(
         phase shift of grating in degrees
     target_indices : int or Sequence[int, ] (optional)
         indices of target discs. If not specified, use middle ring (round down)
-    intensity_target : float (optional)
+    intensity_target : Sequence[float, float], or float (optional)
         intensity value of target ring(s), by default 0.5
     intensity_rings : Sequence[Number, ...]
         intensity value for each ring, from inside to out, by default [1,0]
@@ -98,6 +98,11 @@ def circular_two_sided(
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
 
+    try:
+        len(intensity_target)
+    except:
+        intensity_target = (intensity_target, intensity_target)
+
     stim1 = circular(
         visual_size=(visual_size[0], visual_size[1] / 2),
         ppd=ppd,
@@ -106,7 +111,7 @@ def circular_two_sided(
         ring_width=ring_width,
         phase_shift=phase_shift,
         target_indices=target_indices,
-        intensity_target=intensity_target,
+        intensity_target=intensity_target[0],
         intensity_rings=intensity_rings,
         intensity_background=intensity_background,
         origin=origin,
@@ -121,7 +126,7 @@ def circular_two_sided(
         ring_width=ring_width,
         phase_shift=phase_shift,
         target_indices=target_indices,
-        intensity_target=intensity_target,
+        intensity_target=intensity_target[1],
         intensity_rings=intensity_rings[::-1],
         intensity_background=intensity_background,
         origin=origin,
@@ -262,10 +267,8 @@ def rectangular_two_sided(
         intensity value of background, by default 0.5
     target_indices : int, or Sequence[int, ...]
         indices frames where targets will be placed
-    intensity_target : float, or Sequence[float, ...], optional
-        intensity value for each target, by default 0.5.
-        Can specify as many intensities as number of target_indices;
-        If fewer intensities are passed than target_indices, cycles through intensities
+    intensity_target : Sequence[float, float], or float (optional)
+        intensity value of target ring(s), by default 0.5
     origin : "corner", "mean" or "center"
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)
@@ -293,6 +296,11 @@ def rectangular_two_sided(
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
 
+    try:
+        len(intensity_target)
+    except:
+        intensity_target = (intensity_target, intensity_target)
+
     stim1 = rectangular(
         visual_size=(visual_size[0], visual_size[1] / 2),
         ppd=ppd,
@@ -300,7 +308,7 @@ def rectangular_two_sided(
         n_frames=n_frames,
         frame_width=frame_width,
         phase_shift=phase_shift,
-        intensity_target=intensity_target,
+        intensity_target=intensity_target[0],
         intensity_frames=intensity_frames,
         target_indices=target_indices,
         origin=origin,
@@ -316,7 +324,7 @@ def rectangular_two_sided(
         n_frames=n_frames,
         frame_width=frame_width,
         phase_shift=phase_shift,
-        intensity_target=intensity_target,
+        intensity_target=intensity_target[1],
         intensity_frames=intensity_frames[::-1],
         target_indices=target_indices,
         origin=origin,
