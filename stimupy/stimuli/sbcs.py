@@ -154,8 +154,8 @@ def two_sided(
         size of the target in degree visual angle (height, width)
     intensity_background : Sequence[Number, Number]
         intensity values for backgrounds
-    intensity_target : float
-        intensity value for target
+    intensity_target : Sequence[float, float], or float (optional)
+        intensity value of targets, by default 0.5
 
     Returns
     -------
@@ -172,6 +172,11 @@ def two_sided(
     if target_size is None:
         raise ValueError("two_sided() missing argument 'target_size' which is not 'None'")
 
+    try:
+        len(intensity_target)
+    except:
+        intensity_target = (intensity_target, intensity_target)
+
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
 
@@ -180,7 +185,7 @@ def two_sided(
         ppd=ppd,
         target_size=target_size,
         intensity_background=intensity_backgrounds[0],
-        intensity_target=intensity_target,
+        intensity_target=intensity_target[0],
     )
 
     stim2 = basic(
@@ -188,7 +193,7 @@ def two_sided(
         ppd=ppd,
         target_size=target_size,
         intensity_background=intensity_backgrounds[1],
-        intensity_target=intensity_target,
+        intensity_target=intensity_target[1],
     )
 
     stim = stack_dicts(stim1, stim2)
@@ -367,8 +372,8 @@ def with_dots_two_sided(
         intensity values for background
     intensity_dots : Sequence[Number, Number]
         intensity values for dots
-    intensity_target : float
-        intensity value for target
+    intensity_target : Sequence[float, float], or float (optional)
+        intensity value of targets, by default 0.5
 
     Returns
     -------
@@ -384,6 +389,11 @@ def with_dots_two_sided(
         Journal of Vision, 8(2), 16-16.
         https://doi.org/10.1167/8.2.16
     """
+
+    try:
+        len(intensity_target)
+    except:
+        intensity_target = (intensity_target, intensity_target)
 
     # Resolve resolution
     try:
@@ -401,7 +411,7 @@ def with_dots_two_sided(
         target_shape=target_shape,
         intensity_background=intensity_backgrounds[0],
         intensity_dots=intensity_dots[0],
-        intensity_target=intensity_target,
+        intensity_target=intensity_target[0],
     )
 
     stim2 = with_dots(
@@ -413,7 +423,7 @@ def with_dots_two_sided(
         target_shape=target_shape,
         intensity_background=intensity_backgrounds[1],
         intensity_dots=intensity_dots[1],
-        intensity_target=intensity_target,
+        intensity_target=intensity_target[1],
     )
 
     stim = stack_dicts(stim1, stim2)
@@ -585,12 +595,12 @@ def dotted_two_sided(
         distance between dots in degree visual angle
     target_shape : int or (int, int)
         target shape defined as the number of dots that fit into the target
-    intensity_background : equence[Number, Number]
+    intensity_background : Sequence[Number, Number]
         intensity values for background
-    intensity_dots : equence[Number, Number]
+    intensity_dots : Sequence[Number, Number]
         intensity values for dots
-    intensity_target : float
-        intensity value for target
+    intensity_target : Sequence[float, float], or float (optional)
+        intensity value of targets, by default 0.5
 
     Returns
     -------
@@ -606,6 +616,11 @@ def dotted_two_sided(
         Journal of Vision, 8(2), 16-16.
         https://doi.org/10.1167/8.2.16
     """
+
+    try:
+        len(intensity_target)
+    except:
+        intensity_target = (intensity_target, intensity_target)
 
     # Resolve resolution
     try:
@@ -623,7 +638,7 @@ def dotted_two_sided(
         target_shape=target_shape,
         intensity_background=intensity_backgrounds[0],
         intensity_dots=intensity_dots[0],
-        intensity_target=intensity_target,
+        intensity_target=intensity_target[0],
     )
 
     stim2 = dotted(
@@ -635,7 +650,7 @@ def dotted_two_sided(
         target_shape=target_shape,
         intensity_background=intensity_backgrounds[1],
         intensity_dots=intensity_dots[1],
-        intensity_target=intensity_target,
+        intensity_target=intensity_target[1],
     )
 
     stim = stack_dicts(stim1, stim2)
@@ -677,4 +692,4 @@ if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
 
     stims = overview()
-    plot_stimuli(stims, mask=True, save=None)
+    plot_stimuli(stims, mask=False, save=None)
