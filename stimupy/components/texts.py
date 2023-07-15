@@ -72,12 +72,7 @@ def text(
                 encoding="unic",
             )
         except IOError:
-            # On Ubuntu, should have the Ubuntu Mono fonts
-            font = ImageFont.truetype(
-                "UbuntuMono-R.ttf",
-                fontsize,
-                encoding="unic",
-            )
+            font = ImageFont.load_default()
 
     # Determine dimensions of total text
     n_lines = len(text.split("\n"))
