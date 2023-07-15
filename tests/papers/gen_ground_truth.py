@@ -22,13 +22,18 @@ for paper in papers:
         mask_keys = [key for key in stim.keys() if key.endswith("mask")]
         if "target_mask" in mask_keys:
             mask = stim["target_mask"]
-        else:
+        elif mask_keys:
             mask = stim[mask_keys[0]]
+        else:
+            mask = None
 
         stim.clear()
         stim["img"] = img
-        stim["mask"] = mask
-        export.arrays_to_checksum(stim, ["img", "mask"])
+        keys = ["img"]
+        if mask is not None:
+            stim["mask"] = mask
+            keys += ["mask"]
+        export.arrays_to_checksum(stim, keys)
 
     # Save all as .JSON
     export.to_json(stims, f"{d}/{paper}.json")
