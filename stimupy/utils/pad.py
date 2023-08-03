@@ -1,4 +1,5 @@
 import copy
+
 import numpy as np
 
 from .utils import resolution
@@ -268,7 +269,7 @@ def pad_dict_by_visual_size(dct, padding, ppd, pad_value=0.0, keys=("img", "*mas
                     img = pad_by_visual_size(img, padding, ppd, pad_value)
                 new_dict[key] = img
 
-    # Update visual_size and shape-keys
+    # Update resolution
     new_dict["visual_size"] = resolution.visual_size_from_shape_ppd(img.shape, ppd)
     new_dict["shape"] = resolution.validate_shape(img.shape)
     return new_dict
@@ -301,7 +302,13 @@ def pad_dict_to_visual_size(dct, visual_size, ppd, pad_value=0, keys=("img", "*m
     shape = resolution.shape_from_visual_size_ppd(visual_size=visual_size, ppd=ppd)
 
     # pad
-    return pad_dict_to_shape(dct=dct, shape=shape, pad_value=pad_value, keys=keys)
+    padded_dict = pad_dict_to_shape(dct=dct, shape=shape, pad_value=pad_value, keys=keys)
+
+    # update resolution
+    padded_dict["ppd"] = ppd
+    padded_dict["visual_size"] = visual_size
+
+    return padded_dict
 
 
 def pad_dict_by_shape(dct, padding, pad_value=0, keys=("img", "*mask")):
@@ -430,7 +437,7 @@ def pad_dict_to_shape(dct, shape, pad_value=0, keys=("img", "*mask")):
                     img = pad_by_shape(img, padding=padding, pad_value=pad_value)
                 new_dict[key] = img
 
-    # Update visual_size and shape-keys
+    # Update resolution
     new_dict["shape"] = resolution.validate_shape(shape)
     if "ppd" in dct.keys():
         new_dict["visual_size"] = resolution.visual_size_from_shape_ppd(shape, dct["ppd"])

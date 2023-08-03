@@ -3,6 +3,7 @@ import itertools
 import numpy as np
 
 from stimupy.components import *  # angulars, edges, frames, gaussians, lines, radials, shapes, waves
+from stimupy.components import texts
 from stimupy.utils import resolution
 
 __all__ = [
@@ -20,6 +21,7 @@ __all__ = [
     "gaussians",
     "lines",
     "shapes",
+    "texts",
     "waves",
 ]
 
