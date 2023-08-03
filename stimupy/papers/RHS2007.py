@@ -1645,38 +1645,22 @@ def todorovic_benary1_2(ppd=PPD, pad=True):
         Perception, 26, 379-395.
     """
 
-    params = {
-        "ppd": ppd,
-        "L_width": 2.5,
-        "target_size": 2.5,
-        "target_type": ("t", "t"),
-        "target_rotation": (0.0, 180.0),
-        "target_x": (2.5, 26.0),
-        "target_y": (4.0, 6.5),
-        "intensity_background": v3,
-        "intensity_cross": v1,
-        "intensity_target": v2,
-    }
+    # Generate full stim
+    stim = todorovic_benary1_2_3_4(ppd=ppd, pad=pad)
 
-    stim = stimupy.benarys.todorovic_generalized(
-        visual_size=(13.0, 31.0),
-        **params,
-    )
+    # Remove unused targets
+    stim["img"] = np.where(stim["target_mask"] == 3, v3, stim["img"])
+    stim["img"] = np.where(stim["target_mask"] == 4, v1, stim["img"])
+    stim["target_mask"] = np.where(stim["target_mask"] > 2, 0, stim["target_mask"])
+    stim["target_type"] = stim["target_type"][:2]
+    stim["target_rotation"] = stim["target_rotation"][:2]
+    stim["target_x"] = stim["target_x"][:2]
+    stim["target_y"] = stim["target_y"][:2]
 
-    if pad:
-        stim = pad_dict_to_visual_size(stim, VISEXTENT, ppd, pad_value=v2)
+    # Add experimental data
+    stim["effect_strength"] = 11.96
 
-    experimental_data = {
-        "effect_strength": 11.96,
-    }
-
-    params.update(
-        visual_size=np.array(stim["img"].shape) / ppd,
-        shape=stim["img"].shape,
-        intensity_range=(v1, v3),
-        experimental_data=experimental_data,
-    )
-    return {**stim, **params}
+    return stim
 
 
 def todorovic_benary3_4(ppd=PPD, pad=True):
@@ -1707,38 +1691,25 @@ def todorovic_benary3_4(ppd=PPD, pad=True):
         Perception, 26, 379-395.
     """
 
-    params = {
-        "ppd": ppd,
-        "L_width": 2.5,
-        "target_size": 2.5,
-        "target_type": ("t", "t"),
-        "target_rotation": (45.0, 225.0),
-        "target_x": (9.5, 18.0),
-        "target_y": (6.5, 6.5 - np.sqrt(12.5) / 2.0 + 1 / ppd),
-        "intensity_background": v3,
-        "intensity_cross": v1,
-        "intensity_target": v2,
-    }
+    # Generate full stim
+    stim = todorovic_benary1_2_3_4(ppd=ppd, pad=pad)
 
-    stim = stimupy.benarys.todorovic_generalized(
-        visual_size=(13.0, 31.0),
-        **params,
+    # Remove unused targets
+    stim["img"] = np.where(stim["target_mask"] == 1, v3, stim["img"])
+    stim["img"] = np.where(stim["target_mask"] == 2, v1, stim["img"])
+    stim["target_mask"] = np.where(stim["target_mask"] < 3, 0, stim["target_mask"])
+    stim["target_mask"] = np.where(
+        stim["target_mask"], stim["target_mask"] - 2, stim["target_mask"]
     )
+    stim["target_type"] = stim["target_type"][2:]
+    stim["target_rotation"] = stim["target_rotation"][2:]
+    stim["target_x"] = stim["target_x"][2:]
+    stim["target_y"] = stim["target_y"][2:]
 
-    if pad:
-        stim = pad_dict_to_visual_size(stim, VISEXTENT, ppd, pad_value=v2)
+    # Add experimental data
+    stim["effect_strength"] = 9.55
 
-    experimental_data = {
-        "effect_strength": 9.55,
-    }
-
-    params.update(
-        visual_size=np.array(stim["img"].shape) / ppd,
-        shape=stim["img"].shape,
-        intensity_range=(v1, v3),
-        experimental_data=experimental_data,
-    )
-    return {**stim, **params}
+    return stim
 
 
 def todorovic_benary1_2_3_4(ppd=PPD, pad=True):
