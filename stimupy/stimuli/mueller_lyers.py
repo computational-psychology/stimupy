@@ -35,18 +35,18 @@ def mueller_lyer(
         shape [height, width] of grating, in pixels
     outer_lines_length : Number
         length of outer lines in degrees visual angle
-    outer_lines_angle : Number
-        angle of outer lines in degrees. Must be between -180 and 180 degrees.
+    outer_lines_angle : Number (optional)
+        angle of outer lines in degrees, by default 45. Must be between -180 and 180 degrees.
     target_length : Number
         length of target line in degrees visual angle
-    line_width :
+    line_width : Number (optional)
         line width in degrees visual angle; if 0 (default), line width is 1 px
-    intensity_outer_lines : Number
-        intensity value of outer lines
-    intensity_target : Number
-        intensity value of target line
-    intensity_background : Number
-        intensity value of background
+    intensity_outer_lines : Number (optional)
+        intensity value of outer lines, by default 0.01
+    intensity_target : Number (optional)
+        intensity value of target line, by default 0.5
+    intensity_background : Number (optional)
+        intensity value of background, by default 0.0
 
     Returns
     -------
@@ -198,18 +198,20 @@ def two_sided(
         shape [height, width] of grating, in pixels
     outer_lines_length : Number
         length of outer lines in degrees visual angle
-    outer_lines_angle : Number
-        angle of outer lines in degrees. Must be between -180 and 180 degrees.
-    target_length : Number
+    outer_lines_angle : Sequence[Number, Number], or Number (optional)
+        angle of outer lines in degrees, by default 45. Must be between -180 and 180 degrees.
+        If one angle is passed, that is used for left hand display,
+        and right hand display angle is +90 degrees
+    target_length : Sequence[Number, Number], or Number
         length of target line in degrees visual angle
-    line_width :
+    line_width : float
         line width in degrees visual angle; if 0 (default), line width is 1 px
-    intensity_outer_lines : Number
-        intensity value of outer lines
-    intensity_target : Number
-        intensity value of target line
-    intensity_background : Number
-        intensity value of background
+    intensity_outer_lines : Number (optional)
+        intensity value of outer lines, by default 1.0
+    intensity_target : Sequence[Number, Number], or Number (optional)
+        intensity value of target line, by default 0.5
+    intensity_background : Number (optional)
+        intensity value of background, by default 0.0
 
     Returns
     -------
@@ -228,15 +230,30 @@ def two_sided(
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
 
+    try:
+        len(outer_lines_angle)
+    except:
+        outer_lines_angle = (outer_lines_angle, outer_lines_angle + 90)
+
+    try:
+        len(target_length)
+    except:
+        target_length = (target_length, target_length)
+
+    try:
+        len(intensity_target)
+    except:
+        intensity_target = (intensity_target, intensity_target)
+
     stim1 = mueller_lyer(
         visual_size=(visual_size[0], visual_size[1] / 2),
         ppd=ppd,
         outer_lines_length=outer_lines_length,
-        outer_lines_angle=outer_lines_angle,
-        target_length=target_length,
+        outer_lines_angle=outer_lines_angle[0],
+        target_length=target_length[0],
         line_width=line_width,
         intensity_outer_lines=intensity_outer_lines,
-        intensity_target=intensity_target,
+        intensity_target=intensity_target[0],
         intensity_background=intensity_background,
     )
 
@@ -244,11 +261,11 @@ def two_sided(
         visual_size=(visual_size[0], visual_size[1] / 2),
         ppd=ppd,
         outer_lines_length=outer_lines_length,
-        outer_lines_angle=outer_lines_angle + 90,
-        target_length=target_length,
+        outer_lines_angle=outer_lines_angle[1],
+        target_length=target_length[1],
         line_width=line_width,
         intensity_outer_lines=intensity_outer_lines,
-        intensity_target=intensity_target,
+        intensity_target=intensity_target[1],
         intensity_background=intensity_background,
     )
 
@@ -282,7 +299,7 @@ def overview(**kwargs):
     # fmt: off
     stimuli = {
         "mueller_lyer": mueller_lyer(**default_params, **stim_params),
-        "mueller_lyer_2sided": two_sided(**default_params, **stim_params),
+        "mueller_lyer_2sided": two_sided(**default_params, **stim_params, intensity_target=(0.5, 1.0)),
     }
     # fmt: on
 

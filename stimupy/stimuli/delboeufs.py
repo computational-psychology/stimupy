@@ -122,8 +122,8 @@ def two_sided(
         radius of target circle
     intensity_outer_line : Number
         intensity value of outer circle line (default: 0)
-    intensity_target : Number
-        intensity value of target (default: 0)
+    intensity_target : Sequence[float, float], or float (optional)
+        intensity value of targets, by default 0.5
     intensity_background : Number
         intensity value of background (default: 1)
 
@@ -147,6 +147,10 @@ def two_sided(
         raise ValueError("two_sided() missing argument 'outer_radii' which is not 'None'")
     if target_radius is None:
         raise ValueError("delboeuf() missing argument 'target_radius' which is not 'None'")
+    try:
+        len(intensity_target)
+    except:
+        intensity_target = (intensity_target, intensity_target)
 
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
@@ -158,7 +162,7 @@ def two_sided(
         outer_line_width=outer_line_width,
         target_radius=target_radius,
         intensity_outer_line=intensity_outer_line,
-        intensity_target=intensity_target,
+        intensity_target=intensity_target[0],
         intensity_background=intensity_background,
     )
 
@@ -169,7 +173,7 @@ def two_sided(
         outer_line_width=outer_line_width,
         target_radius=target_radius,
         intensity_outer_line=intensity_outer_line,
-        intensity_target=intensity_target,
+        intensity_target=intensity_target[1],
         intensity_background=intensity_background,
     )
 
