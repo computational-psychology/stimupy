@@ -251,7 +251,8 @@ w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
 
 w_theight = iw.FloatSlider(value=2, min=0, max=4, description="target height [deg]")
 w_twidth = iw.FloatSlider(value=2, min=0, max=4, description="target width [deg]")
-w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
+w_tint_l = iw.FloatSlider(value=0.5, min=0, max=1, description="left target int")
+w_tint_r = iw.FloatSlider(value=0.5, min=0, max=1, description="right target int")
 
 w_cheight = iw.FloatSlider(value=2, min=0, max=4, description="cover height [deg]")
 w_cwidth = iw.FloatSlider(value=2, min=0, max=4, description="cover width [deg]")
@@ -267,7 +268,7 @@ w_mask = iw.Dropdown(value=None, options=[None, 'target_mask'], description="add
 
 # Layout
 b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_tsize = iw.HBox([w_theight, w_twidth, w_tint])
+b_tsize = iw.HBox([w_theight, w_twidth, w_tint_l, w_tint_r])
 b_csize = iw.HBox([w_cheight, w_cwidth, w_cint1, w_cint2])
 b_c1pos = iw.HBox([w_coffx, w_coffy])
 b_intensities = iw.HBox([w_int_back])
@@ -281,7 +282,8 @@ def show_two_sided_rectangle(
     ppd=None,
     theight=None,
     twidth=None,
-    tint=None,
+    tint_l=None,
+    tint_r=None,
     cheight=None,
     cwidth=None,
     cint1=None,
@@ -300,7 +302,7 @@ def show_two_sided_rectangle(
             covers_size=(cheight, cwidth),
             covers_offset=(coffy, coffx),
             intensity_backgrounds=(intback1, intback2),
-            intensity_target=tint,
+            intensity_target=(tint_l, tint_r),
             intensity_covers=(cint1, cint2),
         )
         plot_stim(stim, mask=add_mask)
@@ -316,7 +318,8 @@ out = iw.interactive_output(
         "ppd": w_ppd,
         "theight": w_theight,
         "twidth": w_twidth,
-        "tint": w_tint,
+        "tint_l": w_tint_l,
+        "tint_r": w_tint_r,
         "cheight": w_cheight,
         "cwidth": w_cwidth,
         "cint1": w_cint1,
@@ -539,7 +542,9 @@ w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
 w_theight = iw.FloatSlider(value=4, min=0, max=8, description="cross height [deg]")
 w_twidth = iw.FloatSlider(value=4, min=0, max=8, description="cross width [deg]")
 w_tthick = iw.FloatSlider(value=2, min=0, max=4, description="cross thickness [deg]")
-w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="cross int")
+w_tint_l = iw.FloatSlider(value=0.5, min=0, max=1, description="left cross int")
+w_tint_r = iw.FloatSlider(value=0.5, min=0, max=1, description="right cross int")
+
 
 w_cheight = iw.FloatSlider(value=2, min=0, max=4, description="cover height [deg]")
 w_cwidth = iw.FloatSlider(value=2, min=0, max=4, description="cover width [deg]")
@@ -552,7 +557,7 @@ w_mask = iw.Dropdown(value=None, options=[None, 'target_mask'], description="add
 
 # Layout
 b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_tsize = iw.HBox([w_theight, w_twidth, w_tthick, w_tint])
+b_tsize = iw.HBox([w_theight, w_twidth, w_tthick, w_tint_l, w_tint_r])
 b_csize = iw.HBox([w_cheight, w_cwidth, w_cint1, w_cint2])
 b_intensities = iw.HBox([w_int_back1, w_int_back2])
 b_add = iw.HBox([w_mask])
@@ -565,7 +570,8 @@ def show_two_sided_cross(
     ppd=None,
     theight=None,
     twidth=None,
-    tint=None,
+    tint_l=None,
+    tint_r=None,
     tthick=None,
     cheight=None,
     cwidth=None,
@@ -583,7 +589,7 @@ def show_two_sided_cross(
             cross_thickness=tthick,
             covers_size=(cheight, cwidth),
             intensity_backgrounds=(intback1, intback2),
-            intensity_target=tint,
+            intensity_target=(tint_l, tint_r),
             intensity_covers=(cint1, cint2),
         )
         plot_stim(stim, mask=add_mask)
@@ -599,7 +605,8 @@ out = iw.interactive_output(
         "ppd": w_ppd,
         "theight": w_theight,
         "twidth": w_twidth,
-        "tint": w_tint,
+        "tint_l": w_tint_l,
+        "tint_r": w_tint_r,
         "tthick": w_tthick,
         "cheight": w_cheight,
         "cwidth": w_cwidth,
@@ -710,7 +717,8 @@ w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
 w_theight = iw.FloatSlider(value=4, min=0, max=8, description="cross height [deg]")
 w_twidth = iw.FloatSlider(value=4, min=0, max=8, description="cross width [deg]")
 w_tthick = iw.FloatSlider(value=2, min=0, max=4, description="cross thickness [deg]")
-w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="cross int")
+w_tint_l = iw.FloatSlider(value=0.5, min=0, max=1, description="left cross int")
+w_tint_r = iw.FloatSlider(value=0.5, min=0, max=1, description="right cross int")
 
 w_cint1 = iw.FloatSlider(value=1, min=0, max=1, description="cover1 int")
 w_cint2 = iw.FloatSlider(value=0, min=0, max=1, description="cover2 int")
@@ -721,7 +729,7 @@ w_mask = iw.Dropdown(value=None, options=[None, 'target_mask'], description="add
 
 # Layout
 b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_tsize = iw.HBox([w_theight, w_twidth, w_tthick, w_tint])
+b_tsize = iw.HBox([w_theight, w_twidth, w_tthick, w_tint_l, w_tint_r])
 b_csize = iw.HBox([w_cint1, w_cint2])
 b_intensities = iw.HBox([w_int_back1, w_int_back2])
 b_add = iw.HBox([w_mask])
@@ -734,7 +742,8 @@ def show_two_sided_equal(
     ppd=None,
     theight=None,
     twidth=None,
-    tint=None,
+    tint_l=None,
+    tint_r=None,
     tthick=None,
     cint1=None,
     cint2=None,
@@ -749,7 +758,7 @@ def show_two_sided_equal(
             cross_size=(theight, twidth),
             cross_thickness=tthick,
             intensity_backgrounds=(intback1, intback2),
-            intensity_target=tint,
+            intensity_target=(tint_l, tint_r),
             intensity_covers=(cint1, cint2),
         )
         plot_stim(stim, mask=add_mask)
@@ -765,7 +774,8 @@ out = iw.interactive_output(
         "ppd": w_ppd,
         "theight": w_theight,
         "twidth": w_twidth,
-        "tint": w_tint,
+        "tint_l": w_tint_l,
+        "tint_r": w_tint_r,
         "tthick": w_tthick,
         "cint1": w_cint1,
         "intback1": w_int_back1,

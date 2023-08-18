@@ -195,7 +195,8 @@ w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
 w_t_height = iw.IntSlider(value=3, min=1, max=6, description="target height [deg]")
 w_t_width = iw.IntSlider(value=3, min=1, max=6, description="target width [deg]")
 
-w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="intensity target")
+w_tint_l = iw.FloatSlider(value=0.5, min=0, max=1, description="intensity target left")
+w_tint_r = iw.FloatSlider(value=0.5, min=0, max=1, description="intensity target right")
 w_int_back_l = iw.FloatSlider(value=0., min=0, max=1, description="intensity left background")
 w_int_back_r = iw.FloatSlider(value=1., min=0, max=1, description="intensity right background")
 
@@ -205,8 +206,8 @@ w_mask = iw.ToggleButton(value=False, disabled=False, description="add mask")
 
 # Layout
 b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_t_size = iw.HBox([w_t_height, w_t_width, w_rot])
-b_intensities = iw.HBox([w_tint, w_int_back_l, w_int_back_r])
+b_t_size = iw.HBox([w_t_height, w_t_width])
+b_intensities = iw.HBox([w_tint_l, w_tint_r, w_int_back_l, w_int_back_r])
 b_add = iw.HBox([w_mask])
 ui = iw.VBox([b_im_size, b_t_size, b_intensities, b_add])
 
@@ -219,7 +220,8 @@ def show_two_sided(
     target_width=None,
     intensity_background_l=None,
     intensity_background_r=None,
-    intensity_target=None,
+    intensity_target_l=None,
+    intensity_target_r=None,
     add_mask=False,
 ):
     try:
@@ -228,7 +230,7 @@ def show_two_sided(
             ppd=ppd,
             target_size=(target_height,target_width),
             intensity_backgrounds=(intensity_background_l, intensity_background_r),
-            intensity_target=intensity_target,
+            intensity_target=(intensity_target_l, intensity_target_r),
         )
         plot_stim(stim, mask=add_mask)
     except Exception as e:
@@ -245,7 +247,8 @@ out = iw.interactive_output(
         "target_width": w_t_width,
         "intensity_background_l": w_int_back_l,
         "intensity_background_r": w_int_back_r,
-        "intensity_target": w_tint,
+        "intensity_target_l": w_tint_l,
+        "intensity_target_r": w_tint_r,
         "add_mask": w_mask,
     },
 )
