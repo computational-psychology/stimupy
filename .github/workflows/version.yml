@@ -10,6 +10,10 @@ jobs:
   bump-version:
     if: (github.event.pull_request.merged == true) || (github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
+    concurrency: bump-version
+    permissions:
+      id-token: write
+      contents: write
 
     steps:
       - name: Checkout repository 
@@ -18,20 +22,14 @@ jobs:
           fetch-depth: 0 # checkout full commit history
           token: ${{ secrets.GHA_Token }}
 
-      - name: Setup Python
-        uses: actions/setup-python@v4
+      - name: Python Semantic Release
+        id: versioning
+        uses: python-semantic-release/python-semantic-release@master
         with:
-          python-version: 3.11
+          github_token: $${{ secrets.GHA_TOKEN }}
 
-      - name: Configure git to be able to push to repo
-        env:
-          GH_TOKEN: ${{ secrets.GHA_Token }}
-        run: |
-          git config user.name token
-          git config user.email token@github.com
-
-      - name: Bump version, build & upload release assets using Semantic Release
-        env:
-          GH_TOKEN: ${{ secrets.GHA_Token }}
-        run: |
-          pipx run python-semantic-release publish -v DEBUG
+      - name: Publish package distributions to GitHub Releases
+        uses: python-semantic-release/upload-to-gh-release@main
+        if: steps.versioning.outputs.released == 'true'
+        with:
+          github_token: ${{ secrets.GHA_TOKEN }}
