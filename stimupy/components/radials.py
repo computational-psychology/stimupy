@@ -92,12 +92,12 @@ def rings(
         shape [height, width] of image, in pixels
     radii : Sequence[Number]
         outer radii of rings (& disc) in degree visual angle
-    intensity_rings : Sequence[Number, ...]
-        intensity value for each ring, from inside to out.
+    intensity_rings : Sequence[Number, ...], optional
+        intensity value for each ring, from inside to out, by default (0.0, 1.0)
         If fewer intensities are passed than number of radii, cycles through intensities
-    intensity_background : float (optional)
+    intensity_background : float, optional
         value of background, by default 0.5
-    origin : "corner", "mean" or "center"
+    origin : "corner", "mean" or "center", optional
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)
         if "center": set origin to real center (closest existing value to mean)
@@ -175,11 +175,11 @@ def disc(
         shape [height, width] of image, in pixels
     radius : Number
         outer radius of disc in degree visual angle
-    intensity_disc : Number
+    intensity_disc : Number, optional
         intensity value of disc, by default 1.0
-    intensity_background : float (optional)
+    intensity_background : float, optional
         intensity value of background, by default 0.0
-    origin : "corner", "mean" or "center"
+    origin : "corner", "mean" or "center", optional
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)
         if "center": set origin to real center (closest existing value to mean)
@@ -238,11 +238,11 @@ def ring(
         shape [height, width] of image, in pixels
     radii : Sequence[Number, Number]
         inner and outer radius of ring in degree visual angle
-    intensity_ring : Number
+    intensity_ring : Number, optional
         intensity value of ring, by default 1.0
-    intensity_background : float (optional)
+    intensity_background : float, optional
         intensity value of background, by default 0.0
-    origin : "corner", "mean" or "center"
+    origin : "corner", "mean" or "center", optional
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)
         if "center": set origin to real center (closest existing value to mean)
