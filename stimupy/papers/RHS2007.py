@@ -712,7 +712,7 @@ def WE_circular1(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "frequency": 8.0 / height,
-        "target_indices": 4,
+        "target_indices": 5,
         "intensity_background": v2,
         "intensity_target": v2,
         "clip": True,
@@ -773,7 +773,7 @@ def WE_circular05(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "frequency": 16.0 / height,
-        "target_indices": 10,
+        "target_indices": 11,
         "intensity_background": v2,
         "intensity_target": v2,
         "clip": True,
@@ -834,7 +834,7 @@ def WE_circular025(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "frequency": 32.0 / height,
-        "target_indices": 22,
+        "target_indices": 23,
         "intensity_background": v2,
         "intensity_target": v2,
         "clip": True,

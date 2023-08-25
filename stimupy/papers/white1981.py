@@ -204,7 +204,7 @@ def grating_white_white(ppd=PPD):
         "intensity_background": v3,
         "intensity_bars": (v3, v2),
         "intensity_target": v2,
-        "target_indices": (1, 3, 5, 7),
+        "target_indices": (2, 4, 6, 8),
     }
     stim = stimupy.gratings.on_uniform(**params)
     stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
@@ -247,7 +247,7 @@ def grating_white_black(ppd=PPD):
         "intensity_background": v1,
         "intensity_bars": (v3, v2),
         "intensity_target": v2,
-        "target_indices": (1, 3, 5, 7),
+        "target_indices": (2, 4, 6, 8),
     }
     stim = stimupy.gratings.on_uniform(**params)
     stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
@@ -290,7 +290,7 @@ def grating_black_white(ppd=PPD):
         "intensity_background": v3,
         "intensity_bars": (v1, v2),
         "intensity_target": v2,
-        "target_indices": (1, 3, 5, 7),
+        "target_indices": (2, 4, 6, 8),
     }
     stim = stimupy.gratings.on_uniform(**params)
     stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
@@ -333,7 +333,7 @@ def grating_black_black(ppd=PPD):
         "intensity_background": v1,
         "intensity_bars": (v1, v2),
         "intensity_target": v2,
-        "target_indices": (1, 3, 5, 7),
+        "target_indices": (2, 4, 6, 8),
     }
     stim = stimupy.gratings.on_uniform(**params)
     stim["target_mask"] = np.where(stim["target_mask"] != 0, 1, 0)
@@ -374,7 +374,7 @@ def grating_white_in(ppd=PPD):
         "rotation": ROTATION,
         "intensity_bars": (v3, v1),
         "intensity_target": v2,
-        "target_indices": (1, 3, 5, 7),
+        "target_indices": (2, 4, 6, 8),
     }
     large_params = {
         "bar_width": bar_width,
@@ -426,7 +426,7 @@ def grating_black_in(ppd=PPD):
         "rotation": ROTATION,
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
-        "target_indices": (1, 3, 5, 7),
+        "target_indices": (2, 4, 6, 8),
     }
     large_params = {
         "bar_width": bar_width,
@@ -478,7 +478,7 @@ def grating_white_out(ppd=PPD):
         "rotation": -ROTATION,
         "intensity_bars": (v3, v1),
         "intensity_target": v2,
-        "target_indices": (23, 25, 27, 29),
+        "target_indices": (24, 26, 28, 30),
     }
     large_params = {
         "bar_width": bar_width,
@@ -530,7 +530,7 @@ def grating_black_out(ppd=PPD):
         "rotation": -ROTATION,
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
-        "target_indices": (23, 25, 27, 29),
+        "target_indices": (24, 26, 28, 30),
     }
     large_params = {
         "bar_width": bar_width,
@@ -582,7 +582,7 @@ def grating_white_orthogonal(ppd=PPD):
         "rotation": ROTATION + 90,
         "intensity_bars": (v3, v2),
         "intensity_target": v2,
-        "target_indices": (1, 3, 5, 7),
+        "target_indices": (2, 4, 6, 8),
     }
     large_params = {
         "bar_width": bar_width,
@@ -636,7 +636,7 @@ def grating_black_orthogonal(ppd=PPD):
         "rotation": ROTATION + 90,
         "intensity_bars": (v1, v3),
         "intensity_target": v2,
-        "target_indices": (1, 3, 5, 7),
+        "target_indices": (2, 4, 6, 8),
     }
     large_params = {
         "bar_width": bar_width,
