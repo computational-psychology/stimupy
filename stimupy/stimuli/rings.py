@@ -1,8 +1,5 @@
-import itertools
-
-import numpy as np
-
 from stimupy.components.frames import frames
+from stimupy.stimuli import place_targets
 from stimupy.stimuli.waves import square_radial as circular
 from stimupy.stimuli.waves import square_rectilinear as rectangular
 from stimupy.utils import resolution, stack_dicts
@@ -203,28 +200,14 @@ def rectangular_generalized(
     )
     stim["intensity_target"] = intensity_target
 
-    # Resolve target parameters
-    if isinstance(target_indices, (int)):
-        target_indices = [
-            target_indices,
-        ]
-    if isinstance(intensity_target, (int, float)):
-        intensity_target = [
-            intensity_target,
-        ]
-    intensity_target = itertools.cycle(intensity_target)
-
     # Place target(s)
-    targets_mask = np.zeros_like(stim["frame_mask"])
-    for target_idx, (bar_idx, intensity) in enumerate(zip(target_indices, intensity_target)):
-        targets_mask = np.where(stim["frame_mask"] == bar_idx, target_idx + 1, targets_mask)
-        stim["img"] = np.where(targets_mask == target_idx + 1, intensity, stim["img"])
-        if bar_idx > stim["frame_mask"].max():
-            raise ValueError("target_idx is outside stimulus")
+    stim = place_targets(
+        stim=stim,
+        element_mask_key="frame_mask",
+        target_indices=target_indices,
+        intensity_target=intensity_target,
+    )
 
-    # Update and return stimulus
-    stim["target_mask"] = targets_mask
-    stim["target_indices"] = target_indices
     return stim
 
 
