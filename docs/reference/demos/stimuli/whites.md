@@ -508,13 +508,13 @@ w_mask = iw.ToggleButton(value=False, disabled=False, description="add mask")
 
 # Layout
 b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_freq, w_rot])
+b_geometry = iw.HBox([w_freq])
 b_intensities = iw.HBox([w_int1, w_int2])
 b_toff = w_toff
 b_target = iw.HBox([w_tidx, w_tint, w_theights])
 b_target2 = iw.HBox([w_tidx2, w_tint2, w_theights2])
 b_stripe = iw.HBox([w_sint1, w_sint2])
-b_add = iw.HBox([w_ori, w_period, w_mask])
+b_add = iw.HBox([w_period, w_mask])
 ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_toff, b_target, b_target2, b_stripe, b_add])
 
 # Function for showing stim
