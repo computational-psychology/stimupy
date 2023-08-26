@@ -219,10 +219,8 @@ def square_linear(
         origin=origin,
         round_phase_width=round_phase_width,
         distance_metric="oblique",
+        intensities=intensity_bars
     )
-
-    # Adjust intensities to passed-in values
-    stim["img"] = draw_regions(mask=stim["grating_mask"], intensities=intensity_bars)
 
     # Repackage output
     stim["n_bars"] = stim.pop("n_phases")
@@ -571,10 +569,8 @@ def square_radial(
         origin=origin,
         round_phase_width=round_phase_width,
         distance_metric="radial",
+        intensities=intensity_rings,
     )
-
-    # Adjust intensities to passed-in values
-    stim["img"] = draw_regions(mask=stim["grating_mask"], intensities=intensity_rings)
 
     # Repackage output
     stim["n_rings"] = stim.pop("n_phases")
@@ -962,10 +958,8 @@ def square_rectilinear(
         origin=origin,
         round_phase_width=round_phase_width,
         distance_metric="rectilinear",
+        intensities=intensity_frames
     )
-
-    # Adjust intensities to passed-in values
-    stim["img"] = draw_regions(mask=stim["grating_mask"], intensities=intensity_frames)
 
     # Repackage output
     stim["n_frames"] = stim.pop("n_phases")
@@ -1336,10 +1330,8 @@ def square_angular(
         origin=origin,
         round_phase_width=round_phase_width,
         distance_metric="angular",
+        intensities=intensity_segments,
     )
-
-    # Adjust intensities to passed-in values
-    stim["img"] = draw_regions(mask=stim["grating_mask"], intensities=intensity_segments)
 
     # Repackage output
     stim["n_segments"] = stim.pop("n_phases")
