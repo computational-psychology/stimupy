@@ -299,7 +299,7 @@ def phase_shifted(
         rotation=rotation,
         phase_shift=0,
         period=period,
-        intensity_bars=(0, intensity_target),
+        intensity_bars=(intensity_target, 0),
         origin=origin,
         round_phase_width=True,
     )

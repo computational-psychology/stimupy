@@ -57,7 +57,7 @@ START_PHASE1 = -180
 START_PHASE2 = 0
 
 COMMON_PARAMS = {
-    "intensity_bars": (v1, v3),
+    "intensity_bars": (v3, v1),
     "intensity_target": v2,
     "distance_metric": "vertical",
 }

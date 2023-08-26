@@ -735,7 +735,7 @@ def white(ppd=PPD):
         "target_indices_bottom": (3, 5, 7),
         "target_center_offset": 2,
         "target_heights": 2,
-        "intensity_bars": (70, 17.5),
+        "intensity_bars": (17.5, 70),
         "intensity_target": 35.0,
         "period": "even",
     }
