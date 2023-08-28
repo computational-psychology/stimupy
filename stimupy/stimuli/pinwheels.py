@@ -20,7 +20,7 @@ def pinwheel(
     n_segments=None,
     segment_width=None,
     rotation=0.0,
-    target_indices=None,
+    target_indices=(),
     target_width=None,
     target_center=None,
     intensity_segments=(1.0, 0.0),

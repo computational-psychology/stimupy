@@ -91,7 +91,7 @@ def circular_two_sided(
     n_rings=None,
     ring_width=None,
     phase_shift=0,
-    target_indices=None,
+    target_indices=(),
     intensity_target=0.5,
     intensity_rings=(1.0, 0.0),
     intensity_background=0.5,
