@@ -23,7 +23,7 @@ def pinwheel(
     target_indices=(),
     target_width=None,
     target_center=None,
-    intensity_segments=(1.0, 0.0),
+    intensity_segments=(0.0, 1.0),
     intensity_background=0.5,
     intensity_target=0.5,
     origin="mean",

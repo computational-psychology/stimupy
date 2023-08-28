@@ -261,7 +261,7 @@ def rectangle_two_sided(
     covers_offset=None,
     intensity_backgrounds=(0.0, 1.0),
     intensity_target=0.5,
-    intensity_covers=(1.0, 0.0),
+    intensity_covers=(0.0, 1.0),
 ):
     """
     Two-sided Todorovic's illusion with rectangular target in the center and four
@@ -597,7 +597,7 @@ def cross_two_sided(
     covers_size=None,
     intensity_backgrounds=(0.0, 1.0),
     intensity_target=0.5,
-    intensity_covers=(1.0, 0.0),
+    intensity_covers=(0.0, 1.0),
 ):
     """Two-sided with cross target and four rectangular covers added at inner cross corners
 
@@ -782,7 +782,7 @@ def equal_two_sided(
     cross_thickness=None,
     intensity_backgrounds=(0.0, 1.0),
     intensity_target=0.5,
-    intensity_covers=(1.0, 0.0),
+    intensity_covers=(0.0, 1.0),
 ):
     """Two-sided with cross target and four rectangular covers added at inner cross corners
 
