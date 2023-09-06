@@ -1,6 +1,6 @@
 import numpy as np
 
-from stimupy.components import draw_regions, waves
+from stimupy.components import waves
 from stimupy.components.shapes import disc, rectangle
 from stimupy.stimuli import place_targets
 
@@ -219,7 +219,7 @@ def square_linear(
         origin=origin,
         round_phase_width=round_phase_width,
         distance_metric="oblique",
-        intensities=intensity_bars
+        intensities=intensity_bars,
     )
 
     # Repackage output
@@ -958,7 +958,7 @@ def square_rectilinear(
         origin=origin,
         round_phase_width=round_phase_width,
         distance_metric="rectilinear",
-        intensities=intensity_frames
+        intensities=intensity_frames,
     )
 
     # Repackage output
