@@ -150,7 +150,7 @@ def corrugated_mondrian(
     ncols=None,
     depths=0,
     intensities=(0, 1),
-    target_indices=None,
+    target_indices=(),
     intensity_background=0.5,
     intensity_target=None,
 ):
@@ -208,6 +208,9 @@ def corrugated_mondrian(
     if isinstance(depths, (float, int)):
         depths = (depths,) * nrows
 
+    if target_indices is None:
+        target_indices = ()
+
     if len(depths) != nrows:
         raise ValueError("Unclear number of rows. Check nrows, intensities and depths.")
 
@@ -259,7 +262,7 @@ def corrugated_mondrian(
             poses.append(mpos)
             intenses.append(mint)
 
-            if (target_indices is not None) and (r, c) in target_indices:
+            if (r, c) in target_indices:
                 tlist.append(target_counter)
 
             xst += mwidth_px

@@ -1,3 +1,5 @@
+import collections
+
 from stimupy.components import lines
 from stimupy.components.shapes import disc
 from stimupy.utils import resolution, stack_dicts
@@ -147,9 +149,8 @@ def two_sided(
         raise ValueError("two_sided() missing argument 'outer_radii' which is not 'None'")
     if target_radius is None:
         raise ValueError("delboeuf() missing argument 'target_radius' which is not 'None'")
-    try:
-        len(intensity_target)
-    except:
+
+    if not isinstance(intensity_target, collections.abc.Sequence):
         intensity_target = (intensity_target, intensity_target)
 
     # Resolve resolution

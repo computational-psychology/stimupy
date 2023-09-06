@@ -1,3 +1,4 @@
+import collections
 import itertools
 
 import numpy as np
@@ -307,9 +308,7 @@ def rectangle_two_sided(
         Lightness and junctions. Perception, 26, 379-395.
     """
 
-    try:
-        len(intensity_target)
-    except:
+    if not isinstance(intensity_target, collections.abc.Sequence):
         intensity_target = (intensity_target, intensity_target)
 
     # Resolve resolution
@@ -643,9 +642,7 @@ def cross_two_sided(
         Lightness and junctions. Perception, 26, 379-395.
     """
 
-    try:
-        len(intensity_target)
-    except:
+    if not isinstance(intensity_target, collections.abc.Sequence):
         intensity_target = (intensity_target, intensity_target)
 
     # Resolve resolution
@@ -827,9 +824,7 @@ def equal_two_sided(
     Todorovic, D. (1997).
         Lightness and junctions. Perception, 26, 379-395.
     """
-    try:
-        len(intensity_target)
-    except:
+    if not isinstance(intensity_target, collections.abc.Sequence):
         intensity_target = (intensity_target, intensity_target)
 
     # Resolve resolution

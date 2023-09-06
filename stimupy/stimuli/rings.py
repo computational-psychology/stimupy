@@ -1,19 +1,88 @@
-import itertools
-
-import numpy as np
+import collections
 
 from stimupy.components.frames import frames
+from stimupy.components.radials import rings
+from stimupy.stimuli import place_targets
 from stimupy.stimuli.waves import square_radial as circular
 from stimupy.stimuli.waves import square_rectilinear as rectangular
 from stimupy.utils import resolution, stack_dicts
 
 __all__ = [
     "circular",
+    "circular_generalized",
     "circular_two_sided",
     "rectangular",
     "rectangular_generalized",
     "rectangular_two_sided",
 ]
+
+
+def circular_generalized(
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    radii=None,
+    intensity_rings=(1.0, 0.0),
+    intensity_background=0.5,
+    target_indices=(),
+    intensity_target=0.5,
+    origin="mean",
+):
+    """Sequential set of circular rings with specified radii and targets
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    radii : Sequence[Number] or None (default)
+        radii of each ring, in degrees visual angle
+    intensity_rings : Sequence[float, float]
+        intensities of rings, by default (1.0, 0.0)
+    intensity_background : float (optional)
+        intensity value of background, by default 0.5
+    target_indices : int, or Sequence[int, ...]
+        indices rings where targets will be placed
+    intensity_target : float, or Sequence[float, ...], optional
+        intensity value for each target, by default 0.5.
+        Can specify as many intensities as number of target_indices;
+        If fewer intensities are passed than target_indices, cycles through intensities
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
+
+    Returns
+    -------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each ring (key: "target_mask"),
+        and additional keys containing stimulus parameters
+    """
+
+    # Rings component
+    stim = rings(
+        radii=radii,
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        intensity_rings=intensity_rings,
+        intensity_background=intensity_background,
+        origin=origin,
+    )
+
+    # Place target(s)
+    stim = place_targets(
+        stim=stim,
+        element_mask_key="ring_mask",
+        target_indices=target_indices,
+        intensity_target=intensity_target,
+    )
+
+    return stim
 
 
 def circular_two_sided(
@@ -24,7 +93,7 @@ def circular_two_sided(
     n_rings=None,
     ring_width=None,
     phase_shift=0,
-    target_indices=None,
+    target_indices=(),
     intensity_target=0.5,
     intensity_rings=(1.0, 0.0),
     intensity_background=0.5,
@@ -98,9 +167,7 @@ def circular_two_sided(
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
 
-    try:
-        len(intensity_target)
-    except:
+    if not isinstance(intensity_target, collections.abc.Sequence):
         intensity_target = (intensity_target, intensity_target)
 
     stim1 = circular(
@@ -203,28 +270,14 @@ def rectangular_generalized(
     )
     stim["intensity_target"] = intensity_target
 
-    # Resolve target parameters
-    if isinstance(target_indices, (int)):
-        target_indices = [
-            target_indices,
-        ]
-    if isinstance(intensity_target, (int, float)):
-        intensity_target = [
-            intensity_target,
-        ]
-    intensity_target = itertools.cycle(intensity_target)
-
     # Place target(s)
-    targets_mask = np.zeros_like(stim["frame_mask"])
-    for target_idx, (bar_idx, intensity) in enumerate(zip(target_indices, intensity_target)):
-        targets_mask = np.where(stim["frame_mask"] == bar_idx, target_idx + 1, targets_mask)
-        stim["img"] = np.where(targets_mask == target_idx + 1, intensity, stim["img"])
-        if bar_idx > stim["frame_mask"].max():
-            raise ValueError("target_idx is outside stimulus")
+    stim = place_targets(
+        stim=stim,
+        element_mask_key="frame_mask",
+        target_indices=target_indices,
+        intensity_target=intensity_target,
+    )
 
-    # Update and return stimulus
-    stim["target_mask"] = targets_mask
-    stim["target_indices"] = target_indices
     return stim
 
 
@@ -296,9 +349,7 @@ def rectangular_two_sided(
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
 
-    try:
-        len(intensity_target)
-    except:
+    if not isinstance(intensity_target, collections.abc.Sequence):
         intensity_target = (intensity_target, intensity_target)
 
     stim1 = rectangular(

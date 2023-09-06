@@ -2,6 +2,7 @@ from stimupy.stimuli import rings
 
 __all__ = [
     "circular",
+    "circular_generalized",
     "circular_two_sided",
     "rectangular",
     "rectangular_generalized",
@@ -108,6 +109,64 @@ def circular(
         target_indices=0,
         origin=origin,
         clip=clip,
+    )
+    return stim
+
+
+def circular_generalized(
+    visual_size=None,
+    ppd=None,
+    shape=None,
+    radii=None,
+    intensity_rings=(1.0, 0.0),
+    intensity_background=0.5,
+    intensity_target=0.5,
+    origin="mean",
+):
+    """Draw sequential set of circular rings with specified radii, with central target
+
+    Parameters
+    ----------
+    visual_size : Sequence[Number, Number], Number, or None (default)
+        visual size [height, width] of image, in degrees
+    ppd : Sequence[Number, Number], Number, or None (default)
+        pixels per degree [vertical, horizontal]
+    shape : Sequence[Number, Number], Number, or None (default)
+        shape [height, width] of image, in pixels
+    radii : Sequence[Number] or None (default)
+        radii of each ring, in degrees visual angle
+    rotation : float, optional
+        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+    intensity_rings : Sequence[float, float]
+        intensities of rings, by default (1.0, 0.0)
+    intensity_background : float (optional)
+        intensity value of background, by default 0.5
+    intensity_target : float, or Sequence[float, ...], optional
+        intensity value for each target, by default 0.5.
+        Can specify as many intensities as number of target_indices;
+        If fewer intensities are passed than target_indices, cycles through intensities
+    origin : "corner", "mean" or "center"
+        if "corner": set origin to upper left corner
+        if "mean": set origin to hypothetical image center (default)
+        if "center": set origin to real center (closest existing value to mean)
+
+    Returns
+    -------
+    dict[str, Any]
+        dict with the stimulus (key: "img"),
+        mask with integer index for each frame (key: "target_mask"),
+        and additional keys containing stimulus parameters
+    """
+    stim = rings.circular_generalized(
+        radii=radii,
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        intensity_rings=intensity_rings,
+        intensity_background=intensity_background,
+        target_indices=1,
+        intensity_target=intensity_target,
+        origin=origin,
     )
     return stim
 

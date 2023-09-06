@@ -119,6 +119,99 @@ out = iw.interactive_output(
 display(ui, out)
 ```
 
+## Circular, generalized
+{py:func}`stimupy.stimuli.rings.circular_generalized`
+
+```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
+from stimupy.stimuli.rings import circular_generalized
+
+# Define widgets
+w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
+w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
+w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+
+w_radius1 = iw.FloatSlider(value=1, min=0, max=2, description="radius1 [deg]")
+w_radius2 = iw.FloatSlider(value=2, min=1, max=3, description="radius2 [deg]")
+w_radius3 = iw.FloatSlider(value=3, min=2, max=4, description="radius2 [deg]")
+
+w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int-ring1")
+w_int2 = iw.FloatSlider(value=0.3, min=0, max=1, description="int-ring2")
+w_int3 = iw.FloatSlider(value=0.8, min=0, max=1, description="int-ring3")
+w_int_back = iw.FloatSlider(value=0., min=0, max=1, description="intensity background")
+
+w_ori = iw.Dropdown(value="center", options=['mean', 'corner', 'center'], description="origin")
+w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'frame_mask'], description="add mask")
+
+w_tidx = iw.IntSlider(value=1, min=1, max=4, description="target idx")
+w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
+
+# Layout
+b_im_size = iw.HBox([w_height, w_width, w_ppd])
+b_geometry = iw.HBox([w_radius1, w_radius2, w_radius3])
+b_intensities = iw.HBox([w_int1, w_int2, w_int3, w_int_back])
+b_target = iw.HBox([w_tidx, w_tint])
+b_add = iw.HBox([w_ori, w_mask])
+ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target, b_add])
+
+# Function for showing stim
+def show_circular_generalized(
+    height=None,
+    width=None,
+    ppd=None,
+    radius1=None,
+    radius2=None,
+    radius3=None,
+    int1=None,
+    int2=None,
+    int3=None,
+    intensity_background=None,
+    origin=None,
+    add_mask=False,
+    intensity_target=None,
+    target_indices=None,
+):
+    try:
+        stim = circular_generalized(
+            visual_size=(height, width),
+            ppd=ppd,
+            radii=(radius1, radius2, radius3),
+            intensity_rings=(int1, int2, int3),
+            intensity_background=intensity_background,
+            origin=origin,
+            intensity_target=intensity_target,
+            target_indices=target_indices,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
+
+# Set interactivity
+out = iw.interactive_output(
+    show_circular_generalized,
+    {
+        "height": w_height,
+        "width": w_width,
+        "ppd": w_ppd,
+        "radius1": w_radius1,
+        "radius2": w_radius2,
+        "radius3": w_radius3,
+        "int1": w_int1,
+        "int2": w_int2,
+        "int3": w_int3,
+        "intensity_background": w_int_back,
+        "origin": w_ori,
+        "add_mask": w_mask,
+        "target_indices": w_tidx,
+        "intensity_target": w_tint,
+    },
+)
+
+# Show
+display(ui, out)
+```
+
 ## Two-sided rings
 {py:func}`stimupy.stimuli.rings.circular_two_sided`
 
