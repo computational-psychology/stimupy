@@ -171,7 +171,6 @@ def circular_generalized(
     return stim
 
 
-
 def circular_two_sided(
     visual_size=None,
     ppd=None,

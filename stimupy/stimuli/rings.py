@@ -1,3 +1,5 @@
+import collections
+
 from stimupy.components.frames import frames
 from stimupy.components.radials import rings
 from stimupy.stimuli import place_targets
@@ -165,9 +167,7 @@ def circular_two_sided(
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
 
-    try:
-        len(intensity_target)
-    except:
+    if not isinstance(intensity_target, collections.abc.Sequence):
         intensity_target = (intensity_target, intensity_target)
 
     stim1 = circular(
@@ -349,9 +349,7 @@ def rectangular_two_sided(
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
 
-    try:
-        len(intensity_target)
-    except:
+    if not isinstance(intensity_target, collections.abc.Sequence):
         intensity_target = (intensity_target, intensity_target)
 
     stim1 = rectangular(

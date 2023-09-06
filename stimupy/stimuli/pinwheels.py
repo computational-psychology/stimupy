@@ -117,7 +117,9 @@ def pinwheel(
     # Target segment mask
     if isinstance(target_indices, (int, float)):
         target_indices = (target_indices,)
-    target_segment_mask = mask_targets(element_mask=stim["grating_mask"], target_indices=target_indices)
+    target_segment_mask = mask_targets(
+        element_mask=stim["grating_mask"], target_indices=target_indices
+    )
     stim["target_indices"] = target_indices
 
     # Mask ring regions
@@ -167,11 +169,7 @@ def pinwheel(
 
     # Draw target(s)
     stim["img"] = np.where(
-        target_mask,
-        draw_regions(
-            mask=target_mask, intensities=intensity_target
-        ),
-        stim["img"]
+        target_mask, draw_regions(mask=target_mask, intensities=intensity_target), stim["img"]
     )
     stim["intensity_target"] = intensity_target
 

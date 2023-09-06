@@ -1,3 +1,4 @@
+import collections
 import copy
 
 import numpy as np
@@ -230,19 +231,13 @@ def two_sided(
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
 
-    try:
-        len(outer_lines_angle)
-    except:
+    if not isinstance(outer_lines_angle, collections.abc.Sequence):
         outer_lines_angle = (outer_lines_angle, outer_lines_angle + 90)
 
-    try:
-        len(target_length)
-    except:
+    if not isinstance(target_length, collections.abc.Sequence):
         target_length = (target_length, target_length)
 
-    try:
-        len(intensity_target)
-    except:
+    if not isinstance(intensity_target, collections.abc.Sequence):
         intensity_target = (intensity_target, intensity_target)
 
     stim1 = mueller_lyer(

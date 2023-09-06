@@ -71,7 +71,7 @@ def text(
                 fontsize,
                 encoding="unic",
             )
-        except IOError:
+        except OSError:
             font = ImageFont.load_default()
 
     # Determine dimensions of total text

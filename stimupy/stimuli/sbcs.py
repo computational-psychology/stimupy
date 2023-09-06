@@ -1,3 +1,5 @@
+import collections
+
 import numpy as np
 
 from stimupy.components.shapes import disc, rectangle
@@ -172,9 +174,7 @@ def two_sided(
     if target_size is None:
         raise ValueError("two_sided() missing argument 'target_size' which is not 'None'")
 
-    try:
-        len(intensity_target)
-    except:
+    if not isinstance(intensity_target, collections.abc.Sequence):
         intensity_target = (intensity_target, intensity_target)
 
     # Resolve resolution
@@ -390,9 +390,7 @@ def with_dots_two_sided(
         https://doi.org/10.1167/8.2.16
     """
 
-    try:
-        len(intensity_target)
-    except:
+    if not isinstance(intensity_target, collections.abc.Sequence):
         intensity_target = (intensity_target, intensity_target)
 
     # Resolve resolution
@@ -617,9 +615,7 @@ def dotted_two_sided(
         https://doi.org/10.1167/8.2.16
     """
 
-    try:
-        len(intensity_target)
-    except:
+    if not isinstance(intensity_target, collections.abc.Sequence):
         intensity_target = (intensity_target, intensity_target)
 
     # Resolve resolution

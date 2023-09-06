@@ -114,9 +114,10 @@ def generalized(
         round_phase_width=round_phase_width,
     )
 
-
     # Mask target bars
-    target_bar_mask = mask_targets(element_mask=stim["grating_mask"], target_indices=target_indices)
+    target_bar_mask = mask_targets(
+        element_mask=stim["grating_mask"], target_indices=target_indices
+    )
     stim["target_indices"] = target_indices
 
     # Mask rectangular regions
@@ -166,9 +167,7 @@ def generalized(
     # Draw targets
     stim["img"] = np.where(
         target_mask,
-        draw_regions(
-            mask=target_mask, intensities=intensity_target, intensity_background=0.0
-        ),
+        draw_regions(mask=target_mask, intensities=intensity_target, intensity_background=0.0),
         stim["img"],
     )
     stim["intensity_target"] = intensity_target
