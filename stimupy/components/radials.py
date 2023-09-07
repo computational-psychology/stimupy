@@ -1,9 +1,8 @@
 import collections
-import itertools
 
 import numpy as np
 
-from stimupy.components import image_base, mask_regions
+from stimupy.components import draw_regions, mask_regions
 from stimupy.utils import resolution
 
 __all__ = [
@@ -110,9 +109,6 @@ def rings(
         mask with integer index for each ring (key: "ring_mask"),
         and additional keys containing stimulus parameters
     """
-    if radii is None:
-        raise ValueError("rings() missing argument 'radii' which is not 'None'")
-
     # Try to resolve resolution;
     try:
         shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
@@ -128,34 +124,32 @@ def rings(
         visual_size = [x for x in visual_size if x is not None]
         visual_size = resolution.validate_visual_size(visual_size)
 
-    if not isinstance(radii, (int, float)):
+    # Resolve radii
+    if radii is None:
+        raise ValueError("rings() missing argument 'radii' which is not 'None'")
+    if (isinstance(radii, collections.abc.Sequence) or isinstance(radii, np.ndarray)):
         if np.diff(radii).min() < 0:
             raise ValueError("radii need to monotonically increase")
     else:
         radii = (radii,)
-    if isinstance(intensity_rings, (int, float)):
-        ints = (intensity_rings,)
-    else:
-        ints = intensity_rings
 
     # Get masks for rings
-    params = mask_rings(radii=radii, shape=shape, visual_size=visual_size, ppd=ppd, origin=origin)
-    shape = params["shape"]
+    stim = mask_rings(radii=radii, shape=shape, visual_size=visual_size, ppd=ppd, origin=origin)
+
+    # Resolve intensities
+    if not isinstance(intensity_rings, collections.abc.Sequence):
+        intensity_rings = (intensity_rings,)
 
     # Draw rings
-    base = image_base(shape=shape, visual_size=visual_size, origin=origin)
-    distances = base["radial"]
-
-    img = np.ones(shape) * intensity_background
-    ints = [*itertools.islice(itertools.cycle(ints), len(radii))]
-    for radius, intensity in zip(reversed(radii), reversed(ints)):
-        img[distances < radius] = intensity
+    stim["img"] = draw_regions(
+        stim["ring_mask"], intensity_rings, intensity_background=intensity_background
+    )
 
     # Assemble output
-    params["intensity_rings"] = intensity_rings
-    params["radii"] = radii
-    params["intensity_background"] = intensity_background
-    return {"img": img, **params}
+    stim["intensity_rings"] = intensity_rings
+    stim["radii"] = radii
+    stim["intensity_background"] = intensity_background
+    return stim
 
 
 def disc(
