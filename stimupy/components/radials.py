@@ -1,3 +1,4 @@
+import collections
 import itertools
 
 import numpy as np
@@ -199,26 +200,26 @@ def disc(
     if radius is None:
         raise ValueError("disc() missing argument 'radius' which is not 'None'")
 
-    radius = np.array(radius)
-    intensity = np.array(intensity_disc)
+    if isinstance(radius, np.ndarray):
+        try:
+            radius = float(radius)
+        except TypeError as e:
+            raise ValueError("Can only pass 1 radius") from e
+    elif isinstance(radius, collections.abc.Sequence):
+        if len(radius) != 1:
+            raise ValueError("Can only pass 1 radius")
 
-    if radius.size != 1:
-        raise ValueError("Can only pass 1 radius")
-    if intensity.size != 1:
-        raise ValueError("Can only pass 1 intensity")
-
-    stim = ring(
-        radii=np.insert(radius, 0, 0),
-        intensity_ring=intensity,
+    stim = rings(
+        radii=radius,
+        intensity_rings=intensity_disc,
         visual_size=visual_size,
         ppd=ppd,
         intensity_background=intensity_background,
         shape=shape,
         origin=origin,
     )
-    stim["radius"] = radius
-    stim["intensity_disc"] = intensity_disc
-    del stim["radii"], stim["intensity_rings"]
+    stim["radius"] = stim.pop("radii")
+    stim["intensity_disc"] = stim.pop("intensity_rings")
     return stim
 
 
