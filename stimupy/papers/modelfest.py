@@ -2143,7 +2143,7 @@ def Disk40(ppd=PPD):
     """
 
     stim = shapes.disc(
-        visual_size=256 / PPD, ppd=ppd, radius=0.125, origin="center", intensity_background=0.5
+        visual_size=256 / PPD, ppd=ppd, radius=0.1249, origin="center", intensity_background=0.5
     )
     stim = roll_dict(stim, (-2, -2), axes=(0, 1))
 
