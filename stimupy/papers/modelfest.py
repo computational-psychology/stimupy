@@ -2313,41 +2313,9 @@ def read_tif(filename):
     return img
 
 
-def compare(o1, s1, filename):
-    import matplotlib.pyplot as plt
-
-    o1 = o1 / 255
-    s1 = s1 / 1
-    vmin, vmax = 0, 1
-
-    plt.figure(figsize=(20, 6))
-    plt.subplot(141), plt.imshow(o1, vmin=vmin, vmax=vmax), plt.title("Original")
-    plt.subplot(142), plt.imshow(s1, vmin=vmin, vmax=vmax), plt.title("Our implementation")
-    plt.subplot(143), plt.imshow(o1 - s1, vmin=-vmax, vmax=vmax), plt.title(
-        "Difference"
-    ), plt.colorbar()
-    plt.subplot(144), plt.plot(o1[:, 128], label="Original")
-    plt.plot(s1[:, 128], label="Our implementation"), plt.legend()
-    plt.savefig("./comparisons/" + filename)
-    plt.close()
-
-
-def compare_all():
-    import os
-
-    if not os.path.exists("./comparisons/"):
-        os.makedirs("./comparisons/")
-
-    for stim_name in __all__:
-        func = globals()[stim_name]
-        o1 = read_tif(str(Path(__file__).parents[0]) + "/modelfest/" + stim_name + ".tif")
-        s1 = func()["img"]
-        compare(o1, s1, stim_name + ".png")
-
-
 if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
 
     stims = gen_all(skip=True)
     plot_stimuli(stims, mask=False, units="visual_size")
-    # compare_all()
+
