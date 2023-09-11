@@ -44,7 +44,7 @@ from stimupy.components.waves import bessel
 from stimupy.noises.binaries import binary as binary_noise
 from stimupy.stimuli.gabors import gabor
 from stimupy.stimuli.plaids import gabors as plaid
-from stimupy.utils import pad_dict_to_shape, resize_dict, roll_dict, stack_dicts
+from stimupy.utils import pad_dict_to_shape, resize_dict, resolution, roll_dict, stack_dicts
 
 __all__ = [
     "GaborPatch1",
@@ -95,6 +95,7 @@ __all__ = [
 # Default values:
 PPD = 120  # pixel size of 0.5 arcmin
 PPD2 = 60  # pixel size of 1 arcmin (pixel replication)
+VISUAL_SIZE = resolution.visual_size_from_shape_ppd(shape=256, ppd=PPD)
 
 mean_lum = 0.5
 
@@ -151,7 +152,7 @@ def GaborPatch1(ppd=PPD):
     """
 
     params = {
-        "visual_size": 256 / PPD,
+        "visual_size": VISUAL_SIZE,
         "ppd": ppd,
         "frequency": 1.12,
         "sigma": 0.5,
@@ -200,7 +201,7 @@ def GaborPatch2(ppd=PPD):
     """
 
     params = {
-        "visual_size": 256 / PPD,
+        "visual_size": VISUAL_SIZE,
         "ppd": ppd,
         "frequency": 2,
         "sigma": 0.5,
@@ -249,7 +250,7 @@ def GaborPatch3(ppd=PPD):
     """
 
     params = {
-        "visual_size": 256 / PPD,
+        "visual_size": VISUAL_SIZE,
         "ppd": ppd,
         "frequency": 2.83,
         "sigma": 0.5,
@@ -298,7 +299,7 @@ def GaborPatch4(ppd=PPD):
     """
 
     params = {
-        "visual_size": 256 / PPD,
+        "visual_size": VISUAL_SIZE,
         "ppd": ppd,
         "frequency": 4,
         "sigma": 0.5,
@@ -347,7 +348,7 @@ def GaborPatch5(ppd=PPD):
     """
 
     params = {
-        "visual_size": 256 / PPD,
+        "visual_size": VISUAL_SIZE,
         "ppd": ppd,
         "frequency": 5.66,
         "sigma": 0.5,
@@ -396,7 +397,7 @@ def GaborPatch6(ppd=PPD):
     """
 
     params = {
-        "visual_size": 256 / PPD,
+        "visual_size": VISUAL_SIZE,
         "ppd": ppd,
         "frequency": 8,
         "sigma": 0.5,
@@ -445,7 +446,7 @@ def GaborPatch7(ppd=PPD):
     """
 
     params = {
-        "visual_size": 256 / PPD,
+        "visual_size": VISUAL_SIZE,
         "ppd": ppd,
         "frequency": 11.3,
         "sigma": 0.5,
@@ -494,7 +495,7 @@ def GaborPatch8(ppd=PPD):
     """
 
     params = {
-        "visual_size": 256 / PPD,
+        "visual_size": VISUAL_SIZE,
         "ppd": ppd,
         "frequency": 16,
         "sigma": 0.5,
@@ -543,7 +544,7 @@ def GaborPatch9(ppd=PPD):
     """
 
     params = {
-        "visual_size": 256 / PPD,
+        "visual_size": VISUAL_SIZE,
         "ppd": ppd,
         "frequency": 22.6,
         "sigma": 0.5,
@@ -592,7 +593,7 @@ def GaborPatch10(ppd=PPD):
     """
 
     params = {
-        "visual_size": 256 / PPD,
+        "visual_size": VISUAL_SIZE,
         "ppd": ppd,
         "frequency": 30,
         "sigma": 0.5,
@@ -641,7 +642,7 @@ def GaborPatch11(ppd=PPD):
     """
 
     params = {
-        "visual_size": 256 / PPD,
+        "visual_size": VISUAL_SIZE,
         "ppd": ppd,
         "frequency": 2,
         "sigma": 0.28,
@@ -690,7 +691,7 @@ def GaborPatch12(ppd=PPD):
     """
 
     params = {
-        "visual_size": 256 / PPD,
+        "visual_size": VISUAL_SIZE,
         "ppd": ppd,
         "frequency": 4,
         "sigma": 0.14,
@@ -739,7 +740,7 @@ def GaborPatch13(ppd=PPD):
     """
 
     params = {
-        "visual_size": 256 / PPD,
+        "visual_size": VISUAL_SIZE,
         "ppd": ppd,
         "frequency": 8,
         "sigma": 0.07,
@@ -788,7 +789,7 @@ def GaborPatch14(ppd=PPD):
     """
 
     params = {
-        "visual_size": 256 / PPD,
+        "visual_size": VISUAL_SIZE,
         "ppd": ppd,
         "frequency": 16,
         "sigma": 0.035,
@@ -837,7 +838,7 @@ def ElongatedGabor15(ppd=PPD):
     """
 
     params = {
-        "visual_size": 256 / PPD,
+        "visual_size": VISUAL_SIZE,
         "ppd": ppd,
         "frequency": 4,
         "sigma": (0.28, 0.5),
@@ -886,7 +887,7 @@ def ElongatedGabor16(ppd=PPD):
     """
 
     params = {
-        "visual_size": 256 / PPD,
+        "visual_size": VISUAL_SIZE,
         "ppd": ppd,
         "frequency": 8,
         "sigma": (0.14, 0.5),
@@ -935,7 +936,7 @@ def ElongatedGabor17(ppd=PPD):
     """
 
     params = {
-        "visual_size": 256 / PPD,
+        "visual_size": VISUAL_SIZE,
         "ppd": ppd,
         "frequency": 16,
         "sigma": (0.07, 0.5),
@@ -984,7 +985,7 @@ def Baguette18(ppd=PPD):
     """
 
     params = {
-        "visual_size": 256 / PPD,
+        "visual_size": VISUAL_SIZE,
         "ppd": ppd,
         "frequency": 4,
         "sigma": (0.14, 0.28),
@@ -1033,7 +1034,7 @@ def Baguette19(ppd=PPD):
     """
 
     params = {
-        "visual_size": 256 / PPD,
+        "visual_size": VISUAL_SIZE,
         "ppd": ppd,
         "frequency": 4,
         "sigma": (0.14, 0.5),
@@ -1082,7 +1083,7 @@ def Baguette20(ppd=PPD):
     """
 
     params = {
-        "visual_size": 256 / PPD,
+        "visual_size": VISUAL_SIZE,
         "ppd": ppd,
         "frequency": 4,
         "sigma": (0.28, 0.14),
@@ -1131,7 +1132,7 @@ def Baguette21(ppd=PPD):
     """
 
     params = {
-        "visual_size": 256 / PPD,
+        "visual_size": VISUAL_SIZE,
         "ppd": ppd,
         "frequency": 4,
         "sigma": (0.5, 0.14),
@@ -1180,7 +1181,7 @@ def Subthreshold22(ppd=PPD):
     """
 
     params = {
-        "visual_size": 256 / PPD,
+        "visual_size": VISUAL_SIZE,
         "ppd": ppd,
         "sigma": 0.5,
         "rotation": -90,
@@ -1235,7 +1236,7 @@ def Subthreshold23(ppd=PPD):
     """
 
     params = {
-        "visual_size": 256 / PPD,
+        "visual_size": VISUAL_SIZE,
         "ppd": ppd,
         "sigma": 0.5,
         "rotation": -90,
@@ -1290,7 +1291,7 @@ def Subthreshold24(ppd=PPD):
     """
 
     params = {
-        "visual_size": 256 / PPD,
+        "visual_size": VISUAL_SIZE,
         "ppd": ppd,
         "sigma": 0.5,
         "rotation": -90,
@@ -1345,7 +1346,7 @@ def Subthreshold25(ppd=PPD):
     """
 
     params = {
-        "visual_size": 256 / PPD,
+        "visual_size": VISUAL_SIZE,
         "ppd": ppd,
         "sigma": 0.5,
         "rotation": -90,
@@ -1399,7 +1400,7 @@ def Gaussians26(ppd=PPD):
     """
 
     params = {
-        "visual_size": 256 / PPD,
+        "visual_size": VISUAL_SIZE,
         "ppd": ppd,
         "sigma": 0.5,
         "intensity_max": 1,
@@ -1446,7 +1447,7 @@ def Gaussians27(ppd=PPD):
     """
 
     params = {
-        "visual_size": 256 / PPD,
+        "visual_size": VISUAL_SIZE,
         "ppd": ppd,
         "sigma": 8.43 / 60,
         "intensity_max": 1,
@@ -1493,7 +1494,7 @@ def Gaussians28(ppd=PPD):
     """
 
     params = {
-        "visual_size": 256 / PPD,
+        "visual_size": VISUAL_SIZE,
         "ppd": ppd,
         "sigma": 2.106 / 60,
         "intensity_max": 1,
@@ -1540,7 +1541,7 @@ def Gaussians29(ppd=PPD):
     """
 
     params = {
-        "visual_size": 256 / PPD,
+        "visual_size": VISUAL_SIZE,
         "ppd": ppd,
         "sigma": 1.05 / 60,
         "intensity_max": 1,
@@ -1586,7 +1587,7 @@ def Edge30(ppd=PPD):
         https://doi.org/10.1117/12.348473
     """
 
-    stim = gaussian_edge(visual_size=256 / PPD, ppd=ppd, rotation=-90, sigma=0.5)
+    stim = gaussian_edge(visual_size=VISUAL_SIZE, ppd=ppd, rotation=-90, sigma=0.5)
 
     v = 117
     experimental_data = {
@@ -1626,14 +1627,14 @@ def Line31(ppd=PPD):
     """
 
     stim = lines.line(
-        visual_size=256 / PPD,
+        visual_size=VISUAL_SIZE,
         ppd=ppd,
-        line_length=256 / PPD,
-        line_width=0.5 / 60,
+        line_length=VISUAL_SIZE.width,
+        line_width=resolution.visual_angle_from_length_ppd(length=0.5, ppd=PPD2),
         rotation=90,
         intensity_background=0.5,
     )
-    window = gaussians.gaussian(visual_size=256 / PPD, ppd=ppd, sigma=0.5)
+    window = gaussians.gaussian(visual_size=VISUAL_SIZE, ppd=ppd, sigma=0.5)
 
     img = (stim["img"] - 0.5) * window["img"] + 0.5
     stim["img"] = img
@@ -1678,15 +1679,15 @@ def Dipole32(ppd=PPD):
     """
 
     stim = lines.dipole(
-        visual_size=256 / PPD,
+        visual_size=VISUAL_SIZE,
         ppd=ppd,
-        line_length=256 / PPD,
-        line_width=1 / PPD,
-        line_gap=2 / PPD,
+        line_length=VISUAL_SIZE.width,
+        line_width=resolution.visual_angle_from_length_ppd(length=1, ppd=PPD),
+        line_gap=resolution.visual_angle_from_length_ppd(length=2, ppd=PPD),
         rotation=270,
     )
     stim = roll_dict(stim, -1, axes=0)
-    window = gaussians.gaussian(visual_size=256 / PPD, ppd=ppd, sigma=0.5)
+    window = gaussians.gaussian(visual_size=VISUAL_SIZE, ppd=ppd, sigma=0.5)
 
     img = (stim["img"] - 0.5) * window["img"] + 0.5
     stim["img"] = img
@@ -1731,7 +1732,7 @@ def GaborString33(ppd=PPD):
     """
 
     params = {
-        "visual_size": 256 / PPD / 6,
+        "visual_size": VISUAL_SIZE.width / 6,
         "ppd": ppd,
         "frequency": 8,
         "sigma": 0.07,
@@ -1793,7 +1794,7 @@ def GaborString34(ppd=PPD):
     """
 
     params = {
-        "visual_size": 256 / PPD / 6,
+        "visual_size": VISUAL_SIZE.width / 6,
         "ppd": ppd,
         "frequency": 8,
         "sigma": 0.07,
@@ -1854,9 +1855,9 @@ def Noise35_random(ppd=PPD):
         https://doi.org/10.1117/12.348473
     """
 
-    stim = binary_noise(visual_size=256 / PPD, ppd=ppd / 2, rms_contrast=1)
+    stim = binary_noise(visual_size=VISUAL_SIZE, ppd=ppd / 2, rms_contrast=1)
     stim = resize_dict(stim, (2, 2))
-    window = gaussians.gaussian(visual_size=256 / PPD, ppd=ppd, sigma=0.5)
+    window = gaussians.gaussian(visual_size=VISUAL_SIZE, ppd=ppd, sigma=0.5)
 
     img = stim["img"] * window["img"]
     stim["img"] = img / 2 + 0.5
@@ -1894,7 +1895,7 @@ def Noise35(ppd=PPD):
 
     stim = {
         "img": img,
-        "visual_size": (256 / PPD, 256 / PPD),
+        "visual_size": VISUAL_SIZE,
         "shape": img.shape,
         "ppd": PPD,
         "intensity_range": (img.min(), img.max()),
@@ -1940,7 +1941,7 @@ def Orientation36(ppd=PPD):
     """
 
     params = {
-        "visual_size": 256 / PPD,
+        "visual_size": VISUAL_SIZE,
         "ppd": ppd,
         "frequency": 4,
         "sigma": 0.14,
@@ -1990,7 +1991,7 @@ def Orientation37(ppd=PPD):
     """
 
     params = {
-        "visual_size": 256 / PPD,
+        "visual_size": VISUAL_SIZE,
         "ppd": ppd,
         "frequency": 4,
         "sigma": 0.14,
@@ -2040,7 +2041,7 @@ def Plaids38(ppd=PPD):
     """
 
     params = {
-        "visual_size": 256 / PPD,
+        "visual_size": VISUAL_SIZE,
         "ppd": ppd,
         "frequency": 4,
         "sigma": 0.14,
@@ -2093,7 +2094,7 @@ def Plaids39(ppd=PPD):
     """
 
     params = {
-        "visual_size": 256 / PPD,
+        "visual_size": VISUAL_SIZE,
         "ppd": ppd,
         "frequency": 4,
         "sigma": 0.14,
@@ -2143,7 +2144,7 @@ def Disk40(ppd=PPD):
     """
 
     stim = shapes.disc(
-        visual_size=256 / PPD, ppd=ppd, radius=0.1249, origin="center", intensity_background=0.5
+        visual_size=VISUAL_SIZE, ppd=ppd, radius=0.1249, origin="center", intensity_background=0.5
     )
     stim = roll_dict(stim, (-2, -2), axes=(0, 1))
 
@@ -2184,8 +2185,8 @@ def Bessel41(ppd=PPD):
         https://doi.org/10.1117/12.348473
     """
 
-    stim = bessel(visual_size=256 / PPD, ppd=ppd, frequency=4, origin="center")
-    window = gaussians.gaussian(visual_size=256 / PPD, ppd=ppd, sigma=0.5)
+    stim = bessel(visual_size=VISUAL_SIZE, ppd=ppd, frequency=4, origin="center")
+    window = gaussians.gaussian(visual_size=VISUAL_SIZE, ppd=ppd, sigma=0.5)
     stim["sigma"] = window["sigma"]
 
     # Apply Gaussian windows to Bessel
@@ -2231,7 +2232,7 @@ def Checkerboard42(ppd=PPD):
         https://doi.org/10.1117/12.348473
     """
     params = {
-        "visual_size": 256 / PPD,
+        "visual_size": VISUAL_SIZE,
         "ppd": ppd,
         "frequency": 2.81,
         "rotation": -45,
@@ -2240,7 +2241,7 @@ def Checkerboard42(ppd=PPD):
     }
 
     stim = checkerboards.checkerboard(**params)
-    window = gaussians.gaussian(visual_size=256 / PPD, ppd=ppd, sigma=0.5)
+    window = gaussians.gaussian(visual_size=VISUAL_SIZE, ppd=ppd, sigma=0.5)
 
     img = (stim["img"] - 0.5) * window["img"] + 0.5
     stim["img"] = img
@@ -2284,11 +2285,11 @@ def NaturalScene43(ppd=PPD):
 
     # Read natural image from Modelfest
     img = read_tif(Path(__file__).parents[0] / "modelfest_natural_scene.tif")
-    img = img / 255
+    img /= 255
 
     stim = {
         "img": img,
-        "visual_size": (256 / PPD, 256 / PPD),
+        "visual_size": VISUAL_SIZE,
         "shape": img.shape,
         "ppd": PPD,
         "intensity_range": (img.min(), img.max()),
@@ -2318,4 +2319,3 @@ if __name__ == "__main__":
 
     stims = gen_all(skip=True)
     plot_stimuli(stims, mask=False, units="visual_size")
-
