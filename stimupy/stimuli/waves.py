@@ -121,6 +121,9 @@ def sine_linear(
     stim["bar_width"] = stim.pop("phase_width")
     stim.pop("distance_metric")
 
+    # Rename mask
+    stim["bar_mask"] = stim["grating_mask"]
+
     # Add targets
     stim = place_targets(
         stim=stim,
@@ -226,6 +229,9 @@ def square_linear(
     stim["bar_width"] = stim.pop("phase_width")
     stim["intensity_bars"] = stim.pop("intensities")
     stim.pop("distance_metric")
+
+    # Rename mask
+    stim["bar_mask"] = stim["grating_mask"]
 
     # Add targets
     stim = place_targets(
@@ -335,6 +341,9 @@ def staircase_linear(
     stim["bar_width"] = stim.pop("phase_width")
     stim["intensity_bars"] = stim.pop("intensities")
     stim.pop("distance_metric")
+
+    # Rename mask
+    stim["bar_mask"] = stim["grating_mask"]
 
     # Add targets
     stim = place_targets(
@@ -460,6 +469,9 @@ def sine_radial(
     stim["clip"] = clip
     stim["intensity_background"] = intensity_background
 
+    # Rename mask
+    stim["ring_mask"] = stim["grating_mask"]
+
     # Add targets
     stim = place_targets(
         stim=stim,
@@ -583,6 +595,9 @@ def square_radial(
         stim["grating_mask"] = np.where(circle["ring_mask"], stim["grating_mask"], 0)
     stim["clip"] = clip
     stim["intensity_background"] = intensity_background
+
+    # Rename mask
+    stim["ring_mask"] = stim["grating_mask"]
 
     # Add targets
     stim = place_targets(
@@ -708,6 +723,9 @@ def staircase_radial(
         stim["grating_mask"] = np.where(circle["ring_mask"], stim["grating_mask"], 0)
     stim["clip"] = clip
     stim["intensity_background"] = intensity_background
+
+    # Rename mask
+    stim["ring_mask"] = stim["grating_mask"]
 
     # Add targets
     stim = place_targets(
@@ -840,6 +858,9 @@ def sine_rectilinear(
         stim["grating_mask"] = np.where(rect["rectangle_mask"], stim["grating_mask"], 0)
     stim["clip"] = clip
     stim["intensity_background"] = intensity_background
+
+    # Rename mask
+    stim["frame_mask"] = stim["grating_mask"]
 
     # Add targets
     stim = place_targets(
@@ -974,6 +995,9 @@ def square_rectilinear(
     stim["clip"] = clip
     stim["intensity_background"] = intensity_background
 
+    # Rename mask
+    stim["frame_mask"] = stim["grating_mask"]
+
     # Add targets
     stim = place_targets(
         stim=stim,
@@ -1107,6 +1131,9 @@ def staircase_rectilinear(
     stim["clip"] = clip
     stim["intensity_background"] = intensity_background
 
+    # Rename mask
+    stim["frame_mask"] = stim["grating_mask"]
+
     # Add targets
     stim = place_targets(
         stim=stim,
@@ -1210,6 +1237,9 @@ def sine_angular(
     stim["n_segments"] = stim.pop("n_phases")
     stim["segment_width"] = stim.pop("phase_width")
     stim.pop("distance_metric")
+
+    # Rename mask
+    stim["segment_mask"] = stim["grating_mask"]
 
     # Add targets
     stim = place_targets(
@@ -1317,6 +1347,9 @@ def square_angular(
     stim["intensity_segments"] = stim.pop("intensities")
     stim.pop("distance_metric")
 
+    # Rename mask
+    stim["segment_mask"] = stim["grating_mask"]
+
     # Add targets
     stim = place_targets(
         stim=stim,
@@ -1421,6 +1454,9 @@ def staircase_angular(
     stim["segment_width"] = stim.pop("phase_width")
     stim["intensity_segments"] = stim.pop("intensities")
     stim.pop("distance_metric")
+
+    # Rename mask
+    stim["segment_mask"] = stim["grating_mask"]
 
     # Add targets
     stim = place_targets(

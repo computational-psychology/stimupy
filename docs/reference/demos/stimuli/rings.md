@@ -142,7 +142,7 @@ w_int3 = iw.FloatSlider(value=0.8, min=0, max=1, description="int-ring3")
 w_int_back = iw.FloatSlider(value=0., min=0, max=1, description="intensity background")
 
 w_ori = iw.Dropdown(value="center", options=['mean', 'corner', 'center'], description="origin")
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'frame_mask'], description="add mask")
+w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'ring_mask'], description="add mask")
 
 w_tidx = iw.IntSlider(value=1, min=1, max=4, description="target idx")
 w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")

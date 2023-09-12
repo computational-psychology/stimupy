@@ -139,7 +139,7 @@ w_int_back = iw.FloatSlider(value=0., min=0, max=1, description="intensity backg
 
 w_ori = iw.Dropdown(value="center", options=['mean', 'corner', 'center'], description="origin")
 w_rot = iw.FloatSlider(value=0, min=0, max=360, description="rotation [deg]")
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'frame_mask'], description="add mask")
+w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'ring_mask'], description="add mask")
 
 w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
 

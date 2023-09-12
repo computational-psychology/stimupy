@@ -53,7 +53,7 @@ w_tcent = iw.FloatSlider(value=2.5, min=0, max=5, description="target center")
 w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
 
 w_ori = iw.Dropdown(value="mean", options=['mean', 'corner', 'center'], description="origin")
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'wedge_mask'], description="add mask")
+w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'segment_mask', 'circle_mask'], description="add mask")
 
 # Layout
 b_im_size = iw.HBox([w_height, w_width, w_ppd])
