@@ -49,8 +49,8 @@ def mask_frames(
         ppd=ppd,
         origin=origin,
     )
-    stim["frame_mask"] = stim["mask"]
-    del stim["mask"]
+    stim["frame_mask"] = stim.pop("mask")
+
     return stim
 
 

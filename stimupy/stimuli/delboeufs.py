@@ -86,11 +86,10 @@ def delboeuf(
     inner["line_mask"] = outer["line_mask"]
     inner["outer_radius"] = outer_radius
     inner["target_radius"] = target_radius
-    inner["target_mask"] = inner["ring_mask"]
+    inner["target_mask"] = inner.pop("ring_mask")
     inner["outer_line_width"] = outer["line_width"]
     inner["intensity_outer_line"] = intensity_outer_line
     inner["intensity_target"] = intensity_target
-    del inner["ring_mask"]
     return inner
 
 
