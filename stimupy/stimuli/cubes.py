@@ -318,8 +318,8 @@ def overview(**kwargs):
 
     # fmt: off
     stimuli = {
-        "cubes_regular": cube(**default_params, visual_size=10, n_cells=5, target_indices=(1,2)),
-        "cubes_variable": varying_cells(**default_params, cell_lengths=(2,4,2), target_indices=1),
+        "cubes_regular": cube(**default_params, visual_size=10, n_cells=5, target_indices=(1, 2)),
+        "cubes_variable": varying_cells(**default_params, cell_lengths=(2, 4, 2), target_indices=1),
     }
     # fmt: on
 

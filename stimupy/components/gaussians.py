@@ -114,7 +114,8 @@ def overview(**kwargs):
 
     # fmt: off
     stimuli = {
-        "gaussians_gaussian": gaussian(**default_params, sigma=(3, 1.5), rotation=70),}
+        "gaussians_gaussian": gaussian(**default_params, sigma=(3, 1.5), rotation=70),
+    }
     # fmt: on
 
     return stimuli

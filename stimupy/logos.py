@@ -112,7 +112,7 @@ def qrcode(ppd=128):
         embeded_image=im_logo,
     )
 
-    ## Make "eyes" circular
+    # Make "eyes" circular
     eye_size = 70  # default
     quiet_zone = 40  # default
 

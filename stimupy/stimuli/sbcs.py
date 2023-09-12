@@ -671,7 +671,7 @@ def overview(**kwargs):
 
     # fmt: off
     stimuli = {
-        "sbc_generalized": generalized(**default_params, visual_size=10, target_size=(3,4), target_position=(1, 2)),
+        "sbc_generalized": generalized(**default_params, visual_size=10, target_size=(3, 4), target_position=(1, 2)),
         "sbc_basic": basic(**default_params, visual_size=10, target_size=3),
         "sbc_2sided": two_sided(**default_params, visual_size=10, target_size=2),
         "sbc_with_dots": with_dots(**default_params, n_dots=5, dot_radius=2, distance=0.5, target_shape=3),

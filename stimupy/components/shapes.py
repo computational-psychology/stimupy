@@ -624,7 +624,8 @@ def overview(**kwargs):
         "shapes_disc": disc(**default_params, radius=3),
         "shapes_ring": ring(**default_params, radii=(1, 2)),
         "shapes_annulus": annulus(**default_params, radii=(1, 2)),
-        "shapes_wedge": wedge(**default_params, angle=30, radius=4),}
+        "shapes_wedge": wedge(**default_params, angle=30, radius=4),
+    }
     # fmt: on
 
     return stimuli

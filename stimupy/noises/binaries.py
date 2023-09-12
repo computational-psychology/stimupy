@@ -71,7 +71,8 @@ def overview(**kwargs):
 
     # fmt: off
     stimuli = {
-        "binaries_binary": binary(**default_params),}
+        "binaries_binary": binary(**default_params),
+    }
     # fmt: on
 
     return stimuli

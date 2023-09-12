@@ -381,7 +381,8 @@ def overview(**kwargs):
         "lines_line": line(**default_params, **p, origin="center"),
         "lines_dipole": dipole(**default_params, **p, line_gap=1),
         "lines_circle": circle(**default_params, radius=3),
-        "lines_ellipse": ellipse(**default_params, radius=(3, 4)),}
+        "lines_ellipse": ellipse(**default_params, radius=(3, 4)),
+    }
     # fmt: on
 
     return stimuli
