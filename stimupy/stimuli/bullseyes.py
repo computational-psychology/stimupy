@@ -106,7 +106,7 @@ def circular(
         intensity_rings=intensity_rings,
         intensity_background=intensity_background,
         intensity_target=intensity_target,
-        target_indices=0,
+        target_indices=1,
         origin=origin,
         clip=clip,
     )
@@ -265,7 +265,7 @@ def circular_two_sided(
         intensity_rings=intensity_rings,
         intensity_background=intensity_background,
         intensity_target=intensity_target,
-        target_indices=0,
+        target_indices=1,
         origin=origin,
     )
     return stim
@@ -348,7 +348,7 @@ def rectangular(
         rotation=rotation,
         phase_shift=phase_shift,
         intensity_frames=intensity_frames,
-        target_indices=0,
+        target_indices=1,
         intensity_target=intensity_target,
         origin=origin,
         clip=clip,
@@ -497,7 +497,7 @@ def rectangular_two_sided(
         intensity_frames=intensity_frames,
         intensity_background=intensity_background,
         intensity_target=intensity_target,
-        target_indices=0,
+        target_indices=1,
         origin=origin,
     )
     return stim
