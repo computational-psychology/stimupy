@@ -180,12 +180,12 @@ display(ui, out)
 ```
 
 ## Two sided
-{py:func}`stimupy.stimuli.sbcs.two_sided`
+{py:func}`stimupy.stimuli.sbcs.basic_two_sided`
 
 ```{code-cell} ipython3
 import ipywidgets as iw
 from stimupy.utils import plot_stim
-from stimupy.stimuli.sbcs import two_sided
+from stimupy.stimuli.sbcs import basic_two_sided
 
 # Define widgets
 w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
@@ -225,11 +225,11 @@ def show_two_sided(
     add_mask=False,
 ):
     try:
-        stim = two_sided(
+        stim = basic_two_sided(
             visual_size=(height, width),
             ppd=ppd,
-            target_size=(target_height,target_width),
-            intensity_backgrounds=(intensity_background_l, intensity_background_r),
+            target_size=((target_height,target_width),(target_height,target_width)),
+            intensity_background=(intensity_background_l, intensity_background_r),
             intensity_target=(intensity_target_l, intensity_target_r),
         )
         plot_stim(stim, mask=add_mask)
@@ -413,7 +413,7 @@ def show_two_sided_with_dots(
             n_dots=(ndotsy, ndotsx),
             dot_radius=dot_radius,
             distance=dot_distance,
-            intensity_backgrounds=(intensity_background_l, intensity_background_r),
+            intensity_background=(intensity_background_l, intensity_background_r),
             intensity_target=intensity_target,
             intensity_dots=(intensity_dots_l, intensity_dots_r),
         )
@@ -603,7 +603,7 @@ def show_two_sided_dotted(
             n_dots=(ndotsy, ndotsx),
             dot_radius=dot_radius,
             distance=dot_distance,
-            intensity_backgrounds=(intensity_background_l, intensity_background_r),
+            intensity_background=(intensity_background_l, intensity_background_r),
             intensity_target=intensity_target,
             intensity_dots=(intensity_dots_l, intensity_dots_r),
         )

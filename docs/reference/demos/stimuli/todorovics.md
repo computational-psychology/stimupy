@@ -298,10 +298,10 @@ def show_two_sided_rectangle(
         stim = rectangle_two_sided(
             visual_size=(height, width),
             ppd=ppd,
-            target_size=(theight, twidth),
-            covers_size=(cheight, cwidth),
-            covers_offset=(coffy, coffx),
-            intensity_backgrounds=(intback1, intback2),
+            target_size=((theight, twidth),(theight, twidth)),
+            covers_size=((cheight, cwidth),(cheight, cwidth)),
+            covers_offset=((coffy, coffx),(coffy, coffx)),
+            intensity_background=(intback1, intback2),
             intensity_target=(tint_l, tint_r),
             intensity_covers=(cint1, cint2),
         )
@@ -551,8 +551,8 @@ w_cwidth = iw.FloatSlider(value=2, min=0, max=4, description="cover width [deg]"
 w_cint1 = iw.FloatSlider(value=1, min=0, max=1, description="cover int1")
 w_cint2 = iw.FloatSlider(value=0, min=0, max=1, description="cover int2")
 
-w_int_back1 = iw.FloatSlider(value=0., min=0, max=1, description="int back1")
-w_int_back2 = iw.FloatSlider(value=1., min=0, max=1, description="int back12")
+w_int_back_l = iw.FloatSlider(value=0., min=0, max=1, description="int back1")
+w_int_back_r = iw.FloatSlider(value=1., min=0, max=1, description="int back12")
 w_mask = iw.Dropdown(value=None, options=[None, 'target_mask'], description="add mask")
 
 # Layout
@@ -577,18 +577,18 @@ def show_two_sided_cross(
     cwidth=None,
     cint1=None,
     cint2=None,
-    intback1=None,
-    intback2=None,
+    int_back_l=None,
+    int_back_r=None,
     add_mask=False,
 ):
     try:
         stim = cross_two_sided(
             visual_size=(height, width),
             ppd=ppd,
-            cross_size=(theight, twidth),
+            cross_size=((theight, twidth),(theight, twidth)),
             cross_thickness=tthick,
-            covers_size=(cheight, cwidth),
-            intensity_backgrounds=(intback1, intback2),
+            covers_size=((cheight, cwidth),(cheight, cwidth)),
+            intensity_background=(int_back_l, int_back_r),
             intensity_target=(tint_l, tint_r),
             intensity_covers=(cint1, cint2),
         )
@@ -612,8 +612,8 @@ out = iw.interactive_output(
         "cwidth": w_cwidth,
         "cint1": w_cint1,
         "cint2": w_cint2,
-        "intback1": w_int_back1,
-        "intback2": w_int_back2,
+        "int_back_l": w_int_back_l,
+        "int_back_r": w_int_back_r,
         "add_mask": w_mask,
     },
 )
@@ -720,11 +720,11 @@ w_tthick = iw.FloatSlider(value=2, min=0, max=4, description="cross thickness [d
 w_tint_l = iw.FloatSlider(value=0.5, min=0, max=1, description="left cross int")
 w_tint_r = iw.FloatSlider(value=0.5, min=0, max=1, description="right cross int")
 
-w_cint1 = iw.FloatSlider(value=1, min=0, max=1, description="cover1 int")
-w_cint2 = iw.FloatSlider(value=0, min=0, max=1, description="cover2 int")
+w_cint_l = iw.FloatSlider(value=1, min=0, max=1, description="cover1 int")
+w_cint_r = iw.FloatSlider(value=0, min=0, max=1, description="cover2 int")
 
-w_int_back1 = iw.FloatSlider(value=0., min=0, max=1, description="int back1")
-w_int_back2 = iw.FloatSlider(value=1., min=0, max=1, description="int back2")
+w_int_back_l = iw.FloatSlider(value=0., min=0, max=1, description="int back1")
+w_int_back_r = iw.FloatSlider(value=1., min=0, max=1, description="int back2")
 w_mask = iw.Dropdown(value=None, options=[None, 'target_mask'], description="add mask")
 
 # Layout
@@ -745,21 +745,21 @@ def show_two_sided_equal(
     tint_l=None,
     tint_r=None,
     tthick=None,
-    cint1=None,
-    cint2=None,
-    intback1=None,
-    intback2=None,
+    cint_l=None,
+    cint_r=None,
+    int_back_l=None,
+    int_back_r=None,
     add_mask=False,
 ):
     try:
         stim = equal_two_sided(
             visual_size=(height, width),
             ppd=ppd,
-            cross_size=(theight, twidth),
+            cross_size=((theight, twidth),(theight, twidth)),
             cross_thickness=tthick,
-            intensity_backgrounds=(intback1, intback2),
+            intensity_background=(int_back_l, int_back_r),
             intensity_target=(tint_l, tint_r),
-            intensity_covers=(cint1, cint2),
+            intensity_covers=(cint_l, cint_r),
         )
         plot_stim(stim, mask=add_mask)
     except Exception as e:
@@ -777,10 +777,10 @@ out = iw.interactive_output(
         "tint_l": w_tint_l,
         "tint_r": w_tint_r,
         "tthick": w_tthick,
-        "cint1": w_cint1,
-        "intback1": w_int_back1,
-        "cint2": w_cint2,
-        "intback2": w_int_back2,
+        "cint_l": w_cint1,
+        "int_back_l": w_int_back_l,
+        "cint_r": w_cint2,
+        "int_back_r": w_int_back_r,
         "add_mask": w_mask,
     },
 )
