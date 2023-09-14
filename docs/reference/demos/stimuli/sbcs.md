@@ -179,6 +179,173 @@ out = iw.interactive_output(
 display(ui, out)
 ```
 
+## Square
+{py:func}`stimupy.stimuli.sbcs.square`
+
+```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
+from stimupy.stimuli.sbcs import square
+
+# Define widgets
+w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
+w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
+w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+
+w_radius_target = iw.FloatSlider(value=1, min=0, max=2, description="target radius [deg]")
+w_radius_surround = iw.FloatSlider(value=2, min=1, max=3, description="surround radius [deg]")
+
+w_int_surround = iw.FloatSlider(value=1, min=0, max=1, description="int surround")
+w_int_back = iw.FloatSlider(value=0.5, min=0, max=1, description="intensity background")
+
+w_ori = iw.Dropdown(value="center", options=['mean', 'corner', 'center'], description="origin")
+w_rot = iw.FloatSlider(value=0, min=0, max=360, description="rotation [deg]")
+w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'frame_mask'], description="add mask")
+
+w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
+
+# Layout
+b_im_size = iw.HBox([w_height, w_width, w_ppd])
+b_geometry = iw.HBox([w_radius_target, w_radius_surround])
+b_intensities = iw.HBox([w_int_surround, w_int_back])
+b_target = iw.HBox([w_tint])
+b_add = iw.HBox([w_ori, w_rot, w_mask])
+ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target, b_add])
+
+# Function for showing stim
+def show_square(
+    height=None,
+    width=None,
+    ppd=None,
+    target_radius=None,
+    surround_radius=None,
+    intensity_surround=None,
+    intensity_background=None,
+    origin=None,
+    add_mask=False,
+    intensity_target=None,
+    rotation=0.0,
+):
+    try:
+        stim = square(
+            visual_size=(height, width),
+            ppd=ppd,
+            target_radius=target_radius,
+            surround_radius=surround_radius,
+            intensity_surround=intensity_surround,
+            intensity_background=intensity_background,
+            origin=origin,
+            intensity_target=intensity_target,
+            rotation=rotation,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
+
+# Set interactivity
+out = iw.interactive_output(
+    show_square,
+    {
+        "height": w_height,
+        "width": w_width,
+        "ppd": w_ppd,
+        "target_radius": w_radius_target,
+        "surround_radius": w_radius_surround,
+        "intensity_surround": w_int_surround,
+        "intensity_background": w_int_back,
+        "origin": w_ori,
+        "add_mask": w_mask,
+        "intensity_target": w_tint,
+        "rotation": w_rot,
+    },
+)
+
+# Show
+display(ui, out)
+```
+
+
+## Circular
+{py:func}`stimupy.stimuli.sbcs.circular`
+
+```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
+from stimupy.stimuli.sbcs import circular
+
+# Define widgets
+w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
+w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
+w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+
+w_radius_target = iw.FloatSlider(value=1, min=0, max=2, description="target radius [deg]")
+w_radius_surround = iw.FloatSlider(value=2, min=1, max=3, description="surround radius [deg]")
+
+w_int_surround = iw.FloatSlider(value=1, min=0, max=1, description="int surround")
+w_int_back = iw.FloatSlider(value=0.5, min=0, max=1, description="intensity background")
+
+w_ori = iw.Dropdown(value="center", options=['mean', 'corner', 'center'], description="origin")
+w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'ring_mask'], description="add mask")
+
+w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
+
+# Layout
+b_im_size = iw.HBox([w_height, w_width, w_ppd])
+b_geometry = iw.HBox([w_radius_target, w_radius_surround])
+b_intensities = iw.HBox([w_int_surround, w_int_back])
+b_target = iw.HBox([w_tint])
+b_add = iw.HBox([w_ori, w_mask])
+ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target, b_add])
+
+# Function for showing stim
+def show_circular(
+    height=None,
+    width=None,
+    ppd=None,
+    target_radius=None,
+    surround_radius=None,
+    intensity_surround=None,
+    intensity_background=None,
+    origin=None,
+    add_mask=False,
+    intensity_target=None,
+):
+    try:
+        stim = circular(
+            visual_size=(height, width),
+            ppd=ppd,
+            target_radius=target_radius,
+            surround_radius=surround_radius,
+            intensity_surround=intensity_surround,
+            intensity_background=intensity_background,
+            origin=origin,
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
+
+# Set interactivity
+out = iw.interactive_output(
+    show_circular,
+    {
+        "height": w_height,
+        "width": w_width,
+        "ppd": w_ppd,
+        "target_radius": w_radius_target,
+        "surround_radius": w_radius_surround,
+        "intensity_surround": w_int_surround,
+        "intensity_background": w_int_back,
+        "origin": w_ori,
+        "add_mask": w_mask,
+        "intensity_target": w_tint,
+    },
+)
+
+# Show
+display(ui, out)
+```
+
 ## Two sided
 {py:func}`stimupy.stimuli.sbcs.basic_two_sided`
 
