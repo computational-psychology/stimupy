@@ -23,25 +23,25 @@ def generalized(
     intensity_background=0.0,
     intensity_target=0.5,
 ):
-    """Simultaneous contrast stimulus with free target placement.
+    """Simultaneous contrast stimulus with free target placement
 
     Parameters
     ----------
     visual_size : Sequence[Number, Number], Number, or None (default)
-        visual size [height, width] of grating, in degrees
+        visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
     shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of grating, in pixels
+        shape [height, width] of image, in pixels
     target_size : float or (float, float)
-        size of the target in degree visual angle (height, width)
+        size [height, width] of the target, in degrees visual angle
     target_position : float or (float, float)
         position of the target in degree visual angle (height, width);
         if None, place target centrally
-    intensity_background : float
-        intensity value for background
-    intensity_target : float
-        intensity value for target
+    intensity_background : float, optional
+        intensity value for background, by default 0.0
+    intensity_target : float, optional
+        intensity value for target, by default 0.5
 
     Returns
     -------
@@ -89,22 +89,22 @@ def basic(
     intensity_background=0.0,
     intensity_target=0.5,
 ):
-    """Simultaneous contrast stimulus with central target.
+    """Simultaneous contrast stimulus with central target
 
     Parameters
     ----------
     visual_size : Sequence[Number, Number], Number, or None (default)
-        visual size [height, width] of grating, in degrees
+        visual size [height, width] of image, in degrees
     ppd : Sequence[Number, Number], Number, or None (default)
         pixels per degree [vertical, horizontal]
     shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of grating, in pixels
+        shape [height, width] of image, in pixels
     target_size : float or (float, float)
-        size of the target in degree visual angle (height, width)
-    intensity_background : float
-        intensity value for background
-    intensity_target : float
-        intensity value for target
+        size [height, width] of the target, in degrees visual angle
+    intensity_background : float, optional
+        intensity value for background, by default 0.0
+    intensity_target : float, optional
+        intensity value for target, by default 0.5
 
     Returns
     -------
@@ -124,6 +124,7 @@ def basic(
     stim = generalized(
         visual_size=visual_size,
         ppd=ppd,
+        shape=shape,
         target_size=target_size,
         target_position=None,
         intensity_background=intensity_background,
