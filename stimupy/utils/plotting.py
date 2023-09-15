@@ -9,25 +9,8 @@ from stimupy.utils import resolution
 __all__ = [
     "plot_stim",
     "plot_stimuli",
-    "compare_plots",
+    "plot_comparison",
 ]
-
-
-def compare_plots(plots):
-    """Plot multiple plots in one plot for comparing.
-
-    Parameters
-    ----------
-    plots : list of plots
-        List containing plots which should be plotted
-
-    """
-    M = len(plots)
-    for i, (plot_name, plot) in enumerate(plots.items()):
-        plt.subplot(1, M, i + 1)
-        plt.title(plot_name)
-        plt.imshow(plot, cmap="gray")
-    plt.show()
 
 
 def plot_stim(
@@ -228,3 +211,43 @@ def plot_stimuli(
         plt.close()
     else:
         raise ValueError("save can be None or a filepath")
+
+
+def plot_comparison(original_img, new_img):
+    """Plots visual comparison of two image-arrays
+
+    Parameters
+    ----------
+    original_img : numpy.ndarray
+        original image-array
+    new_img : numpy.ndarray
+        new image-array
+
+    Returns
+    -------
+    matplotlib.Figure
+        Figure containing plots of images, and their comparison(s)
+    """
+    vmin, vmax = 0, 1
+
+    fig = plt.figure(figsize=(20, 6))
+    plt.subplot(1, 4, 1)
+    plt.imshow(original_img, cmap="gray", vmin=vmin, vmax=vmax)
+    plt.title("Original")
+
+    plt.subplot(1, 4, 2)
+    plt.imshow(new_img, cmap="gray", vmin=vmin, vmax=vmax)
+    plt.title("New")
+
+    plt.subplot(1, 4, 3)
+    plt.imshow(original_img - new_img, cmap="coolwarm", vmin=-vmax, vmax=vmax)
+    plt.colorbar()
+    num_pix_off = np.prod(original_img.shape) - np.sum(np.isclose(original_img, new_img))
+    plt.title(f"Difference: {num_pix_off} pix")
+
+    plt.subplot(1, 4, 4)
+    plt.plot(original_img[:, 128], label="Original")
+    plt.plot(new_img[:, 128], label="New")
+    plt.legend()
+
+    return fig
