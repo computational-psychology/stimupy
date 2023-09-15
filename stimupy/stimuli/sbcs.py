@@ -9,10 +9,12 @@ __all__ = [
     "basic",
     "square",
     "circular",
-    "basic_two_sided",
     "with_dots",
-    "with_dots_two_sided",
     "dotted",
+    "basic_two_sided",
+    "square_two_sided",
+    "circular_two_sided",
+    "with_dots_two_sided",
     "dotted_two_sided",
 ]
 
@@ -256,11 +258,6 @@ def circular(
     return stim
 
 
-basic_two_sided = make_two_sided(
-    basic, two_sided_params=("target_size", "intensity_target", "intensity_background")
-)
-
-
 def with_dots(
     visual_size=None,
     ppd=None,
@@ -391,11 +388,6 @@ def with_dots(
     }
 
     return stim
-
-
-with_dots_two_sided = make_two_sided(
-    with_dots, two_sided_params=("intensity_dots", "intensity_background", "intensity_target")
-)
 
 
 def dotted(
@@ -530,6 +522,26 @@ def dotted(
     return stim
 
 
+basic_two_sided = make_two_sided(
+    basic, two_sided_params=("target_size", "intensity_target", "intensity_background")
+)
+
+
+square_two_sided = make_two_sided(
+    square, two_sided_params=("target_radius", "surround_radius", "rotation", "intensity_target", "intensity_surround", "intensity_background")
+)
+
+
+circular_two_sided = make_two_sided(
+    circular, two_sided_params=("target_radius", "surround_radius", "intensity_target", "intensity_surround", "intensity_background")
+)
+
+
+with_dots_two_sided = make_two_sided(
+    with_dots, two_sided_params=("intensity_dots", "intensity_background", "intensity_target")
+)
+
+
 dotted_two_sided = make_two_sided(
     dotted, two_sided_params=("intensity_target", "intensity_background", "intensity_dots")
 )
@@ -561,11 +573,13 @@ def overview(**kwargs):
         "sbc_basic": basic(**default_params, visual_size=10, target_size=3),
         "sbc_square": square(**default_params, visual_size=10, target_radius=1, surround_radius=2),
         "sbc_circular": circular(**default_params, visual_size=10, target_radius=1, surround_radius=2),
+        "sbc_with_dots": with_dots(**default_params, **dot_params),
+        "sbc_dotted": dotted(**default_params, **dot_params),
 
         "sbc_2sided": basic_two_sided(**default_params, visual_size=10, target_size=2, intensity_background=(0.0, 1.0)),
-        "sbc_with_dots": with_dots(**default_params, **dot_params),
+        "sbc_square_2sided": square_two_sided(**default_params, visual_size=10, target_radius=1, surround_radius=2, intensity_surround=(1.0, 0.0)),
+        "sbc_circular_2sided": circular_two_sided(**default_params, visual_size=10, target_radius=1, surround_radius=2, intensity_surround=(1.0, 0.0)),
         "sbc_with_dots_2sided": with_dots_two_sided(**default_params, **dot_params, intensity_background=(0.0, 1.0), intensity_dots=(1.0, 0.0)),
-        "sbc_dotted": dotted(**default_params, **dot_params),
         "sbc_dotted_2sided": dotted_two_sided(**default_params, **dot_params, intensity_background=(0.0, 1.0), intensity_dots=(1.0, 0.0)),
     }
     # fmt: on
