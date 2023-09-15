@@ -39,7 +39,7 @@ def mask_angle(
     Returns
     -------
     dict[str, Any]
-        dict with boolean mask (key: bool_mask) for pixels falling in given angle,
+        dict with boolean mask (key: "segment_mask") for pixels falling in given angle,
         and additional params
     """
     stim = mask_regions(
@@ -51,8 +51,7 @@ def mask_angle(
         ppd=ppd,
         origin=origin,
     )
-    stim["wedge_mask"] = stim["mask"]
-    del stim["mask"]
+    stim["segment_mask"] = stim.pop("mask")
     return stim
 
 
@@ -131,16 +130,19 @@ def wedge(
         origin=origin,
     )
 
-    # Remove everything but wedge, and add additional args
-    stim["img"] = np.where(mask["wedge_mask"], stim["img"], intensity_background)
-    stim["wedge_mask"] = stim["ring_mask"] * mask["wedge_mask"]
+    # Combine masks
+    stim["wedge_mask"] = stim.pop("ring_mask") * mask["segment_mask"]
     stim["wedge_mask"] = np.where(stim["wedge_mask"] != 0, 1, 0).astype(int)
+
+    # Draw image
+    stim["img"] = np.where(stim["wedge_mask"], intensity_wedge, intensity_background)
+
+    # Repackage
     stim["angle"] = angle
     stim["radius"] = radius
     stim["inner_radius"] = inner_radius
     stim["intensity_wedge"] = intensity_wedge
     stim["intensity_background"] = intensity_background
-    del stim["ring_mask"]
     return stim
 
 
@@ -175,7 +177,7 @@ def mask_segments(
     -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
-        mask with integer index for each segment (key: "wedge_mask"),
+        mask with integer index for each segment (key: "segment_mask"),
         and additional keys containing stimulus parameters
     """
     stim = mask_regions(
@@ -187,8 +189,7 @@ def mask_segments(
         ppd=ppd,
         origin=origin,
     )
-    stim["wedge_mask"] = stim["mask"]
-    del stim["mask"]
+    stim["segment_mask"] = stim.pop("mask")
     return stim
 
 
@@ -199,7 +200,7 @@ def segments(
     angles=None,
     rotation=0.0,
     intensity_background=0.5,
-    intensity_segments=(0, 1),
+    intensity_segments=(0.0, 1.0),
     origin="mean",
 ):
     """Generate mask with integer indices for sequential angular segments
@@ -230,7 +231,7 @@ def segments(
     -------
     dict[str, Any]
         dict with the stimulus (key: "img"),
-        mask with integer index for each segment (key: "wedge_mask"),
+        mask with integer index for each segment (key: "segment_mask"),
         and additional keys containing stimulus parameters
     """
     if angles is None:
@@ -251,7 +252,7 @@ def segments(
 
     # Draw image
     stim["img"] = draw_regions(
-        stim["wedge_mask"],
+        stim["segment_mask"],
         intensities=intensity_segments,
         intensity_background=intensity_background,
     )

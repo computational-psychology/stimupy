@@ -137,7 +137,7 @@ def WE_thick(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "frequency": 4.0 / width,
-        "intensity_bars": (v1, v3),
+        "intensity_bars": (v3, v1),
         "intensity_target": v2,
         "target_indices": (3, 6),
         "target_heights": 4.0,
@@ -198,7 +198,7 @@ def WE_thin_wide(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "frequency": 8.0 / width,
-        "intensity_bars": (v3, v1),
+        "intensity_bars": (v1, v3),
         "intensity_target": v2,
         "target_indices": (4, 13),
         "target_heights": 2.0,
@@ -250,7 +250,7 @@ def WE_dual(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "frequency": 4.0 / width,
-        "intensity_bars": (v1, v3),
+        "intensity_bars": (v3, v1),
         "intensity_target": v2,
         "target_indices": (3, 6),
         "target_heights": 2.0,
@@ -320,7 +320,7 @@ def WE_anderson(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "frequency": 8.0 / width,
-        "intensity_bars": (v1, v3),
+        "intensity_bars": (v3, v1),
         "intensity_target": v2,
         "target_indices_top": (6,),
         "target_indices_bottom": (11,),
@@ -389,7 +389,7 @@ def WE_howe(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "frequency": 8.0 / width,
-        "intensity_bars": (v1, v3),
+        "intensity_bars": (v3, v1),
         "intensity_target": v2,
         "target_indices_top": (6,),
         "target_indices_bottom": (11,),
@@ -495,7 +495,7 @@ def WE_radial_thick_small(ppd=PPD, pad=True):
         "target_indices": (1, 8),
         "target_width": 4.0,
         "target_center": 4.5,
-        "intensity_segments": (v3, v1),
+        "intensity_segments": (v1, v3),
         "intensity_background": v2,
         "intensity_target": v2,
     }
@@ -550,7 +550,7 @@ def WE_radial_thick(ppd=PPD, pad=True):
         "target_indices": (1, 10),
         "target_width": 4.0,
         "target_center": 6.0,
-        "intensity_segments": (v3, v1),
+        "intensity_segments": (v1, v3),
         "intensity_background": v2,
         "intensity_target": v2,
     }
@@ -605,7 +605,7 @@ def WE_radial_thin_small(ppd=PPD, pad=True):
         "target_indices": (1, 14),
         "target_width": 2.0,
         "target_center": 4.0,
-        "intensity_segments": (v3, v1),
+        "intensity_segments": (v1, v3),
         "intensity_background": v2,
         "intensity_target": v2,
     }
@@ -660,7 +660,7 @@ def WE_radial_thin(ppd=PPD, pad=True):
         "target_indices": (1, 22),
         "target_width": 2.0,
         "target_center": 6.0,
-        "intensity_segments": (v3, v1),
+        "intensity_segments": (v1, v3),
         "intensity_background": v2,
         "intensity_target": v2,
     }
@@ -720,13 +720,13 @@ def WE_circular1(ppd=PPD, pad=True):
 
     stim1 = stimupy.whites.radial(
         visual_size=(height, width),
-        intensity_rings=(v3, v1),
+        intensity_rings=(v1, v3),
         **params,
     )
 
     stim2 = stimupy.whites.radial(
         visual_size=(height, width),
-        intensity_rings=(v1, v3),
+        intensity_rings=(v3, v1),
         **params,
     )
     stim = stack_dicts(stim1, stim2)
@@ -781,13 +781,13 @@ def WE_circular05(ppd=PPD, pad=True):
 
     stim1 = stimupy.whites.radial(
         visual_size=(height, width),
-        intensity_rings=(v3, v1),
+        intensity_rings=(v1, v3),
         **params,
     )
 
     stim2 = stimupy.whites.radial(
         visual_size=(height, width),
-        intensity_rings=(v1, v3),
+        intensity_rings=(v3, v1),
         **params,
     )
     stim = stack_dicts(stim1, stim2)
@@ -842,13 +842,13 @@ def WE_circular025(ppd=PPD, pad=True):
 
     stim1 = stimupy.whites.radial(
         visual_size=(height, width),
-        intensity_rings=(v3, v1),
+        intensity_rings=(v1, v3),
         **params,
     )
 
     stim2 = stimupy.whites.radial(
         visual_size=(height, width),
-        intensity_rings=(v1, v3),
+        intensity_rings=(v3, v1),
         **params,
     )
     stim = stack_dicts(stim1, stim2)

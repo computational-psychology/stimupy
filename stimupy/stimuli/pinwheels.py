@@ -23,7 +23,7 @@ def pinwheel(
     target_indices=(),
     target_width=None,
     target_center=None,
-    intensity_segments=(1.0, 0.0),
+    intensity_segments=(0.0, 1.0),
     intensity_background=0.5,
     intensity_target=0.5,
     origin="mean",
@@ -104,14 +104,15 @@ def pinwheel(
 
     # Mask to circular aperture
     radius = min(stim["visual_size"]) / 2
-    circle_aperture = circle(
+    stim["circle_mask"] = circle(
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,
         radius=radius,
         origin=origin,
     )["circle_mask"]
-    stim["img"] = np.where(circle_aperture, stim["img"], intensity_background)
+    stim["segment_mask"] = np.where(stim["circle_mask"], stim["segment_mask"], 0)
+    stim["img"] = np.where(stim["circle_mask"], stim["img"], intensity_background)
     stim["intensity_background"] = intensity_background
 
     # Target segment mask
