@@ -73,6 +73,7 @@ def show_generalized(
     intensity_background=None,
     intensity_target=None,
     add_mask=False,
+    rotation=0.0,
 ):
     try:
         stim = generalized(
@@ -82,6 +83,7 @@ def show_generalized(
             target_position=(target_y,target_x),
             intensity_background=intensity_background,
             intensity_target=intensity_target,
+            rotation=rotation,
         )
         plot_stim(stim, mask=add_mask)
     except Exception as e:
@@ -101,6 +103,7 @@ out = iw.interactive_output(
         "intensity_background": w_int_back,
         "intensity_target": w_tint,
         "add_mask": w_mask,
+        "rotation": w_rot,
     },
 )
 

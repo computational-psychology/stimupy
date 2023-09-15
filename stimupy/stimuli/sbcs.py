@@ -27,6 +27,7 @@ def generalized(
     target_position=None,
     intensity_background=0.0,
     intensity_target=0.5,
+    rotation=0.0,
 ):
     """Simultaneous contrast stimulus with free target placement
 
@@ -47,6 +48,9 @@ def generalized(
         intensity value for background, by default 0.0
     intensity_target : float, optional
         intensity value for target, by default 0.5
+    rotation : float, optional
+        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+
 
     Returns
     -------
@@ -71,18 +75,14 @@ def generalized(
         rectangle_position=target_position,
         intensity_background=intensity_background,
         intensity_rectangle=intensity_target,
+        rotation=rotation,
     )
 
-    stim["target_mask"] = stim["rectangle_mask"]
-    stim["target_size"] = stim["rectangle_size"]
-    stim["target_position"] = stim["rectangle_position"]
-    stim["intensity_target"] = stim["intensity_rectangle"]
-    del (
-        stim["rectangle_mask"],
-        stim["rectangle_size"],
-        stim["rectangle_position"],
-        stim["intensity_rectangle"],
-    )
+    stim["target_mask"] = stim.pop("rectangle_mask")
+    stim["target_size"] = stim.pop("rectangle_size")
+    stim["target_position"] = stim.pop("rectangle_position")
+    stim["intensity_target"] = stim.pop("intensity_rectangle")
+
     return stim
 
 
