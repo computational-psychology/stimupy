@@ -127,7 +127,7 @@ def rings(
     # Resolve radii
     if radii is None:
         raise ValueError("rings() missing argument 'radii' which is not 'None'")
-    if (isinstance(radii, collections.abc.Sequence) or isinstance(radii, np.ndarray)):
+    if isinstance(radii, collections.abc.Sequence) or isinstance(radii, np.ndarray):
         if np.diff(radii).min() < 0:
             raise ValueError("radii need to monotonically increase")
     else:

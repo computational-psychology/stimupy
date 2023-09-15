@@ -528,12 +528,27 @@ basic_two_sided = make_two_sided(
 
 
 square_two_sided = make_two_sided(
-    square, two_sided_params=("target_radius", "surround_radius", "rotation", "intensity_target", "intensity_surround", "intensity_background")
+    square,
+    two_sided_params=(
+        "target_radius",
+        "surround_radius",
+        "rotation",
+        "intensity_target",
+        "intensity_surround",
+        "intensity_background",
+    ),
 )
 
 
 circular_two_sided = make_two_sided(
-    circular, two_sided_params=("target_radius", "surround_radius", "intensity_target", "intensity_surround", "intensity_background")
+    circular,
+    two_sided_params=(
+        "target_radius",
+        "surround_radius",
+        "intensity_target",
+        "intensity_surround",
+        "intensity_background",
+    ),
 )
 
 
