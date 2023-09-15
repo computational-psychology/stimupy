@@ -1,8 +1,6 @@
-import collections
-
 from stimupy.components import lines
 from stimupy.components.shapes import disc
-from stimupy.utils import resolution, stack_dicts
+from stimupy.utils import make_two_sided
 
 __all__ = ["delboeuf", "two_sided"]
 
@@ -93,96 +91,16 @@ def delboeuf(
     return inner
 
 
-def two_sided(
-    visual_size=None,
-    ppd=None,
-    shape=None,
-    outer_radii=None,
-    outer_line_width=0,
-    target_radius=None,
-    intensity_outer_line=0.0,
-    intensity_target=0.0,
-    intensity_background=1.0,
-):
-    """Two-sided Delboeuf's (1865) stimulus
-
-    Parameters
-    ----------
-    visual_size : Sequence[Number, Number], Number, or None (default)
-        visual size [height, width] of grating, in degrees
-    ppd : Sequence[Number, Number], Number, or None (default)
-        pixels per degree [vertical, horizontal]
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of grating, in pixels
-    outer_radii : Sequence[Number, Number], or None (default)
-        radius of outer circle
-    outer_line_width : Number
-        line width of outer circle in degrees visual angle
-        if 0 (default), set line width to 1 px
-    target_radius : Number or None (default)
-        radius of target circle
-    intensity_outer_line : Number
-        intensity value of outer circle line (default: 0)
-    intensity_target : Sequence[float, float], or float (optional)
-        intensity value of targets, by default 0.5
-    intensity_background : Number
-        intensity value of background (default: 1)
-
-    Returns
-    -------
-    dict[str, Any]
-        dict with the stimulus (key: "img"),
-        mask with integer index for the target (key: "target_mask"),
-        and additional keys containing stimulus parameters
-
-    References
-    ----------
-    Delboeuf, F. J. (1865).
-        Note sur certaines illusions d'optique:
-        Essai d'une théorie psychophysique de la maniere
-        dont l'oeil apprécie les distances et les angles.
-        Bulletins de l'Académie Royale des Sciences, Lettres et
-        Beaux-arts de Belgique, 19, 195-216.
-    """
-    if outer_radii is None:
-        raise ValueError("two_sided() missing argument 'outer_radii' which is not 'None'")
-    if target_radius is None:
-        raise ValueError("delboeuf() missing argument 'target_radius' which is not 'None'")
-
-    if not isinstance(intensity_target, collections.abc.Sequence):
-        intensity_target = (intensity_target, intensity_target)
-
-    # Resolve resolution
-    shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
-
-    stim1 = delboeuf(
-        visual_size=(visual_size[0], visual_size[1] / 2),
-        ppd=ppd,
-        outer_radius=outer_radii[0],
-        outer_line_width=outer_line_width,
-        target_radius=target_radius,
-        intensity_outer_line=intensity_outer_line,
-        intensity_target=intensity_target[0],
-        intensity_background=intensity_background,
-    )
-
-    stim2 = delboeuf(
-        visual_size=(visual_size[0], visual_size[1] / 2),
-        ppd=ppd,
-        outer_radius=outer_radii[1],
-        outer_line_width=outer_line_width,
-        target_radius=target_radius,
-        intensity_outer_line=intensity_outer_line,
-        intensity_target=intensity_target[1],
-        intensity_background=intensity_background,
-    )
-
-    stim = stack_dicts(stim1, stim2)
-    stim["shape"] = shape
-    stim["visual_size"] = visual_size
-    del stim["outer_radius"]
-    stim["outer_radii"] = outer_radii
-    return stim
+two_sided = make_two_sided(
+    delboeuf,
+    two_sided_params=(
+        "outer_radius",
+        "outer_line_width",
+        "target_radius",
+        "intensity_target",
+        "intensity_outer_line",
+    ),
+)
 
 
 def overview(**kwargs):
@@ -202,7 +120,7 @@ def overview(**kwargs):
     # fmt: off
     stimuli = {
         "delboeuf": delboeuf(**default_params, target_radius=1, outer_radius=4),
-        "delboeuf_2sided": two_sided(**default_params, target_radius=1, outer_radii=(2, 1.1)),
+        "delboeuf_2sided": two_sided(**default_params, target_radius=1, outer_radius=(2, 1.1)),
     }
     # fmt: on
 

@@ -1,4 +1,6 @@
+import collections
 import copy
+import functools
 import itertools
 
 import numpy as np
@@ -18,6 +20,7 @@ __all__ = [
     "flip_dict",
     "roll_dict",
     "strip_dict",
+    "make_two_sided",
     "permutate_params",
     "create_stimspace_stimuli",
 ]
@@ -438,6 +441,103 @@ def strip_dict(
         if name in dct.keys():
             new_dict[name] = dct[name]
     return new_dict
+
+
+def make_two_sided(func, two_sided_params):
+    """Create two-sided version of a stimulus function
+
+    Where (some) parameters can be specified separately for each side.
+    These parameters should then be specified as a 2-Sequence (2-ple, list of len=2),
+    where entry [0] is the parameter value for left side, and [1] for right side.
+    This means that if the kwarg takes a Sequence itself, e.g., `intensities`,
+    then the two-sided specification must be, e.g.,
+    ((int_left_0, int_left_1), (int_right_0, int_right_1))
+
+    Will be left- and right-sided.
+
+
+    Parameters
+    ----------
+    func : function
+        stimulus function to double
+    two_sided_params : Sequence[str]
+        names of parameters (kwargs) of func
+        that can be specified separately for each side of the display.
+
+    Returns
+    -------
+    function
+        two-sided version of stimulus function
+    """
+
+    @functools.wraps(func)
+    def two_sided_func(**kwargs):
+        shape = kwargs.pop("shape", None)
+        visual_size = kwargs.pop("visual_size", None)
+        ppd = kwargs.pop("ppd", None)
+
+        # Resolve resolution
+        try:
+            shape, visual_size, ppd = resolution.resolve(
+                shape=shape, visual_size=visual_size, ppd=ppd
+            )
+        except resolution.TooManyUnknownsError:
+            shape = resolution.validate_shape(shape)
+            visual_size = resolution.validate_visual_size(visual_size)
+            ppd = resolution.validate_ppd(ppd)
+        if visual_size.width is not None:
+            _visual_size = (visual_size.height, visual_size.width / 2)
+        else:
+            _visual_size = None
+        if shape.width is not None:
+            _shape = (shape.height, shape.width / 2)
+        else:
+            _shape = None
+
+        # Left side
+        left_side_params = {}
+        for key, value in kwargs.items():
+            if key in two_sided_params and isinstance(value, collections.abc.Sequence):
+                left_side_params[key] = value[0]
+            else:
+                left_side_params[key] = value
+
+        left = func(
+            visual_size=_visual_size,
+            ppd=ppd,
+            shape=_shape,
+            **left_side_params,
+        )
+
+        # Right side
+        right_side_params = {}
+        for key, value in kwargs.items():
+            if key in two_sided_params and isinstance(value, collections.abc.Sequence):
+                right_side_params[key] = value[1]
+            else:
+                right_side_params[key] = value
+
+        right = func(
+            visual_size=_visual_size,
+            ppd=ppd,
+            shape=_shape,
+            **right_side_params,
+        )
+
+        stim = stack_dicts(left, right, direction="horizontal")
+        stim["shape"] = left["shape"].height, left["shape"].width + right["shape"].width
+        stim["visual_size"] = (
+            left["visual_size"].height,
+            left["visual_size"].width + right["visual_size"].width,
+        )
+        for key in two_sided_params:
+            if key in kwargs:
+                stim[key] = kwargs[key]
+            else:
+                stim[key] = (left[key], right[key])
+        return stim
+
+    return two_sided_func
 
 
 def permutate_params(params):

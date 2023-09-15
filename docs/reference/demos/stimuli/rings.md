@@ -233,6 +233,7 @@ w_int2 = iw.FloatSlider(value=0, min=0, max=1, description="int-ring2")
 w_int_back = iw.FloatSlider(value=0.5, min=0, max=1, description="int background")
 
 w_ori = iw.Dropdown(value="mean", options=['mean', 'corner', 'center'], description="origin")
+w_clip = iw.ToggleButton(value=False, disabled=False, description="clip")
 w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'ring_mask'], description="add mask")
 
 w_tidx = iw.IntSlider(value=2, min=0, max=10, description="target idx")
@@ -244,7 +245,7 @@ w_tint_r = iw.FloatSlider(value=0.5, min=0, max=1, description="right target int
 b_im_size = iw.HBox([w_height, w_width, w_ppd])
 b_geometry = iw.HBox([w_freq, w_phase])
 b_intensities = iw.HBox([w_int1, w_int2, w_int_back])
-b_add = iw.HBox([w_ori, w_mask])
+b_add = iw.HBox([w_ori, w_mask, w_clip])
 b_target = iw.HBox([w_tidx, w_tint_l, w_tint_r])
 ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target, b_add])
 
@@ -263,6 +264,7 @@ def show_circular_two_sided(
     target_indices=None,
     intensity_target_l=None,
     intensity_target_r=None,
+    clip=True,
 ):
     try:
         stim = circular_two_sided(
@@ -270,11 +272,12 @@ def show_circular_two_sided(
             ppd=ppd,
             frequency=frequency,
             phase_shift=phase_shift,
-            intensity_rings=(int1, int2),
+            intensity_rings=((int1, int2),(int2, int1)),
             intensity_background=intensity_background,
             origin=origin,
             target_indices=target_indices,
             intensity_target=(intensity_target_l, intensity_target_r),
+            clip=clip,
         )
         plot_stim(stim, mask=add_mask)
     except Exception as e:
@@ -297,6 +300,7 @@ out = iw.interactive_output(
         "target_indices": w_tidx,
         "intensity_target_l": w_tint_l,
         "intensity_target_r": w_tint_r,
+        "clip": w_clip,
     },
 )
 
@@ -509,6 +513,7 @@ w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int-ring1")
 w_int2 = iw.FloatSlider(value=0, min=0, max=1, description="int-ring2")
 w_int_back = iw.FloatSlider(value=0.5, min=0, max=1, description="intensity background")
 
+w_clip = iw.ToggleButton(value=False, disabled=False, description="clip")
 w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'frame_mask'], description="add mask")
 
 w_tidx = iw.IntSlider(value=1, min=0, max=10, description="target idx")
@@ -520,7 +525,7 @@ b_im_size = iw.HBox([w_height, w_width, w_ppd])
 b_geometry = iw.HBox([w_freq, w_phase])
 b_intensities = iw.HBox([w_int1, w_int2, w_int_back])
 b_target = iw.HBox([w_tidx, w_tint_l, w_tint_r])
-b_add = iw.HBox([w_mask])
+b_add = iw.HBox([w_clip, w_mask])
 ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target, b_add])
 
 # Function for showing stim
@@ -537,6 +542,7 @@ def show_rectangular_two_sided(
     target_indices=None,
     intensity_target_l=None,
     intensity_target_r=None,
+    clip=None,
 ):
     try:
         stim = rectangular_two_sided(
@@ -544,10 +550,11 @@ def show_rectangular_two_sided(
             ppd=ppd,
             frequency=frequency,
             phase_shift=phase_shift,
-            intensity_frames=(int1, int2),
+            intensity_frames=((int1, int2),(int2, int1)),
             intensity_background=intensity_background,
             target_indices=target_indices,
             intensity_target=(intensity_target_l, intensity_target_r),
+            clip=clip,
         )
         plot_stim(stim, mask=add_mask)
     except Exception as e:
@@ -568,7 +575,8 @@ out = iw.interactive_output(
         "add_mask": w_mask,
         "intensity_target_l": w_tint_l,
         "intensity_target_r": w_tint_r,
-            "target_indices": w_tidx,
+        "target_indices": w_tidx,
+        "clip": w_clip,
     },
 )
 
