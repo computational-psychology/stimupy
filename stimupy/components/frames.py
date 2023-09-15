@@ -60,7 +60,7 @@ def frames(
     shape=None,
     radii=None,
     rotation=0.0,
-    intensity_frames=(1.0, 0.0),
+    intensity_frames=(0.0, 1.0),
     intensity_background=0.5,
     origin="mean",
 ):

@@ -1,6 +1,6 @@
 import numpy as np
 
-from stimupy.components import draw_regions, waves
+from stimupy.components import waves
 from stimupy.components.shapes import disc, rectangle
 from stimupy.stimuli import place_targets
 
@@ -144,7 +144,7 @@ def square_linear(
     period="ignore",
     rotation=0.0,
     phase_shift=0,
-    intensity_bars=(1.0, 0.0),
+    intensity_bars=(0.0, 1.0),
     target_indices=(),
     intensity_target=0.5,
     origin="corner",
@@ -219,10 +219,8 @@ def square_linear(
         origin=origin,
         round_phase_width=round_phase_width,
         distance_metric="oblique",
+        intensities=intensity_bars,
     )
-
-    # Adjust intensities to passed-in values
-    stim["img"] = draw_regions(mask=stim["grating_mask"], intensities=intensity_bars)
 
     # Repackage output
     stim["n_bars"] = stim.pop("n_phases")
@@ -492,7 +490,7 @@ def square_radial(
     period="ignore",
     rotation=0.0,
     phase_shift=0,
-    intensity_rings=(1.0, 0.0),
+    intensity_rings=(0.0, 1.0),
     target_indices=(),
     intensity_target=0.5,
     origin="mean",
@@ -571,10 +569,8 @@ def square_radial(
         origin=origin,
         round_phase_width=round_phase_width,
         distance_metric="radial",
+        intensities=intensity_rings,
     )
-
-    # Adjust intensities to passed-in values
-    stim["img"] = draw_regions(mask=stim["grating_mask"], intensities=intensity_rings)
 
     # Repackage output
     stim["n_rings"] = stim.pop("n_phases")
@@ -619,7 +615,7 @@ def staircase_radial(
     period="ignore",
     rotation=0.0,
     phase_shift=0,
-    intensity_rings=(1.0, 0.0),
+    intensity_rings=(0.0, 1.0),
     target_indices=(),
     intensity_target=0.5,
     origin="mean",
@@ -882,7 +878,7 @@ def square_rectilinear(
     period="ignore",
     rotation=0.0,
     phase_shift=0,
-    intensity_frames=(1.0, 0.0),
+    intensity_frames=(0.0, 1.0),
     target_indices=(),
     intensity_target=0.5,
     origin="mean",
@@ -962,10 +958,8 @@ def square_rectilinear(
         origin=origin,
         round_phase_width=round_phase_width,
         distance_metric="rectilinear",
+        intensities=intensity_frames,
     )
-
-    # Adjust intensities to passed-in values
-    stim["img"] = draw_regions(mask=stim["grating_mask"], intensities=intensity_frames)
 
     # Repackage output
     stim["n_frames"] = stim.pop("n_phases")
@@ -1261,7 +1255,7 @@ def square_angular(
     period="ignore",
     rotation=0.0,
     phase_shift=0,
-    intensity_segments=(1.0, 0.0),
+    intensity_segments=(0.0, 1.0),
     target_indices=(),
     intensity_target=0.5,
     origin="mean",
@@ -1336,10 +1330,8 @@ def square_angular(
         origin=origin,
         round_phase_width=round_phase_width,
         distance_metric="angular",
+        intensities=intensity_segments,
     )
-
-    # Adjust intensities to passed-in values
-    stim["img"] = draw_regions(mask=stim["grating_mask"], intensities=intensity_segments)
 
     # Repackage output
     stim["n_segments"] = stim.pop("n_phases")

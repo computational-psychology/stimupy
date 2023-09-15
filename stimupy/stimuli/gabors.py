@@ -14,7 +14,7 @@ def gabor(
     period="ignore",
     rotation=0.0,
     phase_shift=0,
-    intensity_bars=(0.0, 1.0),
+    intensities=(0.0, 1.0),
     origin="center",
     round_phase_width=False,
     sigma=None,
@@ -45,7 +45,7 @@ def gabor(
         rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
     phase_shift : float
         phase shift of grating in degrees
-    intensity_bars : Sequence[float, ...]
+    intensities : Sequence[float, ...]
         maximal intensity value for each bar, by default (0.0, 1.0).
     origin : "corner", "mean" or "center"
         if "corner": set origin to upper left corner
@@ -72,7 +72,7 @@ def gabor(
         period=period,
         rotation=rotation,
         phase_shift=phase_shift,
-        intensities=intensity_bars,
+        intensities=intensities,
         origin=origin,
         distance_metric="oblique",
         round_phase_width=round_phase_width,
@@ -84,7 +84,7 @@ def gabor(
         sigma=sigma,
         origin=origin,
     )
-    mean_int = (intensity_bars[0] + intensity_bars[1]) / 2
+    mean_int = (intensities[0] + intensities[1]) / 2
     stim["img"] = (stim["img"] - mean_int) * gaussian_window["img"] + mean_int
     del stim["intensities"]
 
@@ -92,7 +92,7 @@ def gabor(
         **stim,
         "sigma": sigma,
         "gaussian_mask": gaussian_window["gaussian_mask"],
-        "intensity_bars": intensity_bars,
+        "intensities": intensities,
     }
 
 

@@ -16,7 +16,7 @@ def wedding_cake(
     target_height=None,
     target_indices1=None,
     target_indices2=None,
-    intensity_bars=(1.0, 0.0),
+    intensity_bars=(0.0, 1.0),
     intensity_target=0.5,
 ):
     """Wedding cake stimulus

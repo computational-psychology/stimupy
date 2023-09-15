@@ -200,7 +200,7 @@ def segments(
     angles=None,
     rotation=0.0,
     intensity_background=0.5,
-    intensity_segments=(0, 1),
+    intensity_segments=(0.0, 1.0),
     origin="mean",
 ):
     """Generate mask with integer indices for sequential angular segments

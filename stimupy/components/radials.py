@@ -76,7 +76,7 @@ def rings(
     ppd=None,
     shape=None,
     radii=None,
-    intensity_rings=(0, 1),
+    intensity_rings=(0.0, 1.0),
     intensity_background=0.5,
     origin="mean",
 ):
