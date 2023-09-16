@@ -427,6 +427,112 @@ out = iw.interactive_output(
 display(ui, out)
 ```
 
+## Generalized, Two sided
+{py:func}`stimupy.stimuli.sbcs.generalized_two_sided`
+
+```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
+from stimupy.stimuli.sbcs import generalized_two_sided
+
+# Define widgets
+w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
+w_width = iw.IntSlider(value=20, min=1, max=20, description="width [deg]")
+w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+
+w_t_height_l = iw.IntSlider(value=3, min=1, max=6, description="target height left [deg]")
+w_t_width_l = iw.IntSlider(value=3, min=1, max=6, description="target width right [deg]")
+w_t_height_r = iw.IntSlider(value=3, min=1, max=6, description="target height left [deg]")
+w_t_width_r = iw.IntSlider(value=3, min=1, max=6, description="target width right [deg]")
+
+w_t_y_l = iw.FloatSlider(value=5.0, min=0.0, max=20, description="y left target [deg]")
+w_t_x_l = iw.FloatSlider(value=5.0, min=0.0, max=20, description="x left target [deg]") 
+w_t_y_r = iw.FloatSlider(value=3.0, min=0.0, max=20, description="y right target [deg]")
+w_t_x_r = iw.FloatSlider(value=3.0, min=0.0, max=20, description="x right target [deg]")
+
+w_tint_l = iw.FloatSlider(value=0.5, min=0, max=1, description="intensity target left")
+w_tint_r = iw.FloatSlider(value=0.5, min=0, max=1, description="intensity target right")
+w_int_back_l = iw.FloatSlider(value=0., min=0, max=1, description="intensity left background")
+w_int_back_r = iw.FloatSlider(value=1., min=0, max=1, description="intensity right background")
+
+
+w_mask = iw.ToggleButton(value=False, disabled=False, description="add mask")
+
+
+# Layout
+b_im_size = iw.HBox([w_height, w_width, w_ppd])
+b_t_size_l = iw.HBox([w_t_height_l, w_t_width_l])
+b_t_size_r = iw.HBox([w_t_height_r, w_t_width_r])
+b_t_pos_l = iw.HBox([w_t_y_l, w_t_x_l])
+b_t_pos_r = iw.HBox([w_t_y_r, w_t_x_r])
+b_intensities_l = iw.HBox([w_tint_l, w_int_back_l])
+b_intensities_r = iw.HBox([w_tint_r, w_int_back_r])
+
+b_left = iw.VBox([b_t_size_l, b_t_pos_l, b_intensities_l])
+b_right = iw.VBox([b_t_size_r, b_t_pos_r, b_intensities_r])
+
+b_add = iw.HBox([w_mask])
+ui = iw.VBox([b_im_size, b_left, b_right, b_add])
+
+# Function for showing stim
+def show_gen_two_sided(
+    height=None,
+    width=None,
+    ppd=None,
+    target_height_l=None,
+    target_width_l=None,
+    target_height_r=None,
+    target_width_r=None,
+    target_pos_x_l=None,
+    target_pos_y_l=None,
+    target_pos_x_r=None,
+    target_pos_y_r=None,
+    intensity_background_l=None,
+    intensity_background_r=None,
+    intensity_target_l=None,
+    intensity_target_r=None,
+    add_mask=False,
+):
+    try:
+        stim = generalized_two_sided(
+            visual_size=(height, width),
+            ppd=ppd,
+            target_size=((target_height_l,target_width_l),(target_height_r,target_width_r)),
+            target_position=((target_pos_y_l, target_pos_x_l), (target_pos_y_r, target_pos_x_r)),
+            intensity_background=(intensity_background_l, intensity_background_r),
+            intensity_target=(intensity_target_l, intensity_target_r),
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
+
+# Set interactivity
+out = iw.interactive_output(
+    show_gen_two_sided,
+    {
+        "height": w_height,
+        "width": w_width,
+        "ppd": w_ppd,
+        "target_height_l": w_t_height_l,
+        "target_width_l": w_t_width_l,
+        "target_height_r": w_t_height_r,
+        "target_width_r": w_t_width_r,
+        "target_pos_x_l": w_t_x_l,
+        "target_pos_y_l": w_t_y_l,
+        "target_pos_x_r": w_t_x_r,
+        "target_pos_y_r": w_t_y_r,
+        "intensity_background_l": w_int_back_l,
+        "intensity_background_r": w_int_back_r,
+        "intensity_target_l": w_tint_l,
+        "intensity_target_r": w_tint_r,
+        "add_mask": w_mask,
+    },
+)
+
+# Show
+display(ui, out)
+```
+
 ## Square, Two sided
 {py:func}`stimupy.stimuli.sbcs.square_two_sided`
 
