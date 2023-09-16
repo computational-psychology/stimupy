@@ -522,6 +522,18 @@ def dotted(
     return stim
 
 
+generalized_two_sided = make_two_sided(
+    generalized,
+    two_sided_params=(
+        "target_size",
+        "target_position",
+        "rotation",
+        "intensity_target",
+        "intensity_background",
+    ),
+)
+
+
 basic_two_sided = make_two_sided(
     basic, two_sided_params=("target_size", "intensity_target", "intensity_background")
 )
