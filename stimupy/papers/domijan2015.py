@@ -564,30 +564,17 @@ def simultaneous_brightness_contrast(
     shape, visual_size, ppd, visual_resize = resolve(
         shape, visual_size, ppd, VSIZES["simultaneous_brightness_contrast"]
     )
-    ppd = ppd[0]
 
-    params = {
-        "visual_size": visual_size[0],
-        "ppd": ppd,
-        "target_size": (2.1 * visual_resize, 2.1 * visual_resize),
-        "target_position": (3.8 * visual_resize, 3.8 * visual_resize),
-    }
-
-    stim1 = stimupy.sbcs.generalized(
-        **params,
-        intensity_background=v3,
-        intensity_target=v2,
-    )
-    stim2 = stimupy.sbcs.generalized(
-        **params,
-        intensity_background=v1,
+    stim = stimupy.sbcs.generalized_two_sided(
+        visual_size=visual_size,
+        ppd=ppd,
+        target_size=(2.1 * visual_resize, 2.1 * visual_resize),
+        target_position=(3.8 * visual_resize, 3.8 * visual_resize),
+        intensity_background=(v3, v1),
         intensity_target=v2,
     )
 
-    # Stacking
-    stim = stack_dicts(stim1, stim2)
-
-    params.update(
+    stim.update(
         original_shape=SHAPES["simultaneous_brightness_contrast"],
         original_ppd=PPD,
         original_visual_size=VSIZES["simultaneous_brightness_contrast"],
@@ -596,7 +583,7 @@ def simultaneous_brightness_contrast(
         visual_size=resolution.visual_size_from_shape_ppd(stim["img"].shape, ppd),
         shape=stim["img"].shape,
     )
-    return {**stim, **params}
+    return stim
 
 
 def white(visual_size=VSIZES["white"], ppd=PPD, pad=PAD, shape=SHAPES["white"]):
