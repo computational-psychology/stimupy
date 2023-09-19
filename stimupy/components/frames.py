@@ -78,13 +78,13 @@ def frames(
         radii of each frame, in degrees visual angle
     rotation : float, optional
         rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
-    intensity_frames : Sequence[float, ...]
+    intensity_frames : Sequence[float, ...], optional
         intensity value for each frame, by default (1.0, 0.0).
         Can specify as many intensities as number of frame_widths;
         If fewer intensities are passed than frame_widhts, cycles through intensities
     intensity_background : float, optional
         intensity value of background, by default 0.5
-    origin : "corner", "mean" or "center"
+    origin : "corner", "mean" or "center", optional
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)
         if "center": set origin to real center (closest existing value to mean)

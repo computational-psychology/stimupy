@@ -955,23 +955,13 @@ def sbc_large(ppd=PPD, pad=True):
         Vision Research, 39, 4361-4377.
     """
 
-    params = {
-        "ppd": ppd,
-        "target_size": 3.0,
-        "intensity_target": v2,
-    }
-
-    stim1 = stimupy.sbcs.basic(
-        visual_size=(13.0, 15.5),
-        intensity_background=0.0,
-        **params,
+    stim = stimupy.sbcs.basic_two_sided(
+        visual_size=(13.0, 31.0),
+        ppd=ppd,
+        target_size=3.0,
+        intensity_target=v2,
+        intensity_background=(0.0, 1.0),
     )
-    stim2 = stimupy.sbcs.basic(
-        visual_size=(13.0, 15.5),
-        intensity_background=1.0,
-        **params,
-    )
-    stim = stack_dicts(stim1, stim2)
 
     if pad:
         stim = pad_dict_to_visual_size(stim, VISEXTENT, ppd, pad_value=v2)
@@ -980,13 +970,13 @@ def sbc_large(ppd=PPD, pad=True):
         "effect_strength": 11.35,
     }
 
-    params.update(
+    stim.update(
         visual_size=np.array(stim["img"].shape) / ppd,
         shape=stim["img"].shape,
         intensity_range=(v1, v3),
         experimental_data=experimental_data,
     )
-    return {**stim, **params}
+    return stim
 
 
 def sbc_small(ppd=PPD, pad=True):
@@ -1015,23 +1005,13 @@ def sbc_small(ppd=PPD, pad=True):
         Vision Research, 39, 4361-4377.
     """
 
-    params = {
-        "ppd": ppd,
-        "target_size": 1.0,
-        "intensity_target": v2,
-    }
-
-    stim1 = stimupy.sbcs.basic(
-        visual_size=(13.0, 15.5),
-        intensity_background=0.0,
-        **params,
+    stim = stimupy.sbcs.basic_two_sided(
+        visual_size=(13.0, 31.0),
+        ppd=ppd,
+        target_size=1.0,
+        intensity_background=(0.0, 1.0),
+        intensity_target=v2,
     )
-    stim2 = stimupy.sbcs.basic(
-        visual_size=(13.0, 15.5),
-        intensity_background=1.0,
-        **params,
-    )
-    stim = stack_dicts(stim1, stim2)
 
     if pad:
         stim = pad_dict_to_visual_size(stim, VISEXTENT, ppd, pad_value=v2)
@@ -1040,13 +1020,13 @@ def sbc_small(ppd=PPD, pad=True):
         "effect_strength": 19.78,
     }
 
-    params.update(
+    stim.update(
         visual_size=np.array(stim["img"].shape) / ppd,
         shape=stim["img"].shape,
         intensity_range=(v1, v3),
         experimental_data=experimental_data,
     )
-    return {**stim, **params}
+    return stim
 
 
 def todorovic_equal(ppd=PPD, pad=True):

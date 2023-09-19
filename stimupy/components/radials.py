@@ -1,8 +1,8 @@
-import itertools
+import collections
 
 import numpy as np
 
-from stimupy.components import image_base, mask_regions
+from stimupy.components import draw_regions, mask_regions
 from stimupy.utils import resolution
 
 __all__ = [
@@ -92,12 +92,12 @@ def rings(
         shape [height, width] of image, in pixels
     radii : Sequence[Number]
         outer radii of rings (& disc) in degree visual angle
-    intensity_rings : Sequence[Number, ...]
-        intensity value for each ring, from inside to out.
+    intensity_rings : Sequence[Number, ...], optional
+        intensity value for each ring, from inside to out, by default (0.0, 1.0)
         If fewer intensities are passed than number of radii, cycles through intensities
-    intensity_background : float (optional)
+    intensity_background : float, optional
         value of background, by default 0.5
-    origin : "corner", "mean" or "center"
+    origin : "corner", "mean" or "center", optional
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)
         if "center": set origin to real center (closest existing value to mean)
@@ -109,9 +109,6 @@ def rings(
         mask with integer index for each ring (key: "ring_mask"),
         and additional keys containing stimulus parameters
     """
-    if radii is None:
-        raise ValueError("rings() missing argument 'radii' which is not 'None'")
-
     # Try to resolve resolution;
     try:
         shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
@@ -127,34 +124,32 @@ def rings(
         visual_size = [x for x in visual_size if x is not None]
         visual_size = resolution.validate_visual_size(visual_size)
 
-    if not isinstance(radii, (int, float)):
+    # Resolve radii
+    if radii is None:
+        raise ValueError("rings() missing argument 'radii' which is not 'None'")
+    if isinstance(radii, collections.abc.Sequence) or isinstance(radii, np.ndarray):
         if np.diff(radii).min() < 0:
             raise ValueError("radii need to monotonically increase")
     else:
         radii = (radii,)
-    if isinstance(intensity_rings, (int, float)):
-        ints = (intensity_rings,)
-    else:
-        ints = intensity_rings
 
     # Get masks for rings
-    params = mask_rings(radii=radii, shape=shape, visual_size=visual_size, ppd=ppd, origin=origin)
-    shape = params["shape"]
+    stim = mask_rings(radii=radii, shape=shape, visual_size=visual_size, ppd=ppd, origin=origin)
+
+    # Resolve intensities
+    if not isinstance(intensity_rings, collections.abc.Sequence):
+        intensity_rings = (intensity_rings,)
 
     # Draw rings
-    base = image_base(shape=shape, visual_size=visual_size, origin=origin)
-    distances = base["radial"]
-
-    img = np.ones(shape) * intensity_background
-    ints = [*itertools.islice(itertools.cycle(ints), len(radii))]
-    for radius, intensity in zip(reversed(radii), reversed(ints)):
-        img[distances < radius] = intensity
+    stim["img"] = draw_regions(
+        stim["ring_mask"], intensity_rings, intensity_background=intensity_background
+    )
 
     # Assemble output
-    params["intensity_rings"] = intensity_rings
-    params["radii"] = radii
-    params["intensity_background"] = intensity_background
-    return {"img": img, **params}
+    stim["intensity_rings"] = intensity_rings
+    stim["radii"] = radii
+    stim["intensity_background"] = intensity_background
+    return stim
 
 
 def disc(
@@ -180,11 +175,11 @@ def disc(
         shape [height, width] of image, in pixels
     radius : Number
         outer radius of disc in degree visual angle
-    intensity_disc : Number
+    intensity_disc : Number, optional
         intensity value of disc, by default 1.0
-    intensity_background : float (optional)
+    intensity_background : float, optional
         intensity value of background, by default 0.0
-    origin : "corner", "mean" or "center"
+    origin : "corner", "mean" or "center", optional
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)
         if "center": set origin to real center (closest existing value to mean)
@@ -199,26 +194,26 @@ def disc(
     if radius is None:
         raise ValueError("disc() missing argument 'radius' which is not 'None'")
 
-    radius = np.array(radius)
-    intensity = np.array(intensity_disc)
+    if isinstance(radius, np.ndarray):
+        try:
+            radius = float(radius)
+        except TypeError as e:
+            raise ValueError("Can only pass 1 radius") from e
+    elif isinstance(radius, collections.abc.Sequence):
+        if len(radius) != 1:
+            raise ValueError("Can only pass 1 radius")
 
-    if radius.size != 1:
-        raise ValueError("Can only pass 1 radius")
-    if intensity.size != 1:
-        raise ValueError("Can only pass 1 intensity")
-
-    stim = ring(
-        radii=np.insert(radius, 0, 0),
-        intensity_ring=intensity,
+    stim = rings(
+        radii=radius,
+        intensity_rings=intensity_disc,
         visual_size=visual_size,
         ppd=ppd,
         intensity_background=intensity_background,
         shape=shape,
         origin=origin,
     )
-    stim["radius"] = radius
-    stim["intensity_disc"] = intensity_disc
-    del stim["radii"], stim["intensity_rings"]
+    stim["radius"] = stim.pop("radii")
+    stim["intensity_disc"] = stim.pop("intensity_rings")
     return stim
 
 
@@ -243,11 +238,11 @@ def ring(
         shape [height, width] of image, in pixels
     radii : Sequence[Number, Number]
         inner and outer radius of ring in degree visual angle
-    intensity_ring : Number
+    intensity_ring : Number, optional
         intensity value of ring, by default 1.0
-    intensity_background : float (optional)
+    intensity_background : float, optional
         intensity value of background, by default 0.0
-    origin : "corner", "mean" or "center"
+    origin : "corner", "mean" or "center", optional
         if "corner": set origin to upper left corner
         if "mean": set origin to hypothetical image center (default)
         if "center": set origin to real center (closest existing value to mean)
