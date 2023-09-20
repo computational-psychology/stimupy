@@ -8,38 +8,27 @@ classifiers = [
   "Intended Audience :: Science/Research",
   "Topic :: Scientific/Engineering",
 ]
-keywords = ["stimulus","visual perception","psychophysics"]
+keywords = ["stimulus", "visual perception", "psychophysics"]
 
-license = {file = "LICENSE"}
+license = { file = "LICENSE" }
 authors = [
-  {name = "Lynn Schmittwilken", email = "l.schmittwilken@tu-berlin.de"},
-  {name = "Joris Vincent", email = "j.vincent@tu-berlin.de"},
-  {name = "Matko Matic"},
-  {name = "Guillermo Aguilar"},
-  {name = "Marianne Maertens"},
+  { name = "Lynn Schmittwilken", email = "l.schmittwilken@tu-berlin.de" },
+  { name = "Joris Vincent", email = "j.vincent@tu-berlin.de" },
+  { name = "Matko Matic" },
+  { name = "Guillermo Aguilar" },
+  { name = "Marianne Maertens" },
 ]
 maintainers = [
-  {name = "Lynn Schmittwilken", email = "l.schmittwilken@tu-berlin.de"},
-  {name = "Joris Vincent", email = "j.vincent@tu-berlin.de"},
+  { name = "Lynn Schmittwilken", email = "l.schmittwilken@tu-berlin.de" },
+  { name = "Joris Vincent", email = "j.vincent@tu-berlin.de" },
 ]
 version = "1.0.0"
 
 requires-python = ">=3.6"
-dependencies = [
-  "numpy",
-  "scipy",
-  "matplotlib",
-  "pandas",
-  "Pillow"
-]
+dependencies = ["numpy", "scipy", "matplotlib", "pandas", "Pillow"]
 
 [project.optional-dependencies]
-dev = [
-  "pytest",
-  "black",
-  "pyupgrade",
-  "flake8"
-]
+dev = ["pytest", "black", "pyupgrade", "flake8"]
 docs = [
   "jupyter-book==0.14",
   "jupytext>=1.13.3",
@@ -53,15 +42,15 @@ docs = [
 repository = "https://github.com/computational-psychology/stimupy.git"
 
 [build-system]
-requires = [
-  "setuptools >= 40.9.0",
-]
+requires = ["setuptools >= 40.9.0"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
-where = ["."]  # list of folders that contain the packages (["."] by default)
-include = ["stimupy*"]  # package names should match these glob patterns (["*"] by default)
-namespaces = false  # to disable scanning PEP 420 namespaces (true by default)
+where = ["."] # list of folders that contain the packages (["."] by default)
+include = [
+  "stimupy*",
+] # package names should match these glob patterns (["*"] by default)
+namespaces = false # to disable scanning PEP 420 namespaces (true by default)
 
 # [tool.setuptools.dynamic]
 # version = {attr = "stimupy.__version__"}
