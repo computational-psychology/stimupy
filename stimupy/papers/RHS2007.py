@@ -137,9 +137,9 @@ def WE_thick(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "frequency": 4.0 / width,
-        "intensity_bars": (v1, v3),
+        "intensity_bars": (v3, v1),
         "intensity_target": v2,
-        "target_indices": (2, 5),
+        "target_indices": (3, 6),
         "target_heights": 4.0,
         "period": "even",
     }
@@ -198,9 +198,9 @@ def WE_thin_wide(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "frequency": 8.0 / width,
-        "intensity_bars": (v3, v1),
+        "intensity_bars": (v1, v3),
         "intensity_target": v2,
-        "target_indices": (3, 12),
+        "target_indices": (4, 13),
         "target_heights": 2.0,
         "period": "even",
     }
@@ -250,9 +250,9 @@ def WE_dual(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "frequency": 4.0 / width,
-        "intensity_bars": (v1, v3),
+        "intensity_bars": (v3, v1),
         "intensity_target": v2,
-        "target_indices": (2, 5),
+        "target_indices": (3, 6),
         "target_heights": 2.0,
         "period": "even",
     }
@@ -320,10 +320,10 @@ def WE_anderson(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "frequency": 8.0 / width,
-        "intensity_bars": (v1, v3),
+        "intensity_bars": (v3, v1),
         "intensity_target": v2,
-        "target_indices_top": (5,),
-        "target_indices_bottom": (10,),
+        "target_indices_top": (6,),
+        "target_indices_bottom": (11,),
         "target_center_offset": height / 10.0,
         "target_height": height / 5.0,
         "intensity_stripes": (v1, v3),
@@ -389,10 +389,10 @@ def WE_howe(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "frequency": 8.0 / width,
-        "intensity_bars": (v1, v3),
+        "intensity_bars": (v3, v1),
         "intensity_target": v2,
-        "target_indices_top": (5,),
-        "target_indices_bottom": (10,),
+        "target_indices_top": (6,),
+        "target_indices_bottom": (11,),
         "target_center_offset": height / 5.0,
         "target_height": height / 5.0,
         "intensity_stripes": (v1, v3),
@@ -495,7 +495,7 @@ def WE_radial_thick_small(ppd=PPD, pad=True):
         "target_indices": (1, 8),
         "target_width": 4.0,
         "target_center": 4.5,
-        "intensity_segments": (v3, v1),
+        "intensity_segments": (v1, v3),
         "intensity_background": v2,
         "intensity_target": v2,
     }
@@ -550,7 +550,7 @@ def WE_radial_thick(ppd=PPD, pad=True):
         "target_indices": (1, 10),
         "target_width": 4.0,
         "target_center": 6.0,
-        "intensity_segments": (v3, v1),
+        "intensity_segments": (v1, v3),
         "intensity_background": v2,
         "intensity_target": v2,
     }
@@ -605,7 +605,7 @@ def WE_radial_thin_small(ppd=PPD, pad=True):
         "target_indices": (1, 14),
         "target_width": 2.0,
         "target_center": 4.0,
-        "intensity_segments": (v3, v1),
+        "intensity_segments": (v1, v3),
         "intensity_background": v2,
         "intensity_target": v2,
     }
@@ -660,7 +660,7 @@ def WE_radial_thin(ppd=PPD, pad=True):
         "target_indices": (1, 22),
         "target_width": 2.0,
         "target_center": 6.0,
-        "intensity_segments": (v3, v1),
+        "intensity_segments": (v1, v3),
         "intensity_background": v2,
         "intensity_target": v2,
     }
@@ -712,7 +712,7 @@ def WE_circular1(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "frequency": 8.0 / height,
-        "target_indices": 4,
+        "target_indices": 5,
         "intensity_background": v2,
         "intensity_target": v2,
         "clip": True,
@@ -720,13 +720,13 @@ def WE_circular1(ppd=PPD, pad=True):
 
     stim1 = stimupy.whites.radial(
         visual_size=(height, width),
-        intensity_rings=(v3, v1),
+        intensity_rings=(v1, v3),
         **params,
     )
 
     stim2 = stimupy.whites.radial(
         visual_size=(height, width),
-        intensity_rings=(v1, v3),
+        intensity_rings=(v3, v1),
         **params,
     )
     stim = stack_dicts(stim1, stim2)
@@ -773,7 +773,7 @@ def WE_circular05(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "frequency": 16.0 / height,
-        "target_indices": 10,
+        "target_indices": 11,
         "intensity_background": v2,
         "intensity_target": v2,
         "clip": True,
@@ -781,13 +781,13 @@ def WE_circular05(ppd=PPD, pad=True):
 
     stim1 = stimupy.whites.radial(
         visual_size=(height, width),
-        intensity_rings=(v3, v1),
+        intensity_rings=(v1, v3),
         **params,
     )
 
     stim2 = stimupy.whites.radial(
         visual_size=(height, width),
-        intensity_rings=(v1, v3),
+        intensity_rings=(v3, v1),
         **params,
     )
     stim = stack_dicts(stim1, stim2)
@@ -834,7 +834,7 @@ def WE_circular025(ppd=PPD, pad=True):
     params = {
         "ppd": ppd,
         "frequency": 32.0 / height,
-        "target_indices": 22,
+        "target_indices": 23,
         "intensity_background": v2,
         "intensity_target": v2,
         "clip": True,
@@ -842,13 +842,13 @@ def WE_circular025(ppd=PPD, pad=True):
 
     stim1 = stimupy.whites.radial(
         visual_size=(height, width),
-        intensity_rings=(v3, v1),
+        intensity_rings=(v1, v3),
         **params,
     )
 
     stim2 = stimupy.whites.radial(
         visual_size=(height, width),
-        intensity_rings=(v1, v3),
+        intensity_rings=(v3, v1),
         **params,
     )
     stim = stack_dicts(stim1, stim2)
@@ -955,23 +955,13 @@ def sbc_large(ppd=PPD, pad=True):
         Vision Research, 39, 4361-4377.
     """
 
-    params = {
-        "ppd": ppd,
-        "target_size": 3.0,
-        "intensity_target": v2,
-    }
-
-    stim1 = stimupy.sbcs.basic(
-        visual_size=(13.0, 15.5),
-        intensity_background=0.0,
-        **params,
+    stim = stimupy.sbcs.basic_two_sided(
+        visual_size=(13.0, 31.0),
+        ppd=ppd,
+        target_size=3.0,
+        intensity_target=v2,
+        intensity_background=(0.0, 1.0),
     )
-    stim2 = stimupy.sbcs.basic(
-        visual_size=(13.0, 15.5),
-        intensity_background=1.0,
-        **params,
-    )
-    stim = stack_dicts(stim1, stim2)
 
     if pad:
         stim = pad_dict_to_visual_size(stim, VISEXTENT, ppd, pad_value=v2)
@@ -980,13 +970,13 @@ def sbc_large(ppd=PPD, pad=True):
         "effect_strength": 11.35,
     }
 
-    params.update(
+    stim.update(
         visual_size=np.array(stim["img"].shape) / ppd,
         shape=stim["img"].shape,
         intensity_range=(v1, v3),
         experimental_data=experimental_data,
     )
-    return {**stim, **params}
+    return stim
 
 
 def sbc_small(ppd=PPD, pad=True):
@@ -1015,23 +1005,13 @@ def sbc_small(ppd=PPD, pad=True):
         Vision Research, 39, 4361-4377.
     """
 
-    params = {
-        "ppd": ppd,
-        "target_size": 1.0,
-        "intensity_target": v2,
-    }
-
-    stim1 = stimupy.sbcs.basic(
-        visual_size=(13.0, 15.5),
-        intensity_background=0.0,
-        **params,
+    stim = stimupy.sbcs.basic_two_sided(
+        visual_size=(13.0, 31.0),
+        ppd=ppd,
+        target_size=1.0,
+        intensity_background=(0.0, 1.0),
+        intensity_target=v2,
     )
-    stim2 = stimupy.sbcs.basic(
-        visual_size=(13.0, 15.5),
-        intensity_background=1.0,
-        **params,
-    )
-    stim = stack_dicts(stim1, stim2)
 
     if pad:
         stim = pad_dict_to_visual_size(stim, VISEXTENT, ppd, pad_value=v2)
@@ -1040,13 +1020,13 @@ def sbc_small(ppd=PPD, pad=True):
         "effect_strength": 19.78,
     }
 
-    params.update(
+    stim.update(
         visual_size=np.array(stim["img"].shape) / ppd,
         shape=stim["img"].shape,
         intensity_range=(v1, v3),
         experimental_data=experimental_data,
     )
-    return {**stim, **params}
+    return stim
 
 
 def todorovic_equal(ppd=PPD, pad=True):
@@ -1645,38 +1625,22 @@ def todorovic_benary1_2(ppd=PPD, pad=True):
         Perception, 26, 379-395.
     """
 
-    params = {
-        "ppd": ppd,
-        "L_width": 2.5,
-        "target_size": 2.5,
-        "target_type": ("t", "t"),
-        "target_rotation": (0.0, 180.0),
-        "target_x": (2.5, 26.0),
-        "target_y": (4.0, 6.5),
-        "intensity_background": v3,
-        "intensity_cross": v1,
-        "intensity_target": v2,
-    }
+    # Generate full stim
+    stim = todorovic_benary1_2_3_4(ppd=ppd, pad=pad)
 
-    stim = stimupy.benarys.todorovic_generalized(
-        visual_size=(13.0, 31.0),
-        **params,
-    )
+    # Remove unused targets
+    stim["img"] = np.where(stim["target_mask"] == 3, v3, stim["img"])
+    stim["img"] = np.where(stim["target_mask"] == 4, v1, stim["img"])
+    stim["target_mask"] = np.where(stim["target_mask"] > 2, 0, stim["target_mask"])
+    stim["target_type"] = stim["target_type"][:2]
+    stim["target_rotation"] = stim["target_rotation"][:2]
+    stim["target_x"] = stim["target_x"][:2]
+    stim["target_y"] = stim["target_y"][:2]
 
-    if pad:
-        stim = pad_dict_to_visual_size(stim, VISEXTENT, ppd, pad_value=v2)
+    # Add experimental data
+    stim["effect_strength"] = 11.96
 
-    experimental_data = {
-        "effect_strength": 11.96,
-    }
-
-    params.update(
-        visual_size=np.array(stim["img"].shape) / ppd,
-        shape=stim["img"].shape,
-        intensity_range=(v1, v3),
-        experimental_data=experimental_data,
-    )
-    return {**stim, **params}
+    return stim
 
 
 def todorovic_benary3_4(ppd=PPD, pad=True):
@@ -1707,38 +1671,25 @@ def todorovic_benary3_4(ppd=PPD, pad=True):
         Perception, 26, 379-395.
     """
 
-    params = {
-        "ppd": ppd,
-        "L_width": 2.5,
-        "target_size": 2.5,
-        "target_type": ("t", "t"),
-        "target_rotation": (45.0, 225.0),
-        "target_x": (9.5, 18.0),
-        "target_y": (6.5, 6.5 - np.sqrt(12.5) / 2.0 + 1 / ppd),
-        "intensity_background": v3,
-        "intensity_cross": v1,
-        "intensity_target": v2,
-    }
+    # Generate full stim
+    stim = todorovic_benary1_2_3_4(ppd=ppd, pad=pad)
 
-    stim = stimupy.benarys.todorovic_generalized(
-        visual_size=(13.0, 31.0),
-        **params,
+    # Remove unused targets
+    stim["img"] = np.where(stim["target_mask"] == 1, v3, stim["img"])
+    stim["img"] = np.where(stim["target_mask"] == 2, v1, stim["img"])
+    stim["target_mask"] = np.where(stim["target_mask"] < 3, 0, stim["target_mask"])
+    stim["target_mask"] = np.where(
+        stim["target_mask"], stim["target_mask"] - 2, stim["target_mask"]
     )
+    stim["target_type"] = stim["target_type"][2:]
+    stim["target_rotation"] = stim["target_rotation"][2:]
+    stim["target_x"] = stim["target_x"][2:]
+    stim["target_y"] = stim["target_y"][2:]
 
-    if pad:
-        stim = pad_dict_to_visual_size(stim, VISEXTENT, ppd, pad_value=v2)
+    # Add experimental data
+    stim["effect_strength"] = 9.55
 
-    experimental_data = {
-        "effect_strength": 9.55,
-    }
-
-    params.update(
-        visual_size=np.array(stim["img"].shape) / ppd,
-        shape=stim["img"].shape,
-        intensity_range=(v1, v3),
-        experimental_data=experimental_data,
-    )
-    return {**stim, **params}
+    return stim
 
 
 def todorovic_benary1_2_3_4(ppd=PPD, pad=True):

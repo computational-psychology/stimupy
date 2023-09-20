@@ -115,6 +115,99 @@ out = iw.interactive_output(
 display(ui, out)
 ```
 
+## Circular bullseye, generalized
+{py:func}`stimupy.stimuli.bullseyes.circular_generalized`
+
+```{code-cell} ipython3
+import ipywidgets as iw
+from stimupy.utils import plot_stim
+from stimupy.stimuli.bullseyes import circular_generalized
+
+# Define widgets
+w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
+w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
+w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+
+w_radius1 = iw.FloatSlider(value=1, min=0, max=2, description="radius1 [deg]")
+w_radius2 = iw.FloatSlider(value=2, min=1, max=3, description="radius2 [deg]")
+w_radius3 = iw.FloatSlider(value=3, min=2, max=4, description="radius2 [deg]")
+
+w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int-ring1")
+w_int2 = iw.FloatSlider(value=0.3, min=0, max=1, description="int-ring2")
+w_int3 = iw.FloatSlider(value=0.8, min=0, max=1, description="int-ring3")
+w_int_back = iw.FloatSlider(value=0., min=0, max=1, description="intensity background")
+
+w_ori = iw.Dropdown(value="center", options=['mean', 'corner', 'center'], description="origin")
+w_rot = iw.FloatSlider(value=0, min=0, max=360, description="rotation [deg]")
+w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'ring_mask'], description="add mask")
+
+w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
+
+# Layout
+b_im_size = iw.HBox([w_height, w_width, w_ppd])
+b_geometry = iw.HBox([w_radius1, w_radius2, w_radius3])
+b_intensities = iw.HBox([w_int1, w_int2, w_int3, w_int_back])
+b_target = iw.HBox([w_tint])
+b_add = iw.HBox([w_ori, w_rot, w_mask])
+ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target, b_add])
+
+# Function for showing stim
+def show_circular_generalized(
+    height=None,
+    width=None,
+    ppd=None,
+    radius1=None,
+    radius2=None,
+    radius3=None,
+    int1=None,
+    int2=None,
+    int3=None,
+    intensity_background=None,
+    origin=None,
+    add_mask=False,
+    intensity_target=None,
+    rotation=0.0,
+):
+    try:
+        stim = circular_generalized(
+            visual_size=(height, width),
+            ppd=ppd,
+            radii=(radius1, radius2, radius3),
+            intensity_rings=(int1, int2, int3),
+            intensity_background=intensity_background,
+            origin=origin,
+            intensity_target=intensity_target,
+        )
+        plot_stim(stim, mask=add_mask)
+    except Exception as e:
+        raise ValueError(f"Invalid parameter combination: {e}") from None
+
+# Set interactivity
+out = iw.interactive_output(
+    show_circular_generalized,
+    {
+        "height": w_height,
+        "width": w_width,
+        "ppd": w_ppd,
+        "radius1": w_radius1,
+        "radius2": w_radius2,
+        "radius3": w_radius3,
+        "int1": w_int1,
+        "int2": w_int2,
+        "int3": w_int3,
+        "intensity_background": w_int_back,
+        "origin": w_ori,
+        "add_mask": w_mask,
+        "intensity_target": w_tint,
+        "rotation": w_rot,
+    },
+)
+
+# Show
+display(ui, out)
+```
+
+
 
 ## Circular, Two-sided
 {py:func}`stimupy.stimuli.bullseyes.circular_two_sided`
@@ -139,14 +232,15 @@ w_int_back = iw.FloatSlider(value=0.5, min=0, max=1, description="int background
 w_ori = iw.Dropdown(value="mean", options=['mean', 'corner', 'center'], description="origin")
 w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'ring_mask'], description="add mask")
 
-w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
+w_tint_l = iw.FloatSlider(value=0.5, min=0, max=1, description="left target int")
+w_tint_r = iw.FloatSlider(value=0.5, min=0, max=1, description="right target int")
 
 # Layout
 b_im_size = iw.HBox([w_height, w_width, w_ppd])
 b_geometry = iw.HBox([w_freq, w_phase])
 b_intensities = iw.HBox([w_int1, w_int2, w_int_back])
 b_add = iw.HBox([w_ori, w_mask])
-b_target = iw.HBox([w_tint])
+b_target = iw.HBox([w_tint_l, w_tint_r])
 ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target, b_add])
 
 # Function for showing stim
@@ -161,7 +255,8 @@ def show_two_sided_bullseye(
     intensity_background=None,
     origin=None,
     add_mask=False,
-    intensity_target=None,
+    intensity_target_l=None,
+    intensity_target_r=None,
 ):
     try:
         stim = circular_two_sided(
@@ -169,10 +264,10 @@ def show_two_sided_bullseye(
             ppd=ppd,
             frequency=frequency,
             phase_shift=phase_shift,
-            intensity_rings=(int1, int2),
+            intensity_rings=((int1, int2),(int2, int1)),
             intensity_background=intensity_background,
             origin=origin,
-            intensity_target=intensity_target,
+            intensity_target=(intensity_target_l, intensity_target_r),
         )
         plot_stim(stim, mask=add_mask)
     except Exception as e:
@@ -192,7 +287,8 @@ out = iw.interactive_output(
         "intensity_background": w_int_back,
         "origin": w_ori,
         "add_mask": w_mask,
-        "intensity_target": w_tint,
+        "intensity_target_l": w_tint_l,
+        "intensity_target_r": w_tint_r,
     },
 )
 
@@ -409,13 +505,14 @@ w_rot = iw.FloatSlider(value=0, min=0, max=360, description="rotation [deg]")
 
 w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'frame_mask'], description="add mask")
 
-w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
+w_tint_l = iw.FloatSlider(value=0.5, min=0, max=1, description="left target int")
+w_tint_r = iw.FloatSlider(value=0.5, min=0, max=1, description="right target int")
 
 # Layout
 b_im_size = iw.HBox([w_height, w_width, w_ppd])
 b_geometry = iw.HBox([w_freq, w_phase])
 b_intensities = iw.HBox([w_int1, w_int2, w_int_back])
-b_target = iw.HBox([w_tint])
+b_target = iw.HBox([w_tint_l, w_tint_r])
 b_add = iw.HBox([w_rot, w_mask])
 ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target, b_add])
 
@@ -430,7 +527,8 @@ def show_rectangular_two_sided(
     int2=None,
     intensity_background=None,
     add_mask=False,
-    intensity_target=None,
+    intensity_target_l=None,
+    intensity_target_r=None,
     rotation=0.0,
 ):
     try:
@@ -439,9 +537,9 @@ def show_rectangular_two_sided(
             ppd=ppd,
             frequency=frequency,
             phase_shift=phase_shift,
-            intensity_frames=(int1, int2),
+            intensity_frames=((int1, int2),(int2, int1)),
             intensity_background=intensity_background,
-            intensity_target=intensity_target,
+            intensity_target=(intensity_target_l, intensity_target_r),
             rotation=rotation,
         )
         plot_stim(stim, mask=add_mask)
@@ -461,7 +559,8 @@ out = iw.interactive_output(
         "int2": w_int2,
         "intensity_background": w_int_back,
         "add_mask": w_mask,
-        "intensity_target": w_tint,
+        "intensity_target_l": w_tint_l,
+        "intensity_target_r": w_tint_r,
         "rotation": w_rot,
     },
 )

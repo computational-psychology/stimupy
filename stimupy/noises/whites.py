@@ -83,7 +83,8 @@ def overview(**kwargs):
 
     # fmt: off
     stimuli = {
-        "whites_white": white(**default_params),}
+        "whites_white": white(**default_params),
+    }
     # fmt: on
 
     return stimuli

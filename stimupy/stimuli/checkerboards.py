@@ -72,7 +72,7 @@ def extend_target_idx(target_index, offsets=[(-1, 0), (0, -1), (0, 0), (0, 1), (
     return extended_idc
 
 
-def add_targets(checkerboard_stim, target_indices, extend_targets=False, intensity_target=0.5):
+def add_targets(checkerboard_stim, target_indices=(), extend_targets=False, intensity_target=0.5):
     """Add targets to a checkerboard stimulus
 
     Parameters
@@ -94,7 +94,10 @@ def add_targets(checkerboard_stim, target_indices, extend_targets=False, intensi
         mask with integer index for each target (key: "target_mask"),
         and additional keys containing stimulus parameters
     """
+    if target_indices is None:
+        target_indices = ()
     mask = np.zeros(checkerboard_stim["shape"])
+
     for i, target in enumerate(target_indices):
         if extend_targets:
             target_idc = extend_target_idx(target)
@@ -116,7 +119,7 @@ def checkerboard(
     frequency=None,
     board_shape=None,
     check_visual_size=None,
-    target_indices=None,
+    target_indices=(),
     extend_targets=False,
     period="ignore",
     rotation=0.0,
@@ -298,15 +301,13 @@ def checkerboard(
     }
 
     # Add targets
-    if target_indices is not None:
-        stim = add_targets(
-            stim,
-            target_indices=target_indices,
-            extend_targets=extend_targets,
-            intensity_target=intensity_target,
-        )
-    else:
-        stim["target_mask"] = np.zeros(stim["shape"])
+    stim = add_targets(
+        stim,
+        target_indices=target_indices,
+        extend_targets=extend_targets,
+        intensity_target=intensity_target,
+    )
+
     return stim
 
 

@@ -23,8 +23,8 @@ def line(
     line_length=None,
     line_width=0,
     rotation=0.0,
-    intensity_line=1,
-    intensity_background=0,
+    intensity_line=1.0,
+    intensity_background=0.0,
     origin="corner",
 ):
     """Draw a line
@@ -138,7 +138,7 @@ def dipole(
     line_width=0,
     line_gap=None,
     rotation=0.0,
-    intensity_lines=(0, 1),
+    intensity_lines=(0.0, 1.0),
 ):
     """Draw a two centered parallel lines
 
@@ -237,8 +237,8 @@ def ellipse(
     shape=None,
     radius=None,
     line_width=0,
-    intensity_line=1,
-    intensity_background=0,
+    intensity_line=1.0,
+    intensity_background=0.0,
 ):
     """Draw an ellipse
 
@@ -309,8 +309,8 @@ def circle(
     shape=None,
     radius=None,
     line_width=0,
-    intensity_line=1,
-    intensity_background=0,
+    intensity_line=1.0,
+    intensity_background=0.0,
 ):
     """Draw a circle given the input parameters
 
@@ -381,7 +381,8 @@ def overview(**kwargs):
         "lines_line": line(**default_params, **p, origin="center"),
         "lines_dipole": dipole(**default_params, **p, line_gap=1),
         "lines_circle": circle(**default_params, radius=3),
-        "lines_ellipse": ellipse(**default_params, radius=(3, 4)),}
+        "lines_ellipse": ellipse(**default_params, radius=(3, 4)),
+    }
     # fmt: on
 
     return stimuli

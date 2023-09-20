@@ -183,7 +183,8 @@ def overview(**kwargs):
     stimuli = {
         "naturals_one-over-f": one_over_f(**default_params, exponent=0.5),
         "naturals_pink": pink(**default_params),
-        "naturals_brown": brown(**default_params),}
+        "naturals_brown": brown(**default_params),
+    }
     # fmt: on
 
     return stimuli

@@ -362,18 +362,18 @@ def grating(visual_size=VSIZES["grating"], ppd=PPD, shape=SHAPES["grating"]):
         "visual_size": single_vissize,
         "ppd": ppd,
         "n_bars": 9,
-        "target_indices": (4,),
+        "target_indices": (5,),
         "bar_width": 1.0 * visual_resize,
     }
 
     stim1 = stimupy.waves.square_linear(
         **params,
-        intensity_bars=(v3, v1),
+        intensity_bars=(v1, v3),
         intensity_target=v2,
     )
     stim2 = stimupy.waves.square_linear(
         **params,
-        intensity_bars=(v1, v3),
+        intensity_bars=(v3, v1),
         intensity_target=v2,
     )
 
@@ -564,30 +564,17 @@ def simultaneous_brightness_contrast(
     shape, visual_size, ppd, visual_resize = resolve(
         shape, visual_size, ppd, VSIZES["simultaneous_brightness_contrast"]
     )
-    ppd = ppd[0]
 
-    params = {
-        "visual_size": visual_size[0],
-        "ppd": ppd,
-        "target_size": (2.1 * visual_resize, 2.1 * visual_resize),
-        "target_position": (3.8 * visual_resize, 3.8 * visual_resize),
-    }
-
-    stim1 = stimupy.sbcs.generalized(
-        **params,
-        intensity_background=v3,
-        intensity_target=v2,
-    )
-    stim2 = stimupy.sbcs.generalized(
-        **params,
-        intensity_background=v1,
+    stim = stimupy.sbcs.generalized_two_sided(
+        visual_size=visual_size,
+        ppd=ppd,
+        target_size=(2.1 * visual_resize, 2.1 * visual_resize),
+        target_position=(3.8 * visual_resize, 3.8 * visual_resize),
+        intensity_background=(v3, v1),
         intensity_target=v2,
     )
 
-    # Stacking
-    stim = stack_dicts(stim1, stim2)
-
-    params.update(
+    stim.update(
         original_shape=SHAPES["simultaneous_brightness_contrast"],
         original_ppd=PPD,
         original_visual_size=VSIZES["simultaneous_brightness_contrast"],
@@ -596,7 +583,7 @@ def simultaneous_brightness_contrast(
         visual_size=resolution.visual_size_from_shape_ppd(stim["img"].shape, ppd),
         shape=stim["img"].shape,
     )
-    return {**stim, **params}
+    return stim
 
 
 def white(visual_size=VSIZES["white"], ppd=PPD, pad=PAD, shape=SHAPES["white"]):
@@ -636,14 +623,14 @@ def white(visual_size=VSIZES["white"], ppd=PPD, pad=PAD, shape=SHAPES["white"]):
         "visual_size": visual_size,
         "ppd": ppd,
         "frequency": 4.0 / visual_size[1],
-        "target_indices": (2, 5),
+        "target_indices": (3, 6),
         "target_heights": 2.1 * visual_resize,
         "period": "even",
     }
 
     stim = stimupy.whites.white(
         **params,
-        intensity_bars=(v1, v3),
+        intensity_bars=(v3, v1),
         intensity_target=v2,
     )
 
@@ -1080,8 +1067,8 @@ def white_yazdanbakhsh(
         "visual_size": visual_size,
         "ppd": ppd,
         "frequency": 4.0 / visual_size[1],
-        "target_indices_top": (2,),
-        "target_indices_bottom": (5,),
+        "target_indices_top": (3,),
+        "target_indices_bottom": (6,),
         "target_center_offset": 0.0,
         "target_heights": visual_size[0] / 4.0,
         "gap_size": visual_size[0] / 10.0,
@@ -1090,7 +1077,7 @@ def white_yazdanbakhsh(
 
     stim = stimupy.whites.yazdanbakhsh(
         **params,
-        intensity_bars=(v1, v3),
+        intensity_bars=(v3, v1),
         intensity_target=v2,
     )
 
@@ -1165,8 +1152,8 @@ def white_anderson(
         "visual_size": visual_size,
         "ppd": ppd,
         "frequency": 5.0 / visual_size[1],
-        "target_indices_top": (2,),
-        "target_indices_bottom": (7,),
+        "target_indices_top": (3,),
+        "target_indices_bottom": (8,),
         "target_center_offset": visual_size[0] / 10.0,
         "target_height": visual_size[0] / 5.0,
         "stripe_center_offset": visual_size[0] / 5.0,
@@ -1176,7 +1163,7 @@ def white_anderson(
 
     stim = stimupy.whites.anderson(
         **params,
-        intensity_bars=(v3, v1),
+        intensity_bars=(v1, v3),
         intensity_target=v2,
         intensity_stripes=(v1, v3),
     )
@@ -1249,8 +1236,8 @@ def white_howe(visual_size=VSIZES["white_howe"], ppd=PPD, shape=SHAPES["white_ho
         "visual_size": visual_size,
         "ppd": ppd,
         "frequency": 5.0 / visual_size[1],
-        "target_indices_top": (2,),
-        "target_indices_bottom": (7,),
+        "target_indices_top": (3,),
+        "target_indices_bottom": (8,),
         "target_center_offset": visual_size[0] / 5.0,
         "target_height": visual_size[0] / 5.0,
         "period": "even",
@@ -1258,7 +1245,7 @@ def white_howe(visual_size=VSIZES["white_howe"], ppd=PPD, shape=SHAPES["white_ho
 
     stim = stimupy.whites.howe(
         **params,
-        intensity_bars=(v3, v1),
+        intensity_bars=(v1, v3),
         intensity_target=v2,
         intensity_stripes=(v1, v3),
     )

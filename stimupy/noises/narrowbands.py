@@ -1,7 +1,7 @@
 import numpy as np
 
 from stimupy.noises import pseudo_white_spectrum
-from stimupy.utils import resolution, bandpass
+from stimupy.utils import bandpass, resolution
 from stimupy.utils.contrast_conversions import adapt_intensity_range
 
 __all__ = [
@@ -107,7 +107,8 @@ def overview(**kwargs):
     # fmt: off
     stimuli = {
         "narrowbands_narrowband3": narrowband(**default_params, center_frequency=3, bandwidth=1),
-        "narrowbands_narrowband9": narrowband(**default_params, center_frequency=9, bandwidth=1),}
+        "narrowbands_narrowband9": narrowband(**default_params, center_frequency=9, bandwidth=1),
+    }
     # fmt: on
 
     return stimuli
