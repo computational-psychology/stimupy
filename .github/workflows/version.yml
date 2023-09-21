@@ -26,7 +26,7 @@ jobs:
         id: versioning
         uses: python-semantic-release/python-semantic-release@master
         with:
-          github_token: $${{ secrets.GHA_TOKEN }}
+          github_token: ${{ secrets.GHA_TOKEN }}
 
       - name: Publish package distributions to GitHub Releases
         uses: python-semantic-release/upload-to-gh-release@main
