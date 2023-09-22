@@ -3,7 +3,7 @@
 that can generate many parameterizated stimulus images,
 and several complete sets of stimuli
 that all come from the same {py:mod}`source <stimupy.papers>`.
-Development, organization and maintanance of these sets can be arduous,
+Development, organization and maintenance of these sets can be arduous,
 and we are committed to providing a high-quality and well-tested suite of functions.
 Thus, `stimupy` is a curated and maintained _library_ of stimuli
 (stimulus-functions, to be precise),

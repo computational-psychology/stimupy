@@ -1,6 +1,6 @@
 """Tests whether resolving of resolution/components works as expected
 
-Seperately tests each of three components: visual size, shape, ppd.
+Separately tests each of three components: visual size, shape, ppd.
 For each component, the resolver routine has 1 expected behavior:
 from the two givens, calculate the third unknown component.
 As long as the two givens are valid (see valid_*),
@@ -116,12 +116,12 @@ def test_resolve_resolution(shape, visual_size, ppd):
 @pytest.mark.parametrize(
     "shape, visual_size, ppd",
     [
-        (None, None, (32, 32)),  # Two unkowns
-        ((1024, 1024), None, None),  # Two unkowns
-        (None, (32, 32), None),  # Two unkowns
-        ((1024, None), (32, None), (32, 32)),  # Two unkowns in one dimension
-        ((1024, 1024), (32, None), (32, None)),  # Two unkowns in one dimension
-        ((1024, None), (32, 32), (32, None)),  # Two unkowns in one dimension
+        (None, None, (32, 32)),  # Two unknowns
+        ((1024, 1024), None, None),  # Two unknowns
+        (None, (32, 32), None),  # Two unknowns
+        ((1024, None), (32, None), (32, 32)),  # Two unknowns in one dimension
+        ((1024, 1024), (32, None), (32, None)),  # Two unknowns in one dimension
+        ((1024, None), (32, 32), (32, None)),  # Two unknowns in one dimension
     ],
 )
 def test_too_many_unknowns(shape, visual_size, ppd):

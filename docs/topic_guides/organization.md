@@ -20,7 +20,7 @@ Broadly, `stimupy` functions currently fall into the following categories, which
   - a variety of so-called illusions 
    (e.g. Simultaneous Brightness Contrast, White's illusion, Hermann grid, Ponzo illusion), and many more
 - exact replications of stimuli previously published (e.g. ModelFest)
-  as described in their respecive [papers](../reference/_api/stimupy.papers)
+  as described in their respective [papers](../reference/_api/stimupy.papers)
 - [utility functions](https://stimupy.readthedocs.io/en/latest/reference/_api/stimupy.utils.html)
   for stimulus import, export, manipulation (e.g. contrast, size), or plotting
 
@@ -76,7 +76,7 @@ OR as having a [cross-shaped target](todorovics.cross) with adjoining squares.
 For a single stimulus parameterization,
 these two conceptions may produce perfectly identical images ([see fig, top](fig_todorovics)).
 However, when changing parameters,
-you would expect different *behavior* from the stimulus fuction
+you would expect different *behavior* from the stimulus function
 dependent on your conception/interpretation of the stimulus ([see fig, bottom](fig_todorovics)).
 
 ```{code-cell}

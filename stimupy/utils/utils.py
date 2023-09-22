@@ -132,7 +132,7 @@ def resize_array(arr, factor):
     ----------
     arr : 2D array
           the array to be resized
-    factor : tupel of 2 ints
+    factor : tuple of 2 ints
              the resize factor in the y and x dimensions
 
     Returns
@@ -151,7 +151,7 @@ def resize_dict(dct, factor, keys=("img", "*mask")):
     ----------
     dct : dict
         dict containing arrays to be resized
-    factor : tupel of 2 ints
+    factor : tuple of 2 ints
         the resize factor in the y and x dimensions
     keys : Sequence[String, String] or String
         keys in dict for images to be padded

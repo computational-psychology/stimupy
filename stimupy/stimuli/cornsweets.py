@@ -39,7 +39,7 @@ def cornsweet(
     ramp_width : float
         width of luminance ramp in degrees of visual angle
     rotation : float, optional
-        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+        rotation (in degrees), counterclockwise, by default 0.0 (horizontal)
     intensity_edges : (float, float)
         intensity of edges
     intensity_plateau : float

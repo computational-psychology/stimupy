@@ -49,7 +49,7 @@ def rectangle(
     intensity_background : float, optional
         intensity value of background, by default 0.0
     rotation : float, optional
-        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+        rotation (in degrees), counterclockwise, by default 0.0 (horizontal)
 
     Returns
     -------

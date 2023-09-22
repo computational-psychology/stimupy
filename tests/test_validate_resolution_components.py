@@ -1,6 +1,6 @@
 """Tests whether validation of resolution components works as expected
 
-Seperately tests each of three components: visual size, shape, ppd.
+Separately tests each of three components: visual size, shape, ppd.
 For each component, the validation routine has two expected major behaviors:
 - if input is valid, return canonical format (2-(named)tuple)
   - casts values to correct type (float or int)

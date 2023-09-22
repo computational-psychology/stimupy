@@ -59,7 +59,7 @@ or [OpenCV](https://github.com/opencv/opencv-python)
 ## Exporting only parameters
 In some cases, you may wish to save/export only the stimulus parameters
 -- for a given version of `stimupy`,
-these parameters should reproduce the exact same stimulus everytime.
+these parameters should reproduce the exact same stimulus every time.
 For stimuli created using just `stimupy` functions,
 the output stimulus-`dict` contains not just the `img`-array
 but also all parameters for creating that stimulus.

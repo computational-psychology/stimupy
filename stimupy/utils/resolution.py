@@ -132,7 +132,7 @@ def resolve_1D(length=None, visual_angle=None, ppd=None, round=True):
     # Triage based on number of unknowns
     if n_unknowns > 1:  # More than 1 unknown we cannot resolve
         raise TooManyUnknownsError(
-            f"Too many unkowns to resolve resolution; {length},{visual_angle},{ppd}"
+            f"Too many unknowns to resolve resolution; {length},{visual_angle},{ppd}"
         )
     else:  # 1 unknown, so need to resolve
         # Which unknown?
@@ -479,25 +479,23 @@ def ppd_from_length_visual_angle(length, visual_angle):
 
 
 def compute_ppd(screen_size, resolution, distance):
-    """
-    Compute the pixels per degree, i.e. the number of pixels in the central
-    one degree of visual angle, in a presentation setup.
+    """Compute the pixels per degree in a presentation setup
+    i.e., the number of pixels in the central one degree of visual angle
 
     Parameters
     ----------
-    screen_size : scalar
-                  the size of the presentation screen, in whatever unti you
-                  prefer.
-    resolution : scalar
-                 the sceen resolution in the same direction that screen size
-                 was measured in.
-    distance : scalar
-               the distance between the observer and the screen, in the same
-               unit as screen_size.
+    screen_size : (float, float)
+        physical size, in whatever units you prefer, of the presentation screen
+    resolution : (float, float)
+        screen resolution, in pixels,
+        in the same direction that screen size was measured in
+    distance : float
+        physical distance between the observer and the screen, in the same unit as screen_size
+
     Returns
     -------
-    ppd : number
-          the number of pixels in one degree of visual angle.
+    float
+        ppd, the number of pixels in one degree of visual angle
     """
 
     ppmm = resolution / screen_size

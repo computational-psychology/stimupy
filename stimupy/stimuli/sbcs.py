@@ -49,7 +49,7 @@ def generalized(
     intensity_target : float, optional
         intensity value for target, by default 0.5
     rotation : float, optional
-        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+        rotation (in degrees), counterclockwise, by default 0.0 (horizontal)
 
 
     Returns
@@ -165,7 +165,7 @@ def square(
     surround_radius : float
         radius of surround context field, in degrees visual angle
     rotation : float, optional
-        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+        rotation (in degrees), counterclockwise, by default 0.0 (horizontal)
     intensity_surrond : float, optional
         intensity of surround context field, by default 0.0
     intensity_background : float, optional
@@ -224,7 +224,7 @@ def circular(
     surround_radius : float
         radius of surround context field, in degrees visual angle
     rotation : float, optional
-        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+        rotation (in degrees), counterclockwise, by default 0.0 (horizontal)
     intensity_surrond : float, optional
         intensity of surround context field, by default 0.0
     intensity_background : float (optional)
