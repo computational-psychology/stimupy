@@ -17,7 +17,7 @@ def text(
     intensity_background=0.5,
     fontsize=36,
     align="center",
-    direction="ltr",
+    # direction="ltr",
 ):
     """Draw given text into a (numpy) image-array
 
@@ -42,8 +42,6 @@ def text(
         font size, by default 36
     align : "left", "center" (default), "right"
         alignment of text, by default "center"
-    direction : "ltr" (default), "rtl"
-        text drawing direction, left-to-right, right-to-left
 
     Returns
     -------
@@ -89,7 +87,14 @@ def text(
     draw = ImageDraw.Draw(img)
 
     # Draw text into this image
-    draw.text((0, 0), text, fill=1, font=font, align=align, direction=direction)
+    draw.text(
+        (0, 0),
+        text,
+        fill=1,
+        font=font,
+        align=align,
+        # direction=direction
+    )
 
     # Turn into mask-array
     mask = np.array(img)
