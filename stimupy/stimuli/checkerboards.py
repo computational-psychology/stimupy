@@ -2,7 +2,7 @@ import warnings
 
 import numpy as np
 
-from stimupy.components import waves
+from stimupy.components import draw_regions, waves
 from stimupy.utils import resolution
 from stimupy.utils.contrast_conversions import transparency
 
@@ -84,8 +84,10 @@ def add_targets(checkerboard_stim, target_indices=(), extend_targets=False, inte
         target indices (row, column of checkerboard)
     extend_targets : bool, optional
         if true, extends the targets by 1 check in all 4 directions, by default False
-    intensity_target : float, optional
-        intensity value of the target checks, by default 0.5
+    intensity_target : float, or Sequence[float, ...], optional
+        intensity value for each target, by default 0.5.
+        Can specify as many intensities as number of target_indices;
+        If fewer intensities are passed than target_indices, cycles through intensities
 
     Returns
     -------
@@ -96,19 +98,25 @@ def add_targets(checkerboard_stim, target_indices=(), extend_targets=False, inte
     """
     if target_indices is None:
         target_indices = ()
-    mask = np.zeros(checkerboard_stim["shape"])
+    target_mask = np.zeros(checkerboard_stim["shape"])
 
+    # Define target mask
     for i, target in enumerate(target_indices):
         if extend_targets:
             target_idc = extend_target_idx(target)
         else:
             target_idc = [target]
         for target_idx in target_idc:
-            mask += mask_from_idx(checkerboard_stim, (target_idx,)) * (i + 1)
-    img = np.where(mask, intensity_target, checkerboard_stim["img"])
+            target_mask += mask_from_idx(checkerboard_stim, (target_idx,)) * (i + 1)
+    checkerboard_stim["target_mask"] = target_mask.astype(int)
 
-    checkerboard_stim["img"] = img
-    checkerboard_stim["target_mask"] = mask.astype(int)
+    # Draw targets
+    checkerboard_stim["img"] = np.where(
+        target_mask,
+        draw_regions(mask=target_mask, intensities=intensity_target, intensity_background=0.0),
+        checkerboard_stim["img"],
+    )
+
     return checkerboard_stim
 
 
