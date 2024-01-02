@@ -118,6 +118,8 @@ def generalized(
     target_bar_mask = mask_targets(
         element_mask=stim["grating_mask"], target_indices=target_indices
     )
+    if isinstance(target_indices, (int, float)):
+        target_indices = (target_indices,)
     stim["target_indices"] = target_indices
 
     # Mask rectangular regions
