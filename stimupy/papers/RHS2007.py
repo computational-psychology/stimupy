@@ -276,7 +276,7 @@ def WE_dual(ppd=PPD, pad=True):
     # Pad and stack
     stim1 = pad_dict_to_shape(stim1, shape, pad_value=v2)
     stim2 = pad_dict_to_shape(stim2, shape, pad_value=v2)
-    stim = stack_dicts(stim1, stim2, keep_mask_indices=True)
+    stim = stack_dicts(stim1, stim2, keep_mask_indices=False)
 
     params.update(
         visual_size=np.array(stim["img"].shape) / ppd,
