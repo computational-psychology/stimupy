@@ -555,7 +555,7 @@ w_tint_l = iw.FloatSlider(value=0.5, min=0, max=1, description="intensity target
 w_tint_r = iw.FloatSlider(value=0.5, min=0, max=1, description="intensity target right")
 w_int_surround_l = iw.FloatSlider(value=0., min=0, max=1, description="intensity left surround")
 w_int_surround_r = iw.FloatSlider(value=1., min=0, max=1, description="intensity right surround")
-w_int_background = iw.FloatSlider(value=.5, min=0, max=1, description="intenisty background")
+w_int_background = iw.FloatSlider(value=.5, min=0, max=1, description="intensity background")
 
 w_rot_l = iw.FloatSlider(value=0, min=0, max=360, description="rotation left [deg]")
 w_rot_r = iw.FloatSlider(value=0, min=0, max=360, description="rotation right [deg]")
@@ -651,7 +651,7 @@ w_tint_l = iw.FloatSlider(value=0.5, min=0, max=1, description="intensity target
 w_tint_r = iw.FloatSlider(value=0.5, min=0, max=1, description="intensity target right")
 w_int_surround_l = iw.FloatSlider(value=0., min=0, max=1, description="intensity left surround")
 w_int_surround_r = iw.FloatSlider(value=1., min=0, max=1, description="intensity right surround")
-w_int_background = iw.FloatSlider(value=.5, min=0, max=1, description="intenisty background")
+w_int_background = iw.FloatSlider(value=.5, min=0, max=1, description="intensity background")
 
 
 w_mask = iw.ToggleButton(value=False, disabled=False, description="add mask")

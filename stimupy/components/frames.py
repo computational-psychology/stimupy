@@ -32,7 +32,7 @@ def mask_frames(
         if "mean": set origin to hypothetical image center (default)
         if "center": set origin to real center (closest existing value to mean)
     rotation : float, optional
-        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+        rotation (in degrees), counterclockwise, by default 0.0 (horizontal)
 
     Returns
     -------
@@ -77,7 +77,7 @@ def frames(
     radii : Sequence[Number]
         radii of each frame, in degrees visual angle
     rotation : float, optional
-        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+        rotation (in degrees), counterclockwise, by default 0.0 (horizontal)
     intensity_frames : Sequence[float, ...], optional
         intensity value for each frame, by default (1.0, 0.0).
         Can specify as many intensities as number of frame_widths;

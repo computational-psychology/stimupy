@@ -238,7 +238,7 @@ This has created the bullseye stimulus that we want,
 and included with this is a `mask` that can separately indicate
 each of the three regions (and background).
 We can easily visualize this mask as well,
-overlayed as colorcoding on top of the stimulus:
+overlaid as colorcoding on top of the stimulus:
 
 ```
 plt.subplot(1,2,1)

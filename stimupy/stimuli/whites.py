@@ -61,7 +61,7 @@ def generalized(
         number of phases, either or whether not to round the number of
         phases ("ignore")
     rotation : float, optional
-        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+        rotation (in degrees), counterclockwise, by default 0.0 (horizontal)
     intensity_bars : Sequence[float, ...]
         intensity value for each bar, by default (1.0, 0.0).
         Can specify as many intensities as n_bars;
@@ -212,7 +212,7 @@ def white(
         number of phases, either or whether not to round the number of
         phases ("ignore")
     rotation : float, optional
-        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+        rotation (in degrees), counterclockwise, by default 0.0 (horizontal)
     phase_shift : float
         phase shift of grating in degrees
     intensity_bars : Sequence[float, ...]
@@ -309,7 +309,7 @@ def white_two_rows(
         number of phases, either or whether not to round the number of
         phases ("ignore")
     rotation : float, optional
-        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+        rotation (in degrees), counterclockwise, by default 0.0 (horizontal)
     intensity_bars : Sequence[float, ...]
         intensity value for each bar, by default (1.0, 0.0).
         Can specify as many intensities as n_bars;
@@ -605,7 +605,7 @@ def howe(
         Vision Research, 45, 607-615.
     Howe, P. D. L. (2001).
         A comment on the Anderson (1997), the Todorovic (1997),
-        and the Ross nd Pessoa (2000) explanations of White's eﬀect.
+        and the Ross and Pessoa (2000) explanations of White's eﬀect.
         Perception, 30, 1023-1026
     """
     return anderson(

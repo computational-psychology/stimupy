@@ -158,7 +158,7 @@ def dipole(
     line_gap : Number
         distance between line centers, in degrees visual angle
     rotation : float, optional
-        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+        rotation (in degrees), counterclockwise, by default 0.0 (horizontal)
     intensity_lines : (Number, Number)
         intensity value of the line (default: (0, 1));
         background intensity is the mean of these two values

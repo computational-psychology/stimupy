@@ -25,7 +25,7 @@ def mask_from_idx(checkerboard_stim, check_idc):
     Returns
     -------
     numpy.ndarray
-        mask, as binary 2D numpy.ndarray with 1 for all pixels beloning to
+        mask, as binary 2D numpy.ndarray with 1 for all pixels belonging to
         specified check(s), and 0 everywhere else
 
     Raises
@@ -158,7 +158,7 @@ def checkerboard(
         number of phases, either or whether not to round the number of
         phases ("ignore")
     rotation : float, optional
-        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+        rotation (in degrees), counterclockwise, by default 0.0 (horizontal)
     intensity_checks : Sequence[float, float]
         intensity values of checks, by default (0.0, 1.0)
     round_phase_width : Bool
@@ -352,7 +352,7 @@ def contrast_contrast(
     tau : Number
         tau of transparency (i.e. value of transparent medium), default 0.5
     alpha : Number or None (default)
-        alpha of transparency (i.e. how transparant the medium is)
+        alpha of transparency (i.e. how transparent the medium is)
     round_phase_width : Bool
         if True, round width of bars given resolution (default: True)
 

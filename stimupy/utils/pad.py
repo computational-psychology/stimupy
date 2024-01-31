@@ -375,7 +375,7 @@ def pad_dict_by_shape(dct, padding, pad_value=0, keys=("img", "*mask")):
 
 
 def pad_dict_to_shape(dct, shape, pad_value=0, keys=("img", "*mask")):
-    """Pad images in dicationary to a resulting specified shape in pixels
+    """Pad images in dictionary to a resulting specified shape in pixels
 
     Parameters
     ----------

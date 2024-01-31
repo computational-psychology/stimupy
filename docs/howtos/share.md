@@ -131,7 +131,7 @@ that all come from the same {py:mod}`paper <stimupy.papers>` (/ source).
 The ones currently included span wide range of the stimuli implemented in `stimupy`
 and have formed both the inspiration and a testing benchmark for development.
 
-Development, organization and maintanance of these sets can be arduous,
+Development, organization and maintenance of these sets can be arduous,
 and we are committed to providing a high-quality and well-tested suite of functions.
 Thus, `stimupy` is a curated and maintained _library_ of stimuli
 (stimulus-functions, to be precise),

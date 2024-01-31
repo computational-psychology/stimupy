@@ -14,7 +14,7 @@ kernelspec:
 ```{tip}
 This guide explains the principles behind, behavior of, and relations between
 the parameters of periodic stimuli in `stimupy`.
-For a more hands-on demonstration of how those paramaters affect a specific stimulus,
+For a more hands-on demonstration of how those parameters affect a specific stimulus,
 see, e.g., [](../reference/demos/stimuli/waves.md)
 ```
 
@@ -48,7 +48,7 @@ namely that there are repeated _cycles_ (here of 2 phases/elements per cycle),
 where each cycle is identical to each other cycle.
 This regularity can be expressed in several different ways,
 with several different parameters 
--- and these parameters have some interdependence on eachother.
+-- and these parameters have some interdependence on each other.
 
 ```{tip}
 In the examples in this section,
