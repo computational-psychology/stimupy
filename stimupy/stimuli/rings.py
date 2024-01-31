@@ -127,7 +127,7 @@ def rectangular_generalized(
         if "mean": set origin to hypothetical image center (default)
         if "center": set origin to real center (closest existing value to mean)
     rotation : float, optional
-        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+        rotation (in degrees), counterclockwise, by default 0.0 (horizontal)
 
 
     Returns

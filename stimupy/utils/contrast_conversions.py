@@ -19,12 +19,12 @@ def transparency(img, mask=None, alpha=0.5, tau=0.2):
     Parameters
     ----------
     img : np.array
-        image to which transparancy will be applied
+        image to which transparency will be applied
     mask : np.array or None (default)
-        if not None, transparancy will be provided at non-zero locations
+        if not None, transparency will be provided at non-zero locations
         provided in this mask
     alpha : Number
-        alpha of transparency (i.e. how transparant the medium is), default 0.2
+        alpha of transparency (i.e. how transparent the medium is), default 0.2
     tau : Number
         tau of transparency (i.e. value of transparent medium), default 0.5
 

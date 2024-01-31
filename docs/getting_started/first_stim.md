@@ -173,7 +173,7 @@ Thus, this output is self-documenting:
 all the necessary information to produce this stimulus are in the stimulus-`dict`.
 
 A nice feature of these {py:class}`dict`s is that you, the user,
-can add any arbitray (meta)data to them, after creating the stimulus.
+can add any arbitrary (meta)data to them, after creating the stimulus.
 For instance, we can add some label,
 or a creation date:
 ```{code-cell}

@@ -46,7 +46,7 @@ def resolve_grating_params(
     Parameters
     ----------
     length : Number, or None (default)
-        lenght of grating, in pixels
+        length of grating, in pixels
     visual_angle :Number, or None (default)
         visual angle of grating, in degrees
     ppd : Number, or None (default)
@@ -214,7 +214,7 @@ def round_n_phases(n_phases, length, period="either"):
     n_phases : int
         number of phases (e.g., bars), i.e., half the number of full periods
     length : Number
-        lenght of grating, in pixels
+        length of grating, in pixels
     period : "even", "odd", "either" (default)
         whether to ensure the grating has "even" number of phases,
         "odd" number of phases, or "either" even/odd
@@ -281,7 +281,7 @@ def sine(
         number of phases, either or whether not to round the number of
         phases ("ignore")
     rotation : float, optional
-        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+        rotation (in degrees), counterclockwise, by default 0.0 (horizontal)
     phase_shift : float
         phase shift of grating in degrees, by default 0.0
     intensities : Sequence[float, float]
@@ -512,7 +512,7 @@ def square(
         number of phases, either or whether not to round the number of
         phases ("ignore")
     rotation : float, optional
-        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+        rotation (in degrees), counterclockwise, by default 0.0 (horizontal)
     phase_shift : float
         phase shift of grating in degrees, by default 0.0
     intensities : Sequence[float, float]
@@ -596,7 +596,7 @@ def staircase(
         number of phases, either or whether not to round the number of
         phases ("ignore")
     rotation : float, optional
-        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+        rotation (in degrees), counterclockwise, by default 0.0 (horizontal)
     phase_shift : float
         phase shift of grating in degrees, by default 0.o
     origin : "corner", "mean", or "center" (default)

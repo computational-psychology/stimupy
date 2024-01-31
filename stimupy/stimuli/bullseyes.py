@@ -137,7 +137,7 @@ def circular_generalized(
     radii : Sequence[Number] or None (default)
         radii of each ring, in degrees visual angle
     rotation : float, optional
-        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+        rotation (in degrees), counterclockwise, by default 0.0 (horizontal)
     intensity_rings : Sequence[float, float]
         intensities of rings, by default (1.0, 0.0)
     intensity_background : float (optional)
@@ -212,7 +212,7 @@ def rectangular(
     frame_width : Number, or None (default)
         width of a single frame, in degrees visual angle
     rotation : float, optional
-        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+        rotation (in degrees), counterclockwise, by default 0.0 (horizontal)
     phase_shift : float
         phase shift of grating in degrees
     intensity_frames : Sequence[float, float]
@@ -290,7 +290,7 @@ def rectangular_generalized(
     radii : Sequence[Number] or None (default)
         radii of each frame, in degrees visual angle
     rotation : float, optional
-        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+        rotation (in degrees), counterclockwise, by default 0.0 (horizontal)
     intensity_frames : Sequence[float, float]
         min and max intensity of square-wave, by default (0.0, 1.0)
     intensity_background : float (optional)

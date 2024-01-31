@@ -1224,7 +1224,7 @@ def white_howe(visual_size=VSIZES["white_howe"], ppd=PPD, shape=SHAPES["white_ho
         https://doi.org/10.3389/fnhum.2015.00093
     Howe, P. D. L. (2001).
         A comment on the Anderson (1997), the Todorovic (1997),
-        and the Ross nd Pessoa (2000) explanations of White's eﬀect.
+        and the Ross and Pessoa (2000) explanations of White's eﬀect.
         Perception, 30, 1023-1026
     """
 

@@ -117,7 +117,7 @@ def rings(
         visual_size = resolution.validate_visual_size(visual_size)
 
     if visual_size is None or visual_size == (None, None):
-        # Two axes are None; make image large enought to fit
+        # Two axes are None; make image large enough to fit
         visual_size = resolution.validate_visual_size(np.max(radii) * 2)
     elif None in visual_size:
         # one axis is None; make square

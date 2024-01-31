@@ -1654,7 +1654,7 @@ def Line31(ppd=PPD):
 def Dipole32(ppd=PPD):
     """Dipole32: lines x Gaussian, Carney et al (1999)
     Line width: 3 px =
-    Seperation: 1 px =
+    Separation: 1 px =
     Gaussian window: sy=sx=0.5 deg
 
     Parameters
@@ -1708,7 +1708,7 @@ def GaborString33(ppd=PPD):
     """GaborString33 - 5 collinear in-phase Gabors, Carney et al (1999)
     Frequency: 8 cpd
     Gaussian window of individual Gabors: sx=sy=0.07 deg (~1octave)
-    Seperation: 5sx
+    Separation: 5sx
 
     Parameters
     ----------
@@ -1770,7 +1770,7 @@ def GaborString34(ppd=PPD):
     """GaborString33 - 5 collinear out-of-phase Gabors, Carney et al (1999)
     Frequency: 8 cpd
     Gaussian window of individual Gabors: sx=sy= deg (~1octave)
-    Seperation: 5sx
+    Separation: 5sx
 
     Parameters
     ----------

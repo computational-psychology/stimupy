@@ -62,7 +62,7 @@ def on_uniform(
         number of phases, either or whether not to round the number of
         phases ("ignore")
     rotation : float, optional
-        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+        rotation (in degrees), counterclockwise, by default 0.0 (horizontal)
     phase_shift : float
         phase shift of grating in degrees
     intensity_bars : Sequence[float, ...]
@@ -398,7 +398,7 @@ def grating_induction(
         number of phases, either or whether not to round the number of
         phases ("ignore")
     rotation : float, optional
-        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+        rotation (in degrees), counterclockwise, by default 0.0 (horizontal)
     phase_shift : float
         phase shift of grating in degrees
     intensity_bars : Sequence[float, ...]
@@ -500,7 +500,7 @@ def grating_induction_blur(
         number of phases, either or whether not to round the number of
         phases ("ignore")
     rotation : float, optional
-        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+        rotation (in degrees), counterclockwise, by default 0.0 (horizontal)
     phase_shift : float
         phase shift of grating in degrees
     intensity_bars : Sequence[float, ...]

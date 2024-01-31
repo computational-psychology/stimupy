@@ -7,7 +7,7 @@
     - `".[dev,docs]"` to also edit and build the documentation
 
 The `stimupy` project uses a couple of development tools
-to work towards more consisten code quality:
+to work towards more consistent code quality:
 
 - `pytest` for unit and integration tests
 - `pyupgrade` for possible syntax improvements using newer language features

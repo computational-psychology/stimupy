@@ -57,7 +57,7 @@ def sine_linear(
         number of phases, either or whether not to round the number of
         phases ("ignore")
     rotation : float, optional
-        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+        rotation (in degrees), counterclockwise, by default 0.0 (horizontal)
     phase_shift : float
         phase shift of grating in degrees
     intensities : Sequence[float, float] or None (default)
@@ -171,7 +171,7 @@ def square_linear(
         number of phases, either or whether not to round the number of
         phases ("ignore")
     rotation : float, optional
-        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+        rotation (in degrees), counterclockwise, by default 0.0 (horizontal)
     phase_shift : float
         phase shift of grating in degrees
     intensity_bars : Sequence[float, ...]
@@ -278,7 +278,7 @@ def staircase_linear(
         number of phases, either or whether not to round the number of
         phases ("ignore")
     rotation : float, optional
-        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+        rotation (in degrees), counterclockwise, by default 0.0 (horizontal)
     phase_shift : float
         phase shift of grating in degrees
     intensity_bars : Sequence[float, float] or Sequence[float, ...]
@@ -392,7 +392,7 @@ def sine_radial(
         number of phases, either or whether not to round the number of
         phases ("ignore")
     rotation : float, optional
-        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+        rotation (in degrees), counterclockwise, by default 0.0 (horizontal)
     phase_shift : float
         phase shift of grating in degrees
     intensities : Sequence[float, float] or None (default)
@@ -519,7 +519,7 @@ def square_radial(
         number of phases, either or whether not to round the number of
         phases ("ignore")
     rotation : float, optional
-        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+        rotation (in degrees), counterclockwise, by default 0.0 (horizontal)
     phase_shift : float
         phase shift of grating in degrees
     intensity_rings : Sequence[float, float]
@@ -644,7 +644,7 @@ def staircase_radial(
         number of phases, either or whether not to round the number of
         phases ("ignore")
     rotation : float, optional
-        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+        rotation (in degrees), counterclockwise, by default 0.0 (horizontal)
     phase_shift : float
         phase shift of grating in degrees
     intensity_rings : Sequence[float, ...]
@@ -772,7 +772,7 @@ def sine_rectilinear(
         number of phases, either or whether not to round the number of
         phases ("ignore")
     rotation : float, optional
-        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+        rotation (in degrees), counterclockwise, by default 0.0 (horizontal)
     phase_shift : float
         phase shift of grating in degrees
     intensities : Sequence[float, float] or None (default)
@@ -908,7 +908,7 @@ def square_rectilinear(
         number of phases, either or whether not to round the number of
         phases ("ignore")
     rotation : float, optional
-        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+        rotation (in degrees), counterclockwise, by default 0.0 (horizontal)
     phase_shift : float
         phase shift of grating in degrees
     intensity_frames : Sequence[float, float]
@@ -1020,7 +1020,7 @@ def staircase_rectilinear(
     clip=False,
     intensity_background=0.5,
 ):
-    """Rectiinear staircase, with some frame(s) as target(s)
+    """Rectilinear staircase, with some frame(s) as target(s)
 
     Parameters
     ----------
@@ -1041,7 +1041,7 @@ def staircase_rectilinear(
         number of phases, either or whether not to round the number of
         phases ("ignore")
     rotation : float, optional
-        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+        rotation (in degrees), counterclockwise, by default 0.0 (horizontal)
     phase_shift : float
         phase shift of grating in degrees
     intensity_frames : Sequence[float, ...]
@@ -1175,7 +1175,7 @@ def sine_angular(
         number of phases, either or whether not to round the number of
         phases ("ignore")
     rotation : float, optional
-        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+        rotation (in degrees), counterclockwise, by default 0.0 (horizontal)
     phase_shift : float
         phase shift of grating in degrees
     intensities : Sequence[float, float] or None (default)
@@ -1282,7 +1282,7 @@ def square_angular(
         number of phases, either or whether not to round the number of
         phases ("ignore")
     rotation : float, optional
-        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+        rotation (in degrees), counterclockwise, by default 0.0 (horizontal)
     phase_shift : float
         phase shift of grating in degrees
     intensity_segments : Sequence[float, ...]
@@ -1389,7 +1389,7 @@ def staircase_angular(
         number of phases, either or whether not to round the number of
         phases ("ignore")
     rotation : float, optional
-        rotation (in degrees), counterclockwise, by default 0.0 (horizonal)
+        rotation (in degrees), counterclockwise, by default 0.0 (horizontal)
     phase_shift : float
         phase shift of grating in degrees
     intensity_segments : Sequence[float, ...]

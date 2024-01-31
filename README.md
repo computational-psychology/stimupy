@@ -53,7 +53,7 @@ so that they are reproducible, flexible, and easy.
    (e.g. Simultaneous Brightness Contrast, White's illusion, Hermann grid, Ponzo illusion), and many more
 
 - exact replications of stimuli previously published (e.g. ModelFest)
-  as described in their respecive [papers](stimupy/papers/)
+  as described in their respective [papers](stimupy/papers/)
 
 - all stimuli are fully parameterizable
   - with interpretable parameters that are familiar and relevant to vision scientists
