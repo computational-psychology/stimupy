@@ -258,7 +258,7 @@ sinewave = waves.sine_linear(visual_size=(10, 10), ppd=10,
 
 gabor = gabors.gabor(visual_size=(10, 10), ppd=10,
                      n_bars=5,
-                     intensity_bars=(0.0, 1.0),
+                     intensities=(0.0, 1.0),
                      origin='center',
 
                      sigma=1)
