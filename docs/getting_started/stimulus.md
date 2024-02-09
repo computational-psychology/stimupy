@@ -80,9 +80,9 @@ For this specific stimulus,
 the {py:func}`sbcs.basic <stimupy.stimuli.sbcs.basic>` provides little use over
 the base component.
 But, realistically, we would not show just this one part of a SBC display, but rather
-show both sides of the SBC displays as implemented in {py:func}`two_sided <stimupy.stimuli.sbcs.two_sided>`:
+show both sides of the SBC displays as implemented in {py:func}`two_sided <stimupy.stimuli.sbcs.basic_two_sided>`:
 ```{code-cell}
-two_sided_stim = sbcs.two_sided(visual_size=(6,8), ppd=10,
+two_sided_stim = sbcs.basic_two_sided(visual_size=(6,8), ppd=10,
                                 target_size=(2,2))
 
 plot_stim(two_sided_stim)
@@ -100,18 +100,19 @@ plt.show()
 ```
 and they are controlled by the same `target_size` argument:
 ```{code-cell}
-two_sided_stim = sbcs.two_sided(visual_size=(6,8), ppd=10,
-                                target_size=(1,1))
+two_sided_stim = sbcs.basic_two_sided(visual_size=(6,8), ppd=10,
+                                target_size=(1,1),
+                                intensity_background=(0.0,1.0))
 
 plot_stim(two_sided_stim)
 plt.show()
 ```
 
-The `intensity_backgrounds` can also be specified at creation:
+The `intensity_background` can also be varied at creation:
 ```{code-cell}
-two_sided_stim = sbcs.two_sided(visual_size=(6,8), ppd=10,
+two_sided_stim = sbcs.basic_two_sided(visual_size=(6,8), ppd=10,
                                 target_size=(2,2),
-                                intensity_backgrounds=(.25,.75))
+                                intensity_background=(.25,.75))
 
 plot_stim(two_sided_stim)
 plt.show()
@@ -157,6 +158,7 @@ stim_2bull = bullseyes.circular_two_sided(
    ppd=10,
    n_rings=5,
    ring_width=1,
+  intensity_rings=((0, 1), (1, 0))
 )
 
 plot_stim(stim_2bull)
