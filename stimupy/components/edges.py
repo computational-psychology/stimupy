@@ -202,6 +202,8 @@ def cornsweet(
     dist = np.round(base["oblique"] / ramp_width, 6)
     d1 = copy.deepcopy(dist)
     d2 = copy.deepcopy(dist) * (-1)
+    d1 = d1 - np.abs(d1).min()
+    d2 = d2 - np.abs(d2).min()
     d1[d1 < 0] = -1
     d1[d1 > 1] = 1
     d2[d2 < 0] = -1
