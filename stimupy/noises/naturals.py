@@ -32,7 +32,8 @@ def one_over_f(
     exponent
         exponent used to create 1 / (f**exponent) noise
     intensity_range : Sequence[Number, Number]
-        minimum and maximum intensity value; default: (0, 1)
+        minimum and maximum intensity value; default: (0, 1).
+        be aware that not every instance has mean=(max-min)/2.
     pseudo_noise : bool
         if True, generate pseudo-random noise with ideal power spectrum.
 
@@ -109,7 +110,8 @@ def pink(
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of grating, in pixels
     intensity_range : Sequence[Number, Number]
-        minimum and maximum intensity value; default: (0, 1)
+        minimum and maximum intensity value; default: (0, 1).
+        be aware that not every instance has mean=(max-min)/2.
     pseudo_noise : bool
         if True, generate pseudo-random noise with ideal power spectrum
 
@@ -147,6 +149,7 @@ def brown(
         shape [height, width] of grating, in pixels
     intensity_range : Sequence[Number, Number]
         minimum and maximum intensity value; default: (0, 1)
+        be aware that not every instance has mean=(max-min)/2.
     pseudo_noise : bool
         if True, generate pseudo-random noise with ideal power spectrum
 
