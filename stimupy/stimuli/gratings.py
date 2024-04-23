@@ -316,7 +316,7 @@ def phase_shifted(
 
     if target_shift != int(target_shift):
         s = np.sign(target_phase_shift)
-        warnings.warn(f"Rounding phase; {target_phase_shift} -> {s*target_phasei}")
+        warnings.warn(f"Rounding phase; {target_phase_shift} -> {s * target_phasei}")
 
     # Shift targets by specified phase
     cy, cx = stim["shape"]

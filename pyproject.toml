@@ -87,5 +87,5 @@ upload_to_vcs_release = true # upload sdist, wheel to release-tag
 
 
 [tool.codespell]
-skip = "./docs/_build/*"
+skip = "./docs/_build/*,CHANGELOG.md"
 exclude-file = ".codespell.ignore"

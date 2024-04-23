@@ -180,7 +180,7 @@ def resolve_grating_params(
     # Check that frequency does not exceed Nyquist limit:
     if frequency > (ppd / 2):
         raise ValueError(
-            f"Grating frequency ({frequency}) should not exceed Nyquist limit {ppd/2} (ppd/2)"
+            f"Grating frequency ({frequency}) should not exceed Nyquist limit {ppd / 2} (ppd/2)"
         )
 
     # Accumulate edges of phases (rounding to avoid accumulation of
