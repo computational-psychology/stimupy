@@ -1,4 +1,4 @@
-__version__ = "1.1.1"
+__version__ = "1.1.2"
 
 from stimupy import components, noises, stimuli, utils
 from stimupy.stimuli import *
