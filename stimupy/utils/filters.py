@@ -87,7 +87,7 @@ def bandpass(
 
     if center_frequency > (min(ppd) / 2):
         raise ValueError(
-            f"Center frequency ({center_frequency}) should not exceed Nyquist limit {min(ppd)/2} (ppd/2)"
+            f"Center frequency ({center_frequency}) should not exceed Nyquist limit {min(ppd) / 2} (ppd/2)"
         )
 
     # Create frequency axes
