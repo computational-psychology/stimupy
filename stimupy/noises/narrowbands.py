@@ -33,7 +33,8 @@ def narrowband(
     bandwidth : float
         bandwidth of the noise in octaves
     intensity_range : Sequence[Number, Number]
-        minimum and maximum intensity value; default: (0, 1)
+        minimum and maximum intensity value; default: (0, 1).
+        be aware that not every instance has mean=(max-min)/2.
     pseudo_noise : bool
         if True, generate pseudo-random noise with ideal power spectrum.
 

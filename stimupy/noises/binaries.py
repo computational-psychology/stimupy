@@ -25,7 +25,8 @@ def binary(
     shape : Sequence[Number, Number], Number, or None (default)
         shape [height, width] of grating, in pixels
     intensity_range : Sequence[Number, Number]
-        minimum and maximum intensity value; default: (0, 1)
+        minimum and maximum intensity value; default: (0, 1).
+        be aware that not every instance has mean=(max-min)/2.
 
     Returns
     -------
