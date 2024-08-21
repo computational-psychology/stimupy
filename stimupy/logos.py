@@ -130,7 +130,7 @@ def qrcode(ppd=128):
     )
 
     draw.rectangle((58, 58, 92, 92), fill=0)
-    draw.rectangle((img.size[0] - 58, 92, img.size[0] - 92, 58), fill=0)
+    draw.rectangle((img.size[0] - 92, 58, img.size[0] - 58, 92), fill=0)
     draw.rectangle((55, img.size[0] - 92, 92, img.size[0] - 58), fill=0)
 
     round_eyes = Image.new("L", img.size, 255)
