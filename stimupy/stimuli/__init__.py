@@ -183,7 +183,3 @@ def plot_overview(mask=False, save=None, units="deg"):
 
     stims = overview(skip=True)
     plot_stimuli(stims, mask=mask, units=units, save=save)
-
-
-if __name__ == "__main__":
-    plot_overview()
