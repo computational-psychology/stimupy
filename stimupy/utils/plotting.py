@@ -153,12 +153,7 @@ def plot_stim(
 
 
 def plot_stimuli(
-    stims,
-    mask=False,
-    vmin=0,
-    vmax=1,
-    save=None,
-    units="deg",
+    stims, mask=False, vmin=0, vmax=1, save=None, units="deg", ncols=None, nrows=None
 ):
     """Plot multiple stimuli
 
@@ -184,13 +179,32 @@ def plot_stimuli(
         what units to put on the axes, by default degrees visual angle ("deg").
         If a str other than "deg"(/"degrees") or "px"(/"pix"/"pixels") is passed,
         it must be the key to a tuple in stim
+    ncols : int or None, optional
+        number of columns in gridspec, or figure it out (default)
+    nrows : int or None, optional
+        number of rows in gridspec, or figure it out (default)
     """
 
-    # Plot each stimulus+mask
-    n_stim = int(np.ceil(np.sqrt(len(stims))))
-    F = plt.figure(figsize=(n_stim * 3, n_stim * 3))
-    for i, (stim_name, stim) in enumerate(stims.items()):
-        ax = F.add_subplot(n_stim, n_stim, i + 1)
+    # Setup facets
+    if ncols and nrows:
+        if ncols * nrows < len(stims):
+            raise Exception(
+                f"Invalid ncols/nrows: more stimuli {len(stims)} than facets {ncols * nrows}"
+            )
+    elif ncols:
+        nrows = np.ceil(len(stims) / ncols)
+    elif nrows:
+        ncols = np.ceil(len(stims) / nrows)
+    else:
+        ncols = np.ceil(np.sqrt(len(stims)))
+        nrows = np.ceil(len(stims) / ncols)
+    ncols = int(ncols)
+    nrows = int(nrows)
+
+    # Plot each stimulus (& mask)
+    F = plt.figure(figsize=(nrows * 2, ncols * 2))
+    for idx, (stim_name, stim) in enumerate(stims.items()):
+        ax = F.add_subplot(nrows, ncols, idx + 1)
         plot_stim(
             stim,
             mask,
