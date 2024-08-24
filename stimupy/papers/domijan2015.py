@@ -1,4 +1,4 @@
-"""Stimuli from Domijan (2015) https://doi.org/10.3389/fnhum.2015.00093
+"""Stimuli from Domijan (2015)
 
 This module reproduces all of the stimuli used by Domijan (2015)
 as they were provided to the model described in that paper.
@@ -12,20 +12,23 @@ stimulus sizes by providing at least two of the following: a shape
 (in pixels), a visual_size (in degrees) and/or a resolution (in ppd).
 
 Each stimulus is provided by a separate function,
-a full list can be found as stimupy.papers.domijan2015.__all__
+which can be listed using 
+
+    >>> import stimupy.papers.domijan2015
+    >>> help(stimupy.papers.domijan2015)
 
 The output of each of these functions is a stimulus dictionary.
 
 For a visual representation of all the stimuli and their mask,
-simply run this module as a script:
+simply run this module from the shell
 
-    $ python stimuli/papers/domijan2015.py
+    $ python -m stimuli.papers.domijan2015
 
-Attributes
-----------
-__all__ (list of str): list of all stimulus-functions
-    that are exported by this module when executing
-        >>> from stimupy.papers.domijan2015 import *
+or from within python:
+
+    >>> from stimupy.utils import plot_stimuli
+    >>> from stimupy.papers import domijan2015
+    >>> plot_stimuli(domijan2015.gen_all())
 
 References
 -----------
