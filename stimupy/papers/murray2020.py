@@ -1,26 +1,29 @@
-"""Stimuli from Murray (2020) https://doi.org/10/gh57gf
+"""Stimuli from Murray (2020)
 
 This module reproduces most of the stimuli used by Murray (2020)
-as they were provided to the model described in that paper but
-normalized between 0 and 1.
+as they were provided to the model described in that paper
+but normalized between 0 and 1.
 The stimuli are show in Fig 1 of the paper.
 NOTE that the Haze illusion (Fig 1m) is not provided.
 
 Each stimulus is provided by a separate function,
-a full list can be found as stimupy.papers.murray2020.__all__
+which can be listed using 
+
+    >>> import stimupy.papers.murray2020
+    >>> help(stimupy.papers.murray2020)
 
 The output of each of these functions is a stimulus dictionary.
 
 For a visual representation of all the stimuli and their mask,
-simply run this module as a script:
+simply run this module from the shell
 
-    $ python stimuli/papers/murray2020.py
+    $ python -m stimuli.papers.murray2020
 
-Attributes
-----------
-__all__ (list of str): list of all stimulus-functions
-    that are exported by this module when executing
-        >>> from stimupy.papers.murray2020 import *
+or from within python
+
+    >>> from stimupy.utils import plot_stimuli
+    >>> from stimupy.papers import murray2020
+    >>> plot_stimuli(murray2020.gen_all())
 
 References
 -----------

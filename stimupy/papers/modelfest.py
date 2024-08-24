@@ -1,26 +1,29 @@
-"""Modelfest dataset from Carney et al (1999) https://doi.org/10.1117/12.348473
+"""Stimuli and data from Modelfest (Carney et al., 1999)
 
 This module reproduces all of the stimuli from the Modelfest dataset
-prior to the spatiotemporal extension as described in Carney et al (1999)
+prior to the spatiotemporal extension as described in Carney et al. (1999)
 but normalized between 0 and 1.
 More information on Modelfest can be found here:
 https://www.visionscience.com/data/modelfest/
 
 Each stimulus is provided by a separate function,
-a full list can be found as stimupy.papers.modelfest.__all__
+which can be listed using 
+
+    >>> import stimupy.papers.modelfest
+    >>> help(stimupy.papers.modelfest
 
 The output of each of these functions is a stimulus dictionary.
 
 For a visual representation of all the stimuli and their mask,
-simply run this module as a script:
+simply run this module from the shell
 
-    $ python stimuli/papers/modelfest.py
+    $ python -m stimuli.papers.modelfest
 
-Attributes
-----------
-__all__ (list of str): list of all stimulus-functions
-    that are exported by this module when executing
-        >>> from stimupy.papers.modelfest import *
+or from within python:
+
+    >>> from stimupy.utils import plot_stimuli
+    >>> from stimupy.papers import modelfest
+    >>> plot_stimuli(modelfest.gen_all())
 
 References
 -----------

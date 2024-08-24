@@ -1,24 +1,26 @@
 """Stimuli from Bindmann & Chubb (2004)
-https://doi.org/10.1016/S0042-6989(03)00430-9
 
 This module reproduces most of the stimuli used by Bindmann & Chubb (2004) as
 they were described in that paper.
 
 Each stimulus is provided by a separate function,
-a full list can be found as stimupy.papers.bindmann2004.__all__
+which can be listed using 
+
+    >>> import stimupy.papers.bindmann2004
+    >>> help(stimupy.papers.bindmann2004)
 
 The output of each of these functions is a stimulus dictionary.
 
 For a visual representation of all the stimuli and their mask,
-simply run this module as a script:
+simply run this module from the shell
 
-    $ python stimuli/papers/bindmann2004.py
+    $ python -m stimuli.papers.bindmann2004
 
-Attributes
-----------
-__all__ (list of str): list of all stimulus-functions
-    that are exported by this module when executing
-        >>> from stimupy.papers.bindmann2004 import *
+or from within python:
+
+    >>> from stimupy.utils import plot_stimuli
+    >>> from stimupy.papers import bindmann2004
+    >>> plot_stimuli(bindmann2004.gen_all())
 
 References
 -----------

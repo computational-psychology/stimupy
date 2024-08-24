@@ -1,24 +1,26 @@
 """Stimuli from White & White (1985)
-https://doi.org/10.1016/0042-6989(85)90049-5
 
-This module reproduces most of the stimuli used by White & White (1985) as
-they were described in that paper.
+This module reproduces most of the stimuli used by White & White (1985)
+as they were described in that paper.
 
 Each stimulus is provided by a separate function,
-a full list can be found as stimupy.papers.white1985.__all__
+which can be listed using
+
+    >>> import stimupy.papers.white1985
+    >>> help(stimupy.papers.white1985)
 
 The output of each of these functions is a stimulus dictionary.
 
-For a visual representation of all the stimuli and their mask,
-simply run this module as a script:
+For a visual representation of all the stimuli,
+simply run this module from the shell
 
-    $ python stimuli/papers/white1985.py
+    $ python -m stimuli.papers.white1985
 
-Attributes
-----------
-__all__ (list of str): list of all stimulus-functions
-    that are exported by this module when executing
-        >>> from stimupy.papers.white1985 import *
+or from within python
+
+    >>> from stimupy.utils import plot_stimuli
+    >>> from stimupy.papers import white1985
+    >>> plot_stimuli(white1985.gen_all())
 
 References
 -----------
