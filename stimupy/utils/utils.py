@@ -45,10 +45,12 @@ def round_to_vals(arr, vals):
     """
     # Ensure the 1D array contains unique values
     arr_1d = np.unique(vals)
-    
+
     # Find the nearest values from arr_1d for each element in arr
-    rounded_arr = np.array([arr_1d[np.abs(arr_1d - x).argmin()] for x in arr.ravel()]).reshape(arr.shape)
-    
+    rounded_arr = np.array([arr_1d[np.abs(arr_1d - x).argmin()] for x in arr.ravel()]).reshape(
+        arr.shape
+    )
+
     return rounded_arr
 
 
