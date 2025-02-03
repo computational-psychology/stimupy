@@ -43,16 +43,13 @@ def round_to_vals(arr, vals):
         Rounded output array
 
     """
-    n_val = len(vals)
-    arr = np.repeat(np.expand_dims(arr, -1), n_val, axis=2)
-    vals_arr = np.ones(arr.shape) * np.array(np.expand_dims(vals, [0, 1]))
-
-    indices = np.argmin(np.abs(arr - vals_arr), axis=2)
-    out_arr = np.copy(indices).astype(float)
-
-    for i in range(n_val):
-        out_arr[indices == i] = vals[i]
-    return out_arr
+    # Ensure the 1D array contains unique values
+    arr_1d = np.unique(vals)
+    
+    # Find the nearest values from arr_1d for each element in arr
+    rounded_arr = np.array([arr_1d[np.abs(arr_1d - x).argmin()] for x in arr.ravel()]).reshape(arr.shape)
+    
+    return rounded_arr
 
 
 def int_factorize(n):
