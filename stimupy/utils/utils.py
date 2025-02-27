@@ -83,33 +83,77 @@ def _repeat_numeric_arg(arg, n=2):
         return arg
 
 
-def round_to_vals(arr, vals):
-    """
-    Round array to provided values (vals)
+def round_to_vals(arr, vals, mode="nearest"):
+    """Round each element of array to closest match in provided values
+
+    For each element in the input `arr`, find the closest value from the provided `vals`
+    and replace the element with this closest value.
+    If the element is equidistant to two values, the smaller
+    value is chosen.
 
     Parameters
     ----------
     arr : np.ndarray
-        Numpy array which values will be rounded
+        array to be rounded
     vals : Sequence(float, ...)
-        Values to which array will be rounded
+        values to which array will be rounded
+    mode : ["nearest", "floor", "ceil"], optional
+        rounding mode. Default is "nearest".
 
     Returns
     -------
     out_arr : np.ndarray
         Rounded output array
 
+    Raises
+    ------
+    ValueError
+        If `mode` is not one of ["nearest", "floor", "ceil"].
+        If `arr` contains values outside the bounds of
+        `vals` when `mode` is "floor" or "ceil".
+
+    Examples
+    --------
+    >>> arr = np.array([1.1, 2.2, 3.3, 4.4, 5.5])
+    >>> vals = [1, 3, 5]
+    >>> round_to_vals(arr, vals)
+    array([1., 3., 3., 5., 5.])
+
     """
-    n_val = len(vals)
-    arr = np.repeat(np.expand_dims(arr, -1), n_val, axis=2)
-    vals_arr = np.ones(arr.shape) * np.array(np.expand_dims(vals, [0, 1]))
+    # Ensure the 1D array contains only unique values
+    arr_1d = np.sort(np.unique(vals))
+    arr = np.array(arr)
 
-    indices = np.argmin(np.abs(arr - vals_arr), axis=2)
-    out_arr = np.copy(indices).astype(float)
+    # Ensure arr fall within bounds of mode:
+    if mode == "floor" and arr.min() < arr_1d.min():
+        raise ValueError(
+            f"Array values must be within bounds of vals : {arr.min()} < {arr_1d.min()}"
+        )
+    if mode == "ceil" and arr.min() > arr_1d.max():
+        raise ValueError(
+            f"Array values must be within bounds of vals: {arr.min()} > {arr_1d.max()}"
+        )
 
-    for i in range(n_val):
-        out_arr[indices == i] = vals[i]
-    return out_arr
+    # Find the nearest values from vals, for each element in arr
+    if mode == "floor":
+        idxs = np.searchsorted(arr_1d, arr, side="left") - 1
+    elif mode == "ceil":
+        idxs = np.searchsorted(arr_1d, arr, side="right")
+    elif mode == "nearest":
+        # Find indexes where previous index is closer
+        idxs = np.searchsorted(arr_1d, arr, side="left")
+        prev_idx_is_less = (idxs == len(arr_1d)) | (
+            np.fabs(arr - arr_1d[np.maximum(idxs - 1, 0)])
+            < np.fabs(arr - arr_1d[np.minimum(idxs, len(arr_1d) - 1)])
+        )
+        idxs[prev_idx_is_less] -= 1
+    else:
+        raise ValueError(f"Invalid mode: {mode}")
+
+    # Replace each element in arr with the nearest value from vals
+    rounded_arr = arr_1d[idxs]
+
+    return rounded_arr
 
 
 def int_factorize(n):
