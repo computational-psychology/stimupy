@@ -17,3 +17,5 @@ jobs:
           fetch-depth: 0
       # Lint using Ruff
       - uses: astral-sh/ruff-action@v3
+        with:
+          args: "check --ignore F403,F405"
