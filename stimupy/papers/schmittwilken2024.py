@@ -2,8 +2,8 @@
 https://doi.org/10.1016/j.visres.2024.108450
 
 This module reproduces all stimuli used by Schmittwilken, Wichmann, & Maertens
-(2024) with random noise instances, and provides the corresponding raw
-sensitivity functions of each subject and the average observer.
+(2024) with random noise instances, and provides the corresponding detection
+data of each subject and the average observer.
 
 Each stimulus is provided by a separate function,
 a full list can be found as stimupy.papers.schmittwilken2024.__all__
