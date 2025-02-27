@@ -25,6 +25,7 @@ __all__ = [
     "create_stimspace_stimuli",
 ]
 
+
 def _check_multiple_none(*args):
     """
     Counts the number of None values in the provided arguments.
@@ -46,8 +47,8 @@ def _check_multiple_none(*args):
 
 def _check_and_repeat(arg, count=2):
     """
-    Checks if the argument is a single number. If so, returns a list containing 
-    the number repeated the specified number of times. Otherwise, returns the 
+    Checks if the argument is a single number. If so, returns a list containing
+    the number repeated the specified number of times. Otherwise, returns the
     argument itself.
 
     Parameters:
@@ -55,7 +56,7 @@ def _check_and_repeat(arg, count=2):
     count: The number of times to repeat the argument (default is 2).
 
     Returns:
-    list or any: A list with the number repeated 'count' times if the argument 
+    list or any: A list with the number repeated 'count' times if the argument
                  is a number, otherwise returns the argument itself.
 
     Example:

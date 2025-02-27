@@ -577,28 +577,33 @@ def equal(
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
     if len(np.unique(ppd)) > 1:
         raise ValueError("ppd should be equal in x and y direction")
-    
+
     if _check_multiple_none(cross_size, cross_thickness, cover_size) > 2:
         raise ValueError(
             "'equal()' needs 2 non-None arguments from 'cross_size', "
             "'cross_thickness', 'cover_size'"
         )
-    
+
     cross_size = _check_and_repeat(cross_size, count=2)
     cross_thickness = _check_and_repeat(cross_thickness, count=2)
     cover_size = _check_and_repeat(cover_size, count=2)
-    
+
     if (cross_size is None) or (None in cross_size):
-        cross_size = [cross_thickness[0]+cover_size[0]*2,
-                      cross_thickness[1]+cover_size[1]*2]
+        cross_size = [
+            cross_thickness[0] + cover_size[0] * 2,
+            cross_thickness[1] + cover_size[1] * 2,
+        ]
     if (cross_thickness is None) or (None in cross_thickness):
-        cross_thickness = [cross_size[0]-cover_size[0]*2,
-                           cross_size[1]-cover_size[1]*2]
+        cross_thickness = [cross_size[0] - cover_size[0] * 2, cross_size[1] - cover_size[1] * 2]
     if (cover_size is None) or (None in cover_size):
-        cover_size = [(cross_size[0]-cross_thickness[0]) / 2.,
-                      (cross_size[1]-cross_thickness[1]) / 2.]
-    
-    if ((cross_thickness[0]+cover_size[0]*2) != cross_size[0]) or ((cross_thickness[1]+cover_size[1]*2) != cross_size[1]):
+        cover_size = [
+            (cross_size[0] - cross_thickness[0]) / 2.0,
+            (cross_size[1] - cross_thickness[1]) / 2.0,
+        ]
+
+    if ((cross_thickness[0] + cover_size[0] * 2) != cross_size[0]) or (
+        (cross_thickness[1] + cover_size[1] * 2) != cross_size[1]
+    ):
         raise ValueError("'equal()': 'cross_size', 'cross_thickness', 'cover_size' do not match")
 
     stim = cross_shape(
@@ -622,8 +627,8 @@ def equal(
         shape=shape,
         rectangle_size=cross_size,
     )
-    
-    coverCond = window["rectangle_mask"]-stim["target_mask"]
+
+    coverCond = window["rectangle_mask"] - stim["target_mask"]
     stim["img"] = np.where(coverCond, intensity_covers, stim["img"])
     return stim
 
