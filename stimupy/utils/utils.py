@@ -43,13 +43,21 @@ def round_to_vals(arr, vals):
         Rounded output array
 
     """
-    # Ensure the 1D array contains unique values
-    arr_1d = np.unique(vals)
+    # Ensure the 1D array contains only unique values
+    arr_1d = np.sort(np.unique(vals))
 
-    # Find the nearest values from arr_1d for each element in arr
-    rounded_arr = np.array([arr_1d[np.abs(arr_1d - x).argmin()] for x in arr.ravel()]).reshape(
-        arr.shape
+    # Find the nearest values from vals, for each element in arr
+    idxs = np.searchsorted(arr_1d, arr, side="left")
+
+    # Find indexes where previous index is closer
+    prev_idx_is_less = (idxs == len(arr_1d)) | (
+        np.fabs(arr - arr_1d[np.maximum(idxs - 1, 0)])
+        < np.fabs(arr - arr_1d[np.minimum(idxs, len(arr_1d) - 1)])
     )
+    idxs[prev_idx_is_less] -= 1
+
+    # Replace each element in arr with the nearest value from vals
+    rounded_arr = arr_1d[idxs]
 
     return rounded_arr
 
