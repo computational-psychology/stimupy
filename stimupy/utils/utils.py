@@ -26,7 +26,7 @@ __all__ = [
 ]
 
 
-def round_to_vals(arr, vals):
+def round_to_vals(arr, vals, mode="nearest"):
     """Round each element of array to closest match in provided values
 
     For each element in the input `arr`, find the closest value from the provided `vals`
@@ -40,6 +40,8 @@ def round_to_vals(arr, vals):
         array to be rounded
     vals : Sequence(float, ...)
         values to which array will be rounded
+    mode : ["nearest", "floor", "ceil"], optional
+        rounding mode. Default is "nearest".
 
     Returns
     -------
@@ -56,16 +58,24 @@ def round_to_vals(arr, vals):
     """
     # Ensure the 1D array contains only unique values
     arr_1d = np.sort(np.unique(vals))
+    arr = np.array(arr)
 
     # Find the nearest values from vals, for each element in arr
-    idxs = np.searchsorted(arr_1d, arr, side="left")
-
-    # Find indexes where previous index is closer
-    prev_idx_is_less = (idxs == len(arr_1d)) | (
-        np.fabs(arr - arr_1d[np.maximum(idxs - 1, 0)])
-        < np.fabs(arr - arr_1d[np.minimum(idxs, len(arr_1d) - 1)])
-    )
-    idxs[prev_idx_is_less] -= 1
+    match mode:
+        case "floor":
+            idxs = np.searchsorted(arr_1d, arr, side="left") - 1
+        case "ceil":
+            idxs = np.searchsorted(arr_1d, arr, side="right")
+        case "nearest":
+            # Find indexes where previous index is closer
+            idxs = np.searchsorted(arr_1d, arr, side="left")
+            prev_idx_is_less = (idxs == len(arr_1d)) | (
+                np.fabs(arr - arr_1d[np.maximum(idxs - 1, 0)])
+                < np.fabs(arr - arr_1d[np.minimum(idxs, len(arr_1d) - 1)])
+            )
+            idxs[prev_idx_is_less] -= 1
+        case _:
+            raise ValueError(f"Invalid mode: {mode}")
 
     # Replace each element in arr with the nearest value from vals
     rounded_arr = arr_1d[idxs]
