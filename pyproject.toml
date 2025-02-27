@@ -28,7 +28,7 @@ requires-python = ">=3.9"
 dependencies = ["numpy", "scipy", "matplotlib", "pandas", "Pillow"]
 
 [project.optional-dependencies]
-dev = ["pytest", "black", "pyupgrade", "flake8"]
+dev = ["pytest", "ruff", "codespell"]
 docs = [
   "jupyter-book<2",
   "jupytext>=1.13.3",
