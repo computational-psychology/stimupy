@@ -26,17 +26,21 @@ __all__ = [
 ]
 
 
-def _check_multiple_none(*args):
-    """
-    Counts the number of None values in the provided arguments.
+def _count_none_args(*args):
+    """Counts the number of None values in the provided arguments
 
-    Parameters:
-    *args: A variable number of arguments to check for None values.
+    Parameters
+    ----------
+    *args : dict
+        variable number of arguments to check for None values
 
-    Returns:
-    int: The number of None values in the arguments.
+    Returns
+    -------
+    int :
+        number of None values in the arguments.
 
-    Example:
+    Examples
+    --------
     >>> check_multiple_none(None, 1, None, 2, 3)
     2
     >>> check_multiple_none(1, 2, 3)
@@ -45,29 +49,36 @@ def _check_multiple_none(*args):
     return args.count(None)
 
 
-def _check_and_repeat(arg, count=2):
-    """
-    Checks if the argument is a single number. If so, returns a list containing
-    the number repeated the specified number of times. Otherwise, returns the
-    argument itself.
+def _repeat_numeric_arg(arg, n=2):
+    """If provided argument is single number, repeat n times
 
-    Parameters:
-    arg: The input argument to check.
-    count: The number of times to repeat the argument (default is 2).
+    Checks if the argument is a single number (int, float).
+    If so, returns a list containing the number repeated the specified number of times.
+    For other datatypes, returns the argument itself.
 
-    Returns:
-    list or any: A list with the number repeated 'count' times if the argument
-                 is a number, otherwise returns the argument itself.
+    Parameters
+    ----------
+    arg : Any
+        Input argument to check
+    count : int, optional
+        Number of times to repeat the argument, by default 2.
 
-    Example:
-    >>> check_and_repeat(5, 3)
+    Returns
+    -------
+    list or any:
+        List with the number repeated 'count' times if the argument is a number,
+        or the original arg if non-numeric.
+
+    Examples
+    --------
+    >>> check_and_repeat(5, n=3)
     [5, 5, 5]
     >>> check_and_repeat("Hello")
     'Hello'
     """
     # Check if the argument is a single number (int or float)
     if isinstance(arg, (int, float)):
-        return [arg] * count  # Repeat the number 'count' times in a list
+        return [arg] * n  # Repeat the number 'count' times in a list
     else:
         return arg
 

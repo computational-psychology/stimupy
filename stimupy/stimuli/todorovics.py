@@ -5,7 +5,7 @@ import numpy as np
 from stimupy.components.shapes import cross as cross_shape
 from stimupy.components.shapes import rectangle as rectangle_shape
 from stimupy.utils import make_two_sided, pad_dict_to_shape, resolution
-from stimupy.utils.utils import _check_multiple_none, _check_and_repeat
+from stimupy.utils.utils import _count_none_args, _repeat_numeric_arg
 
 __all__ = [
     "rectangle_generalized",
@@ -578,15 +578,15 @@ def equal(
     if len(np.unique(ppd)) > 1:
         raise ValueError("ppd should be equal in x and y direction")
 
-    if _check_multiple_none(cross_size, cross_thickness, cover_size) > 2:
+    if _count_none_args(cross_size, cross_thickness, cover_size) > 2:
         raise ValueError(
             "'equal()' needs 2 non-None arguments from 'cross_size', "
             "'cross_thickness', 'cover_size'"
         )
 
-    cross_size = _check_and_repeat(cross_size, count=2)
-    cross_thickness = _check_and_repeat(cross_thickness, count=2)
-    cover_size = _check_and_repeat(cover_size, count=2)
+    cross_size = _repeat_numeric_arg(cross_size, n=2)
+    cross_thickness = _repeat_numeric_arg(cross_thickness, n=2)
+    cover_size = _repeat_numeric_arg(cover_size, n=2)
 
     if (cross_size is None) or (None in cross_size):
         cross_size = [
