@@ -25,7 +25,23 @@ __all__ = [
     "create_stimspace_stimuli",
 ]
 
+def _check_multiple_none(*args):
+    """
+    Counts the number of None values in the provided arguments.
 
+    Parameters:
+    *args: A variable number of arguments to check for None values.
+
+    Returns:
+    int: The number of None values in the arguments.
+
+    Example:
+    >>> check_multiple_none(None, 1, None, 2, 3)
+    2
+    >>> check_multiple_none(1, 2, 3)
+    0
+    """
+    return args.count(None)
 def round_to_vals(arr, vals):
     """
     Round array to provided values (vals)
