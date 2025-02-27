@@ -30,7 +30,7 @@ dependencies = ["numpy", "scipy", "matplotlib", "pandas", "Pillow"]
 [project.optional-dependencies]
 dev = ["pytest", "black", "pyupgrade", "flake8"]
 docs = [
-  "jupyter-book==0.14",
+  "jupyter-book<2",
   "jupytext>=1.13.3",
   "jupyterlab_myst",
   "myst_nb",
