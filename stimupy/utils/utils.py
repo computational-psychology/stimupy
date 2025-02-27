@@ -26,6 +26,63 @@ __all__ = [
 ]
 
 
+def _count_none_args(*args):
+    """Counts the number of None values in the provided arguments
+
+    Parameters
+    ----------
+    *args : dict
+        variable number of arguments to check for None values
+
+    Returns
+    -------
+    int :
+        number of None values in the arguments.
+
+    Examples
+    --------
+    >>> check_multiple_none(None, 1, None, 2, 3)
+    2
+    >>> check_multiple_none(1, 2, 3)
+    0
+    """
+    return args.count(None)
+
+
+def _repeat_numeric_arg(arg, n=2):
+    """If provided argument is single number, repeat n times
+
+    Checks if the argument is a single number (int, float).
+    If so, returns a list containing the number repeated the specified number of times.
+    For other datatypes, returns the argument itself.
+
+    Parameters
+    ----------
+    arg : Any
+        Input argument to check
+    count : int, optional
+        Number of times to repeat the argument, by default 2.
+
+    Returns
+    -------
+    list or any:
+        List with the number repeated 'count' times if the argument is a number,
+        or the original arg if non-numeric.
+
+    Examples
+    --------
+    >>> check_and_repeat(5, n=3)
+    [5, 5, 5]
+    >>> check_and_repeat("Hello")
+    'Hello'
+    """
+    # Check if the argument is a single number (int or float)
+    if isinstance(arg, (int, float)):
+        return [arg] * n  # Repeat the number 'count' times in a list
+    else:
+        return arg
+
+
 def round_to_vals(arr, vals, mode="nearest"):
     """Round each element of array to closest match in provided values
 
