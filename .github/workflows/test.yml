@@ -15,21 +15,17 @@ jobs:
         os: [Ubuntu, macOS]
         python_version: ['3.8', '3.9', '3.10', '3.11']
     steps:
-      - uses: actions/checkout@v3
+        # Checkout the stimupy repository
+      - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v4
-        name: Install Python ${{ matrix.python_version }}
+        # Install uv with python version
+      - name: Install the latest version of uv and set the python version
+        uses: astral-sh/setup-uv@v5
         with:
+          enable-cache: true
           python-version: ${{ matrix.python_version }}
-          architecture: x64
 
-      - name: Install (testing) requirements
-        run: |
-          python -m pip install --upgrade pip setuptools
-          pip install -r requirements.txt
-      - name: Install stimupy to be tested
-        run: |
-          pip install .
-      - name: Run tests for ${{ matrix.python_version }} through nox
-        run: |
-          pipx run nox --non-interactive --error-on-missing-interpreter --session "tests-${{ matrix.python_version }}"
+        # Run testing through pytest for the current version
+        # uv automatically install all required dependencies from pyproject.toml
+      - name: Test with python ${{ matrix.python_version }}
+        run: uv run --with pytest pytest

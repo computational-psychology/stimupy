@@ -74,3 +74,5 @@ docs/reference/_api/
 # Modelfest dataset for easy comparison / testing
 **/modelfest/
 
+
+uv.lock
