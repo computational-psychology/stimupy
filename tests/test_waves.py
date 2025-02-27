@@ -32,7 +32,7 @@ def test_rounding():
     ppd = 36
     visual_size = (1.0, 1.0)
     frequency = 2.80
-    stim = waves.square(
+    waves.square(
         ppd=ppd,
         visual_size=visual_size,
         frequency=frequency,

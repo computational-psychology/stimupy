@@ -24,13 +24,13 @@ maintainers = [
 ]
 version = "1.1.2"
 
-requires-python = ">=3.6"
+requires-python = ">=3.9"
 dependencies = ["numpy", "scipy", "matplotlib", "pandas", "Pillow"]
 
 [project.optional-dependencies]
-dev = ["pytest", "black", "pyupgrade", "flake8"]
+dev = ["pytest", "ruff", "codespell"]
 docs = [
-  "jupyter-book==0.14",
+  "jupyter-book<2",
   "jupytext>=1.13.3",
   "jupyterlab_myst",
   "myst_nb",
