@@ -22,3 +22,9 @@ def test_rounding(size, n_vals, mode):
             assert np.all(rounded_arr >= arr)
 
 
+def test_raises_oob():
+    with pytest.raises(ValueError):
+        round_to_vals([0], [1, 2], "floor")
+
+    with pytest.raises(ValueError):
+        round_to_vals([3], [1, 2], "ceil")

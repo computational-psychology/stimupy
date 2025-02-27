@@ -48,6 +48,13 @@ def round_to_vals(arr, vals, mode="nearest"):
     out_arr : np.ndarray
         Rounded output array
 
+    Raises
+    ------
+    ValueError
+        If `mode` is not one of ["nearest", "floor", "ceil"].
+        If `arr` contains values outside the bounds of
+        `vals` when `mode` is "floor" or "ceil".
+
     Examples
     --------
     >>> arr = np.array([1.1, 2.2, 3.3, 4.4, 5.5])
@@ -59,6 +66,16 @@ def round_to_vals(arr, vals, mode="nearest"):
     # Ensure the 1D array contains only unique values
     arr_1d = np.sort(np.unique(vals))
     arr = np.array(arr)
+
+    # Ensure arr fall within bounds of mode:
+    if mode == "floor" and arr.min() < arr_1d.min():
+        raise ValueError(
+            f"Array values must be within bounds of vals : {arr.min()} < {arr_1d.min()}"
+        )
+    if mode == "ceil" and arr.min() > arr_1d.max():
+        raise ValueError(
+            f"Array values must be within bounds of vals: {arr.min()} > {arr_1d.max()}"
+        )
 
     # Find the nearest values from vals, for each element in arr
     match mode:
