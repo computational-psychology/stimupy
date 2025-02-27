@@ -78,7 +78,6 @@ stim_params = {
 
 # Load experimental data
 df = pd.read_csv(Path(__file__).parents[0] / "schmittwilken2024_data.csv")
-# participants = df[0]
 
 
 def _create_edge(contrast, edgeWidth, stim_params):
