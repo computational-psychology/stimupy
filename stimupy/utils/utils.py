@@ -27,20 +27,31 @@ __all__ = [
 
 
 def round_to_vals(arr, vals):
-    """
-    Round array to provided values (vals)
+    """Round each element of array to closest match in provided values
+
+    For each element in the input `arr`, find the closest value from the provided `vals`
+    and replace the element with this closest value.
+    If the element is equidistant to two values, the smaller
+    value is chosen.
 
     Parameters
     ----------
     arr : np.ndarray
-        Numpy array which values will be rounded
+        array to be rounded
     vals : Sequence(float, ...)
-        Values to which array will be rounded
+        values to which array will be rounded
 
     Returns
     -------
     out_arr : np.ndarray
         Rounded output array
+
+    Examples
+    --------
+    >>> arr = np.array([1.1, 2.2, 3.3, 4.4, 5.5])
+    >>> vals = [1, 3, 5]
+    >>> round_to_vals(arr, vals)
+    array([1., 3., 3., 5., 5.])
 
     """
     # Ensure the 1D array contains only unique values
