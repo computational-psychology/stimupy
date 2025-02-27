@@ -15,11 +15,10 @@ def test_rounding(size, n_vals, mode):
     rounded_arr = round_to_vals(arr, vals, mode)
 
     assert np.all(np.isin(rounded_arr, vals))
-    match mode:
-        case "floor":
-            assert np.all(rounded_arr <= arr)
-        case "ceil":
-            assert np.all(rounded_arr >= arr)
+    if mode == "floor":
+        assert np.all(rounded_arr <= arr)
+    elif mode == "ceil":
+        assert np.all(rounded_arr >= arr)
 
 
 def test_raises_oob():

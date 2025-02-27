@@ -78,21 +78,20 @@ def round_to_vals(arr, vals, mode="nearest"):
         )
 
     # Find the nearest values from vals, for each element in arr
-    match mode:
-        case "floor":
-            idxs = np.searchsorted(arr_1d, arr, side="left") - 1
-        case "ceil":
-            idxs = np.searchsorted(arr_1d, arr, side="right")
-        case "nearest":
-            # Find indexes where previous index is closer
-            idxs = np.searchsorted(arr_1d, arr, side="left")
-            prev_idx_is_less = (idxs == len(arr_1d)) | (
-                np.fabs(arr - arr_1d[np.maximum(idxs - 1, 0)])
-                < np.fabs(arr - arr_1d[np.minimum(idxs, len(arr_1d) - 1)])
-            )
-            idxs[prev_idx_is_less] -= 1
-        case _:
-            raise ValueError(f"Invalid mode: {mode}")
+    if mode == "floor":
+        idxs = np.searchsorted(arr_1d, arr, side="left") - 1
+    elif mode == "ceil":
+        idxs = np.searchsorted(arr_1d, arr, side="right")
+    elif mode == "nearest":
+        # Find indexes where previous index is closer
+        idxs = np.searchsorted(arr_1d, arr, side="left")
+        prev_idx_is_less = (idxs == len(arr_1d)) | (
+            np.fabs(arr - arr_1d[np.maximum(idxs - 1, 0)])
+            < np.fabs(arr - arr_1d[np.minimum(idxs, len(arr_1d) - 1)])
+        )
+        idxs[prev_idx_is_less] -= 1
+    else:
+        raise ValueError(f"Invalid mode: {mode}")
 
     # Replace each element in arr with the nearest value from vals
     rounded_arr = arr_1d[idxs]
