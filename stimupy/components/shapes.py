@@ -29,27 +29,30 @@ def rectangle(
     intensity_background=0.0,
     rotation=0.0,
 ):
-    """Draw a rectangle
+    """Draw a rectangle stimulus.
 
     Parameters
     ----------
-    visual_size : Sequence[Number, Number], Number, or None (default)
-        visual size [height, width] of image, in degrees visual angle
-    ppd : Sequence[Number, Number], Number, or None (default)
-        pixels per degree [vertical, horizontal]
-    shape : Sequence[Number, Number], Number, or None (default)
-        shape [height, width] of image, in pixels
-    rectangle_size : Number, Sequence[Number, Number]
-        rectangle size [height, width], in degrees visual angle
-    rectangle_position : Number, Sequence[Number, Number], or None (default)
-        position of the rectangle, in degrees visual angle.
-        If None, rectangle will be placed in center of image.
+    visual_size : Sequence[Number, Number], Number, or None, optional
+        The visual size of the image in degrees of visual angle (height, width).
+        If None, the visual size is inferred from other parameters.
+    ppd : Sequence[Number, Number], Number, or None, optional
+        The pixels per degree for the vertical and horizontal axes.
+        If None, the ppd will be derived from other parameters.
+    shape : Sequence[Number, Number], Number, or None, optional
+        The shape of the image in pixels (height, width).
+        If None, the shape is inferred from other parameters.
+    rectangle_size : Sequence[Number, Number], required
+        The size of the rectangle (height, width) in degrees of visual angle.
+    rectangle_position : Sequence[Number, Number], optional
+        The position of the rectangle (height, width) in degrees of visual angle.
+        If None, the rectangle is centered in the image.
     intensity_rectangle : float, optional
-        intensity value for rectangle, by default 1.0
+        Intensity of the rectangle stimulus, by default 1.0.
     intensity_background : float, optional
-        intensity value of background, by default 0.0
+        Intensity of the background, by default 0.0.
     rotation : float, optional
-        rotation (in degrees), counterclockwise, by default 0.0 (horizontal)
+        The counterclockwise rotation of the rectangle in degrees, by default 0.0.
 
     Returns
     -------
@@ -57,11 +60,17 @@ def rectangle(
         dict with the stimulus (key: "img"),
         mask with integer index for the shape (key: "rectangle_mask"),
         and additional keys containing stimulus parameters
+
+    Raises
+    ------
+    ValueError
+        If the rectangle cannot fit within the specified visual size.
     """
+    # Validate input
     if rectangle_size is None:
         raise ValueError("rectangle() missing argument 'rectangle_size' which is not 'None'")
 
-    # Resolve resolutions and get distances
+    # Base image configuration
     base = image_base(
         visual_size=visual_size,
         ppd=ppd,
@@ -69,60 +78,71 @@ def rectangle(
         rotation=rotation,
         origin="center",
     )
-    xx = base["horizontal"]
-    yy = base["vertical"]
+
+    # Resolve resolution and get distances
+    xx, yy = base["horizontal"], base["vertical"]
     theta = np.deg2rad(rotation)
     rectangle_size = resolution.validate_visual_size(visual_size=rectangle_size)
 
-    # Determine center position
-    rect_posy = (base["visual_size"].height / 2) - (rectangle_size.height / 2)
-    rect_posx = (base["visual_size"].width / 2) - (rectangle_size.width / 2)
-    center_pos = (rect_posy, rect_posx)
+    # Determine position of upper-left corner of rectangle
+    half_height, half_width = rectangle_size.height / 2, rectangle_size.width / 2
+    rect_pos_y = (base["visual_size"].height / 2) - (
+        np.cos(theta) * half_height - np.sin(theta) * half_height
+    )
+    rect_pos_x = (base["visual_size"].width / 2) - (
+        np.sin(theta) * half_width + np.cos(theta) * half_width
+    )
+    corner_pos = (rect_pos_y, rect_pos_x)
 
+    # Default to centered position if not specified
     if rectangle_position is None:
-        # If no position is given, place rectangle centrally
-        rectangle_position = center_pos
+        rectangle_position = corner_pos
 
-    # Positions should always be positive
+    # Ensure positions are non-negative
     rectangle_position = np.array(rectangle_position).clip(min=0)
-    center_pos = np.array(center_pos).clip(min=0)
+    corner_pos = np.array(corner_pos).clip(min=0)
 
-    # Determine shift
+    # Calculate position shift
     rect_pos = resolution.shape_from_visual_size_ppd(rectangle_position, base["ppd"])
-    center_pos = resolution.shape_from_visual_size_ppd(center_pos, base["ppd"])
-    rect_shift = (np.array(rect_pos) - np.array(center_pos)).astype(int)
+    corner_pos = resolution.shape_from_visual_size_ppd(corner_pos, base["ppd"])
+    pos_shift = (np.array(rect_pos) - np.array(corner_pos)).astype(int)
 
-    # Rotate coordinate systems
+    # Rotate coordinates for rectangle placement
     x = np.round(np.cos(theta) * xx - np.sin(theta) * yy, 8)
     y = np.round(np.sin(theta) * xx + np.cos(theta) * yy, 8)
 
-    # Rounding for more robust behavior:
+    # Normalize coordinates for robust behavior
     x = np.round(x * (base["ppd"][0] * 2)) / (base["ppd"][0] * 2)
     y = np.round(y * (base["ppd"][0] * 2)) / (base["ppd"][0] * 2)
 
-    # Draw rectangle
-    img1 = np.where(x < rectangle_size.width / 2, 1, 0)
-    img2 = np.where(x >= -rectangle_size.width / 2, 1, 0)
-    img3 = np.where(y < rectangle_size.height / 2, 1, 0)
-    img4 = np.where(y >= -rectangle_size.height / 2, 1, 0)
+    # Generate rectangle image (mask)
+    img1 = np.where(x < half_width, 1, 0)
+    img2 = np.where(x >= -half_width, 1, 0)
+    img3 = np.where(y < half_height, 1, 0)
+    img4 = np.where(y >= -half_height, 1, 0)
     img = img1 * img2 * img3 * img4
 
-    # Shift rectangle
-    img = np.roll(img, (rect_shift[0], rect_shift[1]), axis=(0, 1))
+    # Apply position shift
+    img = np.roll(img, (pos_shift[0], pos_shift[1]), axis=(0, 1))
+
+    # Check if rectangle fits within the visual size
+    x1, x2 = half_width * np.cos(theta), half_width * np.sin(theta)
+    y1, y2 = half_height * np.cos(theta), half_height * np.sin(theta)
+    cy = x2 + y1 + np.abs(pos_shift[0] / base["ppd"][0])
+    cx = x1 + y2 + np.abs(pos_shift[1] / base["ppd"][1])
 
     # Does the rectangle fit?
-    x1 = rectangle_size[1] / 2 * np.cos(theta)
-    x2 = rectangle_size[1] / 2 * np.sin(theta)
-    y1 = rectangle_size[0] / 2 * np.cos(theta)
-    y2 = rectangle_size[0] / 2 * np.sin(theta)
-    cy = x2 + y1 + np.abs(rect_shift[0] / base["ppd"][0])
+    x1, x2 = half_width * np.cos(theta), half_width * np.sin(theta)
+    y1, y2 = half_height * np.cos(theta), half_height * np.sin(theta)
+    cy = x2 + y1 + np.abs(pos_shift[0] / base["ppd"][0])
     cy = np.floor(cy * base["ppd"][0]) / base["ppd"][0]
-    cx = x1 + y2 + np.abs(rect_shift[1] / base["ppd"][1])
+    cx = x1 + y2 + np.abs(pos_shift[1] / base["ppd"][1])
     cx = np.floor(cx * base["ppd"][1]) / base["ppd"][1]
 
-    if (cy > base["visual_size"][0] / 2) or (cx > base["visual_size"][1] / 2):
-        raise ValueError("stimulus does not fully fit into requested size")
+    if cy > base["visual_size"][0] / 2 or cx > base["visual_size"][1] / 2:
+        raise ValueError(f"Rectangle exceeds visual size: ({cy}, {cx})")
 
+    # Return dictionary with generated image and parameters
     return {
         "img": img * (intensity_rectangle - intensity_background) + intensity_background,
         "rectangle_mask": img.astype(int),
