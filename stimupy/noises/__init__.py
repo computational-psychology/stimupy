@@ -132,6 +132,7 @@ def pseudo_white_spectrum(
     spectrum[int(y / 2), int(x / 2)] = 0 + 0j
     return spectrum
 
+
 # flake8: noqa: E402
 from stimupy.noises import binaries, narrowbands, naturals, whites
 

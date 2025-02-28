@@ -62,14 +62,13 @@ __all__ = [
     "edge9_NB05",
     "edge9_NB3",
     "edge9_NB9",
-    
 ]
 
 # Default stimulus parameters
-PPD = 44.
-visual_size = 4.      # in deg
-mean_lum = 100        # in cd/m2
-edge_exponent = 1.    # affects ramp steepness of Cornsweet edge
+PPD = 44.0
+visual_size = 4.0  # in deg
+mean_lum = 100  # in cd/m2
+edge_exponent = 1.0  # affects ramp steepness of Cornsweet edge
 noise_contrast = 0.2  # in rms (std / mean)
 
 # Load experimental data
@@ -98,6 +97,7 @@ def gen_all(ppd=PPD, skip=False):
 
     return stims
 
+
 def _create_edge(contrast, edgeWidth, ppd):
     """Create a Cornsweet edge as described in Schmittwilken et al. (2024).
 
@@ -106,7 +106,7 @@ def _create_edge(contrast, edgeWidth, ppd):
     width, and pixels per degree (ppd).
 
     Parameters:
-    contrast (float): The rms contrast of the edge (std/mean luminance). 
+    contrast (float): The rms contrast of the edge (std/mean luminance).
     edgeWidth (float): The width of the transition zone (in deg) of the Cornsweet edge.
     ppd (float): Pixels per degree, used for setting the visual size of the edge.
 
@@ -114,7 +114,7 @@ def _create_edge(contrast, edgeWidth, ppd):
     dict of str
         dict with the stimulus (key: "img") and additional keys containing stimulus
         parameters
-    
+
     Reference
     ----------
     Schmittwilken, L., Wichmann, F. A., & Maertens, M. (2024).
@@ -129,18 +129,19 @@ def _create_edge(contrast, edgeWidth, ppd):
         exponent=edge_exponent,
         intensity_edges=[-1, 1],
         intensity_plateau=0,
-        )
+    )
     e = rotate_dict(e, 1)
-    
+
     eImg = e["img"]
     e["mean_lum"] = mean_lum
-    e["img"] = contrast * e["mean_lum"] * eImg/eImg.std() + e["mean_lum"]
+    e["img"] = contrast * e["mean_lum"] * eImg / eImg.std() + e["mean_lum"]
     e["edge_contrast"] = contrast
     e["intensity_plateau"] = e["mean_lum"]
     e["intensity_edges"] = (e["img"].min(), e["img"].max())
     del e["d1"]
     del e["d2"]
     return e
+
 
 def _create_noise(n, ppd):
     """Generate different types of noise as described in Schmittwilken et al. (2024).
@@ -167,35 +168,52 @@ def _create_noise(n, ppd):
         https://doi.org/10.1016/j.visres.2024.108450
     """
     if n == "none":
-        noise = np.zeros([int(visual_size*ppd), int(visual_size*ppd)])
+        noise = np.zeros([int(visual_size * ppd), int(visual_size * ppd)])
     elif n == "white":
         noise = create_whitenoise(visual_size=visual_size, ppd=ppd, pseudo_noise=True)["img"]
     elif n == "pink":
-        noise = create_pinknoise(visual_size=visual_size, ppd=ppd, exponent=1., pseudo_noise=True)["img"]
+        noise = create_pinknoise(
+            visual_size=visual_size, ppd=ppd, exponent=1.0, pseudo_noise=True
+        )["img"]
     elif n == "brown":
-        noise = create_pinknoise(visual_size=visual_size, ppd=ppd, exponent=2., pseudo_noise=True)["img"]
+        noise = create_pinknoise(
+            visual_size=visual_size, ppd=ppd, exponent=2.0, pseudo_noise=True
+        )["img"]
     elif n == "NB05":
-        noise = create_narrownoise(visual_size=visual_size, ppd=ppd, center_frequency=0.5, bandwidth=1., pseudo_noise=True)["img"]
+        noise = create_narrownoise(
+            visual_size=visual_size,
+            ppd=ppd,
+            center_frequency=0.5,
+            bandwidth=1.0,
+            pseudo_noise=True,
+        )["img"]
     elif n == "NB3":
-        noise = create_narrownoise(visual_size=visual_size, ppd=ppd, center_frequency=3, bandwidth=1., pseudo_noise=True)["img"]
+        noise = create_narrownoise(
+            visual_size=visual_size, ppd=ppd, center_frequency=3, bandwidth=1.0, pseudo_noise=True
+        )["img"]
     elif n == "NB9":
-        noise = create_narrownoise(visual_size=visual_size, ppd=ppd, center_frequency=9, bandwidth=1., pseudo_noise=True)["img"]
+        noise = create_narrownoise(
+            visual_size=visual_size, ppd=ppd, center_frequency=9, bandwidth=1.0, pseudo_noise=True
+        )["img"]
 
-    if not n=="none":
+    if not n == "none":
         noise = noise - noise.mean()
         noise = noise / noise.std() * (noise_contrast * mean_lum)
     return noise
 
+
 def _warnPPD(ppd):
     if ppd != 44:
-        warnings.warn("Changing the ppd might affect human performance. "
-                      "Comparability with experimental data is not"
-                      "guaranteed for ppd!=44")
+        warnings.warn(
+            "Changing the ppd might affect human performance. "
+            "Comparability with experimental data is not"
+            "guaranteed for ppd!=44"
+        )
+
 
 def _warnContrast(contrastID):
-    if (contrastID<0) or (contrastID>4):
+    if (contrastID < 0) or (contrastID > 4):
         raise ValueError("'contrastID' needs to be within 0 and 4")
-    
 
 
 # %% Low spatial frequency edge (0.5 cpd)
@@ -212,7 +230,7 @@ def edge05_none(ppd=PPD, contrastID=4):
     dict of str
         dict with the stimulus (key: "img") and additional keys containing stimulus
         parameters and experimental data
-    
+
     Reference
     ----------
     Schmittwilken, L., Wichmann, F. A., & Maertens, M. (2024).
@@ -222,18 +240,18 @@ def edge05_none(ppd=PPD, contrastID=4):
     """
     _warnContrast(contrastID)
     _warnPPD(ppd)
-        
+
     c = np.linspace(1e-05, 0.005, 5)[contrastID]
     edge = _create_edge(contrast=c, edgeWidth=0.95, ppd=ppd)
     n = "none"
     noise = _create_noise(n, ppd)
-    
+
     edge["edge"] = edge["img"]
     edge["noise"] = noise
     edge["img"] = edge["img"] + noise
     edge["noise_contrast"] = noise_contrast
     edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise==n) & (df.edge==0.95)].reset_index(drop=True)
+    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.95)].reset_index(drop=True)
     edge["edge_contrasts"] = c
     return edge
 
@@ -251,7 +269,7 @@ def edge05_white(ppd=PPD, contrastID=4):
     dict of str
         dict with the stimulus (key: "img") and additional keys containing stimulus
         parameters and experimental data
-    
+
     Reference
     ----------
     Schmittwilken, L., Wichmann, F. A., & Maertens, M. (2024).
@@ -261,20 +279,21 @@ def edge05_white(ppd=PPD, contrastID=4):
     """
     _warnContrast(contrastID)
     _warnPPD(ppd)
-        
+
     c = np.linspace(1e-05, 0.015, 5)
     edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
     n = "white"
     noise = _create_noise(n, ppd)
-    
+
     edge["edge"] = edge["img"]
     edge["noise"] = noise
     edge["img"] = edge["img"] + noise
     edge["noise_contrast"] = noise_contrast
     edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise==n) & (df.edge==0.95)].reset_index(drop=True)
+    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.95)].reset_index(drop=True)
     edge["edge_contrasts"] = c
     return edge
+
 
 def edge05_pink(ppd=PPD, contrastID=4):
     """Generate a horizontal Cornsweet edge with peak frequency of 0.5 cpd,
@@ -289,7 +308,7 @@ def edge05_pink(ppd=PPD, contrastID=4):
     dict of str
         dict with the stimulus (key: "img") and additional keys containing stimulus
         parameters and experimental data
-    
+
     Reference
     ----------
     Schmittwilken, L., Wichmann, F. A., & Maertens, M. (2024).
@@ -299,20 +318,21 @@ def edge05_pink(ppd=PPD, contrastID=4):
     """
     _warnContrast(contrastID)
     _warnPPD(ppd)
-        
+
     c = np.linspace(1e-05, 0.05, 5)
     edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
     n = "pink"
     noise = _create_noise(n, ppd)
-    
+
     edge["edge"] = edge["img"]
     edge["noise"] = noise
     edge["img"] = edge["img"] + noise
     edge["noise_contrast"] = noise_contrast
     edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise==n) & (df.edge==0.95)].reset_index(drop=True)
+    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.95)].reset_index(drop=True)
     edge["edge_contrasts"] = c
     return edge
+
 
 def edge05_brown(ppd=PPD, contrastID=4):
     """Generate a horizontal Cornsweet edge with peak frequency of 0.5 cpd,
@@ -327,7 +347,7 @@ def edge05_brown(ppd=PPD, contrastID=4):
     dict of str
         dict with the stimulus (key: "img") and additional keys containing stimulus
         parameters and experimental data
-    
+
     Reference
     ----------
     Schmittwilken, L., Wichmann, F. A., & Maertens, M. (2024).
@@ -337,20 +357,21 @@ def edge05_brown(ppd=PPD, contrastID=4):
     """
     _warnContrast(contrastID)
     _warnPPD(ppd)
-        
+
     c = np.linspace(1e-05, 0.01, 5)
     edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
     n = "brown"
     noise = _create_noise(n, ppd)
-    
+
     edge["edge"] = edge["img"]
     edge["noise"] = noise
     edge["img"] = edge["img"] + noise
     edge["noise_contrast"] = noise_contrast
     edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise==n) & (df.edge==0.95)].reset_index(drop=True)
+    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.95)].reset_index(drop=True)
     edge["edge_contrasts"] = c
     return edge
+
 
 def edge05_NB05(ppd=PPD, contrastID=4):
     """Generate a horizontal Cornsweet edge with peak frequency of 0.5 cpd,
@@ -366,7 +387,7 @@ def edge05_NB05(ppd=PPD, contrastID=4):
     dict of str
         dict with the stimulus (key: "img") and additional keys containing stimulus
         parameters and experimental data
-    
+
     Reference
     ----------
     Schmittwilken, L., Wichmann, F. A., & Maertens, M. (2024).
@@ -376,20 +397,21 @@ def edge05_NB05(ppd=PPD, contrastID=4):
     """
     _warnContrast(contrastID)
     _warnPPD(ppd)
-        
+
     c = np.linspace(1e-05, 0.0075, 5)
     edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
     n = "NB05"
     noise = _create_noise(n, ppd)
-    
+
     edge["edge"] = edge["img"]
     edge["noise"] = noise
     edge["img"] = edge["img"] + noise
     edge["noise_contrast"] = noise_contrast
     edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise==n) & (df.edge==0.95)].reset_index(drop=True)
+    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.95)].reset_index(drop=True)
     edge["edge_contrasts"] = c
     return edge
+
 
 def edge05_NB3(ppd=PPD, contrastID=4):
     """Generate a horizontal Cornsweet edge with peak frequency of 0.5 cpd,
@@ -405,7 +427,7 @@ def edge05_NB3(ppd=PPD, contrastID=4):
     dict of str
         dict with the stimulus (key: "img") and additional keys containing stimulus
         parameters and experimental data
-    
+
     Reference
     ----------
     Schmittwilken, L., Wichmann, F. A., & Maertens, M. (2024).
@@ -415,20 +437,21 @@ def edge05_NB3(ppd=PPD, contrastID=4):
     """
     _warnContrast(contrastID)
     _warnPPD(ppd)
-        
+
     c = np.linspace(1e-05, 0.03, 5)
     edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
     n = "NB3"
     noise = _create_noise(n, ppd)
-    
+
     edge["edge"] = edge["img"]
     edge["noise"] = noise
     edge["img"] = edge["img"] + noise
     edge["noise_contrast"] = noise_contrast
     edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise==n) & (df.edge==0.95)].reset_index(drop=True)
+    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.95)].reset_index(drop=True)
     edge["edge_contrasts"] = c
     return edge
+
 
 def edge05_NB9(ppd=PPD, contrastID=4):
     """Generate a horizontal Cornsweet edge with peak frequency of 0.5 cpd,
@@ -444,7 +467,7 @@ def edge05_NB9(ppd=PPD, contrastID=4):
     dict of str
         dict with the stimulus (key: "img") and additional keys containing stimulus
         parameters and experimental data
-    
+
     Reference
     ----------
     Schmittwilken, L., Wichmann, F. A., & Maertens, M. (2024).
@@ -454,20 +477,21 @@ def edge05_NB9(ppd=PPD, contrastID=4):
     """
     _warnContrast(contrastID)
     _warnPPD(ppd)
-        
+
     c = np.linspace(1e-05, 0.0075, 5)
     edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
     n = "NB9"
     noise = _create_noise(n, ppd)
-    
+
     edge["edge"] = edge["img"]
     edge["noise"] = noise
     edge["img"] = edge["img"] + noise
     edge["noise_contrast"] = noise_contrast
     edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise==n) & (df.edge==0.95)].reset_index(drop=True)
+    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.95)].reset_index(drop=True)
     edge["edge_contrasts"] = c
     return edge
+
 
 # %% Mid spatial frequency edge (3 cpd)
 def edge3_none(ppd=PPD, contrastID=4):
@@ -483,7 +507,7 @@ def edge3_none(ppd=PPD, contrastID=4):
     dict of str
         dict with the stimulus (key: "img") and additional keys containing stimulus
         parameters and experimental data
-    
+
     Reference
     ----------
     Schmittwilken, L., Wichmann, F. A., & Maertens, M. (2024).
@@ -493,18 +517,18 @@ def edge3_none(ppd=PPD, contrastID=4):
     """
     _warnContrast(contrastID)
     _warnPPD(ppd)
-        
+
     c = np.linspace(1e-05, 0.004, 5)
     edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
     n = "none"
     noise = _create_noise(n, ppd)
-    
+
     edge["edge"] = edge["img"]
     edge["noise"] = noise
     edge["img"] = edge["img"] + noise
     edge["noise_contrast"] = noise_contrast
     edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise==n) & (df.edge==0.15)].reset_index(drop=True)
+    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.15)].reset_index(drop=True)
     edge["edge_contrasts"] = c
     return edge
 
@@ -522,7 +546,7 @@ def edge3_white(ppd=PPD, contrastID=4):
     dict of str
         dict with the stimulus (key: "img") and additional keys containing stimulus
         parameters and experimental data
-    
+
     Reference
     ----------
     Schmittwilken, L., Wichmann, F. A., & Maertens, M. (2024).
@@ -532,20 +556,21 @@ def edge3_white(ppd=PPD, contrastID=4):
     """
     _warnContrast(contrastID)
     _warnPPD(ppd)
-        
+
     c = np.linspace(1e-05, 0.0125, 5)
     edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
     n = "white"
     noise = _create_noise(n, ppd)
-    
+
     edge["edge"] = edge["img"]
     edge["noise"] = noise
     edge["img"] = edge["img"] + noise
     edge["noise_contrast"] = noise_contrast
     edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise==n) & (df.edge==0.15)].reset_index(drop=True)
+    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.15)].reset_index(drop=True)
     edge["edge_contrasts"] = c
     return edge
+
 
 def edge3_pink(ppd=PPD, contrastID=4):
     """Generate a horizontal Cornsweet edge with peak frequency of 3 cpd,
@@ -560,7 +585,7 @@ def edge3_pink(ppd=PPD, contrastID=4):
     dict of str
         dict with the stimulus (key: "img") and additional keys containing stimulus
         parameters and experimental data
-    
+
     Reference
     ----------
     Schmittwilken, L., Wichmann, F. A., & Maertens, M. (2024).
@@ -570,20 +595,21 @@ def edge3_pink(ppd=PPD, contrastID=4):
     """
     _warnContrast(contrastID)
     _warnPPD(ppd)
-        
+
     c = np.linspace(1e-05, 0.03, 5)
     edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
     n = "pink"
     noise = _create_noise(n, ppd)
-    
+
     edge["edge"] = edge["img"]
     edge["noise"] = noise
     edge["img"] = edge["img"] + noise
     edge["noise_contrast"] = noise_contrast
     edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise==n) & (df.edge==0.15)].reset_index(drop=True)
+    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.15)].reset_index(drop=True)
     edge["edge_contrasts"] = c
     return edge
+
 
 def edge3_brown(ppd=PPD, contrastID=4):
     """Generate a horizontal Cornsweet edge with peak frequency of 3 cpd,
@@ -598,7 +624,7 @@ def edge3_brown(ppd=PPD, contrastID=4):
     dict of str
         dict with the stimulus (key: "img") and additional keys containing stimulus
         parameters and experimental data
-    
+
     Reference
     ----------
     Schmittwilken, L., Wichmann, F. A., & Maertens, M. (2024).
@@ -608,20 +634,21 @@ def edge3_brown(ppd=PPD, contrastID=4):
     """
     _warnContrast(contrastID)
     _warnPPD(ppd)
-        
+
     c = np.linspace(1e-05, 0.006, 5)
     edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
     n = "brown"
     noise = _create_noise(n, ppd)
-    
+
     edge["edge"] = edge["img"]
     edge["noise"] = noise
     edge["img"] = edge["img"] + noise
     edge["noise_contrast"] = noise_contrast
     edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise==n) & (df.edge==0.15)].reset_index(drop=True)
+    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.15)].reset_index(drop=True)
     edge["edge_contrasts"] = c
     return edge
+
 
 def edge3_NB05(ppd=PPD, contrastID=4):
     """Generate a horizontal Cornsweet edge with peak frequency of 3 cpd,
@@ -637,7 +664,7 @@ def edge3_NB05(ppd=PPD, contrastID=4):
     dict of str
         dict with the stimulus (key: "img") and additional keys containing stimulus
         parameters and experimental data
-    
+
     Reference
     ----------
     Schmittwilken, L., Wichmann, F. A., & Maertens, M. (2024).
@@ -647,20 +674,21 @@ def edge3_NB05(ppd=PPD, contrastID=4):
     """
     _warnContrast(contrastID)
     _warnPPD(ppd)
-        
+
     c = np.linspace(1e-05, 0.003, 5)
     edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
     n = "NB05"
     noise = _create_noise(n, ppd)
-    
+
     edge["edge"] = edge["img"]
     edge["noise"] = noise
     edge["img"] = edge["img"] + noise
     edge["noise_contrast"] = noise_contrast
     edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise==n) & (df.edge==0.15)].reset_index(drop=True)
+    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.15)].reset_index(drop=True)
     edge["edge_contrasts"] = c
     return edge
+
 
 def edge3_NB3(ppd=PPD, contrastID=4):
     """Generate a horizontal Cornsweet edge with peak frequency of 3 cpd,
@@ -676,7 +704,7 @@ def edge3_NB3(ppd=PPD, contrastID=4):
     dict of str
         dict with the stimulus (key: "img") and additional keys containing stimulus
         parameters and experimental data
-    
+
     Reference
     ----------
     Schmittwilken, L., Wichmann, F. A., & Maertens, M. (2024).
@@ -686,20 +714,21 @@ def edge3_NB3(ppd=PPD, contrastID=4):
     """
     _warnContrast(contrastID)
     _warnPPD(ppd)
-        
+
     c = np.linspace(1e-05, 0.015, 5)
     edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
     n = "NB3"
     noise = _create_noise(n, ppd)
-    
+
     edge["edge"] = edge["img"]
     edge["noise"] = noise
     edge["img"] = edge["img"] + noise
     edge["noise_contrast"] = noise_contrast
     edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise==n) & (df.edge==0.15)].reset_index(drop=True)
+    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.15)].reset_index(drop=True)
     edge["edge_contrasts"] = c
     return edge
+
 
 def edge3_NB9(ppd=PPD, contrastID=4):
     """Generate a horizontal Cornsweet edge with peak frequency of 3 cpd,
@@ -715,7 +744,7 @@ def edge3_NB9(ppd=PPD, contrastID=4):
     dict of str
         dict with the stimulus (key: "img") and additional keys containing stimulus
         parameters and experimental data
-    
+
     Reference
     ----------
     Schmittwilken, L., Wichmann, F. A., & Maertens, M. (2024).
@@ -725,20 +754,21 @@ def edge3_NB9(ppd=PPD, contrastID=4):
     """
     _warnContrast(contrastID)
     _warnPPD(ppd)
-        
+
     c = np.linspace(1e-05, 0.0075, 5)
     edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
     n = "NB9"
     noise = _create_noise(n, ppd)
-    
+
     edge["edge"] = edge["img"]
     edge["noise"] = noise
     edge["img"] = edge["img"] + noise
     edge["noise_contrast"] = noise_contrast
     edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise==n) & (df.edge==0.15)].reset_index(drop=True)
+    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.15)].reset_index(drop=True)
     edge["edge_contrasts"] = c
     return edge
+
 
 # %% High spatial frequency edge (9 cpd)
 def edge9_none(ppd=PPD, contrastID=4):
@@ -754,7 +784,7 @@ def edge9_none(ppd=PPD, contrastID=4):
     dict of str
         dict with the stimulus (key: "img") and additional keys containing stimulus
         parameters and experimental data
-    
+
     Reference
     ----------
     Schmittwilken, L., Wichmann, F. A., & Maertens, M. (2024).
@@ -764,18 +794,18 @@ def edge9_none(ppd=PPD, contrastID=4):
     """
     _warnContrast(contrastID)
     _warnPPD(ppd)
-        
+
     c = np.linspace(1e-05, 0.003, 5)
     edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
     n = "none"
     noise = _create_noise(n, ppd)
-    
+
     edge["edge"] = edge["img"]
     edge["noise"] = noise
     edge["img"] = edge["img"] + noise
     edge["noise_contrast"] = noise_contrast
     edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise==n) & (df.edge==0.048)].reset_index(drop=True)
+    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.048)].reset_index(drop=True)
     edge["edge_contrasts"] = c
     return edge
 
@@ -793,7 +823,7 @@ def edge9_white(ppd=PPD, contrastID=4):
     dict of str
         dict with the stimulus (key: "img") and additional keys containing stimulus
         parameters and experimental data
-    
+
     Reference
     ----------
     Schmittwilken, L., Wichmann, F. A., & Maertens, M. (2024).
@@ -803,20 +833,21 @@ def edge9_white(ppd=PPD, contrastID=4):
     """
     _warnContrast(contrastID)
     _warnPPD(ppd)
-        
+
     c = np.linspace(1e-05, 0.015, 5)
     edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
     n = "white"
     noise = _create_noise(n, ppd)
-    
+
     edge["edge"] = edge["img"]
     edge["noise"] = noise
     edge["img"] = edge["img"] + noise
     edge["noise_contrast"] = noise_contrast
     edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise==n) & (df.edge==0.048)].reset_index(drop=True)
+    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.048)].reset_index(drop=True)
     edge["edge_contrasts"] = c
     return edge
+
 
 def edge9_pink(ppd=PPD, contrastID=4):
     """Generate a horizontal Cornsweet edge with peak frequency of 9 cpd,
@@ -831,7 +862,7 @@ def edge9_pink(ppd=PPD, contrastID=4):
     dict of str
         dict with the stimulus (key: "img") and additional keys containing stimulus
         parameters and experimental data
-    
+
     Reference
     ----------
     Schmittwilken, L., Wichmann, F. A., & Maertens, M. (2024).
@@ -841,20 +872,21 @@ def edge9_pink(ppd=PPD, contrastID=4):
     """
     _warnContrast(contrastID)
     _warnPPD(ppd)
-        
+
     c = np.linspace(1e-05, 0.015, 5)
     edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
     n = "pink"
     noise = _create_noise(n, ppd)
-    
+
     edge["edge"] = edge["img"]
     edge["noise"] = noise
     edge["img"] = edge["img"] + noise
     edge["noise_contrast"] = noise_contrast
     edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise==n) & (df.edge==0.048)].reset_index(drop=True)
+    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.048)].reset_index(drop=True)
     edge["edge_contrasts"] = c
     return edge
+
 
 def edge9_brown(ppd=PPD, contrastID=4):
     """Generate a horizontal Cornsweet edge with peak frequency of 9 cpd,
@@ -869,7 +901,7 @@ def edge9_brown(ppd=PPD, contrastID=4):
     dict of str
         dict with the stimulus (key: "img") and additional keys containing stimulus
         parameters and experimental data
-    
+
     Reference
     ----------
     Schmittwilken, L., Wichmann, F. A., & Maertens, M. (2024).
@@ -879,20 +911,21 @@ def edge9_brown(ppd=PPD, contrastID=4):
     """
     _warnContrast(contrastID)
     _warnPPD(ppd)
-        
+
     c = np.linspace(1e-05, 0.004, 5)
     edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
     n = "brown"
     noise = _create_noise(n, ppd)
-    
+
     edge["edge"] = edge["img"]
     edge["noise"] = noise
     edge["img"] = edge["img"] + noise
     edge["noise_contrast"] = noise_contrast
     edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise==n) & (df.edge==0.048)].reset_index(drop=True)
+    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.048)].reset_index(drop=True)
     edge["edge_contrasts"] = c
     return edge
+
 
 def edge9_NB05(ppd=PPD, contrastID=4):
     """Generate a horizontal Cornsweet edge with peak frequency of 9 cpd,
@@ -908,7 +941,7 @@ def edge9_NB05(ppd=PPD, contrastID=4):
     dict of str
         dict with the stimulus (key: "img") and additional keys containing stimulus
         parameters and experimental data
-    
+
     Reference
     ----------
     Schmittwilken, L., Wichmann, F. A., & Maertens, M. (2024).
@@ -918,20 +951,21 @@ def edge9_NB05(ppd=PPD, contrastID=4):
     """
     _warnContrast(contrastID)
     _warnPPD(ppd)
-        
+
     c = np.linspace(1e-05, 0.005, 5)
     edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
     n = "NB05"
     noise = _create_noise(n, ppd)
-    
+
     edge["edge"] = edge["img"]
     edge["noise"] = noise
     edge["img"] = edge["img"] + noise
     edge["noise_contrast"] = noise_contrast
     edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise==n) & (df.edge==0.048)].reset_index(drop=True)
+    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.048)].reset_index(drop=True)
     edge["edge_contrasts"] = c
     return edge
+
 
 def edge9_NB3(ppd=PPD, contrastID=4):
     """Generate a horizontal Cornsweet edge with peak frequency of 9 cpd,
@@ -947,7 +981,7 @@ def edge9_NB3(ppd=PPD, contrastID=4):
     dict of str
         dict with the stimulus (key: "img") and additional keys containing stimulus
         parameters and experimental data
-    
+
     Reference
     ----------
     Schmittwilken, L., Wichmann, F. A., & Maertens, M. (2024).
@@ -957,20 +991,21 @@ def edge9_NB3(ppd=PPD, contrastID=4):
     """
     _warnContrast(contrastID)
     _warnPPD(ppd)
-        
+
     c = np.linspace(1e-05, 0.006, 5)
     edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
     n = "NB3"
     noise = _create_noise(n, ppd)
-    
+
     edge["edge"] = edge["img"]
     edge["noise"] = noise
     edge["img"] = edge["img"] + noise
     edge["noise_contrast"] = noise_contrast
     edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise==n) & (df.edge==0.048)].reset_index(drop=True)
+    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.048)].reset_index(drop=True)
     edge["edge_contrasts"] = c
     return edge
+
 
 def edge9_NB9(ppd=PPD, contrastID=4):
     """Generate a horizontal Cornsweet edge with peak frequency of 9 cpd,
@@ -986,7 +1021,7 @@ def edge9_NB9(ppd=PPD, contrastID=4):
     dict of str
         dict with the stimulus (key: "img") and additional keys containing stimulus
         parameters and experimental data
-    
+
     Reference
     ----------
     Schmittwilken, L., Wichmann, F. A., & Maertens, M. (2024).
@@ -996,18 +1031,18 @@ def edge9_NB9(ppd=PPD, contrastID=4):
     """
     _warnContrast(contrastID)
     _warnPPD(ppd)
-        
+
     c = np.linspace(1e-05, 0.015, 5)
     edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
     n = "NB9"
     noise = _create_noise(n, ppd)
-    
+
     edge["edge"] = edge["img"]
     edge["noise"] = noise
     edge["img"] = edge["img"] + noise
     edge["noise_contrast"] = noise_contrast
     edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise==n) & (df.edge==0.048)].reset_index(drop=True)
+    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.048)].reset_index(drop=True)
     edge["edge_contrasts"] = c
     return edge
 
