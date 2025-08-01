@@ -541,6 +541,44 @@ def make_two_sided(func, two_sided_params):
 
 
 def permutate_params(params):
+    """Generate all possible parameter combinations for a stimulus function.
+
+    Takes a dictionary of stimulus parameters, where each parameter value is
+    provided as a sequence (e.g., list, tuple). Returns a list of dictionaries,
+    each representing one unique combination of parameter values. This is
+    useful for systematically exploring a stimulus parameter space
+    (e.g., in 1D, 2D, or higher dimensions).
+
+    Parameters
+    ----------
+    params : dict
+        Dictionary mapping parameter names (str) to sequences of possible values.
+        Each sequence will be iterated over to form combinations.  
+        Example::
+            {
+                "frequency": [1, 2, 4],
+                "sigma": [0.05, 0.1]
+            }
+
+    Returns
+    -------
+    list of dict
+        A list where each element is a dictionary mapping parameter names to
+        specific values, corresponding to one combination from the Cartesian
+        product of all provided sequences.  
+        Example output::
+            [
+                {"frequency": 1, "sigma": 0.05},
+                {"frequency": 1, "sigma": 0.1},
+                {"frequency": 2, "sigma": 0.05},
+                ...
+            ]
+
+    Raises
+    ------
+    ValueError
+        If `params` is not a dictionary.
+    """
     if not isinstance(params, dict):
         raise ValueError("params needs to be a dict with all stimulus parameters")
 
@@ -550,6 +588,64 @@ def permutate_params(params):
 
 
 def create_stimspace_stimuli(stimulus_function, permutations_dicts, title_params=None):
+    """Generate stimuli for all parameter combinations in a stimspace.
+
+    Given a callable `stimulus_function` and a list of parameter combinations
+    (as produced by [`utils.permutate_params`](utils.permutate_params)),
+    this function generates and returns all corresponding stimulus images.
+    Optionally, specific parameters can be included in the stimulus names
+    for easier identification in plots or debugging.
+
+    Parameters
+    ----------
+    stimulus_function : callable
+        A stimulus-generating function that accepts keyword arguments matching
+        the keys in `permutations_dicts`.
+
+    permutations_dicts : list of dict
+        A list of parameter dictionaries, each representing one combination of
+        stimulus parameters to be passed to `stimulus_function`.
+        Typically obtained from [`utils.permutate_params`](utils.permutate_params).
+
+    title_params : str or list of str, optional
+        Name(s) of parameters to display in the dictionary keys for the output.
+        - If a string, it is interpreted as a single parameter name.
+        - If a list, multiple parameter values will be included in the name.
+        - If `None` (default), keys will be simple integer indices.
+
+    Returns
+    -------
+    dict
+        Dictionary mapping descriptive keys to the generated stimulus outputs.
+        Keys are either:
+        - String representations of selected `title_params` and their values.
+        - Sequential integer strings if `title_params` is `None`.
+
+    Raises
+    ------
+    ValueError
+        If `stimulus_function` is not callable.
+
+    Examples
+    --------
+    >>> from stimupy.stimuli.gabors import gabor
+    >>> from stimupy.utils import permutate_params, create_stimspace_stimuli
+    >>> params = {
+    ...     "visual_size": [1.],
+    ...     "ppd": [50],
+    ...     "sigma": [0.1, 0.2],
+    ...     "frequency": [2, 4]
+    ... }
+    >>> permuted = permutate_params(params)
+    >>> stimspace = create_stimspace_stimuli(
+    ...     stimulus_function=gabor,
+    ...     permutations_dicts=permuted,
+    ...     title_params=["sigma", "frequency"]
+    ... )
+    >>> list(stimspace.keys())
+    ['sigma=0.1 frequency=2 ', 'sigma=0.1 frequency=4 ', 
+     'sigma=0.2 frequency=2 ', 'sigma=0.2 frequency=4 ']
+    """
     if not callable(stimulus_function):
         raise ValueError("stimulus_function needs to be a function")
     if isinstance(title_params, str):
