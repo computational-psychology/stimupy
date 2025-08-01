@@ -12,7 +12,6 @@ which have more in-depth explanation on various concepts and design decisions.
 installation
 organization
 create_stimulus
-stimulus
 ./use_stimulus/use
 replicate
 ```
