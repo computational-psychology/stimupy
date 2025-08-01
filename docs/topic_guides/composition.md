@@ -10,7 +10,7 @@ kernelspec:
   name: python3
 ---
 
-# Composing stimuli, composed stimuli
+# Stimulus composition
 Most stimuli consist not just of one shape or element,
 but consist of a composition of multiple components.
 The geometric {py:mod}`components <stimupy.components>`
@@ -28,8 +28,7 @@ from stimupy.components import shapes
 
 First, we will create the two components that we want to combine in our example;
 here we will use the {py:func}`rectangle <stimupy.components.shapes.rectangle>`
-and {py:func}`disc <stimupy.components.shapes.disc>`
-(from our [previous tutorial](first_stim))
+(from our [previous tutorial](../getting_started/create_stimulus.md))
 
 ```{code-cell}
 rectangle = shapes.rectangle(visual_size=(6,8), ppd=10,
@@ -141,6 +140,7 @@ plt.subplot(1,3,2)
 plot_stim(composition, mask="disc_mask")
 plt.subplot(1,3,3)
 plot_stim(composition, mask="anti_join_mask")
+plt.tight_layout()
 plt.show()
 ```
 
