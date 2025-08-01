@@ -6,7 +6,6 @@ root: index
 parts:
   - caption: Getting started with stimupy
     chapters:
-    - file: getting_started/installation
     - file: getting_started/getting_started
     - file: howtos/howtos
   - caption: Topic guides
