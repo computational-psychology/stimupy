@@ -4,6 +4,7 @@ import numpy as np
 
 from stimupy.components import draw_regions
 from stimupy.stimuli import *
+from stimupy.utils import suppress_prints, enable_prints
 
 __all__ = [
     "mask_targets",
@@ -131,14 +132,27 @@ def place_targets(stim, element_mask_key, target_indices, intensity_target=0.5):
     return stim
 
 
-def overview(skip=False):
+def overview(skip=False, suppress_print=False):
     """Generate example stimuli from this module
+
+    Parameters
+    ----------
+    skip : bool, optional
+        If True, skip stimuli which generation fails.
+    suppress_print : bool, optional
+        If True, temporarily suppress all standard output from print statements
+        during execution of the function (default: False).
+        This can be useful to avoid cluttering console or notebook output
+        when generating a large number of stimuli or running in batch mode.
 
     Returns
     -------
     dict[str, dict]
         Dict mapping names to individual stimulus dicts
     """
+    if suppress_print:
+        suppress_prints()
+
     stimuli = {}
     for stimmodule_name in __all__:
         if stimmodule_name in ["overview", "plot_overview", "mask_targets", "place_targets"]:
@@ -159,10 +173,12 @@ def overview(skip=False):
             print("-- not implemented")
             pass
 
+    if suppress_print:
+        enable_prints()
     return stimuli
 
 
-def plot_overview(mask=False, save=None, units="deg"):
+def plot_overview(mask=False, save=None, units="deg", suppress_print=True):
     """Plot overview of examples in this module (and submodules)
 
     Parameters
@@ -177,9 +193,14 @@ def plot_overview(mask=False, save=None, units="deg"):
         what units to put on the axes, by default degrees visual angle ("deg").
         If a str other than "deg"(/"degrees") or "px"(/"pix"/"pixels") is passed,
         it must be the key to a tuple in stim
+    suppress_print : bool, optional
+        If True, temporarily suppress all standard output from print statements
+        during execution of the function (default: False).
+        This can be useful to avoid cluttering console or notebook output
+        when generating a large number of stimuli or running in batch mode.
 
     """
     from stimupy.utils import plot_stimuli
 
-    stims = overview(skip=True)
+    stims = overview(skip=True, suppress_print=suppress_print)
     plot_stimuli(stims, mask=mask, units=units, save=save)
