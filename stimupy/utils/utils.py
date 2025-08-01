@@ -2,11 +2,18 @@ import collections
 import copy
 import functools
 import itertools
+import sys
+import os
+import warnings
 
 import numpy as np
 import scipy.special as sp
 
 from stimupy.utils import resolution
+
+# Keep track of the original stdout so we can restore it
+_original_stdout = sys.stdout
+_original_warnings = warnings.filters[:]
 
 __all__ = [
     "round_to_vals",
@@ -23,6 +30,8 @@ __all__ = [
     "make_two_sided",
     "permutate_params",
     "create_stimspace_stimuli",
+    "suppress_prints",
+    "enable_prints",
 ]
 
 
@@ -553,7 +562,7 @@ def permutate_params(params):
     ----------
     params : dict
         Dictionary mapping parameter names (str) to sequences of possible values.
-        Each sequence will be iterated over to form combinations.  
+        Each sequence will be iterated over to form combinations.
         Example::
             {
                 "frequency": [1, 2, 4],
@@ -565,7 +574,7 @@ def permutate_params(params):
     list of dict
         A list where each element is a dictionary mapping parameter names to
         specific values, corresponding to one combination from the Cartesian
-        product of all provided sequences.  
+        product of all provided sequences.
         Example output::
             [
                 {"frequency": 1, "sigma": 0.05},
@@ -643,7 +652,7 @@ def create_stimspace_stimuli(stimulus_function, permutations_dicts, title_params
     ...     title_params=["sigma", "frequency"]
     ... )
     >>> list(stimspace.keys())
-    ['sigma=0.1 frequency=2 ', 'sigma=0.1 frequency=4 ', 
+    ['sigma=0.1 frequency=2 ', 'sigma=0.1 frequency=4 ',
      'sigma=0.2 frequency=2 ', 'sigma=0.2 frequency=4 ']
     """
     if not callable(stimulus_function):
@@ -669,3 +678,50 @@ def create_stimspace_stimuli(stimulus_function, permutations_dicts, title_params
             **p,
         )
     return stimuli
+
+
+def suppress_prints():
+    """Temporarily suppress all print() output.
+
+    This function redirects standard output (`sys.stdout`)
+    to the null device, effectively silencing all calls to `print()`.
+
+    Useful in contexts where you want to prevent verbose output
+    from cluttering logs or notebook output cells, while still allowing
+    code to run normally.
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    None
+    """
+    global _original_stdout, _original_warnings_filters
+    _original_stdout = sys.stdout
+    sys.stdout = open(os.devnull, "w")
+    _original_warnings_filters = warnings.filters[:]
+    warnings.filterwarnings("ignore")
+
+
+def enable_prints():
+    """Re-enable normal print() output after suppression.
+
+    This restores standard output (`sys.stdout`) to its original state,
+    so that calls to `print()` once again display text as normal.
+
+    Should be called after `suppress_prints()` to revert
+    the output stream back to normal behavior.
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    None
+    """
+    global _original_stdout, _original_warnings_filters
+    sys.stdout = _original_stdout
+    warnings.filters = _original_warnings_filters
