@@ -12,7 +12,8 @@ which have more in-depth explanation on various concepts and design decisions.
 :titlesonly:
 
 installation
-organization
 create_stimulus
+find_stimulus
+organization
 ../howtos/use_stimulus/use
 ```
