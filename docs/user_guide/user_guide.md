@@ -12,4 +12,5 @@ dimensions
 stimuli_parametrizations
 masks
 composition
+./stimulus_groups/groups
 ```

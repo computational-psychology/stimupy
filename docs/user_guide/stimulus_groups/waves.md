@@ -15,7 +15,7 @@ kernelspec:
 This guide explains the principles behind, behavior of, and relations between
 the parameters of periodic stimuli in `stimupy`.
 For a more hands-on demonstration of how those parameters affect a specific stimulus,
-see, e.g., [](../reference/demos/stimuli/waves.md)
+see, e.g., [](../../reference/demos/stimuli/waves.md)
 ```
 
 Many commonly used visual stimuli are some sort of periodic stimulus:
@@ -208,7 +208,7 @@ and thus cannot fall neatly in pixels anyway.
 
 Other periodic stimuli ({py:mod}`stimupy.stimuli.waves`)
 are analogous in the parameterization,
-but are evaluated over different [_`distance_metrics`_](./dimensions.md).
+but are evaluated over different [_`distance_metrics`_](../dimensions.md).
 Additionally, the naming schema of the arguments is adjusted
 to better fit the geometry of the distance metric.
 Particularly the name for each `phase` is different:
