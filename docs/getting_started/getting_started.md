@@ -13,5 +13,6 @@ installation
 organization
 create_stimulus
 stimulus
+./use_stimulus/use
 replicate
 ```

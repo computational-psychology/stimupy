@@ -7,7 +7,6 @@ parts:
   - caption: Getting started with stimupy
     chapters:
     - file: getting_started/getting_started
-    - file: howtos/howtos
   - caption: Topic guides
     chapters:
     - file: topic_guides/resolution

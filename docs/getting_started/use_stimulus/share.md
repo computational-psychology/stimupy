@@ -17,7 +17,7 @@ Another option is to share the exact digital image (i.e., the matrix of pixel va
 of the stimulus.
 While this allows that exact digital image to be reused,
 any modifications may be hard to implement --
-especially changing the [resolution](../topic_guides/resolution.md).
+especially changing the [resolution](../../topic_guides/resolution.md).
 Moreover, sets of digital images can take up quite some storage space,
 and are not ideal for easy and quick transfer.
 
@@ -75,7 +75,7 @@ Thus, you'll need to:
   A recipient can then install this version of `stimupy`
   and reproduce the exact stimulus from the provide parameter values.
 
-- provide all parameter-values for this stimulus, ideally by [exporting them](export.md).
+- provide all parameter-values for this stimulus, ideally by [exporting them](./export.md).
   For just sharing parameter-values, we recommend exporting the stimulus-`dict`
   without the `img` and `masks` to a [JSON file](./export.md).
   The reason for this is that JSON files are both human-readable --
@@ -139,5 +139,5 @@ not a _repository_ or platform for uploading stimuli.
 We welcome contributions to this library of stimuli,
 and stimulus sets, from the literature.
 If you wish to contribute such a complete set of stimuli from a single paper,
-please see our [contributing guide](../contributing/contribute.md).
+please see our [contributing guide](../../contributing/contribute.md).
 
