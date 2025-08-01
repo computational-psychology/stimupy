@@ -9,7 +9,7 @@ specifically in the [MyST Markdown](https://jupyterbook.org/en/stable/content/my
 The documentation is generally organized along [The Documentation System](https://documentation.divio.com/),
 consisting of the following categories:
 - learning-oriented tutorials, under <project:getting_started/getting_started>
-- understanding-oriented <project:topic_guides/topic_guides>
+- understanding-oriented [](../user_guide/user_guide)
 - information-oriented <project:reference/reference>
 
 

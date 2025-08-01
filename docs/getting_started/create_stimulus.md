@@ -122,7 +122,7 @@ All `stimupy` stimulus-functions require and take multiple arguments. These cont
 
 - **Image size & resolution**
   - `visual_size`, `ppd`, or `shape` (pixels)
-  - for more information, see our Topic Guide on [resolution](../topic_guides/resolution.md)
+  - for more information, see our Topic Guide on [](../user_guide/resolution)
 - **Stimulus-specific geometry**
   - e.g., `sigma`, `frequency` for Gabor
   - e.g., `rectangle_size` for rectangles
