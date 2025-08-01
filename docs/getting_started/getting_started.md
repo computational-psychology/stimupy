@@ -10,6 +10,7 @@ which have more in-depth explanation on various concepts and design decisions.
 ```{toctree}
 :numbered:
 installation
+organization
 create_stimulus
 composition
 stimulus

@@ -10,7 +10,6 @@ parts:
     - file: howtos/howtos
   - caption: Topic guides
     chapters:
-    - file: topic_guides/organization
     - file: topic_guides/resolution
     - file: topic_guides/dimensions
     - file: topic_guides/waves
