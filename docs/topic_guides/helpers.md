@@ -21,7 +21,7 @@ from stimupy.utils import plot_stim
 ```
 
 Included in `stimupy` is a large set of functions
-to generate known {py:mod}`stimuli <stimupy.stimuli>` (see [How stimupy is organized](../topic_guides/organization))
+to generate known {py:mod}`stimuli <stimupy.stimuli>` (see [How stimupy is organized](../getting_started/organization))
 These are generally subdivided into submodules
 bearing their usual name.
 ```{margin}
@@ -177,10 +177,10 @@ A good example of this is the Todorovic Illusion, which one can interpret as
 having a [rectangular target](todorovics.rectangle) that is partially occluded by some "covers"
 OR as having a [cross-shaped target](todorovics.cross) with adjoining squares.
 For a single stimulus parameterization,
-these two conceptions may produce perfectly identical images ([see fig, top](fig_todorovics)).
+these two conceptions may produce perfectly identical images ([see fig, top](fig_todorovics2)).
 However, when changing parameters,
 you would expect different *behavior* from the stimulus function
-dependent on your conception/interpretation of the stimulus ([see fig, bottom](fig_todorovics)).
+dependent on your conception/interpretation of the stimulus ([see fig, bottom](fig_todorovics2)).
 
 ```{code-cell}
 ---
@@ -192,7 +192,7 @@ mystnb:
       [`todorovics.cross()`](todorovics.cross) (left) and [`.rectangle()`](todorovics.cross) (right)
       can produce identical images (top) for some parameterizations,
       but have different behavior for others (bottom)
-    name: fig_todorovics
+    name: fig_todorovics2
 ---
 from stimupy.stimuli import todorovics
 from stimupy.utils import plot_stimuli
