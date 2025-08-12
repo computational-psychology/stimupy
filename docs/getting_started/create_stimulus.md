@@ -105,7 +105,7 @@ plot_stim(stim)
 ## Example 3: White noise
 
 Another classic stimulus is **white noise** — an array of random pixel intensities.  
-White noise is provided in {py:mod}`stimupy.stimuli.noise`:
+White noise is provided in {py:mod}`stimupy.noises.whites`:
 
 ```{code-cell}
 from stimupy.noises.whites import white
