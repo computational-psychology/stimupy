@@ -153,7 +153,14 @@ def plot_stim(
 
 
 def plot_stimuli(
-    stims, mask=False, vmin=0, vmax=1, save=None, units="deg", ncols=None, nrows=None
+    stims,
+    mask=False,
+    vmin=0,
+    vmax=1,
+    save=None,
+    units="deg",
+    ncols=None,
+    nrows=None,
 ):
     """Plot multiple stimuli
 
