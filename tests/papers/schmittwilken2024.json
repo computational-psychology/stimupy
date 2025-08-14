@@ -1,0 +1,86 @@
+{
+    "edge05_none": {
+        "img": "2e08b206496edfe4c154ddb5f7401f18",
+        "mask": "5d7b73fbf9fb506ec155b124923b457d"
+    },
+    "edge05_white": {
+        "img": "d054a5a3ef65f4c91c974746e3d04834",
+        "mask": "5d7b73fbf9fb506ec155b124923b457d"
+    },
+    "edge05_pink": {
+        "img": "4c290b5a7dff3396dcb515e575b31c0f",
+        "mask": "5d7b73fbf9fb506ec155b124923b457d"
+    },
+    "edge05_brown": {
+        "img": "86c828b89bd94a64308cb3fedb50584e",
+        "mask": "5d7b73fbf9fb506ec155b124923b457d"
+    },
+    "edge05_NB05": {
+        "img": "c22884b5c7cbc914b0d63fd0f509564b",
+        "mask": "5d7b73fbf9fb506ec155b124923b457d"
+    },
+    "edge05_NB3": {
+        "img": "76743afe7fbdc9149e99f3fe0c3a6ae3",
+        "mask": "5d7b73fbf9fb506ec155b124923b457d"
+    },
+    "edge05_NB9": {
+        "img": "550e2859ffa2e92ec982e82afc67eca1",
+        "mask": "5d7b73fbf9fb506ec155b124923b457d"
+    },
+    "edge3_none": {
+        "img": "911d67ad36919e491708be165e0203b0",
+        "mask": "5d7b73fbf9fb506ec155b124923b457d"
+    },
+    "edge3_white": {
+        "img": "f66984f641b02931b06e1113fb975bb2",
+        "mask": "5d7b73fbf9fb506ec155b124923b457d"
+    },
+    "edge3_pink": {
+        "img": "13e479d12f5df96e402fcecd7cc8b1bb",
+        "mask": "5d7b73fbf9fb506ec155b124923b457d"
+    },
+    "edge3_brown": {
+        "img": "6dcf0b6cd57d547b0f32ca93b558a699",
+        "mask": "5d7b73fbf9fb506ec155b124923b457d"
+    },
+    "edge3_NB05": {
+        "img": "7e930a931be0989dc2976894df497bcb",
+        "mask": "5d7b73fbf9fb506ec155b124923b457d"
+    },
+    "edge3_NB3": {
+        "img": "3790ab1eab43d7d964fb8282ff0c4ad6",
+        "mask": "5d7b73fbf9fb506ec155b124923b457d"
+    },
+    "edge3_NB9": {
+        "img": "8ae2a3ef64d79be71b75a20a85c86c90",
+        "mask": "5d7b73fbf9fb506ec155b124923b457d"
+    },
+    "edge9_none": {
+        "img": "9b0844f1369094afb48a077ad47c2b6d",
+        "mask": "5d7b73fbf9fb506ec155b124923b457d"
+    },
+    "edge9_white": {
+        "img": "f057a9e7f30a6237e5f2dc017534a577",
+        "mask": "5d7b73fbf9fb506ec155b124923b457d"
+    },
+    "edge9_pink": {
+        "img": "c5d6318510652c2bcd6e78bc90f67f16",
+        "mask": "5d7b73fbf9fb506ec155b124923b457d"
+    },
+    "edge9_brown": {
+        "img": "4f4ecdcbe88d60c7c21a1296dfc150f3",
+        "mask": "5d7b73fbf9fb506ec155b124923b457d"
+    },
+    "edge9_NB05": {
+        "img": "01a97ff778a46e19e07259b7d7ea40b1",
+        "mask": "5d7b73fbf9fb506ec155b124923b457d"
+    },
+    "edge9_NB3": {
+        "img": "7dfe8b96216e8447e42ddcdb3682b1f9",
+        "mask": "5d7b73fbf9fb506ec155b124923b457d"
+    },
+    "edge9_NB9": {
+        "img": "55e5d88182956f2e9488884461251d3f",
+        "mask": "5d7b73fbf9fb506ec155b124923b457d"
+    }
+}
