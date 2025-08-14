@@ -35,6 +35,19 @@ from stimupy.noises.whites import white as create_whitenoise
 from stimupy.noises.narrowbands import narrowband as create_narrownoise
 from stimupy.noises.naturals import one_over_f as create_pinknoise
 from stimupy.utils import rotate_dict
+from enum import Enum, auto
+
+
+# Enum for noise type only
+class NoiseType(Enum):
+    NONE = auto()
+    WHITE = auto()
+    PINK = auto()
+    BROWN = auto()
+    NB05 = auto()
+    NB3 = auto()
+    NB9 = auto()
+
 
 __all__ = [
     "edge05_none",
@@ -62,10 +75,10 @@ __all__ = [
 
 # Default stimulus parameters
 PPD = 44.0
-visual_size = 4.0  # in deg
-mean_lum = 100  # in cd/m2
-edge_exponent = 1.0  # affects ramp steepness of Cornsweet edge
-noise_contrast = 0.2  # in rms (std / mean)
+VISUAL_SIZE = 4.0  # in deg
+MEAN_LUM = 100  # in cd/m2
+EDGE_EXPONENT = 1.0  # affects ramp steepness of Cornsweet edge
+NOISE_CONTRAST = 0.2  # in rms (std / mean)
 
 # Load experimental data
 df = pd.read_csv(Path(__file__).parents[0] / "schmittwilken2024_data.csv")
@@ -117,33 +130,36 @@ def _create_edge(contrast, edgeWidth, ppd):
         Standard models of spatial vision mispredict edge sensitivity at low spatial frequencies.
         Vision Research, 222, 108450. https://doi.org/10.1016/j.visres.2024.108450
     """
-    e = cornsweet_edge(
-        visual_size=visual_size,
+    # Create edge
+    edge = cornsweet_edge(
+        visual_size=VISUAL_SIZE,
         ppd=ppd,
         ramp_width=edgeWidth,
-        exponent=edge_exponent,
+        exponent=EDGE_EXPONENT,
         intensity_edges=[-1, 1],
         intensity_plateau=0,
     )
-    e = rotate_dict(e, 1)
+    edge = rotate_dict(edge, 1)
 
-    eImg = e["img"]
-    e["mean_lum"] = mean_lum
-    e["img"] = contrast * e["mean_lum"] * eImg / eImg.std() + e["mean_lum"]
-    e["edge_contrast"] = contrast
-    e["intensity_plateau"] = e["mean_lum"]
-    e["intensity_edges"] = (e["img"].min(), e["img"].max())
-    del e["d1"]
-    del e["d2"]
-    return e
+    # Adjust edge contrast
+    edge["mean_lum"] = MEAN_LUM
+    edge["img"] = contrast * edge["mean_lum"] * edge["img"] / edge["img"].std() + edge["mean_lum"]
+    edge["edge_contrast"] = contrast
+
+    # Package for output
+    edge["intensity_plateau"] = edge["mean_lum"]
+    edge["intensity_edges"] = (edge["img"].min(), edge["img"].max())
+    del edge["d1"]
+    del edge["d2"]
+    return edge
 
 
-def _create_noise(n, ppd):
+def _create_noise(noise_type, ppd):
     """Noise stimulus as described in Schmittwilken et al. (2024).
 
     Parameters
     ----------
-    n : str
+    noise_type : str
         Type of noise to generate. Options: "none", "white", "pink", "brown", "NB05", "NB3", "NB9".
     ppd : float
         Pixels per degree, used to define the resolution of the generated noise.
@@ -159,38 +175,64 @@ def _create_noise(n, ppd):
         Standard models of spatial vision mispredict edge sensitivity at low spatial frequencies.
         Vision Research, 222, 108450. https://doi.org/10.1016/j.visres.2024.108450
     """
-    if n == "none":
-        noise = np.zeros([int(visual_size * ppd), int(visual_size * ppd)])
-    elif n == "white":
-        noise = create_whitenoise(visual_size=visual_size, ppd=ppd, pseudo_noise=True)["img"]
-    elif n == "pink":
-        noise = create_pinknoise(
-            visual_size=visual_size, ppd=ppd, exponent=1.0, pseudo_noise=True
+    if noise_type == NoiseType.NONE:
+        noise_img = np.zeros([int(VISUAL_SIZE * ppd), int(VISUAL_SIZE * ppd)])
+    elif noise_type == NoiseType.WHITE:
+        noise_img = create_whitenoise(
+            visual_size=VISUAL_SIZE,
+            ppd=ppd,
+            pseudo_noise=True,
         )["img"]
-    elif n == "brown":
-        noise = create_pinknoise(
-            visual_size=visual_size, ppd=ppd, exponent=2.0, pseudo_noise=True
+    elif noise_type == NoiseType.PINK:
+        noise_img = create_pinknoise(
+            visual_size=VISUAL_SIZE,
+            ppd=ppd,
+            exponent=1.0,
+            pseudo_noise=True,
         )["img"]
-    elif n == "NB05":
-        noise = create_narrownoise(
-            visual_size=visual_size,
+    elif noise_type == NoiseType.BROWN:
+        noise_img = create_pinknoise(
+            visual_size=VISUAL_SIZE,
+            ppd=ppd,
+            exponent=2.0,
+            pseudo_noise=True,
+        )["img"]
+    elif noise_type == NoiseType.NB05:
+        noise_img = create_narrownoise(
+            visual_size=VISUAL_SIZE,
             ppd=ppd,
             center_frequency=0.5,
             bandwidth=1.0,
             pseudo_noise=True,
         )["img"]
-    elif n == "NB3":
-        noise = create_narrownoise(
-            visual_size=visual_size, ppd=ppd, center_frequency=3, bandwidth=1.0, pseudo_noise=True
+    elif noise_type == NoiseType.NB3:
+        noise_img = create_narrownoise(
+            visual_size=VISUAL_SIZE,
+            ppd=ppd,
+            center_frequency=3,
+            bandwidth=1.0,
+            pseudo_noise=True,
         )["img"]
-    elif n == "NB9":
-        noise = create_narrownoise(
-            visual_size=visual_size, ppd=ppd, center_frequency=9, bandwidth=1.0, pseudo_noise=True
+    elif noise_type == NoiseType.NB9:
+        noise_img = create_narrownoise(
+            visual_size=VISUAL_SIZE,
+            ppd=ppd,
+            center_frequency=9,
+            bandwidth=1.0,
+            pseudo_noise=True,
         )["img"]
 
-    if not n == "none":
-        noise = noise - noise.mean()
-        noise = noise / noise.std() * (noise_contrast * mean_lum)
+    # Adjust noise contrast
+    if noise_type != NoiseType.NONE:
+        noise_img = noise_img - noise_img.mean()
+        noise_img = noise_img / noise_img.std() * (NOISE_CONTRAST * MEAN_LUM)
+
+    noise = {
+        "img": noise_img,
+        "noise_contrast": NOISE_CONTRAST,
+        "noise_type": noise_type.name.lower(),
+    }
+
     return noise
 
 
@@ -233,19 +275,28 @@ def edge05_none(ppd=PPD, contrastID=4):
     _warnContrast(contrastID)
     _warnPPD(ppd)
 
-    c = np.linspace(1e-05, 0.005, 5)[contrastID]
-    edge = _create_edge(contrast=c, edgeWidth=0.95, ppd=ppd)
-    n = "none"
-    noise = _create_noise(n, ppd)
+    # Edge
+    edge_contrasts = np.linspace(1e-05, 0.005, 5)
+    edge = _create_edge(contrast=edge_contrasts[contrastID], edgeWidth=0.95, ppd=ppd)
+    edge["edge_contrasts"] = edge_contrasts
 
-    edge["edge"] = edge["img"]
-    edge["noise"] = noise
-    edge["img"] = edge["img"] + noise
-    edge["noise_contrast"] = noise_contrast
-    edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.95)].reset_index(drop=True)
-    edge["edge_contrasts"] = c
-    return edge
+    # Noise texture
+    noise_type = NoiseType.NONE
+    noise = _create_noise(noise_type, ppd)
+
+    # Combine
+    stim = edge
+    stim["edge"] = edge["img"]
+    stim["noise"] = noise.pop("img")
+    stim["img"] += stim["noise"]
+    stim.update(noise)  # add additional keys
+
+    # Add experimental data
+    stim["experimental_data"] = df[(df.noise == noise_type) & (df.edge == 0.95)].reset_index(
+        drop=True
+    )
+
+    return stim
 
 
 def edge05_white(ppd=PPD, contrastID=4):
@@ -272,19 +323,28 @@ def edge05_white(ppd=PPD, contrastID=4):
     _warnContrast(contrastID)
     _warnPPD(ppd)
 
-    c = np.linspace(1e-05, 0.015, 5)
-    edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
-    n = "white"
-    noise = _create_noise(n, ppd)
+    # Edge
+    edge_contrasts = np.linspace(1e-05, 0.015, 5)
+    edge = _create_edge(contrast=edge_contrasts[contrastID], edgeWidth=0.95, ppd=ppd)
+    edge["edge_contrasts"] = edge_contrasts
 
-    edge["edge"] = edge["img"]
-    edge["noise"] = noise
-    edge["img"] = edge["img"] + noise
-    edge["noise_contrast"] = noise_contrast
-    edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.95)].reset_index(drop=True)
-    edge["edge_contrasts"] = c
-    return edge
+    # Noise texture
+    noise_type = NoiseType.WHITE
+    noise = _create_noise(noise_type, ppd)
+
+    # Combine
+    stim = edge
+    stim["edge"] = edge["img"]
+    stim["noise"] = noise.pop("img")
+    stim["img"] += stim["noise"]
+    stim.update(noise)  # add additional keys
+
+    # Add experimental data
+    stim["experimental_data"] = df[(df.noise == noise_type) & (df.edge == 0.95)].reset_index(
+        drop=True
+    )
+
+    return stim
 
 
 def edge05_pink(ppd=PPD, contrastID=4):
@@ -311,19 +371,28 @@ def edge05_pink(ppd=PPD, contrastID=4):
     _warnContrast(contrastID)
     _warnPPD(ppd)
 
-    c = np.linspace(1e-05, 0.05, 5)
-    edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
-    n = "pink"
-    noise = _create_noise(n, ppd)
+    # Edge
+    edge_contrasts = np.linspace(1e-05, 0.05, 5)
+    edge = _create_edge(contrast=edge_contrasts[contrastID], edgeWidth=0.95, ppd=ppd)
+    edge["edge_contrasts"] = edge_contrasts
 
-    edge["edge"] = edge["img"]
-    edge["noise"] = noise
-    edge["img"] = edge["img"] + noise
-    edge["noise_contrast"] = noise_contrast
-    edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.95)].reset_index(drop=True)
-    edge["edge_contrasts"] = c
-    return edge
+    # Noise texture
+    noise_type = NoiseType.PINK
+    noise = _create_noise(noise_type, ppd)
+
+    # Combine
+    stim = edge
+    stim["edge"] = edge["img"]
+    stim["noise"] = noise.pop("img")
+    stim["img"] += stim["noise"]
+    stim.update(noise)  # add additional keys
+
+    # Add experimental data
+    stim["experimental_data"] = df[(df.noise == noise_type) & (df.edge == 0.95)].reset_index(
+        drop=True
+    )
+
+    return stim
 
 
 def edge05_brown(ppd=PPD, contrastID=4):
@@ -350,19 +419,28 @@ def edge05_brown(ppd=PPD, contrastID=4):
     _warnContrast(contrastID)
     _warnPPD(ppd)
 
-    c = np.linspace(1e-05, 0.01, 5)
-    edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
-    n = "brown"
-    noise = _create_noise(n, ppd)
+    # Edge
+    edge_contrasts = np.linspace(1e-05, 0.01, 5)
+    edge = _create_edge(contrast=edge_contrasts[contrastID], edgeWidth=0.95, ppd=ppd)
+    edge["edge_contrasts"] = edge_contrasts
 
-    edge["edge"] = edge["img"]
-    edge["noise"] = noise
-    edge["img"] = edge["img"] + noise
-    edge["noise_contrast"] = noise_contrast
-    edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.95)].reset_index(drop=True)
-    edge["edge_contrasts"] = c
-    return edge
+    # Noise
+    noise_type = NoiseType.BROWN
+    noise = _create_noise(noise_type, ppd)
+
+    # Combine
+    stim = edge
+    stim["edge"] = edge["img"]
+    stim["noise"] = noise.pop("img")
+    stim["img"] += stim["noise"]
+    stim.update(noise)  # add additional keys
+
+    # Add experimental data
+    stim["experimental_data"] = df[(df.noise == noise_type) & (df.edge == 0.95)].reset_index(
+        drop=True
+    )
+
+    return stim
 
 
 def edge05_NB05(ppd=PPD, contrastID=4):
@@ -389,19 +467,28 @@ def edge05_NB05(ppd=PPD, contrastID=4):
     _warnContrast(contrastID)
     _warnPPD(ppd)
 
-    c = np.linspace(1e-05, 0.0075, 5)
-    edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
-    n = "NB05"
-    noise = _create_noise(n, ppd)
+    # Edge
+    edge_contrasts = np.linspace(1e-05, 0.0075, 5)
+    edge = _create_edge(contrast=edge_contrasts[contrastID], edgeWidth=0.95, ppd=ppd)
+    edge["edge_contrasts"] = edge_contrasts
 
-    edge["edge"] = edge["img"]
-    edge["noise"] = noise
-    edge["img"] = edge["img"] + noise
-    edge["noise_contrast"] = noise_contrast
-    edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.95)].reset_index(drop=True)
-    edge["edge_contrasts"] = c
-    return edge
+    # Noise
+    noise_type = NoiseType.NB05
+    noise = _create_noise(noise_type, ppd)
+
+    # Combine
+    stim = edge
+    stim["edge"] = edge["img"]
+    stim["noise"] = noise.pop("img")
+    stim["img"] += stim["noise"]
+    stim.update(noise)  # add additional keys
+
+    # Add experimental data
+    stim["experimental_data"] = df[(df.noise == noise_type) & (df.edge == 0.95)].reset_index(
+        drop=True
+    )
+
+    return stim
 
 
 def edge05_NB3(ppd=PPD, contrastID=4):
@@ -428,19 +515,28 @@ def edge05_NB3(ppd=PPD, contrastID=4):
     _warnContrast(contrastID)
     _warnPPD(ppd)
 
-    c = np.linspace(1e-05, 0.03, 5)
-    edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
-    n = "NB3"
-    noise = _create_noise(n, ppd)
+    # Edge
+    edge_contrasts = np.linspace(1e-05, 0.03, 5)
+    edge = _create_edge(contrast=edge_contrasts[contrastID], edgeWidth=0.95, ppd=ppd)
+    edge["edge_contrasts"] = edge_contrasts
 
-    edge["edge"] = edge["img"]
-    edge["noise"] = noise
-    edge["img"] = edge["img"] + noise
-    edge["noise_contrast"] = noise_contrast
-    edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.95)].reset_index(drop=True)
-    edge["edge_contrasts"] = c
-    return edge
+    # Noise
+    noise_type = NoiseType.NB3
+    noise = _create_noise(noise_type, ppd)
+
+    # Combine
+    stim = edge
+    stim["edge"] = edge["img"]
+    stim["noise"] = noise.pop("img")
+    stim["img"] += stim["noise"]
+    stim.update(noise)  # add additional keys
+
+    # Add experimental data
+    stim["experimental_data"] = df[(df.noise == noise_type) & (df.edge == 0.95)].reset_index(
+        drop=True
+    )
+
+    return stim
 
 
 def edge05_NB9(ppd=PPD, contrastID=4):
@@ -467,19 +563,28 @@ def edge05_NB9(ppd=PPD, contrastID=4):
     _warnContrast(contrastID)
     _warnPPD(ppd)
 
-    c = np.linspace(1e-05, 0.0075, 5)
-    edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
-    n = "NB9"
-    noise = _create_noise(n, ppd)
+    # Edge
+    edge_contrasts = np.linspace(1e-05, 0.0075, 5)
+    edge = _create_edge(contrast=edge_contrasts[contrastID], edgeWidth=0.95, ppd=ppd)
+    edge["edge_contrasts"] = edge_contrasts
 
-    edge["edge"] = edge["img"]
-    edge["noise"] = noise
-    edge["img"] = edge["img"] + noise
-    edge["noise_contrast"] = noise_contrast
-    edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.95)].reset_index(drop=True)
-    edge["edge_contrasts"] = c
-    return edge
+    # Noise
+    noise_type = NoiseType.NB9
+    noise = _create_noise(noise_type, ppd)
+
+    # Combine
+    stim = edge
+    stim["edge"] = edge["img"]
+    stim["noise"] = noise.pop("img")
+    stim["img"] += stim["noise"]
+    stim.update(noise)  # add additional keys
+
+    # Add experimental data
+    stim["experimental_data"] = df[(df.noise == noise_type) & (df.edge == 0.95)].reset_index(
+        drop=True
+    )
+
+    return stim
 
 
 # %% Mid spatial frequency edge (3 cpd)
@@ -507,19 +612,28 @@ def edge3_none(ppd=PPD, contrastID=4):
     _warnContrast(contrastID)
     _warnPPD(ppd)
 
-    c = np.linspace(1e-05, 0.004, 5)
-    edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
-    n = "none"
-    noise = _create_noise(n, ppd)
+    # Edge
+    edge_contrasts = np.linspace(1e-05, 0.004, 5)
+    edge = _create_edge(contrast=edge_contrasts[contrastID], edgeWidth=0.95, ppd=ppd)
+    edge["edge_contrasts"] = edge_contrasts
 
-    edge["edge"] = edge["img"]
-    edge["noise"] = noise
-    edge["img"] = edge["img"] + noise
-    edge["noise_contrast"] = noise_contrast
-    edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.15)].reset_index(drop=True)
-    edge["edge_contrasts"] = c
-    return edge
+    # Noise
+    noise_type = NoiseType.NONE
+    noise = _create_noise(noise_type, ppd)
+
+    # Combine
+    stim = edge
+    stim["edge"] = edge["img"]
+    stim["noise"] = noise.pop("img")
+    stim["img"] += stim["noise"]
+    stim.update(noise)  # add additional keys
+
+    # Add experimental data
+    stim["experimental_data"] = df[(df.noise == noise_type) & (df.edge == 0.15)].reset_index(
+        drop=True
+    )
+
+    return stim
 
 
 def edge3_white(ppd=PPD, contrastID=4):
@@ -546,19 +660,28 @@ def edge3_white(ppd=PPD, contrastID=4):
     _warnContrast(contrastID)
     _warnPPD(ppd)
 
-    c = np.linspace(1e-05, 0.0125, 5)
-    edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
-    n = "white"
-    noise = _create_noise(n, ppd)
+    # Edge
+    edge_contrasts = np.linspace(1e-05, 0.0125, 5)
+    edge = _create_edge(contrast=edge_contrasts[contrastID], edgeWidth=0.95, ppd=ppd)
+    edge["edge_contrasts"] = edge_contrasts
 
-    edge["edge"] = edge["img"]
-    edge["noise"] = noise
-    edge["img"] = edge["img"] + noise
-    edge["noise_contrast"] = noise_contrast
-    edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.15)].reset_index(drop=True)
-    edge["edge_contrasts"] = c
-    return edge
+    # Noise
+    noise_type = NoiseType.WHITE
+    noise = _create_noise(noise_type, ppd)
+
+    # Combine
+    stim = edge
+    stim["edge"] = edge["img"]
+    stim["noise"] = noise.pop("img")
+    stim["img"] += stim["noise"]
+    stim.update(noise)  # add additional keys
+
+    # Add experimental data
+    stim["experimental_data"] = df[(df.noise == noise_type) & (df.edge == 0.15)].reset_index(
+        drop=True
+    )
+
+    return stim
 
 
 def edge3_pink(ppd=PPD, contrastID=4):
@@ -585,19 +708,28 @@ def edge3_pink(ppd=PPD, contrastID=4):
     _warnContrast(contrastID)
     _warnPPD(ppd)
 
-    c = np.linspace(1e-05, 0.03, 5)
-    edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
-    n = "pink"
-    noise = _create_noise(n, ppd)
+    # Edge
+    edge_contrasts = np.linspace(1e-05, 0.03, 5)
+    edge = _create_edge(contrast=edge_contrasts[contrastID], edgeWidth=0.95, ppd=ppd)
+    edge["edge_contrasts"] = edge_contrasts
 
-    edge["edge"] = edge["img"]
-    edge["noise"] = noise
-    edge["img"] = edge["img"] + noise
-    edge["noise_contrast"] = noise_contrast
-    edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.15)].reset_index(drop=True)
-    edge["edge_contrasts"] = c
-    return edge
+    # Noise
+    noise_type = NoiseType.PINK
+    noise = _create_noise(noise_type, ppd)
+
+    # Combine
+    stim = edge
+    stim["edge"] = edge["img"]
+    stim["noise"] = noise.pop("img")
+    stim["img"] += stim["noise"]
+    stim.update(noise)  # add additional keys
+
+    # Add experimental data
+    stim["experimental_data"] = df[(df.noise == noise_type) & (df.edge == 0.15)].reset_index(
+        drop=True
+    )
+
+    return stim
 
 
 def edge3_brown(ppd=PPD, contrastID=4):
@@ -624,19 +756,28 @@ def edge3_brown(ppd=PPD, contrastID=4):
     _warnContrast(contrastID)
     _warnPPD(ppd)
 
-    c = np.linspace(1e-05, 0.006, 5)
-    edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
-    n = "brown"
-    noise = _create_noise(n, ppd)
+    # Edge
+    edge_contrasts = np.linspace(1e-05, 0.006, 5)
+    edge = _create_edge(contrast=edge_contrasts[contrastID], edgeWidth=0.95, ppd=ppd)
+    edge["edge_contrasts"] = edge_contrasts
 
-    edge["edge"] = edge["img"]
-    edge["noise"] = noise
-    edge["img"] = edge["img"] + noise
-    edge["noise_contrast"] = noise_contrast
-    edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.15)].reset_index(drop=True)
-    edge["edge_contrasts"] = c
-    return edge
+    # Noise
+    noise_type = NoiseType.BROWN
+    noise = _create_noise(noise_type, ppd)
+
+    # Combine
+    stim = edge
+    stim["edge"] = edge["img"]
+    stim["noise"] = noise.pop("img")
+    stim["img"] += stim["noise"]
+    stim.update(noise)  # add additional keys
+
+    # Add experimental data
+    stim["experimental_data"] = df[(df.noise == noise_type) & (df.edge == 0.15)].reset_index(
+        drop=True
+    )
+
+    return stim
 
 
 def edge3_NB05(ppd=PPD, contrastID=4):
@@ -663,19 +804,28 @@ def edge3_NB05(ppd=PPD, contrastID=4):
     _warnContrast(contrastID)
     _warnPPD(ppd)
 
-    c = np.linspace(1e-05, 0.003, 5)
-    edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
-    n = "NB05"
-    noise = _create_noise(n, ppd)
+    # Edge
+    edge_contrasts = np.linspace(1e-05, 0.003, 5)
+    edge = _create_edge(contrast=edge_contrasts[contrastID], edgeWidth=0.95, ppd=ppd)
+    edge["edge_contrasts"] = edge_contrasts
 
-    edge["edge"] = edge["img"]
-    edge["noise"] = noise
-    edge["img"] = edge["img"] + noise
-    edge["noise_contrast"] = noise_contrast
-    edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.15)].reset_index(drop=True)
-    edge["edge_contrasts"] = c
-    return edge
+    # Noise
+    noise_type = NoiseType.NB05
+    noise = _create_noise(noise_type, ppd)
+
+    # Combine
+    stim = edge
+    stim["edge"] = edge["img"]
+    stim["noise"] = noise.pop("img")
+    stim["img"] += stim["noise"]
+    stim.update(noise)  # add additional keys
+
+    # Add experimental data
+    stim["experimental_data"] = df[(df.noise == noise_type) & (df.edge == 0.15)].reset_index(
+        drop=True
+    )
+
+    return stim
 
 
 def edge3_NB3(ppd=PPD, contrastID=4):
@@ -702,19 +852,28 @@ def edge3_NB3(ppd=PPD, contrastID=4):
     _warnContrast(contrastID)
     _warnPPD(ppd)
 
-    c = np.linspace(1e-05, 0.015, 5)
-    edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
-    n = "NB3"
-    noise = _create_noise(n, ppd)
+    # Edge
+    edge_contrasts = np.linspace(1e-05, 0.015, 5)
+    edge = _create_edge(contrast=edge_contrasts[contrastID], edgeWidth=0.95, ppd=ppd)
+    edge["edge_contrasts"] = edge_contrasts
 
-    edge["edge"] = edge["img"]
-    edge["noise"] = noise
-    edge["img"] = edge["img"] + noise
-    edge["noise_contrast"] = noise_contrast
-    edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.15)].reset_index(drop=True)
-    edge["edge_contrasts"] = c
-    return edge
+    # Noise
+    noise_type = NoiseType.NB3
+    noise = _create_noise(noise_type, ppd)
+
+    # Combine
+    stim = edge
+    stim["edge"] = edge["img"]
+    stim["noise"] = noise.pop("img")
+    stim["img"] += stim["noise"]
+    stim.update(noise)  # add additional keys
+
+    # Add experimental data
+    stim["experimental_data"] = df[(df.noise == noise_type) & (df.edge == 0.15)].reset_index(
+        drop=True
+    )
+
+    return stim
 
 
 def edge3_NB9(ppd=PPD, contrastID=4):
@@ -741,19 +900,28 @@ def edge3_NB9(ppd=PPD, contrastID=4):
     _warnContrast(contrastID)
     _warnPPD(ppd)
 
-    c = np.linspace(1e-05, 0.0075, 5)
-    edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
-    n = "NB9"
-    noise = _create_noise(n, ppd)
+    # Edge
+    edge_contrasts = np.linspace(1e-05, 0.0075, 5)
+    edge = _create_edge(contrast=edge_contrasts[contrastID], edgeWidth=0.95, ppd=ppd)
+    edge["edge_contrasts"] = edge_contrasts
 
-    edge["edge"] = edge["img"]
-    edge["noise"] = noise
-    edge["img"] = edge["img"] + noise
-    edge["noise_contrast"] = noise_contrast
-    edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.15)].reset_index(drop=True)
-    edge["edge_contrasts"] = c
-    return edge
+    # Noise
+    noise_type = NoiseType.NB9
+    noise = _create_noise(noise_type, ppd)
+
+    # Combine
+    stim = edge
+    stim["edge"] = edge["img"]
+    stim["noise"] = noise.pop("img")
+    stim["img"] += stim["noise"]
+    stim.update(noise)  # add additional keys
+
+    # Add experimental data
+    stim["experimental_data"] = df[(df.noise == noise_type) & (df.edge == 0.15)].reset_index(
+        drop=True
+    )
+
+    return stim
 
 
 # %% High spatial frequency edge (9 cpd)
@@ -781,19 +949,28 @@ def edge9_none(ppd=PPD, contrastID=4):
     _warnContrast(contrastID)
     _warnPPD(ppd)
 
-    c = np.linspace(1e-05, 0.003, 5)
-    edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
-    n = "none"
-    noise = _create_noise(n, ppd)
+    # Edge
+    edge_contrasts = np.linspace(1e-05, 0.003, 5)
+    edge = _create_edge(contrast=edge_contrasts[contrastID], edgeWidth=0.95, ppd=ppd)
+    edge["edge_contrasts"] = edge_contrasts
 
-    edge["edge"] = edge["img"]
-    edge["noise"] = noise
-    edge["img"] = edge["img"] + noise
-    edge["noise_contrast"] = noise_contrast
-    edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.048)].reset_index(drop=True)
-    edge["edge_contrasts"] = c
-    return edge
+    # Noise
+    noise_type = NoiseType.NONE
+    noise = _create_noise(noise_type, ppd)
+
+    # Combine
+    stim = edge
+    stim["edge"] = edge["img"]
+    stim["noise"] = noise.pop("img")
+    stim["img"] += stim["noise"]
+    stim.update(noise)  # add additional keys
+
+    # Add experimental data
+    stim["experimental_data"] = df[(df.noise == noise_type) & (df.edge == 0.048)].reset_index(
+        drop=True
+    )
+
+    return stim
 
 
 def edge9_white(ppd=PPD, contrastID=4):
@@ -820,19 +997,28 @@ def edge9_white(ppd=PPD, contrastID=4):
     _warnContrast(contrastID)
     _warnPPD(ppd)
 
-    c = np.linspace(1e-05, 0.015, 5)
-    edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
-    n = "white"
-    noise = _create_noise(n, ppd)
+    # Edge
+    edge_contrasts = np.linspace(1e-05, 0.015, 5)
+    edge = _create_edge(contrast=edge_contrasts[contrastID], edgeWidth=0.95, ppd=ppd)
+    edge["edge_contrasts"] = edge_contrasts
 
-    edge["edge"] = edge["img"]
-    edge["noise"] = noise
-    edge["img"] = edge["img"] + noise
-    edge["noise_contrast"] = noise_contrast
-    edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.048)].reset_index(drop=True)
-    edge["edge_contrasts"] = c
-    return edge
+    # Noise
+    noise_type = NoiseType.WHITE
+    noise = _create_noise(noise_type, ppd)
+
+    # Combine
+    stim = edge
+    stim["edge"] = edge["img"]
+    stim["noise"] = noise.pop("img")
+    stim["img"] += stim["noise"]
+    stim.update(noise)  # add additional keys
+
+    # Add experimental data
+    stim["experimental_data"] = df[(df.noise == noise_type) & (df.edge == 0.048)].reset_index(
+        drop=True
+    )
+
+    return stim
 
 
 def edge9_pink(ppd=PPD, contrastID=4):
@@ -859,19 +1045,28 @@ def edge9_pink(ppd=PPD, contrastID=4):
     _warnContrast(contrastID)
     _warnPPD(ppd)
 
-    c = np.linspace(1e-05, 0.015, 5)
-    edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
-    n = "pink"
-    noise = _create_noise(n, ppd)
+    # Edge
+    edge_contrasts = np.linspace(1e-05, 0.015, 5)
+    edge = _create_edge(contrast=edge_contrasts[contrastID], edgeWidth=0.95, ppd=ppd)
+    edge["edge_contrasts"] = edge_contrasts
 
-    edge["edge"] = edge["img"]
-    edge["noise"] = noise
-    edge["img"] = edge["img"] + noise
-    edge["noise_contrast"] = noise_contrast
-    edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.048)].reset_index(drop=True)
-    edge["edge_contrasts"] = c
-    return edge
+    # Noise
+    noise_type = NoiseType.PINK
+    noise = _create_noise(noise_type, ppd)
+
+    # Combine
+    stim = edge
+    stim["edge"] = edge["img"]
+    stim["noise"] = noise.pop("img")
+    stim["img"] += stim["noise"]
+    stim.update(noise)  # add additional keys
+
+    # Add experimental data
+    stim["experimental_data"] = df[(df.noise == noise_type) & (df.edge == 0.048)].reset_index(
+        drop=True
+    )
+
+    return stim
 
 
 def edge9_brown(ppd=PPD, contrastID=4):
@@ -898,19 +1093,28 @@ def edge9_brown(ppd=PPD, contrastID=4):
     _warnContrast(contrastID)
     _warnPPD(ppd)
 
-    c = np.linspace(1e-05, 0.004, 5)
-    edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
-    n = "brown"
-    noise = _create_noise(n, ppd)
+    # Edge
+    edge_contrasts = np.linspace(1e-05, 0.004, 5)
+    edge = _create_edge(contrast=edge_contrasts[contrastID], edgeWidth=0.95, ppd=ppd)
+    edge["edge_contrasts"] = edge_contrasts
 
-    edge["edge"] = edge["img"]
-    edge["noise"] = noise
-    edge["img"] = edge["img"] + noise
-    edge["noise_contrast"] = noise_contrast
-    edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.048)].reset_index(drop=True)
-    edge["edge_contrasts"] = c
-    return edge
+    # Noise
+    noise_type = NoiseType.BROWN
+    noise = _create_noise(noise_type, ppd)
+
+    # Combine
+    stim = edge
+    stim["edge"] = edge["img"]
+    stim["noise"] = noise.pop("img")
+    stim["img"] += stim["noise"]
+    stim.update(noise)  # add additional keys
+
+    # Add experimental data
+    stim["experimental_data"] = df[(df.noise == noise_type) & (df.edge == 0.048)].reset_index(
+        drop=True
+    )
+
+    return stim
 
 
 def edge9_NB05(ppd=PPD, contrastID=4):
@@ -937,19 +1141,28 @@ def edge9_NB05(ppd=PPD, contrastID=4):
     _warnContrast(contrastID)
     _warnPPD(ppd)
 
-    c = np.linspace(1e-05, 0.005, 5)
-    edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
-    n = "NB05"
-    noise = _create_noise(n, ppd)
+    # Edge
+    edge_contrasts = np.linspace(1e-05, 0.005, 5)
+    edge = _create_edge(contrast=edge_contrasts[contrastID], edgeWidth=0.95, ppd=ppd)
+    edge["edge_contrasts"] = edge_contrasts
 
-    edge["edge"] = edge["img"]
-    edge["noise"] = noise
-    edge["img"] = edge["img"] + noise
-    edge["noise_contrast"] = noise_contrast
-    edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.048)].reset_index(drop=True)
-    edge["edge_contrasts"] = c
-    return edge
+    # Noise
+    noise_type = NoiseType.NB05
+    noise = _create_noise(noise_type, ppd)
+
+    # Combine
+    stim = edge
+    stim["edge"] = edge["img"]
+    stim["noise"] = noise.pop("img")
+    stim["img"] += stim["noise"]
+    stim.update(noise)  # add additional keys
+
+    # Add experimental data
+    stim["experimental_data"] = df[(df.noise == noise_type) & (df.edge == 0.048)].reset_index(
+        drop=True
+    )
+
+    return stim
 
 
 def edge9_NB3(ppd=PPD, contrastID=4):
@@ -976,19 +1189,28 @@ def edge9_NB3(ppd=PPD, contrastID=4):
     _warnContrast(contrastID)
     _warnPPD(ppd)
 
-    c = np.linspace(1e-05, 0.006, 5)
-    edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
-    n = "NB3"
-    noise = _create_noise(n, ppd)
+    # Edge
+    edge_contrasts = np.linspace(1e-05, 0.006, 5)
+    edge = _create_edge(contrast=edge_contrasts[contrastID], edgeWidth=0.95, ppd=ppd)
+    edge["edge_contrasts"] = edge_contrasts
 
-    edge["edge"] = edge["img"]
-    edge["noise"] = noise
-    edge["img"] = edge["img"] + noise
-    edge["noise_contrast"] = noise_contrast
-    edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.048)].reset_index(drop=True)
-    edge["edge_contrasts"] = c
-    return edge
+    # Noise
+    noise_type = NoiseType.NB3
+    noise = _create_noise(noise_type, ppd)
+
+    # Combine
+    stim = edge
+    stim["edge"] = edge["img"]
+    stim["noise"] = noise.pop("img")
+    stim["img"] += stim["noise"]
+    stim.update(noise)  # add additional keys
+
+    # Add experimental data
+    stim["experimental_data"] = df[(df.noise == noise_type) & (df.edge == 0.048)].reset_index(
+        drop=True
+    )
+
+    return stim
 
 
 def edge9_NB9(ppd=PPD, contrastID=4):
@@ -1015,19 +1237,28 @@ def edge9_NB9(ppd=PPD, contrastID=4):
     _warnContrast(contrastID)
     _warnPPD(ppd)
 
-    c = np.linspace(1e-05, 0.015, 5)
-    edge = _create_edge(contrast=c[contrastID], edgeWidth=0.95, ppd=ppd)
-    n = "NB9"
-    noise = _create_noise(n, ppd)
+    # Edge
+    edge_contrasts = np.linspace(1e-05, 0.015, 5)
+    edge = _create_edge(contrast=edge_contrasts[contrastID], edgeWidth=0.95, ppd=ppd)
+    edge["edge_contrasts"] = edge_contrasts
 
-    edge["edge"] = edge["img"]
-    edge["noise"] = noise
-    edge["img"] = edge["img"] + noise
-    edge["noise_contrast"] = noise_contrast
-    edge["noise_type"] = n
-    edge["experimental_data"] = df[(df.noise == n) & (df.edge == 0.048)].reset_index(drop=True)
-    edge["edge_contrasts"] = c
-    return edge
+    # Noise
+    noise_type = NoiseType.NB9
+    noise = _create_noise(noise_type, ppd)
+
+    # Combine
+    stim = edge
+    stim["edge"] = edge["img"]
+    stim["noise"] = noise.pop("img")
+    stim["img"] += stim["noise"]
+    stim.update(noise)  # add additional keys
+
+    # Add experimental data
+    stim["experimental_data"] = df[(df.noise == noise_type) & (df.edge == 0.048)].reset_index(
+        drop=True
+    )
+
+    return stim
 
 
 # %% Main script
