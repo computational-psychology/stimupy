@@ -91,7 +91,29 @@ noise_contrast = 0.2                         # in rms (std / mean)
 df = pd.read_csv(Path(__file__).parents[0] / "betz2015_data.csv")
 
 
-# %% Functions to generate stimulus components
+# %% Functions to generate stimuli (components)
+def gen_all(ppd=PPD, skip=False):
+    stims = {}  # save the stimulus-dicts in a larger dict, with name as key
+    for stim_name in __all__:
+        print(f"Generating betz2015.{stim_name}")
+
+        # Get a reference to the actual function
+        func = globals()[stim_name]
+        try:
+            stim = func(ppd=ppd)
+
+            # Accumulate
+            stims[stim_name] = stim
+        except NotImplementedError as e:
+            if not skip:
+                raise e
+            # Skip stimuli that aren't implemented
+            print("-- not implemented")
+            pass
+
+    return stims
+
+
 def white08_human(ppd=PPD):
     bw = np.round(0.638*ppd)/ppd
     
@@ -759,29 +781,7 @@ def grating02_NB900_model(ppd=PPD):
     return stim
 
 
-# %%
-def gen_all(ppd=PPD, skip=False):
-    stims = {}  # save the stimulus-dicts in a larger dict, with name as key
-    for stim_name in __all__:
-        print(f"Generating betz2015.{stim_name}")
-
-        # Get a reference to the actual function
-        func = globals()[stim_name]
-        try:
-            stim = func(ppd=ppd)
-
-            # Accumulate
-            stims[stim_name] = stim
-        except NotImplementedError as e:
-            if not skip:
-                raise e
-            # Skip stimuli that aren't implemented
-            print("-- not implemented")
-            pass
-
-    return stims
-
-
+# %% Main script
 if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
 
