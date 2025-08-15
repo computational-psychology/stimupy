@@ -15,6 +15,7 @@ def white(
     shape=None,
     intensity_range=(0, 1),
     pseudo_noise=False,
+    rng=None,
 ):
     """Draw white noise texture
 
@@ -42,16 +43,18 @@ def white(
     if len(np.unique(ppd)) > 1:
         raise ValueError("ppd should be equal in x and y direction")
 
+    if rng is None:
+        rng = np.random.default_rng()
     if pseudo_noise:
         # Create white noise with frequency amplitude of 1 everywhere
-        white_noise_fft = pseudo_white_spectrum(shape)
+        white_noise_fft = pseudo_white_spectrum(shape, rng=rng)
 
         # ifft
         white_noise = np.fft.ifft2(np.fft.ifftshift(white_noise_fft))
         white_noise = np.real(white_noise)
     else:
         # Create white noise and fft
-        white_noise = np.random.rand(*shape) * 2.0 - 1.0
+        white_noise = rng.random(shape) * 2.0 - 1.0
 
     # Adjust intensity range:
     white_noise = adapt_intensity_range(white_noise, intensity_range[0], intensity_range[1])

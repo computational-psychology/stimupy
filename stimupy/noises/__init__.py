@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def randomize_sign(array):
+def randomize_sign(array, rng=None):
     """Randomize the sign of values in an array
 
     Parameters
@@ -15,7 +15,9 @@ def randomize_sign(array):
         Same array with randomized signs
 
     """
-    sign = np.random.rand(*array.shape) - 0.5
+    if rng is None:
+        rng = np.random.default_rng()
+    sign = rng.random(array.shape) - 0.5
     sign[sign <= 0.0] = -1.0
     sign[sign > 0.0] = 1.0
     array = array * sign
@@ -25,6 +27,7 @@ def randomize_sign(array):
 def pseudo_white_helper(
     shape,
     amplitude,
+    rng=None,
 ):
     """Generate pseudorandom white noise patch
 
@@ -44,9 +47,11 @@ def pseudo_white_helper(
     if isinstance(shape, (float, int)):
         shape = (shape, shape)
 
-    Re = np.random.rand(*shape) * amplitude - amplitude / 2.0
+    if rng is None:
+        rng = np.random.default_rng()
+    Re = rng.random(shape) * amplitude - amplitude / 2.0
     Im = np.sqrt((amplitude / 2.0) ** 2 - Re**2)
-    Im = randomize_sign(Im)
+    Im = randomize_sign(Im, rng=rng)
     output = Re + Im * 1j
     return output
 
@@ -54,6 +59,7 @@ def pseudo_white_helper(
 def pseudo_white_spectrum(
     shape=(100, 100),
     amplitude=2.0,
+    rng=None,
 ):
     """Create pseudorandom white noise spectrum
 
@@ -85,8 +91,8 @@ def pseudo_white_spectrum(
         raise ValueError("shape needs to be even-numbered")
 
     # We divide the noise spectrum in four quadrants with pseudorandom white noise
-    quadrant1 = pseudo_white_helper((int(y / 2) - 1, int(x / 2) - 1), A)
-    quadrant2 = pseudo_white_helper((int(y / 2) - 1, int(x / 2) - 1), A)
+    quadrant1 = pseudo_white_helper((int(y / 2) - 1, int(x / 2) - 1), A, rng=rng)
+    quadrant2 = pseudo_white_helper((int(y / 2) - 1, int(x / 2) - 1), A, rng=rng)
     quadrant3 = quadrant2[::-1, ::-1].conj()
     quadrant4 = quadrant1[::-1, ::-1].conj()
 
@@ -100,25 +106,25 @@ def pseudo_white_spectrum(
 
     # We need to fill the rows / columns that the quadrants do not cover
     # Fill first row:
-    row = pseudo_white_helper((1, x), A)
+    row = pseudo_white_helper((1, x), A, rng=rng)
     apu = np.fliplr(row)
     row[0, int(x / 2 + 1) : x] = apu[0, int(x / 2) : x - 1].conj()
     spectrum[0, :] = np.squeeze(row)
 
     # Fill central row:
-    row = pseudo_white_helper((1, x), A)
+    row = pseudo_white_helper((1, x), A, rng=rng)
     apu = np.fliplr(row)
     row[0, int(x / 2 + 1) : x] = apu[0, int(x / 2) : x - 1].conj()
     spectrum[int(y / 2), :] = np.squeeze(row)
 
     # Fill first column:
-    col = pseudo_white_helper((y, 1), A)
+    col = pseudo_white_helper((y, 1), A, rng=rng)
     apu = np.flipud(col)
     col[int(y / 2 + 1) : y, 0] = apu[int(y / 2) : y - 1, 0].conj()
     spectrum[:, int(x / 2)] = np.squeeze(col)
 
     # Fill central column:
-    col = pseudo_white_helper((y, 1), A)
+    col = pseudo_white_helper((y, 1), A, rng=rng)
     apu = np.flipud(col)
     col[int(y / 2 + 1) : y, 0] = apu[int(y / 2) : y - 1, 0].conj()
     spectrum[:, 0] = np.squeeze(col)
@@ -131,6 +137,7 @@ def pseudo_white_spectrum(
     # Set DC = 0:
     spectrum[int(y / 2), int(x / 2)] = 0 + 0j
     return spectrum
+
 
 # flake8: noqa: E402
 from stimupy.noises import binaries, narrowbands, naturals, whites

@@ -18,6 +18,7 @@ def one_over_f(
     exponent=None,
     intensity_range=(0, 1),
     pseudo_noise=False,
+    rng=None,
 ):
     """Draw 1 / (f**exponent) noise texture
 
@@ -61,12 +62,14 @@ def one_over_f(
     f = f**exponent
     f[f == 0.0] = 1.0  # Prevent division by zero (DC is zero anyways)
 
+    if rng is None:
+        rng = np.random.default_rng()
     if pseudo_noise:
         # Create white noise with frequency amplitude of 1 everywhere
-        white_noise_fft = pseudo_white_spectrum(shape)
+        white_noise_fft = pseudo_white_spectrum(shape, rng=rng)
     else:
         # Create white noise and fft
-        white_noise = np.random.rand(*shape) * 2.0 - 1.0
+        white_noise = rng.random(shape) * 2.0 - 1.0
         white_noise_fft = np.fft.fftshift(np.fft.fft2(white_noise))
 
     # Create 1/f noise:
@@ -98,6 +101,7 @@ def pink(
     shape=None,
     intensity_range=(0, 1),
     pseudo_noise=False,
+    rng=None,
 ):
     """Draw pink (1 / f) noise texture
 
@@ -126,6 +130,7 @@ def pink(
         exponent=1.0,
         intensity_range=intensity_range,
         pseudo_noise=pseudo_noise,
+        rng=rng,
     )
     return stim
 
@@ -136,6 +141,7 @@ def brown(
     shape=None,
     intensity_range=(0, 1),
     pseudo_noise=False,
+    rng=None,
 ):
     """Draw brown (1 / (f**2.0)) noise texture
 
@@ -164,6 +170,7 @@ def brown(
         exponent=2.0,
         intensity_range=intensity_range,
         pseudo_noise=pseudo_noise,
+        rng=rng,
     )
     return stim
 
