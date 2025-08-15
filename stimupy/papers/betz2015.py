@@ -81,11 +81,11 @@ __all__ = [
 
 # Default stimulus parameters
 PPD = 80
-visual_size = 16
-noisefreqs = [0.58, 1., 1.73, 3., 5.2, 9.]   # in cpd
-intensity_bars = (41.8, 46.2)                # cd/m2
-mean_lum = 44                                # cd/m2
-noise_contrast = 0.2                         # in rms (std / mean)
+VISUAL_SIZE = 16
+NOISE_FREQS = [0.58, 1.0, 1.73, 3.0, 5.2, 9.0]  # in cpd
+INTENSITY_BARS = (41.8, 46.2)  # cd/m2
+MEAN_LUM = 44  # cd/m2
+NOISE_CONTRAST = 0.2  # in rms (std / mean)
 
 # Load experimental data
 df = pd.read_csv(Path(__file__).parents[0] / "betz2015_data.csv")
@@ -115,209 +115,234 @@ def gen_all(ppd=PPD, skip=False):
 
 
 def white08_human(ppd=PPD):
-    bw = np.round(0.638*ppd)/ppd
-    
+    bw = np.round(0.638 * ppd) / ppd
+
     stim = white(
         ppd=PPD,
         n_bars=12,
         bar_width=bw,
-        intensity_bars=intensity_bars,
+        intensity_bars=INTENSITY_BARS,
         target_indices=6,
         target_heights=bw,
-        intensity_target=mean_lum,
-        )
-    
+        intensity_target=MEAN_LUM,
+    )
+
     stim = rotate_dict(stim, nrots=1)
-    stim = pad_dict_to_visual_size(stim, visual_size, ppd, mean_lum)
+    stim = pad_dict_to_visual_size(stim, VISUAL_SIZE, ppd, MEAN_LUM)
     return stim
 
+
 def white08_model(ppd=PPD):
-    bw = np.round(0.638*ppd)/ppd
-    
+    bw = np.round(0.638 * ppd) / ppd
+
     stim = white_two_rows(
         ppd=PPD,
         n_bars=12,
         bar_width=bw,
-        intensity_bars=intensity_bars,
+        intensity_bars=INTENSITY_BARS,
         target_heights=bw,
-        target_center_offset=bw/2+1,
+        target_center_offset=bw / 2 + 1,
         target_indices_bottom=6,
         target_indices_top=7,
-        intensity_target=mean_lum,
-        )
-    
+        intensity_target=MEAN_LUM,
+    )
+
     stim = rotate_dict(stim, nrots=1)
-    stim = pad_dict_to_visual_size(stim, visual_size, ppd, mean_lum)
+    stim = pad_dict_to_visual_size(stim, VISUAL_SIZE, ppd, MEAN_LUM)
     return stim
+
 
 def white04_human(ppd=PPD):
-    bw = np.round(1.276*ppd)/ppd
-    
+    bw = np.round(1.276 * ppd) / ppd
+
     stim = white(
         ppd=PPD,
         n_bars=6,
         bar_width=bw,
-        intensity_bars=intensity_bars,
+        intensity_bars=INTENSITY_BARS,
         target_indices=3,
         target_heights=bw,
-        intensity_target=mean_lum,
-        )
-    
+        intensity_target=MEAN_LUM,
+    )
+
     stim = rotate_dict(stim, nrots=1)
-    stim = pad_dict_to_visual_size(stim, visual_size, ppd, mean_lum)
+    stim = pad_dict_to_visual_size(stim, VISUAL_SIZE, ppd, MEAN_LUM)
     return stim
 
+
 def white04_model(ppd=PPD):
-    bw = np.round(1.276*ppd)/ppd
-    
+    bw = np.round(1.276 * ppd) / ppd
+
     stim = white_two_rows(
         ppd=PPD,
         n_bars=6,
         bar_width=bw,
-        intensity_bars=intensity_bars,
+        intensity_bars=INTENSITY_BARS,
         target_heights=bw,
-        target_center_offset=bw/2+1,
+        target_center_offset=bw / 2 + 1,
         target_indices_bottom=3,
         target_indices_top=4,
-        intensity_target=mean_lum,
-        )
-    
+        intensity_target=MEAN_LUM,
+    )
+
     stim = rotate_dict(stim, nrots=1)
-    stim = pad_dict_to_visual_size(stim, visual_size, ppd, mean_lum)
+    stim = pad_dict_to_visual_size(stim, VISUAL_SIZE, ppd, MEAN_LUM)
     return stim
 
+
 def white02_human(ppd=PPD):
-    bw = np.round(2.552*ppd)/ppd
-    
+    bw = np.round(2.552 * ppd) / ppd
+
     stim = white(
         ppd=PPD,
         n_bars=4,
         bar_width=bw,
-        intensity_bars=intensity_bars,
+        intensity_bars=INTENSITY_BARS,
         target_indices=2,
         target_heights=bw,
-        intensity_target=mean_lum,
-        )
-    
+        intensity_target=MEAN_LUM,
+    )
+
     stim = rotate_dict(stim, nrots=1)
-    stim = pad_dict_to_visual_size(stim, visual_size, ppd, mean_lum)
+    stim = pad_dict_to_visual_size(stim, VISUAL_SIZE, ppd, MEAN_LUM)
     return stim
 
+
 def white02_model(ppd=PPD):
-    bw = np.round(2.552*ppd)/ppd
-    
+    bw = np.round(2.552 * ppd) / ppd
+
     stim = white_two_rows(
         ppd=PPD,
         n_bars=4,
         bar_width=bw,
-        intensity_bars=intensity_bars,
+        intensity_bars=INTENSITY_BARS,
         target_heights=bw,
-        target_center_offset=bw/2+1,
+        target_center_offset=bw / 2 + 1,
         target_indices_bottom=2,
         target_indices_top=3,
-        intensity_target=mean_lum,
-        )
-    
+        intensity_target=MEAN_LUM,
+    )
+
     stim = rotate_dict(stim, nrots=1)
-    stim = pad_dict_to_visual_size(stim, visual_size, ppd, mean_lum)
+    stim = pad_dict_to_visual_size(stim, VISUAL_SIZE, ppd, MEAN_LUM)
     return stim
 
+
 def _create_noise(n, ppd):
-    noise = create_narrownoise(visual_size=visual_size, ppd=ppd, center_frequency=n,
-                               bandwidth=1., pseudo_noise=True)["img"]
+    noise = create_narrownoise(
+        visual_size=VISUAL_SIZE, ppd=ppd, center_frequency=n, bandwidth=1.0, pseudo_noise=True
+    )["img"]
     noise = noise - noise.mean()
-    noise = noise / noise.std() * (noise_contrast * mean_lum)
+    noise = noise / noise.std() * (NOISE_CONTRAST * MEAN_LUM)
     return noise
+
 
 # %% High spatial frequency grating: Human experiment
 def grating08_NB058_human(ppd=PPD):
     n = 0.58
     stim = white08_human(ppd)
     noise = _create_noise(n, ppd)
-    
+
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
-    stim["noise_contrast"] = noise_contrast
+    stim["noise_contrast"] = NOISE_CONTRAST
     stim["noise_frequency"] = n
     stim["experimental_data"] = {
-        "baseline_effect": df[(df.grating==0.8) & (df.noiseType=="baseline")].reset_index(drop=True),
-        "noise_effect": df[(df.grating==0.8) & (df.noiseType==str(n))].reset_index(drop=True),
-        }
+        "baseline_effect": df[(df.grating == 0.8) & (df.noiseType == "baseline")].reset_index(
+            drop=True
+        ),
+        "noise_effect": df[(df.grating == 0.8) & (df.noiseType == str(n))].reset_index(drop=True),
+    }
     return stim
+
 
 def grating08_NB100_human(ppd=PPD):
     n = 1.00
     stim = white08_human(ppd)
     noise = _create_noise(n, ppd)
-    
+
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
-    stim["noise_contrast"] = noise_contrast
+    stim["noise_contrast"] = NOISE_CONTRAST
     stim["noise_frequency"] = n
     stim["experimental_data"] = {
-        "baseline_effect": df[(df.grating==0.8) & (df.noiseType=="baseline")].reset_index(drop=True),
-        "noise_effect": df[(df.grating==0.8) & (df.noiseType==str(n))].reset_index(drop=True),
-        }
+        "baseline_effect": df[(df.grating == 0.8) & (df.noiseType == "baseline")].reset_index(
+            drop=True
+        ),
+        "noise_effect": df[(df.grating == 0.8) & (df.noiseType == str(n))].reset_index(drop=True),
+    }
     return stim
+
 
 def grating08_NB173_human(ppd=PPD):
     n = 1.73
     stim = white08_human(ppd)
     noise = _create_noise(n, ppd)
-    
+
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
-    stim["noise_contrast"] = noise_contrast
+    stim["noise_contrast"] = NOISE_CONTRAST
     stim["noise_frequency"] = n
     stim["experimental_data"] = {
-        "baseline_effect": df[(df.grating==0.8) & (df.noiseType=="baseline")].reset_index(drop=True),
-        "noise_effect": df[(df.grating==0.8) & (df.noiseType==str(n))].reset_index(drop=True),
-        }
+        "baseline_effect": df[(df.grating == 0.8) & (df.noiseType == "baseline")].reset_index(
+            drop=True
+        ),
+        "noise_effect": df[(df.grating == 0.8) & (df.noiseType == str(n))].reset_index(drop=True),
+    }
     return stim
+
 
 def grating08_NB300_human(ppd=PPD):
     n = 3.00
     stim = white08_human(ppd)
     noise = _create_noise(n, ppd)
-    
+
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
-    stim["noise_contrast"] = noise_contrast
+    stim["noise_contrast"] = NOISE_CONTRAST
     stim["noise_frequency"] = n
     stim["experimental_data"] = {
-        "baseline_effect": df[(df.grating==0.8) & (df.noiseType=="baseline")].reset_index(drop=True),
-        "noise_effect": df[(df.grating==0.8) & (df.noiseType==str(n))].reset_index(drop=True),
-        }
+        "baseline_effect": df[(df.grating == 0.8) & (df.noiseType == "baseline")].reset_index(
+            drop=True
+        ),
+        "noise_effect": df[(df.grating == 0.8) & (df.noiseType == str(n))].reset_index(drop=True),
+    }
     return stim
+
 
 def grating08_NB520_human(ppd=PPD):
     n = 5.20
     stim = white08_human(ppd)
     noise = _create_noise(n, ppd)
-    
+
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
-    stim["noise_contrast"] = noise_contrast
+    stim["noise_contrast"] = NOISE_CONTRAST
     stim["noise_frequency"] = n
     stim["experimental_data"] = {
-        "baseline_effect": df[(df.grating==0.8) & (df.noiseType=="baseline")].reset_index(drop=True),
-        "noise_effect": df[(df.grating==0.8) & (df.noiseType==str(n))].reset_index(drop=True),
-        }
+        "baseline_effect": df[(df.grating == 0.8) & (df.noiseType == "baseline")].reset_index(
+            drop=True
+        ),
+        "noise_effect": df[(df.grating == 0.8) & (df.noiseType == str(n))].reset_index(drop=True),
+    }
     return stim
+
 
 def grating08_NB900_human(ppd=PPD):
     n = 9.00
     stim = white08_human(ppd)
     noise = _create_noise(n, ppd)
-    
+
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
-    stim["noise_contrast"] = noise_contrast
+    stim["noise_contrast"] = NOISE_CONTRAST
     stim["noise_frequency"] = n
     stim["experimental_data"] = {
-        "baseline_effect": df[(df.grating==0.8) & (df.noiseType=="baseline")].reset_index(drop=True),
-        "noise_effect": df[(df.grating==0.8) & (df.noiseType==str(n))].reset_index(drop=True),
-        }
+        "baseline_effect": df[(df.grating == 0.8) & (df.noiseType == "baseline")].reset_index(
+            drop=True
+        ),
+        "noise_effect": df[(df.grating == 0.8) & (df.noiseType == str(n))].reset_index(drop=True),
+    }
     return stim
 
 
@@ -326,90 +351,107 @@ def grating04_NB058_human(ppd=PPD):
     n = 0.58
     stim = white04_human(ppd)
     noise = _create_noise(n, ppd)
-    
+
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
-    stim["noise_contrast"] = noise_contrast
+    stim["noise_contrast"] = NOISE_CONTRAST
     stim["noise_frequency"] = n
     stim["experimental_data"] = {
-        "baseline_effect": df[(df.grating==0.4) & (df.noiseType=="baseline")].reset_index(drop=True),
-        "noise_effect": df[(df.grating==0.4) & (df.noiseType==str(n))].reset_index(drop=True),
-        }
+        "baseline_effect": df[(df.grating == 0.4) & (df.noiseType == "baseline")].reset_index(
+            drop=True
+        ),
+        "noise_effect": df[(df.grating == 0.4) & (df.noiseType == str(n))].reset_index(drop=True),
+    }
     return stim
+
 
 def grating04_NB100_human(ppd=PPD):
     n = 1.00
     stim = white04_human(ppd)
     noise = _create_noise(n, ppd)
-    
+
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
-    stim["noise_contrast"] = noise_contrast
+    stim["noise_contrast"] = NOISE_CONTRAST
     stim["noise_frequency"] = n
     stim["experimental_data"] = {
-        "baseline_effect": df[(df.grating==0.4) & (df.noiseType=="baseline")].reset_index(drop=True),
-        "noise_effect": df[(df.grating==0.4) & (df.noiseType==str(n))].reset_index(drop=True),
-        }
+        "baseline_effect": df[(df.grating == 0.4) & (df.noiseType == "baseline")].reset_index(
+            drop=True
+        ),
+        "noise_effect": df[(df.grating == 0.4) & (df.noiseType == str(n))].reset_index(drop=True),
+    }
     return stim
+
 
 def grating04_NB173_human(ppd=PPD):
     n = 1.73
     stim = white04_human(ppd)
     noise = _create_noise(n, ppd)
-    
+
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
-    stim["noise_contrast"] = noise_contrast
+    stim["noise_contrast"] = NOISE_CONTRAST
     stim["noise_frequency"] = n
     stim["experimental_data"] = {
-        "baseline_effect": df[(df.grating==0.4) & (df.noiseType=="baseline")].reset_index(drop=True),
-        "noise_effect": df[(df.grating==0.4) & (df.noiseType==str(n))].reset_index(drop=True),
-        }
+        "baseline_effect": df[(df.grating == 0.4) & (df.noiseType == "baseline")].reset_index(
+            drop=True
+        ),
+        "noise_effect": df[(df.grating == 0.4) & (df.noiseType == str(n))].reset_index(drop=True),
+    }
     return stim
+
 
 def grating04_NB300_human(ppd=PPD):
     n = 3.00
     stim = white04_human(ppd)
     noise = _create_noise(n, ppd)
-    
+
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
-    stim["noise_contrast"] = noise_contrast
+    stim["noise_contrast"] = NOISE_CONTRAST
     stim["noise_frequency"] = n
     stim["experimental_data"] = {
-        "baseline_effect": df[(df.grating==0.4) & (df.noiseType=="baseline")].reset_index(drop=True),
-        "noise_effect": df[(df.grating==0.4) & (df.noiseType==str(n))].reset_index(drop=True),
-        }
+        "baseline_effect": df[(df.grating == 0.4) & (df.noiseType == "baseline")].reset_index(
+            drop=True
+        ),
+        "noise_effect": df[(df.grating == 0.4) & (df.noiseType == str(n))].reset_index(drop=True),
+    }
     return stim
+
 
 def grating04_NB520_human(ppd=PPD):
     n = 5.20
     stim = white04_human(ppd)
     noise = _create_noise(n, ppd)
-    
+
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
-    stim["noise_contrast"] = noise_contrast
+    stim["noise_contrast"] = NOISE_CONTRAST
     stim["noise_frequency"] = n
     stim["experimental_data"] = {
-        "baseline_effect": df[(df.grating==0.4) & (df.noiseType=="baseline")].reset_index(drop=True),
-        "noise_effect": df[(df.grating==0.4) & (df.noiseType==str(n))].reset_index(drop=True),
-        }
+        "baseline_effect": df[(df.grating == 0.4) & (df.noiseType == "baseline")].reset_index(
+            drop=True
+        ),
+        "noise_effect": df[(df.grating == 0.4) & (df.noiseType == str(n))].reset_index(drop=True),
+    }
     return stim
+
 
 def grating04_NB900_human(ppd=PPD):
     n = 9.00
     stim = white04_human(ppd)
     noise = _create_noise(n, ppd)
-    
+
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
-    stim["noise_contrast"] = noise_contrast
+    stim["noise_contrast"] = NOISE_CONTRAST
     stim["noise_frequency"] = n
     stim["experimental_data"] = {
-        "baseline_effect": df[(df.grating==0.4) & (df.noiseType=="baseline")].reset_index(drop=True),
-        "noise_effect": df[(df.grating==0.4) & (df.noiseType==str(n))].reset_index(drop=True),
-        }
+        "baseline_effect": df[(df.grating == 0.4) & (df.noiseType == "baseline")].reset_index(
+            drop=True
+        ),
+        "noise_effect": df[(df.grating == 0.4) & (df.noiseType == str(n))].reset_index(drop=True),
+    }
     return stim
 
 
@@ -418,90 +460,107 @@ def grating02_NB058_human(ppd=PPD):
     n = 0.58
     stim = white02_human(ppd)
     noise = _create_noise(n, ppd)
-    
+
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
-    stim["noise_contrast"] = noise_contrast
+    stim["noise_contrast"] = NOISE_CONTRAST
     stim["noise_frequency"] = n
     stim["experimental_data"] = {
-        "baseline_effect": df[(df.grating==0.2) & (df.noiseType=="baseline")].reset_index(drop=True),
-        "noise_effect": df[(df.grating==0.2) & (df.noiseType==str(n))].reset_index(drop=True),
-        }
+        "baseline_effect": df[(df.grating == 0.2) & (df.noiseType == "baseline")].reset_index(
+            drop=True
+        ),
+        "noise_effect": df[(df.grating == 0.2) & (df.noiseType == str(n))].reset_index(drop=True),
+    }
     return stim
+
 
 def grating02_NB100_human(ppd=PPD):
     n = 1.00
     stim = white02_human(ppd)
     noise = _create_noise(n, ppd)
-    
+
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
-    stim["noise_contrast"] = noise_contrast
+    stim["noise_contrast"] = NOISE_CONTRAST
     stim["noise_frequency"] = n
     stim["experimental_data"] = {
-        "baseline_effect": df[(df.grating==0.2) & (df.noiseType=="baseline")].reset_index(drop=True),
-        "noise_effect": df[(df.grating==0.2) & (df.noiseType==str(n))].reset_index(drop=True),
-        }
+        "baseline_effect": df[(df.grating == 0.2) & (df.noiseType == "baseline")].reset_index(
+            drop=True
+        ),
+        "noise_effect": df[(df.grating == 0.2) & (df.noiseType == str(n))].reset_index(drop=True),
+    }
     return stim
+
 
 def grating02_NB173_human(ppd=PPD):
     n = 1.73
     stim = white02_human(ppd)
     noise = _create_noise(n, ppd)
-    
+
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
-    stim["noise_contrast"] = noise_contrast
+    stim["noise_contrast"] = NOISE_CONTRAST
     stim["noise_frequency"] = n
     stim["experimental_data"] = {
-        "baseline_effect": df[(df.grating==0.2) & (df.noiseType=="baseline")].reset_index(drop=True),
-        "noise_effect": df[(df.grating==0.2) & (df.noiseType==str(n))].reset_index(drop=True),
-        }
+        "baseline_effect": df[(df.grating == 0.2) & (df.noiseType == "baseline")].reset_index(
+            drop=True
+        ),
+        "noise_effect": df[(df.grating == 0.2) & (df.noiseType == str(n))].reset_index(drop=True),
+    }
     return stim
+
 
 def grating02_NB300_human(ppd=PPD):
     n = 3.00
     stim = white02_human(ppd)
     noise = _create_noise(n, ppd)
-    
+
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
-    stim["noise_contrast"] = noise_contrast
+    stim["noise_contrast"] = NOISE_CONTRAST
     stim["noise_frequency"] = n
     stim["experimental_data"] = {
-        "baseline_effect": df[(df.grating==0.2) & (df.noiseType=="baseline")].reset_index(drop=True),
-        "noise_effect": df[(df.grating==0.2) & (df.noiseType==str(n))].reset_index(drop=True),
-        }
+        "baseline_effect": df[(df.grating == 0.2) & (df.noiseType == "baseline")].reset_index(
+            drop=True
+        ),
+        "noise_effect": df[(df.grating == 0.2) & (df.noiseType == str(n))].reset_index(drop=True),
+    }
     return stim
+
 
 def grating02_NB520_human(ppd=PPD):
     n = 5.20
     stim = white02_human(ppd)
     noise = _create_noise(n, ppd)
-    
+
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
-    stim["noise_contrast"] = noise_contrast
+    stim["noise_contrast"] = NOISE_CONTRAST
     stim["noise_frequency"] = n
     stim["experimental_data"] = {
-        "baseline_effect": df[(df.grating==0.2) & (df.noiseType=="baseline")].reset_index(drop=True),
-        "noise_effect": df[(df.grating==0.2) & (df.noiseType==str(n))].reset_index(drop=True),
-        }
+        "baseline_effect": df[(df.grating == 0.2) & (df.noiseType == "baseline")].reset_index(
+            drop=True
+        ),
+        "noise_effect": df[(df.grating == 0.2) & (df.noiseType == str(n))].reset_index(drop=True),
+    }
     return stim
+
 
 def grating02_NB900_human(ppd=PPD):
     n = 9.00
     stim = white04_human(ppd)
     noise = _create_noise(n, ppd)
-    
+
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
-    stim["noise_contrast"] = noise_contrast
+    stim["noise_contrast"] = NOISE_CONTRAST
     stim["noise_frequency"] = n
     stim["experimental_data"] = {
-        "baseline_effect": df[(df.grating==0.2) & (df.noiseType=="baseline")].reset_index(drop=True),
-        "noise_effect": df[(df.grating==0.2) & (df.noiseType==str(n))].reset_index(drop=True),
-        }
+        "baseline_effect": df[(df.grating == 0.2) & (df.noiseType == "baseline")].reset_index(
+            drop=True
+        ),
+        "noise_effect": df[(df.grating == 0.2) & (df.noiseType == str(n))].reset_index(drop=True),
+    }
     return stim
 
 
@@ -510,90 +569,107 @@ def grating08_NB058_model(ppd=PPD):
     n = 0.58
     stim = white08_model(ppd)
     noise = _create_noise(n, ppd)
-    
+
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
-    stim["noise_contrast"] = noise_contrast
+    stim["noise_contrast"] = NOISE_CONTRAST
     stim["noise_frequency"] = n
     stim["experimental_data"] = {
-        "baseline_effect": df[(df.grating==0.8) & (df.noiseType=="baseline")].reset_index(drop=True),
-        "noise_effect": df[(df.grating==0.8) & (df.noiseType==str(n))].reset_index(drop=True),
-        }
+        "baseline_effect": df[(df.grating == 0.8) & (df.noiseType == "baseline")].reset_index(
+            drop=True
+        ),
+        "noise_effect": df[(df.grating == 0.8) & (df.noiseType == str(n))].reset_index(drop=True),
+    }
     return stim
+
 
 def grating08_NB100_model(ppd=PPD):
     n = 1.00
     stim = white08_model(ppd)
     noise = _create_noise(n, ppd)
-    
+
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
-    stim["noise_contrast"] = noise_contrast
+    stim["noise_contrast"] = NOISE_CONTRAST
     stim["noise_frequency"] = n
     stim["experimental_data"] = {
-        "baseline_effect": df[(df.grating==0.8) & (df.noiseType=="baseline")].reset_index(drop=True),
-        "noise_effect": df[(df.grating==0.8) & (df.noiseType==str(n))].reset_index(drop=True),
-        }
+        "baseline_effect": df[(df.grating == 0.8) & (df.noiseType == "baseline")].reset_index(
+            drop=True
+        ),
+        "noise_effect": df[(df.grating == 0.8) & (df.noiseType == str(n))].reset_index(drop=True),
+    }
     return stim
+
 
 def grating08_NB173_model(ppd=PPD):
     n = 1.73
     stim = white08_model(ppd)
     noise = _create_noise(n, ppd)
-    
+
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
-    stim["noise_contrast"] = noise_contrast
+    stim["noise_contrast"] = NOISE_CONTRAST
     stim["noise_frequency"] = n
     stim["experimental_data"] = {
-        "baseline_effect": df[(df.grating==0.8) & (df.noiseType=="baseline")].reset_index(drop=True),
-        "noise_effect": df[(df.grating==0.8) & (df.noiseType==str(n))].reset_index(drop=True),
-        }
+        "baseline_effect": df[(df.grating == 0.8) & (df.noiseType == "baseline")].reset_index(
+            drop=True
+        ),
+        "noise_effect": df[(df.grating == 0.8) & (df.noiseType == str(n))].reset_index(drop=True),
+    }
     return stim
+
 
 def grating08_NB300_model(ppd=PPD):
     n = 3.00
     stim = white08_model(ppd)
     noise = _create_noise(n, ppd)
-    
+
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
-    stim["noise_contrast"] = noise_contrast
+    stim["noise_contrast"] = NOISE_CONTRAST
     stim["noise_frequency"] = n
     stim["experimental_data"] = {
-        "baseline_effect": df[(df.grating==0.8) & (df.noiseType=="baseline")].reset_index(drop=True),
-        "noise_effect": df[(df.grating==0.8) & (df.noiseType==str(n))].reset_index(drop=True),
-        }
+        "baseline_effect": df[(df.grating == 0.8) & (df.noiseType == "baseline")].reset_index(
+            drop=True
+        ),
+        "noise_effect": df[(df.grating == 0.8) & (df.noiseType == str(n))].reset_index(drop=True),
+    }
     return stim
+
 
 def grating08_NB520_model(ppd=PPD):
     n = 5.20
     stim = white08_model(ppd)
     noise = _create_noise(n, ppd)
-    
+
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
-    stim["noise_contrast"] = noise_contrast
+    stim["noise_contrast"] = NOISE_CONTRAST
     stim["noise_frequency"] = n
     stim["experimental_data"] = {
-        "baseline_effect": df[(df.grating==0.8) & (df.noiseType=="baseline")].reset_index(drop=True),
-        "noise_effect": df[(df.grating==0.8) & (df.noiseType==str(n))].reset_index(drop=True),
-        }
+        "baseline_effect": df[(df.grating == 0.8) & (df.noiseType == "baseline")].reset_index(
+            drop=True
+        ),
+        "noise_effect": df[(df.grating == 0.8) & (df.noiseType == str(n))].reset_index(drop=True),
+    }
     return stim
+
 
 def grating08_NB900_model(ppd=PPD):
     n = 9.00
     stim = white08_model(ppd)
     noise = _create_noise(n, ppd)
-    
+
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
-    stim["noise_contrast"] = noise_contrast
+    stim["noise_contrast"] = NOISE_CONTRAST
     stim["noise_frequency"] = n
     stim["experimental_data"] = {
-        "baseline_effect": df[(df.grating==0.8) & (df.noiseType=="baseline")].reset_index(drop=True),
-        "noise_effect": df[(df.grating==0.8) & (df.noiseType==str(n))].reset_index(drop=True),
-        }
+        "baseline_effect": df[(df.grating == 0.8) & (df.noiseType == "baseline")].reset_index(
+            drop=True
+        ),
+        "noise_effect": df[(df.grating == 0.8) & (df.noiseType == str(n))].reset_index(drop=True),
+    }
     return stim
 
 
@@ -602,90 +678,107 @@ def grating04_NB058_model(ppd=PPD):
     n = 0.58
     stim = white04_model(ppd)
     noise = _create_noise(n, ppd)
-    
+
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
-    stim["noise_contrast"] = noise_contrast
+    stim["noise_contrast"] = NOISE_CONTRAST
     stim["noise_frequency"] = n
     stim["experimental_data"] = {
-        "baseline_effect": df[(df.grating==0.4) & (df.noiseType=="baseline")].reset_index(drop=True),
-        "noise_effect": df[(df.grating==0.4) & (df.noiseType==str(n))].reset_index(drop=True),
-        }
+        "baseline_effect": df[(df.grating == 0.4) & (df.noiseType == "baseline")].reset_index(
+            drop=True
+        ),
+        "noise_effect": df[(df.grating == 0.4) & (df.noiseType == str(n))].reset_index(drop=True),
+    }
     return stim
+
 
 def grating04_NB100_model(ppd=PPD):
     n = 1.00
     stim = white04_model(ppd)
     noise = _create_noise(n, ppd)
-    
+
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
-    stim["noise_contrast"] = noise_contrast
+    stim["noise_contrast"] = NOISE_CONTRAST
     stim["noise_frequency"] = n
     stim["experimental_data"] = {
-        "baseline_effect": df[(df.grating==0.4) & (df.noiseType=="baseline")].reset_index(drop=True),
-        "noise_effect": df[(df.grating==0.4) & (df.noiseType==str(n))].reset_index(drop=True),
-        }
+        "baseline_effect": df[(df.grating == 0.4) & (df.noiseType == "baseline")].reset_index(
+            drop=True
+        ),
+        "noise_effect": df[(df.grating == 0.4) & (df.noiseType == str(n))].reset_index(drop=True),
+    }
     return stim
+
 
 def grating04_NB173_model(ppd=PPD):
     n = 1.73
     stim = white04_model(ppd)
     noise = _create_noise(n, ppd)
-    
+
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
-    stim["noise_contrast"] = noise_contrast
+    stim["noise_contrast"] = NOISE_CONTRAST
     stim["noise_frequency"] = n
     stim["experimental_data"] = {
-        "baseline_effect": df[(df.grating==0.4) & (df.noiseType=="baseline")].reset_index(drop=True),
-        "noise_effect": df[(df.grating==0.4) & (df.noiseType==str(n))].reset_index(drop=True),
-        }
+        "baseline_effect": df[(df.grating == 0.4) & (df.noiseType == "baseline")].reset_index(
+            drop=True
+        ),
+        "noise_effect": df[(df.grating == 0.4) & (df.noiseType == str(n))].reset_index(drop=True),
+    }
     return stim
+
 
 def grating04_NB300_model(ppd=PPD):
     n = 3.00
     stim = white04_model(ppd)
     noise = _create_noise(n, ppd)
-    
+
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
-    stim["noise_contrast"] = noise_contrast
+    stim["noise_contrast"] = NOISE_CONTRAST
     stim["noise_frequency"] = n
     stim["experimental_data"] = {
-        "baseline_effect": df[(df.grating==0.4) & (df.noiseType=="baseline")].reset_index(drop=True),
-        "noise_effect": df[(df.grating==0.4) & (df.noiseType==str(n))].reset_index(drop=True),
-        }
+        "baseline_effect": df[(df.grating == 0.4) & (df.noiseType == "baseline")].reset_index(
+            drop=True
+        ),
+        "noise_effect": df[(df.grating == 0.4) & (df.noiseType == str(n))].reset_index(drop=True),
+    }
     return stim
+
 
 def grating04_NB520_model(ppd=PPD):
     n = 5.20
     stim = white04_model(ppd)
     noise = _create_noise(n, ppd)
-    
+
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
-    stim["noise_contrast"] = noise_contrast
+    stim["noise_contrast"] = NOISE_CONTRAST
     stim["noise_frequency"] = n
     stim["experimental_data"] = {
-        "baseline_effect": df[(df.grating==0.4) & (df.noiseType=="baseline")].reset_index(drop=True),
-        "noise_effect": df[(df.grating==0.4) & (df.noiseType==str(n))].reset_index(drop=True),
-        }
+        "baseline_effect": df[(df.grating == 0.4) & (df.noiseType == "baseline")].reset_index(
+            drop=True
+        ),
+        "noise_effect": df[(df.grating == 0.4) & (df.noiseType == str(n))].reset_index(drop=True),
+    }
     return stim
+
 
 def grating04_NB900_model(ppd=PPD):
     n = 9.00
     stim = white04_model(ppd)
     noise = _create_noise(n, ppd)
-    
+
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
-    stim["noise_contrast"] = noise_contrast
+    stim["noise_contrast"] = NOISE_CONTRAST
     stim["noise_frequency"] = n
     stim["experimental_data"] = {
-        "baseline_effect": df[(df.grating==0.4) & (df.noiseType=="baseline")].reset_index(drop=True),
-        "noise_effect": df[(df.grating==0.4) & (df.noiseType==str(n))].reset_index(drop=True),
-        }
+        "baseline_effect": df[(df.grating == 0.4) & (df.noiseType == "baseline")].reset_index(
+            drop=True
+        ),
+        "noise_effect": df[(df.grating == 0.4) & (df.noiseType == str(n))].reset_index(drop=True),
+    }
     return stim
 
 
@@ -694,90 +787,107 @@ def grating02_NB058_model(ppd=PPD):
     n = 0.58
     stim = white02_model(ppd)
     noise = _create_noise(n, ppd)
-    
+
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
-    stim["noise_contrast"] = noise_contrast
+    stim["noise_contrast"] = NOISE_CONTRAST
     stim["noise_frequency"] = n
     stim["experimental_data"] = {
-        "baseline_effect": df[(df.grating==0.2) & (df.noiseType=="baseline")].reset_index(drop=True),
-        "noise_effect": df[(df.grating==0.2) & (df.noiseType==str(n))].reset_index(drop=True),
-        }
+        "baseline_effect": df[(df.grating == 0.2) & (df.noiseType == "baseline")].reset_index(
+            drop=True
+        ),
+        "noise_effect": df[(df.grating == 0.2) & (df.noiseType == str(n))].reset_index(drop=True),
+    }
     return stim
+
 
 def grating02_NB100_model(ppd=PPD):
     n = 1.00
     stim = white02_model(ppd)
     noise = _create_noise(n, ppd)
-    
+
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
-    stim["noise_contrast"] = noise_contrast
+    stim["noise_contrast"] = NOISE_CONTRAST
     stim["noise_frequency"] = n
     stim["experimental_data"] = {
-        "baseline_effect": df[(df.grating==0.2) & (df.noiseType=="baseline")].reset_index(drop=True),
-        "noise_effect": df[(df.grating==0.2) & (df.noiseType==str(n))].reset_index(drop=True),
-        }
+        "baseline_effect": df[(df.grating == 0.2) & (df.noiseType == "baseline")].reset_index(
+            drop=True
+        ),
+        "noise_effect": df[(df.grating == 0.2) & (df.noiseType == str(n))].reset_index(drop=True),
+    }
     return stim
+
 
 def grating02_NB173_model(ppd=PPD):
     n = 1.73
     stim = white02_model(ppd)
     noise = _create_noise(n, ppd)
-    
+
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
-    stim["noise_contrast"] = noise_contrast
+    stim["noise_contrast"] = NOISE_CONTRAST
     stim["noise_frequency"] = n
     stim["experimental_data"] = {
-        "baseline_effect": df[(df.grating==0.2) & (df.noiseType=="baseline")].reset_index(drop=True),
-        "noise_effect": df[(df.grating==0.2) & (df.noiseType==str(n))].reset_index(drop=True),
-        }
+        "baseline_effect": df[(df.grating == 0.2) & (df.noiseType == "baseline")].reset_index(
+            drop=True
+        ),
+        "noise_effect": df[(df.grating == 0.2) & (df.noiseType == str(n))].reset_index(drop=True),
+    }
     return stim
+
 
 def grating02_NB300_model(ppd=PPD):
     n = 3.00
     stim = white02_model(ppd)
     noise = _create_noise(n, ppd)
-    
+
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
-    stim["noise_contrast"] = noise_contrast
+    stim["noise_contrast"] = NOISE_CONTRAST
     stim["noise_frequency"] = n
     stim["experimental_data"] = {
-        "baseline_effect": df[(df.grating==0.2) & (df.noiseType=="baseline")].reset_index(drop=True),
-        "noise_effect": df[(df.grating==0.2) & (df.noiseType==str(n))].reset_index(drop=True),
-        }
+        "baseline_effect": df[(df.grating == 0.2) & (df.noiseType == "baseline")].reset_index(
+            drop=True
+        ),
+        "noise_effect": df[(df.grating == 0.2) & (df.noiseType == str(n))].reset_index(drop=True),
+    }
     return stim
+
 
 def grating02_NB520_model(ppd=PPD):
     n = 5.20
     stim = white02_model(ppd)
     noise = _create_noise(n, ppd)
-    
+
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
-    stim["noise_contrast"] = noise_contrast
+    stim["noise_contrast"] = NOISE_CONTRAST
     stim["noise_frequency"] = n
     stim["experimental_data"] = {
-        "baseline_effect": df[(df.grating==0.2) & (df.noiseType=="baseline")].reset_index(drop=True),
-        "noise_effect": df[(df.grating==0.2) & (df.noiseType==str(n))].reset_index(drop=True),
-        }
+        "baseline_effect": df[(df.grating == 0.2) & (df.noiseType == "baseline")].reset_index(
+            drop=True
+        ),
+        "noise_effect": df[(df.grating == 0.2) & (df.noiseType == str(n))].reset_index(drop=True),
+    }
     return stim
+
 
 def grating02_NB900_model(ppd=PPD):
     n = 9.00
     stim = white04_model(ppd)
     noise = _create_noise(n, ppd)
-    
+
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
-    stim["noise_contrast"] = noise_contrast
+    stim["noise_contrast"] = NOISE_CONTRAST
     stim["noise_frequency"] = n
     stim["experimental_data"] = {
-        "baseline_effect": df[(df.grating==0.2) & (df.noiseType=="baseline")].reset_index(drop=True),
-        "noise_effect": df[(df.grating==0.2) & (df.noiseType==str(n))].reset_index(drop=True),
-        }
+        "baseline_effect": df[(df.grating == 0.2) & (df.noiseType == "baseline")].reset_index(
+            drop=True
+        ),
+        "noise_effect": df[(df.grating == 0.2) & (df.noiseType == str(n))].reset_index(drop=True),
+    }
     return stim
 
 
