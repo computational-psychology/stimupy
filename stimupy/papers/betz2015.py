@@ -146,15 +146,15 @@ def white08_human(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    bw = np.round(0.638 * ppd) / ppd
+    bar_width = np.round(0.638 * ppd) / ppd
 
     stim = white(
         ppd=PPD,
         n_bars=12,
-        bar_width=bw,
+        bar_width=bar_width,
         intensity_bars=INTENSITY_BARS,
         target_indices=6,
-        target_heights=bw,
+        target_heights=bar_width,
         intensity_target=MEAN_LUM,
     )
 
@@ -183,15 +183,15 @@ def white08_model(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    bw = np.round(0.638 * ppd) / ppd
+    bar_width = np.round(0.638 * ppd) / ppd
 
     stim = white_two_rows(
         ppd=PPD,
         n_bars=12,
-        bar_width=bw,
+        bar_width=bar_width,
         intensity_bars=INTENSITY_BARS,
-        target_heights=bw,
-        target_center_offset=bw / 2 + 1,
+        target_heights=bar_width,
+        target_center_offset=bar_width / 2 + 1,
         target_indices_bottom=6,
         target_indices_top=7,
         intensity_target=MEAN_LUM,
@@ -222,15 +222,15 @@ def white04_human(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    bw = np.round(1.276 * ppd) / ppd
+    bar_width = np.round(1.276 * ppd) / ppd
 
     stim = white(
         ppd=PPD,
         n_bars=6,
-        bar_width=bw,
+        bar_width=bar_width,
         intensity_bars=INTENSITY_BARS,
         target_indices=3,
-        target_heights=bw,
+        target_heights=bar_width,
         intensity_target=MEAN_LUM,
     )
 
@@ -259,15 +259,15 @@ def white04_model(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    bw = np.round(1.276 * ppd) / ppd
+    bar_width = np.round(1.276 * ppd) / ppd
 
     stim = white_two_rows(
         ppd=PPD,
         n_bars=6,
-        bar_width=bw,
+        bar_width=bar_width,
         intensity_bars=INTENSITY_BARS,
-        target_heights=bw,
-        target_center_offset=bw / 2 + 1,
+        target_heights=bar_width,
+        target_center_offset=bar_width / 2 + 1,
         target_indices_bottom=3,
         target_indices_top=4,
         intensity_target=MEAN_LUM,
@@ -298,15 +298,15 @@ def white02_human(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    bw = np.round(2.552 * ppd) / ppd
+    bar_width = np.round(2.552 * ppd) / ppd
 
     stim = white(
         ppd=PPD,
         n_bars=4,
-        bar_width=bw,
+        bar_width=bar_width,
         intensity_bars=INTENSITY_BARS,
         target_indices=2,
-        target_heights=bw,
+        target_heights=bar_width,
         intensity_target=MEAN_LUM,
     )
 
@@ -335,15 +335,15 @@ def white02_model(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    bw = np.round(2.552 * ppd) / ppd
+    bar_width = np.round(2.552 * ppd) / ppd
 
     stim = white_two_rows(
         ppd=PPD,
         n_bars=4,
-        bar_width=bw,
+        bar_width=bar_width,
         intensity_bars=INTENSITY_BARS,
-        target_heights=bw,
-        target_center_offset=bw / 2 + 1,
+        target_heights=bar_width,
+        target_center_offset=bar_width / 2 + 1,
         target_indices_bottom=2,
         target_indices_top=3,
         intensity_target=MEAN_LUM,
@@ -354,13 +354,18 @@ def white02_model(ppd=PPD):
     return stim
 
 
-def _create_noise(n, ppd):
-    noise = create_narrownoise(
-        visual_size=VISUAL_SIZE, ppd=ppd, center_frequency=n, bandwidth=1.0, pseudo_noise=True
+def _create_noise(noise_freq, ppd):
+    noise_img = create_narrownoise(
+        visual_size=VISUAL_SIZE,
+        ppd=ppd,
+        center_frequency=noise_freq,
+        bandwidth=1.0,
+        pseudo_noise=True,
     )["img"]
-    noise = noise - noise.mean()
-    noise = noise / noise.std() * (NOISE_CONTRAST * MEAN_LUM)
-    return noise
+    noise_img = noise_img - noise_img.mean()
+    noise_img = noise_img / noise_img.std() * (NOISE_CONTRAST * MEAN_LUM)
+
+    return noise_img
 
 
 # %% High spatial frequency grating: Human experiment
@@ -384,19 +389,21 @@ def grating08_NB058_human(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    n = 0.58
+    noise_freq = 0.58
     stim = white08_human(ppd)
-    noise = _create_noise(n, ppd)
+    noise = _create_noise(noise_freq, ppd)
 
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
     stim["noise_contrast"] = NOISE_CONTRAST
-    stim["noise_frequency"] = n
+    stim["noise_frequency"] = noise_freq
     stim["experimental_data"] = {
         "baseline_effect": df[(df.grating == 0.8) & (df.noiseType == "baseline")].reset_index(
             drop=True
         ),
-        "noise_effect": df[(df.grating == 0.8) & (df.noiseType == str(n))].reset_index(drop=True),
+        "noise_effect": df[(df.grating == 0.8) & (df.noiseType == str(noise_freq))].reset_index(
+            drop=True
+        ),
     }
     return stim
 
@@ -421,19 +428,21 @@ def grating08_NB100_human(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    n = 1.00
+    noise_freq = 1.00
     stim = white08_human(ppd)
-    noise = _create_noise(n, ppd)
+    noise = _create_noise(noise_freq, ppd)
 
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
     stim["noise_contrast"] = NOISE_CONTRAST
-    stim["noise_frequency"] = n
+    stim["noise_frequency"] = noise_freq
     stim["experimental_data"] = {
         "baseline_effect": df[(df.grating == 0.8) & (df.noiseType == "baseline")].reset_index(
             drop=True
         ),
-        "noise_effect": df[(df.grating == 0.8) & (df.noiseType == str(n))].reset_index(drop=True),
+        "noise_effect": df[(df.grating == 0.8) & (df.noiseType == str(noise_freq))].reset_index(
+            drop=True
+        ),
     }
     return stim
 
@@ -458,19 +467,21 @@ def grating08_NB173_human(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    n = 1.73
+    noise_freq = 1.73
     stim = white08_human(ppd)
-    noise = _create_noise(n, ppd)
+    noise = _create_noise(noise_freq, ppd)
 
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
     stim["noise_contrast"] = NOISE_CONTRAST
-    stim["noise_frequency"] = n
+    stim["noise_frequency"] = noise_freq
     stim["experimental_data"] = {
         "baseline_effect": df[(df.grating == 0.8) & (df.noiseType == "baseline")].reset_index(
             drop=True
         ),
-        "noise_effect": df[(df.grating == 0.8) & (df.noiseType == str(n))].reset_index(drop=True),
+        "noise_effect": df[(df.grating == 0.8) & (df.noiseType == str(noise_freq))].reset_index(
+            drop=True
+        ),
     }
     return stim
 
@@ -495,19 +506,21 @@ def grating08_NB300_human(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    n = 3.00
+    noise_freq = 3.00
     stim = white08_human(ppd)
-    noise = _create_noise(n, ppd)
+    noise = _create_noise(noise_freq, ppd)
 
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
     stim["noise_contrast"] = NOISE_CONTRAST
-    stim["noise_frequency"] = n
+    stim["noise_frequency"] = noise_freq
     stim["experimental_data"] = {
         "baseline_effect": df[(df.grating == 0.8) & (df.noiseType == "baseline")].reset_index(
             drop=True
         ),
-        "noise_effect": df[(df.grating == 0.8) & (df.noiseType == str(n))].reset_index(drop=True),
+        "noise_effect": df[(df.grating == 0.8) & (df.noiseType == str(noise_freq))].reset_index(
+            drop=True
+        ),
     }
     return stim
 
@@ -532,19 +545,21 @@ def grating08_NB520_human(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    n = 5.20
+    noise_freq = 5.20
     stim = white08_human(ppd)
-    noise = _create_noise(n, ppd)
+    noise = _create_noise(noise_freq, ppd)
 
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
     stim["noise_contrast"] = NOISE_CONTRAST
-    stim["noise_frequency"] = n
+    stim["noise_frequency"] = noise_freq
     stim["experimental_data"] = {
         "baseline_effect": df[(df.grating == 0.8) & (df.noiseType == "baseline")].reset_index(
             drop=True
         ),
-        "noise_effect": df[(df.grating == 0.8) & (df.noiseType == str(n))].reset_index(drop=True),
+        "noise_effect": df[(df.grating == 0.8) & (df.noiseType == str(noise_freq))].reset_index(
+            drop=True
+        ),
     }
     return stim
 
@@ -569,19 +584,21 @@ def grating08_NB900_human(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    n = 9.00
+    noise_freq = 9.00
     stim = white08_human(ppd)
-    noise = _create_noise(n, ppd)
+    noise = _create_noise(noise_freq, ppd)
 
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
     stim["noise_contrast"] = NOISE_CONTRAST
-    stim["noise_frequency"] = n
+    stim["noise_frequency"] = noise_freq
     stim["experimental_data"] = {
         "baseline_effect": df[(df.grating == 0.8) & (df.noiseType == "baseline")].reset_index(
             drop=True
         ),
-        "noise_effect": df[(df.grating == 0.8) & (df.noiseType == str(n))].reset_index(drop=True),
+        "noise_effect": df[(df.grating == 0.8) & (df.noiseType == str(noise_freq))].reset_index(
+            drop=True
+        ),
     }
     return stim
 
@@ -607,19 +624,21 @@ def grating04_NB058_human(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    n = 0.58
+    noise_freq = 0.58
     stim = white04_human(ppd)
-    noise = _create_noise(n, ppd)
+    noise = _create_noise(noise_freq, ppd)
 
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
     stim["noise_contrast"] = NOISE_CONTRAST
-    stim["noise_frequency"] = n
+    stim["noise_frequency"] = noise_freq
     stim["experimental_data"] = {
         "baseline_effect": df[(df.grating == 0.4) & (df.noiseType == "baseline")].reset_index(
             drop=True
         ),
-        "noise_effect": df[(df.grating == 0.4) & (df.noiseType == str(n))].reset_index(drop=True),
+        "noise_effect": df[(df.grating == 0.4) & (df.noiseType == str(noise_freq))].reset_index(
+            drop=True
+        ),
     }
     return stim
 
@@ -644,19 +663,21 @@ def grating04_NB100_human(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    n = 1.00
+    noise_freq = 1.00
     stim = white04_human(ppd)
-    noise = _create_noise(n, ppd)
+    noise = _create_noise(noise_freq, ppd)
 
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
     stim["noise_contrast"] = NOISE_CONTRAST
-    stim["noise_frequency"] = n
+    stim["noise_frequency"] = noise_freq
     stim["experimental_data"] = {
         "baseline_effect": df[(df.grating == 0.4) & (df.noiseType == "baseline")].reset_index(
             drop=True
         ),
-        "noise_effect": df[(df.grating == 0.4) & (df.noiseType == str(n))].reset_index(drop=True),
+        "noise_effect": df[(df.grating == 0.4) & (df.noiseType == str(noise_freq))].reset_index(
+            drop=True
+        ),
     }
     return stim
 
@@ -681,19 +702,21 @@ def grating04_NB173_human(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    n = 1.73
+    noise_freq = 1.73
     stim = white04_human(ppd)
-    noise = _create_noise(n, ppd)
+    noise = _create_noise(noise_freq, ppd)
 
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
     stim["noise_contrast"] = NOISE_CONTRAST
-    stim["noise_frequency"] = n
+    stim["noise_frequency"] = noise_freq
     stim["experimental_data"] = {
         "baseline_effect": df[(df.grating == 0.4) & (df.noiseType == "baseline")].reset_index(
             drop=True
         ),
-        "noise_effect": df[(df.grating == 0.4) & (df.noiseType == str(n))].reset_index(drop=True),
+        "noise_effect": df[(df.grating == 0.4) & (df.noiseType == str(noise_freq))].reset_index(
+            drop=True
+        ),
     }
     return stim
 
@@ -718,19 +741,21 @@ def grating04_NB300_human(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    n = 3.00
+    noise_freq = 3.00
     stim = white04_human(ppd)
-    noise = _create_noise(n, ppd)
+    noise = _create_noise(noise_freq, ppd)
 
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
     stim["noise_contrast"] = NOISE_CONTRAST
-    stim["noise_frequency"] = n
+    stim["noise_frequency"] = noise_freq
     stim["experimental_data"] = {
         "baseline_effect": df[(df.grating == 0.4) & (df.noiseType == "baseline")].reset_index(
             drop=True
         ),
-        "noise_effect": df[(df.grating == 0.4) & (df.noiseType == str(n))].reset_index(drop=True),
+        "noise_effect": df[(df.grating == 0.4) & (df.noiseType == str(noise_freq))].reset_index(
+            drop=True
+        ),
     }
     return stim
 
@@ -755,19 +780,21 @@ def grating04_NB520_human(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    n = 5.20
+    noise_freq = 5.20
     stim = white04_human(ppd)
-    noise = _create_noise(n, ppd)
+    noise = _create_noise(noise_freq, ppd)
 
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
     stim["noise_contrast"] = NOISE_CONTRAST
-    stim["noise_frequency"] = n
+    stim["noise_frequency"] = noise_freq
     stim["experimental_data"] = {
         "baseline_effect": df[(df.grating == 0.4) & (df.noiseType == "baseline")].reset_index(
             drop=True
         ),
-        "noise_effect": df[(df.grating == 0.4) & (df.noiseType == str(n))].reset_index(drop=True),
+        "noise_effect": df[(df.grating == 0.4) & (df.noiseType == str(noise_freq))].reset_index(
+            drop=True
+        ),
     }
     return stim
 
@@ -792,19 +819,21 @@ def grating04_NB900_human(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    n = 9.00
+    noise_freq = 9.00
     stim = white04_human(ppd)
-    noise = _create_noise(n, ppd)
+    noise = _create_noise(noise_freq, ppd)
 
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
     stim["noise_contrast"] = NOISE_CONTRAST
-    stim["noise_frequency"] = n
+    stim["noise_frequency"] = noise_freq
     stim["experimental_data"] = {
         "baseline_effect": df[(df.grating == 0.4) & (df.noiseType == "baseline")].reset_index(
             drop=True
         ),
-        "noise_effect": df[(df.grating == 0.4) & (df.noiseType == str(n))].reset_index(drop=True),
+        "noise_effect": df[(df.grating == 0.4) & (df.noiseType == str(noise_freq))].reset_index(
+            drop=True
+        ),
     }
     return stim
 
@@ -830,19 +859,21 @@ def grating02_NB058_human(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    n = 0.58
+    noise_freq = 0.58
     stim = white02_human(ppd)
-    noise = _create_noise(n, ppd)
+    noise = _create_noise(noise_freq, ppd)
 
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
     stim["noise_contrast"] = NOISE_CONTRAST
-    stim["noise_frequency"] = n
+    stim["noise_frequency"] = noise_freq
     stim["experimental_data"] = {
         "baseline_effect": df[(df.grating == 0.2) & (df.noiseType == "baseline")].reset_index(
             drop=True
         ),
-        "noise_effect": df[(df.grating == 0.2) & (df.noiseType == str(n))].reset_index(drop=True),
+        "noise_effect": df[(df.grating == 0.2) & (df.noiseType == str(noise_freq))].reset_index(
+            drop=True
+        ),
     }
     return stim
 
@@ -867,19 +898,21 @@ def grating02_NB100_human(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    n = 1.00
+    noise_freq = 1.00
     stim = white02_human(ppd)
-    noise = _create_noise(n, ppd)
+    noise = _create_noise(noise_freq, ppd)
 
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
     stim["noise_contrast"] = NOISE_CONTRAST
-    stim["noise_frequency"] = n
+    stim["noise_frequency"] = noise_freq
     stim["experimental_data"] = {
         "baseline_effect": df[(df.grating == 0.2) & (df.noiseType == "baseline")].reset_index(
             drop=True
         ),
-        "noise_effect": df[(df.grating == 0.2) & (df.noiseType == str(n))].reset_index(drop=True),
+        "noise_effect": df[(df.grating == 0.2) & (df.noiseType == str(noise_freq))].reset_index(
+            drop=True
+        ),
     }
     return stim
 
@@ -904,19 +937,21 @@ def grating02_NB173_human(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    n = 1.73
+    noise_freq = 1.73
     stim = white02_human(ppd)
-    noise = _create_noise(n, ppd)
+    noise = _create_noise(noise_freq, ppd)
 
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
     stim["noise_contrast"] = NOISE_CONTRAST
-    stim["noise_frequency"] = n
+    stim["noise_frequency"] = noise_freq
     stim["experimental_data"] = {
         "baseline_effect": df[(df.grating == 0.2) & (df.noiseType == "baseline")].reset_index(
             drop=True
         ),
-        "noise_effect": df[(df.grating == 0.2) & (df.noiseType == str(n))].reset_index(drop=True),
+        "noise_effect": df[(df.grating == 0.2) & (df.noiseType == str(noise_freq))].reset_index(
+            drop=True
+        ),
     }
     return stim
 
@@ -941,19 +976,21 @@ def grating02_NB300_human(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    n = 3.00
+    noise_freq = 3.00
     stim = white02_human(ppd)
-    noise = _create_noise(n, ppd)
+    noise = _create_noise(noise_freq, ppd)
 
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
     stim["noise_contrast"] = NOISE_CONTRAST
-    stim["noise_frequency"] = n
+    stim["noise_frequency"] = noise_freq
     stim["experimental_data"] = {
         "baseline_effect": df[(df.grating == 0.2) & (df.noiseType == "baseline")].reset_index(
             drop=True
         ),
-        "noise_effect": df[(df.grating == 0.2) & (df.noiseType == str(n))].reset_index(drop=True),
+        "noise_effect": df[(df.grating == 0.2) & (df.noiseType == str(noise_freq))].reset_index(
+            drop=True
+        ),
     }
     return stim
 
@@ -978,19 +1015,21 @@ def grating02_NB520_human(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    n = 5.20
+    noise_freq = 5.20
     stim = white02_human(ppd)
-    noise = _create_noise(n, ppd)
+    noise = _create_noise(noise_freq, ppd)
 
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
     stim["noise_contrast"] = NOISE_CONTRAST
-    stim["noise_frequency"] = n
+    stim["noise_frequency"] = noise_freq
     stim["experimental_data"] = {
         "baseline_effect": df[(df.grating == 0.2) & (df.noiseType == "baseline")].reset_index(
             drop=True
         ),
-        "noise_effect": df[(df.grating == 0.2) & (df.noiseType == str(n))].reset_index(drop=True),
+        "noise_effect": df[(df.grating == 0.2) & (df.noiseType == str(noise_freq))].reset_index(
+            drop=True
+        ),
     }
     return stim
 
@@ -1015,19 +1054,21 @@ def grating02_NB900_human(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    n = 9.00
+    noise_freq = 9.00
     stim = white04_human(ppd)
-    noise = _create_noise(n, ppd)
+    noise = _create_noise(noise_freq, ppd)
 
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
     stim["noise_contrast"] = NOISE_CONTRAST
-    stim["noise_frequency"] = n
+    stim["noise_frequency"] = noise_freq
     stim["experimental_data"] = {
         "baseline_effect": df[(df.grating == 0.2) & (df.noiseType == "baseline")].reset_index(
             drop=True
         ),
-        "noise_effect": df[(df.grating == 0.2) & (df.noiseType == str(n))].reset_index(drop=True),
+        "noise_effect": df[(df.grating == 0.2) & (df.noiseType == str(noise_freq))].reset_index(
+            drop=True
+        ),
     }
     return stim
 
@@ -1053,19 +1094,21 @@ def grating08_NB058_model(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    n = 0.58
+    noise_freq = 0.58
     stim = white08_model(ppd)
-    noise = _create_noise(n, ppd)
+    noise = _create_noise(noise_freq, ppd)
 
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
     stim["noise_contrast"] = NOISE_CONTRAST
-    stim["noise_frequency"] = n
+    stim["noise_frequency"] = noise_freq
     stim["experimental_data"] = {
         "baseline_effect": df[(df.grating == 0.8) & (df.noiseType == "baseline")].reset_index(
             drop=True
         ),
-        "noise_effect": df[(df.grating == 0.8) & (df.noiseType == str(n))].reset_index(drop=True),
+        "noise_effect": df[(df.grating == 0.8) & (df.noiseType == str(noise_freq))].reset_index(
+            drop=True
+        ),
     }
     return stim
 
@@ -1090,19 +1133,21 @@ def grating08_NB100_model(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    n = 1.00
+    noise_freq = 1.00
     stim = white08_model(ppd)
-    noise = _create_noise(n, ppd)
+    noise = _create_noise(noise_freq, ppd)
 
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
     stim["noise_contrast"] = NOISE_CONTRAST
-    stim["noise_frequency"] = n
+    stim["noise_frequency"] = noise_freq
     stim["experimental_data"] = {
         "baseline_effect": df[(df.grating == 0.8) & (df.noiseType == "baseline")].reset_index(
             drop=True
         ),
-        "noise_effect": df[(df.grating == 0.8) & (df.noiseType == str(n))].reset_index(drop=True),
+        "noise_effect": df[(df.grating == 0.8) & (df.noiseType == str(noise_freq))].reset_index(
+            drop=True
+        ),
     }
     return stim
 
@@ -1127,19 +1172,21 @@ def grating08_NB173_model(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    n = 1.73
+    noise_freq = 1.73
     stim = white08_model(ppd)
-    noise = _create_noise(n, ppd)
+    noise = _create_noise(noise_freq, ppd)
 
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
     stim["noise_contrast"] = NOISE_CONTRAST
-    stim["noise_frequency"] = n
+    stim["noise_frequency"] = noise_freq
     stim["experimental_data"] = {
         "baseline_effect": df[(df.grating == 0.8) & (df.noiseType == "baseline")].reset_index(
             drop=True
         ),
-        "noise_effect": df[(df.grating == 0.8) & (df.noiseType == str(n))].reset_index(drop=True),
+        "noise_effect": df[(df.grating == 0.8) & (df.noiseType == str(noise_freq))].reset_index(
+            drop=True
+        ),
     }
     return stim
 
@@ -1164,19 +1211,21 @@ def grating08_NB300_model(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    n = 3.00
+    noise_freq = 3.00
     stim = white08_model(ppd)
-    noise = _create_noise(n, ppd)
+    noise = _create_noise(noise_freq, ppd)
 
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
     stim["noise_contrast"] = NOISE_CONTRAST
-    stim["noise_frequency"] = n
+    stim["noise_frequency"] = noise_freq
     stim["experimental_data"] = {
         "baseline_effect": df[(df.grating == 0.8) & (df.noiseType == "baseline")].reset_index(
             drop=True
         ),
-        "noise_effect": df[(df.grating == 0.8) & (df.noiseType == str(n))].reset_index(drop=True),
+        "noise_effect": df[(df.grating == 0.8) & (df.noiseType == str(noise_freq))].reset_index(
+            drop=True
+        ),
     }
     return stim
 
@@ -1201,19 +1250,21 @@ def grating08_NB520_model(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    n = 5.20
+    noise_freq = 5.20
     stim = white08_model(ppd)
-    noise = _create_noise(n, ppd)
+    noise = _create_noise(noise_freq, ppd)
 
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
     stim["noise_contrast"] = NOISE_CONTRAST
-    stim["noise_frequency"] = n
+    stim["noise_frequency"] = noise_freq
     stim["experimental_data"] = {
         "baseline_effect": df[(df.grating == 0.8) & (df.noiseType == "baseline")].reset_index(
             drop=True
         ),
-        "noise_effect": df[(df.grating == 0.8) & (df.noiseType == str(n))].reset_index(drop=True),
+        "noise_effect": df[(df.grating == 0.8) & (df.noiseType == str(noise_freq))].reset_index(
+            drop=True
+        ),
     }
     return stim
 
@@ -1238,19 +1289,21 @@ def grating08_NB900_model(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    n = 9.00
+    noise_freq = 9.00
     stim = white08_model(ppd)
-    noise = _create_noise(n, ppd)
+    noise = _create_noise(noise_freq, ppd)
 
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
     stim["noise_contrast"] = NOISE_CONTRAST
-    stim["noise_frequency"] = n
+    stim["noise_frequency"] = noise_freq
     stim["experimental_data"] = {
         "baseline_effect": df[(df.grating == 0.8) & (df.noiseType == "baseline")].reset_index(
             drop=True
         ),
-        "noise_effect": df[(df.grating == 0.8) & (df.noiseType == str(n))].reset_index(drop=True),
+        "noise_effect": df[(df.grating == 0.8) & (df.noiseType == str(noise_freq))].reset_index(
+            drop=True
+        ),
     }
     return stim
 
@@ -1276,19 +1329,21 @@ def grating04_NB058_model(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    n = 0.58
+    noise_freq = 0.58
     stim = white04_model(ppd)
-    noise = _create_noise(n, ppd)
+    noise = _create_noise(noise_freq, ppd)
 
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
     stim["noise_contrast"] = NOISE_CONTRAST
-    stim["noise_frequency"] = n
+    stim["noise_frequency"] = noise_freq
     stim["experimental_data"] = {
         "baseline_effect": df[(df.grating == 0.4) & (df.noiseType == "baseline")].reset_index(
             drop=True
         ),
-        "noise_effect": df[(df.grating == 0.4) & (df.noiseType == str(n))].reset_index(drop=True),
+        "noise_effect": df[(df.grating == 0.4) & (df.noiseType == str(noise_freq))].reset_index(
+            drop=True
+        ),
     }
     return stim
 
@@ -1313,19 +1368,21 @@ def grating04_NB100_model(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    n = 1.00
+    noise_freq = 1.00
     stim = white04_model(ppd)
-    noise = _create_noise(n, ppd)
+    noise = _create_noise(noise_freq, ppd)
 
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
     stim["noise_contrast"] = NOISE_CONTRAST
-    stim["noise_frequency"] = n
+    stim["noise_frequency"] = noise_freq
     stim["experimental_data"] = {
         "baseline_effect": df[(df.grating == 0.4) & (df.noiseType == "baseline")].reset_index(
             drop=True
         ),
-        "noise_effect": df[(df.grating == 0.4) & (df.noiseType == str(n))].reset_index(drop=True),
+        "noise_effect": df[(df.grating == 0.4) & (df.noiseType == str(noise_freq))].reset_index(
+            drop=True
+        ),
     }
     return stim
 
@@ -1350,19 +1407,21 @@ def grating04_NB173_model(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    n = 1.73
+    noise_freq = 1.73
     stim = white04_model(ppd)
-    noise = _create_noise(n, ppd)
+    noise = _create_noise(noise_freq, ppd)
 
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
     stim["noise_contrast"] = NOISE_CONTRAST
-    stim["noise_frequency"] = n
+    stim["noise_frequency"] = noise_freq
     stim["experimental_data"] = {
         "baseline_effect": df[(df.grating == 0.4) & (df.noiseType == "baseline")].reset_index(
             drop=True
         ),
-        "noise_effect": df[(df.grating == 0.4) & (df.noiseType == str(n))].reset_index(drop=True),
+        "noise_effect": df[(df.grating == 0.4) & (df.noiseType == str(noise_freq))].reset_index(
+            drop=True
+        ),
     }
     return stim
 
@@ -1387,19 +1446,21 @@ def grating04_NB300_model(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    n = 3.00
+    noise_freq = 3.00
     stim = white04_model(ppd)
-    noise = _create_noise(n, ppd)
+    noise = _create_noise(noise_freq, ppd)
 
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
     stim["noise_contrast"] = NOISE_CONTRAST
-    stim["noise_frequency"] = n
+    stim["noise_frequency"] = noise_freq
     stim["experimental_data"] = {
         "baseline_effect": df[(df.grating == 0.4) & (df.noiseType == "baseline")].reset_index(
             drop=True
         ),
-        "noise_effect": df[(df.grating == 0.4) & (df.noiseType == str(n))].reset_index(drop=True),
+        "noise_effect": df[(df.grating == 0.4) & (df.noiseType == str(noise_freq))].reset_index(
+            drop=True
+        ),
     }
     return stim
 
@@ -1424,19 +1485,21 @@ def grating04_NB520_model(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    n = 5.20
+    noise_freq = 5.20
     stim = white04_model(ppd)
-    noise = _create_noise(n, ppd)
+    noise = _create_noise(noise_freq, ppd)
 
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
     stim["noise_contrast"] = NOISE_CONTRAST
-    stim["noise_frequency"] = n
+    stim["noise_frequency"] = noise_freq
     stim["experimental_data"] = {
         "baseline_effect": df[(df.grating == 0.4) & (df.noiseType == "baseline")].reset_index(
             drop=True
         ),
-        "noise_effect": df[(df.grating == 0.4) & (df.noiseType == str(n))].reset_index(drop=True),
+        "noise_effect": df[(df.grating == 0.4) & (df.noiseType == str(noise_freq))].reset_index(
+            drop=True
+        ),
     }
     return stim
 
@@ -1461,19 +1524,21 @@ def grating04_NB900_model(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    n = 9.00
+    noise_freq = 9.00
     stim = white04_model(ppd)
-    noise = _create_noise(n, ppd)
+    noise = _create_noise(noise_freq, ppd)
 
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
     stim["noise_contrast"] = NOISE_CONTRAST
-    stim["noise_frequency"] = n
+    stim["noise_frequency"] = noise_freq
     stim["experimental_data"] = {
         "baseline_effect": df[(df.grating == 0.4) & (df.noiseType == "baseline")].reset_index(
             drop=True
         ),
-        "noise_effect": df[(df.grating == 0.4) & (df.noiseType == str(n))].reset_index(drop=True),
+        "noise_effect": df[(df.grating == 0.4) & (df.noiseType == str(noise_freq))].reset_index(
+            drop=True
+        ),
     }
     return stim
 
@@ -1499,19 +1564,21 @@ def grating02_NB058_model(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    n = 0.58
+    noise_freq = 0.58
     stim = white02_model(ppd)
-    noise = _create_noise(n, ppd)
+    noise = _create_noise(noise_freq, ppd)
 
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
     stim["noise_contrast"] = NOISE_CONTRAST
-    stim["noise_frequency"] = n
+    stim["noise_frequency"] = noise_freq
     stim["experimental_data"] = {
         "baseline_effect": df[(df.grating == 0.2) & (df.noiseType == "baseline")].reset_index(
             drop=True
         ),
-        "noise_effect": df[(df.grating == 0.2) & (df.noiseType == str(n))].reset_index(drop=True),
+        "noise_effect": df[(df.grating == 0.2) & (df.noiseType == str(noise_freq))].reset_index(
+            drop=True
+        ),
     }
     return stim
 
@@ -1536,19 +1603,21 @@ def grating02_NB100_model(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    n = 1.00
+    noise_freq = 1.00
     stim = white02_model(ppd)
-    noise = _create_noise(n, ppd)
+    noise = _create_noise(noise_freq, ppd)
 
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
     stim["noise_contrast"] = NOISE_CONTRAST
-    stim["noise_frequency"] = n
+    stim["noise_frequency"] = noise_freq
     stim["experimental_data"] = {
         "baseline_effect": df[(df.grating == 0.2) & (df.noiseType == "baseline")].reset_index(
             drop=True
         ),
-        "noise_effect": df[(df.grating == 0.2) & (df.noiseType == str(n))].reset_index(drop=True),
+        "noise_effect": df[(df.grating == 0.2) & (df.noiseType == str(noise_freq))].reset_index(
+            drop=True
+        ),
     }
     return stim
 
@@ -1573,19 +1642,21 @@ def grating02_NB173_model(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    n = 1.73
+    noise_freq = 1.73
     stim = white02_model(ppd)
-    noise = _create_noise(n, ppd)
+    noise = _create_noise(noise_freq, ppd)
 
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
     stim["noise_contrast"] = NOISE_CONTRAST
-    stim["noise_frequency"] = n
+    stim["noise_frequency"] = noise_freq
     stim["experimental_data"] = {
         "baseline_effect": df[(df.grating == 0.2) & (df.noiseType == "baseline")].reset_index(
             drop=True
         ),
-        "noise_effect": df[(df.grating == 0.2) & (df.noiseType == str(n))].reset_index(drop=True),
+        "noise_effect": df[(df.grating == 0.2) & (df.noiseType == str(noise_freq))].reset_index(
+            drop=True
+        ),
     }
     return stim
 
@@ -1610,19 +1681,21 @@ def grating02_NB300_model(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    n = 3.00
+    noise_freq = 3.00
     stim = white02_model(ppd)
-    noise = _create_noise(n, ppd)
+    noise = _create_noise(noise_freq, ppd)
 
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
     stim["noise_contrast"] = NOISE_CONTRAST
-    stim["noise_frequency"] = n
+    stim["noise_frequency"] = noise_freq
     stim["experimental_data"] = {
         "baseline_effect": df[(df.grating == 0.2) & (df.noiseType == "baseline")].reset_index(
             drop=True
         ),
-        "noise_effect": df[(df.grating == 0.2) & (df.noiseType == str(n))].reset_index(drop=True),
+        "noise_effect": df[(df.grating == 0.2) & (df.noiseType == str(noise_freq))].reset_index(
+            drop=True
+        ),
     }
     return stim
 
@@ -1647,19 +1720,21 @@ def grating02_NB520_model(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    n = 5.20
+    noise_freq = 5.20
     stim = white02_model(ppd)
-    noise = _create_noise(n, ppd)
+    noise = _create_noise(noise_freq, ppd)
 
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
     stim["noise_contrast"] = NOISE_CONTRAST
-    stim["noise_frequency"] = n
+    stim["noise_frequency"] = noise_freq
     stim["experimental_data"] = {
         "baseline_effect": df[(df.grating == 0.2) & (df.noiseType == "baseline")].reset_index(
             drop=True
         ),
-        "noise_effect": df[(df.grating == 0.2) & (df.noiseType == str(n))].reset_index(drop=True),
+        "noise_effect": df[(df.grating == 0.2) & (df.noiseType == str(noise_freq))].reset_index(
+            drop=True
+        ),
     }
     return stim
 
@@ -1684,19 +1759,21 @@ def grating02_NB900_model(ppd=PPD):
         filtering models of lightness perception. Journal of Vision, 15(14), 1,
         https://doi.org/10.1167/15.14.1.
     """
-    n = 9.00
+    noise_freq = 9.00
     stim = white04_model(ppd)
-    noise = _create_noise(n, ppd)
+    noise = _create_noise(noise_freq, ppd)
 
     stim["noise"] = noise
     stim["img"] = stim["img"] + noise
     stim["noise_contrast"] = NOISE_CONTRAST
-    stim["noise_frequency"] = n
+    stim["noise_frequency"] = noise_freq
     stim["experimental_data"] = {
         "baseline_effect": df[(df.grating == 0.2) & (df.noiseType == "baseline")].reset_index(
             drop=True
         ),
-        "noise_effect": df[(df.grating == 0.2) & (df.noiseType == str(n))].reset_index(drop=True),
+        "noise_effect": df[(df.grating == 0.2) & (df.noiseType == str(noise_freq))].reset_index(
+            drop=True
+        ),
     }
     return stim
 
