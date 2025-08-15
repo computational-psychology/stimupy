@@ -6,26 +6,24 @@ This module reproduces all stimuli used by Betz, Shapley, Wichmann, & Maertens
 effect and the baseline effect for each subject.
 
 Each stimulus is provided by a separate function,
-a full list can be found as stimupy.papers.betz2015.__all__
+which can be listed using
+
+    >>> import stimupy.papers.betz2015
+    >>> help(stimupy.papers.betz2015
 
 The output of each of these functions is a stimulus dictionary.
 
-For a visual representation of all the stimuli, simply run this module as a
-script:
+For a visual representation of all the stimuli
+simply run this module from the shell
 
-    $ python stimuli/papers/betz2015.py
-
-Attributes
-----------
-__all__ (list of str): list of all stimulus-functions
-    that are exported by this module when executing
-        >>> from stimupy.papers.betz2015 import *
+    $ python -m stimupy.papers.betz2015
 
 References
 ----------
 Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
-    Noise masking of White’s illusion exposes the weakness of current spatial
-    filtering models of lightness perception. Journal of Vision, 15(14), 1,
+    Noise masking of White's illusion exposes the weakness of
+    current spatial filtering models of lightness perception.
+    Journal of Vision, 15(14), 1,
     https://doi.org/10.1167/15.14.1.
 """
 
@@ -93,6 +91,20 @@ df = pd.read_csv(Path(__file__).parents[0] / "betz2015_data.csv")
 
 # %% Functions to generate stimuli (components)
 def gen_all(ppd=PPD, skip=False):
+    """Generate all stimuli in the module.
+
+    Parameters
+    ----------
+    ppd : float, optional
+        Pixels per degree, used for setting the visual size, by default 80.
+    skip : bool, optional
+        If True, skip stimuli that aren't implemented, by default False.
+
+    Returns
+    -------
+    dict
+        Dictionary of all stimulus dicts, keyed by name.
+    """
     stims = {}  # save the stimulus-dicts in a larger dict, with name as key
     for stim_name in __all__:
         print(f"Generating betz2015.{stim_name}")
@@ -115,6 +127,25 @@ def gen_all(ppd=PPD, skip=False):
 
 
 def white08_human(ppd=PPD):
+    """White stimulus (0.8 cpd) for human experiments from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    References
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     bw = np.round(0.638 * ppd) / ppd
 
     stim = white(
@@ -133,6 +164,25 @@ def white08_human(ppd=PPD):
 
 
 def white08_model(ppd=PPD):
+    """White stimulus (0.8 cpd) for model simulations from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    References
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     bw = np.round(0.638 * ppd) / ppd
 
     stim = white_two_rows(
@@ -153,6 +203,25 @@ def white08_model(ppd=PPD):
 
 
 def white04_human(ppd=PPD):
+    """White stimulus (0.4 cpd) for human experiments from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     bw = np.round(1.276 * ppd) / ppd
 
     stim = white(
@@ -171,6 +240,25 @@ def white04_human(ppd=PPD):
 
 
 def white04_model(ppd=PPD):
+    """White stimulus (0.4 cpd) for model simulations from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     bw = np.round(1.276 * ppd) / ppd
 
     stim = white_two_rows(
@@ -191,6 +279,25 @@ def white04_model(ppd=PPD):
 
 
 def white02_human(ppd=PPD):
+    """White stimulus (0.2 cpd) for human experiments from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     bw = np.round(2.552 * ppd) / ppd
 
     stim = white(
@@ -209,6 +316,25 @@ def white02_human(ppd=PPD):
 
 
 def white02_model(ppd=PPD):
+    """White stimulus (0.2 cpd) for model simulations from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     bw = np.round(2.552 * ppd) / ppd
 
     stim = white_two_rows(
@@ -239,6 +365,25 @@ def _create_noise(n, ppd):
 
 # %% High spatial frequency grating: Human experiment
 def grating08_NB058_human(ppd=PPD):
+    """White stimulus (0.8 cpd) masked with 0.58 cpd noise for human experiments from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     n = 0.58
     stim = white08_human(ppd)
     noise = _create_noise(n, ppd)
@@ -257,6 +402,25 @@ def grating08_NB058_human(ppd=PPD):
 
 
 def grating08_NB100_human(ppd=PPD):
+    """White stimulus (0.8 cpd) masked with 1.00 cpd noise for human experiments from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     n = 1.00
     stim = white08_human(ppd)
     noise = _create_noise(n, ppd)
@@ -275,6 +439,25 @@ def grating08_NB100_human(ppd=PPD):
 
 
 def grating08_NB173_human(ppd=PPD):
+    """White stimulus (0.8 cpd) masked with 1.73 cpd noise for human experiments from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     n = 1.73
     stim = white08_human(ppd)
     noise = _create_noise(n, ppd)
@@ -293,6 +476,25 @@ def grating08_NB173_human(ppd=PPD):
 
 
 def grating08_NB300_human(ppd=PPD):
+    """White stimulus (0.8 cpd) masked with 3.00 cpd noise for human experiments from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     n = 3.00
     stim = white08_human(ppd)
     noise = _create_noise(n, ppd)
@@ -311,6 +513,25 @@ def grating08_NB300_human(ppd=PPD):
 
 
 def grating08_NB520_human(ppd=PPD):
+    """White stimulus (0.8 cpd) masked with 5.20 cpd noise for human experiments from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     n = 5.20
     stim = white08_human(ppd)
     noise = _create_noise(n, ppd)
@@ -329,6 +550,25 @@ def grating08_NB520_human(ppd=PPD):
 
 
 def grating08_NB900_human(ppd=PPD):
+    """White stimulus (0.8 cpd) masked with 9.00 cpd noise for human experiments from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     n = 9.00
     stim = white08_human(ppd)
     noise = _create_noise(n, ppd)
@@ -348,6 +588,25 @@ def grating08_NB900_human(ppd=PPD):
 
 # %% Mid spatial frequency grating: Human experiment
 def grating04_NB058_human(ppd=PPD):
+    """White stimulus (0.4 cpd) masked with 0.58 cpd noise for human experiments from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     n = 0.58
     stim = white04_human(ppd)
     noise = _create_noise(n, ppd)
@@ -366,6 +625,25 @@ def grating04_NB058_human(ppd=PPD):
 
 
 def grating04_NB100_human(ppd=PPD):
+    """White stimulus (0.4 cpd) masked with 1.00 cpd noise for human experiments from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     n = 1.00
     stim = white04_human(ppd)
     noise = _create_noise(n, ppd)
@@ -384,6 +662,25 @@ def grating04_NB100_human(ppd=PPD):
 
 
 def grating04_NB173_human(ppd=PPD):
+    """White stimulus (0.4 cpd) masked with 1.73 cpd noise for human experiments from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     n = 1.73
     stim = white04_human(ppd)
     noise = _create_noise(n, ppd)
@@ -402,6 +699,25 @@ def grating04_NB173_human(ppd=PPD):
 
 
 def grating04_NB300_human(ppd=PPD):
+    """White stimulus (0.4 cpd) masked with 3.00 cpd noise for human experiments from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     n = 3.00
     stim = white04_human(ppd)
     noise = _create_noise(n, ppd)
@@ -420,6 +736,25 @@ def grating04_NB300_human(ppd=PPD):
 
 
 def grating04_NB520_human(ppd=PPD):
+    """White stimulus (0.4 cpd) masked with 5.20 cpd noise for human experiments from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     n = 5.20
     stim = white04_human(ppd)
     noise = _create_noise(n, ppd)
@@ -438,6 +773,25 @@ def grating04_NB520_human(ppd=PPD):
 
 
 def grating04_NB900_human(ppd=PPD):
+    """White stimulus (0.4 cpd) masked with 9.00 cpd noise for human experiments from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     n = 9.00
     stim = white04_human(ppd)
     noise = _create_noise(n, ppd)
@@ -457,6 +811,25 @@ def grating04_NB900_human(ppd=PPD):
 
 # %% Low spatial frequency grating: Human experiment
 def grating02_NB058_human(ppd=PPD):
+    """White stimulus (0.2 cpd) masked with 0.58 cpd noise for human experiments from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     n = 0.58
     stim = white02_human(ppd)
     noise = _create_noise(n, ppd)
@@ -475,6 +848,25 @@ def grating02_NB058_human(ppd=PPD):
 
 
 def grating02_NB100_human(ppd=PPD):
+    """White stimulus (0.2 cpd) masked with 1.00 cpd noise for human experiments from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     n = 1.00
     stim = white02_human(ppd)
     noise = _create_noise(n, ppd)
@@ -493,6 +885,25 @@ def grating02_NB100_human(ppd=PPD):
 
 
 def grating02_NB173_human(ppd=PPD):
+    """White stimulus (0.2 cpd) masked with 1.73 cpd noise for human experiments from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     n = 1.73
     stim = white02_human(ppd)
     noise = _create_noise(n, ppd)
@@ -511,6 +922,25 @@ def grating02_NB173_human(ppd=PPD):
 
 
 def grating02_NB300_human(ppd=PPD):
+    """White stimulus (0.2 cpd) masked with 3.00 cpd noise for human experiments from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     n = 3.00
     stim = white02_human(ppd)
     noise = _create_noise(n, ppd)
@@ -529,6 +959,25 @@ def grating02_NB300_human(ppd=PPD):
 
 
 def grating02_NB520_human(ppd=PPD):
+    """White stimulus (0.2 cpd) masked with 5.20 cpd noise for human experiments from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     n = 5.20
     stim = white02_human(ppd)
     noise = _create_noise(n, ppd)
@@ -547,6 +996,25 @@ def grating02_NB520_human(ppd=PPD):
 
 
 def grating02_NB900_human(ppd=PPD):
+    """White stimulus (0.2 cpd) masked with 9.00 cpd noise for human experiments from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     n = 9.00
     stim = white04_human(ppd)
     noise = _create_noise(n, ppd)
@@ -566,6 +1034,25 @@ def grating02_NB900_human(ppd=PPD):
 
 # %% High spatial frequency grating: Modeling
 def grating08_NB058_model(ppd=PPD):
+    """White stimulus (0.8 cpd) masked with 0.58 cpd noise for model simulations from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     n = 0.58
     stim = white08_model(ppd)
     noise = _create_noise(n, ppd)
@@ -584,6 +1071,25 @@ def grating08_NB058_model(ppd=PPD):
 
 
 def grating08_NB100_model(ppd=PPD):
+    """White stimulus (0.8 cpd) masked with 1.00 cpd noise for model simulations from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     n = 1.00
     stim = white08_model(ppd)
     noise = _create_noise(n, ppd)
@@ -602,6 +1108,25 @@ def grating08_NB100_model(ppd=PPD):
 
 
 def grating08_NB173_model(ppd=PPD):
+    """White stimulus (0.8 cpd) masked with 1.73 cpd noise for model simulations from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     n = 1.73
     stim = white08_model(ppd)
     noise = _create_noise(n, ppd)
@@ -620,6 +1145,25 @@ def grating08_NB173_model(ppd=PPD):
 
 
 def grating08_NB300_model(ppd=PPD):
+    """White stimulus (0.8 cpd) masked with 3.00 cpd noise for model simulations from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     n = 3.00
     stim = white08_model(ppd)
     noise = _create_noise(n, ppd)
@@ -638,6 +1182,25 @@ def grating08_NB300_model(ppd=PPD):
 
 
 def grating08_NB520_model(ppd=PPD):
+    """White stimulus (0.8 cpd) masked with 5.20 cpd noise for model simulations from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     n = 5.20
     stim = white08_model(ppd)
     noise = _create_noise(n, ppd)
@@ -656,6 +1219,25 @@ def grating08_NB520_model(ppd=PPD):
 
 
 def grating08_NB900_model(ppd=PPD):
+    """White stimulus (0.8 cpd) masked with 9.00 cpd noise for model simulations from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     n = 9.00
     stim = white08_model(ppd)
     noise = _create_noise(n, ppd)
@@ -673,8 +1255,27 @@ def grating08_NB900_model(ppd=PPD):
     return stim
 
 
-# %% Mid spatial frequency grating: Human experiment
+# %% Mid spatial frequency grating: Modeling
 def grating04_NB058_model(ppd=PPD):
+    """White stimulus (0.4 cpd) masked with 0.58 cpd noise for model simulations from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     n = 0.58
     stim = white04_model(ppd)
     noise = _create_noise(n, ppd)
@@ -693,6 +1294,25 @@ def grating04_NB058_model(ppd=PPD):
 
 
 def grating04_NB100_model(ppd=PPD):
+    """White stimulus (0.4 cpd) masked with 1.00 cpd noise for model simulations from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     n = 1.00
     stim = white04_model(ppd)
     noise = _create_noise(n, ppd)
@@ -711,6 +1331,25 @@ def grating04_NB100_model(ppd=PPD):
 
 
 def grating04_NB173_model(ppd=PPD):
+    """White stimulus (0.4 cpd) masked with 1.73 cpd noise for model simulations from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     n = 1.73
     stim = white04_model(ppd)
     noise = _create_noise(n, ppd)
@@ -729,6 +1368,25 @@ def grating04_NB173_model(ppd=PPD):
 
 
 def grating04_NB300_model(ppd=PPD):
+    """White stimulus (0.4 cpd) masked with 3.00 cpd noise for model simulations from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     n = 3.00
     stim = white04_model(ppd)
     noise = _create_noise(n, ppd)
@@ -747,6 +1405,25 @@ def grating04_NB300_model(ppd=PPD):
 
 
 def grating04_NB520_model(ppd=PPD):
+    """White stimulus (0.4 cpd) masked with 5.20 cpd noise for model simulations from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     n = 5.20
     stim = white04_model(ppd)
     noise = _create_noise(n, ppd)
@@ -765,6 +1442,25 @@ def grating04_NB520_model(ppd=PPD):
 
 
 def grating04_NB900_model(ppd=PPD):
+    """White stimulus (0.4 cpd) masked with 9.00 cpd noise for model simulations from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     n = 9.00
     stim = white04_model(ppd)
     noise = _create_noise(n, ppd)
@@ -782,8 +1478,27 @@ def grating04_NB900_model(ppd=PPD):
     return stim
 
 
-# %% Low spatial frequency grating: Human experiment
+# %% Low spatial frequency grating: Modeling
 def grating02_NB058_model(ppd=PPD):
+    """White stimulus (0.2 cpd) masked with 0.58 cpd noise for model simulations from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     n = 0.58
     stim = white02_model(ppd)
     noise = _create_noise(n, ppd)
@@ -802,6 +1517,25 @@ def grating02_NB058_model(ppd=PPD):
 
 
 def grating02_NB100_model(ppd=PPD):
+    """White stimulus (0.2 cpd) masked with 1.00 cpd noise for model simulations from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     n = 1.00
     stim = white02_model(ppd)
     noise = _create_noise(n, ppd)
@@ -820,6 +1554,25 @@ def grating02_NB100_model(ppd=PPD):
 
 
 def grating02_NB173_model(ppd=PPD):
+    """White stimulus (0.2 cpd) masked with 1.73 cpd noise for model simulations from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     n = 1.73
     stim = white02_model(ppd)
     noise = _create_noise(n, ppd)
@@ -838,6 +1591,25 @@ def grating02_NB173_model(ppd=PPD):
 
 
 def grating02_NB300_model(ppd=PPD):
+    """White stimulus (0.2 cpd) masked with 3.00 cpd noise for model simulations from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     n = 3.00
     stim = white02_model(ppd)
     noise = _create_noise(n, ppd)
@@ -856,6 +1628,25 @@ def grating02_NB300_model(ppd=PPD):
 
 
 def grating02_NB520_model(ppd=PPD):
+    """White stimulus (0.2 cpd) masked with 5.20 cpd noise for model simulations from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     n = 5.20
     stim = white02_model(ppd)
     noise = _create_noise(n, ppd)
@@ -874,6 +1665,25 @@ def grating02_NB520_model(ppd=PPD):
 
 
 def grating02_NB900_model(ppd=PPD):
+    """White stimulus (0.2 cpd) masked with 9.00 cpd noise for model simulations from Betz (2015).
+
+    Parameters
+    ----------
+    ppd : float
+        Pixels per degree, used for setting the visual size.
+
+    Returns
+    -------
+    dict of str
+        Dictionary with the stimulus (key: "img") and additional keys containing stimulus parameters.
+
+    Reference
+    ----------
+    Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
+        Noise masking of White's illusion exposes the weakness of current spatial
+        filtering models of lightness perception. Journal of Vision, 15(14), 1,
+        https://doi.org/10.1167/15.14.1.
+    """
     n = 9.00
     stim = white04_model(ppd)
     noise = _create_noise(n, ppd)
