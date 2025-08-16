@@ -27,6 +27,7 @@ Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
     https://doi.org/10.1167/15.14.1.
 """
 
+import logging
 from pathlib import Path
 import numpy as np
 import pandas as pd
@@ -34,6 +35,9 @@ import pandas as pd
 from stimupy.stimuli.whites import white, white_two_rows
 from stimupy.noises.narrowbands import narrowband as narrowband_noise
 from stimupy.utils import rotate_dict, pad_dict_to_visual_size
+
+# Get module level logger
+logger = logging.getLogger("stimupy.papers.betz2015")
 
 __all__ = [
     # Stimuli used for human experiment
@@ -107,7 +111,7 @@ def gen_all(ppd=PPD, skip=False):
     """
     stims = {}  # save the stimulus-dicts in a larger dict, with name as key
     for stim_name in __all__:
-        print(f"Generating betz2015.{stim_name}")
+        logger.info(f"Generating betz2015.{stim_name}")
 
         # Get a reference to the actual function
         func = globals()[stim_name]
@@ -120,7 +124,7 @@ def gen_all(ppd=PPD, skip=False):
             if not skip:
                 raise e
             # Skip stimuli that aren't implemented
-            print("-- not implemented")
+            logger.info("-- not implemented")
             pass
 
     return stims
@@ -1752,6 +1756,10 @@ def grating02_NB900_model(ppd=PPD):
 # %% Main script
 if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
+
+    # Log to console at INFO level
+    logger.setLevel(logging.INFO)
+    logger.addHandler(logging.StreamHandler())
 
     stims = gen_all(skip=True)
     plot_stimuli(stims, mask=False, vmin=0, vmax=100)
