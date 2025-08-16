@@ -30,6 +30,8 @@ Robinson, A. E., Hammon, P. S., & de Sa, V. R. (2007).
     https://doi.org/10.1016/j.visres.2007.02.017
 """
 
+import logging
+
 import numpy as np
 
 import stimupy
@@ -42,6 +44,9 @@ from stimupy.utils import (
     rotate_dict,
     stack_dicts,
 )
+
+# Get module level logger
+logger = logging.getLogger("stimupy.papers.RHS2007")
 
 __all__ = [
     "WE_thick",
@@ -84,7 +89,7 @@ v1, v2, v3 = 0.0, 0.5, 1.0
 def gen_all(ppd=PPD, pad=True, skip=False):
     stims = {}  # save the stimulus-dicts in a larger dict, with name as key
     for stim_name in __all__:
-        print(f"Generating RHS2007.{stim_name}")
+        logger.info(f"Generating RHS2007.{stim_name}")
 
         # Get a reference to the actual function
         func = globals()[stim_name]
@@ -97,7 +102,7 @@ def gen_all(ppd=PPD, pad=True, skip=False):
             if not skip:
                 raise e
             # Skip stimuli that aren't implemented
-            print("-- not implemented")
+            logger.info("-- not implemented")
             pass
 
     return stims
@@ -1874,6 +1879,10 @@ def bullseye_thick(ppd=PPD, pad=True):
 
 if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
+
+    # Log to console at INFO level
+    logger.setLevel(logging.INFO)
+    logger.addHandler(logging.StreamHandler())
 
     stims = gen_all(pad=True, skip=True)
     plot_stimuli(stims, mask=True)

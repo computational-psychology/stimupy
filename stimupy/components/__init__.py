@@ -1,10 +1,15 @@
 import itertools
+import logging
 
 import numpy as np
 
 from stimupy.components import *  # angulars, edges, frames, gaussians, lines, radials, shapes, waves
 from stimupy.components import texts
 from stimupy.utils import resolution
+
+
+# Get module level logger
+logger = logging.getLogger("stimupy.components")
 
 __all__ = [
     "overview",
@@ -276,7 +281,7 @@ def overview(skip=False):
         ]:
             continue
 
-        print(f"Generating stimuli from {stimmodule_name}")
+        logger.info(f"Generating stimuli from {stimmodule_name}")
         # Get a reference to the actual module
         stimmodule = globals()[stimmodule_name]
         try:
@@ -288,7 +293,7 @@ def overview(skip=False):
             if not skip:
                 raise e
             # Skip stimuli that aren't implemented
-            print("-- not implemented")
+            logger.info("-- not implemented")
             pass
 
     return stimuli
@@ -318,4 +323,8 @@ def plot_overview(mask=False, save=None, units="deg"):
 
 
 if __name__ == "__main__":
+    # Log to console at INFO level
+    logger.setLevel(logging.INFO)
+    logger.addHandler(logging.StreamHandler())
+
     plot_overview()

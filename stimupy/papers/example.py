@@ -15,7 +15,11 @@ reference information here
 
 """
 
+import logging
+
 from stimupy.components import combine_masks, draw_regions, shapes
+
+logger = logging.getLogger("stimupy.papers.example")
 
 # Define original size resolution parameters
 VISUAL_SIZE = (10, 12)
@@ -25,6 +29,28 @@ __all__ = [
     "my_bullseye",
     "my_inverse_bullseye",
 ]
+
+
+def gen_all(ppd=PPD, skip=False):
+    stims = {}  # save the stimulus-dicts in a larger dict, with name as key
+    for stim_name in __all__:
+        logger.info(f"Generating example.{stim_name}")
+
+        # Get a reference to the actual function
+        func = globals()[stim_name]
+        try:
+            stim = func(ppd=ppd)
+
+            # Accumulate
+            stims[stim_name] = stim
+        except NotImplementedError as e:
+            if not skip:
+                raise e
+            # Skip stimuli that aren't implemented
+            logger.info("-- not implemented")
+            pass
+
+    return stims
 
 
 # Helper function:
@@ -136,3 +162,14 @@ def my_inverse_bullseye(ppd=PPD):
 
     # Output
     return stim
+
+
+if __name__ == "__main__":
+    from stimupy.utils import plot_stimuli
+
+    # Log to console at INFO level
+    logger.setLevel(logging.INFO)
+    logger.addHandler(logging.StreamHandler())
+
+    stims = gen_all(skip=True)
+    plot_stimuli(stims, mask=False)
