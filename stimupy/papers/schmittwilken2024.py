@@ -25,6 +25,7 @@ Schmittwilken, L., Wichmann, F. A., & Maertens, M. (2024).
     https://doi.org/10.1016/j.visres.2024.108450
 """
 
+import logging
 from pathlib import Path
 import numpy as np
 import warnings
@@ -36,6 +37,9 @@ from stimupy.noises.narrowbands import narrowband as create_narrownoise
 from stimupy.noises.naturals import one_over_f as create_pinknoise
 from stimupy.utils import rotate_dict
 from enum import Enum, auto
+
+# Get module level logger
+logger = logging.getLogger("stimupy.papers.schmittwilken2024")
 
 
 # Enum for noise type only
@@ -88,7 +92,7 @@ df = pd.read_csv(Path(__file__).parents[0] / "schmittwilken2024_data.csv")
 def gen_all(ppd=PPD, skip=False):
     stims = {}  # save the stimulus-dicts in a larger dict, with name as key
     for stim_name in __all__:
-        print(f"Generating schmittwilken2024.{stim_name}")
+        logger.info(f"Generating schmittwilken2024.{stim_name}")
 
         # Get a reference to the actual function
         func = globals()[stim_name]
@@ -101,7 +105,7 @@ def gen_all(ppd=PPD, skip=False):
             if not skip:
                 raise e
             # Skip stimuli that aren't implemented
-            print("-- not implemented")
+            logger.info("-- not implemented")
             pass
 
     return stims
@@ -1264,6 +1268,10 @@ def edge9_NB9(ppd=PPD, contrastID=4):
 # %% Main script
 if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
+
+    # Log to console at INFO level
+    logger.setLevel(logging.INFO)
+    logger.addHandler(logging.StreamHandler())
 
     stims = gen_all(skip=True)
     plot_stimuli(stims, mask=False, units="visual_size", vmin=0, vmax=200)
