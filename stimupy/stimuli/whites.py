@@ -810,7 +810,7 @@ def overview(**kwargs):
     """
     default_params = {
         "visual_size": 10,
-        "ppd": 30,
+        "ppd": 32,
     }
     default_params.update(kwargs)
 

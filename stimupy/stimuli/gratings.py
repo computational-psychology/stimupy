@@ -588,13 +588,13 @@ def overview(**kwargs):
         dict with all stimuli containing individual stimulus dicts.
     """
     params = {
-        "ppd": 40,
-        "n_bars": 8,
+        "ppd": 32,
+        "n_bars": 5,
         "bar_width": 1.0,
     }
 
     small_grating = {
-        "ppd": 40,
+        "ppd": 32,
         "bar_width": 1.0,
         "n_bars": 7,
         "intensity_bars": (0.2, 0.8),
@@ -603,7 +603,7 @@ def overview(**kwargs):
     }
 
     large_grating = {
-        "ppd": 40,
+        "ppd": 32,
         "bar_width": 1.0,
         "n_bars": 21,
     }

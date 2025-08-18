@@ -27,6 +27,7 @@ Bindmann, D. & Chubb, C. (2004). Brightness assimilation in bullseye displays.
 """
 
 import copy
+import logging
 import warnings
 
 import numpy as np
@@ -34,6 +35,9 @@ import numpy as np
 from stimupy import bullseyes
 from stimupy.utils.contrast_conversions import adapt_intensity_range_dict
 from stimupy.utils.pad import pad_dict_by_visual_size
+
+# Get module level logger
+logger = logging.getLogger("stimupy.papers.bindmann2004")
 
 __all__ = [
     "bullseye_thin_gw45_gb31",
@@ -90,7 +94,7 @@ ORIGIN = "mean"
 def gen_all(ppd=PPD, skip=False):
     stims = {}  # save the stimulus-dicts in a larger dict, with name as key
     for stim_name in __all__:
-        print(f"Generating bindmann2004.{stim_name}")
+        logger.info(f"Generating bindmann2004.{stim_name}")
 
         # Get a reference to the actual function
         func = globals()[stim_name]
@@ -103,7 +107,7 @@ def gen_all(ppd=PPD, skip=False):
             if not skip:
                 raise e
             # Skip stimuli that aren't implemented
-            print("-- not implemented")
+            logger.info("-- not implemented")
             pass
 
     return stims
@@ -1995,6 +1999,10 @@ def bullseye_thick_gw75_gb89(ppd=PPD):
 
 if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
+
+    # Log to console at INFO level
+    logger.setLevel(logging.INFO)
+    logger.addHandler(logging.StreamHandler())
 
     stims = gen_all(skip=True)
     plot_stimuli(stims, mask=False)

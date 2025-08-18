@@ -1,4 +1,9 @@
+import logging
+
 import numpy as np
+
+# Get module level logger
+logger = logging.getLogger("stimupy.noises")
 
 
 def randomize_sign(array, rng=None):
@@ -182,12 +187,10 @@ def overview(skip=False):
         ]:
             continue
 
-        print(f"Generating stimuli from {stimmodule_name}")
+        logger.info(f"Generating stimuli from {stimmodule_name}")
         # Get a reference to the actual module
-        # print(globals())
         stimmodule = globals()[stimmodule_name]
 
-        print(stimmodule)
         try:
             stims = stimmodule.overview()
 
@@ -197,7 +200,7 @@ def overview(skip=False):
             if not skip:
                 raise e
             # Skip stimuli that aren't implemented
-            print("-- not implemented")
+            logger.info("-- not implemented")
             pass
 
     return stimuli
@@ -227,4 +230,8 @@ def plot_overview(mask=False, save=None, units="deg"):
 
 
 if __name__ == "__main__":
+    # Log to console at INFO level
+    logger.setLevel(logging.INFO)
+    logger.addHandler(logging.StreamHandler())
+
     plot_overview()
