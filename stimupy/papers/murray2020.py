@@ -31,6 +31,7 @@ Murray, R. F. (2020).
     https://doi.org/10/gh57gf
 """
 
+import logging
 import os.path
 
 import numpy as np
@@ -38,6 +39,9 @@ import scipy.io
 
 import stimupy
 from stimupy.utils import pad_dict_by_visual_size, rotate_dict
+
+# Get module level logger
+logger = logging.getLogger("stimupy.papers.murray2020")
 
 __all__ = [
     "argyle",
@@ -65,7 +69,7 @@ PAD = True
 def gen_all(skip=False):
     stims = {}  # save the stimulus-dicts in a larger dict, with name as key
     for stim_name in __all__:
-        print(f"Generating murray2020.{stim_name}")
+        logger.info(f"Generating murray2020.{stim_name}")
 
         # Get a reference to the actual function
         func = globals()[stim_name]
@@ -78,7 +82,7 @@ def gen_all(skip=False):
             if not skip:
                 raise e
             # Skip stimuli that aren't implemented
-            print("-- not implemented")
+            logger.info("-- not implemented")
             pass
 
     return stims
@@ -767,6 +771,10 @@ def white(ppd=PPD):
 
 if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
+
+    # Log to console at INFO level
+    logger.setLevel(logging.INFO)
+    logger.addHandler(logging.StreamHandler())
 
     # Generate all stimuli exported in __all__
     stims = gen_all(skip=True)

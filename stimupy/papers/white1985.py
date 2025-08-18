@@ -29,11 +29,15 @@ White, M. & White, T. (1985).
 """
 
 import copy
+import logging
 import warnings
 
 import numpy as np
 
 from stimupy import gratings
+
+# Get module level logger
+logger = logging.getLogger("stimupy.papers.white1985")
 
 __all__ = [
     "wide_0phase",
@@ -66,7 +70,7 @@ COMMON_PARAMS = {
 def gen_all(ppd=PPD, skip=False):
     stims = {}  # save the stimulus-dicts in a larger dict, with name as key
     for stim_name in __all__:
-        print(f"Generating white1981.{stim_name}")
+        logger.info(f"Generating white1981.{stim_name}")
 
         # Get a reference to the actual function
         func = globals()[stim_name]
@@ -79,7 +83,7 @@ def gen_all(ppd=PPD, skip=False):
             if not skip:
                 raise e
             # Skip stimuli that aren't implemented
-            print("-- not implemented")
+            logger.info("-- not implemented")
             pass
 
     return stims
@@ -602,6 +606,10 @@ def square_180phase(ppd=PPD):
 
 if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
+
+    # Log to console at INFO level
+    logger.setLevel(logging.INFO)
+    logger.addHandler(logging.StreamHandler())
 
     stims = gen_all(skip=True)
     plot_stimuli(stims, mask=False)

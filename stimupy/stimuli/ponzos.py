@@ -167,13 +167,13 @@ def overview(**kwargs):
     """
     default_params = {
         "visual_size": 10,
-        "ppd": 20,
+        "ppd": 32,
     }
     default_params.update(kwargs)
 
     # fmt: off
     stimuli = {
-        "ponzo": ponzo(**default_params, outer_lines_angle=10, outer_lines_length=8, target_lines_length=3, target_distance=5)
+        "ponzo": ponzo(**default_params, outer_lines_angle=10, outer_lines_length=8, outer_lines_width=1/default_params["ppd"], target_lines_width=1/default_params["ppd"],target_lines_length=3, target_distance=5)
     }
     # fmt: on
 

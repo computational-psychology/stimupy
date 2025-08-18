@@ -366,13 +366,13 @@ def overview(**kwargs):
     """
     default_params = {
         "visual_size": (10, 10),
-        "ppd": 10,
+        "ppd": 32,
     }
     default_params.update(kwargs)
 
     p = {
         "line_length": 2,
-        "line_width": 0.01,
+        "line_width": 1 / default_params["ppd"],
         "rotation": 30,
     }
 

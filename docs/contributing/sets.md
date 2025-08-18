@@ -99,7 +99,7 @@ A function to generate all stimuli in the set:
 def gen_all(ppd=PPD, skip=False):
     stims = {}  # save the stimulus-dicts in a larger dict, with name as key
     for stim_name in __all__:
-        print(f"Generating RHS2007.{stim_name}")
+        logger.info(f"Generating RHS2007.{stim_name}")
 
         # Get a reference to the actual function
         func = globals()[stim_name]
@@ -112,7 +112,7 @@ def gen_all(ppd=PPD, skip=False):
             if not skip:
                 raise e
             # Skip stimuli that aren't implemented
-            print("-- not implemented")
+            logger.info("-- not implemented")
             pass
 
     return stims

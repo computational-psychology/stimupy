@@ -441,13 +441,13 @@ def overview(**kwargs):
     stims : dict
         dict with all stimuli containing individual stimulus dicts.
     """
-    default_params = {"visual_size": (10, 10), "ppd": 30}
+    default_params = {"visual_size": (10, 10), "ppd": 32}
     default_params.update(kwargs)
 
     # fmt: off
     stimuli = {
         "checkerboard": checkerboard(**default_params, check_visual_size=(1, 1)),
-        "checkerboard_from_frequency": checkerboard(**default_params, frequency=1, rotation=45),
+        "checkerboard_from_frequency": checkerboard(**default_params, frequency=1, rotation=45, round_phase_width=False),
         "checkerboard_with_targets": checkerboard(**default_params, check_visual_size=(1, 1), target_indices=[(3, 2), (5, 5)]),
         "checkerboard_contrast_contrast": contrast_contrast(**default_params, check_visual_size=(1, 1), target_shape=4, alpha=0.2),
     }
