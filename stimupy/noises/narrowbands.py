@@ -38,6 +38,10 @@ def narrowband(
         be aware that not every instance has mean=(max-min)/2.
     pseudo_noise : bool
         if True, generate pseudo-random noise with ideal power spectrum.
+    rng : numpy.random.Generator, optional
+        Random number generator to use. If None, a new default_rng is created.
+        By passing in a custom rng, you can control the randomness of the noise generation,
+        e.g., make it replicable.
 
     Returns
     -------

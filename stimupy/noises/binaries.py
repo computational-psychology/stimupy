@@ -29,7 +29,9 @@ def binary(
         minimum and maximum intensity value; default: (0, 1).
         be aware that not every instance has mean=(max-min)/2.
     rng : numpy.random.Generator, optional
-        Random number generator instance
+        Random number generator to use. If None, a new default_rng is created.
+        By passing in a custom rng, you can control the randomness of the noise generation,
+        e.g., make it replicable.
 
     Returns
     -------

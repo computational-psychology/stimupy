@@ -8,6 +8,10 @@ def randomize_sign(array, rng=None):
     ----------
     array
         N-dimensional array
+    rng : numpy.random.Generator, optional
+        Random number generator to use. If None, a new default_rng is created.
+        By passing in a custom rng, you can control the randomness,
+        e.g., make it replicable.
 
     Returns
     -------
@@ -37,6 +41,10 @@ def pseudo_white_helper(
         Shape of noise patch in pixels (height, width)
     amplitude
         Amplitude of each (pos/neg) frequency component = A/2
+    rng : numpy.random.Generator, optional
+        Random number generator to use. If None, a new default_rng is created.
+        By passing in a custom rng, you can control the randomness of the noise generation,
+        e.g., make it replicable.
 
     Returns
     -------
@@ -72,6 +80,10 @@ def pseudo_white_spectrum(
         Shape of noise array in pixels (height, width)
     amplitude
         Amplitude of noise power spectrum
+    rng : numpy.random.Generator, optional
+        Random number generator to use. If None, a new default_rng is created.
+        By passing in a custom rng, you can control the randomness of the noise generation,
+        e.g., make it replicable.
 
     Returns
     -------
