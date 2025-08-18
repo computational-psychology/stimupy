@@ -13,6 +13,7 @@ def binary(
     ppd=None,
     shape=None,
     intensity_range=(0, 1),
+    rng=None,
 ):
     """Draw binary noise texture
 
@@ -27,6 +28,10 @@ def binary(
     intensity_range : Sequence[Number, Number]
         minimum and maximum intensity value; default: (0, 1).
         be aware that not every instance has mean=(max-min)/2.
+    rng : numpy.random.Generator, optional
+        Random number generator to use. If None, a new default_rng is created.
+        By passing in a custom rng, you can control the randomness of the noise generation,
+        e.g., make it replicable.
 
     Returns
     -------
@@ -40,7 +45,9 @@ def binary(
     if len(np.unique(ppd)) > 1:
         raise ValueError("ppd should be equal in x and y direction")
 
-    binary_noise = np.random.randint(0, 2, size=shape) - 0.5
+    if rng is None:
+        rng = np.random.default_rng()
+    binary_noise = rng.integers(0, 2, size=shape) - 0.5
 
     # Adjust intensity range:
     binary_noise = adapt_intensity_range(binary_noise, intensity_range[0], intensity_range[1])

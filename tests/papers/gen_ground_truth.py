@@ -15,6 +15,20 @@ for paper in papers:
     stims = paper_module.gen_all(skip=True)
 
     # Convert "img", "mask" to checksums
+    import numpy as np
+
+    for stim_name, stim in stims.items():
+        # Pass a fixed RNG to each stimulus function if possible
+        rng = np.random.default_rng(42)
+        if hasattr(paper_module, stim_name):
+            func = getattr(paper_module, stim_name)
+            try:
+                stim = func(rng=rng)
+            except TypeError:
+                # Fallback if function does not accept rng
+                stim = func()
+            stims[stim_name] = stim
+
     for stim in stims.values():
         img = stim["img"]
 
