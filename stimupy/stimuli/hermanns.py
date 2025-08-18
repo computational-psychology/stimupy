@@ -93,13 +93,13 @@ def overview(**kwargs):
     """
     default_params = {
         "visual_size": 10,
-        "ppd": 30,
+        "ppd": 32,
     }
     default_params.update(kwargs)
 
     # fmt: off
     stimuli = {
-        "hermann_grid": grid(**default_params, element_size=(1.5, 1.5, 0.2))
+        "hermann_grid": grid(**default_params, element_size=(1.5, 1.5, 0.1875))
     }
     # fmt: on
 

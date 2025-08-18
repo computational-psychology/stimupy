@@ -206,7 +206,7 @@ def overview(**kwargs):
     """
     default_params = {
         "visual_size": 15,
-        "ppd": 10,
+        "ppd": 32,
         "origin": "center",
         "phase_shift": 30,
     }

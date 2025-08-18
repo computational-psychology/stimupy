@@ -23,7 +23,7 @@ logger = logging.getLogger("stimupy.papers.example")
 
 # Define original size resolution parameters
 VISUAL_SIZE = (10, 12)
-PPD = 10
+PPD = 32
 
 __all__ = [
     "my_bullseye",

@@ -106,7 +106,7 @@ def overview(**kwargs):
     """
     default_params = {
         "visual_size": 10,
-        "ppd": 20,
+        "ppd": 32,
         "rotation": 45,
     }
     default_params.update(kwargs)
