@@ -1,146 +1,146 @@
 {
     "grating08_NB058_human": {
-        "img": "2ef3dd97799573659d68f02c589f6600",
+        "img": "9023ea5d689e382024072466765880eb",
         "mask": "40877dd297e9694bfae36ca0881aa802"
     },
     "grating08_NB100_human": {
-        "img": "f0aaa1779f5a268d0b88d8ec42485bdd",
+        "img": "28766ff5e52bd8274f4c2cc3d2731eb3",
         "mask": "40877dd297e9694bfae36ca0881aa802"
     },
     "grating08_NB173_human": {
-        "img": "f532822a7feb87fe84987ae543a0c285",
+        "img": "87cdb988e438cc50289677832073dc2b",
         "mask": "40877dd297e9694bfae36ca0881aa802"
     },
     "grating08_NB300_human": {
-        "img": "7f48fe0a6666ca0dea9e3a70a2abfb79",
+        "img": "1d655bd48794877b2dd196e22408c3c7",
         "mask": "40877dd297e9694bfae36ca0881aa802"
     },
     "grating08_NB520_human": {
-        "img": "c1c088669b6530d62b0fe2887deff7b2",
+        "img": "ca03b4af7ef4a49af14c50ff58efb8c0",
         "mask": "40877dd297e9694bfae36ca0881aa802"
     },
     "grating08_NB900_human": {
-        "img": "af9f2bb2e96050cd926dabea77201d79",
+        "img": "86305fb70128676f3e44a33aabd5dee0",
         "mask": "40877dd297e9694bfae36ca0881aa802"
     },
     "grating04_NB058_human": {
-        "img": "1452a80cd8588c090f2860e1e6184367",
-        "mask": "a5ed7f74441aba2ec0de8f20a72e444c"
+        "img": "298b114def53c68fc7552a4a638ca09a",
+        "mask": "40877dd297e9694bfae36ca0881aa802"
     },
     "grating04_NB100_human": {
-        "img": "c598b32a314bee4f14aa0f6cf2194ec4",
-        "mask": "a5ed7f74441aba2ec0de8f20a72e444c"
+        "img": "5feadf4cf8793e9c8bc551e5a567f322",
+        "mask": "40877dd297e9694bfae36ca0881aa802"
     },
     "grating04_NB173_human": {
-        "img": "f46e8907674ab0b0a59dd78e5975a0bb",
+        "img": "3745f3ee7572ce99acaf4d5fdb2348c0",
         "mask": "a5ed7f74441aba2ec0de8f20a72e444c"
     },
     "grating04_NB300_human": {
-        "img": "cc49622c35078d535eab5d2043380567",
+        "img": "44a1f2a16a56cff6673eaa4f96413538",
         "mask": "a5ed7f74441aba2ec0de8f20a72e444c"
     },
     "grating04_NB520_human": {
-        "img": "5ad680202e0a6ebeb2b30b0a7dae5498",
+        "img": "17b1fa177c1c08201a7a50dc055bb0a0",
         "mask": "a5ed7f74441aba2ec0de8f20a72e444c"
     },
     "grating04_NB900_human": {
-        "img": "1f17196a08bfe6e79536a99764c9c7f6",
+        "img": "12554e5c96b893760c31ff2834704f40",
         "mask": "a5ed7f74441aba2ec0de8f20a72e444c"
     },
     "grating02_NB058_human": {
-        "img": "fc3ee534951834e2fd75712513cca8fa",
+        "img": "fca493a2c17f256cf150f38467330077",
         "mask": "92cccc425c7e67e9ff31b6608ab7cbbd"
     },
     "grating02_NB100_human": {
-        "img": "cf479f7bb238255c4506b0352c6e8f85",
+        "img": "a3e1105302bc51014d77801ce5178c80",
         "mask": "92cccc425c7e67e9ff31b6608ab7cbbd"
     },
     "grating02_NB173_human": {
-        "img": "b025e413c6af5bf022e42505c49c739c",
+        "img": "c70913782d62b9c8ee538f56565ff2a5",
         "mask": "92cccc425c7e67e9ff31b6608ab7cbbd"
     },
     "grating02_NB300_human": {
-        "img": "8c60b57b7f13276e6b0ad891cf68426f",
+        "img": "4f42303f4b41ad22a037c0ed46c07317",
         "mask": "92cccc425c7e67e9ff31b6608ab7cbbd"
     },
     "grating02_NB520_human": {
-        "img": "06fe1a3dcda763950ce594f7f4dc06e9",
+        "img": "7f90fee55cb9651db76c5e076cbdebb3",
         "mask": "92cccc425c7e67e9ff31b6608ab7cbbd"
     },
     "grating02_NB900_human": {
-        "img": "fc55798aaac5048cc5125562a70fa753",
+        "img": "12554e5c96b893760c31ff2834704f40",
         "mask": "a5ed7f74441aba2ec0de8f20a72e444c"
     },
     "grating08_NB058_model": {
-        "img": "a1cc88da94052ae32485bb9e95c0c38e",
+        "img": "8e29016d7df3f563676d12b96e4e9a18",
         "mask": "ccf24765cc7af8d75655a878f02b36cf"
     },
     "grating08_NB100_model": {
-        "img": "615aba1cba4ad4589f7e291744f9a3d3",
+        "img": "47c45273cb7c16bb13ee0a9acfd496eb",
         "mask": "ccf24765cc7af8d75655a878f02b36cf"
     },
     "grating08_NB173_model": {
-        "img": "364a8adb696c5254ed9376f5b0161a65",
+        "img": "87edeb7e8578bb68adb5a0b6f689e89a",
         "mask": "ccf24765cc7af8d75655a878f02b36cf"
     },
     "grating08_NB300_model": {
-        "img": "3bdafb3e415ad0f49beddbc5df8c4f79",
+        "img": "dc36ed331e66ab71f84dc83f1daae3d2",
         "mask": "ccf24765cc7af8d75655a878f02b36cf"
     },
     "grating08_NB520_model": {
-        "img": "5a9a15af095010dc4523dca8590d6c66",
+        "img": "502aa646743c93347f06ae70171de478",
         "mask": "ccf24765cc7af8d75655a878f02b36cf"
     },
     "grating08_NB900_model": {
-        "img": "cdecf1a037af5882fa4b80947de7b081",
+        "img": "51054df862d6d842c521c76903814d58",
         "mask": "ccf24765cc7af8d75655a878f02b36cf"
     },
     "grating04_NB058_model": {
-        "img": "cbafc8d6f5a8ab8ead91357b04101091",
+        "img": "7e4344167bf64c21182f212ac96f0cd6",
         "mask": "b00fd763aec1925dffae4f0e88f3b019"
     },
     "grating04_NB100_model": {
-        "img": "2eceeeea459261691a7d33d8c9a93df9",
+        "img": "7c4f759de08c400827c5053e2d97183d",
         "mask": "b00fd763aec1925dffae4f0e88f3b019"
     },
     "grating04_NB173_model": {
-        "img": "f01aad68002d87dbe67a0f4b1156d7f6",
+        "img": "f463890e7d59f99f2b45225994d443f8",
         "mask": "b00fd763aec1925dffae4f0e88f3b019"
     },
     "grating04_NB300_model": {
-        "img": "c1e04eaddcfb691c9568483a66546602",
+        "img": "4bf7c872b8fe4f34ab59589006c7ff5e",
         "mask": "b00fd763aec1925dffae4f0e88f3b019"
     },
     "grating04_NB520_model": {
-        "img": "02681e0e1715b65e88f6980527991a7a",
+        "img": "36c0f5c2c04eaf43d34428c7d6e2433a",
         "mask": "b00fd763aec1925dffae4f0e88f3b019"
     },
     "grating04_NB900_model": {
-        "img": "54fabf955581a8dba72243b5c559c1df",
+        "img": "fca46dceb1e8e1c5cee0536f1b0b7acb",
         "mask": "b00fd763aec1925dffae4f0e88f3b019"
     },
     "grating02_NB058_model": {
-        "img": "ee4870e25b71a2fdca5754e16587544f",
+        "img": "4f8e70060a70188b8a7ef0f485b3349c",
         "mask": "fbf0abeb203078b6040fbc78b94608ae"
     },
     "grating02_NB100_model": {
-        "img": "951ec907919f1818ac7dff789ca0e79b",
+        "img": "9047351679b4eb0e9d332325dab0445d",
         "mask": "fbf0abeb203078b6040fbc78b94608ae"
     },
     "grating02_NB173_model": {
-        "img": "4a3e7423a73607adf2f69ad516013727",
+        "img": "b2e26fe6e6bbd1d26e9ab3195130a02e",
         "mask": "fbf0abeb203078b6040fbc78b94608ae"
     },
     "grating02_NB300_model": {
-        "img": "e10623b565c84b5d618533385fcda74b",
+        "img": "da1c9a41149f9addd9e2b7c14a35cb16",
         "mask": "fbf0abeb203078b6040fbc78b94608ae"
     },
     "grating02_NB520_model": {
-        "img": "67b839e40341faa23a1778fa21835b58",
+        "img": "377e03c7fee6545b418755aa7d394f54",
         "mask": "fbf0abeb203078b6040fbc78b94608ae"
     },
     "grating02_NB900_model": {
-        "img": "0ce5d66a0eb71f0bbd6bc5679d25af91",
+        "img": "fca46dceb1e8e1c5cee0536f1b0b7acb",
         "mask": "b00fd763aec1925dffae4f0e88f3b019"
     }
 }

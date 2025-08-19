@@ -238,7 +238,7 @@ def white02(ppd=PPD, config="human"):
     return _white_stimulus(n_bars=4, bar_width=2.552, config=config, ppd=ppd)
 
 
-def _create_noise(noise_freq, noise_contrast=NOISE_CONTRAST, mean_lum=MEAN_LUM, ppd=PPD):
+def _create_noise(noise_freq, noise_contrast=NOISE_CONTRAST, mean_lum=MEAN_LUM, ppd=PPD, rng=None):
     # Create noise texture
     noise = narrowband_noise(
         visual_size=VISUAL_SIZE,
@@ -246,6 +246,7 @@ def _create_noise(noise_freq, noise_contrast=NOISE_CONTRAST, mean_lum=MEAN_LUM, 
         center_frequency=noise_freq,
         bandwidth=1.0,
         pseudo_noise=True,
+        rng=rng,
     )
 
     # Adjust contrast
@@ -259,9 +260,11 @@ def _create_noise(noise_freq, noise_contrast=NOISE_CONTRAST, mean_lum=MEAN_LUM, 
     return noise
 
 
-def _mask_stim_with_noise(stim, noise_freq):
+def _mask_stim_with_noise(stim, noise_freq, rng=None):
     # Create noise
-    noise = _create_noise(noise_freq=noise_freq, ppd=stim["ppd"], noise_contrast=NOISE_CONTRAST)
+    noise = _create_noise(
+        noise_freq=noise_freq, ppd=stim["ppd"], noise_contrast=NOISE_CONTRAST, rng=rng
+    )
 
     # Combine
     stim["noise"] = noise.pop("img")
@@ -272,7 +275,7 @@ def _mask_stim_with_noise(stim, noise_freq):
 
 
 # %% High spatial frequency grating: Human experiment
-def grating08_NB058_human(ppd=PPD):
+def grating08_NB058_human(ppd=PPD, rng=None):
     """White stimulus (0.8 cpd) masked with 0.58 cpd noise for human experiments from Betz (2015).
 
     Parameters
@@ -298,7 +301,7 @@ def grating08_NB058_human(ppd=PPD):
 
     # Noise mask
     noise_freq = 0.58
-    stim = _mask_stim_with_noise(stim, noise_freq)
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
 
     # Add experimental data
     stim["experimental_data"] = {
@@ -313,7 +316,7 @@ def grating08_NB058_human(ppd=PPD):
     return stim
 
 
-def grating08_NB100_human(ppd=PPD):
+def grating08_NB100_human(ppd=PPD, rng=None):
     """White stimulus (0.8 cpd) masked with 1.00 cpd noise for human experiments from Betz (2015).
 
     Parameters
@@ -339,7 +342,7 @@ def grating08_NB100_human(ppd=PPD):
 
     # Noise mask
     noise_freq = 1.00
-    stim = _mask_stim_with_noise(stim, noise_freq)
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
 
     # Add experimental data
     stim["experimental_data"] = {
@@ -354,7 +357,7 @@ def grating08_NB100_human(ppd=PPD):
     return stim
 
 
-def grating08_NB173_human(ppd=PPD):
+def grating08_NB173_human(ppd=PPD, rng=None):
     """White stimulus (0.8 cpd) masked with 1.73 cpd noise for human experiments from Betz (2015).
 
     Parameters
@@ -380,7 +383,7 @@ def grating08_NB173_human(ppd=PPD):
 
     # Noise mask
     noise_freq = 1.73
-    stim = _mask_stim_with_noise(stim, noise_freq)
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
 
     # Add experimental data
     stim["experimental_data"] = {
@@ -395,7 +398,7 @@ def grating08_NB173_human(ppd=PPD):
     return stim
 
 
-def grating08_NB300_human(ppd=PPD):
+def grating08_NB300_human(ppd=PPD, rng=None):
     """White stimulus (0.8 cpd) masked with 3.00 cpd noise for human experiments from Betz (2015).
 
     Parameters
@@ -421,7 +424,7 @@ def grating08_NB300_human(ppd=PPD):
 
     # Noise mask
     noise_freq = 3.00
-    stim = _mask_stim_with_noise(stim, noise_freq)
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
 
     # Add experimental data
     stim["experimental_data"] = {
@@ -436,7 +439,7 @@ def grating08_NB300_human(ppd=PPD):
     return stim
 
 
-def grating08_NB520_human(ppd=PPD):
+def grating08_NB520_human(ppd=PPD, rng=None):
     """White stimulus (0.8 cpd) masked with 5.20 cpd noise for human experiments from Betz (2015).
 
     Parameters
@@ -462,7 +465,7 @@ def grating08_NB520_human(ppd=PPD):
 
     # Noise mask
     noise_freq = 5.20
-    stim = _mask_stim_with_noise(stim, noise_freq)
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
 
     # Add experimental data
     stim["experimental_data"] = {
@@ -477,7 +480,7 @@ def grating08_NB520_human(ppd=PPD):
     return stim
 
 
-def grating08_NB900_human(ppd=PPD):
+def grating08_NB900_human(ppd=PPD, rng=None):
     """White stimulus (0.8 cpd) masked with 9.00 cpd noise for human experiments from Betz (2015).
 
     Parameters
@@ -503,7 +506,7 @@ def grating08_NB900_human(ppd=PPD):
 
     # Noise mask
     noise_freq = 9.00
-    stim = _mask_stim_with_noise(stim, noise_freq)
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
 
     # Add experimental data
     stim["experimental_data"] = {
@@ -519,7 +522,7 @@ def grating08_NB900_human(ppd=PPD):
 
 
 # %% Mid spatial frequency grating: Human experiment
-def grating04_NB058_human(ppd=PPD):
+def grating04_NB058_human(ppd=PPD, rng=None):
     """White stimulus (0.4 cpd) masked with 0.58 cpd noise for human experiments from Betz (2015).
 
     Parameters
@@ -541,11 +544,11 @@ def grating04_NB058_human(ppd=PPD):
     """
     # White's stimulus
     grating_freq = 0.4
-    stim = white04(ppd=ppd, config="human")
-
-    # Noise mask
+    stim = white08(ppd=ppd, config="human")
+    noise_freq = 1.00
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
     noise_freq = 0.58
-    stim = _mask_stim_with_noise(stim, noise_freq)
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
 
     # Add experimental data
     stim["experimental_data"] = {
@@ -560,7 +563,7 @@ def grating04_NB058_human(ppd=PPD):
     return stim
 
 
-def grating04_NB100_human(ppd=PPD):
+def grating04_NB100_human(ppd=PPD, rng=None):
     """White stimulus (0.4 cpd) masked with 1.00 cpd noise for human experiments from Betz (2015).
 
     Parameters
@@ -582,11 +585,11 @@ def grating04_NB100_human(ppd=PPD):
     """
     # White's stimulus
     grating_freq = 0.4
-    stim = white04(ppd=ppd, config="human")
-
-    # Noise mask
+    stim = white08(ppd=ppd, config="human")
+    noise_freq = 1.73
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
     noise_freq = 1.00
-    stim = _mask_stim_with_noise(stim, noise_freq)
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
 
     # Add experimental data
     stim["experimental_data"] = {
@@ -601,7 +604,7 @@ def grating04_NB100_human(ppd=PPD):
     return stim
 
 
-def grating04_NB173_human(ppd=PPD):
+def grating04_NB173_human(ppd=PPD, rng=None):
     """White stimulus (0.4 cpd) masked with 1.73 cpd noise for human experiments from Betz (2015).
 
     Parameters
@@ -627,7 +630,7 @@ def grating04_NB173_human(ppd=PPD):
 
     # Noise mask
     noise_freq = 1.73
-    stim = _mask_stim_with_noise(stim, noise_freq)
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
 
     # Add experimental data
     stim["experimental_data"] = {
@@ -642,7 +645,7 @@ def grating04_NB173_human(ppd=PPD):
     return stim
 
 
-def grating04_NB300_human(ppd=PPD):
+def grating04_NB300_human(ppd=PPD, rng=None):
     """White stimulus (0.4 cpd) masked with 3.00 cpd noise for human experiments from Betz (2015).
 
     Parameters
@@ -668,7 +671,7 @@ def grating04_NB300_human(ppd=PPD):
 
     # Noise mask
     noise_freq = 3.00
-    stim = _mask_stim_with_noise(stim, noise_freq)
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
 
     # Add experimental data
     stim["experimental_data"] = {
@@ -683,7 +686,7 @@ def grating04_NB300_human(ppd=PPD):
     return stim
 
 
-def grating04_NB520_human(ppd=PPD):
+def grating04_NB520_human(ppd=PPD, rng=None):
     """White stimulus (0.4 cpd) masked with 5.20 cpd noise for human experiments from Betz (2015).
 
     Parameters
@@ -709,7 +712,7 @@ def grating04_NB520_human(ppd=PPD):
 
     # Noise mask
     noise_freq = 5.20
-    stim = _mask_stim_with_noise(stim, noise_freq)
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
 
     # Add experimental data
     stim["experimental_data"] = {
@@ -724,7 +727,7 @@ def grating04_NB520_human(ppd=PPD):
     return stim
 
 
-def grating04_NB900_human(ppd=PPD):
+def grating04_NB900_human(ppd=PPD, rng=None):
     """White stimulus (0.4 cpd) masked with 9.00 cpd noise for human experiments from Betz (2015).
 
     Parameters
@@ -750,7 +753,7 @@ def grating04_NB900_human(ppd=PPD):
 
     # Noise mask
     noise_freq = 9.00
-    stim = _mask_stim_with_noise(stim, noise_freq)
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
 
     # Add experimental data
     stim["experimental_data"] = {
@@ -766,7 +769,7 @@ def grating04_NB900_human(ppd=PPD):
 
 
 # %% Low spatial frequency grating: Human experiment
-def grating02_NB058_human(ppd=PPD):
+def grating02_NB058_human(ppd=PPD, rng=None):
     """White stimulus (0.2 cpd) masked with 0.58 cpd noise for human experiments from Betz (2015).
 
     Parameters
@@ -792,7 +795,7 @@ def grating02_NB058_human(ppd=PPD):
 
     # Noise mask
     noise_freq = 0.58
-    stim = _mask_stim_with_noise(stim, noise_freq)
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
 
     # Add experimental data
     stim["experimental_data"] = {
@@ -807,7 +810,7 @@ def grating02_NB058_human(ppd=PPD):
     return stim
 
 
-def grating02_NB100_human(ppd=PPD):
+def grating02_NB100_human(ppd=PPD, rng=None):
     """White stimulus (0.2 cpd) masked with 1.00 cpd noise for human experiments from Betz (2015).
 
     Parameters
@@ -833,7 +836,7 @@ def grating02_NB100_human(ppd=PPD):
 
     # Noise mask
     noise_freq = 1.00
-    stim = _mask_stim_with_noise(stim, noise_freq)
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
 
     # Add experimental data
     stim["experimental_data"] = {
@@ -848,7 +851,7 @@ def grating02_NB100_human(ppd=PPD):
     return stim
 
 
-def grating02_NB173_human(ppd=PPD):
+def grating02_NB173_human(ppd=PPD, rng=None):
     """White stimulus (0.2 cpd) masked with 1.73 cpd noise for human experiments from Betz (2015).
 
     Parameters
@@ -874,7 +877,7 @@ def grating02_NB173_human(ppd=PPD):
 
     # Noise mask
     noise_freq = 1.73
-    stim = _mask_stim_with_noise(stim, noise_freq)
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
 
     # Add experimental data
     stim["experimental_data"] = {
@@ -889,7 +892,7 @@ def grating02_NB173_human(ppd=PPD):
     return stim
 
 
-def grating02_NB300_human(ppd=PPD):
+def grating02_NB300_human(ppd=PPD, rng=None):
     """White stimulus (0.2 cpd) masked with 3.00 cpd noise for human experiments from Betz (2015).
 
     Parameters
@@ -915,7 +918,7 @@ def grating02_NB300_human(ppd=PPD):
 
     # Noise mask
     noise_freq = 3.00
-    stim = _mask_stim_with_noise(stim, noise_freq)
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
 
     # Add experimental data
     stim["experimental_data"] = {
@@ -930,7 +933,7 @@ def grating02_NB300_human(ppd=PPD):
     return stim
 
 
-def grating02_NB520_human(ppd=PPD):
+def grating02_NB520_human(ppd=PPD, rng=None):
     """White stimulus (0.2 cpd) masked with 5.20 cpd noise for human experiments from Betz (2015).
 
     Parameters
@@ -956,7 +959,7 @@ def grating02_NB520_human(ppd=PPD):
 
     # Noise mask
     noise_freq = 5.20
-    stim = _mask_stim_with_noise(stim, noise_freq)
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
 
     # Add experimental data
     stim["experimental_data"] = {
@@ -971,7 +974,7 @@ def grating02_NB520_human(ppd=PPD):
     return stim
 
 
-def grating02_NB900_human(ppd=PPD):
+def grating02_NB900_human(ppd=PPD, rng=None):
     """White stimulus (0.2 cpd) masked with 9.00 cpd noise for human experiments from Betz (2015).
 
     Parameters
@@ -997,7 +1000,7 @@ def grating02_NB900_human(ppd=PPD):
 
     # Noise mask
     noise_freq = 9.00
-    stim = _mask_stim_with_noise(stim, noise_freq)
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
 
     # Add experimental data
     stim["experimental_data"] = {
@@ -1013,7 +1016,7 @@ def grating02_NB900_human(ppd=PPD):
 
 
 # %% High spatial frequency grating: Modeling
-def grating08_NB058_model(ppd=PPD):
+def grating08_NB058_model(ppd=PPD, rng=None):
     """White stimulus (0.8 cpd) masked with 0.58 cpd noise for model simulations from Betz (2015).
 
     Parameters
@@ -1039,7 +1042,7 @@ def grating08_NB058_model(ppd=PPD):
 
     # Noise mask
     noise_freq = 0.58
-    stim = _mask_stim_with_noise(stim, noise_freq)
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
 
     # Add experimental data
     stim["experimental_data"] = {
@@ -1054,7 +1057,7 @@ def grating08_NB058_model(ppd=PPD):
     return stim
 
 
-def grating08_NB100_model(ppd=PPD):
+def grating08_NB100_model(ppd=PPD, rng=None):
     """White stimulus (0.8 cpd) masked with 1.00 cpd noise for model simulations from Betz (2015).
 
     Parameters
@@ -1080,7 +1083,7 @@ def grating08_NB100_model(ppd=PPD):
 
     # Noise mask
     noise_freq = 1.00
-    stim = _mask_stim_with_noise(stim, noise_freq)
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
 
     # Add experimental data
     stim["experimental_data"] = {
@@ -1095,7 +1098,7 @@ def grating08_NB100_model(ppd=PPD):
     return stim
 
 
-def grating08_NB173_model(ppd=PPD):
+def grating08_NB173_model(ppd=PPD, rng=None):
     """White stimulus (0.8 cpd) masked with 1.73 cpd noise for model simulations from Betz (2015).
 
     Parameters
@@ -1121,7 +1124,7 @@ def grating08_NB173_model(ppd=PPD):
 
     # Noise mask
     noise_freq = 1.73
-    stim = _mask_stim_with_noise(stim, noise_freq)
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
 
     # Add experimental data
     stim["experimental_data"] = {
@@ -1136,7 +1139,7 @@ def grating08_NB173_model(ppd=PPD):
     return stim
 
 
-def grating08_NB300_model(ppd=PPD):
+def grating08_NB300_model(ppd=PPD, rng=None):
     """White stimulus (0.8 cpd) masked with 3.00 cpd noise for model simulations from Betz (2015).
 
     Parameters
@@ -1162,7 +1165,7 @@ def grating08_NB300_model(ppd=PPD):
 
     # Noise mask
     noise_freq = 3.00
-    stim = _mask_stim_with_noise(stim, noise_freq)
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
 
     # Add experimental data
     stim["experimental_data"] = {
@@ -1177,7 +1180,7 @@ def grating08_NB300_model(ppd=PPD):
     return stim
 
 
-def grating08_NB520_model(ppd=PPD):
+def grating08_NB520_model(ppd=PPD, rng=None):
     """White stimulus (0.8 cpd) masked with 5.20 cpd noise for model simulations from Betz (2015).
 
     Parameters
@@ -1203,7 +1206,7 @@ def grating08_NB520_model(ppd=PPD):
 
     # Noise mask
     noise_freq = 5.20
-    stim = _mask_stim_with_noise(stim, noise_freq)
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
 
     # Add experimental data
     stim["experimental_data"] = {
@@ -1218,7 +1221,7 @@ def grating08_NB520_model(ppd=PPD):
     return stim
 
 
-def grating08_NB900_model(ppd=PPD):
+def grating08_NB900_model(ppd=PPD, rng=None):
     """White stimulus (0.8 cpd) masked with 9.00 cpd noise for model simulations from Betz (2015).
 
     Parameters
@@ -1244,7 +1247,7 @@ def grating08_NB900_model(ppd=PPD):
 
     # Noise mask
     noise_freq = 9.00
-    stim = _mask_stim_with_noise(stim, noise_freq)
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
 
     # Add experimental data
     stim["experimental_data"] = {
@@ -1260,7 +1263,7 @@ def grating08_NB900_model(ppd=PPD):
 
 
 # %% Mid spatial frequency grating: Modeling
-def grating04_NB058_model(ppd=PPD):
+def grating04_NB058_model(ppd=PPD, rng=None):
     """White stimulus (0.4 cpd) masked with 0.58 cpd noise for model simulations from Betz (2015).
 
     Parameters
@@ -1286,7 +1289,7 @@ def grating04_NB058_model(ppd=PPD):
 
     # Noise mask
     noise_freq = 0.58
-    stim = _mask_stim_with_noise(stim, noise_freq)
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
 
     # Add experimental data
     stim["experimental_data"] = {
@@ -1301,7 +1304,7 @@ def grating04_NB058_model(ppd=PPD):
     return stim
 
 
-def grating04_NB100_model(ppd=PPD):
+def grating04_NB100_model(ppd=PPD, rng=None):
     """White stimulus (0.4 cpd) masked with 1.00 cpd noise for model simulations from Betz (2015).
 
     Parameters
@@ -1327,7 +1330,7 @@ def grating04_NB100_model(ppd=PPD):
 
     # Noise mask
     noise_freq = 1.00
-    stim = _mask_stim_with_noise(stim, noise_freq)
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
 
     # Add experimental data
     stim["experimental_data"] = {
@@ -1342,7 +1345,7 @@ def grating04_NB100_model(ppd=PPD):
     return stim
 
 
-def grating04_NB173_model(ppd=PPD):
+def grating04_NB173_model(ppd=PPD, rng=None):
     """White stimulus (0.4 cpd) masked with 1.73 cpd noise for model simulations from Betz (2015).
 
     Parameters
@@ -1368,7 +1371,7 @@ def grating04_NB173_model(ppd=PPD):
 
     # Noise mask
     noise_freq = 1.73
-    stim = _mask_stim_with_noise(stim, noise_freq)
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
 
     # Add experimental data
     stim["experimental_data"] = {
@@ -1383,7 +1386,7 @@ def grating04_NB173_model(ppd=PPD):
     return stim
 
 
-def grating04_NB300_model(ppd=PPD):
+def grating04_NB300_model(ppd=PPD, rng=None):
     """White stimulus (0.4 cpd) masked with 3.00 cpd noise for model simulations from Betz (2015).
 
     Parameters
@@ -1409,7 +1412,7 @@ def grating04_NB300_model(ppd=PPD):
 
     # Noise mask
     noise_freq = 3.00
-    stim = _mask_stim_with_noise(stim, noise_freq)
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
 
     # Add experimental data
     stim["experimental_data"] = {
@@ -1424,7 +1427,7 @@ def grating04_NB300_model(ppd=PPD):
     return stim
 
 
-def grating04_NB520_model(ppd=PPD):
+def grating04_NB520_model(ppd=PPD, rng=None):
     """White stimulus (0.4 cpd) masked with 5.20 cpd noise for model simulations from Betz (2015).
 
     Parameters
@@ -1450,7 +1453,7 @@ def grating04_NB520_model(ppd=PPD):
 
     # Noise mask
     noise_freq = 5.20
-    stim = _mask_stim_with_noise(stim, noise_freq)
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
 
     # Add experimental data
     stim["experimental_data"] = {
@@ -1465,7 +1468,7 @@ def grating04_NB520_model(ppd=PPD):
     return stim
 
 
-def grating04_NB900_model(ppd=PPD):
+def grating04_NB900_model(ppd=PPD, rng=None):
     """White stimulus (0.4 cpd) masked with 9.00 cpd noise for model simulations from Betz (2015).
 
     Parameters
@@ -1491,7 +1494,7 @@ def grating04_NB900_model(ppd=PPD):
 
     # Noise mask
     noise_freq = 9.00
-    stim = _mask_stim_with_noise(stim, noise_freq)
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
 
     # Add experimental data
     stim["experimental_data"] = {
@@ -1507,7 +1510,7 @@ def grating04_NB900_model(ppd=PPD):
 
 
 # %% Low spatial frequency grating: Modeling
-def grating02_NB058_model(ppd=PPD):
+def grating02_NB058_model(ppd=PPD, rng=None):
     """White stimulus (0.2 cpd) masked with 0.58 cpd noise for model simulations from Betz (2015).
 
     Parameters
@@ -1533,7 +1536,7 @@ def grating02_NB058_model(ppd=PPD):
 
     # Noise mask
     noise_freq = 0.58
-    stim = _mask_stim_with_noise(stim, noise_freq)
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
 
     # Add experimental data
     stim["experimental_data"] = {
@@ -1548,7 +1551,7 @@ def grating02_NB058_model(ppd=PPD):
     return stim
 
 
-def grating02_NB100_model(ppd=PPD):
+def grating02_NB100_model(ppd=PPD, rng=None):
     """White stimulus (0.2 cpd) masked with 1.00 cpd noise for model simulations from Betz (2015).
 
     Parameters
@@ -1574,7 +1577,7 @@ def grating02_NB100_model(ppd=PPD):
 
     # Noise mask
     noise_freq = 1.00
-    stim = _mask_stim_with_noise(stim, noise_freq)
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
 
     # Add experimental data
     stim["experimental_data"] = {
@@ -1589,7 +1592,7 @@ def grating02_NB100_model(ppd=PPD):
     return stim
 
 
-def grating02_NB173_model(ppd=PPD):
+def grating02_NB173_model(ppd=PPD, rng=None):
     """White stimulus (0.2 cpd) masked with 1.73 cpd noise for model simulations from Betz (2015).
 
     Parameters
@@ -1615,7 +1618,7 @@ def grating02_NB173_model(ppd=PPD):
 
     # Noise mask
     noise_freq = 1.73
-    stim = _mask_stim_with_noise(stim, noise_freq)
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
 
     # Add experimental data
     stim["experimental_data"] = {
@@ -1630,7 +1633,7 @@ def grating02_NB173_model(ppd=PPD):
     return stim
 
 
-def grating02_NB300_model(ppd=PPD):
+def grating02_NB300_model(ppd=PPD, rng=None):
     """White stimulus (0.2 cpd) masked with 3.00 cpd noise for model simulations from Betz (2015).
 
     Parameters
@@ -1656,7 +1659,7 @@ def grating02_NB300_model(ppd=PPD):
 
     # Noise mask
     noise_freq = 3.00
-    stim = _mask_stim_with_noise(stim, noise_freq)
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
 
     # Add experimental data
     stim["experimental_data"] = {
@@ -1671,7 +1674,7 @@ def grating02_NB300_model(ppd=PPD):
     return stim
 
 
-def grating02_NB520_model(ppd=PPD):
+def grating02_NB520_model(ppd=PPD, rng=None):
     """White stimulus (0.2 cpd) masked with 5.20 cpd noise for model simulations from Betz (2015).
 
     Parameters
@@ -1697,7 +1700,7 @@ def grating02_NB520_model(ppd=PPD):
 
     # Noise mask
     noise_freq = 5.20
-    stim = _mask_stim_with_noise(stim, noise_freq)
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
 
     # Add experimental data
     stim["experimental_data"] = {
@@ -1712,7 +1715,7 @@ def grating02_NB520_model(ppd=PPD):
     return stim
 
 
-def grating02_NB900_model(ppd=PPD):
+def grating02_NB900_model(ppd=PPD, rng=None):
     """White stimulus (0.2 cpd) masked with 9.00 cpd noise for model simulations from Betz (2015).
 
     Parameters
@@ -1738,7 +1741,7 @@ def grating02_NB900_model(ppd=PPD):
 
     # Noise mask
     noise_freq = 9.00
-    stim = _mask_stim_with_noise(stim, noise_freq)
+    stim = _mask_stim_with_noise(stim, noise_freq, rng=rng)
 
     # Add experimental data
     stim["experimental_data"] = {
