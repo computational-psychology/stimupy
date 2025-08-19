@@ -18,8 +18,9 @@ for paper in papers:
     import numpy as np
 
     for stim_name, stim in stims.items():
-        # Pass a fixed RNG to each stimulus function if possible
-        rng = np.random.default_rng(42)
+        # Pass a fixed RandomState to each stimulus function if possible
+        # Using RandomState instead of default_rng for cross-platform reproducibility
+        rng = np.random.RandomState(1234567890)
         if hasattr(paper_module, stim_name):
             func = getattr(paper_module, stim_name)
             try:

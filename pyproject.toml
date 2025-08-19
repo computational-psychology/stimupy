@@ -25,7 +25,7 @@ maintainers = [
 version = "1.1.2"
 
 requires-python = ">=3.9"
-dependencies = ["numpy", "scipy", "matplotlib", "pandas", "Pillow"]
+dependencies = ["numpy<2.3", "scipy", "matplotlib", "pandas", "Pillow"]
 
 [dependency-groups]
 test = ["pytest"]
