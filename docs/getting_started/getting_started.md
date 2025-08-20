@@ -14,6 +14,7 @@ which have more in-depth explanation on various concepts and design decisions.
 installation
 create_stimulus
 find_stimulus
+choose_variation
 organization
 ../howtos/use_stimulus/use
 ```
