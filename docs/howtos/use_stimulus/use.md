@@ -1,4 +1,4 @@
-# How to use stimuli
+# How to use stimuli beyond stimupy
 
 ```{toctree}
 :titlesonly:
@@ -6,5 +6,4 @@
 display
 export
 share
-color
 ```

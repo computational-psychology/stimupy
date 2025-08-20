@@ -10,7 +10,7 @@ kernelspec:
   name: python3
 ---
 
-# How to replicate existing stimuli
+# Replicate existing stimuli
 
 Sometimes, you want to have an *exact copy*
 of some existing stimulus from the literature.

@@ -9,9 +9,10 @@ which have more in-depth explanation on various concepts and design decisions.
 
 ```{toctree}
 :numbered:
+:titlesonly:
+
 installation
 organization
 create_stimulus
-./use_stimulus/use
-replicate
+../howtos/use_stimulus/use
 ```

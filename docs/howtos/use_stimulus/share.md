@@ -75,7 +75,7 @@ Thus, you'll need to:
   A recipient can then install this version of `stimupy`
   and reproduce the exact stimulus from the provide parameter values.
 
-- provide all parameter-values for this stimulus, ideally by [exporting them](./export.md).
+- provide all parameter-values for this stimulus, ideally by [exporting them](export.md).
   For just sharing parameter-values, we recommend exporting the stimulus-`dict`
   without the `img` and `masks` to a [JSON file](./export.md).
   The reason for this is that JSON files are both human-readable --

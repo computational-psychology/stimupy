@@ -1,4 +1,4 @@
-# Integrate in experiments
+# Display stimuli / integrate in experiments
 `stimupy` is a package which is focused on generating stimuli,
 separate from stimulus display, use, experimentation, etc.
 Hence, `stimupy` is designed agnostic to how stimuli are used after stimulus generation,
