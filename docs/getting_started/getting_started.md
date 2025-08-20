@@ -15,6 +15,5 @@ installation
 create_stimulus
 find_stimulus
 choose_variation
-organization
 ../howtos/use_stimulus/use
 ```

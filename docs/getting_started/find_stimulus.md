@@ -119,3 +119,8 @@ from stimupy.components import shapes
 
 help(shapes)
 ```
+
+<!-- ## How stimupy is organized -->
+```{include} ../user_guide/organization.md
+:heading-offset: 1
+```
