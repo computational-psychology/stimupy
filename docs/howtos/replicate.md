@@ -10,10 +10,10 @@ kernelspec:
   name: python3
 ---
 
-# Replicate exact stimulus
+# Replicate existing stimuli
 
 Sometimes, you want to have an *exact copy*
-of some existing stimulus.
+of some existing stimulus from the literature.
 Since `stimupy`s functions are highly parameterizable,
 lots of variants of a stimulus can be created,
 and thus specific existing parameterizations can be recreated.

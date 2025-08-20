@@ -1,4 +1,6 @@
-# Installing
+# Installation
+
+## Installing
 
 `stimupy` can be installed in several ways.
 For most usecases, i.e., to _use_ the functions in `stimupy`,

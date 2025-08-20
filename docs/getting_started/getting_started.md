@@ -1,17 +1,18 @@
-# Getting started (Tutorial)
+# Getting started
 
-The following pages serve as **tutorial**,
-walking you through the very basics of using `stimupy`.
+The following pages serve as **tutorials**,
+walking you through the very basics of working with `stimupy`.
 
-Along the way, they also refer to some [topic guides](../topic_guides/topic_guides),
+Along the way, they also refer to some parts of the [User guides](../user_guide/user_guide),
 which have more in-depth explanation on various concepts and design decisions.
 
-First, [install `stimupy`](./installation/)
 
 ```{toctree}
 :numbered:
-first_stim
-composition
-stimulus
-replicate
+:titlesonly:
+
+installation
+organization
+create_stimulus
+../howtos/use_stimulus/use
 ```

@@ -17,7 +17,7 @@ Another option is to share the exact digital image (i.e., the matrix of pixel va
 of the stimulus.
 While this allows that exact digital image to be reused,
 any modifications may be hard to implement --
-especially changing the [resolution](../topic_guides/resolution.md).
+especially changing the [resolution](../../user_guide/resolution.md).
 Moreover, sets of digital images can take up quite some storage space,
 and are not ideal for easy and quick transfer.
 
@@ -139,5 +139,5 @@ not a _repository_ or platform for uploading stimuli.
 We welcome contributions to this library of stimuli,
 and stimulus sets, from the literature.
 If you wish to contribute such a complete set of stimuli from a single paper,
-please see our [contributing guide](../contributing/contribute.md).
+please see our [contributing guide](../../contributing/contribute.md).
 

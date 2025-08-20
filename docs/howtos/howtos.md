@@ -1,9 +1,8 @@
 # How-to... (recipes)
 
 ```{toctree}
-:titlesonly:
 
-display
-export
-share
+./use_stimulus/use
+replicate
+color
 ```
