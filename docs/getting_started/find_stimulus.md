@@ -12,40 +12,49 @@ kernelspec:
 
 # How to find a stimulus
 
-`stimupy` offers many ways to discover stimulus functions — whether you’re exploring what’s available or searching for a specific stimulus.  
-This guide covers both **ReadTheDocs-based** and **Python-based** discovery methods.
+`stimupy` offers many ways to discover stimulus functions --
+whether you're exploring what's available or searching for a specific stimulus.  
+This guide covers both discovery using (this) **online documentation**
+and from **within Python** discovery methods.
 
 
-## Find a stimulus on ReadTheDocs
+## In this documentation
 
 ### Search bar
 
-If you’re looking for a specific function or want to check whether `stimupy` includes a certain stimulus (e.g., **Gabors**), use the **search bar** on ReadTheDocs.  
+If you're looking for a specific function
+or want to check whether `stimupy` includes a certain stimulus (e.g., **Gabors**),
+use the **search bar** on any of these pages.  
 It will return all relevant pages, examples, and API references for your search term.
 
-### Lists of all modules and functions
+### Overviews of all modules and functions
 
-You can browse a complete list of submodules and functions in the **[stimupy API reference](../reference/api.md)**.  
-This list mirrors `stimupy`’s modular structure and contains:
+You can browse a complete overview of submodules and functions in the **[stimupy API reference](../reference/api.md)**.  
+This list mirrors `stimupy`'s modular structure and contains:
 
 - All submodules
 - All functions (with documentation)
 - Direct links to their definitions
 
-For a more visual approach, explore our **[interactive demos](../reference/demos)**. These show both high-level and low-level modules, and how they can be used.
+For a more visual approach, explore our **[interactive demos](../reference/demos)**.
+These show both high-level and low-level modules, and how they can be used.
 
 ### Visual overview *(coming soon)*
 
 A quick, visual overview of available stimuli will be added in a future update.
 
+---
 
-## Find a stimulus in Python
+## From within Python
 
-If you’re already working in Python and simply need to refresh your memory about a submodule or function name, `stimupy` provides built-in tools to help.
+If you're already working in Python
+and simply need to refresh your memory about a submodule or function name, 
+`stimupy` provides built-in tools to help.
 
 ### Visual overviews
 
-Both `stimupy.components` and `stimupy.stimuli` include a **`plot_overview()`** function that displays an example of each available stimulus.
+Both `stimupy.components` and `stimupy.stimuli` include a **`plot_overview()`** function
+that displays an example of each available stimulus.
 
 Example for `components`:
 ```{code-cell}
@@ -71,17 +80,18 @@ noises.plot_overview()
 
 ### Autocompletion in interactive interpreters
 
-If you’re using IPython or Jupyter Notebook, you can explore module contents using <TAB> completion:
+Most consoles and IDEs that you may use (IPython, Jupyter Notebook, Spyder, VSCode, ...)
+should be able to autocomplete while typing, usually using <TAB>:
 
 ```
 >>> stimupy.<TAB>
 ```
 
-## Using `help()` to list contents
+### Using `help()` to list contents
 
-You can use Python’s built-in `help()` function to inspect submodules, functions, and their documentation.
-
-To get a list of all submodules and functions, you can use the `help` function in Python.
+You can use Python's built-in `help()` function
+to inspect submodules, functions, and their documentation.
+For modules, this will also list all its submodules and functions.
 
 **Top-level overview:**
 
@@ -109,5 +119,3 @@ from stimupy.components import shapes
 
 help(shapes)
 ```
-
-
