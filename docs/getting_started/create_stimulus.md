@@ -130,7 +130,7 @@ All `stimupy` stimulus-functions require and take multiple arguments. These cont
   - e.g., `intensity_rectangle` for rectangles
   - all `stimupy` stimuli by default are in the range [0, 1]
 
-You can check a function's parameters in the [function reference](../reference/api.md) or via Python's `help()`:
+You can check a function's parameters in the [function reference](../reference/api) or via Python's `help()`:
 
 ```{code-cell}
 :tags: [output_scroll]
