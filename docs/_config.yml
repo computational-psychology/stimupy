@@ -51,6 +51,7 @@ sphinx:
     # Auto documentation (autoapi, autodoc)
     autoapi_dirs: ['../stimupy']
     autoapi_root: 'reference/'
+    autoapi_template_dir: '_templates/autoapi'
     autoapi_add_toctree_entry: False
     autoapi_keep_files: True
 
