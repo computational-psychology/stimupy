@@ -44,6 +44,11 @@ sphinx:
     - hoverxref.extension
 
   config:
+    templates_path: ['_templates']  # Path(s) that contain templates, relative to this config
+    exclude_patterns: ['_build', '_templates']
+    suppress_warnings: ["etoc.toctree"]
+
+    # Auto documentation (autosummary, autodoc)
     #autosummary_generate: True      # autosummary generates module-level .rst files?
     add_module_names: False         # Don't include module names in autosummary tables
     autosummary_imported_members: True
@@ -52,8 +57,8 @@ sphinx:
      "members": True,                # Include module/class members.
      "member-order": 'bysource',     # Order members as in source file.
     }
-    templates_path: ['_templates']  # Path(s) that contain templates, relative to this config
-    exclude_patterns: ['_build', '_templates']
+
+    # Intersphinx
     intersphinx_mapping:
         python:
           - 'https://docs.python.org/3/'
@@ -73,7 +78,6 @@ sphinx:
         pillow [latest]:
           - 'https://pillow.readthedocs.io/en/latest/'
           - null
-    suppress_warnings: ["etoc.toctree"]
 
     # Hoverxref Extension
     hoverxref_auto_ref: True
