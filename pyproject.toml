@@ -36,6 +36,7 @@ docs = [
   "myst_nb",
   "ipywidgets",
   "sphinx-hoverxref",
+  "sphinx-autoapi",
 ]
 
 [project.urls]
