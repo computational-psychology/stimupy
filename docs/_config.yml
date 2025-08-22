@@ -50,10 +50,10 @@ sphinx:
     suppress_warnings: ["etoc.toctree"]
 
     # Auto documentation (autoapi, autodoc)
-    autoapi_dirs: ['../stimupy']
+    autoapi_dirs: ['../stimupy/components', '../stimupy/noises', '../stimupy/stimuli', '../stimupy/papers', '../stimupy/utils']
     autoapi_root: 'reference/'
     autoapi_template_dir: '_templates/autoapi'
-    autoapi_add_toctree_entry: False
+    autoapi_add_toctree_entry: True
     autoapi_keep_files: True
 
     autoapi_own_page_level: 'function'

@@ -13,7 +13,7 @@ parts:
     - file: user_guide/user_guide
   - caption: Reference
     chapters:
-    - file: reference/stimupy/index
+    - file: reference/index
     - file: reference/demos.md
   - caption: Get in touch
     chapters:
