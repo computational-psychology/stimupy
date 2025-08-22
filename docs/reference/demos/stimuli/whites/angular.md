@@ -1,0 +1,71 @@
+---
+jupytext:
+  formats: md:myst
+  text_representation:
+    extension: .md
+    format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.14.5
+kernelspec:
+  display_name: Python 3 (ipykernel)
+  language: python
+  name: python3
+---
+
+```{attention}
+To run locally, the code for these interactive demos requires
+a [Jupyter Notebook](https://jupyter.org/) environment,
+and the [Panel extension](https://panel.holoviz.org/).
+```
+
+# Angular
+{py:func}`stimupy.stimuli.whites.angular`
+
+```{code-cell} ipython3
+import param
+
+class AngularParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=32, bounds=(1, 40), doc="Pixels per degree")
+
+    frequency = param.Number(default=16, bounds=(4, 20), step=1, doc="Angular frequency")
+    rotation = param.Number(default=0, bounds=(0, 360), step=1, doc="Rotation in degrees")
+    intensity_segments_low = param.Number(default=0, bounds=(0, 1), step=0.01, doc="Low segment intensity")
+    intensity_segments_high = param.Number(default=1, bounds=(0, 1), step=0.01, doc="High segment intensity")
+    target_indices = param.List(default=[2], doc="Target indices")
+    intensity_target = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="Target intensity")
+    intensity_background = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="Background intensity")
+    target_width = param.Number(default=1.0, bounds=(0, 90), step=1, doc="Target width in degrees", allow_None=True)
+    target_center = param.Number(default=3, bounds=(0, 10), step=0.1, doc="Target center radius", allow_None=True)
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "frequency": self.frequency,
+            "rotation": self.rotation,
+            "intensity_segments": (self.intensity_segments_low, self.intensity_segments_high),
+            "target_indices": self.target_indices,
+            "intensity_target": self.intensity_target,
+            "intensity_background": self.intensity_background,
+            "target_width": self.target_width,
+            "target_center": self.target_center,
+        }
+```
+
+```{code-cell} ipython3
+from stimupy.stimuli.whites import angular
+import sys
+from pathlib import Path
+
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
+
+# Create and display the interactive angular
+angular_params = AngularParams()
+disp = InteractiveStimDisplay(angular, angular_params)
+disp.layout
+```
