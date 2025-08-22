@@ -38,6 +38,7 @@ launch_buttons:
 sphinx:
   extra_extensions:
     - sphinx.ext.intersphinx
+    - myst_sphinx_gallery           # galleries of pages
     - autoapi.extension             # generate API documentation of functions in modules
     - sphinx.ext.napoleon           # recognize NumPy style docstrings
     - sphinx.ext.viewcode           # add links to source code in API reference

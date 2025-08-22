@@ -34,12 +34,19 @@
 Submodules
 ----------
 
-.. toctree::
-   :maxdepth: 1
+.. autoapisummary::
 
-  {% for submodule in visible_submodules %}
-   {{ submodule.include_path }}
+  {% for module in visible_submodules %}
+   {{ module.id }}
   {% endfor %}
+
+
+.. gallery::
+   :caption: {{ obj.name }}
+
+   {% for module in visible_submodules %}
+   {{ module.include_path }}
+   {% endfor %}
 
 
 {% endif %}
@@ -169,20 +176,20 @@ Classes
 
 Functions
 ---------
-{% if "function" in own_page_types %}
-.. toctree::
-   :hidden:
-
-  {% for function in visible_functions %}
-   {{ function.include_path }}
-  {% endfor %}
-{% endif %}
 
 .. autoapisummary::
 
   {% for function in visible_functions %}
    {{ function.id }}
   {% endfor %}
+
+
+.. base-gallery::
+   :caption: {{ obj.name }}
+
+   {% for function in visible_functions %}
+   {{ function.name }}
+   {% endfor %}
 
 
 {% endif %}

@@ -9,6 +9,7 @@
 {{ obj.id }}
 {{ "=" * obj.id|length }}
 
+
 .. py:module:: {{ obj.name }}
 
 
@@ -34,8 +35,15 @@
 Modules
 -------
 
-.. toctree::
-   :maxdepth: 1
+.. autoapisummary::
+
+  {% for module in visible_submodules %}
+   {{ module.id }}
+  {% endfor %}
+
+
+.. gallery::
+   :caption: {{ obj.name }}
 
   {% for module in visible_submodules %}
    {{ module.include_path }}
