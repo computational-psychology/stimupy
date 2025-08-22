@@ -36,6 +36,10 @@ docs = [
   "myst_nb",
   "ipywidgets",
   "sphinx-hoverxref",
+  "nbsite",
+  "panel",
+  "param",
+  "jupyter-bokeh",
 ]
 
 [project.urls]
