@@ -19,7 +19,7 @@ kernelspec:
 ```{attention}
 To run locally, the code for these interactive demos requires
 a [Jupyter Notebook](https://jupyter.org/) environment,
-and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
+and the [Panel extension](https://panel.holoviz.org/).
 ```
 
 # Components - Gaussians
@@ -31,71 +31,48 @@ and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedoc
 {py:func}`stimupy.components.gaussians.gaussian`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class GaussianParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+    
+    # Gaussian parameters
+    sigma1 = param.Number(default=1, bounds=(0, 3), step=0.1, doc="Sigma 1 in degrees")
+    sigma2 = param.Number(default=1, bounds=(0, 3), step=0.1, doc="Sigma 2 in degrees")
+    rotation = param.Integer(default=0, bounds=(0, 360), doc="Rotation in degrees")
+    
+    # Intensity parameters
+    intensity_max = param.Number(default=1.0, bounds=(0, 1), step=0.01, doc="Maximum intensity")
+    
+    # Additional parameters
+    origin = param.Selector(default="center", objects=["center", "mean", "corner"], doc="Origin")
+    add_mask = param.Boolean(default=False, doc="Add mask to visualization")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "sigma": (self.sigma1, self.sigma2),
+            "origin": self.origin,
+            "rotation": self.rotation,
+            "intensity_max": self.intensity_max,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.components.gaussians import gaussian
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_sig1 = iw.FloatSlider(value=1, min=0, max=3, description="sigma1 [deg]")
-w_sig2 = iw.FloatSlider(value=1, min=0, max=3, description="sigma2 [deg]")
-w_rot = iw.IntSlider(value=0, min=0, max=360, description="rotation [deg]")
-
-w_int1 = iw.FloatSlider(value=1., min=0, max=1, description="intensity max")
-
-w_ori = iw.Dropdown(value="center", options=['center', 'mean', 'corner'], description="origin")
-w_mask = iw.ToggleButton(value=False, disabled=False, description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_sig1, w_sig2, w_rot])
-b_add = iw.HBox([w_ori, w_mask])
-ui = iw.VBox([b_im_size, b_geometry, w_int1, b_add])
-
-# Function for showing stim
-def show_gaussian(
-    height=None,
-    width=None,
-    ppd=None,
-    rotation=0,
-    sigma1=None,
-    sigma2=None,
-    origin=None,
-    intensity_max=None,
-    add_mask=False,
-):
-    try:
-        stim = gaussian(
-            visual_size=(height, width),
-            ppd=ppd,
-            sigma=(sigma1, sigma2),
-            origin=origin,
-            rotation=rotation,
-            intensity_max=intensity_max,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_gaussian,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "rotation": w_rot,
-        "sigma1": w_sig1,
-        "sigma2": w_sig2,
-        "origin": w_ori,
-        "intensity_max": w_int1,
-        "add_mask": w_mask,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive gaussian
+gaussian_params = GaussianParams()
+disp = InteractiveStimDisplay(gaussian, gaussian_params)
+disp.layout
 ```

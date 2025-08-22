@@ -19,7 +19,7 @@ kernelspec:
 ```{attention}
 To run locally, the code for these interactive demos requires
 a [Jupyter Notebook](https://jupyter.org/) environment,
-and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
+and the [Panel extension](https://panel.holoviz.org/).
 ```
 
 # Components - Radials
@@ -31,143 +31,94 @@ and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedoc
 {py:func}`stimupy.components.radials.disc`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class DiscParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+    
+    # Disc geometry parameters
+    radius = param.Number(default=3, bounds=(1, 6), step=0.1, doc="Radius in degrees")
+    
+    # Intensity parameters
+    intensity_disc = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="Disc intensity")
+    intensity_background = param.Number(default=0.0, bounds=(0, 1), step=0.01, doc="Background intensity")
+    
+    # Additional parameters
+    origin = param.Selector(default="mean", objects=["mean", "corner", "center"], doc="Origin")
+    add_mask = param.Boolean(default=False, doc="Add mask to visualization")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "radius": self.radius,
+            "intensity_disc": self.intensity_disc,
+            "intensity_background": self.intensity_background,
+            "origin": self.origin,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.components.radials import disc
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
-w_radius = iw.FloatSlider(value=3, min=1, max=6, description="radius [deg]")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_int = iw.FloatSlider(value=0.5, min=0, max=1, description="intensity disc")
-w_int_back = iw.FloatSlider(value=0., min=0, max=1, description="intensity background")
-
-w_ori = iw.Dropdown(value="mean", options=['mean', 'corner', 'center'], description="origin")
-w_mask = iw.ToggleButton(value=False, disabled=False, description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd, w_radius])
-b_intensities = iw.HBox([w_int, w_int_back])
-b_add = iw.HBox([w_ori, w_mask])
-ui = iw.VBox([b_im_size, b_intensities, b_add])
-
-# Function for showing stim
-def show_disc(
-    height=None,
-    width=None,
-    ppd=None,
-    radius=None,
-    intensity_disc=None,
-    intensity_background=None,
-    origin=None,
-    add_mask=False,
-):
-    try:
-        stim = disc(
-            visual_size=(height, width),
-            ppd=ppd,
-            radius=radius,
-            intensity_disc=intensity_disc,
-            intensity_background=intensity_background,
-            origin=origin,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_disc,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "radius": w_radius,
-        "intensity_disc": w_int,
-        "intensity_background": w_int_back,
-        "origin": w_ori,
-        "add_mask": w_mask,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive disc
+disc_params = DiscParams()
+disp = InteractiveStimDisplay(disc, disc_params)
+disp.layout
 ```
 
 ## Annulus (/ Ring)
 {py:func}`stimupy.components.radials.annulus`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class AnnulusParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+
+    radius1 = param.Number(default=2, bounds=(1, 4), step=0.01, doc="")
+    radius2 = param.Number(default=4, bounds=(3, 6), step=0.01, doc="")
+    intensity_ring = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="")
+    intensity_background = param.Number(default=0., bounds=(0, 1), step=0.01, doc="")
+    origin = param.Selector(default="mean", objects=['mean', 'corner', 'center'], doc="")
+    mask = param.Boolean(default=False, doc="")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "radii": (self.radius1, self.radius2),
+            "intensity_ring": self.intensity_ring,
+            "intensity_background": self.intensity_background,
+            "origin": self.origin,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.components.radials import annulus
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_radius1 = iw.FloatSlider(value=2, min=1, max=4, description="radius1 [deg]")
-w_radius2 = iw.FloatSlider(value=4, min=3, max=6, description="radius2 [deg]")
-
-w_int = iw.FloatSlider(value=0.5, min=0, max=1, description="intensity ring")
-w_int_back = iw.FloatSlider(value=0., min=0, max=1, description="intensity background")
-
-w_ori = iw.Dropdown(value="mean", options=['mean', 'corner', 'center'], description="origin")
-w_mask = iw.ToggleButton(value=False, disabled=False, description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_radius1, w_radius2])
-b_intensities = iw.HBox([w_int, w_int_back])
-b_add = iw.HBox([w_ori, w_mask])
-ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_add])
-
-# Function for showing stim
-def show_annulus(
-    height=None,
-    width=None,
-    ppd=None,
-    radius1=None,
-    radius2=None,
-    intensity_ring=None,
-    intensity_background=None,
-    origin=None,
-    add_mask=False,
-):
-    try:
-        stim = annulus(
-            visual_size=(height, width),
-            ppd=ppd,
-            radii=(radius1, radius2),
-            intensity_ring=intensity_ring,
-            intensity_background=intensity_background,
-            origin=origin,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_annulus,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "radius1": w_radius1,
-        "radius2": w_radius2,
-        "intensity_ring": w_int,
-        "intensity_background": w_int_back,
-        "origin": w_ori,
-        "add_mask": w_mask,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive annulus
+annulus_params = AnnulusParams()
+disp = InteractiveStimDisplay(annulus, annulus_params)
+disp.layout
 ```
 
 
@@ -175,81 +126,46 @@ display(ui, out)
 {py:func}`stimupy.components.radials.rings`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class RingsParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+
+    radius1 = param.Number(default=1, bounds=(0, 2), step=0.01, doc="")
+    radius2 = param.Number(default=2, bounds=(1, 3), step=0.01, doc="")
+    radius3 = param.Number(default=3, bounds=(2, 4), step=0.01, doc="")
+    intensity_1 = param.Number(default=0.8, bounds=(0, 1), step=0.01, doc="")
+    intensity_2 = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="")
+    intensity_3 = param.Number(default=0.3, bounds=(0, 1), step=0.01, doc="")
+    intensity_background = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="")
+    origin = param.Selector(default="mean", objects=['mean', 'corner', 'center'], doc="")
+    mask = param.Boolean(default=False, doc="")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "radii": (self.radius1, self.radius2, self.radius3),
+            "intensity_rings": (self.intensity_1, self.intensity_2, self.intensity_3),
+            "intensity_background": self.intensity_background,
+            "origin": self.origin,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.components.radials import rings
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_radius1 = iw.FloatSlider(value=1, min=0, max=2, description="radius1 [deg]")
-w_radius2 = iw.FloatSlider(value=2, min=1, max=3, description="radius2 [deg]")
-w_radius3 = iw.FloatSlider(value=3, min=2, max=4, description="radius2 [deg]")
-
-w_int1 = iw.FloatSlider(value=0.8, min=0, max=1, description="int-ring1")
-w_int2 = iw.FloatSlider(value=0.5, min=0, max=1, description="int-ring2")
-w_int3 = iw.FloatSlider(value=0.3, min=0, max=1, description="int-ring3")
-w_int_back = iw.FloatSlider(value=0.5, min=0, max=1, description="intensity background")
-
-w_ori = iw.Dropdown(value="mean", options=['mean', 'corner', 'center'], description="origin")
-w_mask = iw.ToggleButton(value=False, disabled=False, description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_radius1, w_radius2, w_radius3])
-b_intensities = iw.HBox([w_int1, w_int2, w_int3, w_int_back])
-b_add = iw.HBox([w_ori, w_mask])
-ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_add])
-
-# Function for showing stim
-def show_rings(
-    height=None,
-    width=None,
-    ppd=None,
-    radius1=None,
-    radius2=None,
-    radius3=None,
-    int1=None,
-    int2=None,
-    int3=None,
-    intensity_background=None,
-    origin=None,
-    add_mask=False,
-):
-    try:
-        stim = rings(
-            visual_size=(height, width),
-            ppd=ppd,
-            radii=(radius1, radius2, radius3),
-            intensity_rings=(int1, int2, int3),
-            intensity_background=intensity_background,
-            origin=origin,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_rings,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "radius1": w_radius1,
-        "radius2": w_radius2,
-        "radius3": w_radius3,
-        "int1": w_int1,
-        "int2": w_int2,
-        "int3": w_int3,
-        "intensity_background": w_int_back,
-        "origin": w_ori,
-        "add_mask": w_mask,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive rings
+rings_params = RingsParams()
+disp = InteractiveStimDisplay(rings, rings_params)
+disp.layout
 ```

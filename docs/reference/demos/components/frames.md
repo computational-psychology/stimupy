@@ -19,7 +19,7 @@ kernelspec:
 ```{attention}
 To run locally, the code for these interactive demos requires
 a [Jupyter Notebook](https://jupyter.org/) environment,
-and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
+and the [Panel extension](https://panel.holoviz.org/).
 ```
 
 # Components - Frames
@@ -31,81 +31,51 @@ and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedoc
 {py:func}`stimupy.components.frames.frames`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class FramesParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+    
+    # Frame geometry parameters
+    radius1 = param.Number(default=1, bounds=(0, 2), step=0.1, doc="Radius 1 in degrees")
+    radius2 = param.Number(default=2, bounds=(1, 3), step=0.1, doc="Radius 2 in degrees")
+    radius3 = param.Number(default=3, bounds=(2, 4), step=0.1, doc="Radius 3 in degrees")
+    
+    # Intensity parameters
+    intensity1 = param.Number(default=0.8, bounds=(0, 1), step=0.01, doc="Frame 1 intensity")
+    intensity2 = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="Frame 2 intensity")
+    intensity3 = param.Number(default=0.3, bounds=(0, 1), step=0.01, doc="Frame 3 intensity")
+    intensity_background = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="Background intensity")
+    
+    # Additional parameters
+    origin = param.Selector(default="mean", objects=["mean", "corner", "center"], doc="Origin")
+    add_mask = param.Boolean(default=False, doc="Add mask to visualization")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "radii": (self.radius1, self.radius2, self.radius3),
+            "intensity_frames": (self.intensity1, self.intensity2, self.intensity3),
+            "intensity_background": self.intensity_background,
+            "origin": self.origin,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.components.frames import frames
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_radius1 = iw.FloatSlider(value=1, min=0, max=2, description="radius1 [deg]")
-w_radius2 = iw.FloatSlider(value=2, min=1, max=3, description="radius2 [deg]")
-w_radius3 = iw.FloatSlider(value=3, min=2, max=4, description="radius2 [deg]")
-
-w_int1 = iw.FloatSlider(value=0.8, min=0, max=1, description="int-ring1")
-w_int2 = iw.FloatSlider(value=0.5, min=0, max=1, description="int-ring2")
-w_int3 = iw.FloatSlider(value=0.3, min=0, max=1, description="int-ring3")
-w_int_back = iw.FloatSlider(value=0.5, min=0, max=1, description="intensity background")
-
-w_ori = iw.Dropdown(value="mean", options=['mean', 'corner', 'center'], description="origin")
-w_mask = iw.ToggleButton(value=False, disabled=False, description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_radius1, w_radius2, w_radius3])
-b_intensities = iw.HBox([w_int1, w_int2, w_int3, w_int_back])
-b_add = iw.HBox([w_ori, w_mask])
-ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_add])
-
-# Function for showing stim
-def show_frames(
-    height=None,
-    width=None,
-    ppd=None,
-    radius1=None,
-    radius2=None,
-    radius3=None,
-    int1=None,
-    int2=None,
-    int3=None,
-    intensity_background=None,
-    origin=None,
-    add_mask=False,
-):
-    try:
-        stim = frames(
-            visual_size=(height, width),
-            ppd=ppd,
-            radii=(radius1, radius2, radius3),
-            intensity_frames=(int1, int2, int3),
-            intensity_background=intensity_background,
-            origin=origin,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_frames,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "radius1": w_radius1,
-        "radius2": w_radius2,
-        "radius3": w_radius3,
-        "int1": w_int1,
-        "int2": w_int2,
-        "int3": w_int3,
-        "intensity_background": w_int_back,
-        "origin": w_ori,
-        "add_mask": w_mask,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive frames
+frames_params = FramesParams()
+disp = InteractiveStimDisplay(frames, frames_params)
+disp.layout
 ```

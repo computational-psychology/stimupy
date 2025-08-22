@@ -19,7 +19,7 @@ kernelspec:
 ```{attention}
 To run locally, the code for these interactive demos requires
 a [Jupyter Notebook](https://jupyter.org/) environment,
-and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
+and the [Panel extension](https://panel.holoviz.org/).
 ```
 
 # Stimuli - Ponzos
@@ -31,91 +31,51 @@ and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedoc
 {py:func}`stimupy.stimuli.ponzos.ponzo`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class PonzoParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+
+    outer_lines_length = param.Number(default=4, bounds=(0.5, 8), step=0.1, doc="Outer lines length")
+    outer_lines_width = param.Number(default=0, bounds=(0, 2), step=0.01, doc="Outer lines width")
+    outer_lines_angle = param.Number(default=15, bounds=(-30, 30), step=1, doc="Outer lines angle")
+    target_lines_length = param.Number(default=2, bounds=(0.5, 4), step=0.1, doc="Target lines length")
+    target_lines_width = param.Number(default=0, bounds=(0, 2), step=0.01, doc="Target lines width")
+    target_distance = param.Number(default=2, bounds=(0.5, 4), step=0.1, doc="Target distance")
+    intensity_outer_lines = param.Number(default=1.0, bounds=(0, 1), step=0.01, doc="Outer lines intensity")
+    intensity_target_lines = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="Target lines intensity")
+    intensity_background = param.Number(default=0.0, bounds=(0, 1), step=0.01, doc="Background intensity")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "outer_lines_length": self.outer_lines_length,
+            "outer_lines_width": self.outer_lines_width,
+            "outer_lines_angle": self.outer_lines_angle,
+            "target_lines_length": self.target_lines_length,
+            "target_lines_width": self.target_lines_width,
+            "target_distance": self.target_distance,
+            "intensity_outer_lines": self.intensity_outer_lines,
+            "intensity_target_lines": self.intensity_target_lines,
+            "intensity_background": self.intensity_background,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.stimuli.ponzos import ponzo
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_outl = iw.FloatSlider(value=4, min=0.5, max=8, description="o-line length [deg]")
-w_outw = iw.FloatSlider(value=0, min=0, max=2, description="o-line width [deg]")
-w_outa = iw.IntSlider(value=15, min=-30, max=30, description="o-line angle [deg]")
-
-w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int o-line")
-w_tint = iw.FloatSlider(value=1, min=0, max=1, description="int t-line")
-w_int_back = iw.FloatSlider(value=0., min=0, max=1, description="int background")
-
-w_tl = iw.FloatSlider(value=4, min=0.5, max=8, description="t-line length [deg]")
-w_tw = iw.FloatSlider(value=0, min=0, max=2, description="t-line width [deg]")
-w_td = iw.FloatSlider(value=2, min=0, max=4, description="t-distance [deg]")
-
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'line_mask'], description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_outl, w_outw, w_outa])
-b_intensities = iw.HBox([w_int1, w_tint, w_int_back])
-b_target = iw.HBox([w_tl, w_tw, w_td])
-b_add = iw.HBox([w_mask])
-ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target, b_add])
-
-# Function for showing stim
-def show_ponzo(
-    height=None,
-    width=None,
-    ppd=None,
-    outer_lines_length=None,
-    outer_lines_width=None,
-    outer_lines_angle=None,
-    target_lines_length=None,
-    target_lines_width=None,
-    target_distance=None,
-    intensity_outer_lines=None,
-    intensity_background=None,
-    intensity_target_lines=None,
-    add_mask=False,
-):
-    try:
-        stim = ponzo(
-            visual_size=(height, width),
-            ppd=ppd,
-            outer_lines_length=outer_lines_length,
-            outer_lines_width=outer_lines_width,
-            outer_lines_angle=outer_lines_angle,
-            target_lines_length=target_lines_length,
-            target_lines_width=target_lines_width,
-            target_distance=target_distance,
-            intensity_outer_lines=intensity_outer_lines,
-            intensity_background=intensity_background,
-            intensity_target_lines=intensity_target_lines,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_ponzo,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "add_mask": w_mask,
-        "outer_lines_length": w_outl,
-        "outer_lines_width": w_outw,
-        "outer_lines_angle": w_outa,
-        "target_lines_length": w_tl,
-        "target_lines_width": w_tw,
-        "target_distance": w_td,
-        "intensity_target_lines": w_tint,
-        "intensity_background": w_int_back,
-        "intensity_outer_lines": w_int1,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive ponzo
+ponzo_params = PonzoParams()
+disp = InteractiveStimDisplay(ponzo, ponzo_params)
+disp.layout
 ```

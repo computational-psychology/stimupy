@@ -19,7 +19,7 @@ kernelspec:
 ```{attention}
 To run locally, the code for these interactive demos requires
 a [Jupyter Notebook](https://jupyter.org/) environment,
-and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
+and the [Panel extension](https://panel.holoviz.org/).
 ```
 
 # Stimuli - Wedding cakes
@@ -31,97 +31,46 @@ and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedoc
 {py:func}`stimupy.stimuli.wedding_cakes.wedding_cake`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class WeddingCakeParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+
+    L_height = param.Number(default=2, bounds=(1, 5), step=0.1, doc="L height")
+    L_width = param.Number(default=2, bounds=(1, 5), step=0.1, doc="L width")
+    L_thickness = param.Number(default=0.5, bounds=(0.1, 2), step=0.1, doc="L thickness")
+    target_height = param.Number(default=0.5, bounds=(0.1, 2), step=0.1, doc="Target height")
+    intensity1 = param.Number(default=0.0, bounds=(0, 1), step=0.01, doc="Intensity 1")
+    intensity2 = param.Number(default=1.0, bounds=(0, 1), step=0.01, doc="Intensity 2")
+    intensity_target = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="Target intensity")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "L_size": (self.L_height, self.L_width, self.L_thickness),
+            "target_height": self.target_height,
+            "target_indices1": ((0, 0),),
+            "target_indices2": ((0, 0),),
+            "intensity_bars": (self.intensity1, self.intensity2),
+            "intensity_target": self.intensity_target,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.stimuli.wedding_cakes import wedding_cake
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_Lheight = iw.FloatSlider(value=2, min=0, max=5, description="L-height [deg]")
-w_Lwidth = iw.FloatSlider(value=2, min=0, max=5, description="L-width [deg]")
-w_Lthick = iw.FloatSlider(value=0.5, min=0, max=2, description="L-thickness [deg]")
-
-w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int1")
-w_int2 = iw.FloatSlider(value=0., min=0, max=1, description="int2")
-
-w_tidx11 = iw.IntSlider(value=0, min=0, max=5, description="target1 idx1")
-w_tidx12 = iw.IntSlider(value=0, min=-5, max=5, description="target1 idx2")
-w_tidx21 = iw.IntSlider(value=0, min=0, max=5, description="target1 idx1")
-w_tidx22 = iw.IntSlider(value=0, min=-5, max=5, description="target2 idx2")
-
-w_theight = iw.FloatSlider(value=0.5, min=0, max=2, description="target height [deg]")
-w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
-
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask'], description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_Lheight, w_Lwidth, w_Lthick])
-b_intensities = iw.HBox([w_int1, w_int2])
-b_target = iw.HBox([w_theight, w_tint])
-b_target_idx = iw.HBox([w_tidx11, w_tidx12, w_tidx21, w_tidx22])
-b_add = iw.HBox([w_mask])
-ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target, b_target_idx, b_add])
-
-# Function for showing stim
-def show_wedding_cake(
-    height=None,
-    width=None,
-    ppd=None,
-    add_mask=False,
-    L_height=None,
-    L_width=None,
-    L_thick=None,
-    int1=None,
-    int2=None,
-    tidx11=None,
-    tidx12=None,
-    tidx21=None,
-    tidx22=None,
-    theight=None,
-    int_target=None,
-):
-    try:
-        stim = wedding_cake(
-            visual_size=(height, width),
-            ppd=ppd,
-            L_size=(L_height, L_width, L_thick),
-            target_height=theight,
-            intensity_target=int_target,
-            target_indices1=((tidx11, tidx12),),
-            target_indices2=((tidx21, tidx22),),
-            intensity_bars=(int1, int2),
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_wedding_cake,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "add_mask": w_mask,
-        "L_height": w_Lheight,
-        "L_width": w_Lwidth,
-        "L_thick": w_Lthick,
-        "int1": w_int1,
-        "int2": w_int2,
-        "tidx11": w_tidx11,
-        "tidx12": w_tidx12,
-        "tidx21": w_tidx21,
-        "tidx22": w_tidx22,
-        "theight": w_theight,
-        "int_target": w_tint,
-        
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive wedding_cake
+wedding_cake_params = WeddingCakeParams()
+disp = InteractiveStimDisplay(wedding_cake, wedding_cake_params)
+disp.layout
 ```

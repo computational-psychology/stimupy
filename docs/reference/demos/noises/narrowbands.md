@@ -19,7 +19,7 @@ kernelspec:
 ```{attention}
 To run locally, the code for these interactive demos requires
 a [Jupyter Notebook](https://jupyter.org/) environment,
-and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
+and the [Panel extension](https://panel.holoviz.org/).
 ```
 
 # Noises - Narrowbands
@@ -31,68 +31,42 @@ and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedoc
 {py:func}`stimupy.noises.narrowbands.narrowband`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class NarrowbandParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+
+    center_frequency = param.Number(default=5., bounds=(0.1, 12), step=0.1, doc="")
+    bandwidth = param.Number(default=1, bounds=(0.1, 2), step=0.1, doc="")
+    intensity_min = param.Number(default=0., bounds=(0, 1), step=0.01, doc="")
+    intensity_max = param.Number(default=1., bounds=(0, 1), step=0.01, doc="")
+    pseudo_noise = param.Boolean(default=False, doc="")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "center_frequency": self.center_frequency,
+            "bandwidth": self.bandwidth,
+            "intensity_range": (self.intensity_min, self.intensity_max),
+            "pseudo_noise": self.pseudo_noise,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.noises.narrowbands import narrowband
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_freq = iw.FloatSlider(value=5., min=0.1, max=12, description="center frequency [deg]")
-w_band = iw.FloatSlider(value=1, min=0.1, max=2, description="bandwidth [octaves]")
-
-w_int1 = iw.FloatSlider(value=0., min=0, max=1, description="intensity1")
-w_int2 = iw.FloatSlider(value=1., min=0, max=1, description="intensity2")
-
-w_pseudo = iw.ToggleButton(value=False, disabled=False, description="pseudo-noise")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_freq, w_band])
-b_intensities = iw.HBox([w_int1, w_int2])
-ui = iw.VBox([b_im_size, b_geometry, b_intensities, w_pseudo])
-
-# Function for showing stim
-def show_narrowband(
-    height=None,
-    width=None,
-    ppd=None,
-    frequency=None,
-    bandwidth=None,
-    intensity1=None,
-    intensity2=None,
-    pseudo_noise=False,
-):
-    try:
-        stim = narrowband(
-            visual_size=(height, width),
-            ppd=ppd,
-            intensity_range=(intensity1, intensity2),
-            center_frequency=frequency,
-            bandwidth=bandwidth,
-            pseudo_noise=pseudo_noise,
-        )
-        plot_stim(stim, mask=False)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_narrowband,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "intensity1": w_int1,
-        "intensity2": w_int2,
-        "frequency": w_freq,
-        "bandwidth": w_band,
-        "pseudo_noise": w_pseudo,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive narrowband
+narrowband_params = NarrowbandParams()
+disp = InteractiveStimDisplay(narrowband, narrowband_params)
+disp.layout
 ```

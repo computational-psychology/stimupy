@@ -19,7 +19,7 @@ kernelspec:
 ```{attention}
 To run locally, the code for these interactive demos requires
 a [Jupyter Notebook](https://jupyter.org/) environment,
-and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
+and the [Panel extension](https://panel.holoviz.org/).
 ```
 
 # Stimuli - Pinwheels
@@ -31,94 +31,52 @@ and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedoc
 {py:func}`stimupy.stimuli.pinwheels.pinwheel`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class PinwheelParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+
+    n_segments = param.Integer(default=6, bounds=(2, 12), doc="Number of segments")
+    rotation = param.Number(default=0, bounds=(0, 360), step=1, doc="Rotation in degrees")
+    intensity1 = param.Number(default=0.0, bounds=(0, 1), step=0.01, doc="Intensity 1")
+    intensity2 = param.Number(default=1.0, bounds=(0, 1), step=0.01, doc="Intensity 2")
+    intensity_background = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="Background intensity")
+    target_idx = param.Integer(default=3, bounds=(0, 12), doc="Target index")
+    target_width = param.Number(default=2.0, bounds=(0.1, 5), step=0.1, doc="Target width")
+    target_center = param.Number(default=2.5, bounds=(0.5, 5), step=0.1, doc="Target center radius")
+    intensity_target = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="Target intensity")
+    origin = param.Selector(default="mean", objects=["mean", "corner", "center"], doc="Origin position")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "n_segments": self.n_segments,
+            "rotation": self.rotation,
+            "intensity_segments": (self.intensity1, self.intensity2),
+            "intensity_background": self.intensity_background,
+            "target_indices": (self.target_idx,),
+            "target_width": self.target_width,
+            "target_center": self.target_center,
+            "intensity_target": self.intensity_target,
+            "origin": self.origin,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.stimuli.pinwheels import pinwheel
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_nseg = iw.IntSlider(value=6, min=2, max=12, description="n_segments")
-w_rot = iw.IntSlider(value=0, min=0, max=360, description="rotation [deg]")
-
-w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int1")
-w_int2 = iw.FloatSlider(value=0., min=0, max=1, description="int2")
-w_int_back = iw.FloatSlider(value=0.5, min=0, max=1, description="int background")
-
-w_tidx = iw.IntSlider(value=3, min=0, max=6, description="target idx")
-w_twidth = iw.FloatSlider(value=2.5, min=0, max=5, description="target width")
-w_tcent = iw.FloatSlider(value=2.5, min=0, max=5, description="target center")
-w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
-
-w_ori = iw.Dropdown(value="mean", options=['mean', 'corner', 'center'], description="origin")
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'segment_mask', 'circle_mask'], description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_nseg, w_rot])
-b_intensities = iw.HBox([w_int1, w_int2, w_int_back])
-b_target = iw.HBox([w_tidx, w_twidth, w_tcent, w_tint])
-b_add = iw.HBox([w_ori, w_mask])
-ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target, b_add])
-
-# Function for showing stim
-def show_pinwheel(
-    height=None,
-    width=None,
-    ppd=None,
-    n_segments=None,
-    rotation=None,
-    intensity1=None,
-    intensity2=None,
-    intensity_background=None,
-    target_indices=None,
-    target_width=None,
-    target_center=None,
-    intensity_target=None,
-    origin=None,
-    add_mask=False,
-):
-    try:
-        stim = pinwheel(
-            visual_size=(height, width),
-            ppd=ppd,
-            rotation=rotation,
-            n_segments=n_segments,
-            intensity_segments=(intensity1, intensity2),
-            intensity_background=intensity_background,
-            origin=origin,
-            target_indices=target_indices,
-            target_width=target_width,
-            target_center=target_center,
-            intensity_target=intensity_target,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_pinwheel,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "n_segments": w_nseg,
-        "rotation": w_rot,
-        "intensity1": w_int1,
-        "intensity2": w_int2,
-        "intensity_background": w_int_back,
-        "origin": w_ori,
-        "add_mask": w_mask,
-        "target_indices": w_tidx,
-        "target_width": w_twidth,
-        "target_center": w_tcent,
-        "intensity_target": w_tint,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive pinwheel
+pinwheel_params = PinwheelParams()
+disp = InteractiveStimDisplay(pinwheel, pinwheel_params)
+disp.layout
 ```

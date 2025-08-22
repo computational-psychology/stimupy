@@ -19,7 +19,7 @@ kernelspec:
 ```{attention}
 To run locally, the code for these interactive demos requires
 a [Jupyter Notebook](https://jupyter.org/) environment,
-and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
+and the [Panel extension](https://panel.holoviz.org/).
 ```
 
 # Stimuli - Checkerboards
@@ -31,194 +31,123 @@ and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedoc
 {py:func}`stimupy.stimuli.checkerboards.checkerboard`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class CheckerboardParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+    
+    # Checkerboard geometry parameters
+    frequency1 = param.Number(default=1, bounds=(0, 3), step=0.1, doc="Frequency 1 in cycles per degree")
+    frequency2 = param.Number(default=1, bounds=(0, 3), step=0.1, doc="Frequency 2 in cycles per degree")
+    rotation = param.Integer(default=0, bounds=(0, 360), doc="Rotation in degrees")
+    
+    # Intensity parameters
+    intensity1 = param.Number(default=1.0, bounds=(0, 1), step=0.01, doc="Intensity 1")
+    intensity2 = param.Number(default=0.0, bounds=(0, 1), step=0.01, doc="Intensity 2")
+    
+    # Target parameters
+    target_x = param.Integer(default=0, bounds=(0, 10), doc="Target x index")
+    target_y = param.Integer(default=0, bounds=(0, 10), doc="Target y index")
+    intensity_target = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="Target intensity")
+    extend_targets = param.Boolean(default=False, doc="Extend targets")
+    
+    # Additional parameters
+    period = param.Selector(default="ignore", objects=["ignore", "even", "odd", "either"], doc="Period")
+    round_phase_width = param.Boolean(default=False, doc="Round check width")
+    add_mask = param.Selector(default=None, objects=[None, "target_mask", "checker_mask", "row_mask", "col_mask"], doc="Add mask")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "frequency": (self.frequency1, self.frequency2),
+            "period": self.period,
+            "rotation": self.rotation,
+            "intensity_checks": (self.intensity1, self.intensity2),
+            "round_phase_width": self.round_phase_width,
+            "target_indices": ((self.target_y, self.target_x),),
+            "intensity_target": self.intensity_target,
+            "extend_targets": self.extend_targets,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.stimuli.checkerboards import checkerboard
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_freq1 = iw.FloatSlider(value=1, min=0, max=3, description="frequency1 [cpd]")
-w_freq2 = iw.FloatSlider(value=1, min=0, max=3, description="frequency2 [cpd]")
-w_rot = iw.IntSlider(value=0, min=0, max=360, description="rotation [deg]")
-
-w_int1 = iw.FloatSlider(value=1., min=0, max=1, description="int1")
-w_int2 = iw.FloatSlider(value=0., min=0, max=1, description="int2")
-
-w_period = iw.Dropdown(value="ignore", options=['ignore', 'even', 'odd', 'either'], description="period")
-w_round = iw.ToggleButton(value=False, disabled=False, description="round check width")
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'checker_mask', 'row_mask', 'col_mask'], description="add mask")
-
-w_tidxx = iw.IntSlider(value=0, min=0, max=10, description="target x-idx")
-w_tidxy = iw.IntSlider(value=0, min=0, max=10, description="target y-idx")
-w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
-w_text = iw.ToggleButton(value=False, disabled=False, description="extend target")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_freq1, w_freq2, w_rot])
-b_intensities = iw.HBox([w_int1, w_int2])
-b_add = iw.HBox([w_period, w_round, w_mask])
-b_target = iw.HBox([w_tidxx, w_tidxy, w_tint, w_text])
-ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target, b_add])
-
-# Function for showing stim
-def show_checkerboard(
-    height=None,
-    width=None,
-    ppd=None,
-    rotation=0,
-    frequency1=None,
-    frequency2=None,
-    period=None,
-    intensity1=None,
-    intensity2=None,
-    add_mask=False,
-    round_phase_width=False,
-    target_x=None,
-    target_y=None,
-    intensity_target=None,
-    extend_targets=False,
-):
-    try:
-        stim = checkerboard(
-            visual_size=(height, width),
-            ppd=ppd,
-            frequency=(frequency1, frequency2),
-            period=period,
-            rotation=rotation,
-            intensity_checks=(intensity1, intensity2),
-            round_phase_width=round_phase_width,
-            target_indices=((target_y, target_x),),
-            intensity_target=intensity_target,
-            extend_targets=extend_targets,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_checkerboard,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "rotation": w_rot,
-        "frequency1": w_freq1,
-        "frequency2": w_freq2,
-        "period": w_period,
-        "intensity1": w_int1,
-        "intensity2": w_int2,
-        "round_phase_width": w_round,
-        "add_mask": w_mask,
-        "target_y": w_tidxy,
-        "target_x": w_tidxx,
-        "intensity_target": w_tint,
-        "extend_targets": w_text,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive checkerboard
+checkerboard_params = CheckerboardParams()
+disp = InteractiveStimDisplay(checkerboard, checkerboard_params)
+disp.layout
 ```
 
 ## Contrast-contrast
 {py:func}`stimupy.stimuli.checkerboards.contrast_contrast`
 
+
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class ContrastContrastParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+    
+    # Checkerboard geometry parameters
+    frequency1 = param.Number(default=1, bounds=(0, 3), step=0.1, doc="Frequency 1 in cycles per degree")
+    frequency2 = param.Number(default=1, bounds=(0, 3), step=0.1, doc="Frequency 2 in cycles per degree")
+    rotation = param.Integer(default=0, bounds=(0, 360), doc="Rotation in degrees")
+    
+    # Intensity parameters
+    intensity1 = param.Number(default=1.0, bounds=(0, 1), step=0.01, doc="Intensity 1")
+    intensity2 = param.Number(default=0.0, bounds=(0, 1), step=0.01, doc="Intensity 2")
+    
+    # Target parameters
+    target_height = param.Integer(default=5, bounds=(0, 10), doc="Target height")
+    target_width = param.Integer(default=5, bounds=(0, 10), doc="Target width")
+    alpha = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="Alpha transparency")
+    tau = param.Boolean(default=False, doc="Tau transparency")
+
+    # Additional parameters
+    period = param.Selector(default="ignore", objects=["ignore", "even", "odd", "either"], doc="Period")
+    round_phase_width = param.Boolean(default=False, doc="Round check width")
+    add_mask = param.Selector(default=None, objects=[None, "target_mask", "checker_mask", "row_mask", "col_mask"], doc="Add mask")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "frequency": (self.frequency1, self.frequency2),
+            "period": self.period,
+            "rotation": self.rotation,
+            "intensity_checks": (self.intensity1, self.intensity2),
+            "round_phase_width": self.round_phase_width,
+            "target_shape": (self.target_height, self.target_width),
+            "alpha": self.alpha,
+            "tau": self.tau,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.stimuli.checkerboards import contrast_contrast
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_freq1 = iw.FloatSlider(value=1, min=0, max=3, description="frequency1 [cpd]")
-w_freq2 = iw.FloatSlider(value=1, min=0, max=3, description="frequency2 [cpd]")
-w_rot = iw.IntSlider(value=0, min=0, max=360, description="rotation [deg]")
-
-w_int1 = iw.FloatSlider(value=1., min=0, max=1, description="int1")
-w_int2 = iw.FloatSlider(value=0., min=0, max=1, description="int2")
-
-w_period = iw.Dropdown(value="ignore", options=['ignore', 'even', 'odd', 'either'], description="period")
-w_round = iw.ToggleButton(value=False, disabled=False, description="round check width")
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'checker_mask', 'row_mask', 'col_mask'], description="add mask")
-
-w_tidxy = iw.IntSlider(value=5, min=0, max=10, description="target height")
-w_tidxx = iw.IntSlider(value=5, min=0, max=10, description="target width")
-w_ttau = iw.FloatSlider(value=0.5, min=0, max=1, description="tau")
-w_talpha = iw.FloatSlider(value=0.5, min=0, max=1, description="alpha")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_freq1, w_freq2, w_rot])
-b_intensities = iw.HBox([w_int1, w_int2])
-b_add = iw.HBox([w_period, w_round, w_mask])
-b_target = iw.HBox([w_tidxy, w_tidxx, w_ttau, w_talpha])
-ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target, b_add])
-
-# Function for showing stim
-def show_contrast_contrast(
-    height=None,
-    width=None,
-    ppd=None,
-    rotation=0,
-    frequency1=None,
-    frequency2=None,
-    period=None,
-    intensity1=None,
-    intensity2=None,
-    add_mask=False,
-    round_phase_width=False,
-    target_x=None,
-    target_y=None,
-    alpha=None,
-    tau=False,
-):
-    try:
-        stim = contrast_contrast(
-            visual_size=(height, width),
-            ppd=ppd,
-            frequency=(frequency1, frequency2),
-            period=period,
-            rotation=rotation,
-            intensity_checks=(intensity1, intensity2),
-            round_phase_width=round_phase_width,
-            target_shape=(target_y, target_x),
-            alpha=alpha,
-            tau=tau,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_contrast_contrast,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "rotation": w_rot,
-        "frequency1": w_freq1,
-        "frequency2": w_freq2,
-        "period": w_period,
-        "intensity1": w_int1,
-        "intensity2": w_int2,
-        "round_phase_width": w_round,
-        "add_mask": w_mask,
-        "target_y": w_tidxy,
-        "target_x": w_tidxx,
-        "alpha": w_talpha,
-        "tau": w_ttau,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive checkerboard
+contrast_contrast_params = ContrastContrastParams()
+disp = InteractiveStimDisplay(contrast_contrast, contrast_contrast_params)
+disp.layout
 ```

@@ -19,7 +19,7 @@ kernelspec:
 ```{attention}
 To run locally, the code for these interactive demos requires
 a [Jupyter Notebook](https://jupyter.org/) environment,
-and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
+and the [Panel extension](https://panel.holoviz.org/).
 ```
 
 # Stimuli - Dungeons
@@ -31,78 +31,52 @@ and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedoc
 {py:func}`stimupy.stimuli.dungeons.dungeon`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class DungeonParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+    
+    # Grid geometry parameters
+    n_cells1 = param.Integer(default=5, bounds=(2, 10), doc="Number of cells 1")
+    n_cells2 = param.Integer(default=5, bounds=(2, 10), doc="Number of cells 2")
+    
+    # Intensity parameters
+    intensity_grid = param.Number(default=1, bounds=(0, 1), step=0.01, doc="Grid intensity")
+    intensity_background = param.Number(default=0.0, bounds=(0, 1), step=0.01, doc="Background intensity")
+    
+    # Target parameters
+    target_radius = param.Integer(default=1, bounds=(0, 3), doc="Target radius")
+    intensity_target = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="Target intensity")
+    
+    # Additional parameters
+    add_mask = param.Selector(default=None, objects=[None, "target_mask"], doc="Add mask")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "n_cells": (self.n_cells1, self.n_cells2),
+            "intensity_grid": self.intensity_grid,
+            "intensity_background": self.intensity_background,
+            "target_radius": self.target_radius,
+            "intensity_target": self.intensity_target,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.stimuli.dungeons import dungeon
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_ncell1 = iw.IntSlider(value=5, min=2, max=10, description="n_cells1")
-w_ncell2 = iw.IntSlider(value=5, min=2, max=10, description="n_cells2")
-
-w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int grid")
-w_int_back = iw.FloatSlider(value=0., min=0, max=1, description="int background")
-
-w_trad = iw.IntSlider(value=1, min=0, max=3, description="target radius")
-w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
-
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask'], description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_ncell1, w_ncell2])
-b_intensities = iw.HBox([w_int1, w_int_back])
-b_target = iw.HBox([w_trad, w_tint])
-b_add = iw.HBox([w_mask])
-ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target, b_add])
-
-# Function for showing stim
-def show_dungeon(
-    height=None,
-    width=None,
-    ppd=None,
-    n_cells1=None,
-    n_cells2=None,
-    intensity1=None,
-    intensity_background=None,
-    target_radius=None,
-    intensity_target=None,
-    add_mask=False,
-):
-    try:
-        stim = dungeon(
-            visual_size=(height, width),
-            ppd=ppd,
-            n_cells=(n_cells1, n_cells2),
-            intensity_grid=intensity1,
-            intensity_background=intensity_background,
-            target_radius=target_radius,
-            intensity_target=intensity_target,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_dungeon,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "n_cells1": w_ncell1,
-        "n_cells2": w_ncell2,
-        "intensity1": w_int1,
-        "intensity_background": w_int_back,
-        "add_mask": w_mask,
-        "target_radius": w_trad,
-        "intensity_target": w_tint,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive dungeon
+dungeon_params = DungeonParams()
+disp = InteractiveStimDisplay(dungeon, dungeon_params)
+disp.layout
 ```

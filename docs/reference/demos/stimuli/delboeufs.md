@@ -19,7 +19,7 @@ kernelspec:
 ```{attention}
 To run locally, the code for these interactive demos requires
 a [Jupyter Notebook](https://jupyter.org/) environment,
-and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
+and the [Panel extension](https://panel.holoviz.org/).
 ```
 
 # Stimuli - Delboeufs
@@ -31,166 +31,96 @@ and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedoc
 {py:func}`stimupy.stimuli.delboeufs.delboeuf`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
-from stimupy.stimuli.delboeufs import delboeuf
+import param
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+class DelboeufParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
 
-w_outr = iw.FloatSlider(value=4, min=0.5, max=8, description="outer radius [deg]")
-w_outw = iw.FloatSlider(value=0, min=0, max=2, description="outer line width [deg]")
+    outer_radius = param.Number(default=4, bounds=(0.5, 8), step=0.1, doc="")
+    outer_line_width = param.Number(default=0, bounds=(0, 2), step=0.1, doc="")
+    intensity_outer_line = param.Number(default=0.0, bounds=(0, 1), step=0.01, doc="")
+    intensity_background = param.Number(default=1.0, bounds=(0, 1), step=0.01, doc="")
+    target_radius = param.Number(default=2.5, bounds=(0, 5), step=0.1, doc="")
+    intensity_target = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="")
 
-w_int1 = iw.FloatSlider(value=0, min=0, max=1, description="int line")
-w_int_back = iw.FloatSlider(value=1., min=0, max=1, description="int background")
-
-w_tr = iw.FloatSlider(value=2.5, min=0, max=5, description="target radius [deg]")
-w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="int target")
-
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'line_mask'], description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_outr, w_outw])
-b_intensities = iw.HBox([w_int1, w_int_back])
-b_target = iw.HBox([w_tr, w_tint])
-b_add = iw.HBox([w_mask])
-ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target, b_add])
-
-# Function for showing stim
-def show_delboeuf(
-    height=None,
-    width=None,
-    ppd=None,
-    outer_radius=None,
-    outer_line_width=None,
-    target_radius=None,
-    intensity_outer_line=None,
-    intensity_background=None,
-    intensity_target=None,
-    add_mask=False,
-):
-    try:
-        stim = delboeuf(
-            visual_size=(height, width),
-            ppd=ppd,
-            outer_radius=outer_radius,
-            outer_line_width=outer_line_width,
-            target_radius=target_radius,
-            intensity_outer_line=intensity_outer_line,
-            intensity_background=intensity_background,
-            intensity_target=intensity_target,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_delboeuf,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "add_mask": w_mask,
-        "outer_radius": w_outr,
-        "outer_line_width": w_outw,
-        "target_radius": w_tr,
-        "intensity_target": w_tint,
-        "intensity_background": w_int_back,
-        "intensity_outer_line": w_int1,
-    },
-)
-
-# Show
-display(ui, out)
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "outer_radius": self.outer_radius,
+            "outer_line_width": self.outer_line_width,
+            "intensity_outer_line": self.intensity_outer_line,
+            "intensity_background": self.intensity_background,
+            "target_radius": self.target_radius,
+            "intensity_target": self.intensity_target,
+        }
 ```
 
-## Two-sided
+```{code-cell} ipython3
+from stimupy.stimuli.delboeufs import delboeuf
+import sys
+from pathlib import Path
+
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
+
+# Create and display the interactive delboeuf
+delboeuf_params = DelboeufParams()
+disp = InteractiveStimDisplay(delboeuf, delboeuf_params)
+disp.layout
+```
+
+## Delboeuf, two_sided
 {py:func}`stimupy.stimuli.delboeufs.two_sided`
 
+
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class DelboeufTwoSidedParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=20, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+
+    target_radius_left = param.Number(default=2.5, bounds=(0, 5), step=0.1, doc="")
+    target_radius_right = param.Number(default=2.5, bounds=(0, 5), step=0.1, doc="")
+    outer_radius_left = param.Number(default=4, bounds=(0.5, 8), step=0.1, doc="")
+    outer_radius_right = param.Number(default=4, bounds=(0.5, 8), step=0.1, doc="")
+    outer_line_width_left = param.Number(default=0, bounds=(0, 2), step=0.1, doc="")
+    outer_line_width_right = param.Number(default=0, bounds=(0, 2), step=0.1, doc="")
+    intensity_target = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="")
+    intensity_outer_line = param.Number(default=0.0, bounds=(0, 1), step=0.01, doc="")
+    intensity_background = param.Number(default=1.0, bounds=(0, 1), step=0.01, doc="")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "target_radius":( self.target_radius_left, self.target_radius_right),
+            "outer_radius": (self.outer_radius_left, self.outer_radius_right),
+            "outer_line_width": (self.outer_line_width_left, self.outer_line_width_right),
+            "intensity_target": self.intensity_target,
+            "intensity_outer_line": self.intensity_outer_line,
+            "intensity_background": self.intensity_background,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.stimuli.delboeufs import two_sided
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=20, min=1, max=40, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_out_rad_l = iw.FloatSlider(value=4, min=0.5, max=8, description="outer radius1 [deg]")
-w_out_rad_r = iw.FloatSlider(value=2.5, min=0.5, max=8, description="outer radius2 [deg]")
-w_outw = iw.FloatSlider(value=0, min=0, max=2, description="outer line width [deg]")
-
-w_int1 = iw.FloatSlider(value=0, min=0, max=1, description="int line")
-w_int_back = iw.FloatSlider(value=1., min=0, max=1, description="int background")
-
-w_tr = iw.FloatSlider(value=2., min=0, max=4, description="target radius [deg]")
-w_tint_l = iw.FloatSlider(value=0.5, min=0, max=1, description="int left target")
-w_tint_r = iw.FloatSlider(value=0.5, min=0, max=1, description="int right target")
-
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'line_mask'], description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_out_rad_l, w_out_rad_r, w_outw])
-b_intensities = iw.HBox([w_int1, w_int_back])
-b_target = iw.HBox([w_tr, w_tint_l, w_tint_r])
-b_add = iw.HBox([w_mask])
-ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target, b_add])
-
-# Function for showing stim
-def show_two_sided(
-    height=None,
-    width=None,
-    ppd=None,
-    outer_radius1=None,
-    outer_radius2=None,
-    outer_line_width=None,
-    target_radius=None,
-    intensity_outer_line=None,
-    intensity_background=None,
-    intensity_target_l=None,
-    intensity_target_r=None,
-    add_mask=False,
-):
-    try:
-        stim = two_sided(
-            visual_size=(height, width),
-            ppd=ppd,
-            outer_radius=(outer_radius1, outer_radius2),
-            outer_line_width=outer_line_width,
-            target_radius=target_radius,
-            intensity_outer_line=intensity_outer_line,
-            intensity_background=intensity_background,
-            intensity_target=(intensity_target_l, intensity_target_r),
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_two_sided,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "add_mask": w_mask,
-        "outer_radius_l": w_out_rad_l,
-        "outer_radius_r": w_out_rad_r,
-        "outer_line_width": w_outw,
-        "target_radius": w_tr,
-        "intensity_target_l": w_tint_l,
-        "intensity_target_r": w_tint_r,
-        "intensity_background": w_int_back,
-        "intensity_outer_line": w_int1,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive two_sided
+two_sided_params = DelboeufTwoSidedParams()
+disp = InteractiveStimDisplay(two_sided, two_sided_params)
+disp.layout
 ```

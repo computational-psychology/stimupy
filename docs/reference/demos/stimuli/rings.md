@@ -19,7 +19,7 @@ kernelspec:
 ```{attention}
 To run locally, the code for these interactive demos requires
 a [Jupyter Notebook](https://jupyter.org/) environment,
-and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
+and the [Panel extension](https://panel.holoviz.org/).
 ```
 
 # Stimuli - Rings
@@ -31,555 +31,310 @@ and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedoc
 {py:func}`stimupy.stimuli.rings.circular`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class CircularParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+
+    frequency = param.Number(default=1.0, bounds=(0.1, 2), step=0.1, doc="Frequency in cpd")
+    phase_shift = param.Number(default=0, bounds=(0, 360), step=1, doc="Phase shift in degrees")
+    intensity1 = param.Number(default=0.0, bounds=(0, 1), step=0.01, doc="Intensity 1")
+    intensity2 = param.Number(default=1.0, bounds=(0, 1), step=0.01, doc="Intensity 2")
+    intensity_background = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="Background intensity")
+    target_idx = param.Integer(default=2, bounds=(0, 10), doc="Target index")
+    intensity_target = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="Target intensity")
+    origin = param.Selector(default="mean", objects=["mean", "corner", "center"], doc="Origin position")
+    clip = param.Boolean(default=False, doc="Clip")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "frequency": self.frequency,
+            "phase_shift": self.phase_shift,
+            "intensity_rings": (self.intensity1, self.intensity2),
+            "intensity_background": self.intensity_background,
+            "target_indices": (self.target_idx,),
+            "intensity_target": self.intensity_target,
+            "origin": self.origin,
+            "clip": self.clip,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.stimuli.rings import circular
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_freq = iw.FloatSlider(value=1, min=0, max=2, description="frequency [cpd]")
-w_phase = iw.FloatSlider(value=0, min=0, max=360, description="phase shift [deg]")
-
-w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int-ring1")
-w_int2 = iw.FloatSlider(value=0, min=0, max=1, description="int-ring2")
-w_int_back = iw.FloatSlider(value=0.5, min=0, max=1, description="int background")
-
-w_ori = iw.Dropdown(value="mean", options=['mean', 'corner', 'center'], description="origin")
-w_clip = iw.ToggleButton(value=False, disabled=False, description="clip")
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'ring_mask'], description="add mask")
-
-w_tidx = iw.IntSlider(value=2, min=0, max=10, description="target idx")
-w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_freq, w_phase])
-b_intensities = iw.HBox([w_int1, w_int2, w_int_back])
-b_add = iw.HBox([w_ori, w_clip, w_mask])
-b_target = iw.HBox([w_tidx, w_tint])
-ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target, b_add])
-
-# Function for showing stim
-def show_circular(
-    height=None,
-    width=None,
-    ppd=None,
-    frequency=None,
-    phase_shift=None,
-    int1=None,
-    int2=None,
-    intensity_background=None,
-    origin=None,
-    clip=False,
-    add_mask=False,
-    target_indices=None,
-    intensity_target=None,
-):
-    try:
-        stim = circular(
-            visual_size=(height, width),
-            ppd=ppd,
-            frequency=frequency,
-            phase_shift=phase_shift,
-            intensity_rings=(int1, int2),
-            intensity_background=intensity_background,
-            origin=origin,
-            clip=clip,
-            target_indices=target_indices,
-            intensity_target=intensity_target,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_circular,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "frequency": w_freq,
-        "phase_shift": w_phase,
-        "int1": w_int1,
-        "int2": w_int2,
-        "intensity_background": w_int_back,
-        "origin": w_ori,
-        "clip": w_clip,
-        "add_mask": w_mask,
-        "target_indices": w_tidx,
-        "intensity_target": w_tint,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive circular
+circular_params = CircularParams()
+disp = InteractiveStimDisplay(circular, circular_params)
+disp.layout
 ```
 
 ## Circular, generalized
 {py:func}`stimupy.stimuli.rings.circular_generalized`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class CircularGeneralizedParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+
+    radius1 = param.Number(default=1.0, bounds=(0.1, 5), step=0.1, doc="Radius 1")
+    radius2 = param.Number(default=2.0, bounds=(0.1, 5), step=0.1, doc="Radius 2")
+    radius3 = param.Number(default=3.0, bounds=(0.1, 5), step=0.1, doc="Radius 3")
+    intensity1 = param.Number(default=1.0, bounds=(0, 1), step=0.01, doc="Intensity 1")
+    intensity2 = param.Number(default=0.3, bounds=(0, 1), step=0.01, doc="Intensity 2")
+    intensity3 = param.Number(default=0.8, bounds=(0, 1), step=0.01, doc="Intensity 3")
+    intensity_background = param.Number(default=0.0, bounds=(0, 1), step=0.01, doc="Background intensity")
+    target_idx = param.Integer(default=1, bounds=(1, 4), doc="Target index")
+    intensity_target = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="Target intensity")
+    origin = param.Selector(default="center", objects=["mean", "corner", "center"], doc="Origin position")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "radii": (self.radius1, self.radius2, self.radius3),
+            "intensity_rings": (self.intensity1, self.intensity2, self.intensity3),
+            "intensity_background": self.intensity_background,
+            "target_indices": (self.target_idx,),
+            "intensity_target": self.intensity_target,
+            "origin": self.origin,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.stimuli.rings import circular_generalized
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_radius1 = iw.FloatSlider(value=1, min=0, max=2, description="radius1 [deg]")
-w_radius2 = iw.FloatSlider(value=2, min=1, max=3, description="radius2 [deg]")
-w_radius3 = iw.FloatSlider(value=3, min=2, max=4, description="radius2 [deg]")
-
-w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int-ring1")
-w_int2 = iw.FloatSlider(value=0.3, min=0, max=1, description="int-ring2")
-w_int3 = iw.FloatSlider(value=0.8, min=0, max=1, description="int-ring3")
-w_int_back = iw.FloatSlider(value=0., min=0, max=1, description="intensity background")
-
-w_ori = iw.Dropdown(value="center", options=['mean', 'corner', 'center'], description="origin")
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'ring_mask'], description="add mask")
-
-w_tidx = iw.IntSlider(value=1, min=1, max=4, description="target idx")
-w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_radius1, w_radius2, w_radius3])
-b_intensities = iw.HBox([w_int1, w_int2, w_int3, w_int_back])
-b_target = iw.HBox([w_tidx, w_tint])
-b_add = iw.HBox([w_ori, w_mask])
-ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target, b_add])
-
-# Function for showing stim
-def show_circular_generalized(
-    height=None,
-    width=None,
-    ppd=None,
-    radius1=None,
-    radius2=None,
-    radius3=None,
-    int1=None,
-    int2=None,
-    int3=None,
-    intensity_background=None,
-    origin=None,
-    add_mask=False,
-    intensity_target=None,
-    target_indices=None,
-):
-    try:
-        stim = circular_generalized(
-            visual_size=(height, width),
-            ppd=ppd,
-            radii=(radius1, radius2, radius3),
-            intensity_rings=(int1, int2, int3),
-            intensity_background=intensity_background,
-            origin=origin,
-            intensity_target=intensity_target,
-            target_indices=target_indices,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_circular_generalized,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "radius1": w_radius1,
-        "radius2": w_radius2,
-        "radius3": w_radius3,
-        "int1": w_int1,
-        "int2": w_int2,
-        "int3": w_int3,
-        "intensity_background": w_int_back,
-        "origin": w_ori,
-        "add_mask": w_mask,
-        "target_indices": w_tidx,
-        "intensity_target": w_tint,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive circular_generalized
+circular_generalized_params = CircularGeneralizedParams()
+disp = InteractiveStimDisplay(circular_generalized, circular_generalized_params)
+disp.layout
 ```
 
 ## Two-sided rings
 {py:func}`stimupy.stimuli.rings.circular_two_sided`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class CircularTwoSidedParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+
+    frequency = param.Number(default=1.0, bounds=(0.1, 2), step=0.1, doc="Frequency in cpd")
+    phase_shift = param.Number(default=0, bounds=(0, 360), step=1, doc="Phase shift in degrees")
+    intensity1 = param.Number(default=1.0, bounds=(0, 1), step=0.01, doc="Intensity 1")
+    intensity2 = param.Number(default=0.0, bounds=(0, 1), step=0.01, doc="Intensity 2")
+    intensity_background = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="Background intensity")
+    target_idx = param.Integer(default=2, bounds=(0, 10), doc="Target index")
+    intensity_target_left = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="Left target intensity")
+    intensity_target_right = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="Right target intensity")
+    origin = param.Selector(default="mean", objects=["mean", "corner", "center"], doc="Origin position")
+    clip = param.Boolean(default=False, doc="Clip")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "frequency": self.frequency,
+            "phase_shift": self.phase_shift,
+            "intensity_rings": ((self.intensity1, self.intensity2), (self.intensity2, self.intensity1)),
+            "intensity_background": self.intensity_background,
+            "target_indices": (self.target_idx, self.target_idx),
+            "intensity_target": (self.intensity_target_left, self.intensity_target_right),
+            "origin": self.origin,
+            "clip": self.clip,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.stimuli.rings import circular_two_sided
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_freq = iw.FloatSlider(value=1, min=0, max=2, description="frequency [cpd]")
-w_phase = iw.FloatSlider(value=0, min=0, max=360, description="phase shift [deg]")
-
-w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int-ring1")
-w_int2 = iw.FloatSlider(value=0, min=0, max=1, description="int-ring2")
-w_int_back = iw.FloatSlider(value=0.5, min=0, max=1, description="int background")
-
-w_ori = iw.Dropdown(value="mean", options=['mean', 'corner', 'center'], description="origin")
-w_clip = iw.ToggleButton(value=False, disabled=False, description="clip")
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'ring_mask'], description="add mask")
-
-w_tidx = iw.IntSlider(value=2, min=0, max=10, description="target idx")
-w_tint_l = iw.FloatSlider(value=0.5, min=0, max=1, description="left target int")
-w_tint_r = iw.FloatSlider(value=0.5, min=0, max=1, description="right target int")
-
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_freq, w_phase])
-b_intensities = iw.HBox([w_int1, w_int2, w_int_back])
-b_add = iw.HBox([w_ori, w_mask, w_clip])
-b_target = iw.HBox([w_tidx, w_tint_l, w_tint_r])
-ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target, b_add])
-
-# Function for showing stim
-def show_circular_two_sided(
-    height=None,
-    width=None,
-    ppd=None,
-    frequency=None,
-    phase_shift=None,
-    int1=None,
-    int2=None,
-    intensity_background=None,
-    origin=None,
-    add_mask=False,
-    target_indices=None,
-    intensity_target_l=None,
-    intensity_target_r=None,
-    clip=True,
-):
-    try:
-        stim = circular_two_sided(
-            visual_size=(height, width),
-            ppd=ppd,
-            frequency=frequency,
-            phase_shift=phase_shift,
-            intensity_rings=((int1, int2),(int2, int1)),
-            intensity_background=intensity_background,
-            origin=origin,
-            target_indices=target_indices,
-            intensity_target=(intensity_target_l, intensity_target_r),
-            clip=clip,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_circular_two_sided,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "frequency": w_freq,
-        "phase_shift": w_phase,
-        "int1": w_int1,
-        "int2": w_int2,
-        "intensity_background": w_int_back,
-        "origin": w_ori,
-        "add_mask": w_mask,
-        "target_indices": w_tidx,
-        "intensity_target_l": w_tint_l,
-        "intensity_target_r": w_tint_r,
-        "clip": w_clip,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive circular_two_sided
+circular_two_sided_params = CircularTwoSidedParams()
+disp = InteractiveStimDisplay(circular_two_sided, circular_two_sided_params)
+disp.layout
 ```
 
 ## Rectangular
 {py:func}`stimupy.stimuli.rings.rectangular`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class RectangularParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+
+    frequency = param.Number(default=1.0, bounds=(0.1, 2), step=0.1, doc="Frequency in cpd")
+    phase_shift = param.Number(default=0, bounds=(0, 360), step=1, doc="Phase shift in degrees")
+    intensity1 = param.Number(default=1.0, bounds=(0, 1), step=0.01, doc="Intensity 1")
+    intensity2 = param.Number(default=0.0, bounds=(0, 1), step=0.01, doc="Intensity 2")
+    intensity_background = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="Background intensity")
+    target_idx = param.Integer(default=1, bounds=(0, 10), doc="Target index")
+    intensity_target = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="Target intensity")
+    origin = param.Selector(default="center", objects=["mean", "corner", "center"], doc="Origin position")
+    clip = param.Boolean(default=False, doc="Clip")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "frequency": self.frequency,
+            "phase_shift": self.phase_shift,
+            "intensity_frames": (self.intensity1, self.intensity2),
+            "intensity_background": self.intensity_background,
+            "target_indices": self.target_idx,
+            "intensity_target": self.intensity_target,
+            "origin": self.origin,
+            "clip": self.clip,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.stimuli.rings import rectangular
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_freq = iw.FloatSlider(value=1, min=0, max=2, description="frequency [cpd]")
-w_phase = iw.FloatSlider(value=0, min=0, max=360, description="phase shift [deg]")
-
-w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int-ring1")
-w_int2 = iw.FloatSlider(value=0, min=0, max=1, description="int-ring2")
-w_int_back = iw.FloatSlider(value=0.5, min=0, max=1, description="intensity background")
-
-w_ori = iw.Dropdown(value="center", options=['mean', 'corner', 'center'], description="origin")
-w_clip = iw.ToggleButton(value=False, disabled=False, description="clip")
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'frame_mask'], description="add mask")
-
-w_tidx = iw.IntSlider(value=1, min=0, max=10, description="target idx")
-w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_freq, w_phase])
-b_intensities = iw.HBox([w_int1, w_int2, w_int_back])
-b_target = iw.HBox([w_tidx, w_tint])
-b_add = iw.HBox([w_ori, w_clip, w_mask])
-ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target, b_add])
-
-# Function for showing stim
-def show_rectangular(
-    height=None,
-    width=None,
-    ppd=None,
-    frequency=None,
-    phase_shift=None,
-    int1=None,
-    int2=None,
-    intensity_background=None,
-    origin=None,
-    clip=False,
-    add_mask=False,
-    target_indices=None,
-    intensity_target=None,
-):
-    try:
-        stim = rectangular(
-            visual_size=(height, width),
-            ppd=ppd,
-            frequency=frequency,
-            phase_shift=phase_shift,
-            intensity_frames=(int1, int2),
-            intensity_background=intensity_background,
-            origin=origin,
-            clip=clip,
-            target_indices=target_indices,
-            intensity_target=intensity_target,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_rectangular,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "frequency": w_freq,
-        "phase_shift": w_phase,
-        "int1": w_int1,
-        "int2": w_int2,
-        "intensity_background": w_int_back,
-        "origin": w_ori,
-        "clip": w_clip,
-        "add_mask": w_mask,
-        "intensity_target": w_tint,
-        "target_indices": w_tidx,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive rectangular
+rectangular_params = RectangularParams()
+disp = InteractiveStimDisplay(rectangular, rectangular_params)
+disp.layout
 ```
 
 ## Rectangular, generalized
 {py:func}`stimupy.stimuli.rings.rectangular_generalized`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class RectangularGeneralizedParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+
+    radius1 = param.Number(default=1.0, bounds=(0.1, 5), step=0.1, doc="Radius 1")
+    radius2 = param.Number(default=2.0, bounds=(0.1, 5), step=0.1, doc="Radius 2")
+    radius3 = param.Number(default=3.0, bounds=(0.1, 5), step=0.1, doc="Radius 3")
+    intensity1 = param.Number(default=1.0, bounds=(0, 1), step=0.01, doc="Intensity 1")
+    intensity2 = param.Number(default=0.3, bounds=(0, 1), step=0.01, doc="Intensity 2")
+    intensity3 = param.Number(default=0.8, bounds=(0, 1), step=0.01, doc="Intensity 3")
+    intensity_background = param.Number(default=0.0, bounds=(0, 1), step=0.01, doc="Background intensity")
+    target_idx = param.Integer(default=1, bounds=(1, 4), doc="Target index")
+    intensity_target = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="Target intensity")
+    origin = param.Selector(default="center", objects=["mean", "corner", "center"], doc="Origin position")
+    rotation = param.Number(default=0.0, bounds=(0, 360), step=1, doc="Rotation in degrees")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "radii": (self.radius1, self.radius2, self.radius3),
+            "intensity_frames": (self.intensity1, self.intensity2, self.intensity3),
+            "intensity_background": self.intensity_background,
+            "target_indices": self.target_idx,
+            "intensity_target": self.intensity_target,
+            "origin": self.origin,
+            "rotation": self.rotation,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.stimuli.rings import rectangular_generalized
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_radius1 = iw.FloatSlider(value=1, min=0, max=2, description="radius1 [deg]")
-w_radius2 = iw.FloatSlider(value=2, min=1, max=3, description="radius2 [deg]")
-w_radius3 = iw.FloatSlider(value=3, min=2, max=4, description="radius2 [deg]")
-
-w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int-ring1")
-w_int2 = iw.FloatSlider(value=0.3, min=0, max=1, description="int-ring2")
-w_int3 = iw.FloatSlider(value=0.8, min=0, max=1, description="int-ring3")
-w_int_back = iw.FloatSlider(value=0., min=0, max=1, description="intensity background")
-
-w_ori = iw.Dropdown(value="center", options=['mean', 'corner', 'center'], description="origin")
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'frame_mask'], description="add mask")
-
-w_tidx = iw.IntSlider(value=1, min=1, max=4, description="target idx")
-w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_radius1, w_radius2, w_radius3])
-b_intensities = iw.HBox([w_int1, w_int2, w_int3, w_int_back])
-b_target = iw.HBox([w_tidx, w_tint])
-b_add = iw.HBox([w_ori, w_mask])
-ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target, b_add])
-
-# Function for showing stim
-def show_rectangular_generalized(
-    height=None,
-    width=None,
-    ppd=None,
-    radius1=None,
-    radius2=None,
-    radius3=None,
-    int1=None,
-    int2=None,
-    int3=None,
-    intensity_background=None,
-    origin=None,
-    add_mask=False,
-    intensity_target=None,
-    target_indices=None,
-):
-    try:
-        stim = rectangular_generalized(
-            visual_size=(height, width),
-            ppd=ppd,
-            radii=(radius1, radius2, radius3),
-            intensity_frames=(int1, int2, int3),
-            intensity_background=intensity_background,
-            origin=origin,
-            intensity_target=intensity_target,
-            target_indices=target_indices,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_rectangular_generalized,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "radius1": w_radius1,
-        "radius2": w_radius2,
-        "radius3": w_radius3,
-        "int1": w_int1,
-        "int2": w_int2,
-        "int3": w_int3,
-        "intensity_background": w_int_back,
-        "origin": w_ori,
-        "add_mask": w_mask,
-        "target_indices": w_tidx,
-        "intensity_target": w_tint,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive rectangular_generalized
+rectangular_generalized_params = RectangularGeneralizedParams()
+disp = InteractiveStimDisplay(rectangular_generalized, rectangular_generalized_params)
+disp.layout
 ```
 
 ## Two-sided-rings
 {py:func}`stimupy.stimuli.rings.rectangular_two_sided`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class RectangularTwoSidedParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=20, bounds=(1, 40), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+
+    frequency = param.Number(default=1.0, bounds=(0.1, 2), step=0.1, doc="Frequency in cpd")
+    phase_shift = param.Number(default=0, bounds=(0, 360), step=1, doc="Phase shift in degrees")
+    intensity1 = param.Number(default=1.0, bounds=(0, 1), step=0.01, doc="Intensity 1")
+    intensity2 = param.Number(default=0.0, bounds=(0, 1), step=0.01, doc="Intensity 2")
+    intensity_background = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="Background intensity")
+    target_idx = param.Integer(default=1, bounds=(0, 10), doc="Target index")
+    intensity_target_left = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="Left target intensity")
+    intensity_target_right = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="Right target intensity")
+    clip = param.Boolean(default=False, doc="Clip")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "frequency": self.frequency,
+            "phase_shift": self.phase_shift,
+            "intensity_frames": ((self.intensity1, self.intensity2), (self.intensity2, self.intensity1)),
+            "intensity_background": self.intensity_background,
+            "target_indices": (self.target_idx, self.target_idx),
+            "intensity_target": (self.intensity_target_left, self.intensity_target_right),
+            "clip": self.clip,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.stimuli.rings import rectangular_two_sided
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=20, min=1, max=40, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_freq = iw.FloatSlider(value=1, min=0, max=2, description="frequency [cpd]")
-w_phase = iw.FloatSlider(value=0, min=0, max=360, description="phase shift [deg]")
-
-w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int-ring1")
-w_int2 = iw.FloatSlider(value=0, min=0, max=1, description="int-ring2")
-w_int_back = iw.FloatSlider(value=0.5, min=0, max=1, description="intensity background")
-
-w_clip = iw.ToggleButton(value=False, disabled=False, description="clip")
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'frame_mask'], description="add mask")
-
-w_tidx = iw.IntSlider(value=1, min=0, max=10, description="target idx")
-w_tint_l = iw.FloatSlider(value=0.5, min=0, max=1, description="left target int")
-w_tint_r = iw.FloatSlider(value=0.5, min=0, max=1, description="right target int")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_freq, w_phase])
-b_intensities = iw.HBox([w_int1, w_int2, w_int_back])
-b_target = iw.HBox([w_tidx, w_tint_l, w_tint_r])
-b_add = iw.HBox([w_clip, w_mask])
-ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target, b_add])
-
-# Function for showing stim
-def show_rectangular_two_sided(
-    height=None,
-    width=None,
-    ppd=None,
-    frequency=None,
-    phase_shift=None,
-    int1=None,
-    int2=None,
-    intensity_background=None,
-    add_mask=False,
-    target_indices=None,
-    intensity_target_l=None,
-    intensity_target_r=None,
-    clip=None,
-):
-    try:
-        stim = rectangular_two_sided(
-            visual_size=(height, width),
-            ppd=ppd,
-            frequency=frequency,
-            phase_shift=phase_shift,
-            intensity_frames=((int1, int2),(int2, int1)),
-            intensity_background=intensity_background,
-            target_indices=target_indices,
-            intensity_target=(intensity_target_l, intensity_target_r),
-            clip=clip,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_rectangular_two_sided,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "frequency": w_freq,
-        "phase_shift": w_phase,
-        "int1": w_int1,
-        "int2": w_int2,
-        "intensity_background": w_int_back,
-        "add_mask": w_mask,
-        "intensity_target_l": w_tint_l,
-        "intensity_target_r": w_tint_r,
-        "target_indices": w_tidx,
-        "clip": w_clip,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive rectangular_two_sided
+rectangular_two_sided_params = RectangularTwoSidedParams()
+disp = InteractiveStimDisplay(rectangular_two_sided, rectangular_two_sided_params)
+disp.layout
 ```

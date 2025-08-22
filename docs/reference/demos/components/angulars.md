@@ -19,7 +19,7 @@ kernelspec:
 ```{attention}
 To run locally, the code for these interactive demos requires
 a [Jupyter Notebook](https://jupyter.org/) environment,
-and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
+and the [Panel extension](https://panel.holoviz.org/).
 ```
 
 # Components - Angulars
@@ -31,173 +31,108 @@ and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedoc
 {py:func}`stimupy.components.angulars.wedge`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class WedgeParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+    rotation = param.Integer(default=0, bounds=(0, 360), doc="Rotation in degrees")
+    
+    # Wedge geometry parameters
+    angle = param.Integer(default=45, bounds=(1, 90), doc="Wedge angle in degrees")
+    radius = param.Number(default=3, bounds=(1, 6), step=0.1, doc="Outer radius in degrees")
+    inner_radius = param.Number(default=0, bounds=(0, 3), step=0.1, doc="Inner radius in degrees")
+    
+    # Intensity parameters
+    intensity_wedge = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="Wedge intensity")
+    intensity_background = param.Number(default=0.0, bounds=(0, 1), step=0.01, doc="Background intensity")
+    
+    # Additional parameters
+    origin = param.Selector(default="mean", objects=["mean", "corner", "center"], doc="Origin")
+    add_mask = param.Boolean(default=False, doc="Add mask to visualization")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "angle": self.angle,
+            "radius": self.radius,
+            "rotation": self.rotation,
+            "inner_radius": self.inner_radius,
+            "intensity_wedge": self.intensity_wedge,
+            "intensity_background": self.intensity_background,
+            "origin": self.origin,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.components.angulars import wedge
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
-w_rot = iw.IntSlider(value=0, min=0, max=360, description="rotation [deg]")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_wwidth = iw.IntSlider(value=45, min=1, max=90, description="angle [deg]")
-
-w_oradius = iw.FloatSlider(value=3, min=1, max=6, description="outer radius [deg]")
-w_iradius = iw.FloatSlider(value=0, min=0, max=3, description="inner radius [deg]")
-
-w_int = iw.FloatSlider(value=0.5, min=0, max=1, description="intensity wedge")
-w_int_back = iw.FloatSlider(value=0., min=0, max=1, description="intensity background")
-
-w_ori = iw.Dropdown(value="mean", options=['mean', 'corner', 'center'], description="origin")
-w_mask = iw.ToggleButton(value=False, disabled=False, description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd, w_rot])
-b_angles = iw.HBox([w_wwidth])
-b_geometry = iw.HBox([w_oradius, w_iradius])
-b_intensities = iw.HBox([w_int, w_int_back])
-b_add = iw.HBox([w_ori, w_mask])
-ui = iw.VBox([b_im_size, b_angles, b_geometry, b_intensities, b_add])
-
-# Function for showing stim
-def show_wedge(
-    height=None,
-    width=None,
-    ppd=None,
-    rotation=0,
-    wwidth=None,
-    radius=None,
-    inner_radius=None,
-    intensity_wedge=None,
-    intensity_background=None,
-    origin=None,
-    add_mask=False,
-):
-    try:
-        stim = wedge(
-            visual_size=(height, width),
-            ppd=ppd,
-            angle=wwidth,
-            radius=radius,
-            rotation=rotation,
-            inner_radius=inner_radius,
-            intensity_wedge=intensity_wedge,
-            intensity_background=intensity_background,
-            origin=origin,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_wedge,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "rotation": w_rot,
-        "wwidth": w_wwidth,
-        "radius": w_oradius,
-        "inner_radius": w_iradius,
-        "intensity_wedge": w_int,
-        "intensity_background": w_int_back,
-        "origin": w_ori,
-        "add_mask": w_mask,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive wedge
+wedge_params = WedgeParams()
+disp = InteractiveStimDisplay(wedge, wedge_params)
+disp.layout
 ```
 
 ## Segments
 {py:func}`stimupy.components.angulars.segments`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class SegmentsParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+    rotation = param.Integer(default=0, bounds=(0, 360), doc="Rotation in degrees")
+    
+    # Segment angles
+    angle1 = param.Integer(default=45, bounds=(1, 90), doc="Angle 1 in degrees")
+    angle2 = param.Integer(default=90, bounds=(1, 180), doc="Angle 2 in degrees")
+    angle3 = param.Integer(default=135, bounds=(1, 360), doc="Angle 3 in degrees")
+    
+    # Intensity parameters
+    intensity1 = param.Number(default=0.2, bounds=(0, 1), step=0.01, doc="Intensity 1")
+    intensity2 = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="Intensity 2")
+    intensity3 = param.Number(default=0.8, bounds=(0, 1), step=0.01, doc="Intensity 3")
+    intensity_background = param.Number(default=0.0, bounds=(0, 1), step=0.01, doc="Background intensity")
+    
+    # Additional parameters
+    origin = param.Selector(default="mean", objects=["mean", "corner", "center"], doc="Origin")
+    add_mask = param.Boolean(default=False, doc="Add mask to visualization")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "angles": (self.angle1, self.angle2, self.angle3),
+            "rotation": self.rotation,
+            "intensity_segments": (self.intensity1, self.intensity2, self.intensity3),
+            "intensity_background": self.intensity_background,
+            "origin": self.origin,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.components.angulars import segments
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
-w_rot = iw.IntSlider(value=0, min=0, max=360, description="rotation [deg]")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_wwidth1 = iw.IntSlider(value=45, min=1, max=90, description="angle1 [deg]")
-w_wwidth2 = iw.IntSlider(value=90, min=1, max=180, description="angle2 [deg]")
-w_wwidth3 = iw.IntSlider(value=135, min=1, max=360, description="angle3 [deg]")
-
-w_oradius = iw.FloatSlider(value=3, min=1, max=6, description="outer radius [deg]")
-w_iradius = iw.FloatSlider(value=0, min=0, max=3, description="inner radius [deg]")
-
-w_int1 = iw.FloatSlider(value=0.2, min=0, max=1, description="int1")
-w_int2 = iw.FloatSlider(value=0.5, min=0, max=1, description="int2")
-w_int3 = iw.FloatSlider(value=0.8, min=0, max=1, description="int3")
-w_int_back = iw.FloatSlider(value=0., min=0, max=1, description="intensity back")
-
-w_ori = iw.Dropdown(value="mean", options=['mean', 'corner', 'center'], description="origin")
-w_mask = iw.ToggleButton(value=False, disabled=False, description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd, w_rot])
-b_angles = iw.HBox([w_wwidth1, w_wwidth2, w_wwidth3])
-b_intensities = iw.HBox([w_int1, w_int2, w_int3, w_int_back])
-b_add = iw.HBox([w_ori, w_mask])
-ui = iw.VBox([b_im_size, b_angles, b_intensities, b_add])
-
-# Function for showing stim
-def show_segments(
-    height=None,
-    width=None,
-    ppd=None,
-    rotation=0,
-    wwidth1=None,
-    wwidth2=None,
-    wwidth3=None,
-    int1=None,
-    int2=None,
-    int3=None,
-    intensity_background=None,
-    origin=None,
-    add_mask=False,
-):
-    try:
-        stim = segments(
-            visual_size=(height, width),
-            ppd=ppd,
-            angles=(wwidth1, wwidth2, wwidth3),
-            rotation=rotation,
-            intensity_segments=(int1, int2, int3),
-            intensity_background=intensity_background,
-            origin=origin,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_segments,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "rotation": w_rot,
-        "wwidth1": w_wwidth1,
-        "wwidth2": w_wwidth2,
-        "wwidth3": w_wwidth3,
-        "int1": w_int1,
-        "int2": w_int2,
-        "int3": w_int3,
-        "intensity_background": w_int_back,
-        "origin": w_ori,
-        "add_mask": w_mask,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive segments
+segments_params = SegmentsParams()
+disp = InteractiveStimDisplay(segments, segments_params)
+disp.layout
 ```

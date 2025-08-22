@@ -19,7 +19,7 @@ kernelspec:
 ```{attention}
 To run locally, the code for these interactive demos requires
 a [Jupyter Notebook](https://jupyter.org/) environment,
-and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
+and the [Panel extension](https://panel.holoviz.org/).
 ```
 
 # Stimuli - Benary's cross
@@ -31,508 +31,189 @@ and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedoc
 {py:func}`stimupy.stimuli.benarys.cross_generalized`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class CrossGeneralizedParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+
+    cross_thickness = param.Number(default=2, bounds=(1, 10), step=0.1, doc="")
+    target_height = param.Number(default=2, bounds=(1, 4), step=0.1, doc="")
+    target_width = param.Number(default=2, bounds=(1, 4), step=0.1, doc="")
+    target_type = param.Selector(default="r", objects=['r', 't'], doc="")
+    intensity_target = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="")
+    target_y = param.Number(default=2, bounds=(1, 4), step=0.1, doc="")
+    target_x = param.Number(default=2, bounds=(1, 4), step=0.1, doc="")
+    target_rotation = param.Number(default=0.0, bounds=(0, 360), step=1, doc="")
+    intensity_background = param.Number(default=1.0, bounds=(0, 1), step=0.01, doc="")
+    intensity_cross = param.Number(default=0.0, bounds=(0, 1), step=0.01, doc="")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "cross_thickness": self.cross_thickness,
+            "target_size": (self.target_height, self.target_width),
+            "target_type": self.target_type,
+            "target_rotation": self.target_rotation,
+            "target_x": self.target_x,
+            "target_y": self.target_y,
+            "intensity_background": self.intensity_background,
+            "intensity_cross": self.intensity_cross,
+            "intensity_target": self.intensity_target,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.stimuli.benarys import cross_generalized
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_cthick = iw.FloatSlider(value=2, min=1, max=10, description="cross thickness [deg]")
-
-w_theight = iw.FloatSlider(value=2, min=1, max=4, description="target height [deg]")
-w_twidth = iw.FloatSlider(value=2, min=1, max=4, description="target width [deg]")
-w_ttype = iw.Dropdown(value="r", options=['r', 't'], description="target type")
-w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
-
-w_ty = iw.FloatSlider(value=2, min=1, max=4, description="target y [deg]")
-w_tx = iw.FloatSlider(value=2, min=1, max=4, description="target x [deg]")
-w_trot = iw.IntSlider(value=0, min=0, max=360, description="target rotation [deg]")
-
-w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int cross")
-w_int_back = iw.FloatSlider(value=0, min=0, max=1, description="int background")
-
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'cross_mask'], description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_cthick])
-b_intensities = iw.HBox([w_int1, w_int_back])
-b_target1 = iw.HBox([w_theight, w_twidth, w_ttype, w_tint])
-b_target2 = iw.HBox([w_ty, w_tx, w_trot])
-b_add = iw.HBox([w_mask])
-ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target1, b_target2, b_add])
-
-# Function for showing stim
-def show_cross_generalized(
-    height=None,
-    width=None,
-    ppd=None,
-    cross_thickness=None,
-    intensity1=None,
-    intensity_background=None,
-    target_height=None,
-    target_width=None,
-    target_type=None,
-    intensity_target=None,
-    target_x=None,
-    target_y=None,
-    target_rotation=None,
-    add_mask=False,
-):
-    try:
-        stim = cross_generalized(
-            visual_size=(height, width),
-            ppd=ppd,
-            cross_thickness=cross_thickness,
-            intensity_cross=intensity1,
-            intensity_background=intensity_background,
-            target_size=(target_height, target_width),
-            target_type=target_type,
-            intensity_target=intensity_target,
-            target_x=target_x,
-            target_y=target_y,
-            target_rotation=target_rotation,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_cross_generalized,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "cross_thickness": w_cthick,
-        "intensity1": w_int1,
-        "intensity_background": w_int_back,
-        "target_height": w_theight,
-        "target_width": w_twidth,
-        "target_type": w_ttype,
-        "intensity_target": w_tint,
-        "target_x": w_tx,
-        "target_y": w_ty,
-        "target_rotation": w_trot,
-        "add_mask": w_mask,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive cross_generalized
+cross_generalized_params = CrossGeneralizedParams()
+disp = InteractiveStimDisplay(cross_generalized, cross_generalized_params)
+disp.layout
 ```
 
 ## Cross, rectangles
 {py:func}`stimupy.stimuli.benarys.cross_rectangles`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class CrossRectanglesParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+
+    cross_thickness = param.Number(default=2, bounds=(1, 10), step=0.1, doc="")
+    target_height = param.Number(default=2, bounds=(1, 4), step=0.1, doc="")
+    target_width = param.Number(default=2, bounds=(1, 4), step=0.1, doc="")
+    intensity_target = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="")
+    intensity_cross = param.Number(default=1.0, bounds=(0, 1), step=0.01, doc="")
+    intensity_background = param.Number(default=0.0, bounds=(0, 1), step=0.01, doc="")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "cross_thickness": self.cross_thickness,
+            "target_size": (self.target_height, self.target_width),
+            "intensity_target": self.intensity_target,
+            "intensity_cross": self.intensity_cross,
+            "intensity_background": self.intensity_background,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.stimuli.benarys import cross_rectangles
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_cthick = iw.FloatSlider(value=2, min=1, max=10, description="cross thickness [deg]")
-
-w_theight = iw.FloatSlider(value=2, min=1, max=4, description="target height [deg]")
-w_twidth = iw.FloatSlider(value=2, min=1, max=4, description="target width [deg]")
-w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
-
-w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int cross")
-w_int_back = iw.FloatSlider(value=0, min=0, max=1, description="int background")
-
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'cross_mask'], description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_cthick])
-b_intensities = iw.HBox([w_int1, w_int_back])
-b_target1 = iw.HBox([w_theight, w_twidth, w_tint])
-b_add = iw.HBox([w_mask])
-ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target1, b_add])
-
-# Function for showing stim
-def show_cross_rectangles(
-    height=None,
-    width=None,
-    ppd=None,
-    cross_thickness=None,
-    intensity1=None,
-    intensity_background=None,
-    target_height=None,
-    target_width=None,
-    intensity_target=None,
-    add_mask=False,
-):
-    try:
-        stim = cross_rectangles(
-            visual_size=(height, width),
-            ppd=ppd,
-            cross_thickness=cross_thickness,
-            intensity_cross=intensity1,
-            intensity_background=intensity_background,
-            target_size=(target_height, target_width),
-            intensity_target=intensity_target,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_cross_rectangles,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "cross_thickness": w_cthick,
-        "intensity1": w_int1,
-        "intensity_background": w_int_back,
-        "target_height": w_theight,
-        "target_width": w_twidth,
-        "intensity_target": w_tint,
-        "add_mask": w_mask,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive cross_rectangles
+cross_rectangles_params = CrossRectanglesParams()
+disp = InteractiveStimDisplay(cross_rectangles, cross_rectangles_params)
+disp.layout
 ```
 
 ## Cross triangles
 {py:func}`stimupy.stimuli.benarys.cross_triangles`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class CrossTrianglesParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+
+    cross_thickness = param.Number(default=2, bounds=(1, 10), step=0.1, doc="")
+    target_size = param.Number(default=2, bounds=(1, 4), step=0.1, doc="")
+    intensity_target = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="")
+    intensity_cross = param.Number(default=1.0, bounds=(0, 1), step=0.01, doc="")
+    intensity_background = param.Number(default=0.0, bounds=(0, 1), step=0.01, doc="")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "cross_thickness": self.cross_thickness,
+            "target_size": self.target_size,
+            "intensity_target": self.intensity_target,
+            "intensity_cross": self.intensity_cross,
+            "intensity_background": self.intensity_background,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.stimuli.benarys import cross_triangles
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_cthick = iw.FloatSlider(value=2, min=1, max=10, description="cross thickness [deg]")
-
-w_tsize = iw.FloatSlider(value=2, min=1, max=4, description="target size [deg]")
-w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
-
-w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int cross")
-w_int_back = iw.FloatSlider(value=0, min=0, max=1, description="int background")
-
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'cross_mask'], description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_cthick])
-b_intensities = iw.HBox([w_int1, w_int_back])
-b_target1 = iw.HBox([w_tsize, w_tint])
-b_add = iw.HBox([w_mask])
-ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target1, b_add])
-
-# Function for showing stim
-def show_cross_triangles(
-    height=None,
-    width=None,
-    ppd=None,
-    cross_thickness=None,
-    intensity1=None,
-    intensity_background=None,
-    target_size=None,
-    intensity_target=None,
-    add_mask=False,
-):
-    try:
-        stim = cross_triangles(
-            visual_size=(height, width),
-            ppd=ppd,
-            cross_thickness=cross_thickness,
-            intensity_cross=intensity1,
-            intensity_background=intensity_background,
-            target_size=target_size,
-            intensity_target=intensity_target,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_cross_triangles,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "cross_thickness": w_cthick,
-        "intensity1": w_int1,
-        "intensity_background": w_int_back,
-        "target_size": w_tsize,
-        "intensity_target": w_tint,
-        "add_mask": w_mask,
-    },
-)
-
-# Show
-display(ui, out)
-```
-
-## Todorovic generalized
-{py:func}`stimupy.stimuli.benarys.todorovic_generalized`
-
-```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
-from stimupy.stimuli.benarys import todorovic_generalized
-
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
-
-w_cthick = iw.FloatSlider(value=2, min=1, max=10, description="L width [deg]")
-
-w_theight = iw.FloatSlider(value=2, min=1, max=4, description="target height [deg]")
-w_twidth = iw.FloatSlider(value=2, min=1, max=4, description="target width [deg]")
-w_ttype = iw.Dropdown(value="r", options=['r', 't'], description="target type")
-w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
-
-w_ty = iw.FloatSlider(value=2, min=1, max=4, description="target y [deg]")
-w_tx = iw.FloatSlider(value=2, min=1, max=4, description="target x [deg]")
-w_trot = iw.IntSlider(value=0, min=0, max=360, description="target rotation [deg]")
-
-w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int cross")
-w_int_back = iw.FloatSlider(value=0, min=0, max=1, description="int background")
-
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'L_mask'], description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_cthick])
-b_intensities = iw.HBox([w_int1, w_int_back])
-b_target1 = iw.HBox([w_theight, w_twidth, w_ttype, w_tint])
-b_target2 = iw.HBox([w_ty, w_tx, w_trot])
-b_add = iw.HBox([w_mask])
-ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target1, b_target2, b_add])
-
-# Function for showing stim
-def show_todorovic_generalized(
-    height=None,
-    width=None,
-    ppd=None,
-    cross_thickness=None,
-    intensity1=None,
-    intensity_background=None,
-    target_height=None,
-    target_width=None,
-    target_type=None,
-    intensity_target=None,
-    target_x=None,
-    target_y=None,
-    target_rotation=None,
-    add_mask=False,
-):
-    try:
-        stim = todorovic_generalized(
-            visual_size=(height, width),
-            ppd=ppd,
-            L_width=cross_thickness,
-            intensity_cross=intensity1,
-            intensity_background=intensity_background,
-            target_size=(target_height, target_width),
-            target_type=target_type,
-            intensity_target=intensity_target,
-            target_x=target_x,
-            target_y=target_y,
-            target_rotation=target_rotation,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_todorovic_generalized,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "cross_thickness": w_cthick,
-        "intensity1": w_int1,
-        "intensity_background": w_int_back,
-        "target_height": w_theight,
-        "target_width": w_twidth,
-        "target_type": w_ttype,
-        "intensity_target": w_tint,
-        "target_x": w_tx,
-        "target_y": w_ty,
-        "target_rotation": w_trot,
-        "add_mask": w_mask,
-    },
-)
-
-# Show
-display(ui, out)
-```
-
-## Todorovic rectangles
-{py:func}`stimupy.stimuli.benarys.todorovic_rectangles`
-
-```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
-from stimupy.stimuli.benarys import todorovic_rectangles
-
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
-
-w_cthick = iw.FloatSlider(value=2, min=1, max=10, description="L width [deg]")
-
-w_theight = iw.FloatSlider(value=2, min=1, max=4, description="target height [deg]")
-w_twidth = iw.FloatSlider(value=2, min=1, max=4, description="target width [deg]")
-w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
-
-w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int cross")
-w_int_back = iw.FloatSlider(value=0, min=0, max=1, description="int background")
-
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'L_mask'], description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_cthick])
-b_intensities = iw.HBox([w_int1, w_int_back])
-b_target1 = iw.HBox([w_theight, w_twidth, w_tint])
-b_add = iw.HBox([w_mask])
-ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target1, b_add])
-
-# Function for showing stim
-def show_todorovic_rectangles(
-    height=None,
-    width=None,
-    ppd=None,
-    cross_thickness=None,
-    intensity1=None,
-    intensity_background=None,
-    target_height=None,
-    target_width=None,
-    intensity_target=None,
-    add_mask=False,
-):
-    try:
-        stim = todorovic_rectangles(
-            visual_size=(height, width),
-            ppd=ppd,
-            L_width=cross_thickness,
-            intensity_cross=intensity1,
-            intensity_background=intensity_background,
-            target_size=(target_height, target_width),
-            intensity_target=intensity_target,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_todorovic_rectangles,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "cross_thickness": w_cthick,
-        "intensity1": w_int1,
-        "intensity_background": w_int_back,
-        "target_height": w_theight,
-        "target_width": w_twidth,
-        "intensity_target": w_tint,
-        "add_mask": w_mask,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive cross_triangles
+cross_triangles_params = CrossTrianglesParams()
+disp = InteractiveStimDisplay(cross_triangles, cross_triangles_params)
+disp.layout
 ```
 
 ## Todorovic triangles
 {py:func}`stimupy.stimuli.benarys.todorovic_triangles`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+
+class TodorovicTrianglesParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+
+    L_width = param.Number(default=2, bounds=(1, 10), step=0.1, doc="")
+    target_size = param.Number(default=2, bounds=(1, 4), step=0.1, doc="")
+    intensity_target = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="")
+    intensity_cross = param.Number(default=1.0, bounds=(0, 1), step=0.01, doc="")
+    intensity_background = param.Number(default=0.0, bounds=(0, 1), step=0.01, doc="")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "L_width": self.L_width,
+            "target_size": self.target_size,
+            "intensity_target": self.intensity_target,
+            "intensity_cross": self.intensity_cross,
+            "intensity_background": self.intensity_background,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.stimuli.benarys import todorovic_triangles
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_cthick = iw.FloatSlider(value=2, min=1, max=10, description="L width [deg]")
-
-w_theight = iw.FloatSlider(value=2, min=1, max=4, description="target size [deg]")
-w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
-
-w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int cross")
-w_int_back = iw.FloatSlider(value=0, min=0, max=1, description="int background")
-
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'L_mask'], description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_cthick])
-b_intensities = iw.HBox([w_int1, w_int_back])
-b_target1 = iw.HBox([w_theight, w_tint])
-b_add = iw.HBox([w_mask])
-ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target1, b_add])
-
-# Function for showing stim
-def show_todorovic_triangles(
-    height=None,
-    width=None,
-    ppd=None,
-    cross_thickness=None,
-    intensity1=None,
-    intensity_background=None,
-    target_size=None,
-    intensity_target=None,
-    add_mask=False,
-):
-    try:
-        stim = todorovic_triangles(
-            visual_size=(height, width),
-            ppd=ppd,
-            L_width=cross_thickness,
-            intensity_cross=intensity1,
-            intensity_background=intensity_background,
-            target_size=target_size,
-            intensity_target=intensity_target,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_todorovic_triangles,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "cross_thickness": w_cthick,
-        "intensity1": w_int1,
-        "intensity_background": w_int_back,
-        "target_size": w_theight,
-        "intensity_target": w_tint,
-        "add_mask": w_mask,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive todorovic_triangles
+todorovic_triangles_params = TodorovicTrianglesParams()
+disp = InteractiveStimDisplay(todorovic_triangles, todorovic_triangles_params)
+disp.layout
 ```

@@ -19,7 +19,7 @@ kernelspec:
 ```{attention}
 To run locally, the code for these interactive demos requires
 a [Jupyter Notebook](https://jupyter.org/) environment,
-and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
+and the [Panel extension](https://panel.holoviz.org/).
 ```
 
 # Components - Texts
@@ -30,77 +30,51 @@ and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedoc
 {py:func}`stimupy.components.texts.text`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class TextParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+    
+    # Text parameters
+    text_content = param.String(default="Hello World", doc="Text content")
+    fontsize = param.Integer(default=30, bounds=(1, 60), doc="Font size")
+    align = param.Selector(default="center", objects=["left", "center", "right"], doc="Text alignment")
+    # direction = param.Selector(default="ltr", objects=["ltr", "rtl"], doc="Text direction")
+    
+    # Intensity parameters
+    intensity_text = param.Number(default=1.0, bounds=(0, 1), step=0.01, doc="Text intensity")
+    intensity_background = param.Number(default=0.0, bounds=(0, 1), step=0.01, doc="Background intensity")
+    
+    # Additional parameters
+    add_mask = param.Boolean(default=False, doc="Add mask to visualization")
+
+    def get_stimulus_params(self):
+        return {
+            "text": self.text_content,
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "intensity_text": self.intensity_text,
+            "intensity_background": self.intensity_background,
+            "fontsize": self.fontsize,
+            "align": self.align,
+            # "direction": self.direction,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.components.texts import text
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_int = iw.FloatSlider(value=1., min=0, max=1, description="intensity line")
-w_int_back = iw.FloatSlider(value=0., min=0, max=1, description="intensity background")
-
-w_text = iw.Textarea(value='Hello World', placeholder='Type something', description='text')
-w_fontsize = iw.IntSlider(value=30, min=1, max=60, description="fontsize")
-w_align = iw.Dropdown(value="center", options=['left', 'center', 'right'], description="align")
-w_direction = iw.Dropdown(value="ltr", options=['ltr', 'rtl'], description="direction")
-
-w_mask = iw.ToggleButton(value=False, disabled=False, description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_text = iw.HBox([w_text, w_fontsize, w_align, w_direction])
-b_intensities = iw.HBox([w_int, w_int_back])
-b_add = iw.HBox([w_mask])
-ui = iw.VBox([b_im_size, b_text, b_intensities, b_add])
-
-# Function for showing stim
-def show_text(
-    height=None,
-    width=None,
-    ppd=None,
-    str_text=None,
-    intensity_text=None,
-    intensity_background=None,
-    fontsize=None,
-    align=None,
-    direction=None,
-    add_mask=False,
-):
-    try:
-        stim = text(
-            text=str_text,
-            visual_size=(height, width),
-            ppd=ppd,
-            intensity_text=intensity_text,
-            intensity_background=intensity_background,
-            fontsize=fontsize,
-            align=align,
-            direction=direction,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None    
-
-# Set interactivity
-out = iw.interactive_output(
-    show_text,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "str_text": w_text,
-        "intensity_text": w_int,
-        "intensity_background": w_int_back,
-        "fontsize": w_fontsize,
-        "align": w_align,
-        "direction": w_direction,
-        "add_mask": w_mask,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive text
+text_params = TextParams()
+disp = InteractiveStimDisplay(text, text_params)
+disp.layout
 ```

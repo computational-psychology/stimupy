@@ -19,7 +19,7 @@ kernelspec:
 ```{attention}
 To run locally, the code for these interactive demos requires
 a [Jupyter Notebook](https://jupyter.org/) environment,
-and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
+and the [Panel extension](https://panel.holoviz.org/).
 ```
 
 # Stimuli - Cubes
@@ -31,172 +31,92 @@ and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedoc
 {py:func}`stimupy.stimuli.cubes.varying_cells`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class VaryingCellsParams(param.Parameterized):
+    # Image parameters
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+
+    cell_length1 = param.Number(default=2, bounds=(0, 4), step=0.1, doc="")
+    cell_length2 = param.Number(default=2, bounds=(0, 4), step=0.1, doc="")
+    cell_length3 = param.Number(default=2, bounds=(0, 4), step=0.1, doc="")
+    cell_length4 = param.Number(default=2, bounds=(0, 4), step=0.1, doc="")
+    cell_thickness = param.Number(default=2, bounds=(0, 4), step=0.1, doc="")
+    cell_spacing = param.Number(default=2, bounds=(0, 4), step=0.1, doc="")
+    intensity_cells = param.Number(default=1.0, bounds=(0, 1), step=0.01, doc="")
+    intensity_background = param.Number(default=0.0, bounds=(0, 1), step=0.01, doc="")
+
+    def get_stimulus_params(self):
+        return {
+            "ppd": self.ppd,
+            "cell_lengths": [self.cell_length1, self.cell_length2, self.cell_length3, self.cell_length4],
+            "cell_thickness": self.cell_thickness,
+            "cell_spacing": self.cell_spacing,
+            "intensity_cells": self.intensity_cells,
+            "intensity_background": self.intensity_background,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.stimuli.cubes import varying_cells
+import sys
+from pathlib import Path
 
-# Define widgets
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_cl1 = iw.FloatSlider(value=2, min=0, max=4, description="c1-length")
-w_cl2 = iw.FloatSlider(value=2, min=0, max=4, description="c2-length")
-w_cl3 = iw.FloatSlider(value=2, min=0, max=4, description="c3-length")
-w_cl4 = iw.FloatSlider(value=2, min=0, max=4, description="c4-length")
-
-w_ct = iw.FloatSlider(value=2, min=0, max=4, description="cell thickness")
-w_cs = iw.FloatSlider(value=2, min=0, max=4, description="cell spacing")
-
-w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int cells")
-w_int_back = iw.FloatSlider(value=0., min=0, max=1, description="int background")
-
-w_tidx = iw.IntSlider(value=0, min=0, max=3, description="target idx")
-w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
-
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'cell_mask'], description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_ppd])
-b_cell_lengths = iw.HBox([w_cl1, w_cl2, w_cl3, w_cl4])
-b_cell_geom = iw.HBox([w_ct, w_cs])
-b_intensities = iw.HBox([w_int1, w_int_back])
-b_target = iw.HBox([w_tidx, w_tint])
-b_add = iw.HBox([w_mask])
-ui = iw.VBox([b_im_size, b_cell_lengths, b_cell_geom, b_intensities, b_target, b_add])
-
-# Function for showing stim
-def show_varying_cells(
-    ppd=None,
-    intensity1=None,
-    intensity_background=None,
-    target_indices=None,
-    intensity_target=None,
-    add_mask=False,
-    cell_l1=None,
-    cell_l2=None,
-    cell_l3=None,
-    cell_l4=None,
-    cell_t=None,
-    cell_s=None,
-):
-    try:
-        stim = varying_cells(
-            ppd=ppd,
-            cell_lengths=(cell_l1, cell_l2, cell_l3, cell_l4),
-            cell_thickness=cell_t,
-            cell_spacing=cell_s,
-            target_indices=target_indices,
-            intensity_background=intensity_background,
-            intensity_cells=intensity1,
-            intensity_target=intensity_target,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_varying_cells,
-    {
-        "ppd": w_ppd,
-        "intensity1": w_int1,
-        "intensity_background": w_int_back,
-        "add_mask": w_mask,
-        "target_indices": w_tidx,
-        "intensity_target": w_tint,
-        "cell_l1": w_cl1,
-        "cell_l2": w_cl2,
-        "cell_l3": w_cl3,
-        "cell_l4": w_cl4,
-        "cell_t": w_ct,
-        "cell_s": w_cs,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive varying_cells
+varying_cells_params = VaryingCellsParams()
+disp = InteractiveStimDisplay(varying_cells, varying_cells_params)
+disp.layout
 ```
 
 ## Cube
 {py:func}`stimupy.stimuli.cubes.cube`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class CubeParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+
+    n_cells = param.Integer(default=4, bounds=(1, 8), doc="")
+    cell_thickness = param.Number(default=1, bounds=(0, 4), step=0.1, doc="")
+    cell_spacing = param.Number(default=1, bounds=(0, 4), step=0.1, doc="")
+    intensity_cells = param.Number(default=1.0, bounds=(0, 1), step=0.01, doc="")
+    intensity_background = param.Number(default=0.0, bounds=(0, 1), step=0.01, doc="")
+    target_indices = param.Integer(default=0, bounds=(0, 3), doc="")
+    intensity_target = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "n_cells": self.n_cells,
+            "cell_thickness": self.cell_thickness,
+            "cell_spacing": self.cell_spacing,
+            "intensity_cells": self.intensity_cells,
+            "intensity_background": self.intensity_background,
+            "target_indices": self.target_indices,
+            "intensity_target": self.intensity_target,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.stimuli.cubes import cube
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_cn = iw.IntSlider(value=4, min=1, max=8, description="n-cells")
-w_ct = iw.FloatSlider(value=1, min=0, max=4, description="cell thickness")
-w_cs = iw.FloatSlider(value=1, min=0, max=4, description="cell spacing")
-
-w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int cells")
-w_int_back = iw.FloatSlider(value=0., min=0, max=1, description="int background")
-
-w_tidx = iw.IntSlider(value=0, min=0, max=3, description="target idx")
-w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
-
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'cell_mask'], description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_cell_geom = iw.HBox([w_cn, w_ct, w_cs])
-b_intensities = iw.HBox([w_int1, w_int_back])
-b_target = iw.HBox([w_tidx, w_tint])
-b_add = iw.HBox([w_mask])
-ui = iw.VBox([b_im_size, b_cell_geom, b_intensities, b_target, b_add])
-
-# Function for showing stim
-def show_cube(
-    height=None,
-    width=None,
-    ppd=None,
-    intensity1=None,
-    intensity_background=None,
-    target_indices=None,
-    intensity_target=None,
-    add_mask=False,
-    n_cells=None,
-    cell_t=None,
-    cell_s=None,
-):
-    try:
-        stim = cube(
-            visual_size=(height, width),
-            ppd=ppd,
-            n_cells=n_cells,
-            cell_thickness=cell_t,
-            cell_spacing=cell_s,
-            target_indices=target_indices,
-            intensity_background=intensity_background,
-            intensity_cells=intensity1,
-            intensity_target=intensity_target,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_cube,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "intensity1": w_int1,
-        "intensity_background": w_int_back,
-        "add_mask": w_mask,
-        "target_indices": w_tidx,
-        "intensity_target": w_tint,
-        "n_cells": w_cn,
-        "cell_t": w_ct,
-        "cell_s": w_cs,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive cube
+cube_params = CubeParams()
+disp = InteractiveStimDisplay(cube, cube_params)
+disp.layout
 ```

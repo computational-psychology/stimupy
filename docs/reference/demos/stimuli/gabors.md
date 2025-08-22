@@ -19,7 +19,7 @@ kernelspec:
 ```{attention}
 To run locally, the code for these interactive demos requires
 a [Jupyter Notebook](https://jupyter.org/) environment,
-and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
+and the [Panel extension](https://panel.holoviz.org/).
 ```
 
 # Stimuli - Gabors
@@ -31,84 +31,54 @@ and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedoc
 {py:func}`stimupy.stimuli.gabors.gabor`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class GaborParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+    
+    # Gabor geometry parameters
+    frequency = param.Number(default=1.0, bounds=(0, 2), step=0.1, doc="Frequency in cycles per degree")
+    phase_shift = param.Number(default=0.0, bounds=(0, 360), step=1, doc="Phase shift in degrees")
+    rotation = param.Number(default=0.0, bounds=(0, 360), step=1, doc="Rotation in degrees")
+    sigma = param.Number(default=2.0, bounds=(0, 4), step=0.1, doc="Gaussian envelope sigma")
+    
+    # Intensity parameters
+    int1 = param.Number(default=1.0, bounds=(0, 1), step=0.01, doc="Intensity 1")
+    int2 = param.Number(default=0.0, bounds=(0, 1), step=0.01, doc="Intensity 2")
+    
+    # Additional parameters
+    origin = param.Selector(default="mean", objects=["mean", "corner", "center"], doc="Origin")
+    period = param.Selector(default="ignore", objects=["ignore", "even", "odd", "either"], doc="Period")
+    add_mask = param.Boolean(default=False, doc="Add mask to visualization")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "frequency": self.frequency,
+            "phase_shift": self.phase_shift,
+            "rotation": self.rotation,
+            "sigma": self.sigma,
+            "intensities": (self.int1, self.int2),
+            "origin": self.origin,
+            "period": self.period,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.stimuli.gabors import gabor
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_freq = iw.FloatSlider(value=1, min=0, max=2, description="frequency [cpd]")
-w_phase = iw.FloatSlider(value=0, min=0, max=360, description="phase shift [deg]")
-w_rot = iw.FloatSlider(value=0, min=0, max=360, description="rotation [deg]")
-w_sigma = iw.FloatSlider(value=2, min=0, max=4, description="sigma [deg]")
-
-w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int1")
-w_int2 = iw.FloatSlider(value=0, min=0, max=1, description="int2")
-
-w_ori = iw.Dropdown(value="mean", options=['mean', 'corner', 'center'], description="origin")
-w_period = iw.Dropdown(value="ignore", options=['ignore', 'even', 'odd', 'either'], description="period")
-w_mask = iw.ToggleButton(value=False, disabled=False, description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_freq, w_phase, w_rot, w_sigma])
-b_intensities = iw.HBox([w_int1, w_int2])
-b_add = iw.HBox([w_ori, w_period, w_mask])
-ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_add])
-
-# Function for showing stim
-def show_gabor(
-    height=None,
-    width=None,
-    ppd=None,
-    rotation=None,
-    frequency=None,
-    phase_shift=None,
-    sigma=None,
-    int1=None,
-    int2=None,
-    origin=None,
-    period=None,
-    add_mask=False,
-):
-    try:
-        stim = gabor(
-            visual_size=(height, width),
-            ppd=ppd,
-            rotation=rotation,
-            frequency=frequency,
-            phase_shift=phase_shift,
-            sigma=sigma,
-            intensity_bars=(int1, int2),
-            origin=origin,
-            period=period,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_gabor,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "rotation": w_rot,
-        "frequency": w_freq,
-        "phase_shift": w_phase,
-        "sigma": w_sigma,
-        "int1": w_int1,
-        "int2": w_int2,
-        "origin": w_ori,
-        "period": w_period,
-        "add_mask": w_mask,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive gabor
+gabor_params = GaborParams()
+disp = InteractiveStimDisplay(gabor, gabor_params)
+disp.layout
 ```

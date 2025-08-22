@@ -19,7 +19,7 @@ kernelspec:
 ```{attention}
 To run locally, the code for these interactive demos requires
 a [Jupyter Notebook](https://jupyter.org/) environment,
-and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
+and the [Panel extension](https://panel.holoviz.org/).
 ```
 
 # Stimuli - Gratings
@@ -32,107 +32,51 @@ and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedoc
 {py:func}`stimupy.stimuli.gratings.on_uniform`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class OnUniformParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+
+    grating_height = param.Number(default=5, bounds=(1, 10), step=0.1, doc="Grating height")
+    grating_width = param.Number(default=5, bounds=(1, 10), step=0.1, doc="Grating width")
+    frequency = param.Number(default=1, bounds=(0.1, 2), step=0.1, doc="Frequency in cpd")
+    phase_shift = param.Number(default=0, bounds=(0, 360), step=1, doc="Phase shift in degrees")
+    rotation = param.Number(default=0, bounds=(0, 360), step=1, doc="Rotation in degrees")
+    intensity1 = param.Number(default=0.0, bounds=(0, 1), step=0.01, doc="Intensity 1")
+    intensity2 = param.Number(default=1.0, bounds=(0, 1), step=0.01, doc="Intensity 2")
+    intensity_background = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="Background intensity")
+    intensity_target = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="Target intensity")
+    target_idx = param.Integer(default=5, bounds=(1, 10), doc="Target index")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "grating_size": (self.grating_height, self.grating_width),
+            "frequency": self.frequency,
+            "phase_shift": self.phase_shift,
+            "rotation": self.rotation,
+            "intensity_bars": (self.intensity1, self.intensity2),
+            "intensity_background": self.intensity_background,
+            "target_indices": (self.target_idx,),
+            "intensity_target": self.intensity_target,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.stimuli.gratings import on_uniform
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_gheight = iw.FloatSlider(value=5, min=1, max=10, description="grating height [deg]")
-w_gwidth = iw.FloatSlider(value=5, min=1, max=10, description="grating width [deg]")
-
-w_freq = iw.FloatSlider(value=1, min=0, max=2, description="frequency [cpd]")
-w_phase = iw.IntSlider(value=0, min=0, max=360, description="phase shift [deg]")
-w_rot = iw.IntSlider(value=0, min=0, max=360, description="rotation [deg]")
-
-w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int1")
-w_int2 = iw.FloatSlider(value=0, min=0, max=1, description="int2")
-w_intback = iw.FloatSlider(value=0.5, min=0, max=1, description="int2")
-
-w_ori = iw.Dropdown(value="corner", options=['mean', 'corner', 'center'], description="origin")
-w_period = iw.Dropdown(value="ignore", options=['ignore', 'even', 'odd', 'either'], description="period")
-w_round = iw.ToggleButton(value=False, disabled=False, description="round phase")
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask', 'grating_mask'], description="add mask")
-
-w_tidx = iw.IntSlider(value=5, min=1, max=10, description="target idx")
-w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_g_size = iw.HBox([w_gheight, w_gwidth])
-b_geometry = iw.HBox([w_freq, w_phase, w_rot])
-b_intensities = iw.HBox([w_int1, w_int2, w_intback])
-b_target = iw.HBox([w_tidx, w_tint])
-b_add = iw.HBox([w_ori, w_period, w_round, w_mask])
-ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_target, b_add])
-
-# Function for showing stim
-def show_on_uniform(
-    height=None,
-    width=None,
-    ppd=None,
-    rotation=None,
-    frequency=None,
-    phase_shift=None,
-    int1=None,
-    int2=None,
-    origin=None,
-    round_phase_width=False,
-    period=None,
-    add_mask=False,
-    target_indices=None,
-    intensity_target=None,
-    intensity_background=None,
-    grating_height=None,
-    grating_width=None,
-):
-    try:
-        stim = on_uniform(
-            visual_size=(height, width),
-            ppd=ppd,
-            rotation=rotation,
-            frequency=frequency,
-            phase_shift=phase_shift,
-            intensity_bars=(int1, int2),
-            origin=origin,
-            round_phase_width=round_phase_width,
-            period=period,
-            target_indices=target_indices,
-            intensity_target=intensity_target,
-            intensity_background=intensity_background,
-            grating_size=(grating_height, grating_width),
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_on_uniform,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "rotation": w_rot,
-        "frequency": w_freq,
-        "phase_shift": w_phase,
-        "int1": w_int1,
-        "int2": w_int2,
-        "origin": w_ori,
-        "round_phase_width": w_round,
-        "period": w_period,
-        "add_mask": w_mask,
-        "target_indices": w_tidx,
-        "intensity_target": w_tint,
-        "intensity_background": w_intback,
-        "grating_height": w_gheight,
-        "grating_width": w_gwidth,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive on_uniform
+on_uniform_params = OnUniformParams()
+disp = InteractiveStimDisplay(on_uniform, on_uniform_params)
+disp.layout
 ```

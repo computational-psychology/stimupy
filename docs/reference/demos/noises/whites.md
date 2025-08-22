@@ -19,7 +19,7 @@ kernelspec:
 ```{attention}
 To run locally, the code for these interactive demos requires
 a [Jupyter Notebook](https://jupyter.org/) environment,
-and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
+and the [Panel extension](https://panel.holoviz.org/).
 ```
 
 # Noises - Whites
@@ -31,58 +31,38 @@ and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedoc
 {py:func}`stimupy.noises.whites.white`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class WhiteParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+
+    intensity_min = param.Number(default=0., bounds=(0, 1), step=0.01, doc="")
+    intensity_max = param.Number(default=1., bounds=(0, 1), step=0.01, doc="")
+    pseudo_noise = param.Boolean(default=False, doc="")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "intensity_range": (self.intensity_min, self.intensity_max),
+            "pseudo_noise": self.pseudo_noise,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.noises.whites import white
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_int1 = iw.FloatSlider(value=0., min=0, max=1, description="intensity1")
-w_int2 = iw.FloatSlider(value=1., min=0, max=1, description="intensity2")
-
-w_pseudo = iw.ToggleButton(value=False, disabled=False, description="pseudo-noise")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_intensities = iw.HBox([w_int1, w_int2])
-ui = iw.VBox([b_im_size, b_intensities, w_pseudo])
-
-# Function for showing stim
-def show_white(
-    height=None,
-    width=None,
-    ppd=None,
-    intensity1=None,
-    intensity2=None,
-    pseudo_noise=False,
-):
-    try:
-        stim = white(
-            visual_size=(height, width),
-            ppd=ppd,
-            intensity_range=(intensity1, intensity2),
-            pseudo_noise=pseudo_noise,
-        )
-        plot_stim(stim, mask=False)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_white,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "intensity1": w_int1,
-        "intensity2": w_int2,
-        "pseudo_noise": w_pseudo,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive white
+white_params = WhiteParams()
+disp = InteractiveStimDisplay(white, white_params)
+disp.layout
 ```

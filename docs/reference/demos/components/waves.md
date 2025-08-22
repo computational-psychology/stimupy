@@ -19,7 +19,7 @@ kernelspec:
 ```{attention}
 To run locally, the code for these interactive demos requires
 a [Jupyter Notebook](https://jupyter.org/) environment,
-and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
+and the [Panel extension](https://panel.holoviz.org/).
 ```
 
 # Components - Waves
@@ -31,342 +31,198 @@ and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedoc
 {py:func}`stimupy.components.waves.sine`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class SineParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+
+    distance_metric = param.Selector(default="horizontal", objects=['horizontal','vertical','oblique','radial','rectilinear','angular'], doc="")
+    frequency = param.Number(default=1, bounds=(0, 2), step=0.01, doc="")
+    phase_shift = param.Number(default=0, bounds=(0, 360), step=0.01, doc="")
+    rotation = param.Number(default=0, bounds=(0, 360), step=0.01, doc="")
+    intensity_min = param.Number(default=0, bounds=(0, 1), step=0.01, doc="")
+    intensity_max = param.Number(default=1, bounds=(0, 1), step=0.01, doc="")
+    origin = param.Selector(default="center", objects=['mean', 'corner', 'center'], doc="")
+    period = param.Selector(default="ignore", objects=['ignore', 'even', 'odd', 'either'], doc="")
+    round_phase_width = param.Boolean(default=False, doc="")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "distance_metric": self.distance_metric,
+            "frequency": self.frequency,
+            "phase_shift": self.phase_shift,
+            "rotation": self.rotation,
+            "intensities": (self.intensity_min, self.intensity_max),
+            "origin": self.origin,
+            "period": self.period,
+            "round_phase_width": self.round_phase_width,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.components.waves import sine
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_distance_metric = iw.Dropdown(value="horizontal", options=['horizontal','vertical','oblique','radial','rectilinear','angular'], description="distance_metric")
-w_freq = iw.FloatSlider(value=1, min=0, max=2, description="frequency [cpd]")
-w_phase = iw.FloatSlider(value=0, min=0, max=360, description="phase shift [deg]")
-w_rot = iw.FloatSlider(value=0, min=0, max=360, description="rotation [deg]")
-
-w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int1")
-w_int2 = iw.FloatSlider(value=0, min=0, max=1, description="int2")
-
-w_ori = iw.Dropdown(value="mean", options=['mean', 'corner', 'center'], description="origin")
-w_period = iw.Dropdown(value="ignore", options=['ignore', 'even', 'odd', 'either'], description="period")
-w_round = iw.ToggleButton(value=False, disabled=False, description="round phase")
-w_mask = iw.ToggleButton(value=False, disabled=False, description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_distance_metric, w_freq, w_phase, w_rot])
-b_intensities = iw.HBox([w_int1, w_int2])
-b_add = iw.HBox([w_ori, w_period, w_round, w_mask])
-ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_add])
-
-# Function for showing stim
-def show_sine(
-    height=None,
-    width=None,
-    ppd=None,
-    distance_metric=None,
-    rotation=None,
-    frequency=None,
-    phase_shift=None,
-    int1=None,
-    int2=None,
-    origin=None,
-    round_phase_width=False,
-    period=None,
-    add_mask=False,
-):
-    try:
-        stim = sine(
-            visual_size=(height, width),
-            ppd=ppd,
-            distance_metric=distance_metric,
-            rotation=rotation,
-            frequency=frequency,
-            phase_shift=phase_shift,
-            intensities=(int1, int2),
-            origin=origin,
-            round_phase_width=round_phase_width,
-            period=period,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_sine,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "distance_metric": w_distance_metric,
-        "rotation": w_rot,
-        "frequency": w_freq,
-        "phase_shift": w_phase,
-        "int1": w_int1,
-        "int2": w_int2,
-        "origin": w_ori,
-        "round_phase_width": w_round,
-        "period": w_period,
-        "add_mask": w_mask,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive sine
+sine_params = SineParams()
+disp = InteractiveStimDisplay(sine, sine_params)
+disp.layout
 ```
 
 ## Squarewave
 {py:func}`stimupy.components.waves.square`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class SquareParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+
+    distance_metric = param.Selector(default="horizontal", objects=['horizontal','vertical','oblique','radial','rectilinear','angular'], doc="")
+    frequency = param.Number(default=1, bounds=(0, 2), step=0.01, doc="")
+    phase_shift = param.Number(default=0, bounds=(0, 360), step=0.01, doc="")
+    rotation = param.Number(default=0, bounds=(0, 360), step=0.01, doc="")
+    intensity_min = param.Number(default=0, bounds=(0, 1), step=0.01, doc="")
+    intensity_max = param.Number(default=1, bounds=(0, 1), step=0.01, doc="")
+    origin = param.Selector(default="center", objects=['mean', 'corner', 'center'], doc="")
+    period = param.Selector(default="ignore", objects=['ignore', 'even', 'odd', 'either'], doc="")
+    round_phase_width = param.Boolean(default=False, doc="")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "distance_metric": self.distance_metric,
+            "frequency": self.frequency,
+            "phase_shift": self.phase_shift,
+            "rotation": self.rotation,
+            "intensities": (self.intensity_min, self.intensity_max),
+            "origin": self.origin,
+            "period": self.period,
+            "round_phase_width": self.round_phase_width,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.components.waves import square
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_distance_metric = iw.Dropdown(value="horizontal", options=['horizontal','vertical','oblique','radial','rectilinear','angular'], description="distance_metric")
-w_freq = iw.FloatSlider(value=1, min=0, max=2, description="frequency [cpd]")
-w_phase = iw.FloatSlider(value=0, min=0, max=360, description="phase shift [deg]")
-w_rot = iw.FloatSlider(value=0, min=0, max=360, description="rotation [deg]")
-
-w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int1")
-w_int2 = iw.FloatSlider(value=0, min=0, max=1, description="int2")
-
-w_ori = iw.Dropdown(value="mean", options=['mean', 'corner', 'center'], description="origin")
-w_period = iw.Dropdown(value="ignore", options=['ignore', 'even', 'odd', 'either'], description="period")
-w_round = iw.ToggleButton(value=False, disabled=False, description="round phase")
-w_mask = iw.ToggleButton(value=False, disabled=False, description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_distance_metric, w_freq, w_phase, w_rot])
-b_intensities = iw.HBox([w_int1, w_int2])
-b_add = iw.HBox([w_ori, w_period, w_round, w_mask])
-ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_add])
-
-# Function for showing stim
-def show_square(
-    height=None,
-    width=None,
-    ppd=None,
-    distance_metric=None,
-    rotation=None,
-    frequency=None,
-    phase_shift=None,
-    int1=None,
-    int2=None,
-    origin=None,
-    round_phase_width=False,
-    period=None,
-    add_mask=False,
-):
-    try:
-        stim = square(
-            visual_size=(height, width),
-            ppd=ppd,
-            distance_metric=distance_metric,
-            rotation=rotation,
-            frequency=frequency,
-            phase_shift=phase_shift,
-            intensities=(int1, int2),
-            origin=origin,
-            round_phase_width=round_phase_width,
-            period=period,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_square,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "distance_metric": w_distance_metric,
-        "rotation": w_rot,
-        "frequency": w_freq,
-        "phase_shift": w_phase,
-        "int1": w_int1,
-        "int2": w_int2,
-        "origin": w_ori,
-        "round_phase_width": w_round,
-        "period": w_period,
-        "add_mask": w_mask,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive square
+square_params = SquareParams()
+disp = InteractiveStimDisplay(square, square_params)
+disp.layout
 ```
 
 ## Staircase
 {py:func}`stimupy.components.waves.staircase`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class StaircaseParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+
+    distance_metric = param.Selector(default="horizontal", objects=['horizontal','vertical','oblique','radial','rectilinear','angular'], doc="")
+    frequency = param.Number(default=1, bounds=(0, 4), step=0.01, doc="")
+    rotation = param.Number(default=0, bounds=(0, 360), step=0.01, doc="")
+    phase_shift = param.Number(default=0, bounds=(0, 360), step=0.01, doc="")
+    intensity_min = param.Number(default=0, bounds=(0, 1), step=0.01, doc="")
+    intensity_max = param.Number(default=1, bounds=(0, 1), step=0.01, doc="")
+    origin = param.Selector(default="center", objects=['mean', 'corner', 'center'], doc="")
+    period = param.Selector(default="ignore", objects=['ignore', 'even', 'odd', 'either'], doc="")
+    round_phase_width = param.Boolean(default=False, doc="")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "distance_metric": self.distance_metric,
+            "frequency": self.frequency,
+            "rotation": self.rotation,
+            "phase_shift": self.phase_shift,
+            "intensities": (self.intensity_min, self.intensity_max),
+            "origin": self.origin,
+            "period": self.period,
+            "round_phase_width": self.round_phase_width,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.components.waves import staircase
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_distance_metric = iw.Dropdown(value="horizontal", options=['horizontal','vertical','oblique','radial','rectilinear','angular'], description="distance_metric")
-w_freq = iw.FloatSlider(value=1, min=0, max=4, description="frequency [cpd / cpc]")
-w_rot = iw.FloatSlider(value=0, min=0, max=360, description="rotation [deg]")
-w_phase = iw.FloatSlider(value=0, min=0, max=360, description="phase shift [deg]")
-
-w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int1")
-w_int2 = iw.FloatSlider(value=0, min=0, max=1, description="int2")
-
-w_ori = iw.Dropdown(value="mean", options=['mean', 'corner', 'center'], description="origin")
-w_period = iw.Dropdown(value="ignore", options=['ignore', 'even', 'odd', 'either'], description="period")
-w_round = iw.ToggleButton(value=False, disabled=False, description="round phase")
-w_mask = iw.ToggleButton(value=False, disabled=False, description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_distance_metric, w_freq, w_phase, w_rot])
-b_intensities = iw.HBox([w_int1, w_int2])
-b_add = iw.HBox([w_ori, w_period, w_round, w_mask])
-ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_add])
-
-# Function for showing stim
-def show_staircase(
-    height=None,
-    width=None,
-    ppd=None,
-    distance_metric=None,
-    rotation=None,
-    frequency=None,
-    phase_shift=None,
-    int1=None,
-    int2=None,
-    round_phase_width=False,
-    period=None,
-    add_mask=False,
-    origin=None,
-):
-    try:
-        stim = staircase(
-            visual_size=(height, width),
-            ppd=ppd,
-            distance_metric=distance_metric,
-            rotation=rotation,
-            frequency=frequency,
-            phase_shift=phase_shift,
-            intensities=(int1, int2),
-            round_phase_width=round_phase_width,
-            period=period,
-            origin=origin,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_staircase,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "distance_metric": w_distance_metric,
-        "rotation": w_rot,
-        "frequency": w_freq,
-        "int1": w_int1,
-        "int2": w_int2,
-        "round_phase_width": w_round,
-        "period": w_period,
-        "add_mask": w_mask,
-        "phase_shift": w_phase,
-        "origin": w_ori,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive staircase
+staircase_params = StaircaseParams()
+disp = InteractiveStimDisplay(staircase, staircase_params)
+disp.layout
 ```
 
 ## Bessel
 {py:func}`stimupy.components.waves.bessel`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class BesselParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+
+    frequency = param.Number(default=1, bounds=(0, 2), step=0.01, doc="")
+    order = param.Integer(default=0, bounds=(0, 5), doc="")
+    intensity_center = param.Number(default=1, bounds=(0, 1), step=0.01, doc="")
+    intensity_outer = param.Number(default=0, bounds=(0, 1), step=0.01, doc="")
+    origin = param.Selector(default="mean", objects=['mean', 'corner', 'center'], doc="")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "frequency": self.frequency,
+            "order": self.order,
+            "intensities": (self.intensity_center, self.intensity_outer),
+            "origin": self.origin,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.components.waves import bessel
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_freq = iw.FloatSlider(value=1, min=0, max=2, description="frequency [cpd]")
-w_order = iw.IntSlider(value=0, min=0, max=5, description="order")
-
-w_int1 = iw.FloatSlider(value=1, min=0, max=1, description="int-ring1")
-w_int2 = iw.FloatSlider(value=0, min=0, max=1, description="int-ring2")
-
-w_ori = iw.Dropdown(value="mean", options=['mean', 'corner', 'center'], description="origin")
-w_mask = iw.ToggleButton(value=False, disabled=False, description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_freq, w_order])
-b_intensities = iw.HBox([w_int1, w_int2])
-b_add = iw.HBox([w_ori, w_mask])
-ui = iw.VBox([b_im_size, b_geometry, b_intensities, b_add])
-
-# Function for showing stim
-def show_bessel(
-    height=None,
-    width=None,
-    ppd=None,
-    frequency=None,
-    order=None,
-    int1=None,
-    int2=None,
-    origin=None,
-    add_mask=False,
-):
-    try:
-        stim = bessel(
-            visual_size=(height, width),
-            ppd=ppd,
-            frequency=frequency,
-            order=order,
-            intensities=(int1, int2),
-            origin=origin,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_bessel,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "frequency": w_freq,
-        "order": w_order,
-        "int1": w_int1,
-        "int2": w_int2,
-        "origin": w_ori,
-        "add_mask": w_mask,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive bessel
+bessel_params = BesselParams()
+disp = InteractiveStimDisplay(bessel, bessel_params)
+disp.layout
 ```

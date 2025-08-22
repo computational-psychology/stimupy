@@ -19,7 +19,7 @@ kernelspec:
 ```{attention}
 To run locally, the code for these interactive demos requires
 a [Jupyter Notebook](https://jupyter.org/) environment,
-and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
+and the [Panel extension](https://panel.holoviz.org/).
 ```
 
 # Stimuli - Todorovics
@@ -31,760 +31,156 @@ and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedoc
 {py:func}`stimupy.stimuli.todorovics.rectangle_generalized`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class RectangleGeneralizedParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+
+    target_height = param.Number(default=2, bounds=(0, 4), step=0.1, doc="Target height")
+    target_width = param.Number(default=2, bounds=(0, 4), step=0.1, doc="Target width")
+    intensity_target = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="Target intensity")
+    target_x = param.Number(default=4, bounds=(0, 8), step=0.1, doc="Target X position")
+    target_y = param.Number(default=4, bounds=(0, 8), step=0.1, doc="Target Y position")
+    covers_height = param.Number(default=2, bounds=(0, 4), step=0.1, doc="Covers height")
+    covers_width = param.Number(default=2, bounds=(0, 4), step=0.1, doc="Covers width")
+    cover_x1 = param.Number(default=2, bounds=(0, 8), step=0.1, doc="Cover 1 X position")
+    cover_y1 = param.Number(default=4, bounds=(0, 8), step=0.1, doc="Cover 1 Y position")
+    cover_x2 = param.Number(default=6, bounds=(0, 8), step=0.1, doc="Cover 2 X position")
+    cover_y2 = param.Number(default=4, bounds=(0, 8), step=0.1, doc="Cover 2 Y position")
+    intensity_background = param.Number(default=0.0, bounds=(0, 1), step=0.01, doc="Background intensity")
+    intensity_covers = param.Number(default=1.0, bounds=(0, 1), step=0.01, doc="Covers intensity")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "target_size": (self.target_height, self.target_width),
+            "target_position": (self.target_y, self.target_x),
+            "covers_size": (self.covers_height, self.covers_width),
+            "covers_x": (self.cover_x1, self.cover_x2),
+            "covers_y": (self.cover_y1, self.cover_y2),
+            "intensity_background": self.intensity_background,
+            "intensity_target": self.intensity_target,
+            "intensity_covers": self.intensity_covers,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.stimuli.todorovics import rectangle_generalized
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_theight = iw.FloatSlider(value=2, min=0, max=4, description="target height [deg]")
-w_twidth = iw.FloatSlider(value=2, min=0, max=4, description="target width [deg]")
-w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
-
-w_tx = iw.FloatSlider(value=4, min=0, max=8, description="target x [deg]")
-w_ty = iw.FloatSlider(value=4, min=0, max=8, description="target y [deg]")
-
-w_cheight = iw.FloatSlider(value=2, min=0, max=4, description="cover height [deg]")
-w_cwidth = iw.FloatSlider(value=2, min=0, max=4, description="cover width [deg]")
-w_cint = iw.FloatSlider(value=1, min=0, max=1, description="cover int")
-
-w_c1x = iw.FloatSlider(value=2, min=0, max=8, description="cover1 x [deg]")
-w_c1y = iw.FloatSlider(value=2, min=0, max=8, description="cover1 y [deg]")
-
-w_c2x = iw.FloatSlider(value=6, min=0, max=8, description="cover2 x [deg]")
-w_c2y = iw.FloatSlider(value=6, min=0, max=8, description="cover2 y [deg]")
-
-w_int_back = iw.FloatSlider(value=0., min=0, max=1, description="int background")
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask'], description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_tsize = iw.HBox([w_theight, w_twidth, w_tint])
-b_tpos = iw.HBox([w_tx, w_ty])
-b_csize = iw.HBox([w_cheight, w_cwidth, w_cint])
-b_c1pos = iw.HBox([w_c1x, w_c1y])
-b_c2pos = iw.HBox([w_c2x, w_c2y])
-b_intensities = iw.HBox([w_int_back])
-b_add = iw.HBox([w_mask])
-ui = iw.VBox([b_im_size, b_tsize, b_tpos, b_csize, b_c1pos, b_c2pos, b_intensities, b_add])
-
-# Function for showing stim
-def show_rectangle_generalized(
-    height=None,
-    width=None,
-    ppd=None,
-    theight=None,
-    twidth=None,
-    tint=None,
-    tx=None,
-    ty=None,
-    cheight=None,
-    cwidth=None,
-    cint=None,
-    c1x=None,
-    c1y=None,
-    c2x=None,
-    c2y=None,
-    intback=None,
-    add_mask=False,
-):
-    try:
-        stim = rectangle_generalized(
-            visual_size=(height, width),
-            ppd=ppd,
-            target_size=(theight, twidth),
-            target_position=(ty, tx),
-            covers_size=(cheight, cwidth),
-            covers_x=(c1x, c2x),
-            covers_y=(c1y, c2y),
-            intensity_background=intback,
-            intensity_target=tint,
-            intensity_covers=cint,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_rectangle_generalized,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "theight": w_theight,
-        "twidth": w_twidth,
-        "tint": w_tint,
-        "tx": w_tx,
-        "ty": w_ty,
-        "cheight": w_cheight,
-        "cwidth": w_cwidth,
-        "cint": w_cint,
-        "c1x": w_c1x,
-        "c2x": w_c2x,
-        "c1y": w_c1y,
-        "c2y": w_c2y,
-        "intback": w_int_back,
-        "add_mask": w_mask,
-    },
-)
-
-# Show
-display(ui, out)
-```
-
-## Rectangle
-{py:func}`stimupy.stimuli.todorovics.rectangle`
-
-```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
-from stimupy.stimuli.todorovics import rectangle
-
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
-
-w_theight = iw.FloatSlider(value=2, min=0, max=4, description="target height [deg]")
-w_twidth = iw.FloatSlider(value=2, min=0, max=4, description="target width [deg]")
-w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="target int")
-
-w_tx = iw.FloatSlider(value=4, min=0, max=8, description="target x [deg]")
-w_ty = iw.FloatSlider(value=4, min=0, max=8, description="target y [deg]")
-
-w_cheight = iw.FloatSlider(value=2, min=0, max=4, description="cover height [deg]")
-w_cwidth = iw.FloatSlider(value=2, min=0, max=4, description="cover width [deg]")
-w_cint = iw.FloatSlider(value=1, min=0, max=1, description="cover int")
-
-w_coffx = iw.FloatSlider(value=2, min=0, max=8, description="cover offset x [deg]")
-w_coffy = iw.FloatSlider(value=2, min=0, max=8, description="cover offset y [deg]")
-
-w_int_back = iw.FloatSlider(value=0., min=0, max=1, description="int background")
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask'], description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_tsize = iw.HBox([w_theight, w_twidth, w_tint])
-b_tpos = iw.HBox([w_tx, w_ty])
-b_csize = iw.HBox([w_cheight, w_cwidth, w_cint])
-b_c1pos = iw.HBox([w_coffx, w_coffy])
-b_intensities = iw.HBox([w_int_back])
-b_add = iw.HBox([w_mask])
-ui = iw.VBox([b_im_size, b_tsize, b_tpos, b_csize, b_c1pos, b_intensities, b_add])
-
-# Function for showing stim
-def show_rectangle(
-    height=None,
-    width=None,
-    ppd=None,
-    theight=None,
-    twidth=None,
-    tint=None,
-    tx=None,
-    ty=None,
-    cheight=None,
-    cwidth=None,
-    cint=None,
-    coffx=None,
-    coffy=None,
-    intback=None,
-    add_mask=False,
-):
-    try:
-        stim = rectangle(
-            visual_size=(height, width),
-            ppd=ppd,
-            target_size=(theight, twidth),
-            target_position=(ty, tx),
-            covers_size=(cheight, cwidth),
-            covers_offset=(coffy, coffx),
-            intensity_background=intback,
-            intensity_target=tint,
-            intensity_covers=cint,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_rectangle,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "theight": w_theight,
-        "twidth": w_twidth,
-        "tint": w_tint,
-        "tx": w_tx,
-        "ty": w_ty,
-        "cheight": w_cheight,
-        "cwidth": w_cwidth,
-        "cint": w_cint,
-        "coffx": w_coffx,
-        "coffy": w_coffy,
-        "intback": w_int_back,
-        "add_mask": w_mask,
-    },
-)
-
-# Show
-display(ui, out)
-```
-
-## Rectangle, two-sided
-{py:func}`stimupy.stimuli.todorovics.rectangle_two_sided`
-
-```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
-from stimupy.stimuli.todorovics import rectangle_two_sided
-
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=20, min=1, max=40, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
-
-w_theight = iw.FloatSlider(value=2, min=0, max=4, description="target height [deg]")
-w_twidth = iw.FloatSlider(value=2, min=0, max=4, description="target width [deg]")
-w_tint_l = iw.FloatSlider(value=0.5, min=0, max=1, description="left target int")
-w_tint_r = iw.FloatSlider(value=0.5, min=0, max=1, description="right target int")
-
-w_cheight = iw.FloatSlider(value=2, min=0, max=4, description="cover height [deg]")
-w_cwidth = iw.FloatSlider(value=2, min=0, max=4, description="cover width [deg]")
-w_cint1 = iw.FloatSlider(value=1, min=0, max=1, description="cover1 int")
-w_cint2 = iw.FloatSlider(value=0, min=0, max=1, description="cover2 int")
-
-w_coffx = iw.FloatSlider(value=2, min=0, max=8, description="cover offset x [deg]")
-w_coffy = iw.FloatSlider(value=2, min=0, max=8, description="cover offset y [deg]")
-
-w_int_back1 = iw.FloatSlider(value=0., min=0, max=1, description="int back1")
-w_int_back2 = iw.FloatSlider(value=1., min=0, max=1, description="int back2")
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask'], description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_tsize = iw.HBox([w_theight, w_twidth, w_tint_l, w_tint_r])
-b_csize = iw.HBox([w_cheight, w_cwidth, w_cint1, w_cint2])
-b_c1pos = iw.HBox([w_coffx, w_coffy])
-b_intensities = iw.HBox([w_int_back])
-b_add = iw.HBox([w_mask])
-ui = iw.VBox([b_im_size, b_tsize, b_csize, b_c1pos, b_intensities, b_add])
-
-# Function for showing stim
-def show_two_sided_rectangle(
-    height=None,
-    width=None,
-    ppd=None,
-    theight=None,
-    twidth=None,
-    tint_l=None,
-    tint_r=None,
-    cheight=None,
-    cwidth=None,
-    cint1=None,
-    cint2=None,
-    coffx=None,
-    coffy=None,
-    intback1=None,
-    intback2=None,
-    add_mask=False,
-):
-    try:
-        stim = rectangle_two_sided(
-            visual_size=(height, width),
-            ppd=ppd,
-            target_size=((theight, twidth),(theight, twidth)),
-            covers_size=((cheight, cwidth),(cheight, cwidth)),
-            covers_offset=((coffy, coffx),(coffy, coffx)),
-            intensity_background=(intback1, intback2),
-            intensity_target=(tint_l, tint_r),
-            intensity_covers=(cint1, cint2),
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_two_sided_rectangle,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "theight": w_theight,
-        "twidth": w_twidth,
-        "tint_l": w_tint_l,
-        "tint_r": w_tint_r,
-        "cheight": w_cheight,
-        "cwidth": w_cwidth,
-        "cint1": w_cint1,
-        "cint2": w_cint2,
-        "coffx": w_coffx,
-        "coffy": w_coffy,
-        "intback1": w_int_back1,
-        "intback2": w_int_back2,
-        "add_mask": w_mask,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive rectangle_generalized
+rectangle_generalized_params = RectangleGeneralizedParams()
+disp = InteractiveStimDisplay(rectangle_generalized, rectangle_generalized_params)
+disp.layout
 ```
 
 ## Cross generalized
 {py:func}`stimupy.stimuli.todorovics.cross_generalized`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class CrossGeneralizedParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+
+    cross_size_height = param.Number(default=4, bounds=(2, 8), step=0.1, doc="Cross height")
+    cross_size_width = param.Number(default=4, bounds=(2, 8), step=0.1, doc="Cross width")
+    cross_thickness = param.Number(default=0.5, bounds=(0.1, 2), step=0.1, doc="Cross thickness")
+    covers_height = param.Number(default=2, bounds=(0, 4), step=0.1, doc="Covers height")
+    covers_width = param.Number(default=2, bounds=(0, 4), step=0.1, doc="Covers width")
+    cover_x1 = param.Number(default=2, bounds=(0, 8), step=0.1, doc="Cover 1 X position")
+    cover_y1 = param.Number(default=4, bounds=(0, 8), step=0.1, doc="Cover 1 Y position")
+    cover_x2 = param.Number(default=6, bounds=(0, 8), step=0.1, doc="Cover 2 X position")
+    cover_y2 = param.Number(default=4, bounds=(0, 8), step=0.1, doc="Cover 2 Y position")
+    intensity_background = param.Number(default=0.0, bounds=(0, 1), step=0.01, doc="Background intensity")
+    intensity_target = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="Target intensity")
+    intensity_covers = param.Number(default=1.0, bounds=(0, 1), step=0.01, doc="Covers intensity")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "cross_size": (self.cross_size_height, self.cross_size_width),
+            "cross_thickness": self.cross_thickness,
+            "covers_size": (self.covers_height, self.covers_width),
+            "covers_x": (self.cover_x1, self.cover_x2),
+            "covers_y": (self.cover_y1, self.cover_y2),
+            "intensity_background": self.intensity_background,
+            "intensity_target": self.intensity_target,
+            "intensity_covers": self.intensity_covers,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.stimuli.todorovics import cross_generalized
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_theight = iw.FloatSlider(value=4, min=0, max=8, description="cross height [deg]")
-w_twidth = iw.FloatSlider(value=4, min=0, max=8, description="cross width [deg]")
-w_tthick = iw.FloatSlider(value=2, min=0, max=4, description="cross thickness [deg]")
-w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="cross int")
-
-w_cheight = iw.FloatSlider(value=2, min=0, max=4, description="cover height [deg]")
-w_cwidth = iw.FloatSlider(value=2, min=0, max=4, description="cover width [deg]")
-w_cint = iw.FloatSlider(value=1, min=0, max=1, description="cover int")
-
-w_c1x = iw.FloatSlider(value=2, min=0, max=8, description="cover1 x [deg]")
-w_c1y = iw.FloatSlider(value=2, min=0, max=8, description="cover1 y [deg]")
-
-w_c2x = iw.FloatSlider(value=6, min=0, max=8, description="cover2 x [deg]")
-w_c2y = iw.FloatSlider(value=6, min=0, max=8, description="cover2 y [deg]")
-
-w_int_back = iw.FloatSlider(value=0., min=0, max=1, description="int background")
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask'], description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_tsize = iw.HBox([w_theight, w_twidth, w_tthick, w_tint])
-b_csize = iw.HBox([w_cheight, w_cwidth, w_cint])
-b_c1pos = iw.HBox([w_c1x, w_c1y])
-b_c2pos = iw.HBox([w_c2x, w_c2y])
-b_intensities = iw.HBox([w_int_back])
-b_add = iw.HBox([w_mask])
-ui = iw.VBox([b_im_size, b_tsize, b_csize, b_c1pos, b_c2pos, b_intensities, b_add])
-
-# Function for showing stim
-def show_cross_generalized(
-    height=None,
-    width=None,
-    ppd=None,
-    theight=None,
-    twidth=None,
-    tint=None,
-    tthick=None,
-    cheight=None,
-    cwidth=None,
-    cint=None,
-    c1x=None,
-    c1y=None,
-    c2x=None,
-    c2y=None,
-    intback=None,
-    add_mask=False,
-):
-    try:
-        stim = cross_generalized(
-            visual_size=(height, width),
-            ppd=ppd,
-            cross_size=(theight, twidth),
-            cross_thickness=tthick,
-            covers_size=(cheight, cwidth),
-            covers_x=(c1x, c2x),
-            covers_y=(c1y, c2y),
-            intensity_background=intback,
-            intensity_target=tint,
-            intensity_covers=cint,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_cross_generalized,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "theight": w_theight,
-        "twidth": w_twidth,
-        "tint": w_tint,
-        "tthick": w_tthick,
-        "cheight": w_cheight,
-        "cwidth": w_cwidth,
-        "cint": w_cint,
-        "c1x": w_c1x,
-        "c2x": w_c2x,
-        "c1y": w_c1y,
-        "c2y": w_c2y,
-        "intback": w_int_back,
-        "add_mask": w_mask,
-    },
-)
-
-# Show
-display(ui, out)
-```
-
-## Cross
-{py:func}`stimupy.stimuli.todorovics.cross`
-
-```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
-from stimupy.stimuli.todorovics import cross
-
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
-
-w_theight = iw.FloatSlider(value=4, min=0, max=8, description="cross height [deg]")
-w_twidth = iw.FloatSlider(value=4, min=0, max=8, description="cross width [deg]")
-w_tthick = iw.FloatSlider(value=2, min=0, max=4, description="cross thickness [deg]")
-w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="cross int")
-
-w_cheight = iw.FloatSlider(value=2, min=0, max=4, description="cover height [deg]")
-w_cwidth = iw.FloatSlider(value=2, min=0, max=4, description="cover width [deg]")
-w_cint = iw.FloatSlider(value=1, min=0, max=1, description="cover int")
-
-w_int_back = iw.FloatSlider(value=0., min=0, max=1, description="int background")
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask'], description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_tsize = iw.HBox([w_theight, w_twidth, w_tthick, w_tint])
-b_csize = iw.HBox([w_cheight, w_cwidth, w_cint])
-b_intensities = iw.HBox([w_int_back])
-b_add = iw.HBox([w_mask])
-ui = iw.VBox([b_im_size, b_tsize, b_csize, b_intensities, b_add])
-
-# Function for showing stim
-def show_cross(
-    height=None,
-    width=None,
-    ppd=None,
-    theight=None,
-    twidth=None,
-    tint=None,
-    tthick=None,
-    cheight=None,
-    cwidth=None,
-    cint=None,
-    intback=None,
-    add_mask=False,
-):
-    try:
-        stim = cross(
-            visual_size=(height, width),
-            ppd=ppd,
-            cross_size=(theight, twidth),
-            cross_thickness=tthick,
-            covers_size=(cheight, cwidth),
-            intensity_background=intback,
-            intensity_target=tint,
-            intensity_covers=cint,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_cross,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "theight": w_theight,
-        "twidth": w_twidth,
-        "tint": w_tint,
-        "tthick": w_tthick,
-        "cheight": w_cheight,
-        "cwidth": w_cwidth,
-        "cint": w_cint,
-        "intback": w_int_back,
-        "add_mask": w_mask,
-    },
-)
-
-# Show
-display(ui, out)
-```
-
-## Cross, two-sided
-{py:func}`stimupy.stimuli.todorovics.cross_two_sided`
-
-```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
-from stimupy.stimuli.todorovics import cross_two_sided
-
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=20, min=1, max=40, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
-
-w_theight = iw.FloatSlider(value=4, min=0, max=8, description="cross height [deg]")
-w_twidth = iw.FloatSlider(value=4, min=0, max=8, description="cross width [deg]")
-w_tthick = iw.FloatSlider(value=2, min=0, max=4, description="cross thickness [deg]")
-w_tint_l = iw.FloatSlider(value=0.5, min=0, max=1, description="left cross int")
-w_tint_r = iw.FloatSlider(value=0.5, min=0, max=1, description="right cross int")
-
-
-w_cheight = iw.FloatSlider(value=2, min=0, max=4, description="cover height [deg]")
-w_cwidth = iw.FloatSlider(value=2, min=0, max=4, description="cover width [deg]")
-w_cint1 = iw.FloatSlider(value=1, min=0, max=1, description="cover int1")
-w_cint2 = iw.FloatSlider(value=0, min=0, max=1, description="cover int2")
-
-w_int_back_l = iw.FloatSlider(value=0., min=0, max=1, description="int back1")
-w_int_back_r = iw.FloatSlider(value=1., min=0, max=1, description="int back12")
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask'], description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_tsize = iw.HBox([w_theight, w_twidth, w_tthick, w_tint_l, w_tint_r])
-b_csize = iw.HBox([w_cheight, w_cwidth, w_cint1, w_cint2])
-b_intensities = iw.HBox([w_int_back1, w_int_back2])
-b_add = iw.HBox([w_mask])
-ui = iw.VBox([b_im_size, b_tsize, b_csize, b_intensities, b_add])
-
-# Function for showing stim
-def show_two_sided_cross(
-    height=None,
-    width=None,
-    ppd=None,
-    theight=None,
-    twidth=None,
-    tint_l=None,
-    tint_r=None,
-    tthick=None,
-    cheight=None,
-    cwidth=None,
-    cint1=None,
-    cint2=None,
-    int_back_l=None,
-    int_back_r=None,
-    add_mask=False,
-):
-    try:
-        stim = cross_two_sided(
-            visual_size=(height, width),
-            ppd=ppd,
-            cross_size=((theight, twidth),(theight, twidth)),
-            cross_thickness=tthick,
-            covers_size=((cheight, cwidth),(cheight, cwidth)),
-            intensity_background=(int_back_l, int_back_r),
-            intensity_target=(tint_l, tint_r),
-            intensity_covers=(cint1, cint2),
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_two_sided_cross,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "theight": w_theight,
-        "twidth": w_twidth,
-        "tint_l": w_tint_l,
-        "tint_r": w_tint_r,
-        "tthick": w_tthick,
-        "cheight": w_cheight,
-        "cwidth": w_cwidth,
-        "cint1": w_cint1,
-        "cint2": w_cint2,
-        "int_back_l": w_int_back_l,
-        "int_back_r": w_int_back_r,
-        "add_mask": w_mask,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive cross_generalized
+cross_generalized_params = CrossGeneralizedParams()
+disp = InteractiveStimDisplay(cross_generalized, cross_generalized_params)
+disp.layout
 ```
 
 ## Equal
 {py:func}`stimupy.stimuli.todorovics.equal`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
-from stimupy.stimuli.todorovics import equal
+import param
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+class EqualParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
 
-w_theight = iw.FloatSlider(value=4, min=0, max=8, description="cross height [deg]")
-w_twidth = iw.FloatSlider(value=4, min=0, max=8, description="cross width [deg]")
-w_tthick = iw.FloatSlider(value=2, min=0, max=4, description="cross thickness [deg]")
-w_tint = iw.FloatSlider(value=0.5, min=0, max=1, description="cross int")
+    cross_size = param.Number(default=4.0, bounds=(2, 8), step=0.1, doc="Cross size", allow_None=True)
+    cross_thickness = param.Number(default=1.0, bounds=(0.5, 3), step=0.1, doc="Cross thickness", allow_None=True)
+    cover_size = param.Number(default=1.5, bounds=(0.1, 2), step=0.1, doc="Cover size", allow_None=True)
+    intensity_background = param.Number(default=0.0, bounds=(0, 1), step=0.01, doc="Background intensity")
+    intensity_target = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="Target intensity")
+    intensity_covers = param.Number(default=1.0, bounds=(0, 1), step=0.01, doc="Covers intensity")
 
-w_cint = iw.FloatSlider(value=1, min=0, max=1, description="cover int")
-
-w_int_back = iw.FloatSlider(value=0., min=0, max=1, description="int background")
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask'], description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_tsize = iw.HBox([w_theight, w_twidth, w_tthick, w_tint])
-b_csize = iw.HBox([w_cint])
-b_intensities = iw.HBox([w_int_back])
-b_add = iw.HBox([w_mask])
-ui = iw.VBox([b_im_size, b_tsize, b_csize, b_intensities, b_add])
-
-# Function for showing stim
-def show_equal(
-    height=None,
-    width=None,
-    ppd=None,
-    theight=None,
-    twidth=None,
-    tint=None,
-    tthick=None,
-    cint=None,
-    intback=None,
-    add_mask=False,
-):
-    try:
-        stim = equal(
-            visual_size=(height, width),
-            ppd=ppd,
-            cross_size=(theight, twidth),
-            cross_thickness=tthick,
-            intensity_background=intback,
-            intensity_target=tint,
-            intensity_covers=cint,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_equal,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "theight": w_theight,
-        "twidth": w_twidth,
-        "tint": w_tint,
-        "tthick": w_tthick,
-        "cint": w_cint,
-        "intback": w_int_back,
-        "add_mask": w_mask,
-    },
-)
-
-# Show
-display(ui, out)
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "cross_size": self.cross_size,
+            "cross_thickness": self.cross_thickness,
+            "cover_size": self.cover_size,
+            "intensity_background": self.intensity_background,
+            "intensity_target": self.intensity_target,
+            "intensity_covers": self.intensity_covers,
+        }
 ```
 
-## Equal, two-sided
-{py:func}`stimupy.stimuli.todorovics.equal_two_sided`
-
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
-from stimupy.stimuli.todorovics import equal_two_sided
+from stimupy.stimuli.todorovics import equal
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=20, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_theight = iw.FloatSlider(value=4, min=0, max=8, description="cross height [deg]")
-w_twidth = iw.FloatSlider(value=4, min=0, max=8, description="cross width [deg]")
-w_tthick = iw.FloatSlider(value=2, min=0, max=4, description="cross thickness [deg]")
-w_tint_l = iw.FloatSlider(value=0.5, min=0, max=1, description="left cross int")
-w_tint_r = iw.FloatSlider(value=0.5, min=0, max=1, description="right cross int")
-
-w_cint_l = iw.FloatSlider(value=1, min=0, max=1, description="cover1 int")
-w_cint_r = iw.FloatSlider(value=0, min=0, max=1, description="cover2 int")
-
-w_int_back_l = iw.FloatSlider(value=0., min=0, max=1, description="int back1")
-w_int_back_r = iw.FloatSlider(value=1., min=0, max=1, description="int back2")
-w_mask = iw.Dropdown(value=None, options=[None, 'target_mask'], description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_tsize = iw.HBox([w_theight, w_twidth, w_tthick, w_tint_l, w_tint_r])
-b_csize = iw.HBox([w_cint1, w_cint2])
-b_intensities = iw.HBox([w_int_back1, w_int_back2])
-b_add = iw.HBox([w_mask])
-ui = iw.VBox([b_im_size, b_tsize, b_csize, b_intensities, b_add])
-
-# Function for showing stim
-def show_two_sided_equal(
-    height=None,
-    width=None,
-    ppd=None,
-    theight=None,
-    twidth=None,
-    tint_l=None,
-    tint_r=None,
-    tthick=None,
-    cint_l=None,
-    cint_r=None,
-    int_back_l=None,
-    int_back_r=None,
-    add_mask=False,
-):
-    try:
-        stim = equal_two_sided(
-            visual_size=(height, width),
-            ppd=ppd,
-            cross_size=((theight, twidth),(theight, twidth)),
-            cross_thickness=tthick,
-            intensity_background=(int_back_l, int_back_r),
-            intensity_target=(tint_l, tint_r),
-            intensity_covers=(cint_l, cint_r),
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_two_sided_equal,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "theight": w_theight,
-        "twidth": w_twidth,
-        "tint_l": w_tint_l,
-        "tint_r": w_tint_r,
-        "tthick": w_tthick,
-        "cint_l": w_cint1,
-        "int_back_l": w_int_back_l,
-        "cint_r": w_cint2,
-        "int_back_r": w_int_back_r,
-        "add_mask": w_mask,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive equal
+equal_params = EqualParams()
+disp = InteractiveStimDisplay(equal, equal_params)
+disp.layout
 ```

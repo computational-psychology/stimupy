@@ -19,7 +19,7 @@ kernelspec:
 ```{attention}
 To run locally, the code for these interactive demos requires
 a [Jupyter Notebook](https://jupyter.org/) environment,
-and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedocs.io/en/latest/index.html).
+and the [Panel extension](https://panel.holoviz.org/).
 ```
 
 # Components - Lines
@@ -31,306 +31,184 @@ and the [Jupyter Widgets extension (`ipywidgets`)](https://ipywidgets.readthedoc
 {py:func}`stimupy.components.lines.line`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class LineParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+
+    line_length = param.Number(default=3, bounds=(0, 6), step=0.01, doc="")
+    line_width = param.Number(default=0, bounds=(0, 3), step=0.01, doc="")
+    rotation = param.Integer(default=0, bounds=(0, 360), doc="")
+    line_position_x = param.Number(default=3.0, bounds=(-10, 10.0), step=0.01, doc="")
+    line_position_y = param.Number(default=3.0, bounds=(-10, 10.0), step=0.01, doc="")
+    intensity_line = param.Number(default=1.0, bounds=(0, 1), step=0.01, doc="")
+    intensity_background = param.Number(default=0., bounds=(0, 1), step=0.01, doc="")
+    origin = param.Selector(default="corner", objects=['corner', 'center', 'mean'], doc="")
+    mask = param.Boolean(default=False, doc="")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "line_length": self.line_length,
+            "line_width": self.line_width,
+            "rotation": self.rotation,
+            "line_position": (self.line_position_y, self.line_position_x),
+            "intensity_line": self.intensity_line,
+            "intensity_background": self.intensity_background,
+            "origin": self.origin,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.components.lines import line
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_len = iw.FloatSlider(value=3, min=0, max=6, description="line length [deg]")
-w_lwidth = iw.FloatSlider(value=0, min=0, max=3, description="line width [deg]")
-w_rot = iw.IntSlider(value=0, min=0, max=360, description="rotation [deg]")
-
-w_posx = iw.FloatSlider(value=3.0, min=-10, max=10.0, description="x-position")
-w_posy = iw.FloatSlider(value=3.0, min=-10, max=10.0, description="y-position")
-
-w_int = iw.FloatSlider(value=1., min=0, max=1, description="intensity line")
-w_int_back = iw.FloatSlider(value=0., min=0, max=1, description="intensity background")
-
-w_ori = iw.Dropdown(value="corner", options=['corner', 'center', 'mean'], description="origin")
-w_mask = iw.ToggleButton(value=False, disabled=False, description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_len, w_lwidth, w_rot])
-b_pos = iw.HBox([w_posx, w_posy])
-b_intensities = iw.HBox([w_int, w_int_back])
-b_add = iw.HBox([w_ori, w_mask])
-ui = iw.VBox([b_im_size, b_geometry, b_pos, b_intensities, b_add])
-
-# Function for showing stim
-def show_line(
-    height=None,
-    width=None,
-    ppd=None,
-    rotation=0,
-    line_length=None,
-    line_width=None,
-    xpos=None,
-    ypos=None,
-    intensity_line=None,
-    intensity_background=None,
-    add_mask=False,
-    origin=None,
-):
-    try:
-        stim = line(
-            visual_size=(height, width),
-            ppd=ppd,
-            line_position=(ypos, xpos),
-            line_length=line_length,
-            line_width=line_width,
-            rotation=rotation,
-            intensity_line=intensity_line,
-            intensity_background=intensity_background,
-            origin=origin,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None    
-
-# Set interactivity
-out = iw.interactive_output(
-    show_line,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "rotation": w_rot,
-        "line_length": w_len,
-        "line_width": w_lwidth,
-        "xpos": w_posx,
-        "ypos": w_posy,
-        "intensity_line": w_int,
-        "intensity_background": w_int_back,
-        "origin": w_ori,
-        "add_mask": w_mask,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive line
+line_params = LineParams()
+disp = InteractiveStimDisplay(line, line_params)
+disp.layout
 ```
 
 ## Dipole
 {py:func}`stimupy.components.lines.dipole`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class DipoleParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+
+    line_length = param.Number(default=3, bounds=(0, 6), step=0.01, doc="")
+    line_width = param.Number(default=0, bounds=(0, 3), step=0.01, doc="")
+    line_gap = param.Number(default=0.5, bounds=(0, 3), step=0.01, doc="")
+    rotation = param.Integer(default=0, bounds=(0, 360), doc="")
+    intensity_lines = param.Range(default=(0.0, 1.0), bounds=(0, 1), doc="Line intensity range (min, max)")
+    mask = param.Boolean(default=False, doc="")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "line_length": self.line_length,
+            "line_width": self.line_width,
+            "line_gap": self.line_gap,
+            "rotation": self.rotation,
+            "intensity_lines": self.intensity_lines,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.components.lines import dipole
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_len = iw.FloatSlider(value=3, min=0, max=6, description="line length [deg]")
-w_lwidth = iw.FloatSlider(value=0, min=0, max=3, description="line width [deg]")
-w_gap = iw.FloatSlider(value=0.5, min=0, max=3, description="gap [deg]")
-w_rot = iw.IntSlider(value=0, min=0, max=360, description="rotation [deg]")
-
-w_int1 = iw.FloatSlider(value=1., min=0, max=1, description="intensity1")
-w_int2 = iw.FloatSlider(value=0., min=0, max=1, description="intensity2")
-
-w_mask = iw.ToggleButton(value=False, disabled=False, description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_len, w_lwidth, w_gap, w_rot])
-b_intensities = iw.HBox([w_int1, w_int2])
-ui = iw.VBox([b_im_size, b_geometry, b_intensities, w_mask])
-
-# Function for showing stim
-def show_dipole(
-    height=None,
-    width=None,
-    ppd=None,
-    rotation=0,
-    line_length=None,
-    line_width=None,
-    line_gap=None,
-    int1=None,
-    int2=None,
-    add_mask=False,
-):
-    try:
-        stim = dipole(
-            visual_size=(height, width),
-            ppd=ppd,
-            line_length=line_length,
-            line_width=line_width,
-            line_gap=line_gap,
-            rotation=rotation,
-            intensity_lines=(int1, int2),
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_dipole,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "rotation": w_rot,
-        "line_length": w_len,
-        "line_width": w_lwidth,
-        "line_gap": w_gap,
-        "int1": w_int1,
-        "int2": w_int2,
-        "add_mask": w_mask,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive dipole
+dipole_params = DipoleParams()
+disp = InteractiveStimDisplay(dipole, dipole_params)
+disp.layout
 ```
 
 ## Ellipse
 {py:func}`stimupy.components.lines.ellipse`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class EllipseParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+
+    radius1 = param.Number(default=3, bounds=(0, 6), step=0.01, doc="")
+    radius2 = param.Number(default=3, bounds=(0, 6), step=0.01, doc="")
+    line_width = param.Number(default=0, bounds=(0, 3), step=0.01, doc="")
+    intensity_line = param.Number(default=1., bounds=(0, 1), step=0.01, doc="")
+    intensity_background = param.Number(default=0., bounds=(0, 1), step=0.01, doc="")
+    mask = param.Boolean(default=False, doc="")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "radius": (self.radius1, self.radius2),
+            "line_width": self.line_width,
+            "intensity_line": self.intensity_line,
+            "intensity_background": self.intensity_background,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.components.lines import ellipse
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_rad1 = iw.FloatSlider(value=3, min=0, max=6, description="radius1 [deg]")
-w_rad2 = iw.FloatSlider(value=3, min=0, max=6, description="radius2 [deg]")
-w_lwidth = iw.FloatSlider(value=0, min=0, max=3, description="line width [deg]")
-
-w_int = iw.FloatSlider(value=1., min=0, max=1, description="intensity line")
-w_int_back = iw.FloatSlider(value=0., min=0, max=1, description="intensity background")
-
-w_mask = iw.ToggleButton(value=False, disabled=False, description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_rad1, w_rad2, w_lwidth])
-b_intensities = iw.HBox([w_int, w_int_back])
-ui = iw.VBox([b_im_size, b_geometry, b_intensities, w_mask])
-
-# Function for showing stim
-def show_ellipse(
-    height=None,
-    width=None,
-    ppd=None,
-    rad1=None,
-    rad2=None,
-    line_width=None,
-    intensity_line=None,
-    intensity_background=None,
-    add_mask=False,
-):
-    try:
-        stim = ellipse(
-            visual_size=(height, width),
-            ppd=ppd,
-            radius=(rad1, rad2),
-            line_width=line_width,
-            intensity_line=intensity_line,
-            intensity_background=intensity_background,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_ellipse,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "rad1": w_rad1,
-        "rad2": w_rad2,
-        "line_width": w_lwidth,
-        "intensity_line": w_int,
-        "intensity_background": w_int_back,
-        "add_mask": w_mask,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive ellipse
+ellipse_params = EllipseParams()
+disp = InteractiveStimDisplay(ellipse, ellipse_params)
+disp.layout
 ```
 
 ## Circle
 {py:func}`stimupy.components.lines.circle`
 
 ```{code-cell} ipython3
-import ipywidgets as iw
-from stimupy.utils import plot_stim
+import param
+
+class CircleParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+
+    radius = param.Number(default=3, bounds=(0, 6), step=0.01, doc="")
+    line_width = param.Number(default=0, bounds=(0, 3), step=0.01, doc="")
+    intensity_line = param.Number(default=1., bounds=(0, 1), step=0.01, doc="")
+    intensity_background = param.Number(default=0., bounds=(0, 1), step=0.01, doc="")
+    mask = param.Boolean(default=False, doc="")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "radius": self.radius,
+            "line_width": self.line_width,
+            "intensity_line": self.intensity_line,
+            "intensity_background": self.intensity_background,
+        }
+```
+
+```{code-cell} ipython3
 from stimupy.components.lines import circle
+import sys
+from pathlib import Path
 
-# Define widgets
-w_height = iw.IntSlider(value=10, min=1, max=20, description="height [deg]")
-w_width = iw.IntSlider(value=10, min=1, max=20, description="width [deg]")
-w_ppd = iw.IntSlider(value=20, min=1, max=40, description="ppd")
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from display_stimulus import InteractiveStimDisplay
 
-w_rad = iw.FloatSlider(value=3, min=0, max=6, description="radius [deg]")
-w_lwidth = iw.FloatSlider(value=0, min=0, max=3, description="line width [deg]")
-
-w_int = iw.FloatSlider(value=1., min=0, max=1, description="intensity line")
-w_int_back = iw.FloatSlider(value=0., min=0, max=1, description="intensity background")
-
-w_mask = iw.ToggleButton(value=False, disabled=False, description="add mask")
-
-# Layout
-b_im_size = iw.HBox([w_height, w_width, w_ppd])
-b_geometry = iw.HBox([w_rad, w_lwidth])
-b_intensities = iw.HBox([w_int, w_int_back])
-ui = iw.VBox([b_im_size, b_geometry, b_intensities, w_mask])
-
-# Function for showing stim
-def show_circle(
-    height=None,
-    width=None,
-    ppd=None,
-    radius=None,
-    line_width=None,
-    intensity_line=None,
-    intensity_background=None,
-    add_mask=False,
-):
-    try:
-        stim = circle(
-            visual_size=(height, width),
-            ppd=ppd,
-            radius=radius,
-            line_width=line_width,
-            intensity_line=intensity_line,
-            intensity_background=intensity_background,
-        )
-        plot_stim(stim, mask=add_mask)
-    except Exception as e:
-        raise ValueError(f"Invalid parameter combination: {e}") from None
-
-# Set interactivity
-out = iw.interactive_output(
-    show_circle,
-    {
-        "height": w_height,
-        "width": w_width,
-        "ppd": w_ppd,
-        "radius": w_rad,
-        "line_width": w_lwidth,
-        "intensity_line": w_int,
-        "intensity_background": w_int_back,
-        "add_mask": w_mask,
-    },
-)
-
-# Show
-display(ui, out)
+# Create and display the interactive circle
+circle_params = CircleParams()
+disp = InteractiveStimDisplay(circle, circle_params)
+disp.layout
 ```
