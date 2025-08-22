@@ -177,11 +177,24 @@ Classes
 Functions
 ---------
 
+{% if "utils" in obj.id %}
+.. autosummary::
+
+  {% for function in visible_functions %}
+  {{ function.name }}
+  {% endfor %}
+
+{% for function in visible_functions %}
+.. autoapifunction:: {{ function.name }}
+{% endfor %}
+
+{% else %}
 .. autoapisummary::
 
   {% for function in visible_functions %}
    {{ function.id }}
   {% endfor %}
+
 
 
 .. base-gallery::
@@ -190,7 +203,7 @@ Functions
    {% for function in visible_functions %}
    {{ function.name }}
    {% endfor %}
-
+{% endif %}
 
 {% endif %}
 {% endif %}

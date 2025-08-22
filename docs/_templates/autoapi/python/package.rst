@@ -41,14 +41,14 @@ Modules
    {{ module.id }}
   {% endfor %}
 
-
+{% if "utils" not in obj.id %}
 .. gallery::
    :caption: {{ obj.name }}
 
   {% for module in visible_submodules %}
    {{ module.include_path }}
   {% endfor %}
-
+{% endif %}
 
 {% endif %}
 {% endblock %}
