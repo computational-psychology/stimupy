@@ -6,4 +6,5 @@
 ./use_stimulus/use
 replicate
 color
+stimspace
 ```
