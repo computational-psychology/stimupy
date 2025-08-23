@@ -16,7 +16,7 @@ build:
       pre_build:
         # Generate the Sphinx configuration for this Jupyter Book so it builds.
         - "jupyter-book config sphinx docs/"
-        - "python ./docs/_static/generate_stimulus_images.py"
+        - "python ./stimupy/_docs/generate_stimulus_images.py"
 
 
 sphinx:

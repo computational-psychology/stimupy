@@ -8,12 +8,12 @@ This script identifies:
 3. Naming mismatches between functions and PNG files
 """
 
+import inspect
 import sys
 from pathlib import Path
-import inspect
 
 # Add the stimupy package to the path
-stimupy_root = Path(__file__).parent.parent.parent
+stimupy_root = Path(__file__).parents[2]
 sys.path.insert(0, str(stimupy_root))
 
 import stimupy
@@ -96,7 +96,7 @@ def get_all_stimupy_functions():
 
 def get_generated_pngs():
     """Get list of generated PNG files (without .png extension)."""
-    png_dir = Path(__file__).parent / "generated_stimuli"
+    png_dir = stimupy_root / "docs" / "_static" / "generated_stimuli"
     if not png_dir.exists():
         return set()
 
