@@ -19,6 +19,7 @@ sys.path.insert(0, str(stimupy_root))
 sys.path.insert(0, str(Path(__file__).parent))
 
 import stimupy
+from stimupy import papers
 
 
 def get_all_param_classes():
@@ -104,6 +105,22 @@ def get_all_param_classes():
                         key = f"noises.{module_name}.{func_name}"
                         param_classes[key] = param_class
 
+        # Process papers - these don't use parameter classes, just functions
+        # We'll add them to the return for consistency but handle them differently
+        try:
+            papers_modules = papers.__all__
+            for module_name in papers_modules:
+                # Import the module directly
+                module = __import__(f"stimupy.papers.{module_name}", fromlist=[module_name])
+                # Get all functions from the module that return stimuli
+                if hasattr(module, "__all__"):
+                    for func_name in module.__all__:
+                        key = f"papers.{module_name}.{func_name}"
+                        param_classes[key] = None  # No parameter class for papers
+        except (ImportError, AttributeError) as e:
+            print(f"Papers module not available: {e}")
+            # Continue without papers
+
     except ImportError as e:
         print(f"Import error: {e}")
         return {}
@@ -126,6 +143,8 @@ def get_stimupy_function(key):
             module = getattr(stimupy.noises, module_name)
         elif category == "stimuli":
             module = getattr(stimupy.stimuli, module_name)
+        elif category == "papers":
+            module = __import__(f"stimupy.papers.{module_name}", fromlist=[module_name])
         else:
             return None
 
@@ -147,13 +166,19 @@ def generate_and_save_stimulus(key, param_class, output_dir):
             print(f"Could not find stimupy function for {key}")
             return False
 
-        # Create parameter instance with defaults
-        params = param_class()
-        stimulus_params = params.get_stimulus_params()
+        # Handle papers functions (no parameter class) vs regular functions
+        if param_class is None:
+            # For papers functions, call without arguments
+            print(f"Generating {key}...")
+            stimulus = func()
+        else:
+            # Create parameter instance with defaults
+            params = param_class()
+            stimulus_params = params.get_stimulus_params()
 
-        # Generate the stimulus
-        print(f"Generating {key}...")
-        stimulus = func(**stimulus_params)
+            # Generate the stimulus
+            print(f"Generating {key}...")
+            stimulus = func(**stimulus_params)
 
         # Extract the image
         if isinstance(stimulus, dict) and "img" in stimulus:
