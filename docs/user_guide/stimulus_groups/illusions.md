@@ -18,13 +18,6 @@ We've collected the major geometric illusions that have shaped our understanding
 
 **Complex spatial patterns**: Things like Mondrian patterns (`mondrians`) for studying spatial segmentation, and other geometric arrangements that reveal how our visual system organizes and processes complex spatial layouts.
 
-## Notable collections
-
-A few sets have become reference points in the field:
-
-**Classic individual studies**: We include the exact parameterizations from foundational papers, so you can replicate the original demonstrations of Müller-Lyer (1896), Ponzo (1910), Delboeuf (1865), and others.
-
-**Modern compilations**: Some papers like Domijan (2015) have brought together multiple geometric illusions in computational studies, providing standardized versions useful for model testing.
 
 ## Getting started
 
