@@ -2,6 +2,25 @@
 {% if is_own_page %}
 {{ obj.short_name }}
 {{ "=" * obj.short_name | length }}
+
+   {% set full_name = obj.id %}
+   {% set name_parts = full_name.split('.') %}
+   {% if name_parts|length >= 3 and (name_parts[0] == 'stimupy') %}
+   {% set category = name_parts[1] %}
+   {% set module_name = name_parts[2] %}
+   {% set function_name = name_parts[-1] %}
+   {% if category in ['components', 'stimuli', 'noises'] %}
+   {% set image_path = '/_static/generated_stimuli/' + category + '.' + module_name + '.' + function_name + '.png' %}
+
+   .. image:: {{ image_path }}
+      :alt: {{ function_name }} stimulus example
+      :align: center
+      :width: 400px
+
+{% endif %}
+{% endif %}
+
+
 {% endif %}
 
 
@@ -16,6 +35,7 @@
    {% endfor %}
 
    {% if obj.docstring %}
+
 
    {{ obj.docstring|indent(3) }}
    {% endif %}
