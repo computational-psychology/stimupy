@@ -4,6 +4,7 @@ __all__ = [
     "modelfest",
     "murray2020",
     "RHS2007",
+    "schmittwilken2024",
     "white1981",
     "white1985",
 ]
