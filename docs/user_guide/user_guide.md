@@ -7,6 +7,7 @@ and touch upon the design decisions and possible use-cases that come with it.
 ```{toctree}
 :titlesonly:
 
+organization
 resolution
 dimensions
 stimuli_parametrizations

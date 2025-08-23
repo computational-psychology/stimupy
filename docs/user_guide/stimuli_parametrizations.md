@@ -21,7 +21,7 @@ from stimupy.utils import plot_stim
 ```
 
 Included in `stimupy` is a large set of functions
-to generate known {py:mod}`stimuli <stimupy.stimuli>` (see [How stimupy is organized](../getting_started/organization))
+to generate known {py:mod}`stimuli <stimupy.stimuli>` (see [](./organization))
 These are generally subdivided into submodules
 bearing their usual name.
 ```{margin}
