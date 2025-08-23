@@ -36,6 +36,9 @@ class AnnulusParams(param.Parameterized):
         }
 
 
+RingParams = AnnulusParams
+
+
 class DiscParams(param.Parameterized):
     # Image size parameters
     height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
@@ -100,4 +103,4 @@ class RingsParams(param.Parameterized):
         }
 
 
-__all__ = ["AnnulusParams", "DiscParams", "RingsParams"]
+__all__ = ["AnnulusParams", "DiscParams", "RingParams", "RingsParams"]

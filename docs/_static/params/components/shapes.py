@@ -3,7 +3,7 @@
 import param
 
 
-class ShapeAnnulusParams(param.Parameterized):
+class AnnulusParams(param.Parameterized):
     # Image size parameters
     height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
     width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
@@ -14,7 +14,7 @@ class ShapeAnnulusParams(param.Parameterized):
     radius_inner = param.Number(default=1, bounds=(0, 3), step=0.1, doc="Inner radius in degrees")
 
     # Intensity parameters
-    intensity_shape = param.Number(default=1.0, bounds=(0, 1), step=0.01, doc="Shape intensity")
+    intensity_ring = param.Number(default=1.0, bounds=(0, 1), step=0.01, doc="Shape intensity")
     intensity_background = param.Number(
         default=0.0, bounds=(0, 1), step=0.01, doc="Background intensity"
     )
@@ -26,14 +26,14 @@ class ShapeAnnulusParams(param.Parameterized):
         return {
             "visual_size": (self.height, self.width),
             "ppd": self.ppd,
-            "radius": (self.radius_inner, self.radius_outer),
-            "intensity_shape": self.intensity_shape,
+            "radii": (self.radius_inner, self.radius_outer),
+            "intensity_ring": self.intensity_ring,
             "intensity_background": self.intensity_background,
             "origin": self.origin,
         }
 
 
-class ShapeCircleParams(param.Parameterized):
+class CircleParams(param.Parameterized):
     # Image size parameters
     height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
     width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
@@ -43,7 +43,7 @@ class ShapeCircleParams(param.Parameterized):
     radius = param.Number(default=2, bounds=(0, 4), step=0.1, doc="Radius in degrees")
 
     # Intensity parameters
-    intensity_shape = param.Number(default=1.0, bounds=(0, 1), step=0.01, doc="Shape intensity")
+    intensity_circle = param.Number(default=1.0, bounds=(0, 1), step=0.01, doc="Shape intensity")
     intensity_background = param.Number(
         default=0.0, bounds=(0, 1), step=0.01, doc="Background intensity"
     )
@@ -56,7 +56,7 @@ class ShapeCircleParams(param.Parameterized):
             "visual_size": (self.height, self.width),
             "ppd": self.ppd,
             "radius": self.radius,
-            "intensity_shape": self.intensity_shape,
+            "intensity_circle": self.intensity_circle,
             "intensity_background": self.intensity_background,
             "origin": self.origin,
         }
@@ -128,7 +128,7 @@ class DiscParams(param.Parameterized):
         }
 
 
-class ShapeEllipseParams(param.Parameterized):
+class EllipseParams(param.Parameterized):
     # Image size parameters
     height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
     width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
@@ -140,7 +140,7 @@ class ShapeEllipseParams(param.Parameterized):
     rotation = param.Integer(default=0, bounds=(0, 360), doc="Rotation in degrees")
 
     # Intensity parameters
-    intensity_shape = param.Number(default=1.0, bounds=(0, 1), step=0.01, doc="Shape intensity")
+    intensity_ellipse = param.Number(default=1.0, bounds=(0, 1), step=0.01, doc="Shape intensity")
     intensity_background = param.Number(
         default=0.0, bounds=(0, 1), step=0.01, doc="Background intensity"
     )
@@ -154,7 +154,7 @@ class ShapeEllipseParams(param.Parameterized):
             "ppd": self.ppd,
             "radius": (self.radius1, self.radius2),
             "rotation": self.rotation,
-            "intensity_shape": self.intensity_shape,
+            "intensity_ellipse": self.intensity_ellipse,
             "intensity_background": self.intensity_background,
             "origin": self.origin,
         }
@@ -279,7 +279,7 @@ class TriangleParams(param.Parameterized):
         }
 
 
-class ShapeWedgeParams(param.Parameterized):
+class WedgeParams(param.Parameterized):
     # Image size parameters
     height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
     width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
@@ -291,7 +291,7 @@ class ShapeWedgeParams(param.Parameterized):
     rotation = param.Integer(default=0, bounds=(0, 360), doc="Rotation in degrees")
 
     # Intensity parameters
-    intensity_shape = param.Number(default=1.0, bounds=(0, 1), step=0.01, doc="Shape intensity")
+    intensity_wedge = param.Number(default=1.0, bounds=(0, 1), step=0.01, doc="Shape intensity")
     intensity_background = param.Number(
         default=0.0, bounds=(0, 1), step=0.01, doc="Background intensity"
     )
@@ -306,7 +306,7 @@ class ShapeWedgeParams(param.Parameterized):
             "angle": self.angle,
             "radius": self.radius,
             "rotation": self.rotation,
-            "intensity_shape": self.intensity_shape,
+            "intensity_wedge": self.intensity_wedge,
             "intensity_background": self.intensity_background,
             "origin": self.origin,
         }
@@ -315,8 +315,12 @@ class ShapeWedgeParams(param.Parameterized):
 __all__ = [
     "CrossParams",
     "DiscParams",
+    "EllipseParams",
     "ParallelogramParams",
     "RectangleParams",
     "RingParams",
     "TriangleParams",
+    "CircleParams",
+    "AnnulusParams",
+    "WedgeParams",
 ]
