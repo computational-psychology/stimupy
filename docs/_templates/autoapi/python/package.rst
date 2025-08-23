@@ -6,8 +6,8 @@
 
 
 
-{{ obj.id }}
-{{ "=" * obj.id|length }}
+{{ obj.short_name }}
+{{ "=" * obj.short_name|length }}
 
 
 .. py:module:: {{ obj.name }}

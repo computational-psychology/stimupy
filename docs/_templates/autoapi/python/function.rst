@@ -1,7 +1,7 @@
 {% if obj.display %}
 {% if is_own_page %}
-{{ obj.id }}
-{{ "=" * obj.id | length }}
+{{ obj.short_name }}
+{{ "=" * obj.short_name | length }}
 {% endif %}
 
 
