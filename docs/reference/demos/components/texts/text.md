@@ -21,7 +21,9 @@ and the [Panel extension](https://panel.holoviz.org/).
 # Text
 {py:func}`stimupy.components.texts.text`
 
-```{code-cell} ipython3
+```{pyodide}
+:skip-embed:
+
 import param
 
 class TextParams(param.Parameterized):
@@ -56,13 +58,10 @@ class TextParams(param.Parameterized):
         }
 ```
 
-```{code-cell} ipython3
-from stimupy.components.texts import text
-import sys
-from pathlib import Path
+```{pyodide}
+:skip-embed:
 
-# Add the _static directory to the path to import display_stimulus
-sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from stimupy.components.texts import text
 from display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive text

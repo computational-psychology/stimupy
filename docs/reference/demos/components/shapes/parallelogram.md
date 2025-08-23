@@ -21,7 +21,9 @@ and the [Panel extension](https://panel.holoviz.org/).
 # Parallelogram
 {py:func}`stimupy.components.shapes.parallelogram`
 
-```{code-cell} ipython3
+```{pyodide}
+:skip-embed:
+
 import param
 
 class ParallelogramParams(param.Parameterized):
@@ -48,13 +50,10 @@ class ParallelogramParams(param.Parameterized):
         }
 ```
 
-```{code-cell} ipython3
-from stimupy.components.shapes import parallelogram
-import sys
-from pathlib import Path
+```{pyodide}
+:skip-embed:
 
-# Add the _static directory to the path to import display_stimulus
-sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from stimupy.components.shapes import parallelogram
 from display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive parallelogram

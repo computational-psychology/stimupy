@@ -21,7 +21,9 @@ and the [Panel extension](https://panel.holoviz.org/).
 # One over f
 {py:func}`stimupy.noises.naturals.one_over_f`
 
-```{code-cell} ipython3
+```{pyodide}
+:skip-embed:
+
 import param
 
 class OneOverFParams(param.Parameterized):
@@ -45,13 +47,10 @@ class OneOverFParams(param.Parameterized):
         }
 ```
 
-```{code-cell} ipython3
-from stimupy.noises.naturals import one_over_f
-import sys
-from pathlib import Path
+```{pyodide}
+:skip-embed:
 
-# Add the _static directory to the path to import display_stimulus
-sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from stimupy.noises.naturals import one_over_f
 from display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive one_over_f

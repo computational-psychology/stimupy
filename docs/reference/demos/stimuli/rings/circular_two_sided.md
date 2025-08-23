@@ -21,7 +21,9 @@ and the [Panel extension](https://panel.holoviz.org/).
 # Two-sided rings
 {py:func}`stimupy.stimuli.rings.circular_two_sided`
 
-```{code-cell} ipython3
+```{pyodide}
+:skip-embed:
+
 import param
 
 class CircularTwoSidedParams(param.Parameterized):
@@ -56,14 +58,12 @@ class CircularTwoSidedParams(param.Parameterized):
         }
 ```
 
-```{code-cell} ipython3
-from stimupy.stimuli.rings import circular_two_sided
-import sys
-from pathlib import Path
+```{pyodide}
+:skip-embed:
 
+from stimupy.stimuli.rings import circular_two_sided
 # Add the _static directory to the path to import display_stimulus
-sys.path.append(str((Path().resolve().parents[3] / "_static")))
-from display_stimulus import InteractiveStimDisplay
+sys.path.append(str((Path().resolve().parents[3] / "_static")))from display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive circular_two_sided
 circular_two_sided_params = CircularTwoSidedParams()

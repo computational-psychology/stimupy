@@ -21,7 +21,9 @@ and the [Panel extension](https://panel.holoviz.org/).
 # Square, angular
 {py:func}`stimupy.stimuli.waves.square_angular`
 
-```{code-cell} ipython3
+```{pyodide}
+:skip-embed:
+
 import param
 
 class SquareAngularParams(param.Parameterized):
@@ -49,13 +51,10 @@ class SquareAngularParams(param.Parameterized):
         }
 ```
 
-```{code-cell} ipython3
-from stimupy.stimuli.waves import square_angular
-import sys
-from pathlib import Path
+```{pyodide}
+:skip-embed:
 
-# Add the _static directory to the path to import display_stimulus
-sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from stimupy.stimuli.waves import square_angular
 from display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive square_angular

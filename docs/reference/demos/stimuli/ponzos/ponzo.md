@@ -21,7 +21,9 @@ and the [Panel extension](https://panel.holoviz.org/).
 # Ponzo
 {py:func}`stimupy.stimuli.ponzos.ponzo`
 
-```{code-cell} ipython3
+```{pyodide}
+:skip-embed:
+
 import param
 
 class PonzoParams(param.Parameterized):
@@ -56,13 +58,10 @@ class PonzoParams(param.Parameterized):
         }
 ```
 
-```{code-cell} ipython3
-from stimupy.stimuli.ponzos import ponzo
-import sys
-from pathlib import Path
+```{pyodide}
+:skip-embed:
 
-# Add the _static directory to the path to import display_stimulus
-sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from stimupy.stimuli.ponzos import ponzo
 from display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive ponzo

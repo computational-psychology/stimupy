@@ -21,7 +21,9 @@ and the [Panel extension](https://panel.holoviz.org/).
 # Gaussian edge
 {py:func}`stimupy.stimuli.edges.gaussian`
 
-```{code-cell} ipython3
+```{pyodide}
+:skip-embed:
+
 import param
 
 class GaussianParams(param.Parameterized):
@@ -47,13 +49,10 @@ class GaussianParams(param.Parameterized):
         }
 ```
 
-```{code-cell} ipython3
-from stimupy.stimuli.edges import gaussian
-import sys
-from pathlib import Path
+```{pyodide}
+:skip-embed:
 
-# Add the _static directory to the path to import display_stimulus
-sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from stimupy.stimuli.edges import gaussian
 from display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive gaussian

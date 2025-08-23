@@ -21,7 +21,9 @@ and the [Panel extension](https://panel.holoviz.org/).
 # White
 {py:func}`stimupy.noises.whites.white`
 
-```{code-cell} ipython3
+```{pyodide}
+:skip-embed:
+
 import param
 
 class WhiteParams(param.Parameterized):
@@ -43,13 +45,10 @@ class WhiteParams(param.Parameterized):
         }
 ```
 
-```{code-cell} ipython3
-from stimupy.noises.whites import white
-import sys
-from pathlib import Path
+```{pyodide}
+:skip-embed:
 
-# Add the _static directory to the path to import display_stimulus
-sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from stimupy.noises.whites import white
 from display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive white

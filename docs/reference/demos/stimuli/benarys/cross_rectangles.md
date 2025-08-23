@@ -21,7 +21,9 @@ and the [Panel extension](https://panel.holoviz.org/).
 # Cross, rectangles
 {py:func}`stimupy.stimuli.benarys.cross_rectangles`
 
-```{code-cell} ipython3
+```{pyodide}
+:skip-embed:
+
 import param
 
 class CrossRectanglesParams(param.Parameterized):
@@ -49,13 +51,10 @@ class CrossRectanglesParams(param.Parameterized):
         }
 ```
 
-```{code-cell} ipython3
-from stimupy.stimuli.benarys import cross_rectangles
-import sys
-from pathlib import Path
+```{pyodide}
+:skip-embed:
 
-# Add the _static directory to the path to import display_stimulus
-sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from stimupy.stimuli.benarys import cross_rectangles
 from display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive cross_rectangles

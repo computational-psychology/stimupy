@@ -21,7 +21,9 @@ and the [Panel extension](https://panel.holoviz.org/).
 # Two-sided
 {py:func}`stimupy.stimuli.mueller_lyers.two_sided`
 
-```{code-cell} ipython3
+```{pyodide}
+:skip-embed:
+
 import param
 
 class TwoSidedParams(param.Parameterized):
@@ -52,13 +54,10 @@ class TwoSidedParams(param.Parameterized):
         }
 ```
 
-```{code-cell} ipython3
-from stimupy.stimuli.mueller_lyers import two_sided
-import sys
-from pathlib import Path
+```{pyodide}
+:skip-embed:
 
-# Add the _static directory to the path to import display_stimulus
-sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from stimupy.stimuli.mueller_lyers import two_sided
 from display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive two_sided

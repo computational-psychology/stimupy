@@ -21,7 +21,9 @@ and the [Panel extension](https://panel.holoviz.org/).
 # Triangle
 {py:func}`stimupy.components.shapes.triangle`
 
-```{code-cell} ipython3
+```{pyodide}
+:skip-embed:
+
 import param
 
 class TriangleParams(param.Parameterized):
@@ -49,13 +51,10 @@ class TriangleParams(param.Parameterized):
         }
 ```
 
-```{code-cell} ipython3
-from stimupy.components.shapes import triangle
-import sys
-from pathlib import Path
+```{pyodide}
+:skip-embed:
 
-# Add the _static directory to the path to import display_stimulus
-sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from stimupy.components.shapes import triangle
 from display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive triangle

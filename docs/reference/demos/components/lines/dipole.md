@@ -21,7 +21,9 @@ and the [Panel extension](https://panel.holoviz.org/).
 # Dipole
 {py:func}`stimupy.components.lines.dipole`
 
-```{code-cell} ipython3
+```{pyodide}
+:skip-embed:
+
 import param
 
 class DipoleParams(param.Parameterized):
@@ -49,13 +51,10 @@ class DipoleParams(param.Parameterized):
         }
 ```
 
-```{code-cell} ipython3
-from stimupy.components.lines import dipole
-import sys
-from pathlib import Path
+```{pyodide}
+:skip-embed:
 
-# Add the _static directory to the path to import display_stimulus
-sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from stimupy.components.lines import dipole
 from display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive dipole

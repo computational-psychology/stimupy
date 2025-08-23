@@ -21,7 +21,9 @@ and the [Panel extension](https://panel.holoviz.org/).
 # Cross
 {py:func}`stimupy.components.shapes.cross`
 
-```{code-cell} ipython3
+```{pyodide}
+:skip-embed:
+
 import param
 
 class CrossParams(param.Parameterized):
@@ -53,13 +55,10 @@ class CrossParams(param.Parameterized):
         }
 ```
 
-```{code-cell} ipython3
-from stimupy.components.shapes import cross
-import sys
-from pathlib import Path
+```{pyodide}
+:skip-embed:
 
-# Add the _static directory to the path to import display_stimulus
-sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from stimupy.components.shapes import cross
 from display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive cross

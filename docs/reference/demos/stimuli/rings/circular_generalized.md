@@ -21,7 +21,9 @@ and the [Panel extension](https://panel.holoviz.org/).
 # Circular, generalized
 {py:func}`stimupy.stimuli.rings.circular_generalized`
 
-```{code-cell} ipython3
+```{pyodide}
+:skip-embed:
+
 import param
 
 class CircularGeneralizedParams(param.Parameterized):
@@ -54,14 +56,12 @@ class CircularGeneralizedParams(param.Parameterized):
         }
 ```
 
-```{code-cell} ipython3
-from stimupy.stimuli.rings import circular_generalized
-import sys
-from pathlib import Path
+```{pyodide}
+:skip-embed:
 
+from stimupy.stimuli.rings import circular_generalized
 # Add the _static directory to the path to import display_stimulus
-sys.path.append(str((Path().resolve().parents[3] / "_static")))
-from display_stimulus import InteractiveStimDisplay
+sys.path.append(str((Path().resolve().parents[3] / "_static")))from display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive circular_generalized
 circular_generalized_params = CircularGeneralizedParams()

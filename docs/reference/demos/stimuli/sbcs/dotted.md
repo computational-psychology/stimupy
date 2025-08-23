@@ -21,7 +21,9 @@ and the [Panel extension](https://panel.holoviz.org/).
 # Dotted
 {py:func}`stimupy.stimuli.sbcs.dotted`
 
-```{code-cell} ipython3
+```{pyodide}
+:skip-embed:
+
 import param
 
 class DottedParams(param.Parameterized):
@@ -54,13 +56,10 @@ class DottedParams(param.Parameterized):
         }
 ```
 
-```{code-cell} ipython3
-from stimupy.stimuli.sbcs import dotted
-import sys
-from pathlib import Path
+```{pyodide}
+:skip-embed:
 
-# Add the _static directory to the path to import display_stimulus
-sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from stimupy.stimuli.sbcs import dotted
 from display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive dotted

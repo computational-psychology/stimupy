@@ -21,7 +21,9 @@ and the [Panel extension](https://panel.holoviz.org/).
 # With dots
 {py:func}`stimupy.stimuli.sbcs.with_dots`
 
-```{code-cell} ipython3
+```{pyodide}
+:skip-embed:
+
 import param
 
 class WithDotsParams(param.Parameterized):
@@ -54,13 +56,10 @@ class WithDotsParams(param.Parameterized):
         }
 ```
 
-```{code-cell} ipython3
-from stimupy.stimuli.sbcs import with_dots
-import sys
-from pathlib import Path
+```{pyodide}
+:skip-embed:
 
-# Add the _static directory to the path to import display_stimulus
-sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from stimupy.stimuli.sbcs import with_dots
 from display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive with_dots

@@ -21,7 +21,9 @@ and the [Panel extension](https://panel.holoviz.org/).
 # Corrugated Mondrian
 {py:func}`stimupy.stimuli.mondrians.corrugated_mondrian`
 
-```{code-cell} ipython3
+```{pyodide}
+:skip-embed:
+
 import param
 
 class CorrugatedMondrianParams(param.Parameterized):
@@ -65,13 +67,10 @@ class CorrugatedMondrianParams(param.Parameterized):
         }
 ```
 
-```{code-cell} ipython3
-from stimupy.stimuli.mondrians import corrugated_mondrian
-import sys
-from pathlib import Path
+```{pyodide}
+:skip-embed:
 
-# Add the _static directory to the path to import display_stimulus
-sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from stimupy.stimuli.mondrians import corrugated_mondrian
 from display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive corrugated_mondrian

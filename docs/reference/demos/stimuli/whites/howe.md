@@ -21,7 +21,9 @@ and the [Panel extension](https://panel.holoviz.org/).
 # Howe
 {py:func}`stimupy.stimuli.whites.howe`
 
-```{code-cell} ipython3
+```{pyodide}
+:skip-embed:
+
 import param
 
 class HoweParams(param.Parameterized):
@@ -56,13 +58,10 @@ class HoweParams(param.Parameterized):
         }
 ```
 
-```{code-cell} ipython3
-from stimupy.stimuli.whites import howe
-import sys
-from pathlib import Path
+```{pyodide}
+:skip-embed:
 
-# Add the _static directory to the path to import display_stimulus
-sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from stimupy.stimuli.whites import howe
 from display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive howe

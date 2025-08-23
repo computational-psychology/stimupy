@@ -21,7 +21,9 @@ and the [Panel extension](https://panel.holoviz.org/).
 # Gabors
 {py:func}`stimupy.stimuli.plaids.gabors`
 
-```{code-cell} ipython3
+```{pyodide}
+:skip-embed:
+
 import param
 
 class GaborsParams(param.Parameterized):
@@ -57,13 +59,10 @@ class GaborsParams(param.Parameterized):
         }
 ```
 
-```{code-cell} ipython3
-from stimupy.stimuli.plaids import gabors
-import sys
-from pathlib import Path
+```{pyodide}
+:skip-embed:
 
-# Add the _static directory to the path to import display_stimulus
-sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from stimupy.stimuli.plaids import gabors
 from display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive gabors

@@ -21,7 +21,9 @@ and the [Panel extension](https://panel.holoviz.org/).
 # Sine, linear
 {py:func}`stimupy.stimuli.waves.sine_linear`
 
-```{code-cell} ipython3
+```{pyodide}
+:skip-embed:
+
 import param
 
 class SineLinearParams(param.Parameterized):
@@ -51,13 +53,10 @@ class SineLinearParams(param.Parameterized):
         }
 ```
 
-```{code-cell} ipython3
-from stimupy.stimuli.waves import sine_linear
-import sys
-from pathlib import Path
+```{pyodide}
+:skip-embed:
 
-# Add the _static directory to the path to import display_stimulus
-sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from stimupy.stimuli.waves import sine_linear
 from display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive sine_linear

@@ -21,7 +21,9 @@ and the [Panel extension](https://panel.holoviz.org/).
 # Sine waves
 {py:func}`stimupy.stimuli.plaids.sine_waves`
 
-```{code-cell} ipython3
+```{pyodide}
+:skip-embed:
+
 import param
 
 class SineWavesParams(param.Parameterized):
@@ -54,13 +56,10 @@ class SineWavesParams(param.Parameterized):
         }
 ```
 
-```{code-cell} ipython3
-from stimupy.stimuli.plaids import sine_waves
-import sys
-from pathlib import Path
+```{pyodide}
+:skip-embed:
 
-# Add the _static directory to the path to import display_stimulus
-sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from stimupy.stimuli.plaids import sine_waves
 from display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive sine_waves

@@ -21,7 +21,9 @@ and the [Panel extension](https://panel.holoviz.org/).
 # Staircase, linear
 {py:func}`stimupy.stimuli.waves.staircase_linear`
 
-```{code-cell} ipython3
+```{pyodide}
+:skip-embed:
+
 import param
 
 class StaircaseLinearParams(param.Parameterized):
@@ -51,13 +53,10 @@ class StaircaseLinearParams(param.Parameterized):
         }
 ```
 
-```{code-cell} ipython3
-from stimupy.stimuli.waves import staircase_linear
-import sys
-from pathlib import Path
+```{pyodide}
+:skip-embed:
 
-# Add the _static directory to the path to import display_stimulus
-sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from stimupy.stimuli.waves import staircase_linear
 from display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive staircase_linear

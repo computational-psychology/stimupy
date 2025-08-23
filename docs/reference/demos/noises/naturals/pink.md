@@ -21,7 +21,9 @@ and the [Panel extension](https://panel.holoviz.org/).
 # Pink
 {py:func}`stimupy.noises.naturals.pink`
 
-```{code-cell} ipython3
+```{pyodide}
+:skip-embed:
+
 import param
 
 class PinkParams(param.Parameterized):
@@ -43,13 +45,10 @@ class PinkParams(param.Parameterized):
         }
 ```
 
-```{code-cell} ipython3
-from stimupy.noises.naturals import pink
-import sys
-from pathlib import Path
+```{pyodide}
+:skip-embed:
 
-# Add the _static directory to the path to import display_stimulus
-sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from stimupy.noises.naturals import pink
 from display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive pink

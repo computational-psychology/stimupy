@@ -21,7 +21,9 @@ and the [Panel extension](https://panel.holoviz.org/).
 # Grid
 {py:func}`stimupy.stimuli.hermanns.grid`
 
-```{code-cell} ipython3
+```{pyodide}
+:skip-embed:
+
 import param
 
 class HermannParams(param.Parameterized):
@@ -49,13 +51,10 @@ class HermannParams(param.Parameterized):
         }
 ```
 
-```{code-cell} ipython3
-from stimupy.stimuli.hermanns import grid
-import sys
-from pathlib import Path
+```{pyodide}
+:skip-embed:
 
-# Add the _static directory to the path to import display_stimulus
-sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from stimupy.stimuli.hermanns import grid
 from display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive hermann grid

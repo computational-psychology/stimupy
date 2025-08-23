@@ -21,7 +21,9 @@ and the [Panel extension](https://panel.holoviz.org/).
 # Cross generalized
 {py:func}`stimupy.stimuli.todorovics.cross_generalized`
 
-```{code-cell} ipython3
+```{pyodide}
+:skip-embed:
+
 import param
 
 class CrossGeneralizedParams(param.Parameterized):
@@ -58,13 +60,10 @@ class CrossGeneralizedParams(param.Parameterized):
         }
 ```
 
-```{code-cell} ipython3
-from stimupy.stimuli.todorovics import cross_generalized
-import sys
-from pathlib import Path
+```{pyodide}
+:skip-embed:
 
-# Add the _static directory to the path to import display_stimulus
-sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from stimupy.stimuli.todorovics import cross_generalized
 from display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive cross_generalized

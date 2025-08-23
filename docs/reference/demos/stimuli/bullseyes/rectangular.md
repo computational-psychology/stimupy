@@ -21,7 +21,9 @@ and the [Panel extension](https://panel.holoviz.org/).
 # Rectangular
 {py:func}`stimupy.stimuli.bullseyes.rectangular`
 
-```{code-cell} ipython3
+```{pyodide}
+:skip-embed:
+
 import param
 
 class RectangularParams(param.Parameterized):
@@ -55,13 +57,10 @@ class RectangularParams(param.Parameterized):
         }
 ```
 
-```{code-cell} ipython3
-from stimupy.stimuli.bullseyes import rectangular
-import sys
-from pathlib import Path
+```{pyodide}
+:skip-embed:
 
-# Add the _static directory to the path to import display_stimulus
-sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from stimupy.stimuli.bullseyes import rectangular
 from display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive rectangular

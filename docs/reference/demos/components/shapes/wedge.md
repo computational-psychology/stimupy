@@ -21,7 +21,9 @@ and the [Panel extension](https://panel.holoviz.org/).
 # Wedge
 {py:func}`stimupy.components.shapes.wedge`
 
-```{code-cell} ipython3
+```{pyodide}
+:skip-embed:
+
 import param
 
 class ShapeWedgeParams(param.Parameterized):
@@ -52,13 +54,10 @@ class ShapeWedgeParams(param.Parameterized):
         }
 ```
 
-```{code-cell} ipython3
-from stimupy.components.shapes import wedge
-import sys
-from pathlib import Path
+```{pyodide}
+:skip-embed:
 
-# Add the _static directory to the path to import display_stimulus
-sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from stimupy.components.shapes import wedge
 from display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive wedge

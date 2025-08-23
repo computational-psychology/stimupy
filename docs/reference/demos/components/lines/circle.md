@@ -21,7 +21,9 @@ and the [Panel extension](https://panel.holoviz.org/).
 # Circle
 {py:func}`stimupy.components.lines.circle`
 
-```{code-cell} ipython3
+```{pyodide}
+:skip-embed:
+
 import param
 
 class CircleParams(param.Parameterized):
@@ -47,13 +49,10 @@ class CircleParams(param.Parameterized):
         }
 ```
 
-```{code-cell} ipython3
-from stimupy.components.lines import circle
-import sys
-from pathlib import Path
+```{pyodide}
+:skip-embed:
 
-# Add the _static directory to the path to import display_stimulus
-sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from stimupy.components.lines import circle
 from display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive circle

@@ -21,7 +21,9 @@ and the [Panel extension](https://panel.holoviz.org/).
 # Rectangular, generalized
 {py:func}`stimupy.stimuli.rings.rectangular_generalized`
 
-```{code-cell} ipython3
+```{pyodide}
+:skip-embed:
+
 import param
 
 class RectangularGeneralizedParams(param.Parameterized):
@@ -56,14 +58,12 @@ class RectangularGeneralizedParams(param.Parameterized):
         }
 ```
 
-```{code-cell} ipython3
-from stimupy.stimuli.rings import rectangular_generalized
-import sys
-from pathlib import Path
+```{pyodide}
+:skip-embed:
 
+from stimupy.stimuli.rings import rectangular_generalized
 # Add the _static directory to the path to import display_stimulus
-sys.path.append(str((Path().resolve().parents[3] / "_static")))
-from display_stimulus import InteractiveStimDisplay
+sys.path.append(str((Path().resolve().parents[3] / "_static")))from display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive rectangular_generalized
 rectangular_generalized_params = RectangularGeneralizedParams()

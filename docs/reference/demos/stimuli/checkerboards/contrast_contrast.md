@@ -21,7 +21,9 @@ and the [Panel extension](https://panel.holoviz.org/).
 # Contrast-contrast
 {py:func}`stimupy.stimuli.checkerboards.contrast_contrast`
 
-```{code-cell} ipython3
+```{pyodide}
+:skip-embed:
+
 import param
 
 class ContrastContrastParams(param.Parameterized):
@@ -65,13 +67,10 @@ class ContrastContrastParams(param.Parameterized):
         }
 ```
 
-```{code-cell} ipython3
-from stimupy.stimuli.checkerboards import contrast_contrast
-import sys
-from pathlib import Path
+```{pyodide}
+:skip-embed:
 
-# Add the _static directory to the path to import display_stimulus
-sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from stimupy.stimuli.checkerboards import contrast_contrast
 from display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive checkerboard

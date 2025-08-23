@@ -21,7 +21,9 @@ and the [Panel extension](https://panel.holoviz.org/).
 # Mueller-Lyer
 {py:func}`stimupy.stimuli.mueller_lyers.mueller_lyer`
 
-```{code-cell} ipython3
+```{pyodide}
+:skip-embed:
+
 import param
 
 class MuellerLyerParams(param.Parameterized):
@@ -52,13 +54,10 @@ class MuellerLyerParams(param.Parameterized):
         }
 ```
 
-```{code-cell} ipython3
-from stimupy.stimuli.mueller_lyers import mueller_lyer
-import sys
-from pathlib import Path
+```{pyodide}
+:skip-embed:
 
-# Add the _static directory to the path to import display_stimulus
-sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from stimupy.stimuli.mueller_lyers import mueller_lyer
 from display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive mueller_lyer

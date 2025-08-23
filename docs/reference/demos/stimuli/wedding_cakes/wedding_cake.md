@@ -21,7 +21,9 @@ and the [Panel extension](https://panel.holoviz.org/).
 # Wedding cake
 {py:func}`stimupy.stimuli.wedding_cakes.wedding_cake`
 
-```{code-cell} ipython3
+```{pyodide}
+:skip-embed:
+
 import param
 
 class WeddingCakeParams(param.Parameterized):
@@ -51,13 +53,10 @@ class WeddingCakeParams(param.Parameterized):
         }
 ```
 
-```{code-cell} ipython3
-from stimupy.stimuli.wedding_cakes import wedding_cake
-import sys
-from pathlib import Path
+```{pyodide}
+:skip-embed:
 
-# Add the _static directory to the path to import display_stimulus
-sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from stimupy.stimuli.wedding_cakes import wedding_cake
 from display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive wedding_cake

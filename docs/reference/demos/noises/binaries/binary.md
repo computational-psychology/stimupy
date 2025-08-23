@@ -21,7 +21,9 @@ and the [Panel extension](https://panel.holoviz.org/).
 # Binary
 {py:func}`stimupy.noises.binaries.binary`
 
-```{code-cell} ipython3
+```{pyodide}
+:skip-embed:
+
 import param
 
 class BinaryParams(param.Parameterized):
@@ -41,13 +43,10 @@ class BinaryParams(param.Parameterized):
         }
 ```
 
-```{code-cell} ipython3
-from stimupy.noises.binaries import binary
-import sys
-from pathlib import Path
+```{pyodide}
+:skip-embed:
 
-# Add the _static directory to the path to import display_stimulus
-sys.path.append(str((Path().resolve().parents[2] / "_static")))
+from stimupy.noises.binaries import binary
 from display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive binary
