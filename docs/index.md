@@ -38,7 +38,7 @@ and particular conventions and topics within `stimupy`
 :::
 
 :::{grid-item-card} Reference
-:link: reference/api
+:link: reference/index
 :link-type: doc
 :text-align: center
 📑

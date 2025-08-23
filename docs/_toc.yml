@@ -13,8 +13,8 @@ parts:
     - file: user_guide/user_guide
   - caption: Reference
     chapters:
-    - file: reference/api.md
-    - file: reference/demos.md
+    - file: reference/index
+    - file: reference/demos/index
   - caption: Get in touch
     chapters:
     - file: contributing/cite
