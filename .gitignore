@@ -70,6 +70,7 @@ target/
 **/.ipynb_checkpoints/
 
 docs/reference/*
+!docs/reference/demos/
 
 # Modelfest dataset for easy comparison / testing
 **/modelfest/

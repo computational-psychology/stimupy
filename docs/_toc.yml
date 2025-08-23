@@ -14,7 +14,7 @@ parts:
   - caption: Reference
     chapters:
     - file: reference/index
-    - file: reference/demos.md
+    - file: reference/demos/index
   - caption: Get in touch
     chapters:
     - file: contributing/cite
