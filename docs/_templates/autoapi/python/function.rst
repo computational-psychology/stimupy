@@ -35,8 +35,10 @@
 
 
 {% if not category == 'papers' %}
-{% set demo_path = '/reference/demos/' + category + '/' + module_name + '.html' %}
-You can find an interactive version of this example `here <{{ demo_path }}>`__
+{% set demo_path = '../../../demos/' + category + '/' + module_name + '/' + function_name + '.html' %}
+
+.. centered:: You can find an interactive version of this example `here <{{ demo_path }}>`__
+
 {% endif %}
 
 
