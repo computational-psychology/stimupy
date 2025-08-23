@@ -18,7 +18,7 @@ A **stimspace** is a systematic variation of a stimulus across one or more param
 This is useful for experiments, computational modeling, and visualizations where you want to explore how changing certain stimulus parameters affects a stimulus.
 
 
-## Createa stimspace in `stimupy`
+## Create a stimspace in `stimupy`
 
 `stimupy` provides two main utility functions for building stimspaces:
 
