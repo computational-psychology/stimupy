@@ -20,7 +20,7 @@ jobs:
 
         # Install uv with python version
       - name: Install the latest version of uv and set the python version
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v6
         with:
           enable-cache: true
           python-version: ${{ matrix.python_version }}
