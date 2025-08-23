@@ -7,4 +7,5 @@
 replicate
 color
 stimspace
+compose
 ```
