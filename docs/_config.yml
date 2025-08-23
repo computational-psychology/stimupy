@@ -37,6 +37,7 @@ launch_buttons:
 
 sphinx:
   extra_extensions:
+    - nbsite.pyodide
     - sphinx.ext.intersphinx
     - myst_sphinx_gallery           # galleries of pages
     - autoapi.extension             # generate API documentation of functions in modules
@@ -48,6 +49,11 @@ sphinx:
     templates_path: ['_templates']  # Path(s) that contain templates, relative to this config
     exclude_patterns: ['_build', '_templates']
     suppress_warnings: ["etoc.toctree"]
+
+    nbsite_pyodide_conf:
+      requirements: ["pyodide-http", "panel", "param", "matplotlib", "stimupy"]
+      autodetect_deps: True
+      setup_code: "url='http://localhost:8000/_static/display_stimulus.py'; import pyodide.http; url_contents=pyodide.http.open_url(url).getvalue(); f=open('display_stimulus.py', 'w'); f.write(url_contents); f.close()"
 
     # Auto documentation (autoapi, autodoc)
     autoapi_dirs: ['../stimupy/components', '../stimupy/noises', '../stimupy/stimuli', '../stimupy/papers', '../stimupy/utils']
