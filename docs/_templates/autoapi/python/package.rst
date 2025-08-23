@@ -177,20 +177,29 @@ Classes
 
 Functions
 ---------
-{% if "function" in own_page_types %}
-.. toctree::
-   :hidden:
 
-  {% for function in visible_functions %}
-   {{ function.include_path }}
-  {% endfor %}
-{% endif %}
+{% if obj.short_name == 'components' or obj.short_name == 'noises' or obj.short_name == 'stimuli' or obj.short_name == 'papers' or obj.short_name == 'utils' %}
+
+.. autosummary::
+    {% for function in visible_functions %}
+    {{ function.name }}
+    {% endfor %}
+
+
+{% for function in visible_functions %}
+.. _{{ function.short_name }}:
+
+.. autoapifunction:: {{ function.name }}
+{% endfor %}
+{% else %}
 
 .. autoapisummary::
 
   {% for function in visible_functions %}
-   {{ function.id }}
+   {{ function.name }}
   {% endfor %}
+
+{% endif %}
 
 
 {% endif %}
