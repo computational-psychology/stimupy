@@ -25,7 +25,10 @@ jobs:
           enable-cache: true
           python-version: ${{ matrix.python_version }}
 
+      - name: Install dependencies for py==${{ matrix.python_version }}
+        run: uv sync --group test
+
         # Run testing through pytest for the current version
         # uv automatically install all required dependencies from pyproject.toml
-      - name: Test with python ${{ matrix.python_version }}
-        run: uv run --with pytest pytest
+      - name: Test, for py==${{ matrix.python_version }}
+        run: uv run pytest

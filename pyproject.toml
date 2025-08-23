@@ -27,8 +27,8 @@ version = "1.1.2"
 requires-python = ">=3.9"
 dependencies = ["numpy", "scipy", "matplotlib", "pandas", "Pillow"]
 
-[project.optional-dependencies]
-dev = ["pytest", "ruff", "codespell"]
+[dependency-groups]
+test = ["pytest"]
 docs = [
   "jupyter-book<2",
   "jupytext>=1.13.3",
@@ -37,6 +37,13 @@ docs = [
   "ipywidgets",
   "sphinx-hoverxref",
 ]
+dev = [
+  "ruff",
+  "codespell",
+  { include-group = "test" },
+  { include-group = "docs" },
+]
+
 
 [project.urls]
 repository = "https://github.com/computational-psychology/stimupy.git"
