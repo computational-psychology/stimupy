@@ -1,0 +1,71 @@
+---
+jupytext:
+  formats: md:myst
+  text_representation:
+    extension: .md
+    format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.14.5
+kernelspec:
+  display_name: Python 3 (ipykernel)
+  language: python
+  name: python3
+---
+
+```{attention}
+To run locally, the code for these interactive demos requires
+a [Jupyter Notebook](https://jupyter.org/) environment,
+and the [Panel extension](https://panel.holoviz.org/).
+```
+
+# Circular
+{py:func}`stimupy.stimuli.rings.circular`
+
+```{pyodide}
+:skip-embed:
+
+import param
+
+class CircularParams(param.Parameterized):
+    # Image size parameters
+    height = param.Integer(default=10, bounds=(1, 20), doc="Height in degrees")
+    width = param.Integer(default=10, bounds=(1, 20), doc="Width in degrees")
+    ppd = param.Integer(default=20, bounds=(1, 40), doc="Pixels per degree")
+
+    frequency = param.Number(default=1.0, bounds=(0.1, 2), step=0.1, doc="Frequency in cpd")
+    phase_shift = param.Number(default=0, bounds=(0, 360), step=1, doc="Phase shift in degrees")
+    intensity1 = param.Number(default=0.0, bounds=(0, 1), step=0.01, doc="Intensity 1")
+    intensity2 = param.Number(default=1.0, bounds=(0, 1), step=0.01, doc="Intensity 2")
+    intensity_background = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="Background intensity")
+    target_idx = param.Integer(default=2, bounds=(0, 10), doc="Target index")
+    intensity_target = param.Number(default=0.5, bounds=(0, 1), step=0.01, doc="Target intensity")
+    origin = param.Selector(default="mean", objects=["mean", "corner", "center"], doc="Origin position")
+    clip = param.Boolean(default=False, doc="Clip")
+
+    def get_stimulus_params(self):
+        return {
+            "visual_size": (self.height, self.width),
+            "ppd": self.ppd,
+            "frequency": self.frequency,
+            "phase_shift": self.phase_shift,
+            "intensity_rings": (self.intensity1, self.intensity2),
+            "intensity_background": self.intensity_background,
+            "target_indices": (self.target_idx,),
+            "intensity_target": self.intensity_target,
+            "origin": self.origin,
+            "clip": self.clip,
+        }
+```
+
+```{pyodide}
+:skip-embed:
+
+from stimupy.stimuli.rings import circular
+# Add the _static directory to the path to import display_stimulus
+sys.path.append(str((Path().resolve().parents[3] / "_static")))from stimupy._docs.display_stimulus import InteractiveStimDisplay
+
+# Create and display the interactive circular
+circular_params = CircularParams()
+disp = InteractiveStimDisplay(circular, circular_params)
+disp.layout
+```
