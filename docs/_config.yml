@@ -60,6 +60,7 @@ sphinx:
     autoapi_template_dir: '_templates/autoapi'
     autoapi_add_toctree_entry: True
     autoapi_keep_files: True
+    autoapi_generate_api_docs: False
 
     autoapi_own_page_level: 'function'
     autodoc_typehints: "signature"
