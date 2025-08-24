@@ -15,9 +15,8 @@ build:
          - UV_PROJECT_ENVIRONMENT="${READTHEDOCS_VIRTUALENV_PATH}" uv sync --group docs
       build:
          html:
-           - "echo 'Building HTML documentation'"
-           - "echo 'Oh wait, it's already here'"
-           - "echo 'Done ?'"
+           - mkdir --parents _readthedocs/html/
+           - cp --recursive docs/_build/html/* _readthedocs/html/
 
 
 sphinx:

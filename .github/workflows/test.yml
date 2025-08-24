@@ -3,7 +3,7 @@ name: Test
 on: 
   push:
     branches-ignore:
-      - 'docs*'
+      - 'docs/*'
   pull_request:
     branches: [ main ]
 
