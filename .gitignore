@@ -52,25 +52,28 @@ coverage.xml
 # Django stuff:
 *.log
 
-# Sphinx documentation
-docs/_build/
-
 # PyBuilder
 target/
 
 .vscode/
 
+
+# Sphinx documentation
+!docs/_build/
+!docs/reference/*
+!docs/reference/demos/
 *.png
+docs/_static/generated_stimuli/*.png
+
+
 !manuscript/overview.png
 !manuscript/stimspace.png
 !docs/logo.png
+
 .pytest_cache/
-
 **/.ipynb_checkpoints/
 **/.ipynb_checkpoints/
 
-docs/reference/*
-!docs/reference/demos/
 
 # Modelfest dataset for easy comparison / testing
 **/modelfest/
