@@ -26,17 +26,18 @@ Schmittwilken, L., Wichmann, F. A., & Maertens, M. (2024).
 """
 
 import logging
-from pathlib import Path
-import numpy as np
 import warnings
+from enum import Enum, auto
+from pathlib import Path
+
+import numpy as np
 import pandas as pd
 
-from stimupy.stimuli.cornsweets import cornsweet_edge
-from stimupy.noises.whites import white as create_whitenoise
 from stimupy.noises.narrowbands import narrowband as create_narrownoise
 from stimupy.noises.naturals import one_over_f as create_pinknoise
+from stimupy.noises.whites import white as create_whitenoise
+from stimupy.stimuli.cornsweets import cornsweet_edge
 from stimupy.utils import rotate_dict
-from enum import Enum, auto
 
 # Get module level logger
 logger = logging.getLogger("stimupy.papers.schmittwilken2024")

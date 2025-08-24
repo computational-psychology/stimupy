@@ -1,6 +1,6 @@
 from os.path import abspath, dirname
 
-from stimupy.papers import *
+from stimupy.papers import *  # noqa: F403
 from stimupy.papers import __all__ as papers
 from stimupy.utils import export
 

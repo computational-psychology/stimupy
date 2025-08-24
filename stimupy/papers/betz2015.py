@@ -29,12 +29,13 @@ Betz, T., Shapley, R., Wichmann, F. A., & Maertens, M. (2015).
 
 import logging
 from pathlib import Path
+
 import numpy as np
 import pandas as pd
 
-from stimupy.stimuli.whites import white, white_two_rows
 from stimupy.noises.narrowbands import narrowband as narrowband_noise
-from stimupy.utils import rotate_dict, pad_dict_to_visual_size
+from stimupy.stimuli.whites import white, white_two_rows
+from stimupy.utils import pad_dict_to_visual_size, rotate_dict
 
 # Get module level logger
 logger = logging.getLogger("stimupy.papers.betz2015")

@@ -1,8 +1,9 @@
-import logging
 import importlib
+import logging
 from io import StringIO
 
 import pytest
+
 import stimupy.papers
 
 PAPERS_LIST = [f"stimupy.papers.{paper}" for paper in stimupy.papers.__all__]
