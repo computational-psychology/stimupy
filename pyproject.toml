@@ -34,8 +34,13 @@ docs = [
   "jupytext>=1.13.3",
   "jupyterlab_myst",
   "myst_nb",
-  "ipywidgets",
   "sphinx-hoverxref",
+  "sphinx-autoapi",
+  "myst-sphinx-gallery",
+  "nbsite",
+  "panel",
+  "param",
+  "jupyter-bokeh",
 ]
 dev = [
   "ruff",

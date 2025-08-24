@@ -1,25 +1,27 @@
 """Stimuli from Robinson, Hammon & de Sa (2007)
-https://doi.org/10.1016/j.visres.2007.02.017
 
 This module reproduces all of the stimuli used by Robinson,
-Hammon & de Sa (2007) as they were provided to the model described
-in that paper.
+Hammon & de Sa (2007)
+as they were provided to the model described in that paper.
 
 Each stimulus is provided by a separate function,
-a full list can be found as stimupy.papers.RHS2007.__all__
+which can be listed using
+
+    >>> import stimupy.papers.RHS2007
+    >>> help(stimupy.papers.RHS2007)
 
 The output of each of these functions is a stimulus dictionary.
 
 For a visual representation of all the stimuli and their mask,
-simply run this module as a script:
+simply run this module from the shell
 
-    $ python stimuli/papers/RHS2007.py
+    $ python -m stimuli.papers.RHS2007
 
-Attributes
-----------
-__all__ (list of str): list of all stimulus-functions
-    that are exported by this module when executing
-        >>> from stimupy.papers.RHS2007 import *
+or from within python
+
+    >>> from stimupy.utils import plot_stimuli
+    >>> from stimupy.papers import RHS2007
+    >>> plot_stimuli(RHS2007.gen_all())
 
 References
 ----------

@@ -37,23 +37,46 @@ launch_buttons:
 
 sphinx:
   extra_extensions:
+    - nbsite.pyodide
     - sphinx.ext.intersphinx
-    - sphinx.ext.autosummary        # generate summary tables of functions in modules
+    - myst_sphinx_gallery           # galleries of pages
+    - autoapi.extension             # generate API documentation of functions in modules
     - sphinx.ext.napoleon           # recognize NumPy style docstrings
     - sphinx.ext.viewcode           # add links to source code in API reference
     - hoverxref.extension
 
   config:
-    #autosummary_generate: True      # autosummary generates module-level .rst files?
-    add_module_names: False         # Don't include module names in autosummary tables
-    autosummary_imported_members: True
-    autosummary_ignore_module_all: False
+    templates_path: ['_templates']  # Path(s) that contain templates, relative to this config
+    exclude_patterns: ['_build', '_templates']
+    suppress_warnings: ["etoc.toctree"]
+
+    nbsite_pyodide_conf:
+      requirements: ["pyodide-http", "panel", "param", "matplotlib", "stimupy"]
+      autodetect_deps: True
+      setup_code: "url='http://localhost:8000/_static/display_stimulus.py'; import pyodide.http; url_contents=pyodide.http.open_url(url).getvalue(); f=open('display_stimulus.py', 'w'); f.write(url_contents); f.close()"
+
+    # Auto documentation (autoapi, autodoc)
+    autoapi_dirs: ['../stimupy/components', '../stimupy/noises', '../stimupy/stimuli', '../stimupy/papers', '../stimupy/utils']
+    autoapi_root: 'reference/'
+    autoapi_template_dir: '_templates/autoapi'
+    autoapi_add_toctree_entry: True
+    autoapi_keep_files: True
+
+    autoapi_own_page_level: 'function'
+    autodoc_typehints: "signature"
+    autoapi_options: [
+        "members",
+        "undoc-members",
+        "imported-members",
+        "show-module-summary",
+    ]
+
     autodoc_default_options: {
      "members": True,                # Include module/class members.
      "member-order": 'bysource',     # Order members as in source file.
     }
-    templates_path: ['_templates']  # Path(s) that contain templates, relative to this config
-    exclude_patterns: ['_build', '_templates']
+
+    # Intersphinx
     intersphinx_mapping:
         python:
           - 'https://docs.python.org/3/'
@@ -73,7 +96,6 @@ sphinx:
         pillow [latest]:
           - 'https://pillow.readthedocs.io/en/latest/'
           - null
-    suppress_warnings: ["etoc.toctree"]
 
     # Hoverxref Extension
     hoverxref_auto_ref: True

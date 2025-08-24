@@ -1,9 +1,11 @@
 # How-to... (recipes)
 
 ```{toctree}
-:titlesonly:
 
-display
-export
-share
+../getting_started/find_stimulus
+./use_stimulus/use
+replicate
+color
+stimspace
+compose
 ```
