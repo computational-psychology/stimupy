@@ -62,7 +62,7 @@ target/
 !docs/_build/
 !docs/reference/*
 !docs/reference/demos/
-*.png
+!*.png
 !docs/_static/generated_stimuli/*.png
 docs/_build/jupyter_execute/
 
