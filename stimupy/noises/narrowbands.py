@@ -17,6 +17,7 @@ def narrowband(
     bandwidth=None,
     intensity_range=(0, 1),
     pseudo_noise=False,
+    rng=None,
 ):
     """Draw narrowband noise texture
 
@@ -37,6 +38,10 @@ def narrowband(
         be aware that not every instance has mean=(max-min)/2.
     pseudo_noise : bool
         if True, generate pseudo-random noise with ideal power spectrum.
+    rng : numpy.random.Generator, optional
+        Random number generator to use. If None, a new default_rng is created.
+        By passing in a custom rng, you can control the randomness of the noise generation,
+        e.g., make it replicable.
 
     Returns
     -------
@@ -59,12 +64,14 @@ def narrowband(
         visual_size=visual_size, ppd=ppd, center_frequency=center_frequency, bandwidth=bandwidth
     )["img"]
 
+    if rng is None:
+        rng = np.random.default_rng()
     if pseudo_noise:
         # Create white noise with frequency amplitude of 1 everywhere
-        white_noise_fft = pseudo_white_spectrum(shape)
+        white_noise_fft = pseudo_white_spectrum(shape, rng=rng)
     else:
         # Create white noise and fft
-        white_noise = np.random.rand(*shape) * 2.0 - 1.0
+        white_noise = rng.random(shape) * 2.0 - 1.0
         white_noise_fft = np.fft.fftshift(np.fft.fft2(white_noise))
 
     # Filter white noise with bandpass filter
