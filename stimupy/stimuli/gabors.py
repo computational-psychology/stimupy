@@ -81,6 +81,7 @@ def gabor(
     gaussian_window = gaussian(
         visual_size=visual_size,
         ppd=ppd,
+        shape=shape,
         sigma=sigma,
         origin=origin,
     )
