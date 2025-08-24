@@ -5,6 +5,7 @@ import numpy as np
 from stimupy.components.shapes import cross as cross_shape
 from stimupy.components.shapes import rectangle as rectangle_shape
 from stimupy.utils import make_two_sided, pad_dict_to_shape, resolution
+from stimupy.utils.utils import _count_none_args, _repeat_numeric_arg
 
 __all__ = [
     "rectangle_generalized",
@@ -524,6 +525,7 @@ def equal(
     shape=None,
     cross_size=None,
     cross_thickness=None,
+    cover_size=None,
     intensity_background=0.0,
     intensity_target=0.5,
     intensity_covers=1.0,
@@ -540,8 +542,10 @@ def equal(
         shape [height, width] of grating, in pixels
     cross_size : float or (float, float)
         size of target cross in visual angle
-    cross_thickness : float
+    cross_thickness : float or (float, float)
         thickness of target cross in visual angle
+    cover_size : float or (float, float)
+        size of covers in visual angle
     intensity_background : float
         intensity value for background
     intensity_target : float
@@ -568,38 +572,54 @@ def equal(
     Todorovic, D. (1997).
         Lightness and junctions. Perception, 26, 379-395.
     """
-    if cross_size is None:
-        raise ValueError("equal() missing argument 'cross_size' which is not 'None'")
-    if cross_thickness is None:
-        raise ValueError("equal() missing argument 'cross_thickness' which is not 'None'")
-
-    if isinstance(cross_size, (float, int)):
-        cross_size = (cross_size, cross_size)
 
     # Resolve resolution
     shape, visual_size, ppd = resolution.resolve(shape=shape, visual_size=visual_size, ppd=ppd)
     if len(np.unique(ppd)) > 1:
         raise ValueError("ppd should be equal in x and y direction")
 
-    # Calculate placement of covers for generalized function:
-    ppd = np.unique(ppd)[0]
-    c1 = (np.ceil(cross_size[0] / 2 * ppd - cross_thickness / 2 * ppd + 1)) / ppd
-    c2 = (np.ceil(cross_size[1] / 2 * ppd - cross_thickness / 2 * ppd + 1)) / ppd
-    covers_size = (c1, c2)
+    if _count_none_args(cross_size, cross_thickness, cover_size) > 2:
+        raise ValueError(
+            "'equal()' needs 2 non-None arguments from 'cross_size', "
+            "'cross_thickness', 'cover_size'"
+        )
 
-    # covers_size = ((cross_size[0] - cross_thickness) / 2, (cross_size[1] - cross_thickness) / 2)
+    cross_size = _repeat_numeric_arg(cross_size, n=2)
+    cross_thickness = _repeat_numeric_arg(cross_thickness, n=2)
+    cover_size = _repeat_numeric_arg(cover_size, n=2)
 
-    stim = cross(
+    if (cross_size is None) or (None in cross_size):
+        cross_size = [
+            cross_thickness[0] + cover_size[0] * 2,
+            cross_thickness[1] + cover_size[1] * 2,
+        ]
+    if (cross_thickness is None) or (None in cross_thickness):
+        cross_thickness = [cross_size[0] - cover_size[0] * 2, cross_size[1] - cover_size[1] * 2]
+    if (cover_size is None) or (None in cover_size):
+        cover_size = [
+            (cross_size[0] - cross_thickness[0]) / 2.0,
+            (cross_size[1] - cross_thickness[1]) / 2.0,
+        ]
+
+    if ((cross_thickness[0] + cover_size[0] * 2) != cross_size[0]) or (
+        (cross_thickness[1] + cover_size[1] * 2) != cross_size[1]
+    ):
+        raise ValueError("'equal()': 'cross_size', 'cross_thickness', 'cover_size' do not match")
+
+    stim = cross_shape(
         visual_size=visual_size,
         ppd=ppd,
         shape=shape,
         cross_size=cross_size,
         cross_thickness=cross_thickness,
-        covers_size=covers_size,
         intensity_background=intensity_background,
-        intensity_target=intensity_target,
-        intensity_covers=intensity_covers,
+        intensity_cross=intensity_target,
     )
+    stim["target_mask"] = stim["cross_mask"]
+    stim["target_size"] = stim["cross_size"]
+    stim["intensity_target"] = intensity_target
+    stim["intensity_covers"] = intensity_covers
+    del (stim["cross_size"], stim["intensity_cross"], stim["cross_mask"])
 
     window = rectangle_shape(
         visual_size=visual_size,
@@ -608,8 +628,8 @@ def equal(
         rectangle_size=cross_size,
     )
 
-    stim["img"] = np.where(window["rectangle_mask"], stim["img"], intensity_background)
-    stim["target_mask"] = np.where(window["rectangle_mask"], stim["target_mask"], 0).astype(int)
+    coverCond = window["rectangle_mask"] - stim["target_mask"]
+    stim["img"] = np.where(coverCond, intensity_covers, stim["img"])
     return stim
 
 
@@ -635,7 +655,7 @@ def overview(**kwargs):
     """
     default_params = {
         "visual_size": 10,
-        "ppd": 30,
+        "ppd": 32,
     }
     default_params.update(kwargs)
 

@@ -1,36 +1,41 @@
 import itertools
+import logging
 
 import numpy as np
 
 from stimupy.components import draw_regions
-from stimupy.stimuli import *
+from stimupy.stimuli import *  # noqa: F403
+
+# Get module level logger
+logger = logging.getLogger("stimupy.stimuli")
+
 
 __all__ = [
     "mask_targets",
     "place_targets",
     "overview",
     "plot_overview",
-    "benarys",
-    "bullseyes",
-    "checkerboards",
-    "cornsweets",
-    "cubes",
-    "delboeufs",
-    "dungeons",
-    "edges",
-    "gabors",
-    "gratings",
-    "hermanns",
-    "mondrians",
-    "mueller_lyers",
-    "plaids",
-    "ponzos",
-    "rings",
-    "sbcs",
-    "todorovics",
-    "waves",
-    "wedding_cakes",
-    "whites",
+    "benarys",  # noqa: F405
+    "bullseyes",  # noqa: F405
+    "checkerboards",  # noqa: F405
+    "cornsweets",  # noqa: F405
+    "cubes",  # noqa: F405
+    "delboeufs",  # noqa: F405
+    "dungeons",  # noqa: F405
+    "edges",  # noqa: F405
+    "gabors",  # noqa: F405
+    "gratings",  # noqa: F405
+    "hermanns",  # noqa: F405
+    "mondrians",  # noqa: F405
+    "mueller_lyers",  # noqa: F405
+    "plaids",  # noqa: F405
+    "ponzos",  # noqa: F405
+    "rings",  # noqa: F405
+    "sbcs",  # noqa: F405
+    "todorovics",  # noqa: F405
+    "waves",  # noqa: F405
+    "wedding_cakes",  # noqa: F405
+    "whites",  # noqa: F405
 ]
 
 
@@ -144,9 +149,10 @@ def overview(skip=False):
         if stimmodule_name in ["overview", "plot_overview", "mask_targets", "place_targets"]:
             continue
 
-        print(f"Generating stimuli from {stimmodule_name}")
+        logger.info(f"Generating stimuli from {stimmodule_name}")
         # Get a reference to the actual module
         stimmodule = globals()[stimmodule_name]
+
         try:
             stims = stimmodule.overview()
 
@@ -156,7 +162,7 @@ def overview(skip=False):
             if not skip:
                 raise e
             # Skip stimuli that aren't implemented
-            print("-- not implemented")
+            logger.info("-- not implemented")
             pass
 
     return stimuli
@@ -186,4 +192,8 @@ def plot_overview(mask=False, save=None, units="deg"):
 
 
 if __name__ == "__main__":
+    # Log to console at INFO level
+    logger.setLevel(logging.INFO)
+    logger.addHandler(logging.StreamHandler())
+
     plot_overview()

@@ -1,6 +1,6 @@
 from os.path import abspath, dirname
 
-from stimupy.papers import *
+from stimupy.papers import *  # noqa: F403
 from stimupy.papers import __all__ as papers
 from stimupy.utils import export
 
@@ -15,6 +15,21 @@ for paper in papers:
     stims = paper_module.gen_all(skip=True)
 
     # Convert "img", "mask" to checksums
+    import numpy as np
+
+    for stim_name, stim in stims.items():
+        # Pass a fixed RandomState to each stimulus function if possible
+        # Using RandomState instead of default_rng for cross-platform reproducibility
+        rng = np.random.RandomState(1234567890)
+        if hasattr(paper_module, stim_name):
+            func = getattr(paper_module, stim_name)
+            try:
+                stim = func(rng=rng)
+            except TypeError:
+                # Fallback if function does not accept rng
+                stim = func()
+            stims[stim_name] = stim
+
     for stim in stims.values():
         img = stim["img"]
 

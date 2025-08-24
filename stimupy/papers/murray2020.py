@@ -1,26 +1,29 @@
-"""Stimuli from Murray (2020) https://doi.org/10/gh57gf
+"""Stimuli from Murray (2020)
 
 This module reproduces most of the stimuli used by Murray (2020)
-as they were provided to the model described in that paper but
-normalized between 0 and 1.
+as they were provided to the model described in that paper
+but normalized between 0 and 1.
 The stimuli are show in Fig 1 of the paper.
 NOTE that the Haze illusion (Fig 1m) is not provided.
 
 Each stimulus is provided by a separate function,
-a full list can be found as stimupy.papers.murray2020.__all__
+which can be listed using 
+
+    >>> import stimupy.papers.murray2020
+    >>> help(stimupy.papers.murray2020)
 
 The output of each of these functions is a stimulus dictionary.
 
 For a visual representation of all the stimuli and their mask,
-simply run this module as a script:
+simply run this module from the shell
 
-    $ python stimuli/papers/murray2020.py
+    $ python -m stimuli.papers.murray2020
 
-Attributes
-----------
-__all__ (list of str): list of all stimulus-functions
-    that are exported by this module when executing
-        >>> from stimupy.papers.murray2020 import *
+or from within python
+
+    >>> from stimupy.utils import plot_stimuli
+    >>> from stimupy.papers import murray2020
+    >>> plot_stimuli(murray2020.gen_all())
 
 References
 -----------
@@ -31,6 +34,7 @@ Murray, R. F. (2020).
     https://doi.org/10/gh57gf
 """
 
+import logging
 import os.path
 
 import numpy as np
@@ -38,6 +42,9 @@ import scipy.io
 
 import stimupy
 from stimupy.utils import pad_dict_by_visual_size, rotate_dict
+
+# Get module level logger
+logger = logging.getLogger("stimupy.papers.murray2020")
 
 __all__ = [
     "argyle",
@@ -65,7 +72,7 @@ PAD = True
 def gen_all(skip=False):
     stims = {}  # save the stimulus-dicts in a larger dict, with name as key
     for stim_name in __all__:
-        print(f"Generating murray2020.{stim_name}")
+        logger.info(f"Generating murray2020.{stim_name}")
 
         # Get a reference to the actual function
         func = globals()[stim_name]
@@ -78,7 +85,7 @@ def gen_all(skip=False):
             if not skip:
                 raise e
             # Skip stimuli that aren't implemented
-            print("-- not implemented")
+            logger.info("-- not implemented")
             pass
 
     return stims
@@ -767,6 +774,10 @@ def white(ppd=PPD):
 
 if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
+
+    # Log to console at INFO level
+    logger.setLevel(logging.INFO)
+    logger.addHandler(logging.StreamHandler())
 
     # Generate all stimuli exported in __all__
     stims = gen_all(skip=True)

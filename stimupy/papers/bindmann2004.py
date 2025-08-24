@@ -1,24 +1,26 @@
 """Stimuli from Bindmann & Chubb (2004)
-https://doi.org/10.1016/S0042-6989(03)00430-9
 
 This module reproduces most of the stimuli used by Bindmann & Chubb (2004) as
 they were described in that paper.
 
 Each stimulus is provided by a separate function,
-a full list can be found as stimupy.papers.bindmann2004.__all__
+which can be listed using 
+
+    >>> import stimupy.papers.bindmann2004
+    >>> help(stimupy.papers.bindmann2004)
 
 The output of each of these functions is a stimulus dictionary.
 
 For a visual representation of all the stimuli and their mask,
-simply run this module as a script:
+simply run this module from the shell
 
-    $ python stimuli/papers/bindmann2004.py
+    $ python -m stimuli.papers.bindmann2004
 
-Attributes
-----------
-__all__ (list of str): list of all stimulus-functions
-    that are exported by this module when executing
-        >>> from stimupy.papers.bindmann2004 import *
+or from within python:
+
+    >>> from stimupy.utils import plot_stimuli
+    >>> from stimupy.papers import bindmann2004
+    >>> plot_stimuli(bindmann2004.gen_all())
 
 References
 -----------
@@ -27,6 +29,7 @@ Bindmann, D. & Chubb, C. (2004). Brightness assimilation in bullseye displays.
 """
 
 import copy
+import logging
 import warnings
 
 import numpy as np
@@ -34,6 +37,9 @@ import numpy as np
 from stimupy import bullseyes
 from stimupy.utils.contrast_conversions import adapt_intensity_range_dict
 from stimupy.utils.pad import pad_dict_by_visual_size
+
+# Get module level logger
+logger = logging.getLogger("stimupy.papers.bindmann2004")
 
 __all__ = [
     "bullseye_thin_gw45_gb31",
@@ -90,7 +96,7 @@ ORIGIN = "mean"
 def gen_all(ppd=PPD, skip=False):
     stims = {}  # save the stimulus-dicts in a larger dict, with name as key
     for stim_name in __all__:
-        print(f"Generating bindmann2004.{stim_name}")
+        logger.info(f"Generating bindmann2004.{stim_name}")
 
         # Get a reference to the actual function
         func = globals()[stim_name]
@@ -103,7 +109,7 @@ def gen_all(ppd=PPD, skip=False):
             if not skip:
                 raise e
             # Skip stimuli that aren't implemented
-            print("-- not implemented")
+            logger.info("-- not implemented")
             pass
 
     return stims
@@ -1995,6 +2001,10 @@ def bullseye_thick_gw75_gb89(ppd=PPD):
 
 if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
+
+    # Log to console at INFO level
+    logger.setLevel(logging.INFO)
+    logger.addHandler(logging.StreamHandler())
 
     stims = gen_all(skip=True)
     plot_stimuli(stims, mask=False)

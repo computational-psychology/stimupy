@@ -1,26 +1,29 @@
-"""Modelfest dataset from Carney et al (1999) https://doi.org/10.1117/12.348473
+"""Stimuli and data from Modelfest (Carney et al., 1999)
 
 This module reproduces all of the stimuli from the Modelfest dataset
-prior to the spatiotemporal extension as described in Carney et al (1999)
+prior to the spatiotemporal extension as described in Carney et al. (1999)
 but normalized between 0 and 1.
 More information on Modelfest can be found here:
 https://www.visionscience.com/data/modelfest/
 
 Each stimulus is provided by a separate function,
-a full list can be found as stimupy.papers.modelfest.__all__
+which can be listed using 
+
+    >>> import stimupy.papers.modelfest
+    >>> help(stimupy.papers.modelfest
 
 The output of each of these functions is a stimulus dictionary.
 
 For a visual representation of all the stimuli and their mask,
-simply run this module as a script:
+simply run this module from the shell
 
-    $ python stimuli/papers/modelfest.py
+    $ python -m stimuli.papers.modelfest
 
-Attributes
-----------
-__all__ (list of str): list of all stimulus-functions
-    that are exported by this module when executing
-        >>> from stimupy.papers.modelfest import *
+or from within python:
+
+    >>> from stimupy.utils import plot_stimuli
+    >>> from stimupy.papers import modelfest
+    >>> plot_stimuli(modelfest.gen_all())
 
 References
 -----------
@@ -32,6 +35,7 @@ Carney, T., Klein, S. A., Tyler, C. W., Silverstein, A. D., Beutter, B., Levi, D
     https://doi.org/10.1117/12.348473
 """
 
+import logging
 from pathlib import Path
 
 import numpy as np
@@ -45,6 +49,9 @@ from stimupy.noises.binaries import binary as binary_noise
 from stimupy.stimuli.gabors import gabor
 from stimupy.stimuli.plaids import gabors as plaid
 from stimupy.utils import pad_dict_to_shape, resize_dict, resolution, roll_dict, stack_dicts
+
+# Get module level logger
+logger = logging.getLogger("stimupy.papers.modelfest")
 
 __all__ = [
     "GaborPatch1",
@@ -106,7 +113,7 @@ participants = df[0]
 def gen_all(ppd=PPD, skip=False):
     stims = {}  # save the stimulus-dicts in a larger dict, with name as key
     for stim_name in __all__:
-        print(f"Generating modelfest.{stim_name}")
+        logger.info(f"Generating modelfest.{stim_name}")
 
         # Get a reference to the actual function
         func = globals()[stim_name]
@@ -119,7 +126,7 @@ def gen_all(ppd=PPD, skip=False):
             if not skip:
                 raise e
             # Skip stimuli that aren't implemented
-            print("-- not implemented")
+            logger.info("-- not implemented")
             pass
 
     return stims
@@ -2316,6 +2323,10 @@ def read_tif(filename):
 
 if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
+
+    # Log to console at INFO level
+    logger.setLevel(logging.INFO)
+    logger.addHandler(logging.StreamHandler())
 
     stims = gen_all(skip=True)
     plot_stimuli(stims, mask=False, units="visual_size")

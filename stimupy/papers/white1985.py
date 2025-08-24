@@ -1,24 +1,26 @@
 """Stimuli from White & White (1985)
-https://doi.org/10.1016/0042-6989(85)90049-5
 
-This module reproduces most of the stimuli used by White & White (1985) as
-they were described in that paper.
+This module reproduces most of the stimuli used by White & White (1985)
+as they were described in that paper.
 
 Each stimulus is provided by a separate function,
-a full list can be found as stimupy.papers.white1985.__all__
+which can be listed using
+
+    >>> import stimupy.papers.white1985
+    >>> help(stimupy.papers.white1985)
 
 The output of each of these functions is a stimulus dictionary.
 
-For a visual representation of all the stimuli and their mask,
-simply run this module as a script:
+For a visual representation of all the stimuli,
+simply run this module from the shell
 
-    $ python stimuli/papers/white1985.py
+    $ python -m stimuli.papers.white1985
 
-Attributes
-----------
-__all__ (list of str): list of all stimulus-functions
-    that are exported by this module when executing
-        >>> from stimupy.papers.white1985 import *
+or from within python
+
+    >>> from stimupy.utils import plot_stimuli
+    >>> from stimupy.papers import white1985
+    >>> plot_stimuli(white1985.gen_all())
 
 References
 -----------
@@ -29,11 +31,15 @@ White, M. & White, T. (1985).
 """
 
 import copy
+import logging
 import warnings
 
 import numpy as np
 
 from stimupy import gratings
+
+# Get module level logger
+logger = logging.getLogger("stimupy.papers.white1985")
 
 __all__ = [
     "wide_0phase",
@@ -66,7 +72,7 @@ COMMON_PARAMS = {
 def gen_all(ppd=PPD, skip=False):
     stims = {}  # save the stimulus-dicts in a larger dict, with name as key
     for stim_name in __all__:
-        print(f"Generating white1981.{stim_name}")
+        logger.info(f"Generating white1981.{stim_name}")
 
         # Get a reference to the actual function
         func = globals()[stim_name]
@@ -79,7 +85,7 @@ def gen_all(ppd=PPD, skip=False):
             if not skip:
                 raise e
             # Skip stimuli that aren't implemented
-            print("-- not implemented")
+            logger.info("-- not implemented")
             pass
 
     return stims
@@ -602,6 +608,10 @@ def square_180phase(ppd=PPD):
 
 if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
+
+    # Log to console at INFO level
+    logger.setLevel(logging.INFO)
+    logger.addHandler(logging.StreamHandler())
 
     stims = gen_all(skip=True)
     plot_stimuli(stims, mask=False)

@@ -92,7 +92,7 @@ def overview(**kwargs):
     stims : dict
         dict with all stimuli containing individual stimulus dicts.
     """
-    default_params = {"visual_size": 15, "ppd": 30}
+    default_params = {"visual_size": 15, "ppd": 32}
     default_params.update(kwargs)
 
     # fmt: off

@@ -1,25 +1,27 @@
 """Stimuli from Robinson, Hammon & de Sa (2007)
-https://doi.org/10.1016/j.visres.2007.02.017
 
 This module reproduces all of the stimuli used by Robinson,
-Hammon & de Sa (2007) as they were provided to the model described
-in that paper.
+Hammon & de Sa (2007)
+as they were provided to the model described in that paper.
 
 Each stimulus is provided by a separate function,
-a full list can be found as stimupy.papers.RHS2007.__all__
+which can be listed using
+
+    >>> import stimupy.papers.RHS2007
+    >>> help(stimupy.papers.RHS2007)
 
 The output of each of these functions is a stimulus dictionary.
 
 For a visual representation of all the stimuli and their mask,
-simply run this module as a script:
+simply run this module from the shell
 
-    $ python stimuli/papers/RHS2007.py
+    $ python -m stimuli.papers.RHS2007
 
-Attributes
-----------
-__all__ (list of str): list of all stimulus-functions
-    that are exported by this module when executing
-        >>> from stimupy.papers.RHS2007 import *
+or from within python
+
+    >>> from stimupy.utils import plot_stimuli
+    >>> from stimupy.papers import RHS2007
+    >>> plot_stimuli(RHS2007.gen_all())
 
 References
 ----------
@@ -29,6 +31,8 @@ Robinson, A. E., Hammon, P. S., & de Sa, V. R. (2007).
     Vision Research, 47(12), 1631-1644.
     https://doi.org/10.1016/j.visres.2007.02.017
 """
+
+import logging
 
 import numpy as np
 
@@ -42,6 +46,9 @@ from stimupy.utils import (
     rotate_dict,
     stack_dicts,
 )
+
+# Get module level logger
+logger = logging.getLogger("stimupy.papers.RHS2007")
 
 __all__ = [
     "WE_thick",
@@ -84,7 +91,7 @@ v1, v2, v3 = 0.0, 0.5, 1.0
 def gen_all(ppd=PPD, pad=True, skip=False):
     stims = {}  # save the stimulus-dicts in a larger dict, with name as key
     for stim_name in __all__:
-        print(f"Generating RHS2007.{stim_name}")
+        logger.info(f"Generating RHS2007.{stim_name}")
 
         # Get a reference to the actual function
         func = globals()[stim_name]
@@ -97,7 +104,7 @@ def gen_all(ppd=PPD, pad=True, skip=False):
             if not skip:
                 raise e
             # Skip stimuli that aren't implemented
-            print("-- not implemented")
+            logger.info("-- not implemented")
             pass
 
     return stims
@@ -1874,6 +1881,10 @@ def bullseye_thick(ppd=PPD, pad=True):
 
 if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
+
+    # Log to console at INFO level
+    logger.setLevel(logging.INFO)
+    logger.addHandler(logging.StreamHandler())
 
     stims = gen_all(pad=True, skip=True)
     plot_stimuli(stims, mask=True)

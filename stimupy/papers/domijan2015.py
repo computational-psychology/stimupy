@@ -1,4 +1,4 @@
-"""Stimuli from Domijan (2015) https://doi.org/10.3389/fnhum.2015.00093
+"""Stimuli from Domijan (2015)
 
 This module reproduces all of the stimuli used by Domijan (2015)
 as they were provided to the model described in that paper.
@@ -12,20 +12,23 @@ stimulus sizes by providing at least two of the following: a shape
 (in pixels), a visual_size (in degrees) and/or a resolution (in ppd).
 
 Each stimulus is provided by a separate function,
-a full list can be found as stimupy.papers.domijan2015.__all__
+which can be listed using 
+
+    >>> import stimupy.papers.domijan2015
+    >>> help(stimupy.papers.domijan2015)
 
 The output of each of these functions is a stimulus dictionary.
 
 For a visual representation of all the stimuli and their mask,
-simply run this module as a script:
+simply run this module from the shell
 
-    $ python stimuli/papers/domijan2015.py
+    $ python -m stimuli.papers.domijan2015
 
-Attributes
-----------
-__all__ (list of str): list of all stimulus-functions
-    that are exported by this module when executing
-        >>> from stimupy.papers.domijan2015 import *
+or from within python:
+
+    >>> from stimupy.utils import plot_stimuli
+    >>> from stimupy.papers import domijan2015
+    >>> plot_stimuli(domijan2015.gen_all())
 
 References
 -----------
@@ -36,10 +39,15 @@ Domijan, D. (2015).
     https://doi.org/10.3389/fnhum.2015.00093
 """
 
+import logging
+
 import numpy as np
 
 import stimupy
 from stimupy.utils import pad_dict_by_visual_size, pad_dict_to_shape, resolution, stack_dicts
+
+# Get module level logger
+logger = logging.getLogger("stimupy.papers.domijan2015")
 
 __all__ = [
     "dungeon",
@@ -114,7 +122,7 @@ v1, v2, v3 = 0.0, 0.5, 1.0
 def gen_all(ppd=PPD, skip=False):
     stims = {}  # save the stimulus-dicts in a larger dict, with name as key
     for stim_name in __all__:
-        print(f"Generating domijan2015.{stim_name}")
+        logger.info(f"Generating domijan2015.{stim_name}")
 
         # Get a reference to the actual function
         func = globals()[stim_name]
@@ -127,7 +135,7 @@ def gen_all(ppd=PPD, skip=False):
             if not skip:
                 raise e
             # Skip stimuli that aren't implemented
-            print("-- not implemented")
+            logger.info("-- not implemented")
             pass
 
     return stims
@@ -1274,6 +1282,10 @@ def white_howe(visual_size=VSIZES["white_howe"], ppd=PPD, shape=SHAPES["white_ho
 
 if __name__ == "__main__":
     from stimupy.utils import plot_stimuli
+
+    # Log to console at INFO level
+    logger.setLevel(logging.INFO)
+    logger.addHandler(logging.StreamHandler())
 
     stims = gen_all(skip=True)
     plot_stimuli(stims, mask=False)

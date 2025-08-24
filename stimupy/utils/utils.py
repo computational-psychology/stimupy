@@ -26,33 +26,134 @@ __all__ = [
 ]
 
 
-def round_to_vals(arr, vals):
+def _count_none_args(*args):
+    """Counts the number of None values in the provided arguments
+
+    Parameters
+    ----------
+    *args : dict
+        variable number of arguments to check for None values
+
+    Returns
+    -------
+    int :
+        number of None values in the arguments.
+
+    Examples
+    --------
+    >>> check_multiple_none(None, 1, None, 2, 3)
+    2
+    >>> check_multiple_none(1, 2, 3)
+    0
     """
-    Round array to provided values (vals)
+    return args.count(None)
+
+
+def _repeat_numeric_arg(arg, n=2):
+    """If provided argument is single number, repeat n times
+
+    Checks if the argument is a single number (int, float).
+    If so, returns a list containing the number repeated the specified number of times.
+    For other datatypes, returns the argument itself.
+
+    Parameters
+    ----------
+    arg : Any
+        Input argument to check
+    count : int, optional
+        Number of times to repeat the argument, by default 2.
+
+    Returns
+    -------
+    list or any:
+        List with the number repeated 'count' times if the argument is a number,
+        or the original arg if non-numeric.
+
+    Examples
+    --------
+    >>> check_and_repeat(5, n=3)
+    [5, 5, 5]
+    >>> check_and_repeat("Hello")
+    'Hello'
+    """
+    # Check if the argument is a single number (int or float)
+    if isinstance(arg, (int, float)):
+        return [arg] * n  # Repeat the number 'count' times in a list
+    else:
+        return arg
+
+
+def round_to_vals(arr, vals, mode="nearest"):
+    """Round each element of array to closest match in provided values
+
+    For each element in the input `arr`, find the closest value from the provided `vals`
+    and replace the element with this closest value.
+    If the element is equidistant to two values, the smaller
+    value is chosen.
 
     Parameters
     ----------
     arr : np.ndarray
-        Numpy array which values will be rounded
+        array to be rounded
     vals : Sequence(float, ...)
-        Values to which array will be rounded
+        values to which array will be rounded
+    mode : ["nearest", "floor", "ceil"], optional
+        rounding mode. Default is "nearest".
 
     Returns
     -------
     out_arr : np.ndarray
         Rounded output array
 
+    Raises
+    ------
+    ValueError
+        If `mode` is not one of ["nearest", "floor", "ceil"].
+        If `arr` contains values outside the bounds of
+        `vals` when `mode` is "floor" or "ceil".
+
+    Examples
+    --------
+    >>> arr = np.array([1.1, 2.2, 3.3, 4.4, 5.5])
+    >>> vals = [1, 3, 5]
+    >>> round_to_vals(arr, vals)
+    array([1., 3., 3., 5., 5.])
+
     """
-    n_val = len(vals)
-    arr = np.repeat(np.expand_dims(arr, -1), n_val, axis=2)
-    vals_arr = np.ones(arr.shape) * np.array(np.expand_dims(vals, [0, 1]))
+    # Ensure the 1D array contains only unique values
+    arr_1d = np.sort(np.unique(vals))
+    arr = np.array(arr)
 
-    indices = np.argmin(np.abs(arr - vals_arr), axis=2)
-    out_arr = np.copy(indices).astype(float)
+    # Ensure arr fall within bounds of mode:
+    if mode == "floor" and arr.min() < arr_1d.min():
+        raise ValueError(
+            f"Array values must be within bounds of vals : {arr.min()} < {arr_1d.min()}"
+        )
+    if mode == "ceil" and arr.min() > arr_1d.max():
+        raise ValueError(
+            f"Array values must be within bounds of vals: {arr.min()} > {arr_1d.max()}"
+        )
 
-    for i in range(n_val):
-        out_arr[indices == i] = vals[i]
-    return out_arr
+    # Find the nearest values from vals, for each element in arr
+    if mode == "floor":
+        idxs = np.searchsorted(arr_1d, arr, side="left") - 1
+    elif mode == "ceil":
+        idxs = np.searchsorted(arr_1d, arr, side="right")
+    elif mode == "nearest":
+        # Find indexes where previous index is closer
+        idxs = np.searchsorted(arr_1d, arr, side="left")
+        prev_idx_is_less = (idxs == len(arr_1d)) | (
+            np.fabs(arr - arr_1d[np.maximum(idxs - 1, 0)])
+            < np.fabs(arr - arr_1d[np.minimum(idxs, len(arr_1d) - 1)])
+        )
+        idxs[prev_idx_is_less] -= 1
+    else:
+        raise ValueError(f"Invalid mode: {mode}")
+
+    # Replace each element in arr with the nearest value from vals
+    rounded_arr = arr_1d[idxs]
+
+    return rounded_arr
 
 
 def int_factorize(n):
@@ -541,6 +642,44 @@ def make_two_sided(func, two_sided_params):
 
 
 def permutate_params(params):
+    """Generate all possible parameter combinations for a stimulus function.
+
+    Takes a dictionary of stimulus parameters, where each parameter value is
+    provided as a sequence (e.g., list, tuple). Returns a list of dictionaries,
+    each representing one unique combination of parameter values. This is
+    useful for systematically exploring a stimulus parameter space
+    (e.g., in 1D, 2D, or higher dimensions).
+
+    Parameters
+    ----------
+    params : dict
+        Dictionary mapping parameter names (str) to sequences of possible values.
+        Each sequence will be iterated over to form combinations.  
+        Example::
+            {
+                "frequency": [1, 2, 4],
+                "sigma": [0.05, 0.1]
+            }
+
+    Returns
+    -------
+    list of dict
+        A list where each element is a dictionary mapping parameter names to
+        specific values, corresponding to one combination from the Cartesian
+        product of all provided sequences.  
+        Example output::
+            [
+                {"frequency": 1, "sigma": 0.05},
+                {"frequency": 1, "sigma": 0.1},
+                {"frequency": 2, "sigma": 0.05},
+                ...
+            ]
+
+    Raises
+    ------
+    ValueError
+        If `params` is not a dictionary.
+    """
     if not isinstance(params, dict):
         raise ValueError("params needs to be a dict with all stimulus parameters")
 
@@ -550,6 +689,64 @@ def permutate_params(params):
 
 
 def create_stimspace_stimuli(stimulus_function, permutations_dicts, title_params=None):
+    """Generate stimuli for all parameter combinations in a stimspace.
+
+    Given a callable `stimulus_function` and a list of parameter combinations
+    (as produced by [`utils.permutate_params`](utils.permutate_params)),
+    this function generates and returns all corresponding stimulus images.
+    Optionally, specific parameters can be included in the stimulus names
+    for easier identification in plots or debugging.
+
+    Parameters
+    ----------
+    stimulus_function : callable
+        A stimulus-generating function that accepts keyword arguments matching
+        the keys in `permutations_dicts`.
+
+    permutations_dicts : list of dict
+        A list of parameter dictionaries, each representing one combination of
+        stimulus parameters to be passed to `stimulus_function`.
+        Typically obtained from [`utils.permutate_params`](utils.permutate_params).
+
+    title_params : str or list of str, optional
+        Name(s) of parameters to display in the dictionary keys for the output.
+        - If a string, it is interpreted as a single parameter name.
+        - If a list, multiple parameter values will be included in the name.
+        - If `None` (default), keys will be simple integer indices.
+
+    Returns
+    -------
+    dict
+        Dictionary mapping descriptive keys to the generated stimulus outputs.
+        Keys are either:
+        - String representations of selected `title_params` and their values.
+        - Sequential integer strings if `title_params` is `None`.
+
+    Raises
+    ------
+    ValueError
+        If `stimulus_function` is not callable.
+
+    Examples
+    --------
+    >>> from stimupy.stimuli.gabors import gabor
+    >>> from stimupy.utils import permutate_params, create_stimspace_stimuli
+    >>> params = {
+    ...     "visual_size": [1.],
+    ...     "ppd": [50],
+    ...     "sigma": [0.1, 0.2],
+    ...     "frequency": [2, 4]
+    ... }
+    >>> permuted = permutate_params(params)
+    >>> stimspace = create_stimspace_stimuli(
+    ...     stimulus_function=gabor,
+    ...     permutations_dicts=permuted,
+    ...     title_params=["sigma", "frequency"]
+    ... )
+    >>> list(stimspace.keys())
+    ['sigma=0.1 frequency=2 ', 'sigma=0.1 frequency=4 ', 
+     'sigma=0.2 frequency=2 ', 'sigma=0.2 frequency=4 ']
+    """
     if not callable(stimulus_function):
         raise ValueError("stimulus_function needs to be a function")
     if isinstance(title_params, str):

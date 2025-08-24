@@ -49,9 +49,9 @@ def step(
         origin="corner",
     )
 
-    img = np.ones(shape) * intensity_edges[0]
+    img = np.ones(base["shape"]) * intensity_edges[0]
     img = np.where(base["oblique"] < base["oblique"].mean(), img, intensity_edges[1])
-    mask = np.ones(shape)
+    mask = np.ones(base["shape"])
     mask = np.where(base["oblique"] < base["oblique"].mean(), mask, 2)
 
     stim = {
@@ -248,7 +248,7 @@ def overview(**kwargs):
     """
     default_params = {
         "visual_size": 10,
-        "ppd": 10,
+        "ppd": 32,
     }
     default_params.update(kwargs)
 

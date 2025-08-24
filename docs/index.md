@@ -27,7 +27,7 @@ and follow an introductory tutorial
 :::
 
 :::{grid-item-card} Learn more
-:link: topic_guides/topic_guides
+:link: user_guide/user_guide
 :link-type: doc
 :text-align: center
 🧑‍🏫
@@ -38,7 +38,7 @@ and particular conventions and topics within `stimupy`
 :::
 
 :::{grid-item-card} Reference
-:link: reference/api
+:link: reference/index
 :link-type: doc
 :text-align: center
 📑

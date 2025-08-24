@@ -69,8 +69,11 @@ target/
 **/.ipynb_checkpoints/
 **/.ipynb_checkpoints/
 
-docs/reference/_api/
+docs/reference/*
+!docs/reference/demos/
 
 # Modelfest dataset for easy comparison / testing
 **/modelfest/
 
+
+uv.lock

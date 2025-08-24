@@ -2,20 +2,22 @@ name: Linting, Formatting
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, dev, build ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, dev ]
 
 jobs:
   lint:
     name: Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        name: Install Python
+      # Checkout the stimupy repository
+      - uses: actions/checkout@v4
         with:
-          python-version: "3.11"
-
-      - name: Lint
-        run: pipx run nox --error-on-missing-interpreters -s lint -- --show-diff-on-failure
+          fetch-depth: 0
+      # Lint using Ruff
+      - uses: astral-sh/ruff-action@v3
+        with:
+          args: "check --ignore F403,F405"
+      # Spellcheck using codespell
+      - uses: codespell-project/actions-codespell@v2

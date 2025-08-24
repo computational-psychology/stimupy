@@ -583,7 +583,7 @@ def overview(**kwargs):
         dict with all stimuli containing individual stimulus dicts.
     """
     default_params = {
-        "ppd": 30,
+        "ppd": 40,
     }
     default_params.update(kwargs)
 
