@@ -64,7 +64,7 @@ target/
 !docs/reference/demos/
 *.png
 !docs/_static/generated_stimuli/*.png
-
+docs/_build/jupyter_execute/
 
 !manuscript/overview.png
 !manuscript/stimspace.png
