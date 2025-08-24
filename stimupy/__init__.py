@@ -1,4 +1,4 @@
-__version__ = "1.1.2"
+__version__ = "1.2.0"
 
 from stimupy import components, noises, stimuli, utils
 from stimupy.logos import *  # noqa: F403

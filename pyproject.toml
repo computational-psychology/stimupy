@@ -22,7 +22,7 @@ maintainers = [
   { name = "Lynn Schmittwilken", email = "l.schmittwilken@tu-berlin.de" },
   { name = "Joris Vincent", email = "j.vincent@tu-berlin.de" },
 ]
-version = "1.1.2"
+version = "1.2.0"
 
 requires-python = ">=3.9"
 dependencies = ["numpy<2.3", "scipy", "matplotlib", "pandas", "Pillow"]
