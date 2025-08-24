@@ -40,6 +40,7 @@ Domijan, D. (2015).
 """
 
 import logging
+
 import numpy as np
 
 import stimupy

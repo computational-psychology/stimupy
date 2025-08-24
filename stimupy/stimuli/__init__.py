@@ -4,7 +4,7 @@ import logging
 import numpy as np
 
 from stimupy.components import draw_regions
-from stimupy.stimuli import *
+from stimupy.stimuli import *  # noqa: F403
 
 # Get module level logger
 logger = logging.getLogger("stimupy.stimuli")
@@ -15,27 +15,27 @@ __all__ = [
     "place_targets",
     "overview",
     "plot_overview",
-    "benarys",
-    "bullseyes",
-    "checkerboards",
-    "cornsweets",
-    "cubes",
-    "delboeufs",
-    "dungeons",
-    "edges",
-    "gabors",
-    "gratings",
-    "hermanns",
-    "mondrians",
-    "mueller_lyers",
-    "plaids",
-    "ponzos",
-    "rings",
-    "sbcs",
-    "todorovics",
-    "waves",
-    "wedding_cakes",
-    "whites",
+    "benarys",  # noqa: F405
+    "bullseyes",  # noqa: F405
+    "checkerboards",  # noqa: F405
+    "cornsweets",  # noqa: F405
+    "cubes",  # noqa: F405
+    "delboeufs",  # noqa: F405
+    "dungeons",  # noqa: F405
+    "edges",  # noqa: F405
+    "gabors",  # noqa: F405
+    "gratings",  # noqa: F405
+    "hermanns",  # noqa: F405
+    "mondrians",  # noqa: F405
+    "mueller_lyers",  # noqa: F405
+    "plaids",  # noqa: F405
+    "ponzos",  # noqa: F405
+    "rings",  # noqa: F405
+    "sbcs",  # noqa: F405
+    "todorovics",  # noqa: F405
+    "waves",  # noqa: F405
+    "wedding_cakes",  # noqa: F405
+    "whites",  # noqa: F405
 ]
 
 
