@@ -1,0 +1,42 @@
+
+wide_72phase
+============
+
+
+.. image:: /_static/generated_stimuli/papers.white1985.wide_72phase.png
+   :alt: wide_72phase stimulus example
+   :align: center
+   :width: 400px
+
+
+
+
+
+
+.. py:function:: stimupy.papers.white1985.wide_72phase(ppd=PPD)
+
+
+   A square-wave grating with four bars that are 72 deg out-of-phase as
+   shown in White & White (1985), Fig. 2
+   Stimulus size: 3.5 x 3.5 deg
+   Target bars: 0.14 x 0.75 deg (originally 0.15 x 0.75 deg)
+   Grating frequency: 3.5 cpd
+
+   :param ppd: Resolution of stimulus in pixels per degree.
+   :type ppd: int
+
+   :returns: dict with the stimulus (key: "img") and target mask (key: "target_mask")
+             and additional keys containing stimulus parameters
+   :rtype: dict of str
+
+   .. rubric:: References
+
+   White, M. & White, T. (1985).
+       Counterphase lightness induction.
+       Vision Research, 25 (9), 1331-1335.
+       https://doi.org/10.1016/0042-6989(85)90049-5
+
+
+
+
+ 

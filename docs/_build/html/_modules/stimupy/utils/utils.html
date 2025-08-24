@@ -1,0 +1,1731 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>stimupy.utils.utils &#8212; stimupy</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/runbutton.css?v=880c2f88" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/myst_sphinx_gallery.css?v=92de7a9e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../../_static/run_cell.js?v=da6c9fe8"></script>
+    <script src="../../../_static/WorkerHandler.js"></script>
+    <script src="../../../_static/js/hoverxref.js"></script>
+    <script src="../../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script src="../../../_static/ServiceHandler.js"></script>
+    <script src="https://cdn.bokeh.org/bokeh/release/bokeh-3.7.3.min.js"></script>
+    <script src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-3.7.3.min.js"></script>
+    <script src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-3.7.3.min.js"></script>
+    <script src="https://cdn.holoviz.org/panel/1.7.5/dist/panel.min.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/stimupy/utils/utils';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="stimupy - Home"/>
+    <script>document.write(`<img src="../../../_static/logo.png" class="logo__image only-dark" alt="stimupy - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../index.html">
+                    stimupy
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting started with stimupy</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../getting_started/getting_started.html">Getting started</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting_started/installation.html">1. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting_started/create_stimulus.html">2. Creating a first stimulus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting_started/find_stimulus.html">3. How to find a stimulus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting_started/choose_variation.html">4. Choosing variations of stimulus (and parametrization)</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../howtos/use_stimulus/use.html">5. How to use stimuli beyond stimupy</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../howtos/use_stimulus/display.html">5.1. Display stimuli / integrate in experiments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../howtos/use_stimulus/export.html">5.2. Save &amp; export stimuli</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../howtos/use_stimulus/share.html">5.3. Share &amp; distribute stimuli</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../howtos/howtos.html">How-to… (recipes)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting_started/find_stimulus.html">3. How to find a stimulus</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../howtos/use_stimulus/use.html">5. How to use stimuli beyond stimupy</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../howtos/use_stimulus/display.html">5.1. Display stimuli / integrate in experiments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../howtos/use_stimulus/export.html">5.2. Save &amp; export stimuli</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../howtos/use_stimulus/share.html">5.3. Share &amp; distribute stimuli</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howtos/replicate.html">Replicate existing stimuli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howtos/color.html">Create color stimuli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howtos/stimspace.html">Create stimuli spanning a parameter space</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howtos/compose.html">Compose stimuli from components</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../user_guide/user_guide.html">User guides</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/organization.html">How <code class="docutils literal notranslate"><span class="pre">stimupy</span></code> is organized</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/resolution.html">Image size and resolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/dimensions.html">Axes, orientations, and distance metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/stimuli_parametrizations.html">Exploring parameterized stimuli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user_guide/masks.html">Masks</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../user_guide/stimulus_groups/groups.html">Special groups of stimuli</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../user_guide/stimulus_groups/waves.html">Periodic stimuli (waves, gratings, grids,…)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../user_guide/stimulus_groups/noise.html">Visual Noise</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../user_guide/stimulus_groups/lightness.html">Lightness stimuli</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/checkerboards/index.html">checkerboards</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/bullseyes/index.html">bullseyes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/cornsweets/index.html">cornsweets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/whites/index.html">whites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/benarys/index.html">benarys</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/todorovics/index.html">todorovics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/dungeons/index.html">dungeons</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/gratings/index.html">gratings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/RHS2007/index.html">RHS2007</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/white1981/index.html">white1981</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/white1985/index.html">white1985</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/domijan2015/index.html">domijan2015</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../user_guide/stimulus_groups/illusions.html">Geometric illusions</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../reference/index.html"><cite>stimupy</cite> API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../reference/stimupy/components/index.html">components</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/components/angulars/index.html">angulars</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/components/angulars/wedge.html">wedge</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/components/angulars/segments.html">segments</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/components/edges/index.html">edges</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/components/edges/step.html">step</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/components/edges/gaussian.html">gaussian</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/components/edges/cornsweet.html">cornsweet</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/components/frames/index.html">frames</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/components/frames/frames.html">frames</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/components/gaussians/index.html">gaussians</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/components/gaussians/gaussian.html">gaussian</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/components/lines/index.html">lines</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/components/lines/line.html">line</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/components/lines/dipole.html">dipole</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/components/lines/ellipse.html">ellipse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/components/lines/circle.html">circle</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/components/radials/index.html">radials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/components/radials/rings.html">rings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/components/radials/disc.html">disc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/components/radials/ring.html">ring</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/components/shapes/index.html">shapes</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/components/shapes/wedge.html">wedge</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/components/shapes/disc.html">disc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/components/shapes/ring.html">ring</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/components/shapes/rectangle.html">rectangle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/components/shapes/triangle.html">triangle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/components/shapes/cross.html">cross</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/components/shapes/parallelogram.html">parallelogram</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/components/shapes/ellipse.html">ellipse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/components/shapes/circle.html">circle</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/components/texts/index.html">texts</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/components/texts/text.html">text</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/components/waves/index.html">waves</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/components/waves/sine.html">sine</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/components/waves/square.html">square</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/components/waves/staircase.html">staircase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/components/waves/bessel.html">bessel</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../reference/stimupy/noises/index.html">noises</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/noises/binaries/index.html">binaries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/noises/binaries/binary.html">binary</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/noises/narrowbands/index.html">narrowbands</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/noises/narrowbands/narrowband.html">narrowband</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/noises/naturals/index.html">naturals</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/noises/naturals/one_over_f.html">one_over_f</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/noises/naturals/pink.html">pink</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/noises/naturals/brown.html">brown</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/noises/whites/index.html">whites</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/noises/whites/white.html">white</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../reference/stimupy/stimuli/index.html">stimuli</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/stimuli/benarys/index.html">benarys</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/benarys/cross_generalized.html">cross_generalized</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/benarys/cross_rectangles.html">cross_rectangles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/benarys/cross_triangles.html">cross_triangles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/benarys/todorovic_generalized.html">todorovic_generalized</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/benarys/todorovic_rectangles.html">todorovic_rectangles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/benarys/todorovic_triangles.html">todorovic_triangles</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/stimuli/bullseyes/index.html">bullseyes</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/bullseyes/circular.html">circular</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/bullseyes/circular_generalized.html">circular_generalized</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/bullseyes/rectangular.html">rectangular</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/bullseyes/rectangular_generalized.html">rectangular_generalized</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/stimuli/checkerboards/index.html">checkerboards</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/checkerboards/checkerboard.html">checkerboard</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/checkerboards/contrast_contrast.html">contrast_contrast</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/stimuli/cornsweets/index.html">cornsweets</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/cornsweets/cornsweet.html">cornsweet</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/stimuli/cubes/index.html">cubes</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/cubes/varying_cells.html">varying_cells</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/cubes/cube.html">cube</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/stimuli/delboeufs/index.html">delboeufs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/delboeufs/delboeuf.html">delboeuf</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/stimuli/dungeons/index.html">dungeons</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/dungeons/dungeon.html">dungeon</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/stimuli/edges/index.html">edges</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/edges/step.html">step</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/edges/gaussian.html">gaussian</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/edges/cornsweet.html">cornsweet</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/stimuli/gabors/index.html">gabors</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/gabors/gabor.html">gabor</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/stimuli/gratings/index.html">gratings</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/gratings/sinewave.html">sinewave</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/gratings/squarewave.html">squarewave</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/gratings/on_uniform.html">on_uniform</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/gratings/on_grating_masked.html">on_grating_masked</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/gratings/on_grating.html">on_grating</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/gratings/phase_shifted.html">phase_shifted</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/gratings/grating_induction.html">grating_induction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/gratings/grating_induction_blur.html">grating_induction_blur</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/stimuli/hermanns/index.html">hermanns</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/hermanns/grid.html">grid</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/stimuli/mondrians/index.html">mondrians</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/mondrians/mondrian.html">mondrian</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/mondrians/corrugated_mondrian.html">corrugated_mondrian</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/stimuli/mueller_lyers/index.html">mueller_lyers</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/mueller_lyers/mueller_lyer.html">mueller_lyer</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/stimuli/pinwheels/index.html">pinwheels</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/pinwheels/pinwheel.html">pinwheel</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/stimuli/plaids/index.html">plaids</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/plaids/gabors.html">gabors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/plaids/sine_waves.html">sine_waves</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/plaids/square_waves.html">square_waves</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/stimuli/ponzos/index.html">ponzos</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/ponzos/ponzo.html">ponzo</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/stimuli/rings/index.html">rings</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/rings/circular.html">circular</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/rings/rectangular.html">rectangular</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/rings/circular_generalized.html">circular_generalized</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/rings/rectangular_generalized.html">rectangular_generalized</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/stimuli/sbcs/index.html">sbcs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/sbcs/generalized.html">generalized</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/sbcs/basic.html">basic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/sbcs/square.html">square</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/sbcs/circular.html">circular</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/sbcs/with_dots.html">with_dots</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/sbcs/dotted.html">dotted</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/stimuli/todorovics/index.html">todorovics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/todorovics/rectangle_generalized.html">rectangle_generalized</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/todorovics/rectangle.html">rectangle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/todorovics/cross_generalized.html">cross_generalized</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/todorovics/cross.html">cross</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/todorovics/equal.html">equal</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/stimuli/waves/index.html">waves</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/waves/sine_linear.html">sine_linear</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/waves/square_linear.html">square_linear</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/waves/staircase_linear.html">staircase_linear</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/waves/sine_radial.html">sine_radial</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/waves/square_radial.html">square_radial</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/waves/staircase_radial.html">staircase_radial</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/waves/sine_rectilinear.html">sine_rectilinear</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/waves/square_rectilinear.html">square_rectilinear</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/waves/staircase_rectilinear.html">staircase_rectilinear</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/waves/sine_angular.html">sine_angular</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/waves/square_angular.html">square_angular</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/waves/staircase_angular.html">staircase_angular</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/stimuli/wedding_cakes/index.html">wedding_cakes</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/wedding_cakes/wedding_cake.html">wedding_cake</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/stimuli/whites/index.html">whites</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/whites/angular.html">angular</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/whites/radial.html">radial</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/whites/wedding_cake.html">wedding_cake</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/whites/generalized.html">generalized</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/whites/white.html">white</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/whites/white_two_rows.html">white_two_rows</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/whites/anderson.html">anderson</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/whites/howe.html">howe</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/stimuli/whites/yazdanbakhsh.html">yazdanbakhsh</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../reference/stimupy/papers/index.html">papers</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/papers/RHS2007/index.html">RHS2007</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/RHS2007/WE_thick.html">WE_thick</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/RHS2007/WE_thin_wide.html">WE_thin_wide</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/RHS2007/WE_dual.html">WE_dual</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/RHS2007/WE_anderson.html">WE_anderson</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/RHS2007/WE_howe.html">WE_howe</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/RHS2007/WE_zigzag.html">WE_zigzag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/RHS2007/WE_radial_thick_small.html">WE_radial_thick_small</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/RHS2007/WE_radial_thick.html">WE_radial_thick</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/RHS2007/WE_radial_thin_small.html">WE_radial_thin_small</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/RHS2007/WE_radial_thin.html">WE_radial_thin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/RHS2007/WE_circular1.html">WE_circular1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/RHS2007/WE_circular05.html">WE_circular05</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/RHS2007/WE_circular025.html">WE_circular025</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/RHS2007/grating_induction.html">grating_induction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/RHS2007/sbc_large.html">sbc_large</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/RHS2007/sbc_small.html">sbc_small</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/RHS2007/todorovic_equal.html">todorovic_equal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/RHS2007/todorovic_in_large.html">todorovic_in_large</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/RHS2007/todorovic_in_small.html">todorovic_in_small</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/RHS2007/todorovic_out.html">todorovic_out</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/RHS2007/checkerboard_016.html">checkerboard_016</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/RHS2007/checkerboard_094.html">checkerboard_094</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/RHS2007/checkerboard_21.html">checkerboard_21</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/RHS2007/corrugated_mondrian.html">corrugated_mondrian</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/RHS2007/benary_cross.html">benary_cross</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/RHS2007/todorovic_benary1_2.html">todorovic_benary1_2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/RHS2007/todorovic_benary3_4.html">todorovic_benary3_4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/RHS2007/todorovic_benary1_2_3_4.html">todorovic_benary1_2_3_4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/RHS2007/bullseye_thin.html">bullseye_thin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/RHS2007/bullseye_thick.html">bullseye_thick</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/papers/bindmann2004/index.html">bindmann2004</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/bindmann2004/bullseye_thin_gw45_gb31.html">bullseye_thin_gw45_gb31</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/bindmann2004/bullseye_thin_gw45_gb38.html">bullseye_thin_gw45_gb38</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/bindmann2004/bullseye_thin_gw45_gb45.html">bullseye_thin_gw45_gb45</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/bindmann2004/bullseye_thin_gw45_gb52.html">bullseye_thin_gw45_gb52</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/bindmann2004/bullseye_thin_gw45_gb59.html">bullseye_thin_gw45_gb59</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/bindmann2004/bullseye_thin_gw60_gb46.html">bullseye_thin_gw60_gb46</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/bindmann2004/bullseye_thin_gw60_gb53.html">bullseye_thin_gw60_gb53</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/bindmann2004/bullseye_thin_gw60_gb60.html">bullseye_thin_gw60_gb60</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/bindmann2004/bullseye_thin_gw60_gb67.html">bullseye_thin_gw60_gb67</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/bindmann2004/bullseye_thin_gw60_gb74.html">bullseye_thin_gw60_gb74</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/bindmann2004/bullseye_thin_gw75_gb61.html">bullseye_thin_gw75_gb61</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/bindmann2004/bullseye_thin_gw75_gb68.html">bullseye_thin_gw75_gb68</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/bindmann2004/bullseye_thin_gw75_gb75.html">bullseye_thin_gw75_gb75</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/bindmann2004/bullseye_thin_gw75_gb82.html">bullseye_thin_gw75_gb82</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/bindmann2004/bullseye_thin_gw75_gb89.html">bullseye_thin_gw75_gb89</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/bindmann2004/bullseye_thick_gw45_gb31.html">bullseye_thick_gw45_gb31</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/bindmann2004/bullseye_thick_gw45_gb38.html">bullseye_thick_gw45_gb38</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/bindmann2004/bullseye_thick_gw45_gb45.html">bullseye_thick_gw45_gb45</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/bindmann2004/bullseye_thick_gw45_gb52.html">bullseye_thick_gw45_gb52</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/bindmann2004/bullseye_thick_gw45_gb59.html">bullseye_thick_gw45_gb59</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/bindmann2004/bullseye_thick_gw60_gb46.html">bullseye_thick_gw60_gb46</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/bindmann2004/bullseye_thick_gw60_gb53.html">bullseye_thick_gw60_gb53</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/bindmann2004/bullseye_thick_gw60_gb60.html">bullseye_thick_gw60_gb60</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/bindmann2004/bullseye_thick_gw60_gb67.html">bullseye_thick_gw60_gb67</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/bindmann2004/bullseye_thick_gw60_gb74.html">bullseye_thick_gw60_gb74</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/bindmann2004/bullseye_thick_gw75_gb61.html">bullseye_thick_gw75_gb61</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/bindmann2004/bullseye_thick_gw75_gb68.html">bullseye_thick_gw75_gb68</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/bindmann2004/bullseye_thick_gw75_gb75.html">bullseye_thick_gw75_gb75</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/bindmann2004/bullseye_thick_gw75_gb82.html">bullseye_thick_gw75_gb82</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/bindmann2004/bullseye_thick_gw75_gb89.html">bullseye_thick_gw75_gb89</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/papers/domijan2015/index.html">domijan2015</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/domijan2015/dungeon.html">dungeon</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/domijan2015/cube.html">cube</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/domijan2015/grating.html">grating</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/domijan2015/rings.html">rings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/domijan2015/bullseye.html">bullseye</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/domijan2015/simultaneous_brightness_contrast.html">simultaneous_brightness_contrast</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/domijan2015/white.html">white</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/domijan2015/benary.html">benary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/domijan2015/todorovic.html">todorovic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/domijan2015/checkerboard_contrast_contrast.html">checkerboard_contrast_contrast</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/domijan2015/checkerboard.html">checkerboard</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/domijan2015/checkerboard_extended.html">checkerboard_extended</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/domijan2015/white_yazdanbakhsh.html">white_yazdanbakhsh</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/domijan2015/white_anderson.html">white_anderson</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/domijan2015/white_howe.html">white_howe</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/papers/example/index.html">example</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/example/my_bullseye.html">my_bullseye</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/example/my_inverse_bullseye.html">my_inverse_bullseye</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/index.html">modelfest</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/GaborPatch1.html">GaborPatch1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/GaborPatch2.html">GaborPatch2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/GaborPatch3.html">GaborPatch3</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/GaborPatch4.html">GaborPatch4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/GaborPatch5.html">GaborPatch5</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/GaborPatch6.html">GaborPatch6</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/GaborPatch7.html">GaborPatch7</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/GaborPatch8.html">GaborPatch8</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/GaborPatch9.html">GaborPatch9</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/GaborPatch10.html">GaborPatch10</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/GaborPatch11.html">GaborPatch11</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/GaborPatch12.html">GaborPatch12</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/GaborPatch13.html">GaborPatch13</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/GaborPatch14.html">GaborPatch14</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/ElongatedGabor15.html">ElongatedGabor15</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/ElongatedGabor16.html">ElongatedGabor16</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/ElongatedGabor17.html">ElongatedGabor17</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/Baguette18.html">Baguette18</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/Baguette19.html">Baguette19</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/Baguette20.html">Baguette20</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/Baguette21.html">Baguette21</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/Subthreshold22.html">Subthreshold22</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/Subthreshold23.html">Subthreshold23</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/Subthreshold24.html">Subthreshold24</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/Subthreshold25.html">Subthreshold25</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/Gaussians26.html">Gaussians26</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/Gaussians27.html">Gaussians27</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/Gaussians28.html">Gaussians28</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/Gaussians29.html">Gaussians29</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/Edge30.html">Edge30</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/Line31.html">Line31</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/Dipole32.html">Dipole32</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/GaborString33.html">GaborString33</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/GaborString34.html">GaborString34</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/Noise35.html">Noise35</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/Orientation36.html">Orientation36</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/Orientation37.html">Orientation37</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/Plaids38.html">Plaids38</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/Plaids39.html">Plaids39</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/Disk40.html">Disk40</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/Bessel41.html">Bessel41</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/Checkerboard42.html">Checkerboard42</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/modelfest/NaturalScene43.html">NaturalScene43</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/papers/murray2020/index.html">murray2020</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/murray2020/argyle.html">argyle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/murray2020/argyle_control.html">argyle_control</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/murray2020/argyle_long.html">argyle_long</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/murray2020/snake.html">snake</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/murray2020/snake_control.html">snake_control</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/murray2020/koffka_adelson.html">koffka_adelson</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/murray2020/koffka_broken.html">koffka_broken</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/murray2020/koffka_connected.html">koffka_connected</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/murray2020/checkassim.html">checkassim</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/murray2020/simcon.html">simcon</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/murray2020/simcon_articulated.html">simcon_articulated</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/murray2020/white.html">white</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/papers/white1981/index.html">white1981</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/white1981/square_white.html">square_white</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/white1981/square_black.html">square_black</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/white1981/grating_white_white.html">grating_white_white</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/white1981/grating_white_black.html">grating_white_black</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/white1981/grating_black_white.html">grating_black_white</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/white1981/grating_black_black.html">grating_black_black</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/white1981/grating_white_in.html">grating_white_in</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/white1981/grating_black_in.html">grating_black_in</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/white1981/grating_white_out.html">grating_white_out</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/white1981/grating_black_out.html">grating_black_out</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/white1981/grating_white_orthogonal.html">grating_white_orthogonal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/white1981/grating_black_orthogonal.html">grating_black_orthogonal</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../reference/stimupy/papers/white1985/index.html">white1985</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/white1985/wide_0phase.html">wide_0phase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/white1985/wide_36phase.html">wide_36phase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/white1985/wide_72phase.html">wide_72phase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/white1985/wide_108phase.html">wide_108phase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/white1985/wide_144phase.html">wide_144phase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/white1985/wide_180phase.html">wide_180phase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/white1985/square_0phase.html">square_0phase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/white1985/square_36phase.html">square_36phase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/white1985/square_72phase.html">square_72phase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/white1985/square_108phase.html">square_108phase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/white1985/square_144phase.html">square_144phase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../reference/stimupy/papers/white1985/square_180phase.html">square_180phase</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/stimupy/utils/index.html">utils</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/demos/index.html">Interactive Demos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Get in touch</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing/cite.html">Citing stimupy</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../contributing/get_in_touch.html">Getting in touch</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference external" href="https://github.com/computational-psychology/stimupy/issues/new/choose">Ask a question</a></li>
+<li class="toctree-l2"><a class="reference external" href="https://github.com/computational-psychology/stimupy/issues/new?assignees=&amp;labels=bug&amp;template=bug_report.md">Report a bug</a></li>
+<li class="toctree-l2"><a class="reference external" href="https://github.com/computational-psychology/stimupy/issues/new?assignees=&amp;labels=documentation&amp;template=documentation-change.md">Propose an edit to the documentation</a></li>
+<li class="toctree-l2"><a class="reference external" href="https://github.com/computational-psychology/stimupy/issues/new?assignees=&amp;labels=enhancement&amp;template=stimulus-request.md&amp;title=Add+%3CSTIMULUS%3E">Suggest a stimulus function</a></li>
+<li class="toctree-l2"><a class="reference external" href="https://github.com/computational-psychology/stimupy/issues/new?assignees=&amp;labels=enhancement&amp;template=stimulus-set-request.md&amp;title=Add+set+%3CCITATION%3E">Suggest a set of stimuli</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../contributing/contribute.html">Contribute to <code class="docutils literal notranslate"><span class="pre">stimupy</span></code></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing/dev_environ.html">Setting up a development environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing/docs.html">Contribute documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing/sets.html">Contribrute a stimulus (set)</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/computational-psychology/stimupy" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/computational-psychology/stimupy/issues/new?title=Issue%20on%20page%20%2F_modules/stimupy/utils/utils.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for stimupy.utils.utils</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">collections</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">functools</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.special</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sp</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">stimupy.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">resolution</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;round_to_vals&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;int_factorize&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_function_argument_names&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;apply_bessel&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;resize_array&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;resize_dict&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;stack_dicts&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rotate_dict&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;flip_dict&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;roll_dict&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;strip_dict&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;make_two_sided&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;permutate_params&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;create_stimspace_stimuli&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_count_none_args</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Counts the number of None values in the provided arguments</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    *args : dict</span>
+<span class="sd">        variable number of arguments to check for None values</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    int :</span>
+<span class="sd">        number of None values in the arguments.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; check_multiple_none(None, 1, None, 2, 3)</span>
+<span class="sd">    2</span>
+<span class="sd">    &gt;&gt;&gt; check_multiple_none(1, 2, 3)</span>
+<span class="sd">    0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">args</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_repeat_numeric_arg</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;If provided argument is single number, repeat n times</span>
+
+<span class="sd">    Checks if the argument is a single number (int, float).</span>
+<span class="sd">    If so, returns a list containing the number repeated the specified number of times.</span>
+<span class="sd">    For other datatypes, returns the argument itself.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    arg : Any</span>
+<span class="sd">        Input argument to check</span>
+<span class="sd">    count : int, optional</span>
+<span class="sd">        Number of times to repeat the argument, by default 2.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list or any:</span>
+<span class="sd">        List with the number repeated &#39;count&#39; times if the argument is a number,</span>
+<span class="sd">        or the original arg if non-numeric.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; check_and_repeat(5, n=3)</span>
+<span class="sd">    [5, 5, 5]</span>
+<span class="sd">    &gt;&gt;&gt; check_and_repeat(&quot;Hello&quot;)</span>
+<span class="sd">    &#39;Hello&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check if the argument is a single number (int or float)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">arg</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>  <span class="c1"># Repeat the number &#39;count&#39; times in a list</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">arg</span>
+
+
+<div class="viewcode-block" id="round_to_vals">
+<a class="viewcode-back" href="../../../reference/stimupy/utils/utils/index.html#stimupy.utils.round_to_vals">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">round_to_vals</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">vals</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Round each element of array to closest match in provided values</span>
+
+<span class="sd">    For each element in the input `arr`, find the closest value from the provided `vals`</span>
+<span class="sd">    and replace the element with this closest value.</span>
+<span class="sd">    If the element is equidistant to two values, the smaller</span>
+<span class="sd">    value is chosen.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    arr : np.ndarray</span>
+<span class="sd">        array to be rounded</span>
+<span class="sd">    vals : Sequence(float, ...)</span>
+<span class="sd">        values to which array will be rounded</span>
+<span class="sd">    mode : [&quot;nearest&quot;, &quot;floor&quot;, &quot;ceil&quot;], optional</span>
+<span class="sd">        rounding mode. Default is &quot;nearest&quot;.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out_arr : np.ndarray</span>
+<span class="sd">        Rounded output array</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If `mode` is not one of [&quot;nearest&quot;, &quot;floor&quot;, &quot;ceil&quot;].</span>
+<span class="sd">        If `arr` contains values outside the bounds of</span>
+<span class="sd">        `vals` when `mode` is &quot;floor&quot; or &quot;ceil&quot;.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; arr = np.array([1.1, 2.2, 3.3, 4.4, 5.5])</span>
+<span class="sd">    &gt;&gt;&gt; vals = [1, 3, 5]</span>
+<span class="sd">    &gt;&gt;&gt; round_to_vals(arr, vals)</span>
+<span class="sd">    array([1., 3., 3., 5., 5.])</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Ensure the 1D array contains only unique values</span>
+    <span class="n">arr_1d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">vals</span><span class="p">))</span>
+    <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+
+    <span class="c1"># Ensure arr fall within bounds of mode:</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;floor&quot;</span> <span class="ow">and</span> <span class="n">arr</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">arr_1d</span><span class="o">.</span><span class="n">min</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Array values must be within bounds of vals : </span><span class="si">{</span><span class="n">arr</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">}</span><span class="s2"> &lt; </span><span class="si">{</span><span class="n">arr_1d</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;ceil&quot;</span> <span class="ow">and</span> <span class="n">arr</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">arr_1d</span><span class="o">.</span><span class="n">max</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Array values must be within bounds of vals: </span><span class="si">{</span><span class="n">arr</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">}</span><span class="s2"> &gt; </span><span class="si">{</span><span class="n">arr_1d</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Find the nearest values from vals, for each element in arr</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;floor&quot;</span><span class="p">:</span>
+        <span class="n">idxs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">arr_1d</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;ceil&quot;</span><span class="p">:</span>
+        <span class="n">idxs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">arr_1d</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;nearest&quot;</span><span class="p">:</span>
+        <span class="c1"># Find indexes where previous index is closer</span>
+        <span class="n">idxs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">arr_1d</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+        <span class="n">prev_idx_is_less</span> <span class="o">=</span> <span class="p">(</span><span class="n">idxs</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr_1d</span><span class="p">))</span> <span class="o">|</span> <span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">arr</span> <span class="o">-</span> <span class="n">arr_1d</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">idxs</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)])</span>
+            <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">arr</span> <span class="o">-</span> <span class="n">arr_1d</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">idxs</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr_1d</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)])</span>
+        <span class="p">)</span>
+        <span class="n">idxs</span><span class="p">[</span><span class="n">prev_idx_is_less</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid mode: </span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Replace each element in arr with the nearest value from vals</span>
+    <span class="n">rounded_arr</span> <span class="o">=</span> <span class="n">arr_1d</span><span class="p">[</span><span class="n">idxs</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">rounded_arr</span></div>
+
+
+
+<div class="viewcode-block" id="int_factorize">
+<a class="viewcode-back" href="../../../reference/stimupy/utils/utils/index.html#stimupy.utils.int_factorize">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">int_factorize</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;All integer factors of integer n</span>
+
+<span class="sd">    All integer factors, i.e., all integers that n is integer-divisible by.</span>
+<span class="sd">    Also not a very efficient algorithm (brute force trial division),</span>
+<span class="sd">    so should only be used as a helpter function.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n : int</span>
+<span class="sd">        number to factorize</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    set</span>
+<span class="sd">        set of all integer factors of n</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">factors</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">}</span>  <span class="c1"># set, guarantees unique factors</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">n</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># N is divisible by i...</span>
+            <span class="n">factors</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="c1"># ...thus also divisible by n/i</span>
+            <span class="n">factors</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">n</span> <span class="o">//</span> <span class="n">i</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">factors</span></div>
+
+
+
+<div class="viewcode-block" id="get_function_argument_names">
+<a class="viewcode-back" href="../../../reference/stimupy/utils/utils/index.html#stimupy.utils.get_function_argument_names">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_function_argument_names</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get all argument names for a given function</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    func : function</span>
+<span class="sd">        Get argument names from this function</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    names : tuple</span>
+<span class="sd">        Tuple containing all argument names of given function</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__code__</span><span class="o">.</span><span class="n">co_varnames</span><span class="p">[:</span> <span class="n">func</span><span class="o">.</span><span class="vm">__code__</span><span class="o">.</span><span class="n">co_argcount</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">names</span></div>
+
+
+
+<div class="viewcode-block" id="apply_bessel">
+<a class="viewcode-back" href="../../../reference/stimupy/utils/utils/index.html#stimupy.utils.apply_bessel">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">apply_bessel</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Bessel function of the first kind of real order and complex argument.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    arr : np.ndarray</span>
+<span class="sd">        Input array</span>
+<span class="sd">    order : float</span>
+<span class="sd">        Order of the bessel function. Default is 0.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : np.ndarray</span>
+<span class="sd">        Output array</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">jv</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">arr</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+
+<div class="viewcode-block" id="resize_array">
+<a class="viewcode-back" href="../../../reference/stimupy/utils/utils/index.html#stimupy.utils.resize_array">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">resize_array</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return a copy of an array, resized by the given factor. Every value is</span>
+<span class="sd">    repeated factor[d] times along dimension d.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    arr : 2D array</span>
+<span class="sd">          the array to be resized</span>
+<span class="sd">    factor : tuple of 2 ints</span>
+<span class="sd">             the resize factor in the y and x dimensions</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    An array of shape (arr.shape[0] * factor[0], arr.shape[1] * factor[1])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">factor</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">factor</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="resize_dict">
+<a class="viewcode-back" href="../../../reference/stimupy/utils/utils/index.html#stimupy.utils.resize_dict">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">resize_dict</span><span class="p">(</span><span class="n">dct</span><span class="p">,</span> <span class="n">factor</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;img&quot;</span><span class="p">,</span> <span class="s2">&quot;*mask&quot;</span><span class="p">)):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return a copy of an array, resized by the given factor. Every value is</span>
+<span class="sd">    repeated factor[d] times along dimension d.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dct : dict</span>
+<span class="sd">        dict containing arrays to be resized</span>
+<span class="sd">    factor : tuple of 2 ints</span>
+<span class="sd">        the resize factor in the y and x dimensions</span>
+<span class="sd">    keys : Sequence[String, String] or String</span>
+<span class="sd">        keys in dict for images to be padded</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict[str, Any]</span>
+<span class="sd">        same as input dict but with larger key-arrays according to</span>
+<span class="sd">        &quot;(arr.shape[0] * factor[0], arr.shape[1] * factor[1])&quot;</span>
+<span class="sd">        and updated keys for &quot;visual_size&quot; and &quot;shape&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Create deepcopy to not override existing dict</span>
+    <span class="n">new_dict</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">dct</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="p">(</span><span class="n">keys</span><span class="p">,)</span>
+
+    <span class="c1"># Find relevant keys</span>
+    <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">dkey</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span>
+        <span class="k">for</span> <span class="n">dkey</span> <span class="ow">in</span> <span class="n">dct</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="k">if</span> <span class="p">((</span><span class="n">dkey</span> <span class="o">==</span> <span class="n">key</span><span class="p">)</span> <span class="ow">or</span> <span class="p">((</span><span class="n">dkey</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">key</span><span class="p">[</span><span class="mi">1</span><span class="p">::]))</span> <span class="ow">and</span> <span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">))))</span>
+    <span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">dct</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+                <span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">factor</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">factor</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;mask&quot;</span><span class="p">):</span>
+                    <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+                <span class="n">new_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">img</span>
+
+    <span class="c1"># Update visual_size and shape-keys</span>
+    <span class="n">dct</span><span class="p">[</span><span class="s2">&quot;shape&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">resolution</span><span class="o">.</span><span class="n">validate_shape</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;ppd&quot;</span> <span class="ow">in</span> <span class="n">dct</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">dct</span><span class="p">[</span><span class="s2">&quot;visual_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">resolution</span><span class="o">.</span><span class="n">visual_size_from_shape_ppd</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dct</span><span class="p">[</span><span class="s2">&quot;ppd&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">new_dict</span></div>
+
+
+
+<div class="viewcode-block" id="stack_dicts">
+<a class="viewcode-back" href="../../../reference/stimupy/utils/utils/index.html#stimupy.utils.stack_dicts">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">stack_dicts</span><span class="p">(</span>
+    <span class="n">dct1</span><span class="p">,</span> <span class="n">dct2</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;horizontal&quot;</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;img&quot;</span><span class="p">,</span> <span class="s2">&quot;*mask&quot;</span><span class="p">),</span> <span class="n">keep_mask_indices</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return a dict with resized key-arrays by the given factor. Every value is</span>
+<span class="sd">    repeated factor[d] times along dimension d.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dct1: dict</span>
+<span class="sd">        dict containing arrays to be stacked</span>
+<span class="sd">    dct2: dict</span>
+<span class="sd">        dict containing arrays to be stacked</span>
+<span class="sd">    direction : str</span>
+<span class="sd">        stack horizontal(ly) or vertical(ly) (default: horizontal)</span>
+<span class="sd">    keys : Sequence[String, String] or String</span>
+<span class="sd">        keys in dict for images to be padded</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict[str, Any]</span>
+<span class="sd">        same as input dict1 but with stacked key-arrays and updated keys for</span>
+<span class="sd">        &quot;visual_size&quot; and &quot;shape&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Create deepcopy to not override existing dict</span>
+    <span class="n">new_dict</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">dct1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="p">(</span><span class="n">keys</span><span class="p">,)</span>
+
+    <span class="c1"># Find relevant keys</span>
+    <span class="n">keys1</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">dkey</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span>
+        <span class="k">for</span> <span class="n">dkey</span> <span class="ow">in</span> <span class="n">dct1</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="k">if</span> <span class="p">((</span><span class="n">dkey</span> <span class="o">==</span> <span class="n">key</span><span class="p">)</span> <span class="ow">or</span> <span class="p">((</span><span class="n">dkey</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">key</span><span class="p">[</span><span class="mi">1</span><span class="p">::]))</span> <span class="ow">and</span> <span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">))))</span>
+    <span class="p">]</span>
+    <span class="n">keys2</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">dkey</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span>
+        <span class="k">for</span> <span class="n">dkey</span> <span class="ow">in</span> <span class="n">dct2</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="k">if</span> <span class="p">((</span><span class="n">dkey</span> <span class="o">==</span> <span class="n">key</span><span class="p">)</span> <span class="ow">or</span> <span class="p">((</span><span class="n">dkey</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">key</span><span class="p">[</span><span class="mi">1</span><span class="p">::]))</span> <span class="ow">and</span> <span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">))))</span>
+    <span class="p">]</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">keys1</span> <span class="o">==</span> <span class="n">keys2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The requested keys do not exist in both dicts&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">dct1</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys1</span><span class="p">:</span>
+            <span class="n">img1</span> <span class="o">=</span> <span class="n">dct1</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="n">img2</span> <span class="o">=</span> <span class="n">dct2</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">img1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">img2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;mask&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">keep_mask_indices</span><span class="p">:</span>
+                    <span class="n">img2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">img2</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">img2</span> <span class="o">+</span> <span class="n">img1</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="mi">0</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="s2">&quot;horizontal&quot;</span><span class="p">:</span>
+                    <span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">img1</span><span class="p">,</span> <span class="n">img2</span><span class="p">])</span>
+                <span class="k">elif</span> <span class="n">direction</span> <span class="o">==</span> <span class="s2">&quot;vertical&quot;</span><span class="p">:</span>
+                    <span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">img1</span><span class="p">,</span> <span class="n">img2</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;direction must be horizontal or vertical&quot;</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;mask&quot;</span><span class="p">):</span>
+                    <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+                <span class="n">new_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">img</span>
+
+    <span class="c1"># Update visual_size and shape-keys</span>
+    <span class="n">new_dict</span><span class="p">[</span><span class="s2">&quot;shape&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">resolution</span><span class="o">.</span><span class="n">validate_shape</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;ppd&quot;</span> <span class="ow">in</span> <span class="n">new_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">new_dict</span><span class="p">[</span><span class="s2">&quot;visual_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">resolution</span><span class="o">.</span><span class="n">visual_size_from_shape_ppd</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">new_dict</span><span class="p">[</span><span class="s2">&quot;ppd&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">new_dict</span></div>
+
+
+
+<div class="viewcode-block" id="rotate_dict">
+<a class="viewcode-back" href="../../../reference/stimupy/utils/utils/index.html#stimupy.utils.rotate_dict">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">rotate_dict</span><span class="p">(</span><span class="n">dct</span><span class="p">,</span> <span class="n">nrots</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;img&quot;</span><span class="p">,</span> <span class="s2">&quot;*mask&quot;</span><span class="p">)):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return a dict with key-arrays rotated by nrots*90 degrees.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dct: dict</span>
+<span class="sd">        dict containing arrays to be stacked</span>
+<span class="sd">    nrot : int</span>
+<span class="sd">        number of rotations by 90 degrees</span>
+<span class="sd">    keys : Sequence[String, String] or String</span>
+<span class="sd">        keys in dict for images to be padded</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict[str, Any]</span>
+<span class="sd">        same as input dict but with rotated key-arrays and updated keys for</span>
+<span class="sd">        &quot;visual_size&quot; and &quot;shape&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Create deepcopy to not override existing dict</span>
+    <span class="n">new_dict</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">dct</span><span class="p">)</span>
+
+    <span class="c1"># Find relevant keys</span>
+    <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">dkey</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span>
+        <span class="k">for</span> <span class="n">dkey</span> <span class="ow">in</span> <span class="n">dct</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="k">if</span> <span class="p">((</span><span class="n">dkey</span> <span class="o">==</span> <span class="n">key</span><span class="p">)</span> <span class="ow">or</span> <span class="p">((</span><span class="n">dkey</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">key</span><span class="p">[</span><span class="mi">1</span><span class="p">::]))</span> <span class="ow">and</span> <span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">))))</span>
+    <span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">dct</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">nrots</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+                    <span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rot90</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">nrots</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;nrots must be a number&quot;</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;mask&quot;</span><span class="p">):</span>
+                    <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+                <span class="n">new_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">img</span>
+
+    <span class="c1"># Update visual_size and shape-keys</span>
+    <span class="n">new_dict</span><span class="p">[</span><span class="s2">&quot;shape&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">resolution</span><span class="o">.</span><span class="n">validate_shape</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;ppd&quot;</span> <span class="ow">in</span> <span class="n">new_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">new_dict</span><span class="p">[</span><span class="s2">&quot;visual_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">resolution</span><span class="o">.</span><span class="n">visual_size_from_shape_ppd</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">new_dict</span><span class="p">[</span><span class="s2">&quot;ppd&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">new_dict</span></div>
+
+
+
+<div class="viewcode-block" id="flip_dict">
+<a class="viewcode-back" href="../../../reference/stimupy/utils/utils/index.html#stimupy.utils.flip_dict">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">flip_dict</span><span class="p">(</span><span class="n">dct</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;lr&quot;</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;img&quot;</span><span class="p">,</span> <span class="s2">&quot;*mask&quot;</span><span class="p">)):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return a dict with key-arrays rotated by nrots*90 degrees.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dct: dict</span>
+<span class="sd">        dict containing arrays to be stacked</span>
+<span class="sd">    direction : str</span>
+<span class="sd">        &quot;lr&quot; for left-right, &quot;ud&quot; for up-down flipping</span>
+<span class="sd">    keys : Sequence[String, String] or String</span>
+<span class="sd">        keys in dict for images to be padded</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict[str, Any]</span>
+<span class="sd">        same as input dict but with flipped key-arrays</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Create deepcopy to not override existing dict</span>
+    <span class="n">new_dict</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">dct</span><span class="p">)</span>
+
+    <span class="c1"># Find relevant keys</span>
+    <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">dkey</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span>
+        <span class="k">for</span> <span class="n">dkey</span> <span class="ow">in</span> <span class="n">dct</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="k">if</span> <span class="p">((</span><span class="n">dkey</span> <span class="o">==</span> <span class="n">key</span><span class="p">)</span> <span class="ow">or</span> <span class="p">((</span><span class="n">dkey</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">key</span><span class="p">[</span><span class="mi">1</span><span class="p">::]))</span> <span class="ow">and</span> <span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">))))</span>
+    <span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">dct</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="s2">&quot;lr&quot;</span><span class="p">:</span>
+                    <span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fliplr</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">direction</span> <span class="o">==</span> <span class="s2">&quot;ud&quot;</span><span class="p">:</span>
+                    <span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;direction must be lr or ud&quot;</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;mask&quot;</span><span class="p">):</span>
+                    <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+                <span class="n">new_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">img</span>
+    <span class="k">return</span> <span class="n">new_dict</span></div>
+
+
+
+<div class="viewcode-block" id="roll_dict">
+<a class="viewcode-back" href="../../../reference/stimupy/utils/utils/index.html#stimupy.utils.roll_dict">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">roll_dict</span><span class="p">(</span><span class="n">dct</span><span class="p">,</span> <span class="n">shift</span><span class="p">,</span> <span class="n">axes</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;img&quot;</span><span class="p">,</span> <span class="s2">&quot;*mask&quot;</span><span class="p">)):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return a dict with key-arrays rolled by shift in axes.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dct: dict</span>
+<span class="sd">        dict containing arrays to be stacked</span>
+<span class="sd">    shift : int</span>
+<span class="sd">        number of pixels by which to shift</span>
+<span class="sd">    axes : Number or Sequence[Number, ...]</span>
+<span class="sd">        axes in which to shift</span>
+<span class="sd">    keys : Sequence[String, String] or String</span>
+<span class="sd">        keys in dict for images to be padded</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict[str, Any]</span>
+<span class="sd">        same as input dict but with rolled key-arrays</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Create deepcopy to not override existing dict</span>
+    <span class="n">new_dict</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">dct</span><span class="p">)</span>
+    <span class="n">shift</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">shift</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+    <span class="c1"># Find relevant keys</span>
+    <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">dkey</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span>
+        <span class="k">for</span> <span class="n">dkey</span> <span class="ow">in</span> <span class="n">dct</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="k">if</span> <span class="p">((</span><span class="n">dkey</span> <span class="o">==</span> <span class="n">key</span><span class="p">)</span> <span class="ow">or</span> <span class="p">((</span><span class="n">dkey</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">key</span><span class="p">[</span><span class="mi">1</span><span class="p">::]))</span> <span class="ow">and</span> <span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">))))</span>
+    <span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">dct</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+                <span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">shift</span><span class="o">=</span><span class="n">shift</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axes</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;mask&quot;</span><span class="p">):</span>
+                    <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+                <span class="n">new_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">img</span>
+    <span class="k">return</span> <span class="n">new_dict</span></div>
+
+
+
+<div class="viewcode-block" id="strip_dict">
+<a class="viewcode-back" href="../../../reference/stimupy/utils/utils/index.html#stimupy.utils.strip_dict">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">strip_dict</span><span class="p">(</span>
+    <span class="n">dct</span><span class="p">,</span>
+    <span class="n">func</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a dictionary by stripping it from all keys that are not also</span>
+<span class="sd">    an argument to the provided function</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dct: dict</span>
+<span class="sd">        dict which will be stripped</span>
+<span class="sd">    func : function</span>
+<span class="sd">        Get argument names from this function</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict[str, Any]</span>
+<span class="sd">        same as input dict but stripped from all keys which are not also</span>
+<span class="sd">        an argument to the provided function</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Get all argument names for given function</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="n">get_function_argument_names</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+
+    <span class="c1"># Add keys from dct into new_dict if the key is also an argument name</span>
+    <span class="n">new_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">dct</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">new_dict</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">new_dict</span></div>
+
+
+
+<div class="viewcode-block" id="make_two_sided">
+<a class="viewcode-back" href="../../../reference/stimupy/utils/utils/index.html#stimupy.utils.make_two_sided">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_two_sided</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">two_sided_params</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create two-sided version of a stimulus function</span>
+
+<span class="sd">    Where (some) parameters can be specified separately for each side.</span>
+<span class="sd">    These parameters should then be specified as a 2-Sequence (2-ple, list of len=2),</span>
+<span class="sd">    where entry [0] is the parameter value for left side, and [1] for right side.</span>
+<span class="sd">    This means that if the kwarg takes a Sequence itself, e.g., `intensities`,</span>
+<span class="sd">    then the two-sided specification must be, e.g.,</span>
+<span class="sd">    ((int_left_0, int_left_1), (int_right_0, int_right_1))</span>
+
+<span class="sd">    Will be left- and right-sided.</span>
+
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    func : function</span>
+<span class="sd">        stimulus function to double</span>
+<span class="sd">    two_sided_params : Sequence[str]</span>
+<span class="sd">        names of parameters (kwargs) of func</span>
+<span class="sd">        that can be specified separately for each side of the display.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    function</span>
+<span class="sd">        two-sided version of stimulus function</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">two_sided_func</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;shape&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">visual_size</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;visual_size&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">ppd</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;ppd&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="c1"># Resolve resolution</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">shape</span><span class="p">,</span> <span class="n">visual_size</span><span class="p">,</span> <span class="n">ppd</span> <span class="o">=</span> <span class="n">resolution</span><span class="o">.</span><span class="n">resolve</span><span class="p">(</span>
+                <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">visual_size</span><span class="o">=</span><span class="n">visual_size</span><span class="p">,</span> <span class="n">ppd</span><span class="o">=</span><span class="n">ppd</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="n">resolution</span><span class="o">.</span><span class="n">TooManyUnknownsError</span><span class="p">:</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="n">resolution</span><span class="o">.</span><span class="n">validate_shape</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+            <span class="n">visual_size</span> <span class="o">=</span> <span class="n">resolution</span><span class="o">.</span><span class="n">validate_visual_size</span><span class="p">(</span><span class="n">visual_size</span><span class="p">)</span>
+            <span class="n">ppd</span> <span class="o">=</span> <span class="n">resolution</span><span class="o">.</span><span class="n">validate_ppd</span><span class="p">(</span><span class="n">ppd</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">visual_size</span><span class="o">.</span><span class="n">width</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">_visual_size</span> <span class="o">=</span> <span class="p">(</span><span class="n">visual_size</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="n">visual_size</span><span class="o">.</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">_visual_size</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">shape</span><span class="o">.</span><span class="n">width</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">shape</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="n">shape</span><span class="o">.</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">_shape</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Left side</span>
+        <span class="n">left_side_params</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">two_sided_params</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Sequence</span><span class="p">):</span>
+                <span class="n">left_side_params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">left_side_params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+        <span class="n">left</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span>
+            <span class="n">visual_size</span><span class="o">=</span><span class="n">_visual_size</span><span class="p">,</span>
+            <span class="n">ppd</span><span class="o">=</span><span class="n">ppd</span><span class="p">,</span>
+            <span class="n">shape</span><span class="o">=</span><span class="n">_shape</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">left_side_params</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Right side</span>
+        <span class="n">right_side_params</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">two_sided_params</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Sequence</span><span class="p">):</span>
+                <span class="n">right_side_params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">right_side_params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+        <span class="n">right</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span>
+            <span class="n">visual_size</span><span class="o">=</span><span class="n">_visual_size</span><span class="p">,</span>
+            <span class="n">ppd</span><span class="o">=</span><span class="n">ppd</span><span class="p">,</span>
+            <span class="n">shape</span><span class="o">=</span><span class="n">_shape</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">right_side_params</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">stim</span> <span class="o">=</span> <span class="n">stack_dicts</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;horizontal&quot;</span><span class="p">)</span>
+        <span class="n">stim</span><span class="p">[</span><span class="s2">&quot;shape&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">left</span><span class="p">[</span><span class="s2">&quot;shape&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="n">left</span><span class="p">[</span><span class="s2">&quot;shape&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">width</span> <span class="o">+</span> <span class="n">right</span><span class="p">[</span><span class="s2">&quot;shape&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">width</span>
+        <span class="n">stim</span><span class="p">[</span><span class="s2">&quot;visual_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">left</span><span class="p">[</span><span class="s2">&quot;visual_size&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">height</span><span class="p">,</span>
+            <span class="n">left</span><span class="p">[</span><span class="s2">&quot;visual_size&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">width</span> <span class="o">+</span> <span class="n">right</span><span class="p">[</span><span class="s2">&quot;visual_size&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">width</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">two_sided_params</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                <span class="n">stim</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">stim</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">left</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">right</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">stim</span>
+
+    <span class="k">return</span> <span class="n">two_sided_func</span></div>
+
+
+
+<div class="viewcode-block" id="permutate_params">
+<a class="viewcode-back" href="../../../reference/stimupy/utils/utils/index.html#stimupy.utils.permutate_params">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">permutate_params</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate all possible parameter combinations for a stimulus function.</span>
+
+<span class="sd">    Takes a dictionary of stimulus parameters, where each parameter value is</span>
+<span class="sd">    provided as a sequence (e.g., list, tuple). Returns a list of dictionaries,</span>
+<span class="sd">    each representing one unique combination of parameter values. This is</span>
+<span class="sd">    useful for systematically exploring a stimulus parameter space</span>
+<span class="sd">    (e.g., in 1D, 2D, or higher dimensions).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    params : dict</span>
+<span class="sd">        Dictionary mapping parameter names (str) to sequences of possible values.</span>
+<span class="sd">        Each sequence will be iterated over to form combinations.  </span>
+<span class="sd">        Example::</span>
+<span class="sd">            {</span>
+<span class="sd">                &quot;frequency&quot;: [1, 2, 4],</span>
+<span class="sd">                &quot;sigma&quot;: [0.05, 0.1]</span>
+<span class="sd">            }</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of dict</span>
+<span class="sd">        A list where each element is a dictionary mapping parameter names to</span>
+<span class="sd">        specific values, corresponding to one combination from the Cartesian</span>
+<span class="sd">        product of all provided sequences.  </span>
+<span class="sd">        Example output::</span>
+<span class="sd">            [</span>
+<span class="sd">                {&quot;frequency&quot;: 1, &quot;sigma&quot;: 0.05},</span>
+<span class="sd">                {&quot;frequency&quot;: 1, &quot;sigma&quot;: 0.1},</span>
+<span class="sd">                {&quot;frequency&quot;: 2, &quot;sigma&quot;: 0.05},</span>
+<span class="sd">                ...</span>
+<span class="sd">            ]</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If `params` is not a dictionary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;params needs to be a dict with all stimulus parameters&quot;</span><span class="p">)</span>
+
+    <span class="n">keys</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+    <span class="n">permutations_dicts</span> <span class="o">=</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="n">values</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">permutations_dicts</span></div>
+
+
+
+<div class="viewcode-block" id="create_stimspace_stimuli">
+<a class="viewcode-back" href="../../../reference/stimupy/utils/utils/index.html#stimupy.utils.create_stimspace_stimuli">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_stimspace_stimuli</span><span class="p">(</span><span class="n">stimulus_function</span><span class="p">,</span> <span class="n">permutations_dicts</span><span class="p">,</span> <span class="n">title_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate stimuli for all parameter combinations in a stimspace.</span>
+
+<span class="sd">    Given a callable `stimulus_function` and a list of parameter combinations</span>
+<span class="sd">    (as produced by [`utils.permutate_params`](utils.permutate_params)),</span>
+<span class="sd">    this function generates and returns all corresponding stimulus images.</span>
+<span class="sd">    Optionally, specific parameters can be included in the stimulus names</span>
+<span class="sd">    for easier identification in plots or debugging.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    stimulus_function : callable</span>
+<span class="sd">        A stimulus-generating function that accepts keyword arguments matching</span>
+<span class="sd">        the keys in `permutations_dicts`.</span>
+
+<span class="sd">    permutations_dicts : list of dict</span>
+<span class="sd">        A list of parameter dictionaries, each representing one combination of</span>
+<span class="sd">        stimulus parameters to be passed to `stimulus_function`.</span>
+<span class="sd">        Typically obtained from [`utils.permutate_params`](utils.permutate_params).</span>
+
+<span class="sd">    title_params : str or list of str, optional</span>
+<span class="sd">        Name(s) of parameters to display in the dictionary keys for the output.</span>
+<span class="sd">        - If a string, it is interpreted as a single parameter name.</span>
+<span class="sd">        - If a list, multiple parameter values will be included in the name.</span>
+<span class="sd">        - If `None` (default), keys will be simple integer indices.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        Dictionary mapping descriptive keys to the generated stimulus outputs.</span>
+<span class="sd">        Keys are either:</span>
+<span class="sd">        - String representations of selected `title_params` and their values.</span>
+<span class="sd">        - Sequential integer strings if `title_params` is `None`.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If `stimulus_function` is not callable.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from stimupy.stimuli.gabors import gabor</span>
+<span class="sd">    &gt;&gt;&gt; from stimupy.utils import permutate_params, create_stimspace_stimuli</span>
+<span class="sd">    &gt;&gt;&gt; params = {</span>
+<span class="sd">    ...     &quot;visual_size&quot;: [1.],</span>
+<span class="sd">    ...     &quot;ppd&quot;: [50],</span>
+<span class="sd">    ...     &quot;sigma&quot;: [0.1, 0.2],</span>
+<span class="sd">    ...     &quot;frequency&quot;: [2, 4]</span>
+<span class="sd">    ... }</span>
+<span class="sd">    &gt;&gt;&gt; permuted = permutate_params(params)</span>
+<span class="sd">    &gt;&gt;&gt; stimspace = create_stimspace_stimuli(</span>
+<span class="sd">    ...     stimulus_function=gabor,</span>
+<span class="sd">    ...     permutations_dicts=permuted,</span>
+<span class="sd">    ...     title_params=[&quot;sigma&quot;, &quot;frequency&quot;]</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; list(stimspace.keys())</span>
+<span class="sd">    [&#39;sigma=0.1 frequency=2 &#39;, &#39;sigma=0.1 frequency=4 &#39;, </span>
+<span class="sd">     &#39;sigma=0.2 frequency=2 &#39;, &#39;sigma=0.2 frequency=4 &#39;]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">stimulus_function</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;stimulus_function needs to be a function&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">title_params</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">title_params</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">title_params</span><span class="p">,</span>
+        <span class="p">]</span>
+
+    <span class="n">stimuli</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">permutations_dicts</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">title_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">for</span> <span class="n">tname</span> <span class="ow">in</span> <span class="n">title_params</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">tname</span><span class="p">],</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)):</span>
+                    <span class="n">ptname</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">tname</span><span class="p">],</span> <span class="mi">3</span><span class="p">)</span>
+                    <span class="n">key</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">tname</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">ptname</span><span class="si">}</span><span class="s2"> &quot;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">key</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">tname</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">p</span><span class="p">[</span><span class="n">tname</span><span class="p">]</span><span class="si">}</span><span class="s2"> &quot;</span>
+        <span class="n">stimuli</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">stimulus_function</span><span class="p">(</span>
+            <span class="o">**</span><span class="n">p</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">stimuli</span></div>
+
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Lynn Schmittwilken, Marianne Maertens, Joris Vincent
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

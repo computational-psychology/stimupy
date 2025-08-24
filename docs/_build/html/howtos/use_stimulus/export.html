@@ -1,0 +1,1145 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+            <link rel="manifest" href="../../site.webmanifest"/>
+            
+    <title>5.2. Save &amp; export stimuli &#8212; stimupy</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/myst_sphinx_gallery.css?v=92de7a9e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../_static/js/hoverxref.js"></script>
+    <script src="../../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../../_static/js/micromodal.min.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script src="../../_static/ServiceHandler.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5.3. Share &amp; distribute stimuli" href="share.html" />
+    <link rel="prev" title="5.1. Display stimuli / integrate in experiments" href="display.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="stimupy - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="stimupy - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    stimupy
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting started with stimupy</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../../getting_started/getting_started.html">Getting started</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/installation.html">1. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/create_stimulus.html">2. Creating a first stimulus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/find_stimulus.html">3. How to find a stimulus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/choose_variation.html">4. Choosing variations of stimulus (and parametrization)</a></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="use.html">5. How to use stimuli beyond stimupy</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="display.html">5.1. Display stimuli / integrate in experiments</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">5.2. Save &amp; export stimuli</a></li>
+<li class="toctree-l3"><a class="reference internal" href="share.html">5.3. Share &amp; distribute stimuli</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../howtos.html">How-to… (recipes)</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/find_stimulus.html">3. How to find a stimulus</a></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="use.html">5. How to use stimuli beyond stimupy</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="display.html">5.1. Display stimuli / integrate in experiments</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">5.2. Save &amp; export stimuli</a></li>
+<li class="toctree-l3"><a class="reference internal" href="share.html">5.3. Share &amp; distribute stimuli</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../replicate.html">Replicate existing stimuli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../color.html">Create color stimuli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stimspace.html">Create stimuli spanning a parameter space</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../compose.html">Compose stimuli from components</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../user_guide/user_guide.html">User guides</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/organization.html">How <code class="docutils literal notranslate"><span class="pre">stimupy</span></code> is organized</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/resolution.html">Image size and resolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/dimensions.html">Axes, orientations, and distance metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/stimuli_parametrizations.html">Exploring parameterized stimuli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide/masks.html">Masks</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../user_guide/stimulus_groups/groups.html">Special groups of stimuli</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../user_guide/stimulus_groups/waves.html">Periodic stimuli (waves, gratings, grids,…)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../user_guide/stimulus_groups/noise.html">Visual Noise</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../user_guide/stimulus_groups/lightness.html">Lightness stimuli</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/checkerboards/index.html">checkerboards</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/bullseyes/index.html">bullseyes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/cornsweets/index.html">cornsweets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/whites/index.html">whites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/benarys/index.html">benarys</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/todorovics/index.html">todorovics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/dungeons/index.html">dungeons</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/gratings/index.html">gratings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/RHS2007/index.html">RHS2007</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/white1981/index.html">white1981</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/white1985/index.html">white1985</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/domijan2015/index.html">domijan2015</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="../../user_guide/stimulus_groups/illusions.html">Geometric illusions</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../reference/index.html"><cite>stimupy</cite> API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../reference/stimupy/components/index.html">components</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/components/angulars/index.html">angulars</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/components/angulars/wedge.html">wedge</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/components/angulars/segments.html">segments</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/components/edges/index.html">edges</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/components/edges/step.html">step</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/components/edges/gaussian.html">gaussian</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/components/edges/cornsweet.html">cornsweet</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/components/frames/index.html">frames</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/components/frames/frames.html">frames</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/components/gaussians/index.html">gaussians</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/components/gaussians/gaussian.html">gaussian</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/components/lines/index.html">lines</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/components/lines/line.html">line</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/components/lines/dipole.html">dipole</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/components/lines/ellipse.html">ellipse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/components/lines/circle.html">circle</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/components/radials/index.html">radials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/components/radials/rings.html">rings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/components/radials/disc.html">disc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/components/radials/ring.html">ring</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/components/shapes/index.html">shapes</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/components/shapes/wedge.html">wedge</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/components/shapes/disc.html">disc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/components/shapes/ring.html">ring</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/components/shapes/rectangle.html">rectangle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/components/shapes/triangle.html">triangle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/components/shapes/cross.html">cross</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/components/shapes/parallelogram.html">parallelogram</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/components/shapes/ellipse.html">ellipse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/components/shapes/circle.html">circle</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/components/texts/index.html">texts</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/components/texts/text.html">text</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/components/waves/index.html">waves</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/components/waves/sine.html">sine</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/components/waves/square.html">square</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/components/waves/staircase.html">staircase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/components/waves/bessel.html">bessel</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../reference/stimupy/noises/index.html">noises</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/noises/binaries/index.html">binaries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/noises/binaries/binary.html">binary</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/noises/narrowbands/index.html">narrowbands</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/noises/narrowbands/narrowband.html">narrowband</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/noises/naturals/index.html">naturals</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/noises/naturals/one_over_f.html">one_over_f</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/noises/naturals/pink.html">pink</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/noises/naturals/brown.html">brown</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/noises/whites/index.html">whites</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/noises/whites/white.html">white</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../reference/stimupy/stimuli/index.html">stimuli</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/stimuli/benarys/index.html">benarys</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/benarys/cross_generalized.html">cross_generalized</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/benarys/cross_rectangles.html">cross_rectangles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/benarys/cross_triangles.html">cross_triangles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/benarys/todorovic_generalized.html">todorovic_generalized</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/benarys/todorovic_rectangles.html">todorovic_rectangles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/benarys/todorovic_triangles.html">todorovic_triangles</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/stimuli/bullseyes/index.html">bullseyes</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/bullseyes/circular.html">circular</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/bullseyes/circular_generalized.html">circular_generalized</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/bullseyes/rectangular.html">rectangular</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/bullseyes/rectangular_generalized.html">rectangular_generalized</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/stimuli/checkerboards/index.html">checkerboards</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/checkerboards/checkerboard.html">checkerboard</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/checkerboards/contrast_contrast.html">contrast_contrast</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/stimuli/cornsweets/index.html">cornsweets</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/cornsweets/cornsweet.html">cornsweet</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/stimuli/cubes/index.html">cubes</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/cubes/varying_cells.html">varying_cells</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/cubes/cube.html">cube</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/stimuli/delboeufs/index.html">delboeufs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/delboeufs/delboeuf.html">delboeuf</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/stimuli/dungeons/index.html">dungeons</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/dungeons/dungeon.html">dungeon</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/stimuli/edges/index.html">edges</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/edges/step.html">step</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/edges/gaussian.html">gaussian</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/edges/cornsweet.html">cornsweet</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/stimuli/gabors/index.html">gabors</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/gabors/gabor.html">gabor</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/stimuli/gratings/index.html">gratings</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/gratings/sinewave.html">sinewave</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/gratings/squarewave.html">squarewave</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/gratings/on_uniform.html">on_uniform</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/gratings/on_grating_masked.html">on_grating_masked</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/gratings/on_grating.html">on_grating</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/gratings/phase_shifted.html">phase_shifted</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/gratings/grating_induction.html">grating_induction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/gratings/grating_induction_blur.html">grating_induction_blur</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/stimuli/hermanns/index.html">hermanns</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/hermanns/grid.html">grid</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/stimuli/mondrians/index.html">mondrians</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/mondrians/mondrian.html">mondrian</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/mondrians/corrugated_mondrian.html">corrugated_mondrian</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/stimuli/mueller_lyers/index.html">mueller_lyers</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/mueller_lyers/mueller_lyer.html">mueller_lyer</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/stimuli/pinwheels/index.html">pinwheels</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/pinwheels/pinwheel.html">pinwheel</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/stimuli/plaids/index.html">plaids</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/plaids/gabors.html">gabors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/plaids/sine_waves.html">sine_waves</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/plaids/square_waves.html">square_waves</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/stimuli/ponzos/index.html">ponzos</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/ponzos/ponzo.html">ponzo</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/stimuli/rings/index.html">rings</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/rings/circular.html">circular</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/rings/rectangular.html">rectangular</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/rings/circular_generalized.html">circular_generalized</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/rings/rectangular_generalized.html">rectangular_generalized</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/stimuli/sbcs/index.html">sbcs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/sbcs/generalized.html">generalized</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/sbcs/basic.html">basic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/sbcs/square.html">square</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/sbcs/circular.html">circular</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/sbcs/with_dots.html">with_dots</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/sbcs/dotted.html">dotted</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/stimuli/todorovics/index.html">todorovics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/todorovics/rectangle_generalized.html">rectangle_generalized</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/todorovics/rectangle.html">rectangle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/todorovics/cross_generalized.html">cross_generalized</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/todorovics/cross.html">cross</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/todorovics/equal.html">equal</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/stimuli/waves/index.html">waves</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/waves/sine_linear.html">sine_linear</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/waves/square_linear.html">square_linear</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/waves/staircase_linear.html">staircase_linear</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/waves/sine_radial.html">sine_radial</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/waves/square_radial.html">square_radial</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/waves/staircase_radial.html">staircase_radial</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/waves/sine_rectilinear.html">sine_rectilinear</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/waves/square_rectilinear.html">square_rectilinear</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/waves/staircase_rectilinear.html">staircase_rectilinear</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/waves/sine_angular.html">sine_angular</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/waves/square_angular.html">square_angular</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/waves/staircase_angular.html">staircase_angular</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/stimuli/wedding_cakes/index.html">wedding_cakes</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/wedding_cakes/wedding_cake.html">wedding_cake</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/stimuli/whites/index.html">whites</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/whites/angular.html">angular</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/whites/radial.html">radial</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/whites/wedding_cake.html">wedding_cake</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/whites/generalized.html">generalized</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/whites/white.html">white</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/whites/white_two_rows.html">white_two_rows</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/whites/anderson.html">anderson</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/whites/howe.html">howe</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/stimuli/whites/yazdanbakhsh.html">yazdanbakhsh</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../reference/stimupy/papers/index.html">papers</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/papers/RHS2007/index.html">RHS2007</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/RHS2007/WE_thick.html">WE_thick</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/RHS2007/WE_thin_wide.html">WE_thin_wide</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/RHS2007/WE_dual.html">WE_dual</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/RHS2007/WE_anderson.html">WE_anderson</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/RHS2007/WE_howe.html">WE_howe</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/RHS2007/WE_zigzag.html">WE_zigzag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/RHS2007/WE_radial_thick_small.html">WE_radial_thick_small</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/RHS2007/WE_radial_thick.html">WE_radial_thick</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/RHS2007/WE_radial_thin_small.html">WE_radial_thin_small</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/RHS2007/WE_radial_thin.html">WE_radial_thin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/RHS2007/WE_circular1.html">WE_circular1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/RHS2007/WE_circular05.html">WE_circular05</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/RHS2007/WE_circular025.html">WE_circular025</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/RHS2007/grating_induction.html">grating_induction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/RHS2007/sbc_large.html">sbc_large</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/RHS2007/sbc_small.html">sbc_small</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/RHS2007/todorovic_equal.html">todorovic_equal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/RHS2007/todorovic_in_large.html">todorovic_in_large</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/RHS2007/todorovic_in_small.html">todorovic_in_small</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/RHS2007/todorovic_out.html">todorovic_out</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/RHS2007/checkerboard_016.html">checkerboard_016</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/RHS2007/checkerboard_094.html">checkerboard_094</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/RHS2007/checkerboard_21.html">checkerboard_21</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/RHS2007/corrugated_mondrian.html">corrugated_mondrian</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/RHS2007/benary_cross.html">benary_cross</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/RHS2007/todorovic_benary1_2.html">todorovic_benary1_2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/RHS2007/todorovic_benary3_4.html">todorovic_benary3_4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/RHS2007/todorovic_benary1_2_3_4.html">todorovic_benary1_2_3_4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/RHS2007/bullseye_thin.html">bullseye_thin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/RHS2007/bullseye_thick.html">bullseye_thick</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/papers/bindmann2004/index.html">bindmann2004</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/bindmann2004/bullseye_thin_gw45_gb31.html">bullseye_thin_gw45_gb31</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/bindmann2004/bullseye_thin_gw45_gb38.html">bullseye_thin_gw45_gb38</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/bindmann2004/bullseye_thin_gw45_gb45.html">bullseye_thin_gw45_gb45</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/bindmann2004/bullseye_thin_gw45_gb52.html">bullseye_thin_gw45_gb52</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/bindmann2004/bullseye_thin_gw45_gb59.html">bullseye_thin_gw45_gb59</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/bindmann2004/bullseye_thin_gw60_gb46.html">bullseye_thin_gw60_gb46</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/bindmann2004/bullseye_thin_gw60_gb53.html">bullseye_thin_gw60_gb53</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/bindmann2004/bullseye_thin_gw60_gb60.html">bullseye_thin_gw60_gb60</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/bindmann2004/bullseye_thin_gw60_gb67.html">bullseye_thin_gw60_gb67</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/bindmann2004/bullseye_thin_gw60_gb74.html">bullseye_thin_gw60_gb74</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/bindmann2004/bullseye_thin_gw75_gb61.html">bullseye_thin_gw75_gb61</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/bindmann2004/bullseye_thin_gw75_gb68.html">bullseye_thin_gw75_gb68</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/bindmann2004/bullseye_thin_gw75_gb75.html">bullseye_thin_gw75_gb75</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/bindmann2004/bullseye_thin_gw75_gb82.html">bullseye_thin_gw75_gb82</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/bindmann2004/bullseye_thin_gw75_gb89.html">bullseye_thin_gw75_gb89</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/bindmann2004/bullseye_thick_gw45_gb31.html">bullseye_thick_gw45_gb31</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/bindmann2004/bullseye_thick_gw45_gb38.html">bullseye_thick_gw45_gb38</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/bindmann2004/bullseye_thick_gw45_gb45.html">bullseye_thick_gw45_gb45</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/bindmann2004/bullseye_thick_gw45_gb52.html">bullseye_thick_gw45_gb52</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/bindmann2004/bullseye_thick_gw45_gb59.html">bullseye_thick_gw45_gb59</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/bindmann2004/bullseye_thick_gw60_gb46.html">bullseye_thick_gw60_gb46</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/bindmann2004/bullseye_thick_gw60_gb53.html">bullseye_thick_gw60_gb53</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/bindmann2004/bullseye_thick_gw60_gb60.html">bullseye_thick_gw60_gb60</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/bindmann2004/bullseye_thick_gw60_gb67.html">bullseye_thick_gw60_gb67</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/bindmann2004/bullseye_thick_gw60_gb74.html">bullseye_thick_gw60_gb74</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/bindmann2004/bullseye_thick_gw75_gb61.html">bullseye_thick_gw75_gb61</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/bindmann2004/bullseye_thick_gw75_gb68.html">bullseye_thick_gw75_gb68</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/bindmann2004/bullseye_thick_gw75_gb75.html">bullseye_thick_gw75_gb75</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/bindmann2004/bullseye_thick_gw75_gb82.html">bullseye_thick_gw75_gb82</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/bindmann2004/bullseye_thick_gw75_gb89.html">bullseye_thick_gw75_gb89</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/papers/domijan2015/index.html">domijan2015</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/domijan2015/dungeon.html">dungeon</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/domijan2015/cube.html">cube</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/domijan2015/grating.html">grating</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/domijan2015/rings.html">rings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/domijan2015/bullseye.html">bullseye</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/domijan2015/simultaneous_brightness_contrast.html">simultaneous_brightness_contrast</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/domijan2015/white.html">white</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/domijan2015/benary.html">benary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/domijan2015/todorovic.html">todorovic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/domijan2015/checkerboard_contrast_contrast.html">checkerboard_contrast_contrast</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/domijan2015/checkerboard.html">checkerboard</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/domijan2015/checkerboard_extended.html">checkerboard_extended</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/domijan2015/white_yazdanbakhsh.html">white_yazdanbakhsh</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/domijan2015/white_anderson.html">white_anderson</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/domijan2015/white_howe.html">white_howe</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/papers/example/index.html">example</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/example/my_bullseye.html">my_bullseye</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/example/my_inverse_bullseye.html">my_inverse_bullseye</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/index.html">modelfest</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/GaborPatch1.html">GaborPatch1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/GaborPatch2.html">GaborPatch2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/GaborPatch3.html">GaborPatch3</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/GaborPatch4.html">GaborPatch4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/GaborPatch5.html">GaborPatch5</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/GaborPatch6.html">GaborPatch6</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/GaborPatch7.html">GaborPatch7</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/GaborPatch8.html">GaborPatch8</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/GaborPatch9.html">GaborPatch9</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/GaborPatch10.html">GaborPatch10</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/GaborPatch11.html">GaborPatch11</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/GaborPatch12.html">GaborPatch12</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/GaborPatch13.html">GaborPatch13</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/GaborPatch14.html">GaborPatch14</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/ElongatedGabor15.html">ElongatedGabor15</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/ElongatedGabor16.html">ElongatedGabor16</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/ElongatedGabor17.html">ElongatedGabor17</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/Baguette18.html">Baguette18</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/Baguette19.html">Baguette19</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/Baguette20.html">Baguette20</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/Baguette21.html">Baguette21</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/Subthreshold22.html">Subthreshold22</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/Subthreshold23.html">Subthreshold23</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/Subthreshold24.html">Subthreshold24</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/Subthreshold25.html">Subthreshold25</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/Gaussians26.html">Gaussians26</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/Gaussians27.html">Gaussians27</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/Gaussians28.html">Gaussians28</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/Gaussians29.html">Gaussians29</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/Edge30.html">Edge30</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/Line31.html">Line31</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/Dipole32.html">Dipole32</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/GaborString33.html">GaborString33</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/GaborString34.html">GaborString34</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/Noise35.html">Noise35</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/Orientation36.html">Orientation36</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/Orientation37.html">Orientation37</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/Plaids38.html">Plaids38</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/Plaids39.html">Plaids39</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/Disk40.html">Disk40</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/Bessel41.html">Bessel41</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/Checkerboard42.html">Checkerboard42</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/modelfest/NaturalScene43.html">NaturalScene43</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/papers/murray2020/index.html">murray2020</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/murray2020/argyle.html">argyle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/murray2020/argyle_control.html">argyle_control</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/murray2020/argyle_long.html">argyle_long</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/murray2020/snake.html">snake</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/murray2020/snake_control.html">snake_control</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/murray2020/koffka_adelson.html">koffka_adelson</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/murray2020/koffka_broken.html">koffka_broken</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/murray2020/koffka_connected.html">koffka_connected</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/murray2020/checkassim.html">checkassim</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/murray2020/simcon.html">simcon</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/murray2020/simcon_articulated.html">simcon_articulated</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/murray2020/white.html">white</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/papers/white1981/index.html">white1981</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/white1981/square_white.html">square_white</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/white1981/square_black.html">square_black</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/white1981/grating_white_white.html">grating_white_white</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/white1981/grating_white_black.html">grating_white_black</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/white1981/grating_black_white.html">grating_black_white</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/white1981/grating_black_black.html">grating_black_black</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/white1981/grating_white_in.html">grating_white_in</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/white1981/grating_black_in.html">grating_black_in</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/white1981/grating_white_out.html">grating_white_out</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/white1981/grating_black_out.html">grating_black_out</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/white1981/grating_white_orthogonal.html">grating_white_orthogonal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/white1981/grating_black_orthogonal.html">grating_black_orthogonal</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../reference/stimupy/papers/white1985/index.html">white1985</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/white1985/wide_0phase.html">wide_0phase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/white1985/wide_36phase.html">wide_36phase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/white1985/wide_72phase.html">wide_72phase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/white1985/wide_108phase.html">wide_108phase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/white1985/wide_144phase.html">wide_144phase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/white1985/wide_180phase.html">wide_180phase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/white1985/square_0phase.html">square_0phase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/white1985/square_36phase.html">square_36phase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/white1985/square_72phase.html">square_72phase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/white1985/square_108phase.html">square_108phase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/white1985/square_144phase.html">square_144phase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/stimupy/papers/white1985/square_180phase.html">square_180phase</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/stimupy/utils/index.html">utils</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/demos/index.html">Interactive Demos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Get in touch</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/cite.html">Citing stimupy</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../contributing/get_in_touch.html">Getting in touch</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference external" href="https://github.com/computational-psychology/stimupy/issues/new/choose">Ask a question</a></li>
+<li class="toctree-l2"><a class="reference external" href="https://github.com/computational-psychology/stimupy/issues/new?assignees=&amp;labels=bug&amp;template=bug_report.md">Report a bug</a></li>
+<li class="toctree-l2"><a class="reference external" href="https://github.com/computational-psychology/stimupy/issues/new?assignees=&amp;labels=documentation&amp;template=documentation-change.md">Propose an edit to the documentation</a></li>
+<li class="toctree-l2"><a class="reference external" href="https://github.com/computational-psychology/stimupy/issues/new?assignees=&amp;labels=enhancement&amp;template=stimulus-request.md&amp;title=Add+%3CSTIMULUS%3E">Suggest a stimulus function</a></li>
+<li class="toctree-l2"><a class="reference external" href="https://github.com/computational-psychology/stimupy/issues/new?assignees=&amp;labels=enhancement&amp;template=stimulus-set-request.md&amp;title=Add+set+%3CCITATION%3E">Suggest a set of stimuli</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../contributing/contribute.html">Contribute to <code class="docutils literal notranslate"><span class="pre">stimupy</span></code></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing/dev_environ.html">Setting up a development environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing/docs.html">Contribute documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing/sets.html">Contribrute a stimulus (set)</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/computational-psychology/stimupy" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/computational-psychology/stimupy/issues/new?title=Issue%20on%20page%20%2Fhowtos/use_stimulus/export.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/howtos/use_stimulus/export.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Save & export stimuli</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fileformats">5.2.1. Fileformats</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#python-pickle">5.2.1.1. Python <code class="docutils literal notranslate"><span class="pre">.pickle</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#numpy-npy">5.2.1.2. Numpy <code class="docutils literal notranslate"><span class="pre">.npy</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#json-json">5.2.1.3. JSON <code class="docutils literal notranslate"><span class="pre">.json</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#matlab-mat">5.2.1.4. MATLAB <code class="docutils literal notranslate"><span class="pre">.mat</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#image-formats">5.2.1.5. Image formats</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exporting-only-parameters">5.2.2. Exporting only parameters</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="save-export-stimuli">
+<h1><a class="toc-backref" href="#id1" role="doc-backlink"><span class="section-number">5.2. </span>Save &amp; export stimuli</a><a class="headerlink" href="#save-export-stimuli" title="Link to this heading">#</a></h1>
+<p>Stimuli created with <code class="docutils literal notranslate"><span class="pre">stimupy</span></code> should not be locked in
+to any specific programming environment.
+As such, you can save and export stimuli to various formats.
+Some formats support only saving the image-array
+without any metadata –
+others support saving the whole stimulus-<code class="docutils literal notranslate"><span class="pre">dict</span></code>.</p>
+<nav class="contents" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#save-export-stimuli" id="id1">Save &amp; export stimuli</a></p>
+<ul>
+<li><p><a class="reference internal" href="#fileformats" id="id2">Fileformats</a></p>
+<ul>
+<li><p><a class="reference internal" href="#python-pickle" id="id3">Python <code class="docutils literal notranslate"><span class="pre">.pickle</span></code></a></p></li>
+<li><p><a class="reference internal" href="#numpy-npy" id="id4">Numpy <code class="docutils literal notranslate"><span class="pre">.npy</span></code></a></p></li>
+<li><p><a class="reference internal" href="#json-json" id="id5">JSON <code class="docutils literal notranslate"><span class="pre">.json</span></code></a></p></li>
+<li><p><a class="reference internal" href="#matlab-mat" id="id6">MATLAB <code class="docutils literal notranslate"><span class="pre">.mat</span></code></a></p></li>
+<li><p><a class="reference internal" href="#image-formats" id="id7">Image formats</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#exporting-only-parameters" id="id8">Exporting only parameters</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<section id="fileformats">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink"><span class="section-number">5.2.1. </span>Fileformats</a><a class="headerlink" href="#fileformats" title="Link to this heading">#</a></h2>
+<section id="python-pickle">
+<h3><a class="toc-backref" href="#id3" role="doc-backlink"><span class="section-number">5.2.1.1. </span>Python <code class="docutils literal notranslate"><span class="pre">.pickle</span></code></a><a class="headerlink" href="#python-pickle" title="Link to this heading">#</a></h3>
+<p>The Python standard library provides functionality for
+saving Python objects to a binary file format called <a class="hxr-hoverxref hxr-tooltip reference external" href="https://docs.python.org/3/library/pickle.html#module-pickle" title="(in Python v3.13)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pickle</span></code></a>.
+This format is useful for quick, short-term storage of data,
+although <a class="reference external" href="https://nedbatchelder.com/blog/202006/pickles_nine_flaws.html">there are some concerns</a>
+about using it for long-term storage and sharing.
+<code class="docutils literal notranslate"><span class="pre">stimupy</span></code> stimuli can be saved to this format,
+either the whole stimulus-dict (<a class="hxr-hoverxref hxr-tooltip reference internal" href="../../reference/stimupy/utils/export/to_pickle.html#stimupy.utils.export.to_pickle" title="stimupy.utils.export.to_pickle"><code class="xref py py-func docutils literal notranslate"><span class="pre">stimupy.utils.export.to_pickle()</span></code></a>)
+or just the bare image-array (<a class="hxr-hoverxref hxr-tooltip reference internal" href="../../reference/stimupy/utils/export/index.html#stimupy.utils.export.array_to_pickle" title="stimupy.utils.export.array_to_pickle"><code class="xref py py-func docutils literal notranslate"><span class="pre">stimupy.utils.export.array_to_pickle()</span></code></a>).</p>
+</section>
+<section id="numpy-npy">
+<h3><a class="toc-backref" href="#id4" role="doc-backlink"><span class="section-number">5.2.1.2. </span>Numpy <code class="docutils literal notranslate"><span class="pre">.npy</span></code></a><a class="headerlink" href="#numpy-npy" title="Link to this heading">#</a></h3>
+<p>The stimulus image-information of <code class="docutils literal notranslate"><span class="pre">stimupy</span></code> stimuli
+are stored in <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>s.
+NumPy provides an efficient fileformat for saving these arrays:
+<a class="reference external" href="https://numpy.org/doc/stable/user/absolute_beginners.html#how-to-save-and-load-numpy-objects"><code class="docutils literal notranslate"><span class="pre">.npy</span></code></a>.
+<code class="docutils literal notranslate"><span class="pre">stimupy</span></code> stimuli can be saved to this format,
+but only the bare image-array (<a class="hxr-hoverxref hxr-tooltip reference internal" href="../../reference/stimupy/utils/export/index.html#stimupy.utils.export.array_to_npy" title="stimupy.utils.export.array_to_npy"><code class="xref py py-func docutils literal notranslate"><span class="pre">stimupy.utils.export.array_to_npy()</span></code></a>).</p>
+</section>
+<section id="json-json">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink"><span class="section-number">5.2.1.3. </span>JSON <code class="docutils literal notranslate"><span class="pre">.json</span></code></a><a class="headerlink" href="#json-json" title="Link to this heading">#</a></h3>
+<p><a class="reference external" href="https://www.wikiwand.com/en/JSON">JavaScript Object Notation (JSON) files</a>
+are a human- and machine-readable plain-text structured fileformat.
+It is particularly well-suited for storing Python data structures
+since JSON syntax is very similar to Python syntax for lists and dicts.
+<code class="docutils literal notranslate"><span class="pre">stimupy</span></code> stimuli can be saved to this format,
+as the whole stimulus-dict (<a class="hxr-hoverxref hxr-tooltip reference internal" href="../../reference/stimupy/utils/export/to_json.html#stimupy.utils.export.to_json" title="stimupy.utils.export.to_json"><code class="xref py py-func docutils literal notranslate"><span class="pre">stimupy.utils.export.to_json()</span></code></a>)</p>
+</section>
+<section id="matlab-mat">
+<h3><a class="toc-backref" href="#id6" role="doc-backlink"><span class="section-number">5.2.1.4. </span>MATLAB <code class="docutils literal notranslate"><span class="pre">.mat</span></code></a><a class="headerlink" href="#matlab-mat" title="Link to this heading">#</a></h3>
+<p>To use stimuli in a MATLAB environment,
+e.g., in a PsychToolBox-based experiment,
+or a computational model that is (only) implemented in MATLAB,
+the stimuli have to be exported to a format that MATLAB can interpret.
+MATLAB does provide (some) support for JSON files
+but <code class="docutils literal notranslate"><span class="pre">stimupy</span></code> can also export directly to MATLAB’s native <code class="docutils literal notranslate"><span class="pre">.mat</span></code> fileformat.
+<code class="docutils literal notranslate"><span class="pre">stimupy</span></code> stimuli can be saved to this format,
+either the whole stimulus-dict (<a class="hxr-hoverxref hxr-tooltip reference internal" href="../../reference/stimupy/utils/export/to_mat.html#stimupy.utils.export.to_mat" title="stimupy.utils.export.to_mat"><code class="xref py py-func docutils literal notranslate"><span class="pre">stimupy.utils.export.to_mat()</span></code></a>)
+or just the bare image-array (<a class="hxr-hoverxref hxr-tooltip reference internal" href="../../reference/stimupy/utils/export/index.html#stimupy.utils.export.array_to_mat" title="stimupy.utils.export.array_to_mat"><code class="xref py py-func docutils literal notranslate"><span class="pre">stimupy.utils.export.array_to_mat()</span></code></a>).</p>
+</section>
+<section id="image-formats">
+<h3><a class="toc-backref" href="#id7" role="doc-backlink"><span class="section-number">5.2.1.5. </span>Image formats</a><a class="headerlink" href="#image-formats" title="Link to this heading">#</a></h3>
+<p>For many uses, it can be convenient to just save the stimulus-array (or the mask) as an image.
+Hence, <code class="docutils literal notranslate"><span class="pre">stimupy</span></code> provides a function to save/export bare image-arrays to common image formats (<code class="docutils literal notranslate"><span class="pre">.png</span></code>, <code class="docutils literal notranslate"><span class="pre">.jpeg</span></code>, etc).
+Alternatively, there exist multiple image-processing libraries for Python which allow for further image processing and exporting,
+e.g., <a class="reference external" href="https://pillow.readthedocs.io/en/stable/">Pillow/PIL</a>
+or <a class="reference external" href="https://github.com/opencv/opencv-python">OpenCV</a></p>
+</section>
+</section>
+<section id="exporting-only-parameters">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink"><span class="section-number">5.2.2. </span>Exporting only parameters</a><a class="headerlink" href="#exporting-only-parameters" title="Link to this heading">#</a></h2>
+<p>In some cases, you may wish to save/export only the stimulus parameters
+– for a given version of <code class="docutils literal notranslate"><span class="pre">stimupy</span></code>,
+these parameters should reproduce the exact same stimulus every time.
+For stimuli created using just <code class="docutils literal notranslate"><span class="pre">stimupy</span></code> functions,
+the output stimulus-<code class="docutils literal notranslate"><span class="pre">dict</span></code> contains not just the <code class="docutils literal notranslate"><span class="pre">img</span></code>-array
+but also all parameters for creating that stimulus.
+Thus, taking the <code class="docutils literal notranslate"><span class="pre">img</span></code> (and any <code class="docutils literal notranslate"><span class="pre">mask</span></code>s) out of this dict
+creates a <code class="docutils literal notranslate"><span class="pre">dict</span></code> with just the parameters.
+Since <code class="docutils literal notranslate"><span class="pre">dict</span></code>s can be <em>expanded</em> in function calls,
+this parameter-<code class="docutils literal notranslate"><span class="pre">dict</span></code> can then be used to recreate the stimulus:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a stimulus-dict</span>
+<span class="n">stim</span> <span class="o">=</span> <span class="n">stimuli</span><span class="o">.</span><span class="n">some_stim_func</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+
+<span class="c1"># &#39;strip&#39; the dict of any key-value pairs that are not parameters to the given function</span>
+<span class="n">stim_params</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">strip_dict</span><span class="p">(</span><span class="n">stim</span><span class="p">,</span> <span class="n">stimuli</span><span class="o">.</span><span class="n">some_stim_func</span><span class="p">)</span>
+
+<span class="c1"># reproduce the stimulus-dict by expanding stim_params</span>
+<span class="c1"># reproduced_stim should be identical to stim</span>
+<span class="n">reproduced_stim</span> <span class="o">=</span> <span class="n">stimuli</span><span class="o">.</span><span class="n">some_stim_func</span><span class="p">(</span><span class="o">**</span><span class="n">stim_params</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To share only parameter values of an existing <code class="docutils literal notranslate"><span class="pre">stimupy</span></code> function
+we recommend this approach of <code class="docutils literal notranslate"><span class="pre">strip</span></code>ping the <code class="docutils literal notranslate"><span class="pre">dict</span></code>
+and then exporting this <code class="docutils literal notranslate"><span class="pre">strip</span></code>ed <code class="docutils literal notranslate"><span class="pre">dict</span></code> of params
+to a <code class="docutils literal notranslate"><span class="pre">.json</span></code> file.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./howtos/use_stimulus"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="display.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">5.1. </span>Display stimuli / integrate in experiments</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="share.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">5.3. </span>Share &amp; distribute stimuli</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fileformats">5.2.1. Fileformats</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#python-pickle">5.2.1.1. Python <code class="docutils literal notranslate"><span class="pre">.pickle</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#numpy-npy">5.2.1.2. Numpy <code class="docutils literal notranslate"><span class="pre">.npy</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#json-json">5.2.1.3. JSON <code class="docutils literal notranslate"><span class="pre">.json</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#matlab-mat">5.2.1.4. MATLAB <code class="docutils literal notranslate"><span class="pre">.mat</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#image-formats">5.2.1.5. Image formats</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exporting-only-parameters">5.2.2. Exporting only parameters</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Lynn Schmittwilken, Marianne Maertens, Joris Vincent
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

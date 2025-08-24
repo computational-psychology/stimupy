@@ -53,7 +53,10 @@ coverage.xml
 *.log
 
 # Sphinx documentation
-docs/_build/
+!docs/_build/
+docs/_build/jupyter_execute
+!docs/reference/*
+!docs/reference/demos/
 
 # PyBuilder
 target/
@@ -69,8 +72,6 @@ target/
 **/.ipynb_checkpoints/
 **/.ipynb_checkpoints/
 
-docs/reference/*
-!docs/reference/demos/
 
 # Modelfest dataset for easy comparison / testing
 **/modelfest/

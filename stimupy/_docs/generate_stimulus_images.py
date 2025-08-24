@@ -217,7 +217,7 @@ def main():
     """Main function to generate all stimulus images."""
     # Create output directory
     output_dir = Path(__file__).parents[2] / "docs" / "_static" / "generated_stimuli"
-    output_dir.mkdir(exist_ok=True)
+    output_dir.mkdir(exist_ok=True, parents=True)
 
     print(f"Output directory: {output_dir}")
 
