@@ -59,7 +59,7 @@ class SineRadialParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.waves import sine_radial
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive sine_radial
 sine_radial_params = SineRadialParams()

@@ -64,7 +64,7 @@ class WedgeParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.components.angulars import wedge
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive wedge
 wedge_params = WedgeParams()

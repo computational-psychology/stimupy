@@ -58,7 +58,7 @@ class CubeParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.cubes import cube
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive cube
 cube_params = CubeParams()

@@ -63,7 +63,7 @@ class PinwheelParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.pinwheels import pinwheel
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive pinwheel
 pinwheel_params = PinwheelParams()

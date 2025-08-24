@@ -61,7 +61,7 @@ class StaircaseParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.components.waves import staircase
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive staircase
 staircase_params = StaircaseParams()

@@ -71,7 +71,7 @@ class ContrastContrastParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.checkerboards import contrast_contrast
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive checkerboard
 contrast_contrast_params = ContrastContrastParams()

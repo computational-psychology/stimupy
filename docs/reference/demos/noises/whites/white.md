@@ -49,7 +49,7 @@ class WhiteParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.noises.whites import white
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive white
 white_params = WhiteParams()

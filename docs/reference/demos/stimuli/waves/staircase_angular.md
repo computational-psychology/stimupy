@@ -55,7 +55,7 @@ class StaircaseAngularParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.waves import staircase_angular
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive staircase_angular
 staircase_angular_params = StaircaseAngularParams()

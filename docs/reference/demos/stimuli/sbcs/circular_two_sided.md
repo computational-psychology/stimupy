@@ -58,7 +58,7 @@ class CircularTwoSidedParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.sbcs import circular_two_sided
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive circular_two_sided
 circular_two_sided_params = CircularTwoSidedParams()

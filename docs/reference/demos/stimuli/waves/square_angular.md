@@ -55,7 +55,7 @@ class SquareAngularParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.waves import square_angular
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive square_angular
 square_angular_params = SquareAngularParams()

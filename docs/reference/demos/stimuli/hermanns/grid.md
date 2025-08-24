@@ -55,7 +55,7 @@ class HermannParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.hermanns import grid
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive hermann grid
 hermann_params = HermannParams()

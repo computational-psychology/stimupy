@@ -59,7 +59,7 @@ class StaircaseRadialParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.waves import staircase_radial
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive staircase_radial
 staircase_radial_params = StaircaseRadialParams()

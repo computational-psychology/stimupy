@@ -55,7 +55,7 @@ class TodorovicTrianglesParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.benarys import todorovic_triangles
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive todorovic_triangles
 todorovic_triangles_params = TodorovicTrianglesParams()

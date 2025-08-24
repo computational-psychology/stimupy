@@ -60,7 +60,7 @@ class DottedParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.sbcs import dotted
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive dotted
 dotted_params = DottedParams()

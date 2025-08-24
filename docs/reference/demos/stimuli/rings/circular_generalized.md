@@ -61,7 +61,7 @@ class CircularGeneralizedParams(param.Parameterized):
 
 from stimupy.stimuli.rings import circular_generalized
 # Add the _static directory to the path to import display_stimulus
-sys.path.append(str((Path().resolve().parents[3] / "_static")))from display_stimulus import InteractiveStimDisplay
+sys.path.append(str((Path().resolve().parents[3] / "_static")))from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive circular_generalized
 circular_generalized_params = CircularGeneralizedParams()

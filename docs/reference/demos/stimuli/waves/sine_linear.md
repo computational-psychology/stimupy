@@ -57,7 +57,7 @@ class SineLinearParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.waves import sine_linear
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive sine_linear
 sine_linear_params = SineLinearParams()

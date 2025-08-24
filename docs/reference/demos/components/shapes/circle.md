@@ -54,7 +54,7 @@ class ShapeCircleParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.components.shapes import circle
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive circle
 circle_params = ShapeCircleParams()

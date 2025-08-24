@@ -54,7 +54,7 @@ class ParallelogramParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.components.shapes import parallelogram
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive parallelogram
 parallelogram_params = ParallelogramParams()

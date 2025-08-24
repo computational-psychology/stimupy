@@ -59,7 +59,7 @@ class DelboeufTwoSidedParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.delboeufs import two_sided
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive two_sided
 two_sided_params = DelboeufTwoSidedParams()

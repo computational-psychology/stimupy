@@ -62,7 +62,7 @@ class HoweParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.whites import howe
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive howe
 howe_params = HoweParams()

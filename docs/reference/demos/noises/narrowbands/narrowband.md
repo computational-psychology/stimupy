@@ -53,7 +53,7 @@ class NarrowbandParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.noises.narrowbands import narrowband
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive narrowband
 narrowband_params = NarrowbandParams()

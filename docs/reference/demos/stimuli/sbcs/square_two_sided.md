@@ -61,7 +61,7 @@ class SquareTwoSidedParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.sbcs import square_two_sided
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive square_two_sided
 square_two_sided_params = SquareTwoSidedParams()

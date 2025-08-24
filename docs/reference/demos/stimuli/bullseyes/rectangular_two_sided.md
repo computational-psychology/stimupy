@@ -58,7 +58,7 @@ class RectangularTwoSidedParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.bullseyes import rectangular_two_sided
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive rectangular_two_sided
 rectangular_two_sided_params = RectangularTwoSidedParams()

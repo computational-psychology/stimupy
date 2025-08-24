@@ -55,7 +55,7 @@ class CrossRectanglesParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.benarys import cross_rectangles
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive cross_rectangles
 cross_rectangles_params = CrossRectanglesParams()

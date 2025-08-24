@@ -62,7 +62,7 @@ class TextParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.components.texts import text
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive text
 text_params = TextParams()

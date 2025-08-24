@@ -58,7 +58,7 @@ class CircularGeneralizedParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.bullseyes import circular_generalized
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive circular_generalized
 circular_generalized_params = CircularGeneralizedParams()

@@ -57,7 +57,7 @@ class RingsParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.components.radials import rings
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive rings
 rings_params = RingsParams()

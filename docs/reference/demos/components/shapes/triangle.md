@@ -55,7 +55,7 @@ class TriangleParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.components.shapes import triangle
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive triangle
 triangle_params = TriangleParams()

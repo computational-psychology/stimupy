@@ -47,7 +47,7 @@ class BinaryParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.noises.binaries import binary
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive binary
 binary_params = BinaryParams()

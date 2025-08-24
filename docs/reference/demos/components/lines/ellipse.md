@@ -54,7 +54,7 @@ class EllipseParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.components.lines import ellipse
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive ellipse
 ellipse_params = EllipseParams()

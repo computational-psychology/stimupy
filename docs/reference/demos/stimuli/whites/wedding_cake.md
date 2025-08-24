@@ -65,7 +65,7 @@ class WeddingCakeParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.whites import wedding_cake
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive wedding_cake
 wedding_cake_params = WeddingCakeParams()

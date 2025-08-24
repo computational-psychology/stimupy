@@ -60,7 +60,7 @@ class WithDotsParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.sbcs import with_dots
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive with_dots
 with_dots_params = WithDotsParams()

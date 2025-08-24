@@ -56,7 +56,7 @@ class CircularParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.sbcs import circular
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive circular
 circular_params = CircularParams()

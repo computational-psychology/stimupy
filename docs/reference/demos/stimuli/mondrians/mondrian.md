@@ -72,7 +72,7 @@ class MondrianParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.mondrians import mondrian
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive mondrian
 mondrian_params = MondrianParams()

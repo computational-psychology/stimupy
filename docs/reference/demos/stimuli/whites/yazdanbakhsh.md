@@ -63,7 +63,7 @@ class YazdanbakhshParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.whites import yazdanbakhsh
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive yazdanbakhsh
 yazdanbakhsh_params = YazdanbakhshParams()

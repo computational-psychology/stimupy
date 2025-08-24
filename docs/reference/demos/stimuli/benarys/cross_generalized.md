@@ -63,7 +63,7 @@ class CrossGeneralizedParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.benarys import cross_generalized
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive cross_generalized
 cross_generalized_params = CrossGeneralizedParams()

@@ -49,7 +49,7 @@ class BrownParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.noises.naturals import brown
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive brown
 brown_params = BrownParams()

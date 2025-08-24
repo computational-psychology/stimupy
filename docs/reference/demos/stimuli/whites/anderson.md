@@ -66,7 +66,7 @@ class AndersonParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.whites import anderson
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive anderson
 anderson_params = AndersonParams()

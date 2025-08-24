@@ -60,7 +60,7 @@ class SquareWavesParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.plaids import square_waves
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive square_waves
 square_waves_params = SquareWavesParams()

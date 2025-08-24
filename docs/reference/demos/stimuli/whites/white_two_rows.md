@@ -61,7 +61,7 @@ class WhiteTwoRowsParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.whites import white_two_rows
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive white_two_rows
 white_two_rows_params = WhiteTwoRowsParams()

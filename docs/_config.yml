@@ -53,7 +53,6 @@ sphinx:
     nbsite_pyodide_conf:
       requirements: ["pyodide-http", "panel", "param", "matplotlib", "stimupy"]
       autodetect_deps: True
-      setup_code: "url='http://localhost:8000/_static/display_stimulus.py'; import pyodide.http; url_contents=pyodide.http.open_url(url).getvalue(); f=open('display_stimulus.py', 'w'); f.write(url_contents); f.close()"
 
     # Auto documentation (autoapi, autodoc)
     autoapi_dirs: ['../stimupy/components', '../stimupy/noises', '../stimupy/stimuli', '../stimupy/papers', '../stimupy/utils']

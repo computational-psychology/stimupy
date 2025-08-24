@@ -62,7 +62,7 @@ class PonzoParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.ponzos import ponzo
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive ponzo
 ponzo_params = PonzoParams()

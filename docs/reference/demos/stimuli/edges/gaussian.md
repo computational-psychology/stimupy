@@ -53,7 +53,7 @@ class GaussianParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.edges import gaussian
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive gaussian
 gaussian_params = GaussianParams()

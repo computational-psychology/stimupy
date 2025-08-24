@@ -60,7 +60,7 @@ class SineWavesParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.plaids import sine_waves
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive sine_waves
 sine_waves_params = SineWavesParams()

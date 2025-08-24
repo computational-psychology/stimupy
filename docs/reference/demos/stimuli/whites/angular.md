@@ -61,7 +61,7 @@ class AngularParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.whites import angular
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive angular
 angular_params = AngularParams()

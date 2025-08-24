@@ -61,7 +61,7 @@ class SquareParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.components.waves import square
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive square
 square_params = SquareParams()

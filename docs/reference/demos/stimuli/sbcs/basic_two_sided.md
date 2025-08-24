@@ -53,7 +53,7 @@ class BasicTwoSidedParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.sbcs import basic_two_sided
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive basic_two_sided
 basic_two_sided_params = BasicTwoSidedParams()

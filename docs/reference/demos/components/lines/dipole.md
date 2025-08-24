@@ -55,7 +55,7 @@ class DipoleParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.components.lines import dipole
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive dipole
 dipole_params = DipoleParams()

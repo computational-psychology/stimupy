@@ -59,7 +59,7 @@ class GeneralizedParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.whites import generalized
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive generalized
 generalized_params = GeneralizedParams()

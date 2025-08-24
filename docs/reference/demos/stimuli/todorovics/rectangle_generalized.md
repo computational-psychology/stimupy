@@ -65,7 +65,7 @@ class RectangleGeneralizedParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.todorovics import rectangle_generalized
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive rectangle_generalized
 rectangle_generalized_params = RectangleGeneralizedParams()

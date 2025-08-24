@@ -49,7 +49,7 @@ class PinkParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.noises.naturals import pink
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive pink
 pink_params = PinkParams()

@@ -58,7 +58,7 @@ class MuellerLyerParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.mueller_lyers import mueller_lyer
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive mueller_lyer
 mueller_lyer_params = MuellerLyerParams()

@@ -53,7 +53,7 @@ class CircleParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.components.lines import circle
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive circle
 circle_params = CircleParams()

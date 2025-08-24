@@ -54,7 +54,7 @@ class VaryingCellsParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.cubes import varying_cells
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive varying_cells
 varying_cells_params = VaryingCellsParams()

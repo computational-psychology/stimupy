@@ -49,7 +49,7 @@ class StepParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.edges import step
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive step
 step_params = StepParams()

@@ -60,7 +60,7 @@ class LineParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.components.lines import line
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive line
 line_params = LineParams()

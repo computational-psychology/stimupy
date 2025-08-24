@@ -61,7 +61,7 @@ class SineParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.components.waves import sine
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive sine
 sine_params = SineParams()

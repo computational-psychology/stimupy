@@ -71,7 +71,7 @@ class CorrugatedMondrianParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.mondrians import corrugated_mondrian
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive corrugated_mondrian
 corrugated_mondrian_params = CorrugatedMondrianParams()

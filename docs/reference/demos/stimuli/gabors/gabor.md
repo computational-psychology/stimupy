@@ -65,7 +65,7 @@ class GaborParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.gabors import gabor
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive gabor
 gabor_params = GaborParams()

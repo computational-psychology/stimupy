@@ -56,7 +56,7 @@ class EqualParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.todorovics import equal
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive equal
 equal_params = EqualParams()

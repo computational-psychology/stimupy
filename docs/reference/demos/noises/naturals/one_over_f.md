@@ -51,7 +51,7 @@ class OneOverFParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.noises.naturals import one_over_f
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive one_over_f
 one_over_f_params = OneOverFParams()

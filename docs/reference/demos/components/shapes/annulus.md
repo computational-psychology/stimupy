@@ -53,7 +53,7 @@ class ShapeAnnulusParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.components.shapes import annulus
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive annulus
 annulus_params = ShapeAnnulusParams()

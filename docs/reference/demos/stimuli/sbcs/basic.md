@@ -51,7 +51,7 @@ class BasicParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.sbcs import basic
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive basic
 basic_params = BasicParams()

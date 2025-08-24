@@ -57,7 +57,7 @@ class SquareLinearParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.waves import square_linear
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive square_linear
 square_linear_params = SquareLinearParams()

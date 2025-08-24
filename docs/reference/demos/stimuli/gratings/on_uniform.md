@@ -62,7 +62,7 @@ class OnUniformParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.gratings import on_uniform
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive on_uniform
 on_uniform_params = OnUniformParams()

@@ -55,7 +55,7 @@ class CornweetParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.edges import cornsweet
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive cornsweet
 cornsweet_params = CornweetParams()

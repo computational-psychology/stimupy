@@ -61,7 +61,7 @@ class RectangularParams(param.Parameterized):
 :skip-embed:
 
 from stimupy.stimuli.bullseyes import rectangular
-from display_stimulus import InteractiveStimDisplay
+from stimupy._docs.display_stimulus import InteractiveStimDisplay
 
 # Create and display the interactive rectangular
 rectangular_params = RectangularParams()
