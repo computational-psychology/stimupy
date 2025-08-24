@@ -63,7 +63,7 @@ target/
 !docs/reference/*
 !docs/reference/demos/
 *.png
-docs/_static/generated_stimuli/*.png
+!docs/_static/generated_stimuli/*.png
 
 
 !manuscript/overview.png
