@@ -61,7 +61,11 @@ def narrowband(
         raise ValueError("ppd should be equal in x and y direction")
 
     bp = bandpass(
-        visual_size=visual_size, ppd=ppd, center_frequency=center_frequency, bandwidth=bandwidth
+        visual_size=visual_size,
+        ppd=ppd,
+        shape=shape,
+        center_frequency=center_frequency,
+        bandwidth=bandwidth,
     )["img"]
 
     if rng is None:

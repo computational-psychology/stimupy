@@ -546,6 +546,7 @@ def todorovic_triangles(
     stim = todorovic_generalized(
         visual_size=visual_size,
         ppd=ppd,
+        shape=shape,
         L_width=L_width,
         target_size=target_size,
         target_type=("t",) * 2,
