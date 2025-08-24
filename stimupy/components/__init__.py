@@ -218,7 +218,7 @@ def combine_masks(*masks):
             raise ValueError("Masks overlap")
 
         # Combine: increase `mask`-idc by adding the current highest idx in combined_mask
-        combined_mask = np.where(mask, mask + combined_mask.max(), combined_mask)
+        combined_mask = np.where(mask, mask.astype(int) + combined_mask.max(), combined_mask)
 
     return combined_mask
 
