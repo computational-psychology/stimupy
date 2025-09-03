@@ -24,7 +24,7 @@ maintainers = [
 ]
 version = "1.2.0"
 
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = ["numpy<2.3", "scipy", "matplotlib", "pandas", "Pillow"]
 
 [dependency-groups]
