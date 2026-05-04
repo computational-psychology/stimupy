@@ -1,4 +1,3 @@
-import itertools
 import logging
 
 import numpy as np
@@ -116,13 +115,26 @@ def place_targets(stim, element_mask_key, target_indices, intensity_target=0.5):
     stim["target_mask"] = mask_targets(
         element_mask=stim[element_mask_key], target_indices=target_indices
     )
+    n_targets = int(stim["target_mask"].max())
 
+    # Determine intensity for each target region
     if isinstance(intensity_target, (int, float)):
         intensity_target = [
             intensity_target,
         ]
-    intensity_target = itertools.cycle(intensity_target)
+    else:
+        intensity_target = list(intensity_target)
 
+    if n_targets > 0:
+        if len(intensity_target) == 0:
+            raise ValueError("intensity_target must not be empty when targets are requested")
+        intensity_target = [
+            intensity_target[idx % len(intensity_target)] for idx in range(n_targets)
+        ]
+    else:
+        intensity_target = []
+
+    # Place targets
     stim["img"] = np.where(
         stim["target_mask"],
         draw_regions(
