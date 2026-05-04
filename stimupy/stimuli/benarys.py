@@ -92,7 +92,7 @@ def cross_generalized(
     # Add targets
     stim = add_targets(
         cross_stim["img"],
-        np.unique(ppd),
+        np.unique(ppd).squeeze(),
         target_size,
         target_type,
         target_rotation,
@@ -365,7 +365,9 @@ def todorovic_generalized(
         raise ValueError("L_width cannot be larger than stimulus_width / 2")
 
     L_size = (visual_size[0] / 2, visual_size[0] / 2, L_width, visual_size[1] - L_width)
-    top, bottom, left, right = resolution.lengths_from_visual_angles_ppd(L_size, np.unique(ppd))
+    top, bottom, left, right = resolution.lengths_from_visual_angles_ppd(
+        L_size, np.unique(ppd).squeeze()
+    )
     width, height = left + right, top + bottom
 
     # Create stimulus without targets
@@ -377,7 +379,7 @@ def todorovic_generalized(
     # Add targets
     stim = add_targets(
         img,
-        np.unique(ppd),
+        np.unique(ppd).squeeze(),
         target_size,
         target_type,
         target_rotation,
