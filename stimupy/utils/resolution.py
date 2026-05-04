@@ -342,7 +342,7 @@ def length_from_visual_angle_ppd(visual_angle, ppd, round=True):
     visual angle (degrees) translated to length (pixels)
     """
     if visual_angle is not None and ppd is not None:
-        fpix = np.round(visual_angle * ppd, 10)
+        fpix = np.round(visual_angle * ppd, 10).squeeze()
 
         if round:
             pix = int(fpix)
